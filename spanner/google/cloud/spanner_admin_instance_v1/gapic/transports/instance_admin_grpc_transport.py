@@ -208,7 +208,7 @@ class InstanceAdminGrpcTransport(object):
         """Return the gRPC stub for :meth:`InstanceAdminClient.update_instance`.
 
         Updates an instance, and begins allocating or releasing resources as
-        requested. The returned ``long-running  operation`` can be used to track
+        requested. The returned ``long-running operation`` can be used to track
         the progress of updating the instance. If the named instance does not
         exist, returns ``NOT_FOUND``.
 

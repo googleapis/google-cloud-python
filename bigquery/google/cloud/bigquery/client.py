@@ -23,6 +23,8 @@ except ImportError:  # Python 2.7
 
 import functools
 import gzip
+import io
+import json
 import os
 import tempfile
 import uuid
@@ -46,8 +48,11 @@ from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetListItem
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery import job
+from google.cloud.bigquery.model import Model
+from google.cloud.bigquery.model import ModelReference
 from google.cloud.bigquery.query import _QueryResults
 from google.cloud.bigquery.retry import DEFAULT_RETRY
+from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import _table_arg_to_table
 from google.cloud.bigquery.table import _table_arg_to_table_ref
 from google.cloud.bigquery.table import Table
@@ -123,6 +128,11 @@ class Client(ClientWithProject):
         default_query_job_config (google.cloud.bigquery.job.QueryJobConfig):
             (Optional) Default ``QueryJobConfig``.
             Will be merged into job configs passed into the ``query`` method.
+        client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+            The client info used to send a user-agent string along with API
+            requests. If ``None``, then default info will be used. Generally,
+            you only need to set this if you're developing your own library
+            or partner tool.
 
     Raises:
         google.auth.exceptions.DefaultCredentialsError:
@@ -143,11 +153,12 @@ class Client(ClientWithProject):
         _http=None,
         location=None,
         default_query_job_config=None,
+        client_info=None,
     ):
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http
         )
-        self._connection = Connection(self)
+        self._connection = Connection(self, client_info=client_info)
         self._location = location
         self._default_query_job_config = default_query_job_config
 
@@ -428,6 +439,33 @@ class Client(ClientWithProject):
         api_response = self._call_api(retry, method="GET", path=dataset_ref.path)
         return Dataset.from_api_repr(api_response)
 
+    def get_model(self, model_ref, retry=DEFAULT_RETRY):
+        """[Beta] Fetch the model referenced by ``model_ref``.
+
+         Args:
+            model_ref (Union[ \
+                :class:`~google.cloud.bigquery.model.ModelReference`, \
+                str, \
+            ]):
+                A reference to the model to fetch from the BigQuery API.
+                If a string is passed in, this method attempts to create a
+                model reference from a string using
+                :func:`google.cloud.bigquery.model.ModelReference.from_string`.
+            retry (:class:`google.api_core.retry.Retry`):
+                (Optional) How to retry the RPC.
+
+         Returns:
+            google.cloud.bigquery.model.Model:
+                A ``Model`` instance.
+        """
+        if isinstance(model_ref, str):
+            model_ref = ModelReference.from_string(
+                model_ref, default_project=self.project
+            )
+
+        api_response = self._call_api(retry, method="GET", path=model_ref.path)
+        return Model.from_api_repr(api_response)
+
     def get_table(self, table, retry=DEFAULT_RETRY):
         """Fetch the table referenced by ``table``.
 
@@ -488,6 +526,41 @@ class Client(ClientWithProject):
         )
         return Dataset.from_api_repr(api_response)
 
+    def update_model(self, model, fields, retry=DEFAULT_RETRY):
+        """[Beta] Change some fields of a model.
+
+        Use ``fields`` to specify which fields to update. At least one field
+        must be provided. If a field is listed in ``fields`` and is ``None``
+        in ``model``, it will be deleted.
+
+        If ``model.etag`` is not ``None``, the update will only succeed if
+        the model on the server has the same ETag. Thus reading a model with
+        ``get_model``, changing its fields, and then passing it to
+        ``update_model`` will ensure that the changes will only be saved if
+        no modifications to the model occurred since the read.
+
+        Args:
+            model (google.cloud.bigquery.model.Model): The model to update.
+            fields (Sequence[str]):
+                The fields of ``model`` to change, spelled as the Model
+                properties (e.g. "friendly_name").
+            retry (google.api_core.retry.Retry):
+                (Optional) A description of how to retry the API call.
+
+        Returns:
+            google.cloud.bigquery.model.Model:
+                The model resource returned from the API call.
+        """
+        partial = model._build_resource(fields)
+        if model.etag:
+            headers = {"If-Match": model.etag}
+        else:
+            headers = None
+        api_response = self._call_api(
+            retry, method="PATCH", path=model.path, data=partial, headers=headers
+        )
+        return Model.from_api_repr(api_response)
+
     def update_table(self, table, fields, retry=DEFAULT_RETRY):
         """Change some fields of a table.
 
@@ -522,6 +595,64 @@ class Client(ClientWithProject):
             retry, method="PATCH", path=table.path, data=partial, headers=headers
         )
         return Table.from_api_repr(api_response)
+
+    def list_models(
+        self, dataset, max_results=None, page_token=None, retry=DEFAULT_RETRY
+    ):
+        """[Beta] List models in the dataset.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/models/list
+
+        Args:
+            dataset (Union[ \
+                :class:`~google.cloud.bigquery.dataset.Dataset`, \
+                :class:`~google.cloud.bigquery.dataset.DatasetReference`, \
+                str, \
+            ]):
+                A reference to the dataset whose models to list from the
+                BigQuery API. If a string is passed in, this method attempts
+                to create a dataset reference from a string using
+                :func:`google.cloud.bigquery.dataset.DatasetReference.from_string`.
+            max_results (int):
+                (Optional) Maximum number of models to return. If not passed,
+                defaults to a value set by the API.
+            page_token (str):
+                (Optional) Token representing a cursor into the models. If
+                not passed, the API will return the first page of models. The
+                token marks the beginning of the iterator to be returned and
+                the value of the ``page_token`` can be accessed at
+                ``next_page_token`` of the
+                :class:`~google.api_core.page_iterator.HTTPIterator`.
+            retry (:class:`google.api_core.retry.Retry`):
+                (Optional) How to retry the RPC.
+
+         Returns:
+            google.api_core.page_iterator.Iterator:
+                Iterator of
+                :class:`~google.cloud.bigquery.model.Model` contained
+                within the requested dataset.
+        """
+        if isinstance(dataset, str):
+            dataset = DatasetReference.from_string(
+                dataset, default_project=self.project
+            )
+
+        if not isinstance(dataset, (Dataset, DatasetReference)):
+            raise TypeError("dataset must be a Dataset, DatasetReference, or string")
+
+        path = "%s/models" % dataset.path
+        result = page_iterator.HTTPIterator(
+            client=self,
+            api_request=functools.partial(self._call_api, retry),
+            path=path,
+            item_to_value=_item_to_model,
+            items_key="models",
+            page_token=page_token,
+            max_results=max_results,
+        )
+        result.dataset = dataset
+        return result
 
     def list_tables(
         self, dataset, max_results=None, page_token=None, retry=DEFAULT_RETRY
@@ -625,6 +756,40 @@ class Client(ClientWithProject):
             self._call_api(
                 retry, method="DELETE", path=dataset.path, query_params=params
             )
+        except google.api_core.exceptions.NotFound:
+            if not not_found_ok:
+                raise
+
+    def delete_model(self, model, retry=DEFAULT_RETRY, not_found_ok=False):
+        """[Beta] Delete a model
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/models/delete
+
+        Args:
+            model (Union[ \
+                :class:`~google.cloud.bigquery.model.Model`, \
+                :class:`~google.cloud.bigquery.model.ModelReference`, \
+                str, \
+            ]):
+                A reference to the model to delete. If a string is passed in,
+                this method attempts to create a model reference from a
+                string using
+                :func:`google.cloud.bigquery.model.ModelReference.from_string`.
+            retry (:class:`google.api_core.retry.Retry`):
+                (Optional) How to retry the RPC.
+            not_found_ok (bool):
+                Defaults to ``False``. If ``True``, ignore "not found" errors
+                when deleting the model.
+        """
+        if isinstance(model, str):
+            model = ModelReference.from_string(model, default_project=self.project)
+
+        if not isinstance(model, (Model, ModelReference)):
+            raise TypeError("model must be a Model or a ModelReference")
+
+        try:
+            self._call_api(retry, method="DELETE", path=model.path)
         except google.api_core.exceptions.NotFound:
             if not not_found_ok:
                 raise
@@ -1694,15 +1859,19 @@ class Client(ClientWithProject):
         Args:
             table (Union[ \
                 :class:`~google.cloud.bigquery.table.Table`, \
+                :class:`~google.cloud.bigquery.table.TableListItem`, \
                 :class:`~google.cloud.bigquery.table.TableReference`, \
                 str, \
             ]):
-                The table to list, or a reference to it.
+                The table to list, or a reference to it. When the table
+                object does not contain a schema and ``selected_fields`` is
+                not supplied, this method calls ``get_table`` to fetch the
+                table schema.
             selected_fields (Sequence[ \
                 :class:`~google.cloud.bigquery.schema.SchemaField` \
             ]):
-                The fields to return. Required if ``table`` is a
-                :class:`~google.cloud.bigquery.table.TableReference`.
+                The fields to return. If not supplied, data for all columns
+                are downloaded.
             max_results (int):
                 (Optional) maximum number of rows to return.
             page_token (str):
@@ -1741,14 +1910,11 @@ class Client(ClientWithProject):
         if selected_fields is not None:
             schema = selected_fields
 
-        # Allow listing rows of an empty table by not raising if the table exists.
-        elif len(schema) == 0 and table.created is None:
-            raise ValueError(
-                (
-                    "Could not determine schema for table '{}'. Call client.get_table() "
-                    "or pass in a list of schema fields to the selected_fields argument."
-                ).format(table)
-            )
+        # No schema, but no selected_fields. Assume the developer wants all
+        # columns, so get the table resource for them rather than failing.
+        elif len(schema) == 0:
+            table = self.get_table(table.reference, retry=retry)
+            schema = table.schema
 
         params = {}
         if selected_fields is not None:
@@ -1771,6 +1937,50 @@ class Client(ClientWithProject):
             selected_fields=selected_fields,
         )
         return row_iterator
+
+    def _schema_from_json_file_object(self, file_obj):
+        """Helper function for schema_from_json that takes a
+       file object that describes a table schema.
+
+       Returns:
+            List of schema field objects.
+        """
+        json_data = json.load(file_obj)
+        return [SchemaField.from_api_repr(field) for field in json_data]
+
+    def _schema_to_json_file_object(self, schema_list, file_obj):
+        """Helper function for schema_to_json that takes a schema list and file
+        object and writes the schema list to the file object with json.dump
+        """
+        json.dump(schema_list, file_obj, indent=2, sort_keys=True)
+
+    def schema_from_json(self, file_or_path):
+        """Takes a file object or file path that contains json that describes
+        a table schema.
+
+        Returns:
+            List of schema field objects.
+        """
+        if isinstance(file_or_path, io.IOBase):
+            return self._schema_from_json_file_object(file_or_path)
+
+        with open(file_or_path) as file_obj:
+            return self._schema_from_json_file_object(file_obj)
+
+    def schema_to_json(self, schema_list, destination):
+        """Takes a list of schema field objects.
+
+        Serializes the list of schema field objects as json to a file.
+
+        Destination is a file path or a file object.
+        """
+        json_schema_list = [f.to_api_repr() for f in schema_list]
+
+        if isinstance(destination, io.IOBase):
+            return self._schema_to_json_file_object(json_schema_list, destination)
+
+        with open(destination, mode="w") as file_obj:
+            return self._schema_to_json_file_object(json_schema_list, file_obj)
 
 
 # pylint: disable=unused-argument
@@ -1820,6 +2030,21 @@ def _item_to_job(iterator, resource):
     :returns: The next job in the page.
     """
     return iterator.client.job_from_resource(resource)
+
+
+def _item_to_model(iterator, resource):
+    """Convert a JSON model to the native object.
+
+    Args:
+        iterator (google.api_core.page_iterator.Iterator):
+            The iterator that is currently in use.
+        resource (dict):
+            An item to be converted to a model.
+
+    Returns:
+        google.cloud.bigquery.model.Model: The next model in the page.
+    """
+    return Model.from_api_repr(resource)
 
 
 def _item_to_table(iterator, resource):

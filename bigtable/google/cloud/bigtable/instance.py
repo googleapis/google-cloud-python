@@ -36,7 +36,7 @@ _INSTANCE_NAME_RE = re.compile(
 )
 
 _INSTANCE_CREATE_WARNING = """
-Use of `instance.create({0}, {1}, {2})` will be depricated.
+Use of `instance.create({0}, {1}, {2})` will be deprecated.
 Please replace with
 `cluster = instance.cluster({0}, {1}, {2})`
 `instance.create(clusters=[cluster])`."""
@@ -74,10 +74,10 @@ class Instance(object):
     :param instance_type: (Optional) The type of the instance.
                           Possible values are represented
                           by the following constants:
-                          :data:`google.cloud.bigtable.enums.InstanceType.PRODUCTION`.
-                          :data:`google.cloud.bigtable.enums.InstanceType.DEVELOPMENT`,
+                          :data:`google.cloud.bigtable.enums.Instance.Type.PRODUCTION`.
+                          :data:`google.cloud.bigtable.enums.Instance.Type.DEVELOPMENT`,
                           Defaults to
-                          :data:`google.cloud.bigtable.enums.InstanceType.UNSPECIFIED`.
+                          :data:`google.cloud.bigtable.enums.Instance.Type.UNSPECIFIED`.
 
     :type labels: dict
     :param labels: (Optional) Labels are a flexible and lightweight

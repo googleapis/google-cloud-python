@@ -23,6 +23,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import grpc
@@ -235,6 +236,19 @@ class TraceServiceClient(object):
             )
 
         request = trace_pb2.PatchTracesRequest(project_id=project_id, traces=traces)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("project_id", project_id)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["patch_traces"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -343,9 +357,11 @@ class TraceServiceClient(object):
             project_id (str): ID of the Cloud project where the trace data is stored.
             view (~google.cloud.trace_v1.types.ViewType): Type of data returned for traces in the list. Optional. Default is
                 ``MINIMAL``.
-            page_size (int): Maximum number of traces to return. If not specified or <= 0, the
-                implementation selects a reasonable value.  The implementation may
-                return fewer traces than the requested page size. Optional.
+            page_size (int): The maximum number of resources contained in the
+                underlying API response. If page streaming is performed per-
+                resource, this parameter does not affect the return value. If page
+                streaming is performed per-page, this determines the maximum number
+                of resources in a page.
             start_time (Union[dict, ~google.cloud.trace_v1.types.Timestamp]): Start of the time interval (inclusive) during which the trace data was
                 collected from the application.
 
@@ -441,6 +457,19 @@ class TraceServiceClient(object):
             filter=filter_,
             order_by=order_by,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("project_id", project_id)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(

@@ -23,6 +23,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.operation
 from google.api_core import operations_v1
@@ -97,16 +98,6 @@ class ProductSearchClient(object):
         )
 
     @classmethod
-    def product_set_path(cls, project, location, product_set):
-        """Return a fully-qualified product_set string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}/productSets/{product_set}",
-            project=project,
-            location=location,
-            product_set=product_set,
-        )
-
-    @classmethod
     def product_path(cls, project, location, product):
         """Return a fully-qualified product string."""
         return google.api_core.path_template.expand(
@@ -114,6 +105,16 @@ class ProductSearchClient(object):
             project=project,
             location=location,
             product=product,
+        )
+
+    @classmethod
+    def product_set_path(cls, project, location, product_set):
+        """Return a fully-qualified product_set string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}/productSets/{product_set}",
+            project=project,
+            location=location,
+            product_set=product_set,
         )
 
     @classmethod
@@ -303,6 +304,19 @@ class ProductSearchClient(object):
         request = product_search_service_pb2.CreateProductRequest(
             parent=parent, product=product, product_id=product_id
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_product"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -389,6 +403,19 @@ class ProductSearchClient(object):
         request = product_search_service_pb2.ListProductsRequest(
             parent=parent, page_size=page_size
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -462,6 +489,19 @@ class ProductSearchClient(object):
             )
 
         request = product_search_service_pb2.GetProductRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_product"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -546,6 +586,19 @@ class ProductSearchClient(object):
         request = product_search_service_pb2.UpdateProductRequest(
             product=product, update_mask=update_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("product.name", product.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_product"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -609,6 +662,19 @@ class ProductSearchClient(object):
             )
 
         request = product_search_service_pb2.DeleteProductRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_product"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -696,6 +762,19 @@ class ProductSearchClient(object):
         request = product_search_service_pb2.ListReferenceImagesRequest(
             parent=parent, page_size=page_size
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -771,6 +850,19 @@ class ProductSearchClient(object):
             )
 
         request = product_search_service_pb2.GetReferenceImageRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_reference_image"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -838,6 +930,19 @@ class ProductSearchClient(object):
             )
 
         request = product_search_service_pb2.DeleteReferenceImageRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_reference_image"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -934,6 +1039,19 @@ class ProductSearchClient(object):
             reference_image=reference_image,
             reference_image_id=reference_image_id,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_reference_image"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1012,6 +1130,19 @@ class ProductSearchClient(object):
         request = product_search_service_pb2.CreateProductSetRequest(
             parent=parent, product_set=product_set, product_set_id=product_set_id
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_product_set"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1098,6 +1229,19 @@ class ProductSearchClient(object):
         request = product_search_service_pb2.ListProductSetsRequest(
             parent=parent, page_size=page_size
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -1172,6 +1316,19 @@ class ProductSearchClient(object):
             )
 
         request = product_search_service_pb2.GetProductSetRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_product_set"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1248,6 +1405,19 @@ class ProductSearchClient(object):
         request = product_search_service_pb2.UpdateProductSetRequest(
             product_set=product_set, update_mask=update_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("product_set.name", product_set.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_product_set"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1311,6 +1481,19 @@ class ProductSearchClient(object):
             )
 
         request = product_search_service_pb2.DeleteProductSetRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_product_set"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1339,9 +1522,7 @@ class ProductSearchClient(object):
             >>> client = vision_v1.ProductSearchClient()
             >>>
             >>> name = client.product_set_path('[PROJECT]', '[LOCATION]', '[PRODUCT_SET]')
-            >>>
-            >>> # TODO: Initialize `product`:
-            >>> product = ''
+            >>> product = client.product_path('[PROJECT]', '[LOCATION]', '[PRODUCT]')
             >>>
             >>> client.add_product_to_product_set(name, product)
 
@@ -1383,6 +1564,19 @@ class ProductSearchClient(object):
         request = product_search_service_pb2.AddProductToProductSetRequest(
             name=name, product=product
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["add_product_to_product_set"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1408,9 +1602,7 @@ class ProductSearchClient(object):
             >>> client = vision_v1.ProductSearchClient()
             >>>
             >>> name = client.product_set_path('[PROJECT]', '[LOCATION]', '[PRODUCT_SET]')
-            >>>
-            >>> # TODO: Initialize `product`:
-            >>> product = ''
+            >>> product = client.product_path('[PROJECT]', '[LOCATION]', '[PRODUCT]')
             >>>
             >>> client.remove_product_from_product_set(name, product)
 
@@ -1454,6 +1646,19 @@ class ProductSearchClient(object):
         request = product_search_service_pb2.RemoveProductFromProductSetRequest(
             name=name, product=product
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["remove_product_from_product_set"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1545,6 +1750,19 @@ class ProductSearchClient(object):
         request = product_search_service_pb2.ListProductsInProductSetRequest(
             name=name, page_size=page_size
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -1643,6 +1861,19 @@ class ProductSearchClient(object):
         request = product_search_service_pb2.ImportProductSetsRequest(
             parent=parent, input_config=input_config
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         operation = self._inner_api_calls["import_product_sets"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )

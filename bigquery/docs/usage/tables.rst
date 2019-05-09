@@ -10,7 +10,7 @@ Listing Tables
 List the tables belonging to a dataset with the
 :func:`~google.cloud.bigquery.client.Client.list_tables` method:
 
-.. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/list_tables.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_list_tables]
@@ -22,7 +22,7 @@ Getting a Table
 Get a table resource with the
 :func:`~google.cloud.bigquery.client.Client.get_table` method:
 
-.. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/get_table.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_get_table]
@@ -43,7 +43,7 @@ Creating a Table
 Create an empty table with the
 :func:`~google.cloud.bigquery.client.Client.create_table` method:
 
-.. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/create_table.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_create_table]
@@ -140,7 +140,7 @@ Deleting a Table
 Delete a table with the
 :func:`~google.cloud.bigquery.client.Client.delete_table` method:
 
-.. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/delete_table.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_delete_table]

@@ -4,7 +4,7 @@ API Reference
 -------------
 
 This package includes clients for multiple versions of the Tasks
-API. By default, you will get ``v2beta3``, the latest version.
+API. By default, you will get ``v2``, the latest version.
 
 .. toctree::
     :maxdepth: 2
@@ -18,12 +18,18 @@ support code previously written against them. In order to use them, you
 will want to import from e.g.  ``google.cloud.tasks_v2beta3`` in lieu of
 ``google.cloud.tasks`` (or the equivalent ``google.cloud.tasks_v2``).
 
-An API and type reference is provided the this beta also:
+v2beta3:
 
 .. toctree::
     :maxdepth: 2
 
     gapic/v2beta3/api
     gapic/v2beta3/types
+    
+v2beta2:
+
+.. toctree::
+    :maxdepth: 2
+    
     gapic/v2beta2/api
     gapic/v2beta2/types

@@ -241,7 +241,10 @@ class Document(object):
 class Entity(object):
     class Type(enum.IntEnum):
         """
-        The type of the entity.
+        The type of the entity. For most entity types, the associated metadata
+        is a Wikipedia URL (``wikipedia_url``) and Knowledge Graph MID
+        (``mid``). The table below lists the associated fields for entities that
+        have different metadata.
 
         Attributes:
           UNKNOWN (int): Unknown
@@ -249,14 +252,43 @@ class Entity(object):
           LOCATION (int): Location
           ORGANIZATION (int): Organization
           EVENT (int): Event
-          WORK_OF_ART (int): Work of art
-          CONSUMER_GOOD (int): Consumer goods
-          OTHER (int): Other types
-          PHONE_NUMBER (int): Phone number
-          ADDRESS (int): Address
-          DATE (int): Date
-          NUMBER (int): Number
-          PRICE (int): Price
+          WORK_OF_ART (int): Artwork
+          CONSUMER_GOOD (int): Consumer product
+          OTHER (int): Other types of entities
+          PHONE_NUMBER (int): Phone number The metadata lists the phone number, formatted according to
+          local convention, plus whichever additional elements appear in the text:
+
+          .. raw:: html
+
+              <li><code>number</code> &ndash; the actual number, broken down into
+              sections as per local convention</li> <li><code>national_prefix</code>
+              &ndash; country code, if detected</li> <li><code>area_code</code> &ndash;
+              region or area code, if detected</li> <li><code>extension</code> &ndash;
+              phone extension (to be dialed after connection), if detected</li></ul>
+          ADDRESS (int): Address The metadata identifies the street number and locality plus
+          whichever additional elements appear in the text:
+
+          .. raw:: html
+
+              <li><code>street_number</code> &ndash; street number</li>
+              <li><code>locality</code> &ndash; city or town</li>
+              <li><code>street_name</code> &ndash; street/route name, if detected</li>
+              <li><code>postal_code</code> &ndash; postal code, if detected</li>
+              <li><code>country</code> &ndash; country, if detected</li>
+              <li><code>broad_region</code> &ndash; administrative area, such as the
+              state, if detected</li> <li><code>narrow_region</code> &ndash; smaller
+              administrative area, such as county, if detected</li>
+              <li><code>sublocality</code> &ndash; used in Asian addresses to demark a
+              district within a city, if detected</li></ul>
+          DATE (int): Date<br><br>
+          The metadata identifies the components of the date:<ul>
+          <li><code>year</code> &ndash; four digit year, if detected</li>
+          <li><code>month</code> &ndash; two digit month number, if detected</li>
+          <li><code>day</code> &ndash; two digit day number, if detected</li></ul>
+          NUMBER (int): Number<br><br>
+          The metadata is the number itself.
+          PRICE (int): Price<br><br>
+          The metadata identifies the <code>value</code> and <code>currency</code>.
         """
 
         UNKNOWN = 0

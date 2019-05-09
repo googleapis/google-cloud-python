@@ -23,14 +23,14 @@ import pytest
 from google.protobuf import text_format
 from google.cloud.firestore_v1beta1.proto import document_pb2
 from google.cloud.firestore_v1beta1.proto import firestore_pb2
-from google.cloud.firestore_v1beta1.proto import test_pb2
+from google.cloud.firestore_v1beta1.proto import test_v1beta1_pb2
 from google.cloud.firestore_v1beta1.proto import write_pb2
 
 
 def _load_testproto(filename):
     with open(filename, "r") as tp_file:
         tp_text = tp_file.read()
-    test_proto = test_pb2.Test()
+    test_proto = test_v1beta1_pb2.Test()
     text_format.Merge(tp_text, test_proto)
     shortname = os.path.split(filename)[-1]
     test_proto.description = test_proto.description + " (%s)" % shortname
@@ -342,13 +342,13 @@ def convert_precondition(precond):
 
 
 class DummyRpc(object):  # pragma: NO COVER
-    def __init__(self, listen, initial_request, should_recover, rpc_metadata=None):
+    def __init__(self, listen, initial_request, should_recover, metadata=None):
         self.listen = listen
         self.initial_request = initial_request
         self.should_recover = should_recover
         self.closed = False
         self.callbacks = []
-        self._rpc_metadata = rpc_metadata
+        self._metadata = metadata
 
     def add_done_callback(self, callback):
         self.callbacks.append(callback)

@@ -91,7 +91,13 @@ class BigQueryStorageGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(  # pragma: no cover
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
+            address,
+            credentials=credentials,
+            scopes=cls._OAUTH_SCOPES,
+            options={
+                "grpc.max_send_message_length": -1,
+                "grpc.max_receive_message_length": -1,
+            }.items(),
         )
 
     @property

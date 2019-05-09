@@ -74,6 +74,17 @@ class DeviceManagerClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
+    def device_path(cls, project, location, registry, device):
+        """Return a fully-qualified device string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}/registries/{registry}/devices/{device}",
+            project=project,
+            location=location,
+            registry=registry,
+            device=device,
+        )
+
+    @classmethod
     def location_path(cls, project, location):
         """Return a fully-qualified location string."""
         return google.api_core.path_template.expand(
@@ -90,17 +101,6 @@ class DeviceManagerClient(object):
             project=project,
             location=location,
             registry=registry,
-        )
-
-    @classmethod
-    def device_path(cls, project, location, registry, device):
-        """Return a fully-qualified device string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}/registries/{registry}/devices/{device}",
-            project=project,
-            location=location,
-            registry=registry,
-            device=device,
         )
 
     def __init__(
@@ -1558,18 +1558,20 @@ class DeviceManagerClient(object):
     ):
         """
         Sends a command to the specified device. In order for a device to be
-        able to receive commands, it must: 1) be connected to Cloud IoT Core
-        using the MQTT protocol, and 2) be subscribed to the group of MQTT
-        topics specified by /devices/{device-id}/commands/#. This subscription
-        will receive commands at the top-level topic
-        /devices/{device-id}/commands as well as commands for subfolders, like
-        /devices/{device-id}/commands/subfolder. Note that subscribing to
-        specific subfolders is not supported. If the command could not be
-        delivered to the device, this method will return an error; in
-        particular, if the device is not subscribed, this method will return
-        FAILED\_PRECONDITION. Otherwise, this method will return OK. If the
-        subscription is QoS 1, at least once delivery will be guaranteed; for
-        QoS 0, no acknowledgment will be expected from the device.
+        able to receive commands, it must:
+
+        1) be connected to Cloud IoT Core using the MQTT protocol, and
+        2) be subscribed to the group of MQTT topics specified by
+           /devices/{device-id}/commands/#. This subscription will receive
+           commands at the top-level topic /devices/{device-id}/commands as well
+           as commands for subfolders, like
+           /devices/{device-id}/commands/subfolder. Note that subscribing to
+           specific subfolders is not supported. If the command could not be
+           delivered to the device, this method will return an error; in
+           particular, if the device is not subscribed, this method will return
+           FAILED\_PRECONDITION. Otherwise, this method will return OK. If the
+           subscription is QoS 1, at least once delivery will be guaranteed; for
+           QoS 0, no acknowledgment will be expected from the device.
 
         Example:
             >>> from google.cloud import iot_v1

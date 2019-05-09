@@ -85,13 +85,14 @@ class KeyManagementServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def key_ring_path(cls, project, location, key_ring):
-        """Return a fully-qualified key_ring string."""
+    def crypto_key_path(cls, project, location, key_ring, crypto_key):
+        """Return a fully-qualified crypto_key string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}/keyRings/{key_ring}",
+            "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}",
             project=project,
             location=location,
             key_ring=key_ring,
+            crypto_key=crypto_key,
         )
 
     @classmethod
@@ -106,26 +107,6 @@ class KeyManagementServiceClient(object):
         )
 
     @classmethod
-    def location_path(cls, project, location):
-        """Return a fully-qualified location string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}",
-            project=project,
-            location=location,
-        )
-
-    @classmethod
-    def crypto_key_path(cls, project, location, key_ring, crypto_key):
-        """Return a fully-qualified crypto_key string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}",
-            project=project,
-            location=location,
-            key_ring=key_ring,
-            crypto_key=crypto_key,
-        )
-
-    @classmethod
     def crypto_key_version_path(
         cls, project, location, key_ring, crypto_key, crypto_key_version
     ):
@@ -137,6 +118,25 @@ class KeyManagementServiceClient(object):
             key_ring=key_ring,
             crypto_key=crypto_key,
             crypto_key_version=crypto_key_version,
+        )
+
+    @classmethod
+    def key_ring_path(cls, project, location, key_ring):
+        """Return a fully-qualified key_ring string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}/keyRings/{key_ring}",
+            project=project,
+            location=location,
+            key_ring=key_ring,
+        )
+
+    @classmethod
+    def location_path(cls, project, location):
+        """Return a fully-qualified location string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}",
+            project=project,
+            location=location,
         )
 
     def __init__(

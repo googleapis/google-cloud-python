@@ -15,6 +15,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.scheduler_v1beta1.proto import (
     target_pb2 as google_dot_cloud_dot_scheduler__v1beta1_dot_proto_dot_target__pb2,
 )
@@ -31,10 +32,11 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         '\n"com.google.cloud.scheduler.v1beta1B\010JobProtoP\001ZGgoogle.golang.org/genproto/googleapis/cloud/scheduler/v1beta1;scheduler'
     ),
     serialized_pb=_b(
-        '\n.google/cloud/scheduler_v1beta1/proto/job.proto\x12\x1egoogle.cloud.scheduler.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x31google/cloud/scheduler_v1beta1/proto/target.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto"\xd3\x05\n\x03Job\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x45\n\rpubsub_target\x18\x04 \x01(\x0b\x32,.google.cloud.scheduler.v1beta1.PubsubTargetH\x00\x12U\n\x16\x61pp_engine_http_target\x18\x05 \x01(\x0b\x32\x33.google.cloud.scheduler.v1beta1.AppEngineHttpTargetH\x00\x12\x41\n\x0bhttp_target\x18\x06 \x01(\x0b\x32*.google.cloud.scheduler.v1beta1.HttpTargetH\x00\x12\x10\n\x08schedule\x18\x14 \x01(\t\x12\x11\n\ttime_zone\x18\x15 \x01(\t\x12\x34\n\x10user_update_time\x18\t \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x38\n\x05state\x18\n \x01(\x0e\x32).google.cloud.scheduler.v1beta1.Job.State\x12"\n\x06status\x18\x0b \x01(\x0b\x32\x12.google.rpc.Status\x12\x31\n\rschedule_time\x18\x11 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x35\n\x11last_attempt_time\x18\x12 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x41\n\x0cretry_config\x18\x13 \x01(\x0b\x32+.google.cloud.scheduler.v1beta1.RetryConfig"X\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07\x45NABLED\x10\x01\x12\n\n\x06PAUSED\x10\x02\x12\x0c\n\x08\x44ISABLED\x10\x03\x12\x11\n\rUPDATE_FAILED\x10\x04\x42\x08\n\x06target"\xe2\x01\n\x0bRetryConfig\x12\x13\n\x0bretry_count\x18\x01 \x01(\x05\x12\x35\n\x12max_retry_duration\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x37\n\x14min_backoff_duration\x18\x03 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x37\n\x14max_backoff_duration\x18\x04 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x15\n\rmax_doublings\x18\x05 \x01(\x05\x42y\n"com.google.cloud.scheduler.v1beta1B\x08JobProtoP\x01ZGgoogle.golang.org/genproto/googleapis/cloud/scheduler/v1beta1;schedulerb\x06proto3'
+        '\n.google/cloud/scheduler_v1beta1/proto/job.proto\x12\x1egoogle.cloud.scheduler.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a\x31google/cloud/scheduler_v1beta1/proto/target.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto"\x88\x06\n\x03Job\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x45\n\rpubsub_target\x18\x04 \x01(\x0b\x32,.google.cloud.scheduler.v1beta1.PubsubTargetH\x00\x12U\n\x16\x61pp_engine_http_target\x18\x05 \x01(\x0b\x32\x33.google.cloud.scheduler.v1beta1.AppEngineHttpTargetH\x00\x12\x41\n\x0bhttp_target\x18\x06 \x01(\x0b\x32*.google.cloud.scheduler.v1beta1.HttpTargetH\x00\x12\x10\n\x08schedule\x18\x14 \x01(\t\x12\x11\n\ttime_zone\x18\x15 \x01(\t\x12\x34\n\x10user_update_time\x18\t \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x38\n\x05state\x18\n \x01(\x0e\x32).google.cloud.scheduler.v1beta1.Job.State\x12"\n\x06status\x18\x0b \x01(\x0b\x32\x12.google.rpc.Status\x12\x31\n\rschedule_time\x18\x11 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x35\n\x11last_attempt_time\x18\x12 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x41\n\x0cretry_config\x18\x13 \x01(\x0b\x32+.google.cloud.scheduler.v1beta1.RetryConfig\x12\x33\n\x10\x61ttempt_deadline\x18\x16 \x01(\x0b\x32\x19.google.protobuf.Duration"X\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07\x45NABLED\x10\x01\x12\n\n\x06PAUSED\x10\x02\x12\x0c\n\x08\x44ISABLED\x10\x03\x12\x11\n\rUPDATE_FAILED\x10\x04\x42\x08\n\x06target"\xe2\x01\n\x0bRetryConfig\x12\x13\n\x0bretry_count\x18\x01 \x01(\x05\x12\x35\n\x12max_retry_duration\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x37\n\x14min_backoff_duration\x18\x03 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x37\n\x14max_backoff_duration\x18\x04 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x15\n\rmax_doublings\x18\x05 \x01(\x05\x42y\n"com.google.cloud.scheduler.v1beta1B\x08JobProtoP\x01ZGgoogle.golang.org/genproto/googleapis/cloud/scheduler/v1beta1;schedulerb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_scheduler__v1beta1_dot_proto_dot_target__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
@@ -71,8 +73,8 @@ _JOB_STATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=879,
-    serialized_end=967,
+    serialized_start=959,
+    serialized_end=1047,
 )
 _sym_db.RegisterEnumDescriptor(_JOB_STATE)
 
@@ -318,6 +320,24 @@ _JOB = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
         ),
+        _descriptor.FieldDescriptor(
+            name="attempt_deadline",
+            full_name="google.cloud.scheduler.v1beta1.Job.attempt_deadline",
+            index=13,
+            number=22,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -335,8 +355,8 @@ _JOB = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=254,
-    serialized_end=977,
+    serialized_start=281,
+    serialized_end=1057,
 )
 
 
@@ -446,8 +466,8 @@ _RETRYCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=980,
-    serialized_end=1206,
+    serialized_start=1060,
+    serialized_end=1286,
 )
 
 _JOB.fields_by_name[
@@ -477,6 +497,9 @@ _JOB.fields_by_name[
     "last_attempt_time"
 ].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _JOB.fields_by_name["retry_config"].message_type = _RETRYCONFIG
+_JOB.fields_by_name[
+    "attempt_deadline"
+].message_type = google_dot_protobuf_dot_duration__pb2._DURATION
 _JOB_STATE.containing_type = _JOB
 _JOB.oneofs_by_name["target"].fields.append(_JOB.fields_by_name["pubsub_target"])
 _JOB.fields_by_name["pubsub_target"].containing_oneof = _JOB.oneofs_by_name["target"]
@@ -512,7 +535,9 @@ Job = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          The job name. For example:
+          Optionally caller-specified in [CreateJob][google.cloud.schedu
+          ler.v1beta1.CloudScheduler.CreateJob], after which it becomes
+          output only.  The job name. For example:
           ``projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID``.  -
           ``PROJECT_ID`` can contain letters ([A-Za-z]), numbers
           ([0-9]),    hyphens (-), colons (:), or periods (.). For more
@@ -528,8 +553,11 @@ Job = _reflection.GeneratedProtocolMessageType(
           (-), or underscores (\_). The maximum length is 500
           characters.
       description:
-          A human-readable description for the job. This string must not
-          contain more than 500 characters.
+          Optionally caller-specified in [CreateJob][google.cloud.schedu
+          ler.v1beta1.CloudScheduler.CreateJob] or [UpdateJob][google.cl
+          oud.scheduler.v1beta1.CloudScheduler.UpdateJob].  A human-
+          readable description for the job. This string must not contain
+          more than 500 characters.
       target:
           Required.  Delivery settings containing destination and
           parameters.
@@ -540,8 +568,14 @@ Job = _reflection.GeneratedProtocolMessageType(
       http_target:
           HTTP target.
       schedule:
-          Required.  Describes the schedule on which the job will be
-          executed.  As a general rule, execution ``n + 1`` of a job
+          Required, except when used with [UpdateJob][google.cloud.sched
+          uler.v1beta1.CloudScheduler.UpdateJob].  Describes the
+          schedule on which the job will be executed.  The schedule can
+          be either of the following types:  -  `Crontab
+          <http://en.wikipedia.org/wiki/Cron#Overview>`__ -  English-
+          like    `schedule
+          <https://cloud.google.com/scheduler/docs/configuring/cron-job-
+          schedules>`__  As a general rule, execution ``n + 1`` of a job
           will not begin until execution ``n`` has finished. Cloud
           Scheduler will never allow two simultaneously outstanding
           executions. For example, this implies that if the ``n+1``\ th
@@ -553,12 +587,7 @@ Job = _reflection.GeneratedProtocolMessageType(
           er.v1beta1.RetryConfig.retry\_count] > 0 and a job attempt
           fails, the job will be tried a total of [retry\_count][google.
           cloud.scheduler.v1beta1.RetryConfig.retry\_count] times, with
-          exponential backoff, until the next scheduled start time.  The
-          schedule can be either of the following types:  -  `Crontab
-          <http://en.wikipedia.org/wiki/Cron#Overview>`__ -  English-
-          like    `schedule
-          <https://cloud.google.com/scheduler/docs/configuring/cron-job-
-          schedules>`__
+          exponential backoff, until the next scheduled start time.
       time_zone:
           Specifies the time zone to be used in interpreting
           [schedule][google.cloud.scheduler.v1beta1.Job.schedule]. The
@@ -583,6 +612,20 @@ Job = _reflection.GeneratedProtocolMessageType(
           Output only. The time the last job attempt started.
       retry_config:
           Settings that determine the retry behavior.
+      attempt_deadline:
+          The deadline for job attempts. If the request handler does not
+          respond by this deadline then the request is cancelled and the
+          attempt is marked as a ``DEADLINE_EXCEEDED`` failure. The
+          failed attempt can be viewed in execution logs. Cloud
+          Scheduler will retry the job according to the
+          [RetryConfig][google.cloud.scheduler.v1beta1.RetryConfig].
+          The allowed duration for this deadline is:  -  For [HTTP
+          targets][google.cloud.scheduler.v1beta1.Job.http\_target],
+          between 15 seconds and 30 minutes. -  For [App Engine HTTP    
+          targets][google.cloud.scheduler.v1beta1.Job.app\_engine\_http\
+          _target],    between 15 seconds and 24 hours. -  For [PubSub
+          targets][google.cloud.scheduler.v1beta1.Job.pubsub\_target],
+          this    field is ignored.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.scheduler.v1beta1.Job)
     ),
