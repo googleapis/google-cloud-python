@@ -22,6 +22,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.path_template
 import grpc
@@ -29,6 +30,9 @@ import grpc
 from google.cloud.talent_v4beta1.gapic import enums
 from google.cloud.talent_v4beta1.gapic import event_service_client_config
 from google.cloud.talent_v4beta1.gapic.transports import event_service_grpc_transport
+from google.cloud.talent_v4beta1.proto import application_pb2
+from google.cloud.talent_v4beta1.proto import application_service_pb2
+from google.cloud.talent_v4beta1.proto import application_service_pb2_grpc
 from google.cloud.talent_v4beta1.proto import company_pb2
 from google.cloud.talent_v4beta1.proto import company_service_pb2
 from google.cloud.talent_v4beta1.proto import company_service_pb2_grpc
@@ -74,10 +78,10 @@ class EventServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
+    def tenant_path(cls, project, tenant):
+        """Return a fully-qualified tenant string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            "projects/{project}/tenants/{tenant}", project=project, tenant=tenant
         )
 
     def __init__(
@@ -201,7 +205,7 @@ class EventServiceClient(object):
             >>>
             >>> client = talent_v4beta1.EventServiceClient()
             >>>
-            >>> parent = client.project_path('[PROJECT]')
+            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
             >>>
             >>> # TODO: Initialize `client_event`:
             >>> client_event = {}
@@ -209,7 +213,15 @@ class EventServiceClient(object):
             >>> response = client.create_client_event(parent, client_event)
 
         Args:
-            parent (str): Parent project name.
+            parent (str): Required.
+
+                Resource name of the tenant under which the event is created.
+
+                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
+                example, "projects/api-test-project/tenant/foo".
+
+                Tenant id is optional and a default tenant is created if unspecified,
+                for example, "projects/api-test-project".
             client_event (Union[dict, ~google.cloud.talent_v4beta1.types.ClientEvent]): Required.
 
                 Events issued when end user interacts with customer's application that
@@ -250,6 +262,19 @@ class EventServiceClient(object):
         request = event_service_pb2.CreateClientEventRequest(
             parent=parent, client_event=client_event
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_client_event"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
