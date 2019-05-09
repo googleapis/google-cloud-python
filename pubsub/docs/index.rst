@@ -1,4 +1,4 @@
-.. include:: /../pubsub/README.rst
+.. include:: README.rst
 
 API Documentation
 -----------------
