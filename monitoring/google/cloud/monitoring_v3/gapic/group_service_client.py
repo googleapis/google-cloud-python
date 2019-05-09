@@ -91,17 +91,17 @@ class GroupServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}", project=project
-        )
-
-    @classmethod
     def group_path(cls, project, group):
         """Return a fully-qualified group string."""
         return google.api_core.path_template.expand(
             "projects/{project}/groups/{group}", project=project, group=group
+        )
+
+    @classmethod
+    def project_path(cls, project):
+        """Return a fully-qualified project string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}", project=project
         )
 
     def __init__(
