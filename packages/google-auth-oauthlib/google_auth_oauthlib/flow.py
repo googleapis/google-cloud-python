@@ -398,13 +398,13 @@ class InstalledAppFlow(Flow):
             google.oauth2.credentials.Credentials: The OAuth 2.0 credentials
                 for the user.
         """
-        self.redirect_uri = 'http://{}:{}/'.format(host, port)
-
-        auth_url, _ = self.authorization_url(**kwargs)
-
         wsgi_app = _RedirectWSGIApp(success_message)
         local_server = wsgiref.simple_server.make_server(
             host, port, wsgi_app, handler_class=_WSGIRequestHandler)
+
+        self.redirect_uri = 'http://{}:{}/'.format(
+            host, local_server.server_port)
+        auth_url, _ = self.authorization_url(**kwargs)
 
         if open_browser:
             webbrowser.open(auth_url, new=1, autoraise=True)
