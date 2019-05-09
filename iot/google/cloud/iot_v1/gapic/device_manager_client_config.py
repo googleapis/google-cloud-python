@@ -2,13 +2,9 @@ config = {
     "interfaces": {
         "google.cloud.iot.v1.DeviceManager": {
             "retry_codes": {
-                "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
+                "idempotent": ["UNAVAILABLE"],
                 "non_idempotent": [],
-                "rate_limited_aware": [
-                    "DEADLINE_EXCEEDED",
-                    "RESOURCE_EXHAUSTED",
-                    "UNAVAILABLE",
-                ],
+                "rate_limited_aware": ["RESOURCE_EXHAUSTED", "UNAVAILABLE"],
             },
             "retry_params": {
                 "default": {
