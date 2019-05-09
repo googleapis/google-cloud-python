@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.kms_v1.gapic.key_management_service_client &#8212; google-cloud b9b04ab documentation</title>
+    <title>google.cloud.kms_v1.gapic.key_management_service_client &#8212; google-cloud 1b2c6f8 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -1894,8 +1894,7 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            resource (str): REQUIRED: The resource for which the policy is being specified.</span>
-<span class="sd">                ``resource`` is usually specified as a path. For example, a Project</span>
-<span class="sd">                resource is specified as ``projects/{project}``.</span>
+<span class="sd">                See the operation documentation for the appropriate value for this field.</span>
 <span class="sd">            policy (Union[dict, ~google.cloud.kms_v1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The</span>
 <span class="sd">                size of the policy is limited to a few 10s of KB. An empty policy is a</span>
 <span class="sd">                valid policy but certain Cloud Platform services (such as Projects)</span>
@@ -1974,8 +1973,7 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            resource (str): REQUIRED: The resource for which the policy is being requested.</span>
-<span class="sd">                ``resource`` is usually specified as a path. For example, a Project</span>
-<span class="sd">                resource is specified as ``projects/{project}``.</span>
+<span class="sd">                See the operation documentation for the appropriate value for this field.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -2037,6 +2035,10 @@
 <span class="sd">        resource does not exist, this will return an empty set of permissions,</span>
 <span class="sd">        not a NOT\_FOUND error.</span>
 
+<span class="sd">        Note: This operation is designed to be used for building</span>
+<span class="sd">        permission-aware UIs and command-line tools, not for authorization</span>
+<span class="sd">        checking. This operation may &quot;fail open&quot; without warning.</span>
+
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import kms_v1</span>
 <span class="sd">            &gt;&gt;&gt;</span>
@@ -2051,8 +2053,7 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            resource (str): REQUIRED: The resource for which the policy detail is being requested.</span>
-<span class="sd">                ``resource`` is usually specified as a path. For example, a Project</span>
-<span class="sd">                resource is specified as ``projects/{project}``.</span>
+<span class="sd">                See the operation documentation for the appropriate value for this field.</span>
 <span class="sd">            permissions (list[str]): The set of permissions to check for the ``resource``. Permissions with</span>
 <span class="sd">                wildcards (such as &#39;*&#39; or &#39;storage.*&#39;) are not allowed. For more</span>
 <span class="sd">                information see `IAM</span>

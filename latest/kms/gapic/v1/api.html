@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Cloud Key Management Service (KMS) API &#8212; google-cloud b9b04ab documentation</title>
+    <title>Client for Cloud Key Management Service (KMS) API &#8212; google-cloud 1b2c6f8 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -751,8 +751,7 @@ set.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – REQUIRED: The resource for which the policy is being requested.
-<code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For example, a Project
-resource is specified as <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</li>
+See the operation documentation for the appropriate value for this field.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1167,8 +1166,7 @@ existing policy.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – REQUIRED: The resource for which the policy is being specified.
-<code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For example, a Project
-resource is specified as <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</li>
+See the operation documentation for the appropriate value for this field.</li>
 <li><strong>policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>Policy</em><em>]</em>) – <p>REQUIRED: The complete policy to be applied to the <code class="docutils literal notranslate"><span class="pre">resource</span></code>. The
 size of the policy is limited to a few 10s of KB. An empty policy is a
 valid policy but certain Cloud Platform services (such as Projects)
@@ -1209,6 +1207,9 @@ to a retryable error and retry attempts failed.</li>
 <dd><p>Returns permissions that a caller has on the specified resource. If the
 resource does not exist, this will return an empty set of permissions,
 not a NOT_FOUND error.</p>
+<p>Note: This operation is designed to be used for building
+permission-aware UIs and command-line tools, not for authorization
+checking. This operation may “fail open” without warning.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">kms_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1228,8 +1229,7 @@ not a NOT_FOUND error.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – REQUIRED: The resource for which the policy detail is being requested.
-<code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For example, a Project
-resource is specified as <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</li>
+See the operation documentation for the appropriate value for this field.</li>
 <li><strong>permissions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – The set of permissions to check for the <code class="docutils literal notranslate"><span class="pre">resource</span></code>. Permissions with
 wildcards (such as ‘*’ or ‘storage.*’) are not allowed. For more
 information see <a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM
