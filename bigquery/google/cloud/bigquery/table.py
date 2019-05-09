@@ -1787,7 +1787,7 @@ class TimePartitioning(object):
         """google.cloud.bigquery.table.TimePartitioningType: The type of time
         partitioning to use.
         """
-        return self._properties["type"]
+        return self._properties.get("type")
 
     @type_.setter
     def type_(self, value):
@@ -1849,7 +1849,7 @@ class TimePartitioning(object):
             google.cloud.bigquery.table.TimePartitioning:
                 The ``TimePartitioning`` object.
         """
-        instance = cls(api_repr["type"])
+        instance = cls()
         instance._properties = api_repr
         return instance
 

@@ -42,8 +42,8 @@ for version in ["v1", "v2"]:
         f"from google.cloud.trace_{version}.proto import ",
     )
 
-# Copy docs config
-s.move( library / "docs/conf.py")
+# Copy docs configuration
+s.move(library / f"docs/conf.py")
 
 # Issues exist where python files should define the source encoding
 # https://github.com/googleapis/gapic-generator/issues/2097

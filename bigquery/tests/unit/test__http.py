@@ -57,49 +57,21 @@ class TestConnection(unittest.TestCase):
         client = mock.Mock(_http=http, spec=["_http"])
 
         conn = self._make_one(client)
-        conn.USER_AGENT = "my-application/1.2.3"
+        conn.user_agent = "my-application/1.2.3"
         req_data = "req-data-boring"
         result = conn.api_request("GET", "/rainbow", data=req_data, expect_json=False)
         self.assertEqual(result, data)
 
         expected_headers = {
             "Accept-Encoding": "gzip",
-            base_http.CLIENT_INFO_HEADER: conn.USER_AGENT,
-            "User-Agent": conn.USER_AGENT,
+            base_http.CLIENT_INFO_HEADER: conn.user_agent,
+            "User-Agent": conn.user_agent,
         }
         expected_uri = conn.build_api_url("/rainbow")
         http.request.assert_called_once_with(
             data=req_data, headers=expected_headers, method="GET", url=expected_uri
         )
-        self.assertIn("my-application/1.2.3", conn.USER_AGENT)
-
-    def test_extra_headers(self):
-        from google.cloud import _http as base_http
-
-        http = mock.create_autospec(requests.Session, instance=True)
-        response = requests.Response()
-        response.status_code = 200
-        data = b"brent-spiner"
-        response._content = data
-        http.request.return_value = response
-        client = mock.Mock(_http=http, spec=["_http"])
-
-        conn = self._make_one(client)
-        conn._EXTRA_HEADERS["x-test-header"] = "a test value"
-        req_data = "req-data-boring"
-        result = conn.api_request("GET", "/rainbow", data=req_data, expect_json=False)
-        self.assertEqual(result, data)
-
-        expected_headers = {
-            "Accept-Encoding": "gzip",
-            base_http.CLIENT_INFO_HEADER: conn.USER_AGENT,
-            "User-Agent": conn.USER_AGENT,
-            "x-test-header": "a test value",
-        }
-        expected_uri = conn.build_api_url("/rainbow")
-        http.request.assert_called_once_with(
-            data=req_data, headers=expected_headers, method="GET", url=expected_uri
-        )
+        self.assertIn("my-application/1.2.3", conn.user_agent)
 
     def test_extra_headers_replace(self):
         from google.cloud import _http as base_http
@@ -113,15 +85,15 @@ class TestConnection(unittest.TestCase):
         client = mock.Mock(_http=http, spec=["_http"])
 
         conn = self._make_one(client)
-        conn._EXTRA_HEADERS = {"x-test-header": "a test value"}
+        conn.extra_headers = {"x-test-header": "a test value"}
         req_data = "req-data-boring"
         result = conn.api_request("GET", "/rainbow", data=req_data, expect_json=False)
         self.assertEqual(result, data)
 
         expected_headers = {
             "Accept-Encoding": "gzip",
-            base_http.CLIENT_INFO_HEADER: conn.USER_AGENT,
-            "User-Agent": conn.USER_AGENT,
+            base_http.CLIENT_INFO_HEADER: conn.user_agent,
+            "User-Agent": conn.user_agent,
             "x-test-header": "a test value",
         }
         expected_uri = conn.build_api_url("/rainbow")

@@ -25,15 +25,15 @@ from google.cloud.vision_v1.gapic import image_annotator_client as iac
 from google.cloud.vision_v1.gapic import product_search_client
 
 
-class ProductSearchClient(product_search_client.ProductSearchClient):
-    __doc__ = product_search_client.ProductSearchClient.__doc__
-    enums = enums
-
-
 @add_single_feature_methods
 class ImageAnnotatorClient(VisionHelpers, iac.ImageAnnotatorClient):
     __doc__ = iac.ImageAnnotatorClient.__doc__
     enums = enums
 
 
-__all__ = ("enums", "types", "ProductSearchClient", "ImageAnnotatorClient")
+class ProductSearchClient(product_search_client.ProductSearchClient):
+    __doc__ = product_search_client.ProductSearchClient.__doc__
+    enums = enums
+
+
+__all__ = ("enums", "types", "ImageAnnotatorClient", "ProductSearchClient")

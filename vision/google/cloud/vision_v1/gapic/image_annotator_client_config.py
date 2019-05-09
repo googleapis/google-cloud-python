@@ -1,10 +1,7 @@
 config = {
     "interfaces": {
         "google.cloud.vision.v1.ImageAnnotator": {
-            "retry_codes": {
-                "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
-                "non_idempotent": [],
-            },
+            "retry_codes": {"idempotent": ["UNAVAILABLE"], "non_idempotent": []},
             "retry_params": {
                 "default": {
                     "initial_retry_delay_millis": 100,
@@ -18,6 +15,16 @@ config = {
             },
             "methods": {
                 "BatchAnnotateImages": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "BatchAnnotateFiles": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "AsyncBatchAnnotateImages": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",

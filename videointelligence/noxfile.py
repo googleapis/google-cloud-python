@@ -144,7 +144,7 @@ def cover(session):
 def docs(session):
     """Build the docs for this library."""
 
-    session.install('e', '.')
+    session.install('-e', '.')
     session.install('sphinx', 'alabaster', 'recommonmark')
 
     shutil.rmtree(os.path.join('docs', '_build'), ignore_errors=True)

@@ -27,26 +27,41 @@ class Test_ErrorReportingLoggingAPI(unittest.TestCase):
 
     PROJECT = "PROJECT"
 
-    def _make_one(self, project, credentials):
+    def _make_one(self, project, credentials, **kw):
         from google.cloud.error_reporting._logging import _ErrorReportingLoggingAPI
 
-        return _ErrorReportingLoggingAPI(project, credentials)
+        return _ErrorReportingLoggingAPI(project, credentials, **kw)
 
-    def test_constructor(self):
+    @mock.patch("google.cloud.logging.client.Client")
+    def test_ctor_defaults(self, mocked_cls):
         credentials = _make_credentials()
+
         logging_api = self._make_one(self.PROJECT, credentials)
 
-        self.assertEqual(
-            logging_api.logging_client._connection.credentials, credentials
+        self.assertIs(logging_api.logging_client, mocked_cls.return_value)
+        mocked_cls.assert_called_once_with(
+            self.PROJECT, credentials, _http=None, client_info=None
         )
-        self.assertEqual(logging_api.logging_client.project, self.PROJECT)
+
+    @mock.patch("google.cloud.logging.client.Client")
+    def test_ctor_explicit(self, mocked_cls):
+        credentials = _make_credentials()
+        http = mock.Mock()
+        client_info = mock.Mock()
+
+        logging_api = self._make_one(
+            self.PROJECT, credentials, _http=http, client_info=client_info
+        )
+
+        self.assertIs(logging_api.logging_client, mocked_cls.return_value)
+        mocked_cls.assert_called_once_with(
+            self.PROJECT, credentials, _http=http, client_info=client_info
+        )
 
     @mock.patch("google.cloud.logging.client.Client")
     def test_report_error_event(self, mocked_cls):
         credentials = _make_credentials()
         logging_api = self._make_one(self.PROJECT, credentials)
-        mocked_cls.assert_called_once_with(self.PROJECT, credentials, _http=None)
-        self.assertIs(logging_api.logging_client, mocked_cls.return_value)
 
         logger = mock.Mock(spec=["log_struct"])
         logging_api.logging_client.logger.return_value = logger

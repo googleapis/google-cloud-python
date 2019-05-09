@@ -141,8 +141,10 @@ def lint(session):
     serious code quality issues.
     """
 
-    session.install("black", "flake8", *LOCAL_DEPS)
-    session.install(".")
+    session.install("black", "flake8")
+    for local_dep in LOCAL_DEPS:
+        session.install("-e", local_dep)
+    session.install("-e", ".")
     session.run("flake8", os.path.join("google", "cloud", "bigquery"))
     session.run("flake8", "tests")
     session.run("flake8", os.path.join("docs", "snippets.py"))

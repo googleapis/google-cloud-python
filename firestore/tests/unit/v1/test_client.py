@@ -38,6 +38,7 @@ class TestClient(unittest.TestCase):
         return self._make_one(project=self.PROJECT, credentials=credentials)
 
     def test_constructor(self):
+        from google.cloud.firestore_v1.client import _CLIENT_INFO
         from google.cloud.firestore_v1.client import DEFAULT_DATABASE
 
         credentials = _make_credentials()
@@ -45,16 +46,22 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.project, self.PROJECT)
         self.assertEqual(client._credentials, credentials)
         self.assertEqual(client._database, DEFAULT_DATABASE)
+        self.assertIs(client._client_info, _CLIENT_INFO)
 
     def test_constructor_explicit(self):
         credentials = _make_credentials()
         database = "now-db"
+        client_info = mock.Mock()
         client = self._make_one(
-            project=self.PROJECT, credentials=credentials, database=database
+            project=self.PROJECT,
+            credentials=credentials,
+            database=database,
+            client_info=client_info,
         )
         self.assertEqual(client.project, self.PROJECT)
         self.assertEqual(client._credentials, credentials)
         self.assertEqual(client._database, database)
+        self.assertIs(client._client_info, client_info)
 
     @mock.patch(
         "google.cloud.firestore_v1.gapic.firestore_client." "FirestoreClient",
@@ -63,11 +70,14 @@ class TestClient(unittest.TestCase):
     )
     def test__firestore_api_property(self, mock_client):
         client = self._make_default_one()
+        client_info = client._client_info = mock.Mock()
         self.assertIsNone(client._firestore_api_internal)
         firestore_api = client._firestore_api
         self.assertIs(firestore_api, mock_client.return_value)
         self.assertIs(firestore_api, client._firestore_api_internal)
-        mock_client.assert_called_once_with(credentials=client._credentials)
+        mock_client.assert_called_once_with(
+            credentials=client._credentials, client_info=client_info
+        )
 
         # Call again to show that it is cached, but call count is still 1.
         self.assertIs(client._firestore_api, mock_client.return_value)

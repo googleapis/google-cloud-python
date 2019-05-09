@@ -32,11 +32,7 @@ from google.cloud.vision_v1.gapic import image_annotator_client_config
 from google.cloud.vision_v1.gapic.transports import image_annotator_grpc_transport
 from google.cloud.vision_v1.proto import image_annotator_pb2
 from google.cloud.vision_v1.proto import image_annotator_pb2_grpc
-from google.cloud.vision_v1.proto import product_search_service_pb2
-from google.cloud.vision_v1.proto import product_search_service_pb2_grpc
 from google.longrunning import operations_pb2
-from google.protobuf import empty_pb2
-from google.protobuf import field_mask_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-vision").version
 
@@ -232,6 +228,169 @@ class ImageAnnotatorClient(object):
         request = image_annotator_pb2.BatchAnnotateImagesRequest(requests=requests)
         return self._inner_api_calls["batch_annotate_images"](
             request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def batch_annotate_files(
+        self,
+        requests,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Service that performs image detection and annotation for a batch of files.
+        Now only "application/pdf", "image/tiff" and "image/gif" are supported.
+
+        This service will extract at most 5 (customers can specify which 5 in
+        AnnotateFileRequest.pages) frames (gif) or pages (pdf or tiff) from each
+        file provided and perform detection and annotation for each image
+        extracted.
+
+        Example:
+            >>> from google.cloud import vision_v1
+            >>>
+            >>> client = vision_v1.ImageAnnotatorClient()
+            >>>
+            >>> # TODO: Initialize `requests`:
+            >>> requests = []
+            >>>
+            >>> response = client.batch_annotate_files(requests)
+
+        Args:
+            requests (list[Union[dict, ~google.cloud.vision_v1.types.AnnotateFileRequest]]): The list of file annotation requests. Right now we support only one
+                AnnotateFileRequest in BatchAnnotateFilesRequest.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.vision_v1.types.AnnotateFileRequest`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.vision_v1.types.BatchAnnotateFilesResponse` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "batch_annotate_files" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "batch_annotate_files"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.batch_annotate_files,
+                default_retry=self._method_configs["BatchAnnotateFiles"].retry,
+                default_timeout=self._method_configs["BatchAnnotateFiles"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = image_annotator_pb2.BatchAnnotateFilesRequest(requests=requests)
+        return self._inner_api_calls["batch_annotate_files"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def async_batch_annotate_images(
+        self,
+        requests,
+        output_config,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Run asynchronous image detection and annotation for a list of images.
+
+        Progress and results can be retrieved through the
+        ``google.longrunning.Operations`` interface. ``Operation.metadata``
+        contains ``OperationMetadata`` (metadata). ``Operation.response``
+        contains ``AsyncBatchAnnotateImagesResponse`` (results).
+
+        This service will write image annotation outputs to json files in
+        customer GCS bucket, each json file containing
+        BatchAnnotateImagesResponse proto.
+
+        Example:
+            >>> from google.cloud import vision_v1
+            >>>
+            >>> client = vision_v1.ImageAnnotatorClient()
+            >>>
+            >>> # TODO: Initialize `requests`:
+            >>> requests = []
+            >>>
+            >>> # TODO: Initialize `output_config`:
+            >>> output_config = {}
+            >>>
+            >>> response = client.async_batch_annotate_images(requests, output_config)
+            >>>
+            >>> def callback(operation_future):
+            ...     # Handle result.
+            ...     result = operation_future.result()
+            >>>
+            >>> response.add_done_callback(callback)
+            >>>
+            >>> # Handle metadata.
+            >>> metadata = response.metadata()
+
+        Args:
+            requests (list[Union[dict, ~google.cloud.vision_v1.types.AnnotateImageRequest]]): Individual image annotation requests for this batch.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.vision_v1.types.AnnotateImageRequest`
+            output_config (Union[dict, ~google.cloud.vision_v1.types.OutputConfig]): Required. The desired output location and metadata (e.g. format).
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.vision_v1.types.OutputConfig`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.vision_v1.types._OperationFuture` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "async_batch_annotate_images" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "async_batch_annotate_images"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.async_batch_annotate_images,
+                default_retry=self._method_configs["AsyncBatchAnnotateImages"].retry,
+                default_timeout=self._method_configs[
+                    "AsyncBatchAnnotateImages"
+                ].timeout,
+                client_info=self._client_info,
+            )
+
+        request = image_annotator_pb2.AsyncBatchAnnotateImagesRequest(
+            requests=requests, output_config=output_config
+        )
+        operation = self._inner_api_calls["async_batch_annotate_images"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+        return google.api_core.operation.from_gapic(
+            operation,
+            self.transport._operations_client,
+            image_annotator_pb2.AsyncBatchAnnotateImagesResponse,
+            metadata_type=image_annotator_pb2.OperationMetadata,
         )
 
     def async_batch_annotate_files(

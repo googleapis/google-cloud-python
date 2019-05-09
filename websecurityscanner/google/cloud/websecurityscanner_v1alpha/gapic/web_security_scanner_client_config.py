@@ -1,10 +1,7 @@
 config = {
     "interfaces": {
         "google.cloud.websecurityscanner.v1alpha.WebSecurityScanner": {
-            "retry_codes": {
-                "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
-                "non_idempotent": [],
-            },
+            "retry_codes": {"idempotent": ["UNAVAILABLE"], "non_idempotent": []},
             "retry_params": {
                 "default": {
                     "initial_retry_delay_millis": 100,
