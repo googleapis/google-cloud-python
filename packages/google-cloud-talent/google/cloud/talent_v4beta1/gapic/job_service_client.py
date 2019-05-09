@@ -23,6 +23,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
@@ -31,6 +32,9 @@ import grpc
 from google.cloud.talent_v4beta1.gapic import enums
 from google.cloud.talent_v4beta1.gapic import job_service_client_config
 from google.cloud.talent_v4beta1.gapic.transports import job_service_grpc_transport
+from google.cloud.talent_v4beta1.proto import application_pb2
+from google.cloud.talent_v4beta1.proto import application_service_pb2
+from google.cloud.talent_v4beta1.proto import application_service_pb2_grpc
 from google.cloud.talent_v4beta1.proto import common_pb2
 from google.cloud.talent_v4beta1.proto import company_pb2
 from google.cloud.talent_v4beta1.proto import company_service_pb2
@@ -82,17 +86,30 @@ class JobServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
+    def company_path(cls, project, tenant, company):
+        """Return a fully-qualified company string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            "projects/{project}/tenants/{tenant}/companies/{company}",
+            project=project,
+            tenant=tenant,
+            company=company,
         )
 
     @classmethod
-    def job_path(cls, project, jobs):
+    def job_path(cls, project, tenant, jobs):
         """Return a fully-qualified job string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/jobs/{jobs}", project=project, jobs=jobs
+            "projects/{project}/tenants/{tenant}/jobs/{jobs}",
+            project=project,
+            tenant=tenant,
+            jobs=jobs,
+        )
+
+    @classmethod
+    def tenant_path(cls, project, tenant):
+        """Return a fully-qualified tenant string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/tenants/{tenant}", project=project, tenant=tenant
         )
 
     def __init__(
@@ -213,7 +230,7 @@ class JobServiceClient(object):
             >>>
             >>> client = talent_v4beta1.JobServiceClient()
             >>>
-            >>> parent = client.project_path('[PROJECT]')
+            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
             >>>
             >>> # TODO: Initialize `job`:
             >>> job = {}
@@ -223,10 +240,13 @@ class JobServiceClient(object):
         Args:
             parent (str): Required.
 
-                The resource name of the project under which the job is created.
+                The resource name of the tenant under which the job is created.
 
-                The format is "projects/{project\_id}", for example,
-                "projects/api-test-project".
+                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
+                example, "projects/api-test-project/tenant/foo".
+
+                Tenant id is optional and a default tenant is created if unspecified,
+                for example, "projects/api-test-project".
             job (Union[dict, ~google.cloud.talent_v4beta1.types.Job]): Required.
 
                 The Job to be created.
@@ -264,6 +284,19 @@ class JobServiceClient(object):
             )
 
         request = job_service_pb2.CreateJobRequest(parent=parent, job=job)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_job"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -284,7 +317,7 @@ class JobServiceClient(object):
             >>>
             >>> client = talent_v4beta1.JobServiceClient()
             >>>
-            >>> name = client.job_path('[PROJECT]', '[JOBS]')
+            >>> name = client.job_path('[PROJECT]', '[TENANT]', '[JOBS]')
             >>>
             >>> response = client.get_job(name)
 
@@ -293,8 +326,12 @@ class JobServiceClient(object):
 
                 The resource name of the job to retrieve.
 
-                The format is "projects/{project\_id}/jobs/{job\_id}", for example,
-                "projects/api-test-project/jobs/1234".
+                The format is
+                "projects/{project\_id}/tenants/{tenant\_id}/jobs/{job\_id}", for
+                example, "projects/api-test-project/tenants/foo/jobs/1234".
+
+                Tenant id is optional and the default tenant is used if unspecified, for
+                example, "projects/api-test-project/jobs/1234".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -326,6 +363,19 @@ class JobServiceClient(object):
             )
 
         request = job_service_pb2.GetJobRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_job"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -403,6 +453,19 @@ class JobServiceClient(object):
             )
 
         request = job_service_pb2.UpdateJobRequest(job=job, update_mask=update_mask)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("job.name", job.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_job"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -425,7 +488,7 @@ class JobServiceClient(object):
             >>>
             >>> client = talent_v4beta1.JobServiceClient()
             >>>
-            >>> name = client.job_path('[PROJECT]', '[JOBS]')
+            >>> name = client.job_path('[PROJECT]', '[TENANT]', '[JOBS]')
             >>>
             >>> client.delete_job(name)
 
@@ -434,8 +497,12 @@ class JobServiceClient(object):
 
                 The resource name of the job to be deleted.
 
-                The format is "projects/{project\_id}/jobs/{job\_id}", for example,
-                "projects/api-test-project/jobs/1234".
+                The format is
+                "projects/{project\_id}/tenants/{tenant\_id}/jobs/{job\_id}", for
+                example, "projects/api-test-project/tenants/foo/jobs/1234".
+
+                Tenant id is optional and the default tenant is used if unspecified, for
+                example, "projects/api-test-project/jobs/1234".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -464,6 +531,19 @@ class JobServiceClient(object):
             )
 
         request = job_service_pb2.DeleteJobRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_job"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -486,7 +566,7 @@ class JobServiceClient(object):
             >>>
             >>> client = talent_v4beta1.JobServiceClient()
             >>>
-            >>> parent = client.project_path('[PROJECT]')
+            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
             >>>
             >>> # TODO: Initialize `filter_`:
             >>> filter_ = ''
@@ -508,10 +588,13 @@ class JobServiceClient(object):
         Args:
             parent (str): Required.
 
-                The resource name of the project under which the job is created.
+                The resource name of the tenant under which the job is created.
 
-                The format is "projects/{project\_id}", for example,
-                "projects/api-test-project".
+                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
+                example, "projects/api-test-project/tenant/foo".
+
+                Tenant id is optional and the default tenant is used if unspecified, for
+                example, "projects/api-test-project".
             filter_ (str): Required.
 
                 The filter string specifies the jobs to be enumerated.
@@ -527,11 +610,11 @@ class JobServiceClient(object):
 
                 Sample Query:
 
-                -  companyName = "projects/api-test-project/companies/123"
-                -  companyName = "projects/api-test-project/companies/123" AND
-                   requisitionId = "req-1"
-                -  companyName = "projects/api-test-project/companies/123" AND status =
-                   "EXPIRED"
+                -  companyName = "projects/api-test-project/tenants/foo/companies/bar"
+                -  companyName = "projects/api-test-project/tenants/foo/companies/bar"
+                   AND requisitionId = "req-1"
+                -  companyName = "projects/api-test-project/tenants/foo/companies/bar"
+                   AND status = "EXPIRED"
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -577,6 +660,19 @@ class JobServiceClient(object):
         request = job_service_pb2.ListJobsRequest(
             parent=parent, filter=filter_, page_size=page_size, job_view=job_view
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -608,7 +704,7 @@ class JobServiceClient(object):
             >>>
             >>> client = talent_v4beta1.JobServiceClient()
             >>>
-            >>> parent = client.project_path('[PROJECT]')
+            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
             >>>
             >>> # TODO: Initialize `filter_`:
             >>> filter_ = ''
@@ -618,10 +714,13 @@ class JobServiceClient(object):
         Args:
             parent (str): Required.
 
-                The resource name of the project under which the job is created.
+                The resource name of the tenant under which the job is created.
 
-                The format is "projects/{project\_id}", for example,
-                "projects/api-test-project".
+                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
+                example, "projects/api-test-project/tenant/foo".
+
+                Tenant id is optional and the default tenant is used if unspecified, for
+                example, "projects/api-test-project".
             filter_ (str): Required.
 
                 The filter string specifies the jobs to be deleted.
@@ -663,6 +762,19 @@ class JobServiceClient(object):
             )
 
         request = job_service_pb2.BatchDeleteJobsRequest(parent=parent, filter=filter_)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["batch_delete_jobs"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -698,7 +810,7 @@ class JobServiceClient(object):
             >>>
             >>> client = talent_v4beta1.JobServiceClient()
             >>>
-            >>> parent = client.project_path('[PROJECT]')
+            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
             >>>
             >>> # TODO: Initialize `request_metadata`:
             >>> request_metadata = {}
@@ -720,10 +832,13 @@ class JobServiceClient(object):
         Args:
             parent (str): Required.
 
-                The resource name of the project to search within.
+                The resource name of the tenant to search within.
 
-                The format is "projects/{project\_id}", for example,
-                "projects/api-test-project".
+                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
+                example, "projects/api-test-project/tenant/foo".
+
+                Tenant id is optional and the default tenant is used if unspecified, for
+                example, "projects/api-test-project".
             request_metadata (Union[dict, ~google.cloud.talent_v4beta1.types.RequestMetadata]): Required.
 
                 The meta information collected about the job searcher, used to improve
@@ -768,11 +883,12 @@ class JobServiceClient(object):
                 Expression syntax is an aggregation function call with histogram facets
                 and other options.
 
-                Available aggregation function calls are: \*
-                ``count(string_histogram_facet)``: Count the number of matching
-                entities, for each distinct attribute value. \*
-                ``count(numeric_histogram_facet, list of buckets)``: Count the number of
-                matching entities within each bucket.
+                Available aggregation function calls are:
+
+                -  ``count(string_histogram_facet)``: Count the number of matching
+                   entities, for each distinct attribute value.
+                -  ``count(numeric_histogram_facet, list of buckets)``: Count the number
+                   of matching entities within each bucket.
 
                 Data types:
 
@@ -845,11 +961,14 @@ class JobServiceClient(object):
                    notations like numeric\_custom\_attribute["key1"]. Must specify list
                    of numeric buckets to group results by.
 
-                Example expressions: \* count(admin1) \* count(base\_compensation,
-                [bucket(1000, 10000), bucket(10000, 100000), bucket(100000, MAX)]) \*
-                count(string\_custom\_attribute["some-string-custom-attribute"]) \*
-                count(numeric\_custom\_attribute["some-numeric-custom-attribute"],
-                [bucket(MIN, 0, "negative"), bucket(0, MAX, "non-negative"])
+                Example expressions:
+
+                -  count(admin1)
+                -  count(base\_compensation, [bucket(1000, 10000), bucket(10000,
+                   100000), bucket(100000, MAX)])
+                -  count(string\_custom\_attribute["some-string-custom-attribute"])
+                -  count(numeric\_custom\_attribute["some-numeric-custom-attribute"],
+                   [bucket(MIN, 0, "negative"), bucket(0, MAX, "non-negative"])
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.HistogramQuery`
@@ -1008,6 +1127,19 @@ class JobServiceClient(object):
             custom_ranking_info=custom_ranking_info,
             disable_keyword_match=disable_keyword_match,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -1059,7 +1191,7 @@ class JobServiceClient(object):
             >>>
             >>> client = talent_v4beta1.JobServiceClient()
             >>>
-            >>> parent = client.project_path('[PROJECT]')
+            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
             >>>
             >>> # TODO: Initialize `request_metadata`:
             >>> request_metadata = {}
@@ -1081,10 +1213,13 @@ class JobServiceClient(object):
         Args:
             parent (str): Required.
 
-                The resource name of the project to search within.
+                The resource name of the tenant to search within.
 
-                The format is "projects/{project\_id}", for example,
-                "projects/api-test-project".
+                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
+                example, "projects/api-test-project/tenant/foo".
+
+                Tenant id is optional and the default tenant is used if unspecified, for
+                example, "projects/api-test-project".
             request_metadata (Union[dict, ~google.cloud.talent_v4beta1.types.RequestMetadata]): Required.
 
                 The meta information collected about the job searcher, used to improve
@@ -1129,11 +1264,12 @@ class JobServiceClient(object):
                 Expression syntax is an aggregation function call with histogram facets
                 and other options.
 
-                Available aggregation function calls are: \*
-                ``count(string_histogram_facet)``: Count the number of matching
-                entities, for each distinct attribute value. \*
-                ``count(numeric_histogram_facet, list of buckets)``: Count the number of
-                matching entities within each bucket.
+                Available aggregation function calls are:
+
+                -  ``count(string_histogram_facet)``: Count the number of matching
+                   entities, for each distinct attribute value.
+                -  ``count(numeric_histogram_facet, list of buckets)``: Count the number
+                   of matching entities within each bucket.
 
                 Data types:
 
@@ -1206,11 +1342,14 @@ class JobServiceClient(object):
                    notations like numeric\_custom\_attribute["key1"]. Must specify list
                    of numeric buckets to group results by.
 
-                Example expressions: \* count(admin1) \* count(base\_compensation,
-                [bucket(1000, 10000), bucket(10000, 100000), bucket(100000, MAX)]) \*
-                count(string\_custom\_attribute["some-string-custom-attribute"]) \*
-                count(numeric\_custom\_attribute["some-numeric-custom-attribute"],
-                [bucket(MIN, 0, "negative"), bucket(0, MAX, "non-negative"])
+                Example expressions:
+
+                -  count(admin1)
+                -  count(base\_compensation, [bucket(1000, 10000), bucket(10000,
+                   100000), bucket(100000, MAX)])
+                -  count(string\_custom\_attribute["some-string-custom-attribute"])
+                -  count(numeric\_custom\_attribute["some-numeric-custom-attribute"],
+                   [bucket(MIN, 0, "negative"), bucket(0, MAX, "non-negative"])
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.HistogramQuery`
@@ -1369,6 +1508,19 @@ class JobServiceClient(object):
             custom_ranking_info=custom_ranking_info,
             disable_keyword_match=disable_keyword_match,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(

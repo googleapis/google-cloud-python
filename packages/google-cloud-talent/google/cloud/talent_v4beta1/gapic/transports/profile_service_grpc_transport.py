@@ -155,6 +155,8 @@ class ProfileServiceGrpcTransport(object):
         """Return the gRPC stub for :meth:`ProfileServiceClient.delete_profile`.
 
         Deletes the specified profile.
+        Prerequisite: The profile has no associated applications or assignments
+        associated.
 
         Returns:
             Callable: A callable which accepts the appropriate
