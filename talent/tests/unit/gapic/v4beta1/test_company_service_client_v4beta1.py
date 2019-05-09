@@ -95,7 +95,7 @@ class TestCompanyServiceClient(object):
             client = talent_v4beta1.CompanyServiceClient()
 
         # Setup Request
-        parent = client.project_path("[PROJECT]")
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
         company = {}
 
         response = client.create_company(parent, company)
@@ -117,7 +117,7 @@ class TestCompanyServiceClient(object):
             client = talent_v4beta1.CompanyServiceClient()
 
         # Setup request
-        parent = client.project_path("[PROJECT]")
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
         company = {}
 
         with pytest.raises(CustomException):
@@ -157,7 +157,7 @@ class TestCompanyServiceClient(object):
             client = talent_v4beta1.CompanyServiceClient()
 
         # Setup Request
-        name = client.company_path("[PROJECT]", "[COMPANY]")
+        name = client.company_path("[PROJECT]", "[TENANT]", "[COMPANY]")
 
         response = client.get_company(name)
         assert expected_response == response
@@ -176,7 +176,7 @@ class TestCompanyServiceClient(object):
             client = talent_v4beta1.CompanyServiceClient()
 
         # Setup request
-        name = client.company_path("[PROJECT]", "[COMPANY]")
+        name = client.company_path("[PROJECT]", "[TENANT]", "[COMPANY]")
 
         with pytest.raises(CustomException):
             client.get_company(name)
@@ -247,7 +247,7 @@ class TestCompanyServiceClient(object):
             client = talent_v4beta1.CompanyServiceClient()
 
         # Setup Request
-        name = client.company_path("[PROJECT]", "[COMPANY]")
+        name = client.company_path("[PROJECT]", "[TENANT]", "[COMPANY]")
 
         client.delete_company(name)
 
@@ -265,7 +265,7 @@ class TestCompanyServiceClient(object):
             client = talent_v4beta1.CompanyServiceClient()
 
         # Setup request
-        name = client.company_path("[PROJECT]", "[COMPANY]")
+        name = client.company_path("[PROJECT]", "[TENANT]", "[COMPANY]")
 
         with pytest.raises(CustomException):
             client.delete_company(name)
@@ -288,7 +288,7 @@ class TestCompanyServiceClient(object):
             client = talent_v4beta1.CompanyServiceClient()
 
         # Setup Request
-        parent = client.project_path("[PROJECT]")
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
 
         paged_list_response = client.list_companies(parent)
         resources = list(paged_list_response)
@@ -309,7 +309,7 @@ class TestCompanyServiceClient(object):
             client = talent_v4beta1.CompanyServiceClient()
 
         # Setup request
-        parent = client.project_path("[PROJECT]")
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
 
         paged_list_response = client.list_companies(parent)
         with pytest.raises(CustomException):

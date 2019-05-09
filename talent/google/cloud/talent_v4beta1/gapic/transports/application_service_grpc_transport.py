@@ -16,12 +16,12 @@
 
 import google.api_core.grpc_helpers
 
-from google.cloud.talent_v4beta1.proto import resume_service_pb2_grpc
+from google.cloud.talent_v4beta1.proto import application_service_pb2_grpc
 
 
-class ResumeServiceGrpcTransport(object):
+class ApplicationServiceGrpcTransport(object):
     """gRPC transport class providing stubs for
-    google.cloud.talent.v4beta1 ResumeService API.
+    google.cloud.talent.v4beta1 ApplicationService API.
 
     The transport provides access to the raw gRPC stubs,
     which can be used to take advantage of advanced
@@ -67,7 +67,9 @@ class ResumeServiceGrpcTransport(object):
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            "resume_service_stub": resume_service_pb2_grpc.ResumeServiceStub(channel)
+            "application_service_stub": application_service_pb2_grpc.ApplicationServiceStub(
+                channel
+            )
         }
 
     @classmethod
@@ -99,42 +101,66 @@ class ResumeServiceGrpcTransport(object):
         return self._channel
 
     @property
-    def parse_resume(self):
-        """Return the gRPC stub for :meth:`ResumeServiceClient.parse_resume`.
+    def create_application(self):
+        """Return the gRPC stub for :meth:`ApplicationServiceClient.create_application`.
 
-        Parses a resume into a ``Profile``. The API attempts to fill out the
-        following profile fields if present within the resume:
-
-        -  personNames
-        -  addresses
-        -  emailAddress
-        -  phoneNumbers
-        -  personalUris
-        -  employmentRecords
-        -  educationRecords
-        -  skills
-
-        Note that some attributes in these fields may not be populated if
-        they're not present within the resume or unrecognizable by the resume
-        parser.
-
-        This API does not save the resume or profile. To create a profile from
-        this resume, clients need to call the CreateProfile method again with
-        the profile returned.
-
-        The following list of formats are supported:
-
-        -  PDF
-        -  TXT
-        -  DOC
-        -  RTF
-        -  DOCX
-        -  PNG (only when ``ParseResumeRequest.enable_ocr`` is set to ``true``,
-           otherwise an error is thrown)
+        Creates a new application entity.
 
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["resume_service_stub"].ParseResume
+        return self._stubs["application_service_stub"].CreateApplication
+
+    @property
+    def get_application(self):
+        """Return the gRPC stub for :meth:`ApplicationServiceClient.get_application`.
+
+        Retrieves specified application.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["application_service_stub"].GetApplication
+
+    @property
+    def update_application(self):
+        """Return the gRPC stub for :meth:`ApplicationServiceClient.update_application`.
+
+        Updates specified application.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["application_service_stub"].UpdateApplication
+
+    @property
+    def delete_application(self):
+        """Return the gRPC stub for :meth:`ApplicationServiceClient.delete_application`.
+
+        Deletes specified application.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["application_service_stub"].DeleteApplication
+
+    @property
+    def list_applications(self):
+        """Return the gRPC stub for :meth:`ApplicationServiceClient.list_applications`.
+
+        Lists all applications associated with the profile.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["application_service_stub"].ListApplications

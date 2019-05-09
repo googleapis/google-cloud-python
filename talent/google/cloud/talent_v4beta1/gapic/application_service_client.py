@@ -13,7 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Accesses the google.cloud.talent.v4beta1 TenantService API."""
+"""Accesses the google.cloud.talent.v4beta1 ApplicationService API."""
 
 import functools
 import pkg_resources
@@ -29,47 +29,32 @@ import google.api_core.page_iterator
 import google.api_core.path_template
 import grpc
 
+from google.cloud.talent_v4beta1.gapic import application_service_client_config
 from google.cloud.talent_v4beta1.gapic import enums
-from google.cloud.talent_v4beta1.gapic import tenant_service_client_config
-from google.cloud.talent_v4beta1.gapic.transports import tenant_service_grpc_transport
+from google.cloud.talent_v4beta1.gapic.transports import (
+    application_service_grpc_transport,
+)
 from google.cloud.talent_v4beta1.proto import application_pb2
 from google.cloud.talent_v4beta1.proto import application_service_pb2
 from google.cloud.talent_v4beta1.proto import application_service_pb2_grpc
-from google.cloud.talent_v4beta1.proto import common_pb2
-from google.cloud.talent_v4beta1.proto import company_pb2
-from google.cloud.talent_v4beta1.proto import company_service_pb2
-from google.cloud.talent_v4beta1.proto import company_service_pb2_grpc
-from google.cloud.talent_v4beta1.proto import completion_service_pb2
-from google.cloud.talent_v4beta1.proto import completion_service_pb2_grpc
-from google.cloud.talent_v4beta1.proto import event_pb2
-from google.cloud.talent_v4beta1.proto import event_service_pb2
-from google.cloud.talent_v4beta1.proto import event_service_pb2_grpc
-from google.cloud.talent_v4beta1.proto import filters_pb2
-from google.cloud.talent_v4beta1.proto import histogram_pb2
-from google.cloud.talent_v4beta1.proto import job_pb2
-from google.cloud.talent_v4beta1.proto import job_service_pb2
-from google.cloud.talent_v4beta1.proto import job_service_pb2_grpc
-from google.cloud.talent_v4beta1.proto import profile_pb2
-from google.cloud.talent_v4beta1.proto import profile_service_pb2
-from google.cloud.talent_v4beta1.proto import profile_service_pb2_grpc
-from google.cloud.talent_v4beta1.proto import tenant_pb2
-from google.cloud.talent_v4beta1.proto import tenant_service_pb2
-from google.cloud.talent_v4beta1.proto import tenant_service_pb2_grpc
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-talent").version
 
 
-class TenantServiceClient(object):
-    """A service that handles tenant management, including CRUD and enumeration."""
+class ApplicationServiceClient(object):
+    """
+    A service that handles application management, including CRUD and
+    enumeration.
+    """
 
     SERVICE_ADDRESS = "jobs.googleapis.com:443"
     """The default address of the service."""
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = "google.cloud.talent.v4beta1.TenantService"
+    _INTERFACE_NAME = "google.cloud.talent.v4beta1.ApplicationService"
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -83,7 +68,7 @@ class TenantServiceClient(object):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            TenantServiceClient: The constructed client.
+            ApplicationServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -92,17 +77,24 @@ class TenantServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
+    def application_path(cls, project, tenant, profile, application):
+        """Return a fully-qualified application string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            "projects/{project}/tenants/{tenant}/profiles/{profile}/applications/{application}",
+            project=project,
+            tenant=tenant,
+            profile=profile,
+            application=application,
         )
 
     @classmethod
-    def tenant_path(cls, project, tenant):
-        """Return a fully-qualified tenant string."""
+    def profile_path(cls, project, tenant, profile):
+        """Return a fully-qualified profile string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/tenants/{tenant}", project=project, tenant=tenant
+            "projects/{project}/tenants/{tenant}/profiles/{profile}",
+            project=project,
+            tenant=tenant,
+            profile=profile,
         )
 
     def __init__(
@@ -116,8 +108,8 @@ class TenantServiceClient(object):
         """Constructor.
 
         Args:
-            transport (Union[~.TenantServiceGrpcTransport,
-                    Callable[[~.Credentials, type], ~.TenantServiceGrpcTransport]): A transport
+            transport (Union[~.ApplicationServiceGrpcTransport,
+                    Callable[[~.Credentials, type], ~.ApplicationServiceGrpcTransport]): A transport
                 instance, responsible for actually making the API calls.
                 The default transport uses the gRPC protocol.
                 This argument may also be a callable which returns a
@@ -151,7 +143,7 @@ class TenantServiceClient(object):
                 stacklevel=2,
             )
         else:
-            client_config = tenant_service_client_config.config
+            client_config = application_service_client_config.config
 
         if channel:
             warnings.warn(
@@ -167,7 +159,7 @@ class TenantServiceClient(object):
             if callable(transport):
                 self.transport = transport(
                     credentials=credentials,
-                    default_class=tenant_service_grpc_transport.TenantServiceGrpcTransport,
+                    default_class=application_service_grpc_transport.ApplicationServiceGrpcTransport,
                 )
             else:
                 if credentials:
@@ -177,7 +169,7 @@ class TenantServiceClient(object):
                     )
                 self.transport = transport
         else:
-            self.transport = tenant_service_grpc_transport.TenantServiceGrpcTransport(
+            self.transport = application_service_grpc_transport.ApplicationServiceGrpcTransport(
                 address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
             )
 
@@ -204,42 +196,44 @@ class TenantServiceClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def create_tenant(
+    def create_application(
         self,
         parent,
-        tenant,
+        application,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
     ):
         """
-        Creates a new tenant entity.
+        Creates a new application entity.
 
         Example:
             >>> from google.cloud import talent_v4beta1
             >>>
-            >>> client = talent_v4beta1.TenantServiceClient()
+            >>> client = talent_v4beta1.ApplicationServiceClient()
             >>>
-            >>> parent = client.project_path('[PROJECT]')
+            >>> parent = client.profile_path('[PROJECT]', '[TENANT]', '[PROFILE]')
             >>>
-            >>> # TODO: Initialize `tenant`:
-            >>> tenant = {}
+            >>> # TODO: Initialize `application`:
+            >>> application = {}
             >>>
-            >>> response = client.create_tenant(parent, tenant)
+            >>> response = client.create_application(parent, application)
 
         Args:
             parent (str): Required.
 
-                Resource name of the project under which the tenant is created.
+                Resource name of the profile under which the application is created.
 
-                The format is "projects/{project\_id}", for example,
-                "projects/api-test-project".
-            tenant (Union[dict, ~google.cloud.talent_v4beta1.types.Tenant]): Required.
+                The format is
+                "projects/{project\_id}/tenants/{tenant\_id}/profiles/{profile\_id}",
+                for example,
+                "projects/test-project/tenants/test-tenant/profiles/test-profile".
+            application (Union[dict, ~google.cloud.talent_v4beta1.types.Application]): Required.
 
-                The tenant to be created.
+                The application to be created.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.talent_v4beta1.types.Tenant`
+                message :class:`~google.cloud.talent_v4beta1.types.Application`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -250,7 +244,7 @@ class TenantServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.talent_v4beta1.types.Tenant` instance.
+            A :class:`~google.cloud.talent_v4beta1.types.Application` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -260,17 +254,19 @@ class TenantServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "create_tenant" not in self._inner_api_calls:
+        if "create_application" not in self._inner_api_calls:
             self._inner_api_calls[
-                "create_tenant"
+                "create_application"
             ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.create_tenant,
-                default_retry=self._method_configs["CreateTenant"].retry,
-                default_timeout=self._method_configs["CreateTenant"].timeout,
+                self.transport.create_application,
+                default_retry=self._method_configs["CreateApplication"].retry,
+                default_timeout=self._method_configs["CreateApplication"].timeout,
                 client_info=self._client_info,
             )
 
-        request = tenant_service_pb2.CreateTenantRequest(parent=parent, tenant=tenant)
+        request = application_service_pb2.CreateApplicationRequest(
+            parent=parent, application=application
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -284,11 +280,11 @@ class TenantServiceClient(object):
             )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["create_tenant"](
+        return self._inner_api_calls["create_application"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
-    def get_tenant(
+    def get_application(
         self,
         name,
         retry=google.api_core.gapic_v1.method.DEFAULT,
@@ -296,24 +292,26 @@ class TenantServiceClient(object):
         metadata=None,
     ):
         """
-        Retrieves specified tenant.
+        Retrieves specified application.
 
         Example:
             >>> from google.cloud import talent_v4beta1
             >>>
-            >>> client = talent_v4beta1.TenantServiceClient()
+            >>> client = talent_v4beta1.ApplicationServiceClient()
             >>>
-            >>> name = client.tenant_path('[PROJECT]', '[TENANT]')
+            >>> name = client.application_path('[PROJECT]', '[TENANT]', '[PROFILE]', '[APPLICATION]')
             >>>
-            >>> response = client.get_tenant(name)
+            >>> response = client.get_application(name)
 
         Args:
             name (str): Required.
 
-                The resource name of the tenant to be retrieved.
+                The resource name of the application to be retrieved.
 
-                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
-                example, "projects/api-test-project/tenants/foo".
+                The format is
+                "projects/{project\_id}/tenants/{tenant\_id}/profiles/{profile\_id}/applications/{application\_id}",
+                for example,
+                "projects/test-project/tenants/test-tenant/profiles/test-profile/applications/test-application".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -324,7 +322,7 @@ class TenantServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.talent_v4beta1.types.Tenant` instance.
+            A :class:`~google.cloud.talent_v4beta1.types.Application` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -334,17 +332,17 @@ class TenantServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "get_tenant" not in self._inner_api_calls:
+        if "get_application" not in self._inner_api_calls:
             self._inner_api_calls[
-                "get_tenant"
+                "get_application"
             ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.get_tenant,
-                default_retry=self._method_configs["GetTenant"].retry,
-                default_timeout=self._method_configs["GetTenant"].timeout,
+                self.transport.get_application,
+                default_retry=self._method_configs["GetApplication"].retry,
+                default_timeout=self._method_configs["GetApplication"].timeout,
                 client_info=self._client_info,
             )
 
-        request = tenant_service_pb2.GetTenantRequest(name=name)
+        request = application_service_pb2.GetApplicationRequest(name=name)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -358,45 +356,45 @@ class TenantServiceClient(object):
             )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["get_tenant"](
+        return self._inner_api_calls["get_application"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
-    def update_tenant(
+    def update_application(
         self,
-        tenant,
+        application,
         update_mask=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
     ):
         """
-        Updates specified tenant.
+        Updates specified application.
 
         Example:
             >>> from google.cloud import talent_v4beta1
             >>>
-            >>> client = talent_v4beta1.TenantServiceClient()
+            >>> client = talent_v4beta1.ApplicationServiceClient()
             >>>
-            >>> # TODO: Initialize `tenant`:
-            >>> tenant = {}
+            >>> # TODO: Initialize `application`:
+            >>> application = {}
             >>>
-            >>> response = client.update_tenant(tenant)
+            >>> response = client.update_application(application)
 
         Args:
-            tenant (Union[dict, ~google.cloud.talent_v4beta1.types.Tenant]): Required.
+            application (Union[dict, ~google.cloud.talent_v4beta1.types.Application]): Required.
 
-                The tenant resource to replace the current resource in the system.
+                The application resource to replace the current resource in the system.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.talent_v4beta1.types.Tenant`
+                message :class:`~google.cloud.talent_v4beta1.types.Application`
             update_mask (Union[dict, ~google.cloud.talent_v4beta1.types.FieldMask]): Optional but strongly recommended for the best service experience.
 
-                If ``update_mask`` is provided, only the specified fields in ``tenant``
-                are updated. Otherwise all the fields are updated.
+                If ``update_mask`` is provided, only the specified fields in
+                ``application`` are updated. Otherwise all the fields are updated.
 
-                A field mask to specify the tenant fields to be updated. Only top level
-                fields of ``Tenant`` are supported.
+                A field mask to specify the application fields to be updated. Only top
+                level fields of ``Application`` are supported.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.FieldMask`
@@ -410,7 +408,7 @@ class TenantServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.talent_v4beta1.types.Tenant` instance.
+            A :class:`~google.cloud.talent_v4beta1.types.Application` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -420,24 +418,24 @@ class TenantServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "update_tenant" not in self._inner_api_calls:
+        if "update_application" not in self._inner_api_calls:
             self._inner_api_calls[
-                "update_tenant"
+                "update_application"
             ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.update_tenant,
-                default_retry=self._method_configs["UpdateTenant"].retry,
-                default_timeout=self._method_configs["UpdateTenant"].timeout,
+                self.transport.update_application,
+                default_retry=self._method_configs["UpdateApplication"].retry,
+                default_timeout=self._method_configs["UpdateApplication"].timeout,
                 client_info=self._client_info,
             )
 
-        request = tenant_service_pb2.UpdateTenantRequest(
-            tenant=tenant, update_mask=update_mask
+        request = application_service_pb2.UpdateApplicationRequest(
+            application=application, update_mask=update_mask
         )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("tenant.name", tenant.name)]
+            routing_header = [("application.name", application.name)]
         except AttributeError:
             pass
         else:
@@ -446,11 +444,11 @@ class TenantServiceClient(object):
             )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["update_tenant"](
+        return self._inner_api_calls["update_application"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
-    def delete_tenant(
+    def delete_application(
         self,
         name,
         retry=google.api_core.gapic_v1.method.DEFAULT,
@@ -458,24 +456,26 @@ class TenantServiceClient(object):
         metadata=None,
     ):
         """
-        Deletes specified tenant.
+        Deletes specified application.
 
         Example:
             >>> from google.cloud import talent_v4beta1
             >>>
-            >>> client = talent_v4beta1.TenantServiceClient()
+            >>> client = talent_v4beta1.ApplicationServiceClient()
             >>>
-            >>> name = client.tenant_path('[PROJECT]', '[TENANT]')
+            >>> name = client.application_path('[PROJECT]', '[TENANT]', '[PROFILE]', '[APPLICATION]')
             >>>
-            >>> client.delete_tenant(name)
+            >>> client.delete_application(name)
 
         Args:
             name (str): Required.
 
-                The resource name of the tenant to be deleted.
+                The resource name of the application to be deleted.
 
-                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
-                example, "projects/api-test-project/tenants/foo".
+                The format is
+                "projects/{project\_id}/tenants/{tenant\_id}/profiles/{profile\_id}/applications/{application\_id}",
+                for example,
+                "projects/test-project/tenants/test-tenant/profiles/test-profile/applications/test-application".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -493,17 +493,17 @@ class TenantServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "delete_tenant" not in self._inner_api_calls:
+        if "delete_application" not in self._inner_api_calls:
             self._inner_api_calls[
-                "delete_tenant"
+                "delete_application"
             ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_tenant,
-                default_retry=self._method_configs["DeleteTenant"].retry,
-                default_timeout=self._method_configs["DeleteTenant"].timeout,
+                self.transport.delete_application,
+                default_retry=self._method_configs["DeleteApplication"].retry,
+                default_timeout=self._method_configs["DeleteApplication"].timeout,
                 client_info=self._client_info,
             )
 
-        request = tenant_service_pb2.DeleteTenantRequest(name=name)
+        request = application_service_pb2.DeleteApplicationRequest(name=name)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -517,11 +517,11 @@ class TenantServiceClient(object):
             )
             metadata.append(routing_metadata)
 
-        self._inner_api_calls["delete_tenant"](
+        self._inner_api_calls["delete_application"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
-    def list_tenants(
+    def list_applications(
         self,
         parent,
         page_size=None,
@@ -530,17 +530,17 @@ class TenantServiceClient(object):
         metadata=None,
     ):
         """
-        Lists all tenants associated with the project.
+        Lists all applications associated with the profile.
 
         Example:
             >>> from google.cloud import talent_v4beta1
             >>>
-            >>> client = talent_v4beta1.TenantServiceClient()
+            >>> client = talent_v4beta1.ApplicationServiceClient()
             >>>
-            >>> parent = client.project_path('[PROJECT]')
+            >>> parent = client.profile_path('[PROJECT]', '[TENANT]', '[PROFILE]')
             >>>
             >>> # Iterate over all results
-            >>> for element in client.list_tenants(parent):
+            >>> for element in client.list_applications(parent):
             ...     # process element
             ...     pass
             >>>
@@ -548,7 +548,7 @@ class TenantServiceClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_tenants(parent).pages:
+            >>> for page in client.list_applications(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
@@ -556,10 +556,12 @@ class TenantServiceClient(object):
         Args:
             parent (str): Required.
 
-                Resource name of the project under which the tenant is created.
+                Resource name of the profile under which the application is created.
 
-                The format is "projects/{project\_id}", for example,
-                "projects/api-test-project".
+                The format is
+                "projects/{project\_id}/tenants/{tenant\_id}/profiles/{profile\_id}",
+                for example,
+                "projects/test-project/tenants/test-tenant/profiles/test-profile".
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -576,7 +578,7 @@ class TenantServiceClient(object):
 
         Returns:
             A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.talent_v4beta1.types.Tenant` instances.
+            is an iterable of :class:`~google.cloud.talent_v4beta1.types.Application` instances.
             This object can also be configured to iterate over the pages
             of the response through the `options` parameter.
 
@@ -588,17 +590,17 @@ class TenantServiceClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "list_tenants" not in self._inner_api_calls:
+        if "list_applications" not in self._inner_api_calls:
             self._inner_api_calls[
-                "list_tenants"
+                "list_applications"
             ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.list_tenants,
-                default_retry=self._method_configs["ListTenants"].retry,
-                default_timeout=self._method_configs["ListTenants"].timeout,
+                self.transport.list_applications,
+                default_retry=self._method_configs["ListApplications"].retry,
+                default_timeout=self._method_configs["ListApplications"].timeout,
                 client_info=self._client_info,
             )
 
-        request = tenant_service_pb2.ListTenantsRequest(
+        request = application_service_pb2.ListApplicationsRequest(
             parent=parent, page_size=page_size
         )
         if metadata is None:
@@ -617,13 +619,13 @@ class TenantServiceClient(object):
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._inner_api_calls["list_tenants"],
+                self._inner_api_calls["list_applications"],
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata,
             ),
             request=request,
-            items_field="tenants",
+            items_field="applications",
             request_token_field="page_token",
             response_token_field="next_page_token",
         )

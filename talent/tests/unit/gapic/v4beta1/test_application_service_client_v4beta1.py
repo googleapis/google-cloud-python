@@ -19,10 +19,8 @@ import mock
 import pytest
 
 from google.cloud import talent_v4beta1
-from google.cloud.talent_v4beta1.proto import common_pb2
-from google.cloud.talent_v4beta1.proto import histogram_pb2
-from google.cloud.talent_v4beta1.proto import profile_pb2
-from google.cloud.talent_v4beta1.proto import profile_service_pb2
+from google.cloud.talent_v4beta1.proto import application_pb2
+from google.cloud.talent_v4beta1.proto import application_service_pb2
 from google.protobuf import empty_pb2
 
 
@@ -62,255 +60,218 @@ class CustomException(Exception):
     pass
 
 
-class TestProfileServiceClient(object):
-    def test_list_profiles(self):
-        # Setup Expected Response
-        next_page_token = ""
-        profiles_element = {}
-        profiles = [profiles_element]
-        expected_response = {"next_page_token": next_page_token, "profiles": profiles}
-        expected_response = profile_service_pb2.ListProfilesResponse(
-            **expected_response
-        )
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = talent_v4beta1.ProfileServiceClient()
-
-        # Setup Request
-        parent = client.tenant_path("[PROJECT]", "[TENANT]")
-
-        paged_list_response = client.list_profiles(parent)
-        resources = list(paged_list_response)
-        assert len(resources) == 1
-
-        assert expected_response.profiles[0] == resources[0]
-
-        assert len(channel.requests) == 1
-        expected_request = profile_service_pb2.ListProfilesRequest(parent=parent)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_list_profiles_exception(self):
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = talent_v4beta1.ProfileServiceClient()
-
-        # Setup request
-        parent = client.tenant_path("[PROJECT]", "[TENANT]")
-
-        paged_list_response = client.list_profiles(parent)
-        with pytest.raises(CustomException):
-            list(paged_list_response)
-
-    def test_create_profile(self):
+class TestApplicationServiceClient(object):
+    def test_create_application(self):
         # Setup Expected Response
         name = "name3373707"
         external_id = "externalId-1153075697"
-        source = "source-896505829"
-        uri = "uri116076"
-        group_id = "groupId506361563"
-        processed = True
-        keyword_snippet = "keywordSnippet1325317319"
+        profile = "profile-309425751"
+        job = "job105405"
+        company = "company950484093"
+        outcome_notes = "outcomeNotes-355961964"
+        job_title_snippet = "jobTitleSnippet-1100512972"
         expected_response = {
             "name": name,
             "external_id": external_id,
-            "source": source,
-            "uri": uri,
-            "group_id": group_id,
-            "processed": processed,
-            "keyword_snippet": keyword_snippet,
+            "profile": profile,
+            "job": job,
+            "company": company,
+            "outcome_notes": outcome_notes,
+            "job_title_snippet": job_title_snippet,
         }
-        expected_response = profile_pb2.Profile(**expected_response)
+        expected_response = application_pb2.Application(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = talent_v4beta1.ProfileServiceClient()
+            client = talent_v4beta1.ApplicationServiceClient()
 
         # Setup Request
-        parent = client.tenant_path("[PROJECT]", "[TENANT]")
-        profile = {}
+        parent = client.profile_path("[PROJECT]", "[TENANT]", "[PROFILE]")
+        application = {}
 
-        response = client.create_profile(parent, profile)
+        response = client.create_application(parent, application)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = profile_service_pb2.CreateProfileRequest(
-            parent=parent, profile=profile
+        expected_request = application_service_pb2.CreateApplicationRequest(
+            parent=parent, application=application
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
-    def test_create_profile_exception(self):
+    def test_create_application_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = talent_v4beta1.ProfileServiceClient()
+            client = talent_v4beta1.ApplicationServiceClient()
 
         # Setup request
-        parent = client.tenant_path("[PROJECT]", "[TENANT]")
-        profile = {}
+        parent = client.profile_path("[PROJECT]", "[TENANT]", "[PROFILE]")
+        application = {}
 
         with pytest.raises(CustomException):
-            client.create_profile(parent, profile)
+            client.create_application(parent, application)
 
-    def test_get_profile(self):
+    def test_get_application(self):
         # Setup Expected Response
         name_2 = "name2-1052831874"
         external_id = "externalId-1153075697"
-        source = "source-896505829"
-        uri = "uri116076"
-        group_id = "groupId506361563"
-        processed = True
-        keyword_snippet = "keywordSnippet1325317319"
+        profile = "profile-309425751"
+        job = "job105405"
+        company = "company950484093"
+        outcome_notes = "outcomeNotes-355961964"
+        job_title_snippet = "jobTitleSnippet-1100512972"
         expected_response = {
             "name": name_2,
             "external_id": external_id,
-            "source": source,
-            "uri": uri,
-            "group_id": group_id,
-            "processed": processed,
-            "keyword_snippet": keyword_snippet,
+            "profile": profile,
+            "job": job,
+            "company": company,
+            "outcome_notes": outcome_notes,
+            "job_title_snippet": job_title_snippet,
         }
-        expected_response = profile_pb2.Profile(**expected_response)
+        expected_response = application_pb2.Application(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = talent_v4beta1.ProfileServiceClient()
+            client = talent_v4beta1.ApplicationServiceClient()
 
         # Setup Request
-        name = client.profile_path("[PROJECT]", "[TENANT]", "[PROFILE]")
+        name = client.application_path(
+            "[PROJECT]", "[TENANT]", "[PROFILE]", "[APPLICATION]"
+        )
 
-        response = client.get_profile(name)
+        response = client.get_application(name)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = profile_service_pb2.GetProfileRequest(name=name)
+        expected_request = application_service_pb2.GetApplicationRequest(name=name)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
-    def test_get_profile_exception(self):
+    def test_get_application_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = talent_v4beta1.ProfileServiceClient()
+            client = talent_v4beta1.ApplicationServiceClient()
 
         # Setup request
-        name = client.profile_path("[PROJECT]", "[TENANT]", "[PROFILE]")
+        name = client.application_path(
+            "[PROJECT]", "[TENANT]", "[PROFILE]", "[APPLICATION]"
+        )
 
         with pytest.raises(CustomException):
-            client.get_profile(name)
+            client.get_application(name)
 
-    def test_update_profile(self):
+    def test_update_application(self):
         # Setup Expected Response
         name = "name3373707"
         external_id = "externalId-1153075697"
-        source = "source-896505829"
-        uri = "uri116076"
-        group_id = "groupId506361563"
-        processed = True
-        keyword_snippet = "keywordSnippet1325317319"
+        profile = "profile-309425751"
+        job = "job105405"
+        company = "company950484093"
+        outcome_notes = "outcomeNotes-355961964"
+        job_title_snippet = "jobTitleSnippet-1100512972"
         expected_response = {
             "name": name,
             "external_id": external_id,
-            "source": source,
-            "uri": uri,
-            "group_id": group_id,
-            "processed": processed,
-            "keyword_snippet": keyword_snippet,
+            "profile": profile,
+            "job": job,
+            "company": company,
+            "outcome_notes": outcome_notes,
+            "job_title_snippet": job_title_snippet,
         }
-        expected_response = profile_pb2.Profile(**expected_response)
+        expected_response = application_pb2.Application(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = talent_v4beta1.ProfileServiceClient()
+            client = talent_v4beta1.ApplicationServiceClient()
 
         # Setup Request
-        profile = {}
+        application = {}
 
-        response = client.update_profile(profile)
+        response = client.update_application(application)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = profile_service_pb2.UpdateProfileRequest(profile=profile)
+        expected_request = application_service_pb2.UpdateApplicationRequest(
+            application=application
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
-    def test_update_profile_exception(self):
+    def test_update_application_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = talent_v4beta1.ProfileServiceClient()
+            client = talent_v4beta1.ApplicationServiceClient()
 
         # Setup request
-        profile = {}
+        application = {}
 
         with pytest.raises(CustomException):
-            client.update_profile(profile)
+            client.update_application(application)
 
-    def test_delete_profile(self):
+    def test_delete_application(self):
         channel = ChannelStub()
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = talent_v4beta1.ProfileServiceClient()
+            client = talent_v4beta1.ApplicationServiceClient()
 
         # Setup Request
-        name = client.profile_path("[PROJECT]", "[TENANT]", "[PROFILE]")
+        name = client.application_path(
+            "[PROJECT]", "[TENANT]", "[PROFILE]", "[APPLICATION]"
+        )
 
-        client.delete_profile(name)
+        client.delete_application(name)
 
         assert len(channel.requests) == 1
-        expected_request = profile_service_pb2.DeleteProfileRequest(name=name)
+        expected_request = application_service_pb2.DeleteApplicationRequest(name=name)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
-    def test_delete_profile_exception(self):
+    def test_delete_application_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = talent_v4beta1.ProfileServiceClient()
+            client = talent_v4beta1.ApplicationServiceClient()
 
         # Setup request
-        name = client.profile_path("[PROJECT]", "[TENANT]", "[PROFILE]")
+        name = client.application_path(
+            "[PROJECT]", "[TENANT]", "[PROFILE]", "[APPLICATION]"
+        )
 
         with pytest.raises(CustomException):
-            client.delete_profile(name)
+            client.delete_application(name)
 
-    def test_search_profiles(self):
+    def test_list_applications(self):
         # Setup Expected Response
-        estimated_total_size = 1882144769
         next_page_token = ""
-        histogram_query_results_element = {}
-        histogram_query_results = [histogram_query_results_element]
+        applications_element = {}
+        applications = [applications_element]
         expected_response = {
-            "estimated_total_size": estimated_total_size,
             "next_page_token": next_page_token,
-            "histogram_query_results": histogram_query_results,
+            "applications": applications,
         }
-        expected_response = profile_service_pb2.SearchProfilesResponse(
+        expected_response = application_service_pb2.ListApplicationsResponse(
             **expected_response
         )
 
@@ -319,36 +280,34 @@ class TestProfileServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = talent_v4beta1.ProfileServiceClient()
+            client = talent_v4beta1.ApplicationServiceClient()
 
         # Setup Request
-        parent = client.tenant_path("[PROJECT]", "[TENANT]")
-        request_metadata = {}
+        parent = client.profile_path("[PROJECT]", "[TENANT]", "[PROFILE]")
 
-        paged_list_response = client.search_profiles(parent, request_metadata)
+        paged_list_response = client.list_applications(parent)
         resources = list(paged_list_response)
         assert len(resources) == 1
 
-        assert expected_response.histogram_query_results[0] == resources[0]
+        assert expected_response.applications[0] == resources[0]
 
         assert len(channel.requests) == 1
-        expected_request = profile_service_pb2.SearchProfilesRequest(
-            parent=parent, request_metadata=request_metadata
+        expected_request = application_service_pb2.ListApplicationsRequest(
+            parent=parent
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
-    def test_search_profiles_exception(self):
+    def test_list_applications_exception(self):
         channel = ChannelStub(responses=[CustomException()])
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = talent_v4beta1.ProfileServiceClient()
+            client = talent_v4beta1.ApplicationServiceClient()
 
         # Setup request
-        parent = client.tenant_path("[PROJECT]", "[TENANT]")
-        request_metadata = {}
+        parent = client.profile_path("[PROJECT]", "[TENANT]", "[PROFILE]")
 
-        paged_list_response = client.search_profiles(parent, request_metadata)
+        paged_list_response = client.list_applications(parent)
         with pytest.raises(CustomException):
             list(paged_list_response)
