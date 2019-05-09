@@ -871,6 +871,54 @@ class TestTable(unittest.TestCase, _SchemaBase):
         with self.assertRaises(ValueError):
             table._build_resource(["bad"])
 
+    def test_time_partitioning_getter(self):
+        from google.cloud.bigquery.table import TimePartitioning
+        from google.cloud.bigquery.table import TimePartitioningType
+
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+
+        table._properties["timePartitioning"] = {
+            "type": "DAY",
+            "field": "col1",
+            "expirationMs": "123456",
+            "requirePartitionFilter": False,
+        }
+        self.assertIsInstance(table.time_partitioning, TimePartitioning)
+        self.assertEqual(table.time_partitioning.type_, TimePartitioningType.DAY)
+        self.assertEqual(table.time_partitioning.field, "col1")
+        self.assertEqual(table.time_partitioning.expiration_ms, 123456)
+        self.assertFalse(table.time_partitioning.require_partition_filter)
+
+    def test_time_partitioning_getter_w_none(self):
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+
+        table._properties["timePartitioning"] = None
+        self.assertIsNone(table.time_partitioning)
+
+        del table._properties["timePartitioning"]
+        self.assertIsNone(table.time_partitioning)
+
+    def test_time_partitioning_getter_w_empty(self):
+        from google.cloud.bigquery.table import TimePartitioning
+
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+
+        # Even though there are required properties according to the API
+        # specification, sometimes time partitioning is populated as an empty
+        # object. See internal bug 131167013.
+        table._properties["timePartitioning"] = {}
+        self.assertIsInstance(table.time_partitioning, TimePartitioning)
+        self.assertIsNone(table.time_partitioning.type_)
+        self.assertIsNone(table.time_partitioning.field)
+        self.assertIsNone(table.time_partitioning.expiration_ms)
+        self.assertIsNone(table.time_partitioning.require_partition_filter)
+
     def test_time_partitioning_setter(self):
         from google.cloud.bigquery.table import TimePartitioning
         from google.cloud.bigquery.table import TimePartitioningType
@@ -2211,6 +2259,20 @@ class TestTimePartitioning(unittest.TestCase):
         self.assertEqual(time_partitioning.expiration_ms, 10000)
         self.assertTrue(time_partitioning.require_partition_filter)
 
+    def test_from_api_repr_empty(self):
+        klass = self._get_target_class()
+
+        # Even though there are required properties according to the API
+        # specification, sometimes time partitioning is populated as an empty
+        # object. See internal bug 131167013.
+        api_repr = {}
+        time_partitioning = klass.from_api_repr(api_repr)
+
+        self.assertIsNone(time_partitioning.type_)
+        self.assertIsNone(time_partitioning.field)
+        self.assertIsNone(time_partitioning.expiration_ms)
+        self.assertIsNone(time_partitioning.require_partition_filter)
+
     def test_from_api_repr_minimal(self):
         from google.cloud.bigquery.table import TimePartitioningType
 
@@ -2222,6 +2284,12 @@ class TestTimePartitioning(unittest.TestCase):
         self.assertIsNone(time_partitioning.field)
         self.assertIsNone(time_partitioning.expiration_ms)
         self.assertIsNone(time_partitioning.require_partition_filter)
+
+    def test_from_api_repr_doesnt_override_type(self):
+        klass = self._get_target_class()
+        api_repr = {"type": "HOUR"}
+        time_partitioning = klass.from_api_repr(api_repr)
+        self.assertEqual(time_partitioning.type_, "HOUR")
 
     def test_from_api_repr_explicit(self):
         from google.cloud.bigquery.table import TimePartitioningType
