@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+## 1.0.0
+
+05-03-2019 10:04 PDT
+
+### Internal / Testing Changes
+- Add smoke test for scheduler. ([#7854](https://github.com/googleapis/google-cloud-python/pull/7854))
+
 ## 0.3.0
 
 04-15-2019 10:32 PDT

@@ -64,7 +64,12 @@ class TestEventServiceClient(object):
         # Setup Expected Response
         request_id = "requestId37109963"
         event_id = "eventId278118624"
-        expected_response = {"request_id": request_id, "event_id": event_id}
+        event_notes = "eventNotes445073628"
+        expected_response = {
+            "request_id": request_id,
+            "event_id": event_id,
+            "event_notes": event_notes,
+        }
         expected_response = event_pb2.ClientEvent(**expected_response)
 
         # Mock the API response
@@ -75,7 +80,7 @@ class TestEventServiceClient(object):
             client = talent_v4beta1.EventServiceClient()
 
         # Setup Request
-        parent = client.project_path("[PROJECT]")
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
         client_event = {}
 
         response = client.create_client_event(parent, client_event)
@@ -97,7 +102,7 @@ class TestEventServiceClient(object):
             client = talent_v4beta1.EventServiceClient()
 
         # Setup request
-        parent = client.project_path("[PROJECT]")
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
         client_event = {}
 
         with pytest.raises(CustomException):

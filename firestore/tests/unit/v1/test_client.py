@@ -38,6 +38,7 @@ class TestClient(unittest.TestCase):
         return self._make_one(project=self.PROJECT, credentials=credentials)
 
     def test_constructor(self):
+        from google.cloud.firestore_v1.client import _CLIENT_INFO
         from google.cloud.firestore_v1.client import DEFAULT_DATABASE
 
         credentials = _make_credentials()
@@ -45,16 +46,22 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.project, self.PROJECT)
         self.assertEqual(client._credentials, credentials)
         self.assertEqual(client._database, DEFAULT_DATABASE)
+        self.assertIs(client._client_info, _CLIENT_INFO)
 
     def test_constructor_explicit(self):
         credentials = _make_credentials()
         database = "now-db"
+        client_info = mock.Mock()
         client = self._make_one(
-            project=self.PROJECT, credentials=credentials, database=database
+            project=self.PROJECT,
+            credentials=credentials,
+            database=database,
+            client_info=client_info,
         )
         self.assertEqual(client.project, self.PROJECT)
         self.assertEqual(client._credentials, credentials)
         self.assertEqual(client._database, database)
+        self.assertIs(client._client_info, client_info)
 
     @mock.patch(
         "google.cloud.firestore_v1.gapic.firestore_client." "FirestoreClient",
@@ -63,11 +70,14 @@ class TestClient(unittest.TestCase):
     )
     def test__firestore_api_property(self, mock_client):
         client = self._make_default_one()
+        client_info = client._client_info = mock.Mock()
         self.assertIsNone(client._firestore_api_internal)
         firestore_api = client._firestore_api
         self.assertIs(firestore_api, mock_client.return_value)
         self.assertIs(firestore_api, client._firestore_api_internal)
-        mock_client.assert_called_once_with(credentials=client._credentials)
+        mock_client.assert_called_once_with(
+            credentials=client._credentials, client_info=client_info
+        )
 
         # Call again to show that it is cached, but call count is still 1.
         self.assertIs(client._firestore_api, mock_client.return_value)
@@ -130,6 +140,21 @@ class TestClient(unittest.TestCase):
         self.assertIs(collection2._client, client)
         self.assertIsInstance(collection2, CollectionReference)
 
+    def test_collection_group(self):
+        client = self._make_default_one()
+        query = client.collection_group("collectionId").where("foo", "==", u"bar")
+
+        assert query._all_descendants
+        assert query._field_filters[0].field.field_path == "foo"
+        assert query._field_filters[0].value.string_value == u"bar"
+        assert query._field_filters[0].op == query._field_filters[0].EQUAL
+        assert query._parent.id == "collectionId"
+
+    def test_collection_group_no_slashes(self):
+        client = self._make_default_one()
+        with self.assertRaises(ValueError):
+            client.collection_group("foo/bar")
+
     def test_document_factory(self):
         from google.cloud.firestore_v1.document import DocumentReference
 
@@ -148,7 +173,20 @@ class TestClient(unittest.TestCase):
         self.assertIs(document2._client, client)
         self.assertIsInstance(document2, DocumentReference)
 
-    def test_document_factory_nested(self):
+    def test_document_factory_w_absolute_path(self):
+        from google.cloud.firestore_v1.document import DocumentReference
+
+        parts = ("rooms", "roomA")
+        client = self._make_default_one()
+        doc_path = "/".join(parts)
+        to_match = client.document(doc_path)
+        document1 = client.document(to_match._document_path)
+
+        self.assertEqual(document1._path, parts)
+        self.assertIs(document1._client, client)
+        self.assertIsInstance(document1, DocumentReference)
+
+    def test_document_factory_w_nested_path(self):
         from google.cloud.firestore_v1.document import DocumentReference
 
         client = self._make_default_one()

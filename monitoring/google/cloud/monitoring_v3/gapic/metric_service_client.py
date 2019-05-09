@@ -86,13 +86,6 @@ class MetricServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}", project=project
-        )
-
-    @classmethod
     def metric_descriptor_path(cls, project, metric_descriptor):
         """Return a fully-qualified metric_descriptor string."""
         return google.api_core.path_template.expand(
@@ -108,6 +101,13 @@ class MetricServiceClient(object):
             "projects/{project}/monitoredResourceDescriptors/{monitored_resource_descriptor}",
             project=project,
             monitored_resource_descriptor=monitored_resource_descriptor,
+        )
+
+    @classmethod
+    def project_path(cls, project):
+        """Return a fully-qualified project string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}", project=project
         )
 
     def __init__(

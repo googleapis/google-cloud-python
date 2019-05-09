@@ -82,7 +82,7 @@ class TestVideoIntelligenceServiceClient(object):
             client = videointelligence_v1.VideoIntelligenceServiceClient()
 
         # Setup Request
-        input_uri = "gs://demomaker/cat.mp4"
+        input_uri = "gs://videodemomaker/cat.mp4"
         features_element = enums.Feature.LABEL_DETECTION
         features = [features_element]
 
@@ -113,7 +113,7 @@ class TestVideoIntelligenceServiceClient(object):
             client = videointelligence_v1.VideoIntelligenceServiceClient()
 
         # Setup Request
-        input_uri = "gs://demomaker/cat.mp4"
+        input_uri = "gs://videodemomaker/cat.mp4"
         features_element = enums.Feature.LABEL_DETECTION
         features = [features_element]
 

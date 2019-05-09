@@ -1,10 +1,7 @@
 config = {
     "interfaces": {
-        "google.cloud.talent.v4beta1.ResumeService": {
-            "retry_codes": {
-                "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
-                "non_idempotent": [],
-            },
+        "google.cloud.phishingprotection.v1beta1.PhishingProtectionServiceV1Beta1": {
+            "retry_codes": {"idempotent": ["UNAVAILABLE"], "non_idempotent": []},
             "retry_params": {
                 "default": {
                     "initial_retry_delay_millis": 100,
@@ -17,8 +14,8 @@ config = {
                 }
             },
             "methods": {
-                "ParseResume": {
-                    "timeout_millis": 30000,
+                "ReportPhishing": {
+                    "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 }

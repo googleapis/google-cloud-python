@@ -115,7 +115,6 @@ class TestProfileServiceClient(object):
         source = "source-896505829"
         uri = "uri116076"
         group_id = "groupId506361563"
-        resume_hrxml = "resumeHrxml1834730555"
         processed = True
         keyword_snippet = "keywordSnippet1325317319"
         expected_response = {
@@ -124,7 +123,6 @@ class TestProfileServiceClient(object):
             "source": source,
             "uri": uri,
             "group_id": group_id,
-            "resume_hrxml": resume_hrxml,
             "processed": processed,
             "keyword_snippet": keyword_snippet,
         }
@@ -173,7 +171,6 @@ class TestProfileServiceClient(object):
         source = "source-896505829"
         uri = "uri116076"
         group_id = "groupId506361563"
-        resume_hrxml = "resumeHrxml1834730555"
         processed = True
         keyword_snippet = "keywordSnippet1325317319"
         expected_response = {
@@ -182,7 +179,6 @@ class TestProfileServiceClient(object):
             "source": source,
             "uri": uri,
             "group_id": group_id,
-            "resume_hrxml": resume_hrxml,
             "processed": processed,
             "keyword_snippet": keyword_snippet,
         }
@@ -227,7 +223,6 @@ class TestProfileServiceClient(object):
         source = "source-896505829"
         uri = "uri116076"
         group_id = "groupId506361563"
-        resume_hrxml = "resumeHrxml1834730555"
         processed = True
         keyword_snippet = "keywordSnippet1325317319"
         expected_response = {
@@ -236,7 +231,6 @@ class TestProfileServiceClient(object):
             "source": source,
             "uri": uri,
             "group_id": group_id,
-            "resume_hrxml": resume_hrxml,
             "processed": processed,
             "keyword_snippet": keyword_snippet,
         }

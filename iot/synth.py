@@ -33,6 +33,7 @@ library = gapic.py_library(
 s.move(library / "google/cloud/iot_v1")
 s.move(library / "tests/unit/gapic")
 s.move(library / "tests/system/gapic")
+s.move(library / "docs", excludes="index.rst")
 
 # ----------------------------------------------------------------------------
 # Add templated files

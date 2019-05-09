@@ -27,34 +27,32 @@ class Test__create_gapic_client(unittest.TestCase):
         return _create_gapic_client(client_class)
 
     def test_without_emulator(self):
-        from google.cloud.bigtable.client import _CLIENT_INFO
-
         client_class = mock.Mock()
         credentials = _make_credentials()
         client = _Client(credentials)
+        client_info = client._client_info = mock.Mock()
 
         result = self._invoke_client_factory(client_class)(client)
 
         self.assertIs(result, client_class.return_value)
         client_class.assert_called_once_with(
-            credentials=client._credentials, client_info=_CLIENT_INFO
+            credentials=client._credentials, client_info=client_info
         )
 
     def test_with_emulator(self):
-        from google.cloud.bigtable.client import _CLIENT_INFO
-
         client_class = mock.Mock()
         emulator_host = emulator_channel = object()
         credentials = _make_credentials()
         client = _Client(
             credentials, emulator_host=emulator_host, emulator_channel=emulator_channel
         )
+        client_info = client._client_info = mock.Mock()
 
         result = self._invoke_client_factory(client_class)(client)
 
         self.assertIs(result, client_class.return_value)
         client_class.assert_called_once_with(
-            channel=client._emulator_channel, client_info=_CLIENT_INFO
+            channel=client._emulator_channel, client_info=client_info
         )
 
 
@@ -82,6 +80,7 @@ class TestClient(unittest.TestCase):
         return self._get_target_class()(*args, **kwargs)
 
     def test_constructor_defaults(self):
+        from google.cloud.bigtable.client import _CLIENT_INFO
         from google.cloud.bigtable.client import DATA_SCOPE
 
         credentials = _make_credentials()
@@ -94,6 +93,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(client._credentials, credentials.with_scopes.return_value)
         self.assertFalse(client._read_only)
         self.assertFalse(client._admin)
+        self.assertIs(client._client_info, _CLIENT_INFO)
         self.assertIsNone(client._channel)
         self.assertIsNone(client._emulator_host)
         self.assertIsNone(client._emulator_channel)
@@ -105,6 +105,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.bigtable.client import DATA_SCOPE
 
         credentials = _make_credentials()
+        client_info = mock.Mock()
 
         with warnings.catch_warnings(record=True) as warned:
             client = self._make_one(
@@ -112,6 +113,7 @@ class TestClient(unittest.TestCase):
                 credentials=credentials,
                 read_only=False,
                 admin=True,
+                client_info=client_info,
                 channel=mock.sentinel.channel,
             )
 
@@ -121,6 +123,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(client._credentials, credentials.with_scopes.return_value)
         self.assertFalse(client._read_only)
         self.assertTrue(client._admin)
+        self.assertIs(client._client_info, client_info)
         self.assertIs(client._channel, mock.sentinel.channel)
         self.assertEqual(client.SCOPE, (DATA_SCOPE, ADMIN_SCOPE))
 
@@ -182,6 +185,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.project_path, project_name)
 
     def test_table_data_client_not_initialized(self):
+        from google.cloud.bigtable.client import _CLIENT_INFO
         from google.cloud.bigtable_v2 import BigtableClient
 
         credentials = _make_credentials()
@@ -189,6 +193,21 @@ class TestClient(unittest.TestCase):
 
         table_data_client = client.table_data_client
         self.assertIsInstance(table_data_client, BigtableClient)
+        self.assertIs(table_data_client._client_info, _CLIENT_INFO)
+        self.assertIs(client._table_data_client, table_data_client)
+
+    def test_table_data_client_not_initialized_w_client_info(self):
+        from google.cloud.bigtable_v2 import BigtableClient
+
+        credentials = _make_credentials()
+        client_info = mock.Mock()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, client_info=client_info
+        )
+
+        table_data_client = client.table_data_client
+        self.assertIsInstance(table_data_client, BigtableClient)
+        self.assertIs(table_data_client._client_info, client_info)
         self.assertIs(client._table_data_client, table_data_client)
 
     def test_table_data_client_initialized(self):
@@ -208,6 +227,7 @@ class TestClient(unittest.TestCase):
             client.table_admin_client()
 
     def test_table_admin_client_not_initialized_w_admin_flag(self):
+        from google.cloud.bigtable.client import _CLIENT_INFO
         from google.cloud.bigtable_admin_v2 import BigtableTableAdminClient
 
         credentials = _make_credentials()
@@ -217,6 +237,25 @@ class TestClient(unittest.TestCase):
 
         table_admin_client = client.table_admin_client
         self.assertIsInstance(table_admin_client, BigtableTableAdminClient)
+        self.assertIs(table_admin_client._client_info, _CLIENT_INFO)
+        self.assertIs(client._table_admin_client, table_admin_client)
+
+    def test_table_admin_client_not_initialized_w_client_info(self):
+        from google.cloud.bigtable_admin_v2 import BigtableTableAdminClient
+
+        credentials = _make_credentials()
+        client_info = mock.Mock()
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=credentials,
+            admin=True,
+            client_info=client_info,
+        )
+
+        table_admin_client = client.table_admin_client
+        self.assertIsInstance(table_admin_client, BigtableTableAdminClient)
+        self.assertIs(table_admin_client._client_info, client_info)
+        self.assertIs(client._table_admin_client, table_admin_client)
 
     def test_table_admin_client_initialized(self):
         credentials = _make_credentials()
@@ -235,6 +274,7 @@ class TestClient(unittest.TestCase):
             client.instance_admin_client()
 
     def test_instance_admin_client_not_initialized_w_admin_flag(self):
+        from google.cloud.bigtable.client import _CLIENT_INFO
         from google.cloud.bigtable_admin_v2 import BigtableInstanceAdminClient
 
         credentials = _make_credentials()
@@ -244,6 +284,25 @@ class TestClient(unittest.TestCase):
 
         instance_admin_client = client.instance_admin_client
         self.assertIsInstance(instance_admin_client, BigtableInstanceAdminClient)
+        self.assertIs(instance_admin_client._client_info, _CLIENT_INFO)
+        self.assertIs(client._instance_admin_client, instance_admin_client)
+
+    def test_instance_admin_client_not_initialized_w_admin_and_client_info(self):
+        from google.cloud.bigtable_admin_v2 import BigtableInstanceAdminClient
+
+        credentials = _make_credentials()
+        client_info = mock.Mock()
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=credentials,
+            admin=True,
+            client_info=client_info,
+        )
+
+        instance_admin_client = client.instance_admin_client
+        self.assertIsInstance(instance_admin_client, BigtableInstanceAdminClient)
+        self.assertIs(instance_admin_client._client_info, client_info)
+        self.assertIs(client._instance_admin_client, instance_admin_client)
 
     def test_instance_admin_client_initialized(self):
         credentials = _make_credentials()

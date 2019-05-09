@@ -1,4 +1,4 @@
-.. include:: /../iot/README.rst
+.. include:: README.rst
 
 Api Reference
 -------------
@@ -7,3 +7,14 @@ Api Reference
 
     gapic/v1/api
     gapic/v1/types
+
+
+Changelog
+---------
+
+For a list of all ``google-cloud-iot`` releases:
+
+.. toctree::
+   :maxdepth: 2
+
+   changelog

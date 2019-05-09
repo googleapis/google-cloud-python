@@ -20,12 +20,12 @@ import shlex
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath(".."))
 
-__version__ = "0.90.4"
+__version__ = "0.1.0"
 
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
-# needs_sphinx = '1.0'
+needs_sphinx = "1.6.3"
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -37,6 +37,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.coverage",
     "sphinx.ext.napoleon",
+    "sphinx.ext.todo",
     "sphinx.ext.viewcode",
 ]
 
@@ -55,7 +56,7 @@ source_parsers = {".md": "recommonmark.parser.CommonMarkParser"}
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 # source_suffix = ['.rst', '.md']
-source_suffix = ".rst"
+source_suffix = [".rst", ".md"]
 
 # The encoding of source files.
 # source_encoding = 'utf-8-sig'
@@ -130,7 +131,15 @@ html_theme = "alabaster"
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-# html_theme_options = {}
+html_theme_options = {
+    "description": "Google Cloud Client Libraries for Python",
+    "github_user": "googleapis",
+    "github_repo": "google-cloud-python",
+    "github_banner": True,
+    "font_family": "'Roboto', Georgia, sans",
+    "head_font_family": "'Roboto', Georgia, serif",
+    "code_font_family": "'Roboto Mono', 'Consolas', monospace",
+}
 
 # Add any paths that contain custom themes here, relative to this directory.
 # html_theme_path = []
@@ -218,6 +227,17 @@ html_theme = "alabaster"
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = "google-cloud-language-doc"
+
+# -- Options for warnings ------------------------------------------------------
+
+suppress_warnings = [
+    # Temporarily suppress this to avoid "more than one target found for
+    # cross-reference" warning, which are intractable for us to avoid while in
+    # a mono-repo.
+    # See https://github.com/sphinx-doc/sphinx/blob
+    # /2a65ffeef5c107c19084fabdd706cdff3f52d93c/sphinx/domains/python.py#L843
+    "ref.python"
+]
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -315,6 +335,16 @@ texinfo_documents = [
 intersphinx_mapping = {
     "python": ("http://python.readthedocs.org/en/latest/", None),
     "gax": ("https://gax-python.readthedocs.org/en/latest/", None),
+    "google-auth": ("https://google-auth.readthedocs.io/en/stable", None),
+    "google-gax": ("https://gax-python.readthedocs.io/en/latest/", None),
+    "google.api_core": (
+        "https://googleapis.github.io/google-cloud-python/latest",
+        None,
+    ),
+    "grpc": ("https://grpc.io/grpc/python/", None),
+    "requests": ("http://docs.python-requests.org/en/master/", None),
+    "fastavro": ("https://fastavro.readthedocs.io/en/stable/", None),
+    "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
 }
 
 # Napoleon settings

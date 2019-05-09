@@ -19,14 +19,12 @@ import functools
 import re
 import threading
 
-from google.api_core.gapic_v1 import client_info
 import google.auth.credentials
 from google.protobuf.struct_pb2 import Struct
 from google.cloud.exceptions import NotFound
 import six
 
 # pylint: disable=ungrouped-imports
-from google.cloud.spanner_v1 import __version__
 from google.cloud.spanner_v1._helpers import _make_value_pb
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1.batch import Batch
@@ -46,7 +44,6 @@ from google.cloud.spanner_v1.proto.transaction_pb2 import (
 # pylint: enable=ungrouped-imports
 
 
-_CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
 SPANNER_DATA_SCOPE = "https://www.googleapis.com/auth/spanner.data"
 
 
@@ -179,8 +176,9 @@ class Database(object):
             credentials = self._instance._client.credentials
             if isinstance(credentials, google.auth.credentials.Scoped):
                 credentials = credentials.with_scopes((SPANNER_DATA_SCOPE,))
+            client_info = self._instance._client._client_info
             self._spanner_api = SpannerClient(
-                credentials=credentials, client_info=_CLIENT_INFO
+                credentials=credentials, client_info=client_info
             )
         return self._spanner_api
 

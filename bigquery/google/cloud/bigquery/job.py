@@ -15,6 +15,7 @@
 """Define API Jobs."""
 
 import copy
+import re
 import threading
 
 import six
@@ -45,6 +46,7 @@ from google.cloud.bigquery import _helpers
 _DONE_STATE = "DONE"
 _STOPPED_REASON = "stopped"
 _TIMEOUT_BUFFER_SECS = 0.1
+_CONTAINS_ORDER_BY = re.compile(r"ORDER\s+BY", re.IGNORECASE)
 
 _ERROR_REASON_TO_EXCEPTION = {
     "accessDenied": http_client.FORBIDDEN,
@@ -90,6 +92,29 @@ def _error_result_to_exception(error_result):
     return exceptions.from_http_status(
         status_code, error_result.get("message", ""), errors=[error_result]
     )
+
+
+def _contains_order_by(query):
+    """Do we need to preserve the order of the query results?
+
+    This function has known false positives, such as with ordered window
+    functions:
+
+    .. code-block:: sql
+
+       SELECT SUM(x) OVER (
+           window_name
+           PARTITION BY...
+           ORDER BY...
+           window_frame_clause)
+       FROM ...
+
+    This false positive failure case means the behavior will be correct, but
+    downloading results with the BigQuery Storage API may be slower than it
+    otherwise would. This is preferable to the false negative case, where
+    results are expected to be in order but are not (due to parallel reads).
+    """
+    return query and _CONTAINS_ORDER_BY.search(query)
 
 
 class Compression(object):
@@ -2357,7 +2382,10 @@ class QueryJob(_AsyncJob):
         if job_config.use_legacy_sql is None:
             job_config.use_legacy_sql = False
 
-        self.query = query
+        _helpers._set_sub_prop(
+            self._properties, ["configuration", "query", "query"], query
+        )
+
         self._configuration = job_config
         self._query_results = None
         self._done_timeout = None
@@ -2423,6 +2451,17 @@ class QueryJob(_AsyncJob):
         :attr:`google.cloud.bigquery.job.QueryJobConfig.priority`.
         """
         return self._configuration.priority
+
+    @property
+    def query(self):
+        """str: The query text used in this query job.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.query
+        """
+        return _helpers._get_sub_prop(
+            self._properties, ["configuration", "query", "query"]
+        )
 
     @property
     def query_parameters(self):
@@ -2516,7 +2555,6 @@ class QueryJob(_AsyncJob):
     def _copy_configuration_properties(self, configuration):
         """Helper:  assign subclass configuration properties in cleaned."""
         self._configuration._properties = copy.deepcopy(configuration)
-        self.query = _helpers._get_sub_prop(configuration, ["query", "query"])
 
     @classmethod
     def from_api_repr(cls, resource, client):
@@ -2533,7 +2571,7 @@ class QueryJob(_AsyncJob):
         :returns: Job parsed from ``resource``.
         """
         job_id, config = cls._get_resource_config(resource)
-        query = config["query"]["query"]
+        query = _helpers._get_sub_prop(config, ["query", "query"])
         job = cls(job_id, query, client=client)
         job._set_properties(resource)
         return job
@@ -2836,7 +2874,9 @@ class QueryJob(_AsyncJob):
         dest_table_ref = self.destination
         dest_table = Table(dest_table_ref, schema=schema)
         dest_table._properties["numRows"] = self._query_results.total_rows
-        return self._client.list_rows(dest_table, retry=retry)
+        rows = self._client.list_rows(dest_table, retry=retry)
+        rows._preserve_order = _contains_order_by(self.query)
+        return rows
 
     def to_dataframe(self, bqstorage_client=None, dtypes=None, progress_bar_type=None):
         """Return a pandas DataFrame from a QueryJob
