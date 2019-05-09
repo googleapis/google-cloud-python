@@ -14,7 +14,6 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.cloud.talent_v4beta1.proto import (
     application_pb2 as google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_application__pb2,
 )
@@ -33,6 +32,7 @@ from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb
 from google.type import date_pb2 as google_dot_type_dot_date__pb2
 from google.type import latlng_pb2 as google_dot_type_dot_latlng__pb2
 from google.type import timeofday_pb2 as google_dot_type_dot_timeofday__pb2
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -43,10 +43,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\014FiltersProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        '\n/google/cloud/talent_v4beta1/proto/filters.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x33google/cloud/talent_v4beta1/proto/application.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a+google/cloud/talent_v4beta1/proto/job.proto\x1a/google/cloud/talent_v4beta1/proto/profile.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x16google/type/date.proto\x1a\x18google/type/latlng.proto\x1a\x1bgoogle/type/timeofday.proto"\xe3\x04\n\x08JobQuery\x12\r\n\x05query\x18\x01 \x01(\t\x12\x11\n\tcompanies\x18\x02 \x03(\t\x12\x45\n\x10location_filters\x18\x03 \x03(\x0b\x32+.google.cloud.talent.v4beta1.LocationFilter\x12@\n\x0ejob_categories\x18\x04 \x03(\x0e\x32(.google.cloud.talent.v4beta1.JobCategory\x12\x42\n\x0e\x63ommute_filter\x18\x05 \x01(\x0b\x32*.google.cloud.talent.v4beta1.CommuteFilter\x12\x1d\n\x15\x63ompany_display_names\x18\x06 \x03(\t\x12L\n\x13\x63ompensation_filter\x18\x07 \x01(\x0b\x32/.google.cloud.talent.v4beta1.CompensationFilter\x12\x1f\n\x17\x63ustom_attribute_filter\x18\x08 \x01(\t\x12\x1b\n\x13\x64isable_spell_check\x18\t \x01(\x08\x12\x45\n\x10\x65mployment_types\x18\n \x03(\x0e\x32+.google.cloud.talent.v4beta1.EmploymentType\x12\x16\n\x0elanguage_codes\x18\x0b \x03(\t\x12G\n\x12publish_time_range\x18\x0c \x01(\x0b\x32+.google.cloud.talent.v4beta1.TimestampRange\x12\x15\n\rexcluded_jobs\x18\r \x03(\t"\xac\x08\n\x0cProfileQuery\x12\r\n\x05query\x18\x01 \x01(\t\x12\x45\n\x10location_filters\x18\x02 \x03(\x0b\x32+.google.cloud.talent.v4beta1.LocationFilter\x12\x46\n\x11job_title_filters\x18\x03 \x03(\x0b\x32+.google.cloud.talent.v4beta1.JobTitleFilter\x12\x45\n\x10\x65mployer_filters\x18\x04 \x03(\x0b\x32+.google.cloud.talent.v4beta1.EmployerFilter\x12G\n\x11\x65\x64ucation_filters\x18\x05 \x03(\x0b\x32,.google.cloud.talent.v4beta1.EducationFilter\x12?\n\rskill_filters\x18\x06 \x03(\x0b\x32(.google.cloud.talent.v4beta1.SkillFilter\x12Q\n\x16work_experience_filter\x18\x07 \x03(\x0b\x32\x31.google.cloud.talent.v4beta1.WorkExperienceFilter\x12=\n\x0ctime_filters\x18\x08 \x03(\x0b\x32\'.google.cloud.talent.v4beta1.TimeFilter\x12\x32\n\x0ehirable_filter\x18\t \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12T\n\x18\x61pplication_date_filters\x18\n \x03(\x0b\x32\x32.google.cloud.talent.v4beta1.ApplicationDateFilter\x12\x65\n!application_outcome_notes_filters\x18\x0b \x03(\x0b\x32:.google.cloud.talent.v4beta1.ApplicationOutcomeNotesFilter\x12_\n\x1e\x61pplication_last_stage_filters\x18\x0c \x03(\x0b\x32\x37.google.cloud.talent.v4beta1.ApplicationLastStageFilter\x12R\n\x17\x61pplication_job_filters\x18\r \x03(\x0b\x32\x31.google.cloud.talent.v4beta1.ApplicationJobFilter\x12X\n\x1a\x61pplication_status_filters\x18\x0e \x03(\x0b\x32\x34.google.cloud.talent.v4beta1.ApplicationStatusFilter\x12\x1b\n\x13\x63ustom_field_filter\x18\x0f \x01(\t"\xdf\x02\n\x0eLocationFilter\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\t\x12\x13\n\x0bregion_code\x18\x02 \x01(\t\x12$\n\x07lat_lng\x18\x03 \x01(\x0b\x32\x13.google.type.LatLng\x12\x19\n\x11\x64istance_in_miles\x18\x04 \x01(\x01\x12\x61\n\x16telecommute_preference\x18\x05 \x01(\x0e\x32\x41.google.cloud.talent.v4beta1.LocationFilter.TelecommutePreference\x12\x0f\n\x07negated\x18\x06 \x01(\x08"r\n\x15TelecommutePreference\x12&\n"TELECOMMUTE_PREFERENCE_UNSPECIFIED\x10\x00\x12\x18\n\x14TELECOMMUTE_EXCLUDED\x10\x01\x12\x17\n\x13TELECOMMUTE_ALLOWED\x10\x02"\xc0\x03\n\x12\x43ompensationFilter\x12H\n\x04type\x18\x01 \x01(\x0e\x32:.google.cloud.talent.v4beta1.CompensationFilter.FilterType\x12M\n\x05units\x18\x02 \x03(\x0e\x32>.google.cloud.talent.v4beta1.CompensationInfo.CompensationUnit\x12N\n\x05range\x18\x03 \x01(\x0b\x32?.google.cloud.talent.v4beta1.CompensationInfo.CompensationRange\x12\x38\n0include_jobs_with_unspecified_compensation_range\x18\x04 \x01(\x08"\x86\x01\n\nFilterType\x12\x1b\n\x17\x46ILTER_TYPE_UNSPECIFIED\x10\x00\x12\r\n\tUNIT_ONLY\x10\x01\x12\x13\n\x0fUNIT_AND_AMOUNT\x10\x02\x12\x1a\n\x16\x41NNUALIZED_BASE_AMOUNT\x10\x03\x12\x1b\n\x17\x41NNUALIZED_TOTAL_AMOUNT\x10\x04"\xbc\x03\n\rCommuteFilter\x12\x42\n\x0e\x63ommute_method\x18\x01 \x01(\x0e\x32*.google.cloud.talent.v4beta1.CommuteMethod\x12.\n\x11start_coordinates\x18\x02 \x01(\x0b\x32\x13.google.type.LatLng\x12\x32\n\x0ftravel_duration\x18\x03 \x01(\x0b\x32\x19.google.protobuf.Duration\x12!\n\x19\x61llow_imprecise_addresses\x18\x04 \x01(\x08\x12N\n\x0croad_traffic\x18\x05 \x01(\x0e\x32\x36.google.cloud.talent.v4beta1.CommuteFilter.RoadTrafficH\x00\x12\x30\n\x0e\x64\x65parture_time\x18\x06 \x01(\x0b\x32\x16.google.type.TimeOfDayH\x00"L\n\x0bRoadTraffic\x12\x1c\n\x18ROAD_TRAFFIC_UNSPECIFIED\x10\x00\x12\x10\n\x0cTRAFFIC_FREE\x10\x01\x12\r\n\tBUSY_HOUR\x10\x02\x42\x10\n\x0etraffic_option"4\n\x0eJobTitleFilter\x12\x11\n\tjob_title\x18\x01 \x01(\t\x12\x0f\n\x07negated\x18\x02 \x01(\x08"-\n\x0bSkillFilter\x12\r\n\x05skill\x18\x01 \x01(\t\x12\x0f\n\x07negated\x18\x02 \x01(\x08"\xa1\x02\n\x0e\x45mployerFilter\x12\x10\n\x08\x65mployer\x18\x01 \x01(\t\x12L\n\x04mode\x18\x02 \x01(\x0e\x32>.google.cloud.talent.v4beta1.EmployerFilter.EmployerFilterMode\x12\x0f\n\x07negated\x18\x03 \x01(\x08"\x9d\x01\n\x12\x45mployerFilterMode\x12$\n EMPLOYER_FILTER_MODE_UNSPECIFIED\x10\x00\x12\x1a\n\x16\x41LL_EMPLOYMENT_RECORDS\x10\x01\x12#\n\x1f\x43URRENT_EMPLOYMENT_RECORDS_ONLY\x10\x02\x12 \n\x1cPAST_EMPLOYMENT_RECORDS_ONLY\x10\x03"\x88\x01\n\x0f\x45\x64ucationFilter\x12\x0e\n\x06school\x18\x01 \x01(\t\x12\x16\n\x0e\x66ield_of_study\x18\x02 \x01(\t\x12<\n\x0b\x64\x65gree_type\x18\x03 \x01(\x0e\x32\'.google.cloud.talent.v4beta1.DegreeType\x12\x0f\n\x07negated\x18\x06 \x01(\x08"|\n\x14WorkExperienceFilter\x12\x31\n\x0emin_experience\x18\x01 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x31\n\x0emax_experience\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration"c\n\x15\x41pplicationDateFilter\x12%\n\nstart_date\x18\x01 \x01(\x0b\x32\x11.google.type.Date\x12#\n\x08\x65nd_date\x18\x02 \x01(\x0b\x32\x11.google.type.Date"G\n\x1d\x41pplicationOutcomeNotesFilter\x12\x15\n\routcome_notes\x18\x01 \x01(\t\x12\x0f\n\x07negated\x18\x02 \x01(\x08"A\n\x1a\x41pplicationLastStageFilter\x12\x12\n\nlast_stage\x18\x01 \x01(\t\x12\x0f\n\x07negated\x18\x02 \x01(\x08"c\n\x14\x41pplicationJobFilter\x12\x0b\n\x03job\x18\x01 \x01(\t\x12\x1a\n\x12job_requisition_id\x18\x02 \x01(\t\x12\x11\n\tjob_title\x18\x03 \x01(\t\x12\x0f\n\x07negated\x18\x04 \x01(\x08"\x80\x01\n\x17\x41pplicationStatusFilter\x12T\n\x11\x61pplication_state\x18\x01 \x01(\x0e\x32\x39.google.cloud.talent.v4beta1.Application.ApplicationState\x12\x0f\n\x07negated\x18\x02 \x01(\x08"\xfc\x01\n\nTimeFilter\x12.\n\nstart_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x45\n\ntime_field\x18\x03 \x01(\x0e\x32\x31.google.cloud.talent.v4beta1.TimeFilter.TimeField"I\n\tTimeField\x12\x1a\n\x16TIME_FIELD_UNSPECIFIED\x10\x00\x12\x0f\n\x0b\x43REATE_TIME\x10\x01\x12\x0f\n\x0bUPDATE_TIME\x10\x02\x42z\n\x1f\x63om.google.cloud.talent.v4beta1B\x0c\x46iltersProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
+        '\n/google/cloud/talent_v4beta1/proto/filters.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x33google/cloud/talent_v4beta1/proto/application.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a+google/cloud/talent_v4beta1/proto/job.proto\x1a/google/cloud/talent_v4beta1/proto/profile.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x16google/type/date.proto\x1a\x18google/type/latlng.proto\x1a\x1bgoogle/type/timeofday.proto\x1a\x1cgoogle/api/annotations.proto"\xe3\x04\n\x08JobQuery\x12\r\n\x05query\x18\x01 \x01(\t\x12\x11\n\tcompanies\x18\x02 \x03(\t\x12\x45\n\x10location_filters\x18\x03 \x03(\x0b\x32+.google.cloud.talent.v4beta1.LocationFilter\x12@\n\x0ejob_categories\x18\x04 \x03(\x0e\x32(.google.cloud.talent.v4beta1.JobCategory\x12\x42\n\x0e\x63ommute_filter\x18\x05 \x01(\x0b\x32*.google.cloud.talent.v4beta1.CommuteFilter\x12\x1d\n\x15\x63ompany_display_names\x18\x06 \x03(\t\x12L\n\x13\x63ompensation_filter\x18\x07 \x01(\x0b\x32/.google.cloud.talent.v4beta1.CompensationFilter\x12\x1f\n\x17\x63ustom_attribute_filter\x18\x08 \x01(\t\x12\x1b\n\x13\x64isable_spell_check\x18\t \x01(\x08\x12\x45\n\x10\x65mployment_types\x18\n \x03(\x0e\x32+.google.cloud.talent.v4beta1.EmploymentType\x12\x16\n\x0elanguage_codes\x18\x0b \x03(\t\x12G\n\x12publish_time_range\x18\x0c \x01(\x0b\x32+.google.cloud.talent.v4beta1.TimestampRange\x12\x15\n\rexcluded_jobs\x18\r \x03(\t"\xf5\x06\n\x0cProfileQuery\x12\r\n\x05query\x18\x01 \x01(\t\x12\x45\n\x10location_filters\x18\x02 \x03(\x0b\x32+.google.cloud.talent.v4beta1.LocationFilter\x12\x46\n\x11job_title_filters\x18\x03 \x03(\x0b\x32+.google.cloud.talent.v4beta1.JobTitleFilter\x12\x45\n\x10\x65mployer_filters\x18\x04 \x03(\x0b\x32+.google.cloud.talent.v4beta1.EmployerFilter\x12G\n\x11\x65\x64ucation_filters\x18\x05 \x03(\x0b\x32,.google.cloud.talent.v4beta1.EducationFilter\x12?\n\rskill_filters\x18\x06 \x03(\x0b\x32(.google.cloud.talent.v4beta1.SkillFilter\x12Q\n\x16work_experience_filter\x18\x07 \x03(\x0b\x32\x31.google.cloud.talent.v4beta1.WorkExperienceFilter\x12=\n\x0ctime_filters\x18\x08 \x03(\x0b\x32\'.google.cloud.talent.v4beta1.TimeFilter\x12\x32\n\x0ehirable_filter\x18\t \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12T\n\x18\x61pplication_date_filters\x18\n \x03(\x0b\x32\x32.google.cloud.talent.v4beta1.ApplicationDateFilter\x12\x65\n!application_outcome_notes_filters\x18\x0b \x03(\x0b\x32:.google.cloud.talent.v4beta1.ApplicationOutcomeNotesFilter\x12R\n\x17\x61pplication_job_filters\x18\r \x03(\x0b\x32\x31.google.cloud.talent.v4beta1.ApplicationJobFilter\x12\x1f\n\x17\x63ustom_attribute_filter\x18\x0f \x01(\t"\xdf\x02\n\x0eLocationFilter\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\t\x12\x13\n\x0bregion_code\x18\x02 \x01(\t\x12$\n\x07lat_lng\x18\x03 \x01(\x0b\x32\x13.google.type.LatLng\x12\x19\n\x11\x64istance_in_miles\x18\x04 \x01(\x01\x12\x61\n\x16telecommute_preference\x18\x05 \x01(\x0e\x32\x41.google.cloud.talent.v4beta1.LocationFilter.TelecommutePreference\x12\x0f\n\x07negated\x18\x06 \x01(\x08"r\n\x15TelecommutePreference\x12&\n"TELECOMMUTE_PREFERENCE_UNSPECIFIED\x10\x00\x12\x18\n\x14TELECOMMUTE_EXCLUDED\x10\x01\x12\x17\n\x13TELECOMMUTE_ALLOWED\x10\x02"\xc0\x03\n\x12\x43ompensationFilter\x12H\n\x04type\x18\x01 \x01(\x0e\x32:.google.cloud.talent.v4beta1.CompensationFilter.FilterType\x12M\n\x05units\x18\x02 \x03(\x0e\x32>.google.cloud.talent.v4beta1.CompensationInfo.CompensationUnit\x12N\n\x05range\x18\x03 \x01(\x0b\x32?.google.cloud.talent.v4beta1.CompensationInfo.CompensationRange\x12\x38\n0include_jobs_with_unspecified_compensation_range\x18\x04 \x01(\x08"\x86\x01\n\nFilterType\x12\x1b\n\x17\x46ILTER_TYPE_UNSPECIFIED\x10\x00\x12\r\n\tUNIT_ONLY\x10\x01\x12\x13\n\x0fUNIT_AND_AMOUNT\x10\x02\x12\x1a\n\x16\x41NNUALIZED_BASE_AMOUNT\x10\x03\x12\x1b\n\x17\x41NNUALIZED_TOTAL_AMOUNT\x10\x04"\xbc\x03\n\rCommuteFilter\x12\x42\n\x0e\x63ommute_method\x18\x01 \x01(\x0e\x32*.google.cloud.talent.v4beta1.CommuteMethod\x12.\n\x11start_coordinates\x18\x02 \x01(\x0b\x32\x13.google.type.LatLng\x12\x32\n\x0ftravel_duration\x18\x03 \x01(\x0b\x32\x19.google.protobuf.Duration\x12!\n\x19\x61llow_imprecise_addresses\x18\x04 \x01(\x08\x12N\n\x0croad_traffic\x18\x05 \x01(\x0e\x32\x36.google.cloud.talent.v4beta1.CommuteFilter.RoadTrafficH\x00\x12\x30\n\x0e\x64\x65parture_time\x18\x06 \x01(\x0b\x32\x16.google.type.TimeOfDayH\x00"L\n\x0bRoadTraffic\x12\x1c\n\x18ROAD_TRAFFIC_UNSPECIFIED\x10\x00\x12\x10\n\x0cTRAFFIC_FREE\x10\x01\x12\r\n\tBUSY_HOUR\x10\x02\x42\x10\n\x0etraffic_option"4\n\x0eJobTitleFilter\x12\x11\n\tjob_title\x18\x01 \x01(\t\x12\x0f\n\x07negated\x18\x02 \x01(\x08"-\n\x0bSkillFilter\x12\r\n\x05skill\x18\x01 \x01(\t\x12\x0f\n\x07negated\x18\x02 \x01(\x08"\xa1\x02\n\x0e\x45mployerFilter\x12\x10\n\x08\x65mployer\x18\x01 \x01(\t\x12L\n\x04mode\x18\x02 \x01(\x0e\x32>.google.cloud.talent.v4beta1.EmployerFilter.EmployerFilterMode\x12\x0f\n\x07negated\x18\x03 \x01(\x08"\x9d\x01\n\x12\x45mployerFilterMode\x12$\n EMPLOYER_FILTER_MODE_UNSPECIFIED\x10\x00\x12\x1a\n\x16\x41LL_EMPLOYMENT_RECORDS\x10\x01\x12#\n\x1f\x43URRENT_EMPLOYMENT_RECORDS_ONLY\x10\x02\x12 \n\x1cPAST_EMPLOYMENT_RECORDS_ONLY\x10\x03"\x88\x01\n\x0f\x45\x64ucationFilter\x12\x0e\n\x06school\x18\x01 \x01(\t\x12\x16\n\x0e\x66ield_of_study\x18\x02 \x01(\t\x12<\n\x0b\x64\x65gree_type\x18\x03 \x01(\x0e\x32\'.google.cloud.talent.v4beta1.DegreeType\x12\x0f\n\x07negated\x18\x06 \x01(\x08"|\n\x14WorkExperienceFilter\x12\x31\n\x0emin_experience\x18\x01 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x31\n\x0emax_experience\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration"c\n\x15\x41pplicationDateFilter\x12%\n\nstart_date\x18\x01 \x01(\x0b\x32\x11.google.type.Date\x12#\n\x08\x65nd_date\x18\x02 \x01(\x0b\x32\x11.google.type.Date"G\n\x1d\x41pplicationOutcomeNotesFilter\x12\x15\n\routcome_notes\x18\x01 \x01(\t\x12\x0f\n\x07negated\x18\x02 \x01(\x08"V\n\x14\x41pplicationJobFilter\x12\x1a\n\x12job_requisition_id\x18\x02 \x01(\t\x12\x11\n\tjob_title\x18\x03 \x01(\t\x12\x0f\n\x07negated\x18\x04 \x01(\x08"\xfc\x01\n\nTimeFilter\x12.\n\nstart_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x45\n\ntime_field\x18\x03 \x01(\x0e\x32\x31.google.cloud.talent.v4beta1.TimeFilter.TimeField"I\n\tTimeField\x12\x1a\n\x16TIME_FIELD_UNSPECIFIED\x10\x00\x12\x0f\n\x0b\x43REATE_TIME\x10\x01\x12\x0f\n\x0bUPDATE_TIME\x10\x02\x42z\n\x1f\x63om.google.cloud.talent.v4beta1B\x0c\x46iltersProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
     ),
     dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_application__pb2.DESCRIPTOR,
         google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2.DESCRIPTOR,
         google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__pb2.DESCRIPTOR,
@@ -57,6 +56,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         google_dot_type_dot_date__pb2.DESCRIPTOR,
         google_dot_type_dot_latlng__pb2.DESCRIPTOR,
         google_dot_type_dot_timeofday__pb2.DESCRIPTOR,
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
     ],
 )
 
@@ -91,8 +91,8 @@ _LOCATIONFILTER_TELECOMMUTEPREFERENCE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2404,
-    serialized_end=2518,
+    serialized_start=2221,
+    serialized_end=2335,
 )
 _sym_db.RegisterEnumDescriptor(_LOCATIONFILTER_TELECOMMUTEPREFERENCE)
 
@@ -136,8 +136,8 @@ _COMPENSATIONFILTER_FILTERTYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2835,
-    serialized_end=2969,
+    serialized_start=2652,
+    serialized_end=2786,
 )
 _sym_db.RegisterEnumDescriptor(_COMPENSATIONFILTER_FILTERTYPE)
 
@@ -163,8 +163,8 @@ _COMMUTEFILTER_ROADTRAFFIC = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3322,
-    serialized_end=3398,
+    serialized_start=3139,
+    serialized_end=3215,
 )
 _sym_db.RegisterEnumDescriptor(_COMMUTEFILTER_ROADTRAFFIC)
 
@@ -205,8 +205,8 @@ _EMPLOYERFILTER_EMPLOYERFILTERMODE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3652,
-    serialized_end=3809,
+    serialized_start=3469,
+    serialized_end=3626,
 )
 _sym_db.RegisterEnumDescriptor(_EMPLOYERFILTER_EMPLOYERFILTERMODE)
 
@@ -232,8 +232,8 @@ _TIMEFILTER_TIMEFIELD = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=4729,
-    serialized_end=4802,
+    serialized_start=4335,
+    serialized_end=4408,
 )
 _sym_db.RegisterEnumDescriptor(_TIMEFILTER_TIMEFIELD)
 
@@ -699,27 +699,9 @@ _PROFILEQUERY = _descriptor.Descriptor(
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
-            name="application_last_stage_filters",
-            full_name="google.cloud.talent.v4beta1.ProfileQuery.application_last_stage_filters",
-            index=11,
-            number=12,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
             name="application_job_filters",
             full_name="google.cloud.talent.v4beta1.ProfileQuery.application_job_filters",
-            index=12,
+            index=11,
             number=13,
             type=11,
             cpp_type=10,
@@ -735,27 +717,9 @@ _PROFILEQUERY = _descriptor.Descriptor(
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
-            name="application_status_filters",
-            full_name="google.cloud.talent.v4beta1.ProfileQuery.application_status_filters",
-            index=13,
-            number=14,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="custom_field_filter",
-            full_name="google.cloud.talent.v4beta1.ProfileQuery.custom_field_filter",
-            index=14,
+            name="custom_attribute_filter",
+            full_name="google.cloud.talent.v4beta1.ProfileQuery.custom_attribute_filter",
+            index=12,
             number=15,
             type=9,
             cpp_type=9,
@@ -780,7 +744,7 @@ _PROFILEQUERY = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[],
     serialized_start=1096,
-    serialized_end=2164,
+    serialized_end=1981,
 )
 
 
@@ -908,8 +872,8 @@ _LOCATIONFILTER = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2167,
-    serialized_end=2518,
+    serialized_start=1984,
+    serialized_end=2335,
 )
 
 
@@ -1001,8 +965,8 @@ _COMPENSATIONFILTER = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2521,
-    serialized_end=2969,
+    serialized_start=2338,
+    serialized_end=2786,
 )
 
 
@@ -1138,8 +1102,8 @@ _COMMUTEFILTER = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=2972,
-    serialized_end=3416,
+    serialized_start=2789,
+    serialized_end=3233,
 )
 
 
@@ -1195,8 +1159,8 @@ _JOBTITLEFILTER = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3418,
-    serialized_end=3470,
+    serialized_start=3235,
+    serialized_end=3287,
 )
 
 
@@ -1252,8 +1216,8 @@ _SKILLFILTER = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3472,
-    serialized_end=3517,
+    serialized_start=3289,
+    serialized_end=3334,
 )
 
 
@@ -1327,8 +1291,8 @@ _EMPLOYERFILTER = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3520,
-    serialized_end=3809,
+    serialized_start=3337,
+    serialized_end=3626,
 )
 
 
@@ -1420,8 +1384,8 @@ _EDUCATIONFILTER = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3812,
-    serialized_end=3948,
+    serialized_start=3629,
+    serialized_end=3765,
 )
 
 
@@ -1477,8 +1441,8 @@ _WORKEXPERIENCEFILTER = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3950,
-    serialized_end=4074,
+    serialized_start=3767,
+    serialized_end=3891,
 )
 
 
@@ -1534,8 +1498,8 @@ _APPLICATIONDATEFILTER = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4076,
-    serialized_end=4175,
+    serialized_start=3893,
+    serialized_end=3992,
 )
 
 
@@ -1591,65 +1555,8 @@ _APPLICATIONOUTCOMENOTESFILTER = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4177,
-    serialized_end=4248,
-)
-
-
-_APPLICATIONLASTSTAGEFILTER = _descriptor.Descriptor(
-    name="ApplicationLastStageFilter",
-    full_name="google.cloud.talent.v4beta1.ApplicationLastStageFilter",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="last_stage",
-            full_name="google.cloud.talent.v4beta1.ApplicationLastStageFilter.last_stage",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="negated",
-            full_name="google.cloud.talent.v4beta1.ApplicationLastStageFilter.negated",
-            index=1,
-            number=2,
-            type=8,
-            cpp_type=7,
-            label=1,
-            has_default_value=False,
-            default_value=False,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=4250,
-    serialized_end=4315,
+    serialized_start=3994,
+    serialized_end=4065,
 )
 
 
@@ -1661,27 +1568,9 @@ _APPLICATIONJOBFILTER = _descriptor.Descriptor(
     containing_type=None,
     fields=[
         _descriptor.FieldDescriptor(
-            name="job",
-            full_name="google.cloud.talent.v4beta1.ApplicationJobFilter.job",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
             name="job_requisition_id",
             full_name="google.cloud.talent.v4beta1.ApplicationJobFilter.job_requisition_id",
-            index=1,
+            index=0,
             number=2,
             type=9,
             cpp_type=9,
@@ -1699,7 +1588,7 @@ _APPLICATIONJOBFILTER = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="job_title",
             full_name="google.cloud.talent.v4beta1.ApplicationJobFilter.job_title",
-            index=2,
+            index=1,
             number=3,
             type=9,
             cpp_type=9,
@@ -1717,7 +1606,7 @@ _APPLICATIONJOBFILTER = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="negated",
             full_name="google.cloud.talent.v4beta1.ApplicationJobFilter.negated",
-            index=3,
+            index=2,
             number=4,
             type=8,
             cpp_type=7,
@@ -1741,65 +1630,8 @@ _APPLICATIONJOBFILTER = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4317,
-    serialized_end=4416,
-)
-
-
-_APPLICATIONSTATUSFILTER = _descriptor.Descriptor(
-    name="ApplicationStatusFilter",
-    full_name="google.cloud.talent.v4beta1.ApplicationStatusFilter",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="application_state",
-            full_name="google.cloud.talent.v4beta1.ApplicationStatusFilter.application_state",
-            index=0,
-            number=1,
-            type=14,
-            cpp_type=8,
-            label=1,
-            has_default_value=False,
-            default_value=0,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="negated",
-            full_name="google.cloud.talent.v4beta1.ApplicationStatusFilter.negated",
-            index=1,
-            number=2,
-            type=8,
-            cpp_type=7,
-            label=1,
-            has_default_value=False,
-            default_value=False,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=4419,
-    serialized_end=4547,
+    serialized_start=4067,
+    serialized_end=4153,
 )
 
 
@@ -1873,8 +1705,8 @@ _TIMEFILTER = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4550,
-    serialized_end=4802,
+    serialized_start=4156,
+    serialized_end=4408,
 )
 
 _JOBQUERY.fields_by_name["location_filters"].message_type = _LOCATIONFILTER
@@ -1914,14 +1746,8 @@ _PROFILEQUERY.fields_by_name[
     "application_outcome_notes_filters"
 ].message_type = _APPLICATIONOUTCOMENOTESFILTER
 _PROFILEQUERY.fields_by_name[
-    "application_last_stage_filters"
-].message_type = _APPLICATIONLASTSTAGEFILTER
-_PROFILEQUERY.fields_by_name[
     "application_job_filters"
 ].message_type = _APPLICATIONJOBFILTER
-_PROFILEQUERY.fields_by_name[
-    "application_status_filters"
-].message_type = _APPLICATIONSTATUSFILTER
 _LOCATIONFILTER.fields_by_name[
     "lat_lng"
 ].message_type = google_dot_type_dot_latlng__pb2._LATLNG
@@ -1986,11 +1812,6 @@ _APPLICATIONDATEFILTER.fields_by_name[
 _APPLICATIONDATEFILTER.fields_by_name[
     "end_date"
 ].message_type = google_dot_type_dot_date__pb2._DATE
-_APPLICATIONSTATUSFILTER.fields_by_name[
-    "application_state"
-].enum_type = (
-    google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_application__pb2._APPLICATION_APPLICATIONSTATE
-)
 _TIMEFILTER.fields_by_name[
     "start_time"
 ].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
@@ -2013,11 +1834,7 @@ DESCRIPTOR.message_types_by_name["ApplicationDateFilter"] = _APPLICATIONDATEFILT
 DESCRIPTOR.message_types_by_name[
     "ApplicationOutcomeNotesFilter"
 ] = _APPLICATIONOUTCOMENOTESFILTER
-DESCRIPTOR.message_types_by_name[
-    "ApplicationLastStageFilter"
-] = _APPLICATIONLASTSTAGEFILTER
 DESCRIPTOR.message_types_by_name["ApplicationJobFilter"] = _APPLICATIONJOBFILTER
-DESCRIPTOR.message_types_by_name["ApplicationStatusFilter"] = _APPLICATIONSTATUSFILTER
 DESCRIPTOR.message_types_by_name["TimeFilter"] = _TIMEFILTER
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -2133,7 +1950,7 @@ JobQuery = _reflection.GeneratedProtocolMessageType(
           filter are searched against.
       excluded_jobs:
           Optional.  This filter specifies a list of job names to be
-          excluded during search.  At most 200 excluded job names are
+          excluded during search.  At most 400 excluded job names are
           allowed.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.JobQuery)
@@ -2221,16 +2038,10 @@ ProfileQuery = _reflection.GeneratedProtocolMessageType(
       application_outcome_notes_filters:
           Optional.  The application outcome notes filters specify the
           notes for the outcome of the job application.
-      application_last_stage_filters:
-          Optional.  The application last stage filters specify the last
-          stage of job application.
       application_job_filters:
           Optional.  The application job filters specify the job applied
           for in the application.
-      application_status_filters:
-          Optional.  The application status filters specify the status
-          of job application.
-      custom_field_filter:
+      custom_attribute_filter:
           Optional.  This filter specifies a structured syntax to match
           against the [Profile.custom\_attributes][google.cloud.talent.v
           4beta1.Profile.custom\_attributes] that are marked as
@@ -2432,7 +2243,8 @@ SkillFilter = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       skill:
-          Required.  The skill name. For example, "java", "j2ee", etc.
+          Required.  The skill name. For example, "java", "j2ee", and so
+          on.
       negated:
           Optional.  Whether to apply negation to the filter so profiles
           matching the filter are excluded.
@@ -2595,32 +2407,6 @@ ApplicationOutcomeNotesFilter = _reflection.GeneratedProtocolMessageType(
 )
 _sym_db.RegisterMessage(ApplicationOutcomeNotesFilter)
 
-ApplicationLastStageFilter = _reflection.GeneratedProtocolMessageType(
-    "ApplicationLastStageFilter",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_APPLICATIONLASTSTAGEFILTER,
-        __module__="google.cloud.talent_v4beta1.proto.filters_pb2",
-        __doc__="""Input only.
-  
-  Filter on Last Stage of Application.
-  
-  
-  Attributes:
-      last_stage:
-          Required.  User entered or selected last stage the candidate
-          reached in the application. The API does an exact match on the
-          [Application.last\_stage][] in profiles.
-      negated:
-          Optional. If true, The API excludes all candidates with any
-          [Application.last\_stage][] matching the last stage specified
-          in the filter.
-  """,
-        # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.ApplicationLastStageFilter)
-    ),
-)
-_sym_db.RegisterMessage(ApplicationLastStageFilter)
-
 ApplicationJobFilter = _reflection.GeneratedProtocolMessageType(
     "ApplicationJobFilter",
     (_message.Message,),
@@ -2633,12 +2419,6 @@ ApplicationJobFilter = _reflection.GeneratedProtocolMessageType(
   
   
   Attributes:
-      job:
-          Optional.  The job resource name in the application. The API
-          does an exact match on the
-          [Job.name][google.cloud.talent.v4beta1.Job.name] of
-          [Application.job][google.cloud.talent.v4beta1.Application.job]
-          in profiles.
       job_requisition_id:
           Optional.  The job requisition id in the application. The API
           does an exact match on the [Job.requisistion\_id][] of
@@ -2659,33 +2439,6 @@ ApplicationJobFilter = _reflection.GeneratedProtocolMessageType(
     ),
 )
 _sym_db.RegisterMessage(ApplicationJobFilter)
-
-ApplicationStatusFilter = _reflection.GeneratedProtocolMessageType(
-    "ApplicationStatusFilter",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_APPLICATIONSTATUSFILTER,
-        __module__="google.cloud.talent_v4beta1.proto.filters_pb2",
-        __doc__="""Input only.
-  
-  Filter on state of Application.
-  
-  
-  Attributes:
-      application_state:
-          Required.  User entered or selected application state. The API
-          does an exact match between the application state specified in
-          this filter and the [Application.state][google.cloud.talent.v4
-          beta1.Application.state] in profiles.
-      negated:
-          Optional.  If true, The API excludes all candidates with any [
-          Application.state][google.cloud.talent.v4beta1.Application.sta
-          te] matching the state specified in the filter.
-  """,
-        # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.ApplicationStatusFilter)
-    ),
-)
-_sym_db.RegisterMessage(ApplicationStatusFilter)
 
 TimeFilter = _reflection.GeneratedProtocolMessageType(
     "TimeFilter",

@@ -164,7 +164,7 @@ class TestJobServiceClient(object):
             client = talent_v4beta1.JobServiceClient()
 
         # Setup Request
-        name = client.job_old_path("[PROJECT]", "[JOBS]")
+        name = client.job_path("[PROJECT]", "[TENANT]", "[JOBS]")
 
         response = client.get_job(name)
         assert expected_response == response
@@ -183,7 +183,7 @@ class TestJobServiceClient(object):
             client = talent_v4beta1.JobServiceClient()
 
         # Setup request
-        name = client.job_old_path("[PROJECT]", "[JOBS]")
+        name = client.job_path("[PROJECT]", "[TENANT]", "[JOBS]")
 
         with pytest.raises(CustomException):
             client.get_job(name)
@@ -258,7 +258,7 @@ class TestJobServiceClient(object):
             client = talent_v4beta1.JobServiceClient()
 
         # Setup Request
-        name = client.job_old_path("[PROJECT]", "[JOBS]")
+        name = client.job_path("[PROJECT]", "[TENANT]", "[JOBS]")
 
         client.delete_job(name)
 
@@ -276,7 +276,7 @@ class TestJobServiceClient(object):
             client = talent_v4beta1.JobServiceClient()
 
         # Setup request
-        name = client.job_old_path("[PROJECT]", "[JOBS]")
+        name = client.job_path("[PROJECT]", "[TENANT]", "[JOBS]")
 
         with pytest.raises(CustomException):
             client.delete_job(name)

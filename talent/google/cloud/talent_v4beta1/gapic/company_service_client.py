@@ -23,6 +23,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
@@ -74,17 +75,20 @@ class CompanyServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
+    def company_path(cls, project, tenant, company):
+        """Return a fully-qualified company string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/tenants/{tenant}/companies/{company}",
+            project=project,
+            tenant=tenant,
+            company=company,
+        )
+
+    @classmethod
     def tenant_path(cls, project, tenant):
         """Return a fully-qualified tenant string."""
         return google.api_core.path_template.expand(
             "projects/{project}/tenants/{tenant}", project=project, tenant=tenant
-        )
-
-    @classmethod
-    def company_old_path(cls, project, company):
-        """Return a fully-qualified company_old string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/companies/{company}", project=project, company=company
         )
 
     def __init__(
@@ -258,6 +262,19 @@ class CompanyServiceClient(object):
         request = company_service_pb2.CreateCompanyRequest(
             parent=parent, company=company
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_company"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -277,7 +294,7 @@ class CompanyServiceClient(object):
             >>>
             >>> client = talent_v4beta1.CompanyServiceClient()
             >>>
-            >>> name = client.company_old_path('[PROJECT]', '[COMPANY]')
+            >>> name = client.company_path('[PROJECT]', '[TENANT]', '[COMPANY]')
             >>>
             >>> response = client.get_company(name)
 
@@ -323,6 +340,19 @@ class CompanyServiceClient(object):
             )
 
         request = company_service_pb2.GetCompanyRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_company"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -398,6 +428,19 @@ class CompanyServiceClient(object):
         request = company_service_pb2.UpdateCompanyRequest(
             company=company, update_mask=update_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("company.name", company.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_company"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -418,7 +461,7 @@ class CompanyServiceClient(object):
             >>>
             >>> client = talent_v4beta1.CompanyServiceClient()
             >>>
-            >>> name = client.company_old_path('[PROJECT]', '[COMPANY]')
+            >>> name = client.company_path('[PROJECT]', '[TENANT]', '[COMPANY]')
             >>>
             >>> client.delete_company(name)
 
@@ -461,6 +504,19 @@ class CompanyServiceClient(object):
             )
 
         request = company_service_pb2.DeleteCompanyRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_company"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -557,6 +613,19 @@ class CompanyServiceClient(object):
         request = company_service_pb2.ListCompaniesRequest(
             parent=parent, page_size=page_size, require_open_jobs=require_open_jobs
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(

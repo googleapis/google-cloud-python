@@ -23,6 +23,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
@@ -270,6 +271,19 @@ class TenantServiceClient(object):
             )
 
         request = tenant_service_pb2.CreateTenantRequest(parent=parent, tenant=tenant)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_tenant"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -331,6 +345,19 @@ class TenantServiceClient(object):
             )
 
         request = tenant_service_pb2.GetTenantRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_tenant"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -406,6 +433,19 @@ class TenantServiceClient(object):
         request = tenant_service_pb2.UpdateTenantRequest(
             tenant=tenant, update_mask=update_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("tenant.name", tenant.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_tenant"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -464,6 +504,19 @@ class TenantServiceClient(object):
             )
 
         request = tenant_service_pb2.DeleteTenantRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_tenant"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -548,6 +601,19 @@ class TenantServiceClient(object):
         request = tenant_service_pb2.ListTenantsRequest(
             parent=parent, page_size=page_size
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(

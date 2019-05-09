@@ -23,6 +23,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
@@ -76,16 +77,6 @@ class ApplicationServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def profile_path(cls, project, tenant, profile):
-        """Return a fully-qualified profile string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/tenants/{tenant}/profiles/{profile}",
-            project=project,
-            tenant=tenant,
-            profile=profile,
-        )
-
-    @classmethod
     def application_path(cls, project, tenant, profile, application):
         """Return a fully-qualified application string."""
         return google.api_core.path_template.expand(
@@ -94,6 +85,16 @@ class ApplicationServiceClient(object):
             tenant=tenant,
             profile=profile,
             application=application,
+        )
+
+    @classmethod
+    def profile_path(cls, project, tenant, profile):
+        """Return a fully-qualified profile string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/tenants/{tenant}/profiles/{profile}",
+            project=project,
+            tenant=tenant,
+            profile=profile,
         )
 
     def __init__(
@@ -266,6 +267,19 @@ class ApplicationServiceClient(object):
         request = application_service_pb2.CreateApplicationRequest(
             parent=parent, application=application
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_application"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -329,6 +343,19 @@ class ApplicationServiceClient(object):
             )
 
         request = application_service_pb2.GetApplicationRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_application"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -404,6 +431,19 @@ class ApplicationServiceClient(object):
         request = application_service_pb2.UpdateApplicationRequest(
             application=application, update_mask=update_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("application.name", application.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_application"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -464,6 +504,19 @@ class ApplicationServiceClient(object):
             )
 
         request = application_service_pb2.DeleteApplicationRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_application"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -550,6 +603,19 @@ class ApplicationServiceClient(object):
         request = application_service_pb2.ListApplicationsRequest(
             parent=parent, page_size=page_size
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(

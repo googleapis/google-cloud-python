@@ -37,7 +37,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\024ProfileResourceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        '\n/google/cloud/talent_v4beta1/proto/profile.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a+google/cloud/talent_v4beta1/proto/job.proto\x1a\x1egoogle/protobuf/duration.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x16google/type/date.proto\x1a google/type/postal_address.proto"\xdb\n\n\x07Profile\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x65xternal_id\x18\x02 \x01(\t\x12\x0e\n\x06source\x18\x03 \x01(\t\x12\x0b\n\x03uri\x18\x04 \x01(\t\x12\x10\n\x08group_id\x18\x05 \x01(\t\x12.\n\nis_hirable\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12/\n\x0b\x63reate_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x14\n\x0cresume_hrxml\x18\n \x01(\t\x12=\n\x0cperson_names\x18\x0b \x03(\x0b\x32\'.google.cloud.talent.v4beta1.PersonName\x12\x37\n\taddresses\x18\x0c \x03(\x0b\x32$.google.cloud.talent.v4beta1.Address\x12;\n\x0f\x65mail_addresses\x18\r \x03(\x0b\x32".google.cloud.talent.v4beta1.Email\x12\x39\n\rphone_numbers\x18\x0e \x03(\x0b\x32".google.cloud.talent.v4beta1.Phone\x12?\n\rpersonal_uris\x18\x0f \x03(\x0b\x32(.google.cloud.talent.v4beta1.PersonalUri\x12S\n\x17\x61\x64\x64itional_contact_info\x18\x10 \x03(\x0b\x32\x32.google.cloud.talent.v4beta1.AdditionalContactInfo\x12I\n\x12\x65mployment_records\x18\x11 \x03(\x0b\x32-.google.cloud.talent.v4beta1.EmploymentRecord\x12G\n\x11\x65\x64ucation_records\x18\x12 \x03(\x0b\x32,.google.cloud.talent.v4beta1.EducationRecord\x12\x32\n\x06skills\x18\x13 \x03(\x0b\x32".google.cloud.talent.v4beta1.Skill\x12\x39\n\nactivities\x18\x14 \x03(\x0b\x32%.google.cloud.talent.v4beta1.Activity\x12>\n\x0cpublications\x18\x15 \x03(\x0b\x32(.google.cloud.talent.v4beta1.Publication\x12\x34\n\x07patents\x18\x16 \x03(\x0b\x32#.google.cloud.talent.v4beta1.Patent\x12\x42\n\x0e\x63\x65rtifications\x18\x17 \x03(\x0b\x32*.google.cloud.talent.v4beta1.Certification\x12\x14\n\x0c\x61pplications\x18/ \x03(\t\x12\x13\n\x0b\x61ssignments\x18\x30 \x03(\t\x12U\n\x11\x63ustom_attributes\x18\x1a \x03(\x0b\x32:.google.cloud.talent.v4beta1.Profile.CustomAttributesEntry\x12\x11\n\tprocessed\x18\x1b \x01(\x08\x12\x17\n\x0fkeyword_snippet\x18\x1c \x01(\t\x1a\x65\n\x15\x43ustomAttributesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12;\n\x05value\x18\x02 \x01(\x0b\x32,.google.cloud.talent.v4beta1.CustomAttribute:\x02\x38\x01"\xa3\x02\n\nPersonName\x12\x18\n\x0e\x66ormatted_name\x18\x01 \x01(\tH\x00\x12W\n\x0fstructured_name\x18\x02 \x01(\x0b\x32<.google.cloud.talent.v4beta1.PersonName.PersonStructuredNameH\x00\x12\x16\n\x0epreferred_name\x18\x03 \x01(\t\x1a{\n\x14PersonStructuredName\x12\x12\n\ngiven_name\x18\x01 \x01(\t\x12\x16\n\x0emiddle_initial\x18\x02 \x01(\t\x12\x13\n\x0b\x66\x61mily_name\x18\x03 \x01(\t\x12\x10\n\x08suffixes\x18\x04 \x03(\t\x12\x10\n\x08prefixes\x18\x05 \x03(\tB\r\n\x0bperson_name"\xd9\x01\n\x07\x41\x64\x64ress\x12<\n\x05usage\x18\x01 \x01(\x0e\x32-.google.cloud.talent.v4beta1.ContactInfoUsage\x12\x1e\n\x14unstructured_address\x18\x02 \x01(\tH\x00\x12\x38\n\x12structured_address\x18\x03 \x01(\x0b\x32\x1a.google.type.PostalAddressH\x00\x12+\n\x07\x63urrent\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.BoolValueB\t\n\x07\x61\x64\x64ress"\\\n\x05\x45mail\x12<\n\x05usage\x18\x01 \x01(\x0e\x32-.google.cloud.talent.v4beta1.ContactInfoUsage\x12\x15\n\remail_address\x18\x02 \x01(\t"\xcf\x02\n\x05Phone\x12<\n\x05usage\x18\x01 \x01(\x0e\x32-.google.cloud.talent.v4beta1.ContactInfoUsage\x12:\n\x04type\x18\x02 \x01(\x0e\x32,.google.cloud.talent.v4beta1.Phone.PhoneType\x12\x0e\n\x06number\x18\x03 \x01(\t\x12\x16\n\x0ewhen_available\x18\x04 \x01(\t"\xa3\x01\n\tPhoneType\x12\x1a\n\x16PHONE_TYPE_UNSPECIFIED\x10\x00\x12\x0c\n\x08LANDLINE\x10\x01\x12\n\n\x06MOBILE\x10\x02\x12\x07\n\x03\x46\x41X\x10\x03\x12\t\n\x05PAGER\x10\x04\x12\x0e\n\nTTY_OR_TDD\x10\x05\x12\r\n\tVOICEMAIL\x10\x06\x12\x0b\n\x07VIRTUAL\x10\x07\x12\x08\n\x04VOIP\x10\x08\x12\x16\n\x12MOBILE_OR_LANDLINE\x10\t"\x1a\n\x0bPersonalUri\x12\x0b\n\x03uri\x18\x01 \x01(\t"w\n\x15\x41\x64\x64itionalContactInfo\x12<\n\x05usage\x18\x01 \x01(\x0e\x32-.google.cloud.talent.v4beta1.ContactInfoUsage\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x12\n\ncontact_id\x18\x03 \x01(\t"\xe3\x03\n\x10\x45mploymentRecord\x12%\n\nstart_date\x18\x01 \x01(\x0b\x32\x11.google.type.Date\x12#\n\x08\x65nd_date\x18\x02 \x01(\x0b\x32\x11.google.type.Date\x12\x15\n\remployer_name\x18\x03 \x01(\t\x12\x15\n\rdivision_name\x18\x04 \x01(\t\x12\x35\n\x07\x61\x64\x64ress\x18\x05 \x01(\x0b\x32$.google.cloud.talent.v4beta1.Address\x12\x11\n\tjob_title\x18\x06 \x01(\t\x12\x17\n\x0fjob_description\x18\x07 \x01(\t\x12\x31\n\ris_supervisor\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12\x34\n\x10is_self_employed\x18\t \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12.\n\nis_current\x18\n \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12\x19\n\x11job_title_snippet\x18\x0b \x01(\t\x12\x1f\n\x17job_description_snippet\x18\x0c \x01(\t\x12\x1d\n\x15\x65mployer_name_snippet\x18\r \x01(\t"\xc2\x03\n\x0f\x45\x64ucationRecord\x12%\n\nstart_date\x18\x01 \x01(\x0b\x32\x11.google.type.Date\x12#\n\x08\x65nd_date\x18\x02 \x01(\x0b\x32\x11.google.type.Date\x12\x33\n\x18\x65xpected_graduation_date\x18\x03 \x01(\x0b\x32\x11.google.type.Date\x12\x13\n\x0bschool_name\x18\x04 \x01(\t\x12\x35\n\x07\x61\x64\x64ress\x18\x05 \x01(\x0b\x32$.google.cloud.talent.v4beta1.Address\x12\x1c\n\x12\x64\x65gree_description\x18\x06 \x01(\tH\x00\x12@\n\x11structured_degree\x18\x07 \x01(\x0b\x32#.google.cloud.talent.v4beta1.DegreeH\x00\x12\x13\n\x0b\x64\x65scription\x18\x08 \x01(\t\x12.\n\nis_current\x18\t \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12\x1b\n\x13school_name_snippet\x18\n \x01(\t\x12\x16\n\x0e\x64\x65gree_snippet\x18\x0b \x01(\tB\x08\n\x06\x64\x65gree"t\n\x06\x44\x65gree\x12<\n\x0b\x64\x65gree_type\x18\x01 \x01(\x0e\x32\'.google.cloud.talent.v4beta1.DegreeType\x12\x13\n\x0b\x64\x65gree_name\x18\x02 \x01(\t\x12\x17\n\x0f\x66ields_of_study\x18\x03 \x03(\t"\xc3\x02\n\x08\x41\x63tivity\x12\x14\n\x0c\x64isplay_name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x0b\n\x03uri\x18\x03 \x01(\t\x12&\n\x0b\x63reate_date\x18\x04 \x01(\x0b\x32\x11.google.type.Date\x12&\n\x0bupdate_date\x18\x05 \x01(\x0b\x32\x11.google.type.Date\x12\x14\n\x0cteam_members\x18\x06 \x03(\t\x12\x37\n\x0bskills_used\x18\x07 \x03(\x0b\x32".google.cloud.talent.v4beta1.Skill\x12\x1d\n\x15\x61\x63tivity_name_snippet\x18\x08 \x01(\t\x12$\n\x1c\x61\x63tivity_description_snippet\x18\t \x01(\t\x12\x1b\n\x13skills_used_snippet\x18\n \x03(\t"\xcb\x01\n\x0bPublication\x12\x0f\n\x07\x61uthors\x18\x01 \x03(\t\x12\r\n\x05title\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x0f\n\x07journal\x18\x04 \x01(\t\x12\x0e\n\x06volume\x18\x05 \x01(\t\x12\x11\n\tpublisher\x18\x06 \x01(\t\x12+\n\x10publication_date\x18\x07 \x01(\x0b\x32\x11.google.type.Date\x12\x18\n\x10publication_type\x18\x08 \x01(\t\x12\x0c\n\x04isbn\x18\t \x01(\t"\xa9\x02\n\x06Patent\x12\x14\n\x0c\x64isplay_name\x18\x01 \x01(\t\x12\x11\n\tinventors\x18\x02 \x03(\t\x12\x15\n\rpatent_status\x18\x03 \x01(\t\x12-\n\x12patent_status_date\x18\x04 \x01(\x0b\x32\x11.google.type.Date\x12-\n\x12patent_filing_date\x18\x05 \x01(\x0b\x32\x11.google.type.Date\x12\x15\n\rpatent_office\x18\x06 \x01(\t\x12\x15\n\rpatent_number\x18\x07 \x01(\t\x12\x1a\n\x12patent_description\x18\x08 \x01(\t\x12\x37\n\x0bskills_used\x18\t \x03(\x0b\x32".google.cloud.talent.v4beta1.SkillB\x82\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x14ProfileResourceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
+        '\n/google/cloud/talent_v4beta1/proto/profile.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a+google/cloud/talent_v4beta1/proto/job.proto\x1a\x1egoogle/protobuf/duration.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x16google/type/date.proto\x1a google/type/postal_address.proto"\xfa\n\n\x07Profile\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x65xternal_id\x18\x02 \x01(\t\x12\x0e\n\x06source\x18\x03 \x01(\t\x12\x0b\n\x03uri\x18\x04 \x01(\t\x12\x10\n\x08group_id\x18\x05 \x01(\t\x12.\n\nis_hirable\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12/\n\x0b\x63reate_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x33\n\x06resume\x18\x35 \x01(\x0b\x32#.google.cloud.talent.v4beta1.Resume\x12=\n\x0cperson_names\x18\x0b \x03(\x0b\x32\'.google.cloud.talent.v4beta1.PersonName\x12\x37\n\taddresses\x18\x0c \x03(\x0b\x32$.google.cloud.talent.v4beta1.Address\x12;\n\x0f\x65mail_addresses\x18\r \x03(\x0b\x32".google.cloud.talent.v4beta1.Email\x12\x39\n\rphone_numbers\x18\x0e \x03(\x0b\x32".google.cloud.talent.v4beta1.Phone\x12?\n\rpersonal_uris\x18\x0f \x03(\x0b\x32(.google.cloud.talent.v4beta1.PersonalUri\x12S\n\x17\x61\x64\x64itional_contact_info\x18\x10 \x03(\x0b\x32\x32.google.cloud.talent.v4beta1.AdditionalContactInfo\x12I\n\x12\x65mployment_records\x18\x11 \x03(\x0b\x32-.google.cloud.talent.v4beta1.EmploymentRecord\x12G\n\x11\x65\x64ucation_records\x18\x12 \x03(\x0b\x32,.google.cloud.talent.v4beta1.EducationRecord\x12\x32\n\x06skills\x18\x13 \x03(\x0b\x32".google.cloud.talent.v4beta1.Skill\x12\x39\n\nactivities\x18\x14 \x03(\x0b\x32%.google.cloud.talent.v4beta1.Activity\x12>\n\x0cpublications\x18\x15 \x03(\x0b\x32(.google.cloud.talent.v4beta1.Publication\x12\x34\n\x07patents\x18\x16 \x03(\x0b\x32#.google.cloud.talent.v4beta1.Patent\x12\x42\n\x0e\x63\x65rtifications\x18\x17 \x03(\x0b\x32*.google.cloud.talent.v4beta1.Certification\x12\x14\n\x0c\x61pplications\x18/ \x03(\t\x12\x13\n\x0b\x61ssignments\x18\x30 \x03(\t\x12U\n\x11\x63ustom_attributes\x18\x1a \x03(\x0b\x32:.google.cloud.talent.v4beta1.Profile.CustomAttributesEntry\x12\x11\n\tprocessed\x18\x1b \x01(\x08\x12\x17\n\x0fkeyword_snippet\x18\x1c \x01(\t\x1a\x65\n\x15\x43ustomAttributesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12;\n\x05value\x18\x02 \x01(\x0b\x32,.google.cloud.talent.v4beta1.CustomAttribute:\x02\x38\x01"\xb5\x01\n\x06Resume\x12\x19\n\x11structured_resume\x18\x01 \x01(\t\x12\x43\n\x0bresume_type\x18\x02 \x01(\x0e\x32..google.cloud.talent.v4beta1.Resume.ResumeType"K\n\nResumeType\x12\x1b\n\x17RESUME_TYPE_UNSPECIFIED\x10\x00\x12\t\n\x05HRXML\x10\x01\x12\x15\n\x11OTHER_RESUME_TYPE\x10\x02"\xbc\x02\n\nPersonName\x12\x18\n\x0e\x66ormatted_name\x18\x01 \x01(\tH\x00\x12W\n\x0fstructured_name\x18\x02 \x01(\x0b\x32<.google.cloud.talent.v4beta1.PersonName.PersonStructuredNameH\x00\x12\x16\n\x0epreferred_name\x18\x03 \x01(\t\x1a\x93\x01\n\x14PersonStructuredName\x12\x12\n\ngiven_name\x18\x01 \x01(\t\x12\x16\n\x0epreferred_name\x18\x06 \x01(\t\x12\x16\n\x0emiddle_initial\x18\x02 \x01(\t\x12\x13\n\x0b\x66\x61mily_name\x18\x03 \x01(\t\x12\x10\n\x08suffixes\x18\x04 \x03(\t\x12\x10\n\x08prefixes\x18\x05 \x03(\tB\r\n\x0bperson_name"\xd9\x01\n\x07\x41\x64\x64ress\x12<\n\x05usage\x18\x01 \x01(\x0e\x32-.google.cloud.talent.v4beta1.ContactInfoUsage\x12\x1e\n\x14unstructured_address\x18\x02 \x01(\tH\x00\x12\x38\n\x12structured_address\x18\x03 \x01(\x0b\x32\x1a.google.type.PostalAddressH\x00\x12+\n\x07\x63urrent\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.BoolValueB\t\n\x07\x61\x64\x64ress"\\\n\x05\x45mail\x12<\n\x05usage\x18\x01 \x01(\x0e\x32-.google.cloud.talent.v4beta1.ContactInfoUsage\x12\x15\n\remail_address\x18\x02 \x01(\t"\xcf\x02\n\x05Phone\x12<\n\x05usage\x18\x01 \x01(\x0e\x32-.google.cloud.talent.v4beta1.ContactInfoUsage\x12:\n\x04type\x18\x02 \x01(\x0e\x32,.google.cloud.talent.v4beta1.Phone.PhoneType\x12\x0e\n\x06number\x18\x03 \x01(\t\x12\x16\n\x0ewhen_available\x18\x04 \x01(\t"\xa3\x01\n\tPhoneType\x12\x1a\n\x16PHONE_TYPE_UNSPECIFIED\x10\x00\x12\x0c\n\x08LANDLINE\x10\x01\x12\n\n\x06MOBILE\x10\x02\x12\x07\n\x03\x46\x41X\x10\x03\x12\t\n\x05PAGER\x10\x04\x12\x0e\n\nTTY_OR_TDD\x10\x05\x12\r\n\tVOICEMAIL\x10\x06\x12\x0b\n\x07VIRTUAL\x10\x07\x12\x08\n\x04VOIP\x10\x08\x12\x16\n\x12MOBILE_OR_LANDLINE\x10\t"\x1a\n\x0bPersonalUri\x12\x0b\n\x03uri\x18\x01 \x01(\t"w\n\x15\x41\x64\x64itionalContactInfo\x12<\n\x05usage\x18\x01 \x01(\x0e\x32-.google.cloud.talent.v4beta1.ContactInfoUsage\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x12\n\ncontact_id\x18\x03 \x01(\t"\xe3\x03\n\x10\x45mploymentRecord\x12%\n\nstart_date\x18\x01 \x01(\x0b\x32\x11.google.type.Date\x12#\n\x08\x65nd_date\x18\x02 \x01(\x0b\x32\x11.google.type.Date\x12\x15\n\remployer_name\x18\x03 \x01(\t\x12\x15\n\rdivision_name\x18\x04 \x01(\t\x12\x35\n\x07\x61\x64\x64ress\x18\x05 \x01(\x0b\x32$.google.cloud.talent.v4beta1.Address\x12\x11\n\tjob_title\x18\x06 \x01(\t\x12\x17\n\x0fjob_description\x18\x07 \x01(\t\x12\x31\n\ris_supervisor\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12\x34\n\x10is_self_employed\x18\t \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12.\n\nis_current\x18\n \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12\x19\n\x11job_title_snippet\x18\x0b \x01(\t\x12\x1f\n\x17job_description_snippet\x18\x0c \x01(\t\x12\x1d\n\x15\x65mployer_name_snippet\x18\r \x01(\t"\xc2\x03\n\x0f\x45\x64ucationRecord\x12%\n\nstart_date\x18\x01 \x01(\x0b\x32\x11.google.type.Date\x12#\n\x08\x65nd_date\x18\x02 \x01(\x0b\x32\x11.google.type.Date\x12\x33\n\x18\x65xpected_graduation_date\x18\x03 \x01(\x0b\x32\x11.google.type.Date\x12\x13\n\x0bschool_name\x18\x04 \x01(\t\x12\x35\n\x07\x61\x64\x64ress\x18\x05 \x01(\x0b\x32$.google.cloud.talent.v4beta1.Address\x12\x1c\n\x12\x64\x65gree_description\x18\x06 \x01(\tH\x00\x12@\n\x11structured_degree\x18\x07 \x01(\x0b\x32#.google.cloud.talent.v4beta1.DegreeH\x00\x12\x13\n\x0b\x64\x65scription\x18\x08 \x01(\t\x12.\n\nis_current\x18\t \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12\x1b\n\x13school_name_snippet\x18\n \x01(\t\x12\x16\n\x0e\x64\x65gree_snippet\x18\x0b \x01(\tB\x08\n\x06\x64\x65gree"t\n\x06\x44\x65gree\x12<\n\x0b\x64\x65gree_type\x18\x01 \x01(\x0e\x32\'.google.cloud.talent.v4beta1.DegreeType\x12\x13\n\x0b\x64\x65gree_name\x18\x02 \x01(\t\x12\x17\n\x0f\x66ields_of_study\x18\x03 \x03(\t"\xc3\x02\n\x08\x41\x63tivity\x12\x14\n\x0c\x64isplay_name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x0b\n\x03uri\x18\x03 \x01(\t\x12&\n\x0b\x63reate_date\x18\x04 \x01(\x0b\x32\x11.google.type.Date\x12&\n\x0bupdate_date\x18\x05 \x01(\x0b\x32\x11.google.type.Date\x12\x14\n\x0cteam_members\x18\x06 \x03(\t\x12\x37\n\x0bskills_used\x18\x07 \x03(\x0b\x32".google.cloud.talent.v4beta1.Skill\x12\x1d\n\x15\x61\x63tivity_name_snippet\x18\x08 \x01(\t\x12$\n\x1c\x61\x63tivity_description_snippet\x18\t \x01(\t\x12\x1b\n\x13skills_used_snippet\x18\n \x03(\t"\xcb\x01\n\x0bPublication\x12\x0f\n\x07\x61uthors\x18\x01 \x03(\t\x12\r\n\x05title\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x0f\n\x07journal\x18\x04 \x01(\t\x12\x0e\n\x06volume\x18\x05 \x01(\t\x12\x11\n\tpublisher\x18\x06 \x01(\t\x12+\n\x10publication_date\x18\x07 \x01(\x0b\x32\x11.google.type.Date\x12\x18\n\x10publication_type\x18\x08 \x01(\t\x12\x0c\n\x04isbn\x18\t \x01(\t"\xa9\x02\n\x06Patent\x12\x14\n\x0c\x64isplay_name\x18\x01 \x01(\t\x12\x11\n\tinventors\x18\x02 \x03(\t\x12\x15\n\rpatent_status\x18\x03 \x01(\t\x12-\n\x12patent_status_date\x18\x04 \x01(\x0b\x32\x11.google.type.Date\x12-\n\x12patent_filing_date\x18\x05 \x01(\x0b\x32\x11.google.type.Date\x12\x15\n\rpatent_office\x18\x06 \x01(\t\x12\x15\n\rpatent_number\x18\x07 \x01(\t\x12\x1a\n\x12patent_description\x18\x08 \x01(\t\x12\x37\n\x0bskills_used\x18\t \x03(\x0b\x32".google.cloud.talent.v4beta1.SkillB\x82\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x14ProfileResourceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -52,6 +52,37 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     ],
 )
 
+
+_RESUME_RESUMETYPE = _descriptor.EnumDescriptor(
+    name="ResumeType",
+    full_name="google.cloud.talent.v4beta1.Resume.ResumeType",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="RESUME_TYPE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="HRXML", index=1, number=1, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="OTHER_RESUME_TYPE",
+            index=2,
+            number=2,
+            serialized_options=None,
+            type=None,
+        ),
+    ],
+    containing_type=None,
+    serialized_options=None,
+    serialized_start=1904,
+    serialized_end=1979,
+)
+_sym_db.RegisterEnumDescriptor(_RESUME_RESUMETYPE)
 
 _PHONE_PHONETYPE = _descriptor.EnumDescriptor(
     name="PhoneType",
@@ -100,8 +131,8 @@ _PHONE_PHONETYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2547,
-    serialized_end=2710,
+    serialized_start=2787,
+    serialized_end=2950,
 )
 _sym_db.RegisterEnumDescriptor(_PHONE_PHONETYPE)
 
@@ -158,8 +189,8 @@ _PROFILE_CUSTOMATTRIBUTESENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1663,
-    serialized_end=1764,
+    serialized_start=1694,
+    serialized_end=1795,
 )
 
 _PROFILE = _descriptor.Descriptor(
@@ -314,15 +345,15 @@ _PROFILE = _descriptor.Descriptor(
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
-            name="resume_hrxml",
-            full_name="google.cloud.talent.v4beta1.Profile.resume_hrxml",
+            name="resume",
+            full_name="google.cloud.talent.v4beta1.Profile.resume",
             index=8,
-            number=10,
-            type=9,
-            cpp_type=9,
+            number=53,
+            type=11,
+            cpp_type=10,
             label=1,
             has_default_value=False,
-            default_value=_b("").decode("utf-8"),
+            default_value=None,
             message_type=None,
             enum_type=None,
             containing_type=None,
@@ -665,7 +696,64 @@ _PROFILE = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[],
     serialized_start=393,
-    serialized_end=1764,
+    serialized_end=1795,
+)
+
+
+_RESUME = _descriptor.Descriptor(
+    name="Resume",
+    full_name="google.cloud.talent.v4beta1.Resume",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="structured_resume",
+            full_name="google.cloud.talent.v4beta1.Resume.structured_resume",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="resume_type",
+            full_name="google.cloud.talent.v4beta1.Resume.resume_type",
+            index=1,
+            number=2,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[_RESUME_RESUMETYPE],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1798,
+    serialized_end=1979,
 )
 
 
@@ -695,9 +783,27 @@ _PERSONNAME_PERSONSTRUCTUREDNAME = _descriptor.Descriptor(
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
+            name="preferred_name",
+            full_name="google.cloud.talent.v4beta1.PersonName.PersonStructuredName.preferred_name",
+            index=1,
+            number=6,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
             name="middle_initial",
             full_name="google.cloud.talent.v4beta1.PersonName.PersonStructuredName.middle_initial",
-            index=1,
+            index=2,
             number=2,
             type=9,
             cpp_type=9,
@@ -715,7 +821,7 @@ _PERSONNAME_PERSONSTRUCTUREDNAME = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="family_name",
             full_name="google.cloud.talent.v4beta1.PersonName.PersonStructuredName.family_name",
-            index=2,
+            index=3,
             number=3,
             type=9,
             cpp_type=9,
@@ -733,7 +839,7 @@ _PERSONNAME_PERSONSTRUCTUREDNAME = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="suffixes",
             full_name="google.cloud.talent.v4beta1.PersonName.PersonStructuredName.suffixes",
-            index=3,
+            index=4,
             number=4,
             type=9,
             cpp_type=9,
@@ -751,7 +857,7 @@ _PERSONNAME_PERSONSTRUCTUREDNAME = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="prefixes",
             full_name="google.cloud.talent.v4beta1.PersonName.PersonStructuredName.prefixes",
-            index=4,
+            index=5,
             number=5,
             type=9,
             cpp_type=9,
@@ -775,8 +881,8 @@ _PERSONNAME_PERSONSTRUCTUREDNAME = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1920,
-    serialized_end=2043,
+    serialized_start=2136,
+    serialized_end=2283,
 )
 
 _PERSONNAME = _descriptor.Descriptor(
@@ -857,8 +963,8 @@ _PERSONNAME = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1767,
-    serialized_end=2058,
+    serialized_start=1982,
+    serialized_end=2298,
 )
 
 
@@ -958,8 +1064,8 @@ _ADDRESS = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=2061,
-    serialized_end=2278,
+    serialized_start=2301,
+    serialized_end=2518,
 )
 
 
@@ -1015,8 +1121,8 @@ _EMAIL = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2280,
-    serialized_end=2372,
+    serialized_start=2520,
+    serialized_end=2612,
 )
 
 
@@ -1108,8 +1214,8 @@ _PHONE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2375,
-    serialized_end=2710,
+    serialized_start=2615,
+    serialized_end=2950,
 )
 
 
@@ -1147,8 +1253,8 @@ _PERSONALURI = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2712,
-    serialized_end=2738,
+    serialized_start=2952,
+    serialized_end=2978,
 )
 
 
@@ -1222,8 +1328,8 @@ _ADDITIONALCONTACTINFO = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2740,
-    serialized_end=2859,
+    serialized_start=2980,
+    serialized_end=3099,
 )
 
 
@@ -1477,8 +1583,8 @@ _EMPLOYMENTRECORD = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2862,
-    serialized_end=3345,
+    serialized_start=3102,
+    serialized_end=3585,
 )
 
 
@@ -1704,8 +1810,8 @@ _EDUCATIONRECORD = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=3348,
-    serialized_end=3798,
+    serialized_start=3588,
+    serialized_end=4038,
 )
 
 
@@ -1779,8 +1885,8 @@ _DEGREE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3800,
-    serialized_end=3916,
+    serialized_start=4040,
+    serialized_end=4156,
 )
 
 
@@ -1980,8 +2086,8 @@ _ACTIVITY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3919,
-    serialized_end=4242,
+    serialized_start=4159,
+    serialized_end=4482,
 )
 
 
@@ -2163,8 +2269,8 @@ _PUBLICATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4245,
-    serialized_end=4448,
+    serialized_start=4485,
+    serialized_end=4688,
 )
 
 
@@ -2346,8 +2452,8 @@ _PATENT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4451,
-    serialized_end=4748,
+    serialized_start=4691,
+    serialized_end=4988,
 )
 
 _PROFILE_CUSTOMATTRIBUTESENTRY.fields_by_name[
@@ -2365,6 +2471,7 @@ _PROFILE.fields_by_name[
 _PROFILE.fields_by_name[
     "update_time"
 ].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_PROFILE.fields_by_name["resume"].message_type = _RESUME
 _PROFILE.fields_by_name["person_names"].message_type = _PERSONNAME
 _PROFILE.fields_by_name["addresses"].message_type = _ADDRESS
 _PROFILE.fields_by_name["email_addresses"].message_type = _EMAIL
@@ -2387,6 +2494,8 @@ _PROFILE.fields_by_name[
 _PROFILE.fields_by_name[
     "custom_attributes"
 ].message_type = _PROFILE_CUSTOMATTRIBUTESENTRY
+_RESUME.fields_by_name["resume_type"].enum_type = _RESUME_RESUMETYPE
+_RESUME_RESUMETYPE.containing_type = _RESUME
 _PERSONNAME_PERSONSTRUCTUREDNAME.containing_type = _PERSONNAME
 _PERSONNAME.fields_by_name[
     "structured_name"
@@ -2510,6 +2619,7 @@ _PATENT.fields_by_name[
     "skills_used"
 ].message_type = google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2._SKILL
 DESCRIPTOR.message_types_by_name["Profile"] = _PROFILE
+DESCRIPTOR.message_types_by_name["Resume"] = _RESUME
 DESCRIPTOR.message_types_by_name["PersonName"] = _PERSONNAME
 DESCRIPTOR.message_types_by_name["Address"] = _ADDRESS
 DESCRIPTOR.message_types_by_name["Email"] = _EMAIL
@@ -2565,22 +2675,14 @@ Profile = _reflection.GeneratedProtocolMessageType(
           4000.
       group_id:
           Optional.  The cluster id of the profile to associate with
-          other profile(s) for the same candidate.  A random UUID is
-          assigned if
-          [group\_id][google.cloud.talent.v4beta1.Profile.group\_id]
-          isn't provided. To ensure global uniqueness, customized
-          [group\_id][google.cloud.talent.v4beta1.Profile.group\_id]
-          isn't supported. If
-          [group\_id][google.cloud.talent.v4beta1.Profile.group\_id] is
-          set, there must be at least one other profile with the same
-          system generated
-          [group\_id][google.cloud.talent.v4beta1.Profile.group\_id],
-          otherwise an error is thrown.  This is used to link multiple
-          profiles to the same candidate. For example, a client has a
-          candidate with two profiles, where one was created recently
-          and the other one was created 5 years ago. These two profiles
-          may be very different. The clients can create the first
-          profile and get a generated
+          other profile(s) for the same candidate.  This field should be
+          generated by the customer. If a value is not provided, a
+          random UUI is assigned to this field of the profile.  This is
+          used to link multiple profiles to the same candidate. For
+          example, a client has a candidate with two profiles, where one
+          was created recently and the other one was created 5 years
+          ago. These two profiles may be very different. The clients can
+          create the first profile and get a generated
           [group\_id][google.cloud.talent.v4beta1.Profile.group\_id],
           and assign it when the second profile is created, indicating
           these two profiles are referring to the same candidate.
@@ -2592,23 +2694,8 @@ Profile = _reflection.GeneratedProtocolMessageType(
       update_time:
           Optional.  The timestamp when the profile was last updated at
           this source.
-      resume_hrxml:
-          Optional.  The profile contents in HR-XML format. See
-          http://schemas.liquid-technologies.com/hr-xml/2007-04-15/ for
-          more information about Human Resources XML.  Users can create
-          a profile with only [resume\_hrxml][google.cloud.talent.v4beta
-          1.Profile.resume\_hrxml] field. For example, the API parses
-          the [resume\_hrxml][google.cloud.talent.v4beta1.Profile.resume
-          \_hrxml] and creates a profile with all structured fields
-          populated, for example. [EmploymentRecord][google.cloud.talent
-          .v4beta1.EmploymentRecord], [EducationRecord][google.cloud.tal
-          ent.v4beta1.EducationRecord], etc. An error is thrown if the [
-          resume\_hrxml][google.cloud.talent.v4beta1.Profile.resume\_hrx
-          ml] can't be parsed.  If the [resume\_hrxml][google.cloud.tale
-          nt.v4beta1.Profile.resume\_hrxml] is provided during profile
-          creation or update, any other structured data provided in the
-          profile is ignored. The API populates these fields by parsing
-          the HR-XML.
+      resume:
+          Optional.  The resume representing this profile.
       person_names:
           Optional.  The names of the candidate this profile references.
           Currently only one person name is supported.
@@ -2696,13 +2783,46 @@ Profile = _reflection.GeneratedProtocolMessageType(
           searchable.
       keyword_snippet:
           Output only. Keyword snippet shows how the search result is
-          related to a search query.
+          related to a search query. This is only returned in [SearchPro
+          filesResponse][google.cloud.talent.v4beta1.SearchProfilesRespo
+          nse].
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.Profile)
     ),
 )
 _sym_db.RegisterMessage(Profile)
 _sym_db.RegisterMessage(Profile.CustomAttributesEntry)
+
+Resume = _reflection.GeneratedProtocolMessageType(
+    "Resume",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_RESUME,
+        __module__="google.cloud.talent_v4beta1.proto.profile_pb2",
+        __doc__="""Resource that represents a resume.
+  
+  
+  Attributes:
+      structured_resume:
+          Optional.  Users can create a profile with only this field
+          field, if [resume\_type][google.cloud.talent.v4beta1.Resume.re
+          sume\_type] is [HRXML][]. For example, the API parses this
+          field and creates a profile with all structured fields
+          populated, for example. [EmploymentRecord][google.cloud.talent
+          .v4beta1.EmploymentRecord], [EducationRecord][google.cloud.tal
+          ent.v4beta1.EducationRecord], and so on. An error is thrown if
+          this field cannot be parsed.  If this field is provided during
+          profile creation or update, any other structured data provided
+          in the profile is ignored. The API populates these fields by
+          parsing this field.
+      resume_type:
+          Optional.  The format of [structured\_resume][google.cloud.tal
+          ent.v4beta1.Resume.structured\_resume].
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.Resume)
+    ),
+)
+_sym_db.RegisterMessage(Resume)
 
 PersonName = _reflection.GeneratedProtocolMessageType(
     "PersonName",
@@ -2722,6 +2842,9 @@ PersonName = _reflection.GeneratedProtocolMessageType(
             Optional.  Given/first name.  It's derived from [formatted\_na
             me][google.cloud.talent.v4beta1.PersonName.formatted\_name] if
             not provided.  Number of characters allowed is 100.
+        preferred_name:
+            Optional.  Preferred given/first name or nickname.  Number of
+            characters allowed is 100.
         middle_initial:
             Optional.  Middle initial.  It's derived from [formatted\_name
             ][google.cloud.talent.v4beta1.PersonName.formatted\_name] if
@@ -2753,9 +2876,12 @@ PersonName = _reflection.GeneratedProtocolMessageType(
           100.
       structured_name:
           Optional.  A person's name in a structured way (last name,
-          first name, suffix, etc.)
+          first name, suffix, and so on.)
       preferred_name:
-          Optional.  Preferred name for the person.
+          Optional.  Preferred name for the person. This field is
+          ignored if [structured\_name][google.cloud.talent.v4beta1.Pers
+          onName.structured\_name] is provided.  Number of characters
+          allowed is 100.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.PersonName)
     ),
@@ -2785,7 +2911,7 @@ Address = _reflection.GeneratedProtocolMessageType(
           California".  Number of characters allowed is 100.
       structured_address:
           Optional.  Structured address that contains street address,
-          city, state, country, etc.
+          city, state, country, and so on.
       current:
           Optional.  Indicates if it's the person's current address.
   """,
@@ -2902,37 +3028,28 @@ EmploymentRecord = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       start_date:
-          Optional.  Start date of the employment.  It can be a partial
-          date (only year, or only year and month), but must be valid.
-          Otherwise an error is thrown.  Examples: {"year": 2017,
-          "month": 2, "day": 28} is valid. {"year": 2020, "month": 1,
-          "date": 31} is valid. {"year": 2018, "month": 12} is valid
-          (partial date). {"year": 2018} is valid (partial date).
-          {"year": 2015, "day": 21} is not valid (month is missing but
-          day is presented). {"year": 2018, "month": 13} is not valid
-          (invalid month). {"year": 2017, "month": 1, "day": 32} is not
-          valid (invalid day).
+          Optional.  Start date of the employment.
       end_date:
           Optional.  End date of the employment.
       employer_name:
           Optional.  The name of the employer company/organization.  For
-          example, "Google", "Alphabet", etc.  Number of characters
-          allowed is 100.
+          example, "Google", "Alphabet", and so on.  Number of
+          characters allowed is 100.
       division_name:
           Optional.  The division name of the employment.  For example,
-          division, department, client, etc.  Number of characters
+          division, department, client, and so on.  Number of characters
           allowed is 100.
       address:
           Optional.  The physical address of the employer.
       job_title:
           Optional.  The job title of the employment.  For example,
-          "Software Engineer", "Data Scientist", etc.  Number of
+          "Software Engineer", "Data Scientist", and so on.  Number of
           characters allowed is 100.
       job_description:
           Optional.  The description of job content.  Number of
           characters allowed is 100,000.
       is_supervisor:
-          Optional.  If it is a supervisor position.
+          Optional.  If the jobs is a supervisor position.
       is_self_employed:
           Optional.  If this employment is self-employed.
       is_current:
@@ -2980,8 +3097,8 @@ EducationRecord = _reflection.GeneratedProtocolMessageType(
           a degree.
       school_name:
           Optional.  The name of the school or institution.  For
-          example, "Stanford University", "UC Berkeley", etc.  Number of
-          characters allowed is 100.
+          example, "Stanford University", "UC Berkeley", and so on.
+          Number of characters allowed is 100.
       address:
           Optional.  The physical address of the education institution.
       degree:
@@ -3030,7 +3147,7 @@ Degree = _reflection.GeneratedProtocolMessageType(
           Optional.  ISCED degree type.
       degree_name:
           Optional.  Full Degree name.  For example, "B.S.", "Master of
-          Arts", etc.  Number of characters allowed is 100.
+          Arts", and so on.  Number of characters allowed is 100.
       fields_of_study:
           Optional.  Fields of study for the degree.  For example,
           "Computer science", "engineering".  Number of characters
@@ -3049,7 +3166,7 @@ Activity = _reflection.GeneratedProtocolMessageType(
         __module__="google.cloud.talent_v4beta1.proto.profile_pb2",
         __doc__="""Resource that represents an individual or collaborative activity
   participated in by a candidate, for example, an open-source project, a
-  class assignment, etc.
+  class assignment, and so on.
   
   
   Attributes:

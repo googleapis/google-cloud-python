@@ -26,7 +26,7 @@ class CommuteMethod(enum.IntEnum):
       COMMUTE_METHOD_UNSPECIFIED (int): Commute method isn't specified.
       DRIVING (int): Commute time is calculated based on driving time.
       TRANSIT (int): Commute time is calculated based on public transit including bus, metro,
-      subway, etc.
+      subway, and so on.
       WALKING (int): Commute time is calculated based on walking time.
       CYCLING (int): Commute time is calculated based on biking time.
     """
@@ -554,11 +554,11 @@ class CompensationFilter(object):
 
           Set exactly one ``units`` and populate ``range``.
           ANNUALIZED_BASE_AMOUNT (int): Filter by annualized base compensation amount and
-          ``base compensation  entry's`` unit. Populate ``range`` and zero or more
+          ``base compensation entry's`` unit. Populate ``range`` and zero or more
           ``units``.
           ANNUALIZED_TOTAL_AMOUNT (int): Filter by annualized total compensation amount and
-          ``base compensation  entry's`` unit . Populate ``range`` and zero or
-          more ``units``.
+          ``base compensation entry's`` unit . Populate ``range`` and zero or more
+          ``units``.
         """
 
         FILTER_TYPE_UNSPECIFIED = 0
@@ -871,11 +871,11 @@ class Phone(object):
           TTY_OR_TDD (int): A TTY (test telephone) or TDD (telecommunication device for the deaf).
           VOICEMAIL (int): A voicemail.
           VIRTUAL (int): A virtual telephone number is a number that can be routed to another
-          number and managed by the user via Web, SMS, IVR, etc. It is associated
-          with a particular person, and may be routed to either a MOBILE or
-          LANDLINE number. The phone usage (see ContactInfoUsage above) should be
-          set to PERSONAL for these phone types. Some more information can be
-          found here: http://en.wikipedia.org/wiki/Personal\_Numbers
+          number and managed by the user via Web, SMS, IVR, and so on. It is
+          associated with a particular person, and may be routed to either a
+          MOBILE or LANDLINE number. The phone usage (see ContactInfoUsage above)
+          should be set to PERSONAL for these phone types. Some more information
+          can be found here: http://en.wikipedia.org/wiki/Personal\_Numbers
           VOIP (int): Voice over IP numbers. This includes TSoIP (Telephony Service over IP).
           MOBILE_OR_LANDLINE (int): In some regions (e.g. the USA), it is impossible to distinguish between
           fixed-line and mobile numbers by looking at the phone number itself.
@@ -909,6 +909,24 @@ class ProfileEvent(object):
         IMPRESSION = 1
         VIEW = 2
         BOOKMARK = 3
+
+
+class Resume(object):
+    class ResumeType(enum.IntEnum):
+        """
+        The format of a structured resume.
+
+        Attributes:
+          RESUME_TYPE_UNSPECIFIED (int): Default value.
+          HRXML (int): The profile contents in HR-XML format.
+          See http://schemas.liquid-technologies.com/hr-xml/2007-04-15/ for more
+          information about Human Resources XML.
+          OTHER_RESUME_TYPE (int): Resume type not specified.
+        """
+
+        RESUME_TYPE_UNSPECIFIED = 0
+        HRXML = 1
+        OTHER_RESUME_TYPE = 2
 
 
 class SearchJobsRequest(object):

@@ -157,7 +157,7 @@ class TestCompanyServiceClient(object):
             client = talent_v4beta1.CompanyServiceClient()
 
         # Setup Request
-        name = client.company_old_path("[PROJECT]", "[COMPANY]")
+        name = client.company_path("[PROJECT]", "[TENANT]", "[COMPANY]")
 
         response = client.get_company(name)
         assert expected_response == response
@@ -176,7 +176,7 @@ class TestCompanyServiceClient(object):
             client = talent_v4beta1.CompanyServiceClient()
 
         # Setup request
-        name = client.company_old_path("[PROJECT]", "[COMPANY]")
+        name = client.company_path("[PROJECT]", "[TENANT]", "[COMPANY]")
 
         with pytest.raises(CustomException):
             client.get_company(name)
@@ -247,7 +247,7 @@ class TestCompanyServiceClient(object):
             client = talent_v4beta1.CompanyServiceClient()
 
         # Setup Request
-        name = client.company_old_path("[PROJECT]", "[COMPANY]")
+        name = client.company_path("[PROJECT]", "[TENANT]", "[COMPANY]")
 
         client.delete_company(name)
 
@@ -265,7 +265,7 @@ class TestCompanyServiceClient(object):
             client = talent_v4beta1.CompanyServiceClient()
 
         # Setup request
-        name = client.company_old_path("[PROJECT]", "[COMPANY]")
+        name = client.company_path("[PROJECT]", "[TENANT]", "[COMPANY]")
 
         with pytest.raises(CustomException):
             client.delete_company(name)

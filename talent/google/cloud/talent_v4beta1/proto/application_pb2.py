@@ -14,7 +14,6 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.cloud.talent_v4beta1.proto import (
     common_pb2 as google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2,
 )
@@ -24,6 +23,7 @@ from google.cloud.talent_v4beta1.proto import (
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 from google.type import date_pb2 as google_dot_type_dot_date__pb2
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -34,15 +34,15 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\030ApplicationResourceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        '\n3google/cloud/talent_v4beta1/proto/application.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a+google/cloud/talent_v4beta1/proto/job.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x16google/type/date.proto"\xc2\x07\n\x0b\x41pplication\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x65xternal_id\x18\x1f \x01(\t\x12\x0f\n\x07profile\x18\x02 \x01(\t\x12\x0b\n\x03job\x18\x04 \x01(\t\x12\x0f\n\x07\x63ompany\x18\x05 \x01(\t\x12+\n\x10\x61pplication_date\x18\x07 \x01(\x0b\x32\x11.google.type.Date\x12H\n\x05stage\x18\x0b \x01(\x0e\x32\x39.google.cloud.talent.v4beta1.Application.ApplicationStage\x12H\n\x05state\x18\r \x01(\x0e\x32\x39.google.cloud.talent.v4beta1.Application.ApplicationState\x12:\n\ninterviews\x18\x10 \x03(\x0b\x32&.google.cloud.talent.v4beta1.Interview\x12,\n\x08referral\x18\x12 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12/\n\x0b\x63reate_time\x18\x13 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x14 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x15\n\routcome_notes\x18\x15 \x01(\t\x12\x35\n\x07outcome\x18\x16 \x01(\x0e\x32$.google.cloud.talent.v4beta1.Outcome\x12,\n\x08is_match\x18\x1c \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12\x19\n\x11job_title_snippet\x18\x1d \x01(\t"\x90\x01\n\x10\x41pplicationState\x12!\n\x1d\x41PPLICATION_STATE_UNSPECIFIED\x10\x00\x12\x0f\n\x0bIN_PROGRESS\x10\x01\x12\x16\n\x12\x43\x41NDIDATE_WITHDREW\x10\x02\x12\x15\n\x11\x45MPLOYER_WITHDREW\x10\x03\x12\r\n\tCOMPLETED\x10\x04\x12\n\n\x06\x43LOSED\x10\x05"\xa9\x01\n\x10\x41pplicationStage\x12!\n\x1d\x41PPLICATION_STAGE_UNSPECIFIED\x10\x00\x12\x07\n\x03NEW\x10\x01\x12\n\n\x06SCREEN\x10\x02\x12\x19\n\x15HIRING_MANAGER_REVIEW\x10\x03\x12\r\n\tINTERVIEW\x10\x04\x12\x12\n\x0eOFFER_EXTENDED\x10\x05\x12\x12\n\x0eOFFER_ACCEPTED\x10\x06\x12\x0b\n\x07STARTED\x10\x07\x42\x86\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x18\x41pplicationResourceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
+        '\n3google/cloud/talent_v4beta1/proto/application.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a+google/cloud/talent_v4beta1/proto/job.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x16google/type/date.proto\x1a\x1cgoogle/api/annotations.proto"\xc2\x07\n\x0b\x41pplication\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x65xternal_id\x18\x1f \x01(\t\x12\x0f\n\x07profile\x18\x02 \x01(\t\x12\x0b\n\x03job\x18\x04 \x01(\t\x12\x0f\n\x07\x63ompany\x18\x05 \x01(\t\x12+\n\x10\x61pplication_date\x18\x07 \x01(\x0b\x32\x11.google.type.Date\x12H\n\x05stage\x18\x0b \x01(\x0e\x32\x39.google.cloud.talent.v4beta1.Application.ApplicationStage\x12H\n\x05state\x18\r \x01(\x0e\x32\x39.google.cloud.talent.v4beta1.Application.ApplicationState\x12:\n\ninterviews\x18\x10 \x03(\x0b\x32&.google.cloud.talent.v4beta1.Interview\x12,\n\x08referral\x18\x12 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12/\n\x0b\x63reate_time\x18\x13 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x14 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x15\n\routcome_notes\x18\x15 \x01(\t\x12\x35\n\x07outcome\x18\x16 \x01(\x0e\x32$.google.cloud.talent.v4beta1.Outcome\x12,\n\x08is_match\x18\x1c \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12\x19\n\x11job_title_snippet\x18\x1d \x01(\t"\x90\x01\n\x10\x41pplicationState\x12!\n\x1d\x41PPLICATION_STATE_UNSPECIFIED\x10\x00\x12\x0f\n\x0bIN_PROGRESS\x10\x01\x12\x16\n\x12\x43\x41NDIDATE_WITHDREW\x10\x02\x12\x15\n\x11\x45MPLOYER_WITHDREW\x10\x03\x12\r\n\tCOMPLETED\x10\x04\x12\n\n\x06\x43LOSED\x10\x05"\xa9\x01\n\x10\x41pplicationStage\x12!\n\x1d\x41PPLICATION_STAGE_UNSPECIFIED\x10\x00\x12\x07\n\x03NEW\x10\x01\x12\n\n\x06SCREEN\x10\x02\x12\x19\n\x15HIRING_MANAGER_REVIEW\x10\x03\x12\r\n\tINTERVIEW\x10\x04\x12\x12\n\x0eOFFER_EXTENDED\x10\x05\x12\x12\n\x0eOFFER_ACCEPTED\x10\x06\x12\x0b\n\x07STARTED\x10\x07\x42\x86\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x18\x41pplicationResourceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
     ),
     dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2.DESCRIPTOR,
         google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,
         google_dot_type_dot_date__pb2.DESCRIPTOR,
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
     ],
 )
 
@@ -494,23 +494,24 @@ Application = _reflection.GeneratedProtocolMessageType(
           project/tenants/foo/profiles/bar/applications/baz".
       external_id:
           Required.  Client side application identifier, used to
-          uniquely identify the recruiter.  The maximum number of
+          uniquely identify the application.  The maximum number of
           allowed characters is 255.
       profile:
-          Required.  Resource name of the candidate of this application.
-          The format is "projects/{project\_id}/tenants/{tenant\_id}/pro
-          files/{profile\_id}", for example, "projects/api-test-
-          project/tenants/foo/profiles/bar".
+          Output only. Resource name of the candidate of this
+          application.  The format is "projects/{project\_id}/tenants/{t
+          enant\_id}/profiles/{profile\_id}", for example,
+          "projects/api-test-project/tenants/foo/profiles/bar".
       job:
           One of either a job or a company is required.  Resource name
           of the job which the candidate applied for.  The format is
-          "projects/{project\_id}/jobs/{job\_id}", for example,
-          "projects/api-test-project/jobs/bar".
+          "projects/{project\_id}/tenants/{tenant\_id}/jobs/{job\_id}",
+          for example, "projects/api-test-project/tenants/foo/jobs/bar".
       company:
           One of either a job or a company is required.  Resource name
           of the company which the candidate applied for.  The format is
-          "projects/{project\_id}/companies/{company\_id}", for example,
-          "projects/api-test-project/companies/foo".
+          "projects/{project\_id}/tenants/{tenant\_id}/companies/{compan
+          y\_id}", for example, "projects/api-test-
+          project/tenants/foo/companies/bar".
       application_date:
           Optional.  The application date.
       stage:
@@ -522,9 +523,10 @@ Application = _reflection.GeneratedProtocolMessageType(
       state:
           Optional.  The application state.
       interviews:
-          Optional.  All interviews (screen, onsite, etc) conducted as
-          part of this application (includes details such as user
-          conducting the interview, timestamp, feedback, etc).
+          Optional.  All interviews (screen, onsite, and so on)
+          conducted as part of this application (includes details such
+          as user conducting the interview, timestamp, feedback, and so
+          on).
       referral:
           Optional.  If the candidate is referred by a employee.
       create_time:

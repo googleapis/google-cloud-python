@@ -974,7 +974,8 @@ UpdateProfileRequest = _reflection.GeneratedProtocolMessageType(
           addresses -  emailAddresses -  phoneNumbers -  personalUris -
           additionalContactInfo -  employmentRecords -  educationRecords
           -  skills -  projects -  publications -  patents -
-          certifications -  recruitingNotes -  customAttributes
+          certifications -  recruitingNotes -  customAttributes -
+          groupId
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.UpdateProfileRequest)
     ),
@@ -1124,17 +1125,10 @@ SearchProfilesRequest = _reflection.GeneratedProtocolMessageType(
           specifies    the reasons behind the outcome of the job
           application. See    [ApplicationOutcomeNotesFilter][google.clo
           ud.talent.v4beta1.ApplicationOutcomeNotesFilter]    for more
-          details. -  application\_last\_stage: The application last
-          stage specifies the    last stage of job application. See    [
-          ApplicationLastStageFilter][google.cloud.talent.v4beta1.Applic
-          ationLastStageFilter]    for more details. -
-          application\_job\_title: The application job title specifies
-          the job    applied for in the application. See    [Application
-          JobFilter][google.cloud.talent.v4beta1.ApplicationJobFilter]
-          for more details. -  application\_status: The application
-          status specifies the status of    job application. See    [App
-          licationStatusFilter][google.cloud.talent.v4beta1.ApplicationS
-          tatusFilter]    for more details. -  hirable\_status: Hirable
+          details. -  application\_job\_title: The application job title
+          specifies the job    applied for in the application. See    [A
+          pplicationJobFilter][google.cloud.talent.v4beta1.ApplicationJo
+          bFilter]    for more details. -  hirable\_status: Hirable
           status specifies the profile's hirable    status. -
           string\_custom\_attribute: String custom attributes. Values
           can be    accessed via square bracket notation like

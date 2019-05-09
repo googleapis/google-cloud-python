@@ -23,6 +23,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
@@ -85,17 +86,30 @@ class JobServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
+    def company_path(cls, project, tenant, company):
+        """Return a fully-qualified company string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/tenants/{tenant}/companies/{company}",
+            project=project,
+            tenant=tenant,
+            company=company,
+        )
+
+    @classmethod
+    def job_path(cls, project, tenant, jobs):
+        """Return a fully-qualified job string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/tenants/{tenant}/jobs/{jobs}",
+            project=project,
+            tenant=tenant,
+            jobs=jobs,
+        )
+
+    @classmethod
     def tenant_path(cls, project, tenant):
         """Return a fully-qualified tenant string."""
         return google.api_core.path_template.expand(
             "projects/{project}/tenants/{tenant}", project=project, tenant=tenant
-        )
-
-    @classmethod
-    def job_old_path(cls, project, jobs):
-        """Return a fully-qualified job_old string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/jobs/{jobs}", project=project, jobs=jobs
         )
 
     def __init__(
@@ -270,6 +284,19 @@ class JobServiceClient(object):
             )
 
         request = job_service_pb2.CreateJobRequest(parent=parent, job=job)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_job"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -290,7 +317,7 @@ class JobServiceClient(object):
             >>>
             >>> client = talent_v4beta1.JobServiceClient()
             >>>
-            >>> name = client.job_old_path('[PROJECT]', '[JOBS]')
+            >>> name = client.job_path('[PROJECT]', '[TENANT]', '[JOBS]')
             >>>
             >>> response = client.get_job(name)
 
@@ -336,6 +363,19 @@ class JobServiceClient(object):
             )
 
         request = job_service_pb2.GetJobRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_job"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -413,6 +453,19 @@ class JobServiceClient(object):
             )
 
         request = job_service_pb2.UpdateJobRequest(job=job, update_mask=update_mask)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("job.name", job.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_job"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -435,7 +488,7 @@ class JobServiceClient(object):
             >>>
             >>> client = talent_v4beta1.JobServiceClient()
             >>>
-            >>> name = client.job_old_path('[PROJECT]', '[JOBS]')
+            >>> name = client.job_path('[PROJECT]', '[TENANT]', '[JOBS]')
             >>>
             >>> client.delete_job(name)
 
@@ -478,6 +531,19 @@ class JobServiceClient(object):
             )
 
         request = job_service_pb2.DeleteJobRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_job"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -594,6 +660,19 @@ class JobServiceClient(object):
         request = job_service_pb2.ListJobsRequest(
             parent=parent, filter=filter_, page_size=page_size, job_view=job_view
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -683,6 +762,19 @@ class JobServiceClient(object):
             )
 
         request = job_service_pb2.BatchDeleteJobsRequest(parent=parent, filter=filter_)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["batch_delete_jobs"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -791,11 +883,12 @@ class JobServiceClient(object):
                 Expression syntax is an aggregation function call with histogram facets
                 and other options.
 
-                Available aggregation function calls are: \*
-                ``count(string_histogram_facet)``: Count the number of matching
-                entities, for each distinct attribute value. \*
-                ``count(numeric_histogram_facet, list of buckets)``: Count the number of
-                matching entities within each bucket.
+                Available aggregation function calls are:
+
+                -  ``count(string_histogram_facet)``: Count the number of matching
+                   entities, for each distinct attribute value.
+                -  ``count(numeric_histogram_facet, list of buckets)``: Count the number
+                   of matching entities within each bucket.
 
                 Data types:
 
@@ -868,11 +961,14 @@ class JobServiceClient(object):
                    notations like numeric\_custom\_attribute["key1"]. Must specify list
                    of numeric buckets to group results by.
 
-                Example expressions: \* count(admin1) \* count(base\_compensation,
-                [bucket(1000, 10000), bucket(10000, 100000), bucket(100000, MAX)]) \*
-                count(string\_custom\_attribute["some-string-custom-attribute"]) \*
-                count(numeric\_custom\_attribute["some-numeric-custom-attribute"],
-                [bucket(MIN, 0, "negative"), bucket(0, MAX, "non-negative"])
+                Example expressions:
+
+                -  count(admin1)
+                -  count(base\_compensation, [bucket(1000, 10000), bucket(10000,
+                   100000), bucket(100000, MAX)])
+                -  count(string\_custom\_attribute["some-string-custom-attribute"])
+                -  count(numeric\_custom\_attribute["some-numeric-custom-attribute"],
+                   [bucket(MIN, 0, "negative"), bucket(0, MAX, "non-negative"])
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.HistogramQuery`
@@ -1031,6 +1127,19 @@ class JobServiceClient(object):
             custom_ranking_info=custom_ranking_info,
             disable_keyword_match=disable_keyword_match,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -1155,11 +1264,12 @@ class JobServiceClient(object):
                 Expression syntax is an aggregation function call with histogram facets
                 and other options.
 
-                Available aggregation function calls are: \*
-                ``count(string_histogram_facet)``: Count the number of matching
-                entities, for each distinct attribute value. \*
-                ``count(numeric_histogram_facet, list of buckets)``: Count the number of
-                matching entities within each bucket.
+                Available aggregation function calls are:
+
+                -  ``count(string_histogram_facet)``: Count the number of matching
+                   entities, for each distinct attribute value.
+                -  ``count(numeric_histogram_facet, list of buckets)``: Count the number
+                   of matching entities within each bucket.
 
                 Data types:
 
@@ -1232,11 +1342,14 @@ class JobServiceClient(object):
                    notations like numeric\_custom\_attribute["key1"]. Must specify list
                    of numeric buckets to group results by.
 
-                Example expressions: \* count(admin1) \* count(base\_compensation,
-                [bucket(1000, 10000), bucket(10000, 100000), bucket(100000, MAX)]) \*
-                count(string\_custom\_attribute["some-string-custom-attribute"]) \*
-                count(numeric\_custom\_attribute["some-numeric-custom-attribute"],
-                [bucket(MIN, 0, "negative"), bucket(0, MAX, "non-negative"])
+                Example expressions:
+
+                -  count(admin1)
+                -  count(base\_compensation, [bucket(1000, 10000), bucket(10000,
+                   100000), bucket(100000, MAX)])
+                -  count(string\_custom\_attribute["some-string-custom-attribute"])
+                -  count(numeric\_custom\_attribute["some-numeric-custom-attribute"],
+                   [bucket(MIN, 0, "negative"), bucket(0, MAX, "non-negative"])
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.HistogramQuery`
@@ -1395,6 +1508,19 @@ class JobServiceClient(object):
             custom_ranking_info=custom_ranking_info,
             disable_keyword_match=disable_keyword_match,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(

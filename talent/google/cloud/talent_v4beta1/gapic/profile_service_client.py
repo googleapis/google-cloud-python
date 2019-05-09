@@ -23,6 +23,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
@@ -91,13 +92,6 @@ class ProfileServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def tenant_path(cls, project, tenant):
-        """Return a fully-qualified tenant string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/tenants/{tenant}", project=project, tenant=tenant
-        )
-
-    @classmethod
     def profile_path(cls, project, tenant, profile):
         """Return a fully-qualified profile string."""
         return google.api_core.path_template.expand(
@@ -105,6 +99,13 @@ class ProfileServiceClient(object):
             project=project,
             tenant=tenant,
             profile=profile,
+        )
+
+    @classmethod
+    def tenant_path(cls, project, tenant):
+        """Return a fully-qualified tenant string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/tenants/{tenant}", project=project, tenant=tenant
         )
 
     def __init__(
@@ -298,6 +299,19 @@ class ProfileServiceClient(object):
         request = profile_service_pb2.ListProfilesRequest(
             parent=parent, page_size=page_size, read_mask=read_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -382,6 +396,19 @@ class ProfileServiceClient(object):
         request = profile_service_pb2.CreateProfileRequest(
             parent=parent, profile=profile
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_profile"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -444,6 +471,19 @@ class ProfileServiceClient(object):
             )
 
         request = profile_service_pb2.GetProfileRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_profile"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -506,6 +546,7 @@ class ProfileServiceClient(object):
                 -  certifications
                 -  recruitingNotes
                 -  customAttributes
+                -  groupId
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.FieldMask`
@@ -542,6 +583,19 @@ class ProfileServiceClient(object):
         request = profile_service_pb2.UpdateProfileRequest(
             profile=profile, update_mask=update_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("profile.name", profile.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_profile"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -603,6 +657,19 @@ class ProfileServiceClient(object):
             )
 
         request = profile_service_pb2.DeleteProfileRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_profile"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -784,14 +851,9 @@ class ProfileServiceClient(object):
                 -  application\_outcome\_notes: The application outcome reason specifies
                    the reasons behind the outcome of the job application. See
                    ``ApplicationOutcomeNotesFilter`` for more details.
-                -  application\_last\_stage: The application last stage specifies the
-                   last stage of job application. See ``ApplicationLastStageFilter`` for
-                   more details.
                 -  application\_job\_title: The application job title specifies the job
                    applied for in the application. See ``ApplicationJobFilter`` for more
                    details.
-                -  application\_status: The application status specifies the status of
-                   job application. See ``ApplicationStatusFilter`` for more details.
                 -  hirable\_status: Hirable status specifies the profile's hirable
                    status.
                 -  string\_custom\_attribute: String custom attributes. Values can be
@@ -856,6 +918,19 @@ class ProfileServiceClient(object):
             case_sensitive_sort=case_sensitive_sort,
             histogram_queries=histogram_queries,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(

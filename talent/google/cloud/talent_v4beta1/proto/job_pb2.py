@@ -14,12 +14,13 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.cloud.talent_v4beta1.proto import (
     common_pb2 as google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2,
 )
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
+from google.type import postal_address_pb2 as google_dot_type_dot_postal__address__pb2
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -30,13 +31,14 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\020JobResourceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        "\n+google/cloud/talent_v4beta1/proto/job.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\"\xa7\x0e\n\x03Job\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07\x63ompany\x18\x02 \x01(\t\x12\x16\n\x0erequisition_id\x18\x03 \x01(\t\x12\r\n\x05title\x18\x04 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x05 \x01(\t\x12\x11\n\taddresses\x18\x06 \x03(\t\x12J\n\x10\x61pplication_info\x18\x07 \x01(\x0b\x32\x30.google.cloud.talent.v4beta1.Job.ApplicationInfo\x12=\n\x0cjob_benefits\x18\x08 \x03(\x0e\x32'.google.cloud.talent.v4beta1.JobBenefit\x12H\n\x11\x63ompensation_info\x18\t \x01(\x0b\x32-.google.cloud.talent.v4beta1.CompensationInfo\x12Q\n\x11\x63ustom_attributes\x18\n \x03(\x0b\x32\x36.google.cloud.talent.v4beta1.Job.CustomAttributesEntry\x12=\n\x0c\x64\x65gree_types\x18\x0b \x03(\x0e\x32'.google.cloud.talent.v4beta1.DegreeType\x12\x12\n\ndepartment\x18\x0c \x01(\t\x12\x45\n\x10\x65mployment_types\x18\r \x03(\x0e\x32+.google.cloud.talent.v4beta1.EmploymentType\x12\x12\n\nincentives\x18\x0e \x01(\t\x12\x15\n\rlanguage_code\x18\x0f \x01(\t\x12\x38\n\tjob_level\x18\x10 \x01(\x0e\x32%.google.cloud.talent.v4beta1.JobLevel\x12\x17\n\x0fpromotion_value\x18\x11 \x01(\x05\x12\x16\n\x0equalifications\x18\x12 \x01(\t\x12\x18\n\x10responsibilities\x18\x13 \x01(\t\x12\x42\n\x0eposting_region\x18\x14 \x01(\x0e\x32*.google.cloud.talent.v4beta1.PostingRegion\x12;\n\nvisibility\x18\x15 \x01(\x0e\x32'.google.cloud.talent.v4beta1.Visibility\x12\x32\n\x0ejob_start_time\x18\x16 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x30\n\x0cjob_end_time\x18\x17 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x38\n\x14posting_publish_time\x18\x18 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x37\n\x13posting_expire_time\x18\x19 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x37\n\x13posting_create_time\x18\x1a \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x37\n\x13posting_update_time\x18\x1b \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1c\n\x14\x63ompany_display_name\x18\x1c \x01(\t\x12\x42\n\x0c\x64\x65rived_info\x18\x1d \x01(\x0b\x32,.google.cloud.talent.v4beta1.Job.DerivedInfo\x12N\n\x12processing_options\x18\x1e \x01(\x0b\x32\x32.google.cloud.talent.v4beta1.Job.ProcessingOptions\x1a\x44\n\x0f\x41pplicationInfo\x12\x0e\n\x06\x65mails\x18\x01 \x03(\t\x12\x13\n\x0binstruction\x18\x02 \x01(\t\x12\x0c\n\x04uris\x18\x03 \x03(\t\x1a\x89\x01\n\x0b\x44\x65rivedInfo\x12\x38\n\tlocations\x18\x01 \x03(\x0b\x32%.google.cloud.talent.v4beta1.Location\x12@\n\x0ejob_categories\x18\x03 \x03(\x0e\x32(.google.cloud.talent.v4beta1.JobCategory\x1a\x88\x01\n\x11ProcessingOptions\x12)\n!disable_street_address_resolution\x18\x01 \x01(\x08\x12H\n\x11html_sanitization\x18\x02 \x01(\x0e\x32-.google.cloud.talent.v4beta1.HtmlSanitization\x1a\x65\n\x15\x43ustomAttributesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12;\n\x05value\x18\x02 \x01(\x0b\x32,.google.cloud.talent.v4beta1.CustomAttribute:\x02\x38\x01\x42~\n\x1f\x63om.google.cloud.talent.v4beta1B\x10JobResourceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3"
+        "\n+google/cloud/talent_v4beta1/proto/job.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a google/type/postal_address.proto\x1a\x1cgoogle/api/annotations.proto\"\xa7\x0e\n\x03Job\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07\x63ompany\x18\x02 \x01(\t\x12\x16\n\x0erequisition_id\x18\x03 \x01(\t\x12\r\n\x05title\x18\x04 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x05 \x01(\t\x12\x11\n\taddresses\x18\x06 \x03(\t\x12J\n\x10\x61pplication_info\x18\x07 \x01(\x0b\x32\x30.google.cloud.talent.v4beta1.Job.ApplicationInfo\x12=\n\x0cjob_benefits\x18\x08 \x03(\x0e\x32'.google.cloud.talent.v4beta1.JobBenefit\x12H\n\x11\x63ompensation_info\x18\t \x01(\x0b\x32-.google.cloud.talent.v4beta1.CompensationInfo\x12Q\n\x11\x63ustom_attributes\x18\n \x03(\x0b\x32\x36.google.cloud.talent.v4beta1.Job.CustomAttributesEntry\x12=\n\x0c\x64\x65gree_types\x18\x0b \x03(\x0e\x32'.google.cloud.talent.v4beta1.DegreeType\x12\x12\n\ndepartment\x18\x0c \x01(\t\x12\x45\n\x10\x65mployment_types\x18\r \x03(\x0e\x32+.google.cloud.talent.v4beta1.EmploymentType\x12\x12\n\nincentives\x18\x0e \x01(\t\x12\x15\n\rlanguage_code\x18\x0f \x01(\t\x12\x38\n\tjob_level\x18\x10 \x01(\x0e\x32%.google.cloud.talent.v4beta1.JobLevel\x12\x17\n\x0fpromotion_value\x18\x11 \x01(\x05\x12\x16\n\x0equalifications\x18\x12 \x01(\t\x12\x18\n\x10responsibilities\x18\x13 \x01(\t\x12\x42\n\x0eposting_region\x18\x14 \x01(\x0e\x32*.google.cloud.talent.v4beta1.PostingRegion\x12;\n\nvisibility\x18\x15 \x01(\x0e\x32'.google.cloud.talent.v4beta1.Visibility\x12\x32\n\x0ejob_start_time\x18\x16 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x30\n\x0cjob_end_time\x18\x17 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x38\n\x14posting_publish_time\x18\x18 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x37\n\x13posting_expire_time\x18\x19 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x37\n\x13posting_create_time\x18\x1a \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x37\n\x13posting_update_time\x18\x1b \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1c\n\x14\x63ompany_display_name\x18\x1c \x01(\t\x12\x42\n\x0c\x64\x65rived_info\x18\x1d \x01(\x0b\x32,.google.cloud.talent.v4beta1.Job.DerivedInfo\x12N\n\x12processing_options\x18\x1e \x01(\x0b\x32\x32.google.cloud.talent.v4beta1.Job.ProcessingOptions\x1a\x44\n\x0f\x41pplicationInfo\x12\x0e\n\x06\x65mails\x18\x01 \x03(\t\x12\x13\n\x0binstruction\x18\x02 \x01(\t\x12\x0c\n\x04uris\x18\x03 \x03(\t\x1a\x89\x01\n\x0b\x44\x65rivedInfo\x12\x38\n\tlocations\x18\x01 \x03(\x0b\x32%.google.cloud.talent.v4beta1.Location\x12@\n\x0ejob_categories\x18\x03 \x03(\x0e\x32(.google.cloud.talent.v4beta1.JobCategory\x1a\x88\x01\n\x11ProcessingOptions\x12)\n!disable_street_address_resolution\x18\x01 \x01(\x08\x12H\n\x11html_sanitization\x18\x02 \x01(\x0e\x32-.google.cloud.talent.v4beta1.HtmlSanitization\x1a\x65\n\x15\x43ustomAttributesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12;\n\x05value\x18\x02 \x01(\x0b\x32,.google.cloud.talent.v4beta1.CustomAttribute:\x02\x38\x01\x42~\n\x1f\x63om.google.cloud.talent.v4beta1B\x10JobResourceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3"
     ),
     dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,
+        google_dot_type_dot_postal__address__pb2.DESCRIPTOR,
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
     ],
 )
 
@@ -111,8 +113,8 @@ _JOB_APPLICATIONINFO = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1601,
-    serialized_end=1669,
+    serialized_start=1635,
+    serialized_end=1703,
 )
 
 _JOB_DERIVEDINFO = _descriptor.Descriptor(
@@ -167,8 +169,8 @@ _JOB_DERIVEDINFO = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1672,
-    serialized_end=1809,
+    serialized_start=1706,
+    serialized_end=1843,
 )
 
 _JOB_PROCESSINGOPTIONS = _descriptor.Descriptor(
@@ -223,8 +225,8 @@ _JOB_PROCESSINGOPTIONS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1812,
-    serialized_end=1948,
+    serialized_start=1846,
+    serialized_end=1982,
 )
 
 _JOB_CUSTOMATTRIBUTESENTRY = _descriptor.Descriptor(
@@ -279,8 +281,8 @@ _JOB_CUSTOMATTRIBUTESENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1950,
-    serialized_end=2051,
+    serialized_start=1984,
+    serialized_end=2085,
 )
 
 _JOB = _descriptor.Descriptor(
@@ -844,8 +846,8 @@ _JOB = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=220,
-    serialized_end=2051,
+    serialized_start=254,
+    serialized_end=2085,
 )
 
 _JOB_APPLICATIONINFO.containing_type = _JOB
@@ -939,34 +941,21 @@ Job = _reflection.GeneratedProtocolMessageType(
     
     Attributes:
         emails:
-            Optional but at least one of
-            [uris][google.cloud.talent.v4beta1.Job.ApplicationInfo.uris], 
-            [emails][google.cloud.talent.v4beta1.Job.ApplicationInfo.email
-            s] or [instruction][google.cloud.talent.v4beta1.Job.Applicatio
-            nInfo.instruction] must be specified.  Use this field to
-            specify email address(es) to which resumes or applications can
-            be sent.  The maximum number of allowed characters for each
-            entry is 255.
+            Optional.  Use this field to specify email address(es) to
+            which resumes or applications can be sent.  The maximum number
+            of allowed characters for each entry is 255.
         instruction:
-            Optional but at least one of
-            [uris][google.cloud.talent.v4beta1.Job.ApplicationInfo.uris], 
-            [emails][google.cloud.talent.v4beta1.Job.ApplicationInfo.email
-            s] or [instruction][google.cloud.talent.v4beta1.Job.Applicatio
-            nInfo.instruction] must be specified.  Use this field to
-            provide instructions, such as "Mail your application to ...",
-            that a candidate can follow to apply for the job.  This field
-            accepts and sanitizes HTML input, and also accepts bold,
-            italic, ordered list, and unordered list markup tags.  The
-            maximum number of allowed characters is 3,000.
+            Optional.  Use this field to provide instructions, such as
+            "Mail your application to ...", that a candidate can follow to
+            apply for the job.  This field accepts and sanitizes HTML
+            input, and also accepts bold, italic, ordered list, and
+            unordered list markup tags.  The maximum number of allowed
+            characters is 3,000.
         uris:
-            Optional but at least one of
-            [uris][google.cloud.talent.v4beta1.Job.ApplicationInfo.uris], 
-            [emails][google.cloud.talent.v4beta1.Job.ApplicationInfo.email
-            s] or [instruction][google.cloud.talent.v4beta1.Job.Applicatio
-            nInfo.instruction] must be specified.  Use this URI field to
-            direct an applicant to a website, for example to link to an
-            online application form.  The maximum number of allowed
-            characters for each entry is 2,000.
+            Optional.  Use this URI field to direct an applicant to a
+            website, for example to link to an online application form.
+            The maximum number of allowed characters for each entry is
+            2,000.
     """,
                 # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.Job.ApplicationInfo)
             ),
@@ -1095,8 +1084,8 @@ Job = _reflection.GeneratedProtocolMessageType(
           allowed for best search performance. If a job has more
           locations, it is suggested to split it into multiple jobs with
           unique [requisition\_id][google.cloud.talent.v4beta1.Job.requi
-          sition\_id]s (e.g. 'ReqA' becomes 'ReqA-1', 'ReqA-2', etc.) as
-          multiple jobs with the same
+          sition\_id]s (e.g. 'ReqA' becomes 'ReqA-1', 'ReqA-2', and so
+          on.) as multiple jobs with the same
           [company][google.cloud.talent.v4beta1.Job.name][],
           [language\_code][] and [requisition\_id][google.cloud.talent.v
           4beta1.Job.requisition\_id] are not allowed. If the original [
@@ -1106,9 +1095,7 @@ Job = _reflection.GeneratedProtocolMessageType(
           close to each other in the same job for better search
           experience.  The maximum number of allowed characters is 500.
       application_info:
-          Required. At least one field within [ApplicationInfo][google.c
-          loud.talent.v4beta1.Job.ApplicationInfo] must be specified.
-          Job application information.
+          Optional.  Job application information.
       job_benefits:
           Optional.  The benefits included with the job.
       compensation_info:

@@ -22,6 +22,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.path_template
 import grpc
@@ -72,6 +73,16 @@ class CompletionClient(object):
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
+
+    @classmethod
+    def company_path(cls, project, tenant, company):
+        """Return a fully-qualified company string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/tenants/{tenant}/companies/{company}",
+            project=project,
+            tenant=tenant,
+            company=company,
+        )
 
     @classmethod
     def tenant_path(cls, project, tenant):
@@ -303,6 +314,19 @@ class CompletionClient(object):
             scope=scope,
             type=type_,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["complete_query"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
