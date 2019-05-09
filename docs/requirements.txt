@@ -29,6 +29,7 @@ grpcio-gcp >= 0.2.2
 -e logging/
 -e error_reporting/
 -e monitoring/
+-e phishing_protection/
 -e pubsub/
 -e oslogin/
 -e redis/

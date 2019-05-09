@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
   "updateTime": "2019-05-08T12:24:28.560729Z",
-=======
-  "updateTime": "2019-05-03T19:20:00.985143Z",
->>>>>>> Add replace in synth.
   "sources": [
     {
       "generator": {
@@ -16,24 +12,15 @@
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-<<<<<<< HEAD
-        "sha": "51145ff7812d2bb44c1219d0b76dac92a8bd94b2",
-        "internalRef": "247143125"
-=======
         "sha": "bc671f6d3f46e63747b67667d4b04c8dcadb61a2",
         "internalRef": "246529413"
->>>>>>> Add replace in synth.
       }
     },
     {
       "template": {
         "name": "python_library",
         "origin": "synthtool.gcp",
-<<<<<<< HEAD
         "version": "2019.5.2"
-=======
-        "version": "2019.4.10"
->>>>>>> Add replace in synth.
       }
     }
   ],

@@ -22,7 +22,7 @@
   Key Management <kms/index>
   Language <language/index>
   OSLogin <oslogin/index>
-  Phishing Protection <phishingprotection/index>
+  Phishing Protection <phishing_protection/index>
   PubSub <pubsub/index>
   Redis <redis/index>
   Resource Manager <resource-manager/index>
