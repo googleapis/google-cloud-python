@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.talent_v4beta1.gapic.job_service_client &#8212; google-cloud 247e71e documentation</title>
+    <title>google.cloud.talent_v4beta1.gapic.job_service_client &#8212; google-cloud 26bae96 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -59,6 +59,7 @@
 <span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.client_info</span>
 <span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.config</span>
 <span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.method</span>
+<span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.routing_header</span>
 <span class="kn">import</span> <span class="nn">google.api_core.grpc_helpers</span>
 <span class="kn">import</span> <span class="nn">google.api_core.page_iterator</span>
 <span class="kn">import</span> <span class="nn">google.api_core.path_template</span>
@@ -67,6 +68,9 @@
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.gapic</span> <span class="k">import</span> <span class="n">enums</span>
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.gapic</span> <span class="k">import</span> <span class="n">job_service_client_config</span>
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.gapic.transports</span> <span class="k">import</span> <span class="n">job_service_grpc_transport</span>
+<span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.proto</span> <span class="k">import</span> <span class="n">application_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.proto</span> <span class="k">import</span> <span class="n">application_service_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.proto</span> <span class="k">import</span> <span class="n">application_service_pb2_grpc</span>
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.proto</span> <span class="k">import</span> <span class="n">common_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.proto</span> <span class="k">import</span> <span class="n">company_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.proto</span> <span class="k">import</span> <span class="n">company_service_pb2</span>
@@ -117,18 +121,31 @@
 
     <span class="n">from_service_account_json</span> <span class="o">=</span> <span class="n">from_service_account_file</span>
 
-<div class="viewcode-block" id="JobServiceClient.project_path"><a class="viewcode-back" href="../../../../../talent/gapic/v4beta1/api.html#google.cloud.talent_v4beta1.JobServiceClient.project_path">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">project_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a fully-qualified project string.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="JobServiceClient.company_path"><a class="viewcode-back" href="../../../../../talent/gapic/v4beta1/api.html#google.cloud.talent_v4beta1.JobServiceClient.company_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">company_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">tenant</span><span class="p">,</span> <span class="n">company</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified company string.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
-            <span class="s2">&quot;projects/</span><span class="si">{project}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span>
+            <span class="s2">&quot;projects/</span><span class="si">{project}</span><span class="s2">/tenants/</span><span class="si">{tenant}</span><span class="s2">/companies/</span><span class="si">{company}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">tenant</span><span class="o">=</span><span class="n">tenant</span><span class="p">,</span>
+            <span class="n">company</span><span class="o">=</span><span class="n">company</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="JobServiceClient.job_path"><a class="viewcode-back" href="../../../../../talent/gapic/v4beta1/api.html#google.cloud.talent_v4beta1.JobServiceClient.job_path">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">job_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">jobs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">job_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">tenant</span><span class="p">,</span> <span class="n">jobs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a fully-qualified job string.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
-            <span class="s2">&quot;projects/</span><span class="si">{project}</span><span class="s2">/jobs/</span><span class="si">{jobs}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">jobs</span><span class="o">=</span><span class="n">jobs</span>
+            <span class="s2">&quot;projects/</span><span class="si">{project}</span><span class="s2">/tenants/</span><span class="si">{tenant}</span><span class="s2">/jobs/</span><span class="si">{jobs}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">tenant</span><span class="o">=</span><span class="n">tenant</span><span class="p">,</span>
+            <span class="n">jobs</span><span class="o">=</span><span class="n">jobs</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="JobServiceClient.tenant_path"><a class="viewcode-back" href="../../../../../talent/gapic/v4beta1/api.html#google.cloud.talent_v4beta1.JobServiceClient.tenant_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">tenant_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">tenant</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified tenant string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s2">&quot;projects/</span><span class="si">{project}</span><span class="s2">/tenants/</span><span class="si">{tenant}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">tenant</span><span class="o">=</span><span class="n">tenant</span>
         <span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
@@ -249,7 +266,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = talent_v4beta1.JobServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; parent = client.project_path(&#39;[PROJECT]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; parent = client.tenant_path(&#39;[PROJECT]&#39;, &#39;[TENANT]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # TODO: Initialize `job`:</span>
 <span class="sd">            &gt;&gt;&gt; job = {}</span>
@@ -259,10 +276,13 @@
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): Required.</span>
 
-<span class="sd">                The resource name of the project under which the job is created.</span>
+<span class="sd">                The resource name of the tenant under which the job is created.</span>
 
-<span class="sd">                The format is &quot;projects/{project\_id}&quot;, for example,</span>
-<span class="sd">                &quot;projects/api-test-project&quot;.</span>
+<span class="sd">                The format is &quot;projects/{project\_id}/tenants/{tenant\_id}&quot;, for</span>
+<span class="sd">                example, &quot;projects/api-test-project/tenant/foo&quot;.</span>
+
+<span class="sd">                Tenant id is optional and a default tenant is created if unspecified,</span>
+<span class="sd">                for example, &quot;projects/api-test-project&quot;.</span>
 <span class="sd">            job (Union[dict, ~google.cloud.talent_v4beta1.types.Job]): Required.</span>
 
 <span class="sd">                The Job to be created.</span>
@@ -300,6 +320,19 @@
             <span class="p">)</span>
 
         <span class="n">request</span> <span class="o">=</span> <span class="n">job_service_pb2</span><span class="o">.</span><span class="n">CreateJobRequest</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">job</span><span class="o">=</span><span class="n">job</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;parent&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;create_job&quot;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
         <span class="p">)</span></div>
@@ -320,7 +353,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = talent_v4beta1.JobServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; name = client.job_path(&#39;[PROJECT]&#39;, &#39;[JOBS]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; name = client.job_path(&#39;[PROJECT]&#39;, &#39;[TENANT]&#39;, &#39;[JOBS]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.get_job(name)</span>
 
@@ -329,8 +362,12 @@
 
 <span class="sd">                The resource name of the job to retrieve.</span>
 
-<span class="sd">                The format is &quot;projects/{project\_id}/jobs/{job\_id}&quot;, for example,</span>
-<span class="sd">                &quot;projects/api-test-project/jobs/1234&quot;.</span>
+<span class="sd">                The format is</span>
+<span class="sd">                &quot;projects/{project\_id}/tenants/{tenant\_id}/jobs/{job\_id}&quot;, for</span>
+<span class="sd">                example, &quot;projects/api-test-project/tenants/foo/jobs/1234&quot;.</span>
+
+<span class="sd">                Tenant id is optional and the default tenant is used if unspecified, for</span>
+<span class="sd">                example, &quot;projects/api-test-project/jobs/1234&quot;.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -362,6 +399,19 @@
             <span class="p">)</span>
 
         <span class="n">request</span> <span class="o">=</span> <span class="n">job_service_pb2</span><span class="o">.</span><span class="n">GetJobRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;get_job&quot;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
         <span class="p">)</span></div>
@@ -439,6 +489,19 @@
             <span class="p">)</span>
 
         <span class="n">request</span> <span class="o">=</span> <span class="n">job_service_pb2</span><span class="o">.</span><span class="n">UpdateJobRequest</span><span class="p">(</span><span class="n">job</span><span class="o">=</span><span class="n">job</span><span class="p">,</span> <span class="n">update_mask</span><span class="o">=</span><span class="n">update_mask</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;job.name&quot;</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">name</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;update_job&quot;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
         <span class="p">)</span></div>
@@ -461,7 +524,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = talent_v4beta1.JobServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; name = client.job_path(&#39;[PROJECT]&#39;, &#39;[JOBS]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; name = client.job_path(&#39;[PROJECT]&#39;, &#39;[TENANT]&#39;, &#39;[JOBS]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client.delete_job(name)</span>
 
@@ -470,8 +533,12 @@
 
 <span class="sd">                The resource name of the job to be deleted.</span>
 
-<span class="sd">                The format is &quot;projects/{project\_id}/jobs/{job\_id}&quot;, for example,</span>
-<span class="sd">                &quot;projects/api-test-project/jobs/1234&quot;.</span>
+<span class="sd">                The format is</span>
+<span class="sd">                &quot;projects/{project\_id}/tenants/{tenant\_id}/jobs/{job\_id}&quot;, for</span>
+<span class="sd">                example, &quot;projects/api-test-project/tenants/foo/jobs/1234&quot;.</span>
+
+<span class="sd">                Tenant id is optional and the default tenant is used if unspecified, for</span>
+<span class="sd">                example, &quot;projects/api-test-project/jobs/1234&quot;.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -500,6 +567,19 @@
             <span class="p">)</span>
 
         <span class="n">request</span> <span class="o">=</span> <span class="n">job_service_pb2</span><span class="o">.</span><span class="n">DeleteJobRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;delete_job&quot;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
         <span class="p">)</span></div>
@@ -522,7 +602,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = talent_v4beta1.JobServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; parent = client.project_path(&#39;[PROJECT]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; parent = client.tenant_path(&#39;[PROJECT]&#39;, &#39;[TENANT]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # TODO: Initialize `filter_`:</span>
 <span class="sd">            &gt;&gt;&gt; filter_ = &#39;&#39;</span>
@@ -544,10 +624,13 @@
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): Required.</span>
 
-<span class="sd">                The resource name of the project under which the job is created.</span>
+<span class="sd">                The resource name of the tenant under which the job is created.</span>
 
-<span class="sd">                The format is &quot;projects/{project\_id}&quot;, for example,</span>
-<span class="sd">                &quot;projects/api-test-project&quot;.</span>
+<span class="sd">                The format is &quot;projects/{project\_id}/tenants/{tenant\_id}&quot;, for</span>
+<span class="sd">                example, &quot;projects/api-test-project/tenant/foo&quot;.</span>
+
+<span class="sd">                Tenant id is optional and the default tenant is used if unspecified, for</span>
+<span class="sd">                example, &quot;projects/api-test-project&quot;.</span>
 <span class="sd">            filter_ (str): Required.</span>
 
 <span class="sd">                The filter string specifies the jobs to be enumerated.</span>
@@ -563,11 +646,11 @@
 
 <span class="sd">                Sample Query:</span>
 
-<span class="sd">                -  companyName = &quot;projects/api-test-project/companies/123&quot;</span>
-<span class="sd">                -  companyName = &quot;projects/api-test-project/companies/123&quot; AND</span>
-<span class="sd">                   requisitionId = &quot;req-1&quot;</span>
-<span class="sd">                -  companyName = &quot;projects/api-test-project/companies/123&quot; AND status =</span>
-<span class="sd">                   &quot;EXPIRED&quot;</span>
+<span class="sd">                -  companyName = &quot;projects/api-test-project/tenants/foo/companies/bar&quot;</span>
+<span class="sd">                -  companyName = &quot;projects/api-test-project/tenants/foo/companies/bar&quot;</span>
+<span class="sd">                   AND requisitionId = &quot;req-1&quot;</span>
+<span class="sd">                -  companyName = &quot;projects/api-test-project/tenants/foo/companies/bar&quot;</span>
+<span class="sd">                   AND status = &quot;EXPIRED&quot;</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
@@ -613,6 +696,19 @@
         <span class="n">request</span> <span class="o">=</span> <span class="n">job_service_pb2</span><span class="o">.</span><span class="n">ListJobsRequest</span><span class="p">(</span>
             <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">filter_</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span> <span class="n">job_view</span><span class="o">=</span><span class="n">job_view</span>
         <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;parent&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="n">iterator</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">GRPCIterator</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">method</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
@@ -644,7 +740,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = talent_v4beta1.JobServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; parent = client.project_path(&#39;[PROJECT]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; parent = client.tenant_path(&#39;[PROJECT]&#39;, &#39;[TENANT]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # TODO: Initialize `filter_`:</span>
 <span class="sd">            &gt;&gt;&gt; filter_ = &#39;&#39;</span>
@@ -654,10 +750,13 @@
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): Required.</span>
 
-<span class="sd">                The resource name of the project under which the job is created.</span>
+<span class="sd">                The resource name of the tenant under which the job is created.</span>
 
-<span class="sd">                The format is &quot;projects/{project\_id}&quot;, for example,</span>
-<span class="sd">                &quot;projects/api-test-project&quot;.</span>
+<span class="sd">                The format is &quot;projects/{project\_id}/tenants/{tenant\_id}&quot;, for</span>
+<span class="sd">                example, &quot;projects/api-test-project/tenant/foo&quot;.</span>
+
+<span class="sd">                Tenant id is optional and the default tenant is used if unspecified, for</span>
+<span class="sd">                example, &quot;projects/api-test-project&quot;.</span>
 <span class="sd">            filter_ (str): Required.</span>
 
 <span class="sd">                The filter string specifies the jobs to be deleted.</span>
@@ -699,6 +798,19 @@
             <span class="p">)</span>
 
         <span class="n">request</span> <span class="o">=</span> <span class="n">job_service_pb2</span><span class="o">.</span><span class="n">BatchDeleteJobsRequest</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">filter_</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;parent&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;batch_delete_jobs&quot;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
         <span class="p">)</span></div>
@@ -734,7 +846,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = talent_v4beta1.JobServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; parent = client.project_path(&#39;[PROJECT]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; parent = client.tenant_path(&#39;[PROJECT]&#39;, &#39;[TENANT]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # TODO: Initialize `request_metadata`:</span>
 <span class="sd">            &gt;&gt;&gt; request_metadata = {}</span>
@@ -756,10 +868,13 @@
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): Required.</span>
 
-<span class="sd">                The resource name of the project to search within.</span>
+<span class="sd">                The resource name of the tenant to search within.</span>
 
-<span class="sd">                The format is &quot;projects/{project\_id}&quot;, for example,</span>
-<span class="sd">                &quot;projects/api-test-project&quot;.</span>
+<span class="sd">                The format is &quot;projects/{project\_id}/tenants/{tenant\_id}&quot;, for</span>
+<span class="sd">                example, &quot;projects/api-test-project/tenant/foo&quot;.</span>
+
+<span class="sd">                Tenant id is optional and the default tenant is used if unspecified, for</span>
+<span class="sd">                example, &quot;projects/api-test-project&quot;.</span>
 <span class="sd">            request_metadata (Union[dict, ~google.cloud.talent_v4beta1.types.RequestMetadata]): Required.</span>
 
 <span class="sd">                The meta information collected about the job searcher, used to improve</span>
@@ -804,11 +919,12 @@
 <span class="sd">                Expression syntax is an aggregation function call with histogram facets</span>
 <span class="sd">                and other options.</span>
 
-<span class="sd">                Available aggregation function calls are: \*</span>
-<span class="sd">                ``count(string_histogram_facet)``: Count the number of matching</span>
-<span class="sd">                entities, for each distinct attribute value. \*</span>
-<span class="sd">                ``count(numeric_histogram_facet, list of buckets)``: Count the number of</span>
-<span class="sd">                matching entities within each bucket.</span>
+<span class="sd">                Available aggregation function calls are:</span>
+
+<span class="sd">                -  ``count(string_histogram_facet)``: Count the number of matching</span>
+<span class="sd">                   entities, for each distinct attribute value.</span>
+<span class="sd">                -  ``count(numeric_histogram_facet, list of buckets)``: Count the number</span>
+<span class="sd">                   of matching entities within each bucket.</span>
 
 <span class="sd">                Data types:</span>
 
@@ -881,11 +997,14 @@
 <span class="sd">                   notations like numeric\_custom\_attribute[&quot;key1&quot;]. Must specify list</span>
 <span class="sd">                   of numeric buckets to group results by.</span>
 
-<span class="sd">                Example expressions: \* count(admin1) \* count(base\_compensation,</span>
-<span class="sd">                [bucket(1000, 10000), bucket(10000, 100000), bucket(100000, MAX)]) \*</span>
-<span class="sd">                count(string\_custom\_attribute[&quot;some-string-custom-attribute&quot;]) \*</span>
-<span class="sd">                count(numeric\_custom\_attribute[&quot;some-numeric-custom-attribute&quot;],</span>
-<span class="sd">                [bucket(MIN, 0, &quot;negative&quot;), bucket(0, MAX, &quot;non-negative&quot;])</span>
+<span class="sd">                Example expressions:</span>
+
+<span class="sd">                -  count(admin1)</span>
+<span class="sd">                -  count(base\_compensation, [bucket(1000, 10000), bucket(10000,</span>
+<span class="sd">                   100000), bucket(100000, MAX)])</span>
+<span class="sd">                -  count(string\_custom\_attribute[&quot;some-string-custom-attribute&quot;])</span>
+<span class="sd">                -  count(numeric\_custom\_attribute[&quot;some-numeric-custom-attribute&quot;],</span>
+<span class="sd">                   [bucket(MIN, 0, &quot;negative&quot;), bucket(0, MAX, &quot;non-negative&quot;])</span>
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.talent_v4beta1.types.HistogramQuery`</span>
@@ -1044,6 +1163,19 @@
             <span class="n">custom_ranking_info</span><span class="o">=</span><span class="n">custom_ranking_info</span><span class="p">,</span>
             <span class="n">disable_keyword_match</span><span class="o">=</span><span class="n">disable_keyword_match</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;parent&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="n">iterator</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">GRPCIterator</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">method</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
@@ -1095,7 +1227,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = talent_v4beta1.JobServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; parent = client.project_path(&#39;[PROJECT]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; parent = client.tenant_path(&#39;[PROJECT]&#39;, &#39;[TENANT]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # TODO: Initialize `request_metadata`:</span>
 <span class="sd">            &gt;&gt;&gt; request_metadata = {}</span>
@@ -1117,10 +1249,13 @@
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): Required.</span>
 
-<span class="sd">                The resource name of the project to search within.</span>
+<span class="sd">                The resource name of the tenant to search within.</span>
 
-<span class="sd">                The format is &quot;projects/{project\_id}&quot;, for example,</span>
-<span class="sd">                &quot;projects/api-test-project&quot;.</span>
+<span class="sd">                The format is &quot;projects/{project\_id}/tenants/{tenant\_id}&quot;, for</span>
+<span class="sd">                example, &quot;projects/api-test-project/tenant/foo&quot;.</span>
+
+<span class="sd">                Tenant id is optional and the default tenant is used if unspecified, for</span>
+<span class="sd">                example, &quot;projects/api-test-project&quot;.</span>
 <span class="sd">            request_metadata (Union[dict, ~google.cloud.talent_v4beta1.types.RequestMetadata]): Required.</span>
 
 <span class="sd">                The meta information collected about the job searcher, used to improve</span>
@@ -1165,11 +1300,12 @@
 <span class="sd">                Expression syntax is an aggregation function call with histogram facets</span>
 <span class="sd">                and other options.</span>
 
-<span class="sd">                Available aggregation function calls are: \*</span>
-<span class="sd">                ``count(string_histogram_facet)``: Count the number of matching</span>
-<span class="sd">                entities, for each distinct attribute value. \*</span>
-<span class="sd">                ``count(numeric_histogram_facet, list of buckets)``: Count the number of</span>
-<span class="sd">                matching entities within each bucket.</span>
+<span class="sd">                Available aggregation function calls are:</span>
+
+<span class="sd">                -  ``count(string_histogram_facet)``: Count the number of matching</span>
+<span class="sd">                   entities, for each distinct attribute value.</span>
+<span class="sd">                -  ``count(numeric_histogram_facet, list of buckets)``: Count the number</span>
+<span class="sd">                   of matching entities within each bucket.</span>
 
 <span class="sd">                Data types:</span>
 
@@ -1242,11 +1378,14 @@
 <span class="sd">                   notations like numeric\_custom\_attribute[&quot;key1&quot;]. Must specify list</span>
 <span class="sd">                   of numeric buckets to group results by.</span>
 
-<span class="sd">                Example expressions: \* count(admin1) \* count(base\_compensation,</span>
-<span class="sd">                [bucket(1000, 10000), bucket(10000, 100000), bucket(100000, MAX)]) \*</span>
-<span class="sd">                count(string\_custom\_attribute[&quot;some-string-custom-attribute&quot;]) \*</span>
-<span class="sd">                count(numeric\_custom\_attribute[&quot;some-numeric-custom-attribute&quot;],</span>
-<span class="sd">                [bucket(MIN, 0, &quot;negative&quot;), bucket(0, MAX, &quot;non-negative&quot;])</span>
+<span class="sd">                Example expressions:</span>
+
+<span class="sd">                -  count(admin1)</span>
+<span class="sd">                -  count(base\_compensation, [bucket(1000, 10000), bucket(10000,</span>
+<span class="sd">                   100000), bucket(100000, MAX)])</span>
+<span class="sd">                -  count(string\_custom\_attribute[&quot;some-string-custom-attribute&quot;])</span>
+<span class="sd">                -  count(numeric\_custom\_attribute[&quot;some-numeric-custom-attribute&quot;],</span>
+<span class="sd">                   [bucket(MIN, 0, &quot;negative&quot;), bucket(0, MAX, &quot;non-negative&quot;])</span>
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.talent_v4beta1.types.HistogramQuery`</span>
@@ -1405,6 +1544,19 @@
             <span class="n">custom_ranking_info</span><span class="o">=</span><span class="n">custom_ranking_info</span><span class="p">,</span>
             <span class="n">disable_keyword_match</span><span class="o">=</span><span class="n">disable_keyword_match</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;parent&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="n">iterator</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">GRPCIterator</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">method</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>

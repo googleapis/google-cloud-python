@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.talent_v4beta1.gapic.profile_service_client &#8212; google-cloud 247e71e documentation</title>
+    <title>google.cloud.talent_v4beta1.gapic.profile_service_client &#8212; google-cloud 26bae96 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -59,6 +59,7 @@
 <span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.client_info</span>
 <span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.config</span>
 <span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.method</span>
+<span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.routing_header</span>
 <span class="kn">import</span> <span class="nn">google.api_core.grpc_helpers</span>
 <span class="kn">import</span> <span class="nn">google.api_core.page_iterator</span>
 <span class="kn">import</span> <span class="nn">google.api_core.path_template</span>
@@ -67,6 +68,9 @@
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.gapic</span> <span class="k">import</span> <span class="n">enums</span>
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.gapic</span> <span class="k">import</span> <span class="n">profile_service_client_config</span>
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.gapic.transports</span> <span class="k">import</span> <span class="n">profile_service_grpc_transport</span>
+<span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.proto</span> <span class="k">import</span> <span class="n">application_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.proto</span> <span class="k">import</span> <span class="n">application_service_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.proto</span> <span class="k">import</span> <span class="n">application_service_pb2_grpc</span>
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.proto</span> <span class="k">import</span> <span class="n">common_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.proto</span> <span class="k">import</span> <span class="n">company_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.proto</span> <span class="k">import</span> <span class="n">company_service_pb2</span>
@@ -123,13 +127,6 @@
 
     <span class="n">from_service_account_json</span> <span class="o">=</span> <span class="n">from_service_account_file</span>
 
-<div class="viewcode-block" id="ProfileServiceClient.tenant_path"><a class="viewcode-back" href="../../../../../talent/gapic/v4beta1/api.html#google.cloud.talent_v4beta1.ProfileServiceClient.tenant_path">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">tenant_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">tenant</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a fully-qualified tenant string.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
-            <span class="s2">&quot;projects/</span><span class="si">{project}</span><span class="s2">/tenants/</span><span class="si">{tenant}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">tenant</span><span class="o">=</span><span class="n">tenant</span>
-        <span class="p">)</span></div>
-
 <div class="viewcode-block" id="ProfileServiceClient.profile_path"><a class="viewcode-back" href="../../../../../talent/gapic/v4beta1/api.html#google.cloud.talent_v4beta1.ProfileServiceClient.profile_path">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">profile_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">tenant</span><span class="p">,</span> <span class="n">profile</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a fully-qualified profile string.&quot;&quot;&quot;</span>
@@ -138,6 +135,13 @@
             <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
             <span class="n">tenant</span><span class="o">=</span><span class="n">tenant</span><span class="p">,</span>
             <span class="n">profile</span><span class="o">=</span><span class="n">profile</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ProfileServiceClient.tenant_path"><a class="viewcode-back" href="../../../../../talent/gapic/v4beta1/api.html#google.cloud.talent_v4beta1.ProfileServiceClient.tenant_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">tenant_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">tenant</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified tenant string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s2">&quot;projects/</span><span class="si">{project}</span><span class="s2">/tenants/</span><span class="si">{tenant}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">tenant</span><span class="o">=</span><span class="n">tenant</span>
         <span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
@@ -243,7 +247,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">parent</span><span class="p">,</span>
         <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">field_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">read_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
         <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
         <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -284,7 +288,7 @@
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
 <span class="sd">                streaming is performed per-page, this determines the maximum number</span>
 <span class="sd">                of resources in a page.</span>
-<span class="sd">            field_mask (Union[dict, ~google.cloud.talent_v4beta1.types.FieldMask]): Optional.</span>
+<span class="sd">            read_mask (Union[dict, ~google.cloud.talent_v4beta1.types.FieldMask]): Optional.</span>
 
 <span class="sd">                A field mask to specify the profile fields to be listed in response. All</span>
 <span class="sd">                fields are listed if it is unset.</span>
@@ -329,8 +333,21 @@
             <span class="p">)</span>
 
         <span class="n">request</span> <span class="o">=</span> <span class="n">profile_service_pb2</span><span class="o">.</span><span class="n">ListProfilesRequest</span><span class="p">(</span>
-            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span> <span class="n">field_mask</span><span class="o">=</span><span class="n">field_mask</span>
+            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span> <span class="n">read_mask</span><span class="o">=</span><span class="n">read_mask</span>
         <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;parent&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="n">iterator</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">GRPCIterator</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">method</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
@@ -415,6 +432,19 @@
         <span class="n">request</span> <span class="o">=</span> <span class="n">profile_service_pb2</span><span class="o">.</span><span class="n">CreateProfileRequest</span><span class="p">(</span>
             <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">profile</span><span class="o">=</span><span class="n">profile</span>
         <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;parent&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;create_profile&quot;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
         <span class="p">)</span></div>
@@ -477,6 +507,19 @@
             <span class="p">)</span>
 
         <span class="n">request</span> <span class="o">=</span> <span class="n">profile_service_pb2</span><span class="o">.</span><span class="n">GetProfileRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;get_profile&quot;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
         <span class="p">)</span></div>
@@ -537,9 +580,9 @@
 <span class="sd">                -  publications</span>
 <span class="sd">                -  patents</span>
 <span class="sd">                -  certifications</span>
-<span class="sd">                -  jobApplications</span>
 <span class="sd">                -  recruitingNotes</span>
 <span class="sd">                -  customAttributes</span>
+<span class="sd">                -  groupId</span>
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.talent_v4beta1.types.FieldMask`</span>
@@ -576,6 +619,19 @@
         <span class="n">request</span> <span class="o">=</span> <span class="n">profile_service_pb2</span><span class="o">.</span><span class="n">UpdateProfileRequest</span><span class="p">(</span>
             <span class="n">profile</span><span class="o">=</span><span class="n">profile</span><span class="p">,</span> <span class="n">update_mask</span><span class="o">=</span><span class="n">update_mask</span>
         <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;profile.name&quot;</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">name</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;update_profile&quot;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
         <span class="p">)</span></div>
@@ -589,6 +645,8 @@
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Deletes the specified profile.</span>
+<span class="sd">        Prerequisite: The profile has no associated applications or assignments</span>
+<span class="sd">        associated.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import talent_v4beta1</span>
@@ -635,6 +693,19 @@
             <span class="p">)</span>
 
         <span class="n">request</span> <span class="o">=</span> <span class="n">profile_service_pb2</span><span class="o">.</span><span class="n">DeleteProfileRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;delete_profile&quot;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
         <span class="p">)</span></div>
@@ -807,23 +878,18 @@
 <span class="sd">                -  institution: The school name. For example, &quot;MIT&quot;, &quot;University of</span>
 <span class="sd">                   California, Berkeley&quot;</span>
 <span class="sd">                -  degree: Highest education degree in ISCED code. Each value in degree</span>
-<span class="sd">                   covers specific level of education, without any expansion to upper</span>
+<span class="sd">                   covers a specific level of education, without any expansion to upper</span>
 <span class="sd">                   nor lower levels of education degree.</span>
 <span class="sd">                -  experience\_in\_months: experience in months. 0 means 0 month to 1</span>
 <span class="sd">                   month (exclusive).</span>
 <span class="sd">                -  application\_date: The application date specifies application start</span>
 <span class="sd">                   dates. See [ApplicationDateFilter\` for more details.</span>
-<span class="sd">                -  application\_outcome\_reason: The application outcome reason</span>
-<span class="sd">                   specifies the outcome reasons of job application. See</span>
-<span class="sd">                   ``ApplicationOutcomeReasonFilter`` for more details.</span>
-<span class="sd">                -  application\_last\_stage: The application last stage specifies the</span>
-<span class="sd">                   last stage of job application. See ``ApplicationLastStageFilter`` for</span>
-<span class="sd">                   more details.</span>
+<span class="sd">                -  application\_outcome\_notes: The application outcome reason specifies</span>
+<span class="sd">                   the reasons behind the outcome of the job application. See</span>
+<span class="sd">                   ``ApplicationOutcomeNotesFilter`` for more details.</span>
 <span class="sd">                -  application\_job\_title: The application job title specifies the job</span>
 <span class="sd">                   applied for in the application. See ``ApplicationJobFilter`` for more</span>
 <span class="sd">                   details.</span>
-<span class="sd">                -  application\_status: The application status specifies the status of</span>
-<span class="sd">                   job application. See ``ApplicationStatusFilter`` for more details.</span>
 <span class="sd">                -  hirable\_status: Hirable status specifies the profile&#39;s hirable</span>
 <span class="sd">                   status.</span>
 <span class="sd">                -  string\_custom\_attribute: String custom attributes. Values can be</span>
@@ -888,6 +954,19 @@
             <span class="n">case_sensitive_sort</span><span class="o">=</span><span class="n">case_sensitive_sort</span><span class="p">,</span>
             <span class="n">histogram_queries</span><span class="o">=</span><span class="n">histogram_queries</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;parent&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="n">iterator</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">GRPCIterator</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">method</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>

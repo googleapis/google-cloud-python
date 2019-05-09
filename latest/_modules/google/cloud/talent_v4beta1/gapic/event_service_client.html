@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.talent_v4beta1.gapic.event_service_client &#8212; google-cloud 247e71e documentation</title>
+    <title>google.cloud.talent_v4beta1.gapic.event_service_client &#8212; google-cloud 26bae96 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -58,6 +58,7 @@
 <span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.client_info</span>
 <span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.config</span>
 <span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.method</span>
+<span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.routing_header</span>
 <span class="kn">import</span> <span class="nn">google.api_core.grpc_helpers</span>
 <span class="kn">import</span> <span class="nn">google.api_core.path_template</span>
 <span class="kn">import</span> <span class="nn">grpc</span>
@@ -65,6 +66,9 @@
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.gapic</span> <span class="k">import</span> <span class="n">enums</span>
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.gapic</span> <span class="k">import</span> <span class="n">event_service_client_config</span>
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.gapic.transports</span> <span class="k">import</span> <span class="n">event_service_grpc_transport</span>
+<span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.proto</span> <span class="k">import</span> <span class="n">application_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.proto</span> <span class="k">import</span> <span class="n">application_service_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.proto</span> <span class="k">import</span> <span class="n">application_service_pb2_grpc</span>
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.proto</span> <span class="k">import</span> <span class="n">company_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.proto</span> <span class="k">import</span> <span class="n">company_service_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.proto</span> <span class="k">import</span> <span class="n">company_service_pb2_grpc</span>
@@ -109,11 +113,11 @@
 
     <span class="n">from_service_account_json</span> <span class="o">=</span> <span class="n">from_service_account_file</span>
 
-<div class="viewcode-block" id="EventServiceClient.project_path"><a class="viewcode-back" href="../../../../../talent/gapic/v4beta1/api.html#google.cloud.talent_v4beta1.EventServiceClient.project_path">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">project_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a fully-qualified project string.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="EventServiceClient.tenant_path"><a class="viewcode-back" href="../../../../../talent/gapic/v4beta1/api.html#google.cloud.talent_v4beta1.EventServiceClient.tenant_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">tenant_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">tenant</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified tenant string.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
-            <span class="s2">&quot;projects/</span><span class="si">{project}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span>
+            <span class="s2">&quot;projects/</span><span class="si">{project}</span><span class="s2">/tenants/</span><span class="si">{tenant}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">tenant</span><span class="o">=</span><span class="n">tenant</span>
         <span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
@@ -237,7 +241,7 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = talent_v4beta1.EventServiceClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; parent = client.project_path(&#39;[PROJECT]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; parent = client.tenant_path(&#39;[PROJECT]&#39;, &#39;[TENANT]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; # TODO: Initialize `client_event`:</span>
 <span class="sd">            &gt;&gt;&gt; client_event = {}</span>
@@ -245,7 +249,15 @@
 <span class="sd">            &gt;&gt;&gt; response = client.create_client_event(parent, client_event)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): Parent project name.</span>
+<span class="sd">            parent (str): Required.</span>
+
+<span class="sd">                Resource name of the tenant under which the event is created.</span>
+
+<span class="sd">                The format is &quot;projects/{project\_id}/tenants/{tenant\_id}&quot;, for</span>
+<span class="sd">                example, &quot;projects/api-test-project/tenant/foo&quot;.</span>
+
+<span class="sd">                Tenant id is optional and a default tenant is created if unspecified,</span>
+<span class="sd">                for example, &quot;projects/api-test-project&quot;.</span>
 <span class="sd">            client_event (Union[dict, ~google.cloud.talent_v4beta1.types.ClientEvent]): Required.</span>
 
 <span class="sd">                Events issued when end user interacts with customer&#39;s application that</span>
@@ -286,6 +298,19 @@
         <span class="n">request</span> <span class="o">=</span> <span class="n">event_service_pb2</span><span class="o">.</span><span class="n">CreateClientEventRequest</span><span class="p">(</span>
             <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">client_event</span><span class="o">=</span><span class="n">client_event</span>
         <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;parent&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;create_client_event&quot;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
         <span class="p">)</span></div>

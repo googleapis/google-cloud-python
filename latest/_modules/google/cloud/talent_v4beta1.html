@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.talent_v4beta1 &#8212; google-cloud 247e71e documentation</title>
+    <title>google.cloud.talent_v4beta1 &#8212; google-cloud 26bae96 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -53,14 +53,19 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1</span> <span class="k">import</span> <span class="n">types</span>
+<span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.gapic</span> <span class="k">import</span> <span class="n">application_service_client</span>
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.gapic</span> <span class="k">import</span> <span class="n">company_service_client</span>
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.gapic</span> <span class="k">import</span> <span class="n">completion_client</span>
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.gapic</span> <span class="k">import</span> <span class="n">enums</span>
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.gapic</span> <span class="k">import</span> <span class="n">event_service_client</span>
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.gapic</span> <span class="k">import</span> <span class="n">job_service_client</span>
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.gapic</span> <span class="k">import</span> <span class="n">profile_service_client</span>
-<span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.gapic</span> <span class="k">import</span> <span class="n">resume_service_client</span>
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.gapic</span> <span class="k">import</span> <span class="n">tenant_service_client</span>
+
+
+<div class="viewcode-block" id="ApplicationServiceClient"><a class="viewcode-back" href="../../../talent/gapic/v4beta1/api.html#google.cloud.talent_v4beta1.ApplicationServiceClient">[docs]</a><span class="k">class</span> <span class="nc">ApplicationServiceClient</span><span class="p">(</span><span class="n">application_service_client</span><span class="o">.</span><span class="n">ApplicationServiceClient</span><span class="p">):</span>
+    <span class="vm">__doc__</span> <span class="o">=</span> <span class="n">application_service_client</span><span class="o">.</span><span class="n">ApplicationServiceClient</span><span class="o">.</span><span class="vm">__doc__</span>
+    <span class="n">enums</span> <span class="o">=</span> <span class="n">enums</span></div>
 
 
 <div class="viewcode-block" id="CompanyServiceClient"><a class="viewcode-back" href="../../../talent/gapic/v4beta1/api.html#google.cloud.talent_v4beta1.CompanyServiceClient">[docs]</a><span class="k">class</span> <span class="nc">CompanyServiceClient</span><span class="p">(</span><span class="n">company_service_client</span><span class="o">.</span><span class="n">CompanyServiceClient</span><span class="p">):</span>
@@ -88,11 +93,6 @@
     <span class="n">enums</span> <span class="o">=</span> <span class="n">enums</span></div>
 
 
-<div class="viewcode-block" id="ResumeServiceClient"><a class="viewcode-back" href="../../../talent/gapic/v4beta1/api.html#google.cloud.talent_v4beta1.ResumeServiceClient">[docs]</a><span class="k">class</span> <span class="nc">ResumeServiceClient</span><span class="p">(</span><span class="n">resume_service_client</span><span class="o">.</span><span class="n">ResumeServiceClient</span><span class="p">):</span>
-    <span class="vm">__doc__</span> <span class="o">=</span> <span class="n">resume_service_client</span><span class="o">.</span><span class="n">ResumeServiceClient</span><span class="o">.</span><span class="vm">__doc__</span>
-    <span class="n">enums</span> <span class="o">=</span> <span class="n">enums</span></div>
-
-
 <div class="viewcode-block" id="TenantServiceClient"><a class="viewcode-back" href="../../../talent/gapic/v4beta1/api.html#google.cloud.talent_v4beta1.TenantServiceClient">[docs]</a><span class="k">class</span> <span class="nc">TenantServiceClient</span><span class="p">(</span><span class="n">tenant_service_client</span><span class="o">.</span><span class="n">TenantServiceClient</span><span class="p">):</span>
     <span class="vm">__doc__</span> <span class="o">=</span> <span class="n">tenant_service_client</span><span class="o">.</span><span class="n">TenantServiceClient</span><span class="o">.</span><span class="vm">__doc__</span>
     <span class="n">enums</span> <span class="o">=</span> <span class="n">enums</span></div>
@@ -101,12 +101,12 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span>
     <span class="s2">&quot;enums&quot;</span><span class="p">,</span>
     <span class="s2">&quot;types&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ApplicationServiceClient&quot;</span><span class="p">,</span>
     <span class="s2">&quot;CompanyServiceClient&quot;</span><span class="p">,</span>
     <span class="s2">&quot;CompletionClient&quot;</span><span class="p">,</span>
     <span class="s2">&quot;EventServiceClient&quot;</span><span class="p">,</span>
     <span class="s2">&quot;JobServiceClient&quot;</span><span class="p">,</span>
     <span class="s2">&quot;ProfileServiceClient&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ResumeServiceClient&quot;</span><span class="p">,</span>
     <span class="s2">&quot;TenantServiceClient&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
