@@ -2029,7 +2029,7 @@ class Query:
 
         NOTE:
             This method relies on cursors which are not available for queries
-            that inolve ``OR``, ``!=``, ``IN`` operators. This feature is not
+            that involve ``OR``, ``!=``, ``IN`` operators. This feature is not
             available for those queries.
 
         Args:
