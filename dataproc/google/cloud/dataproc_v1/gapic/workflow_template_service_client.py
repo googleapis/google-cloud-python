@@ -23,6 +23,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.operation
 import google.api_core.operations_v1
@@ -263,6 +264,19 @@ class WorkflowTemplateServiceClient(object):
         request = workflow_templates_pb2.CreateWorkflowTemplateRequest(
             parent=parent, template=template
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_workflow_template"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -331,6 +345,19 @@ class WorkflowTemplateServiceClient(object):
         request = workflow_templates_pb2.GetWorkflowTemplateRequest(
             name=name, version=version
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_workflow_template"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -434,6 +461,19 @@ class WorkflowTemplateServiceClient(object):
         request = workflow_templates_pb2.InstantiateWorkflowTemplateRequest(
             name=name, version=version, request_id=request_id, parameters=parameters
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         operation = self._inner_api_calls["instantiate_workflow_template"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -547,6 +587,19 @@ class WorkflowTemplateServiceClient(object):
         request = workflow_templates_pb2.InstantiateInlineWorkflowTemplateRequest(
             parent=parent, template=template, request_id=request_id
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         operation = self._inner_api_calls["instantiate_inline_workflow_template"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -618,6 +671,19 @@ class WorkflowTemplateServiceClient(object):
         request = workflow_templates_pb2.UpdateWorkflowTemplateRequest(
             template=template
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("template.name", template.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_workflow_template"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -699,6 +765,19 @@ class WorkflowTemplateServiceClient(object):
         request = workflow_templates_pb2.ListWorkflowTemplatesRequest(
             parent=parent, page_size=page_size
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -771,6 +850,19 @@ class WorkflowTemplateServiceClient(object):
         request = workflow_templates_pb2.DeleteWorkflowTemplateRequest(
             name=name, version=version
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_workflow_template"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
