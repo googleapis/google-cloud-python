@@ -1,7 +1,10 @@
 config = {
     "interfaces": {
         "google.cloud.vision.v1p3beta1.ImageAnnotator": {
-            "retry_codes": {"idempotent": ["UNAVAILABLE"], "non_idempotent": []},
+            "retry_codes": {
+                "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
+                "non_idempotent": [],
+            },
             "retry_params": {
                 "default": {
                     "initial_retry_delay_millis": 100,
