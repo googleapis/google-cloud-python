@@ -430,8 +430,6 @@ class PartialRowsData(object):
 
     def _read_next_response(self):
         """Helper for :meth:`__iter__`."""
-        if self.stop:
-            raise StopIteration
         return self.retry(self._read_next, on_error=self._on_error)()
 
     def __iter__(self):
@@ -444,23 +442,24 @@ class PartialRowsData(object):
         while True:
             try:
                 response = self._read_next_response()
+                for chunk in response.chunks:
+                    self._process_chunk(chunk)
+                    if chunk.commit_row:
+                        self.last_scanned_row_key = self._previous_row.row_key
+                        self._counter += 1
+                        yield self._previous_row
             except StopIteration:
                 if self.state != self.NEW_ROW:
                     raise ValueError("The row remains partial / is not committed.")
                 break
-
-            for chunk in response.chunks:
-                self._process_chunk(chunk)
-                if chunk.commit_row:
-                    self.last_scanned_row_key = self._previous_row.row_key
-                    self._counter += 1
-                    yield self._previous_row
 
             resp_last_key = response.last_scanned_row_key
             if resp_last_key and resp_last_key > self.last_scanned_row_key:
                 self.last_scanned_row_key = resp_last_key
 
     def _process_chunk(self, chunk):
+        if self.stop:
+            raise StopIteration
         if chunk.reset_row:
             self._validate_chunk_reset_row(chunk)
             self._row = None
