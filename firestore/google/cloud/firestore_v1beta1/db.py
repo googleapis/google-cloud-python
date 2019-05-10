@@ -60,7 +60,7 @@ class FirestoreModel(object, ABCMeta):
     def __init__(self, __parent__: Type['FirestoreModel'] = None, **data):
         self.__setup_fields()
         self.__model_name = type(self).__name__
-        client = self.__init_client__()
+        client = self.__init_client()
         self.__collection = client.collection(self.__collection_path(__parent__))
         self.id = None
         if "id" in data:
@@ -74,7 +74,7 @@ class FirestoreModel(object, ABCMeta):
     @classmethod
     def __collection_path(cls, __parent__):
         try:
-            sub_collection = cls.__sub_collection__()
+            sub_collection = cls.__sub_collection__
             if isinstance(sub_collection, str):  # In this case the subcollection is just a path
                 return sub_collection + "/" + cls.__name__
             if not issubclass(sub_collection, FirestoreModel):
@@ -86,7 +86,7 @@ class FirestoreModel(object, ABCMeta):
                 raise SubCollectionError("The __parent__ of a subcollection must be of the same instance as "
                                          "the return of `__sub_collection__`")
             return __parent__._reference_path() + "/" + cls.__name__
-        except NotImplementedError:
+        except AttributeError:
             if __parent__:
                 raise Exception("__parent__ provided in a model that doesn't provide a subcollection")
             return cls.__name__
@@ -104,10 +104,10 @@ class FirestoreModel(object, ABCMeta):
         return self.__collection.document(self.id).path()
 
     @classmethod
-    def __init_client__(cls):
+    def __init_client(cls):
         try:
-            project, credentials, database = cls.__database_props__()
-        except NotImplementedError:
+            project, credentials, database = cls.__database_props__
+        except AttributeError:
             project, credentials, database = (None, None, DEFAULT_DATABASE)
         return Client(project=project, credentials=credentials, database=database)
 
@@ -209,7 +209,7 @@ class FirestoreModel(object, ABCMeta):
             FirestoreModel: An instance of the firestore model calling get
             None: If the id provided doesn't exist
         """
-        document = cls.__init_client__().collection(cls.__collection_path(__parent__)).document(id)
+        document = cls.__init_client().collection(cls.__collection_path(__parent__)).document(id)
         data = document.get()
         if not data.exists:
             return None
@@ -228,8 +228,9 @@ class FirestoreModel(object, ABCMeta):
         Returns:
             An iterable query object
         """
-        collection_path = cls.__collection_path(__parent__)
-        return Query(cls, offset, limit, collection_path, __parent__)
+        path = cls.__collection_path(__parent__)
+        collection = cls.__init_client().collection(path)
+        return Query(cls, offset, limit, collection, __parent__)
 
 
 class Query(object):
@@ -239,8 +240,7 @@ class Query(object):
     :class:`~.firestore_v1beta1.client.db.FirestoreModel`
     """
 
-    def __init__(self, model, offset, limit, path, parent):
-        collection = FirestoreModel.__init_client__().collection(path)
+    def __init__(self, model, offset, limit, collection, parent):
         self.__query = collection
         self.parent = parent
         if offset:
@@ -438,7 +438,7 @@ class BytesField(_Field):
 
 class ListField(_Field):
     """A List field"""
-    def __init__(self, field_type: Type[_Field]):
+    def __init__(self, field_type: _Field):
         super(ListField, self).__init__(list, default=[])
         self.field_type = field_type
 
@@ -483,14 +483,25 @@ class BooleanField(_Field):
 
 
 class DateTimeField(_Field):
-    """Holds a date time value"""
-    def __init__(self, default=None, required=False):
+    """
+    Holds a date time value, if `auto_now` is true the value you set will be overwritten with the current server value
+
+    Args:
+        default (datetime)
+        required (bool): Enforce that this field can't be submitted when empty
+        auto_now (bool): Set to the current time every time the model is updated
+        auto_add_now (bool): Set to the current time when a record is created
+    """
+    def __init__(self, default=None, required=False, auto_now=False, auto_add_now=False):
+        if not default and auto_add_now:
+            default = SERVER_TIMESTAMP
         super(DateTimeField, self).__init__((datetime, date), default=default, required=required)
+        self.auto_now = auto_now
 
     def validate(self, value):
         # Return server timestamp as the value
-        if value == SERVER_TIMESTAMP:
-            return value
+        if value == SERVER_TIMESTAMP or self.auto_now:
+            return SERVER_TIMESTAMP
         return super(DateTimeField, self).validate(value)
 
 
