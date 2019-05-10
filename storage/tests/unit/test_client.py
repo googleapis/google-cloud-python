@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import io
 import json
 import unittest
 
@@ -515,6 +516,32 @@ class TestClient(unittest.TestCase):
         )
         json_sent = http.request.call_args_list[0][1]["data"]
         self.assertEqual(json_expected, json.loads(json_sent))
+
+    def test_download_blob_to_file_with_blob(self):
+        project = "PROJECT"
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+        blob = mock.Mock()
+        file_obj = io.BytesIO()
+
+        client.download_blob_to_file(blob, file_obj)
+        blob.download_to_file.assert_called_once_with(
+            file_obj, client=client, start=None, end=None
+        )
+
+    def test_download_blob_to_file_with_uri(self):
+        project = "PROJECT"
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+        blob = mock.Mock()
+        file_obj = io.BytesIO()
+
+        with mock.patch("google.cloud.storage.client.Blob", return_value=blob):
+            client.download_blob_to_file("gs://bucket_name/path/to/object", file_obj)
+
+        blob.download_to_file.assert_called_once_with(
+            file_obj, client=client, start=None, end=None
+        )
 
     def test_list_buckets_wo_project(self):
         CREDENTIALS = _make_credentials()

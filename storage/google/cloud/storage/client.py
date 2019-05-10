@@ -14,6 +14,7 @@
 
 """Client for interacting with the Google Cloud Storage API."""
 
+from six.moves.urllib.parse import urlsplit
 
 from google.auth.credentials import AnonymousCredentials
 
@@ -24,6 +25,7 @@ from google.cloud.exceptions import NotFound
 from google.cloud.storage._http import Connection
 from google.cloud.storage.batch import Batch
 from google.cloud.storage.bucket import Bucket
+from google.cloud.storage.blob import Blob
 
 
 _marker = object()
@@ -308,6 +310,16 @@ class Client(ClientWithProject):
             bucket.requester_pays = requester_pays
         bucket.create(client=self, project=project)
         return bucket
+
+    def download_blob_to_file(self, blob_or_uri, file_obj, start=None, end=None):
+        try:
+            blob_or_uri.download_to_file(file_obj, client=self, start=start, end=end)
+        except AttributeError:
+            scheme, netloc, path, query, frag = urlsplit(blob_or_uri)
+            bucket = Bucket(self, name=netloc)
+            blob_or_uri = Blob(path, bucket)
+
+            blob_or_uri.download_to_file(file_obj, client=self, start=start, end=end)
 
     def list_buckets(
         self,
