@@ -53,6 +53,11 @@ class CloudRedisStub(object):
             request_serializer=google_dot_cloud_dot_redis__v1beta1_dot_proto_dot_cloud__redis__pb2.UpdateInstanceRequest.SerializeToString,
             response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
         )
+        self.FailoverInstance = channel.unary_unary(
+            "/google.cloud.redis.v1beta1.CloudRedis/FailoverInstance",
+            request_serializer=google_dot_cloud_dot_redis__v1beta1_dot_proto_dot_cloud__redis__pb2.FailoverInstanceRequest.SerializeToString,
+            response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
+        )
         self.DeleteInstance = channel.unary_unary(
             "/google.cloud.redis.v1beta1.CloudRedis/DeleteInstance",
             request_serializer=google_dot_cloud_dot_redis__v1beta1_dot_proto_dot_cloud__redis__pb2.DeleteInstanceRequest.SerializeToString,
@@ -102,7 +107,7 @@ class CloudRedisServicer(object):
     def CreateInstance(self, request, context):
         """Creates a Redis instance based on the specified tier and memory size.
 
-    By default, the instance is peered to the project's
+    By default, the instance is accessible from the project's
     [default network](/compute/docs/networks-and-firewalls#networks).
 
     The creation is executed asynchronously and callers may check the returned
@@ -123,6 +128,14 @@ class CloudRedisServicer(object):
     Completed longrunning.Operation will contain the new instance object
     in the response field. The returned operation is automatically deleted
     after a few hours, so there is no need to call DeleteOperation.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def FailoverInstance(self, request, context):
+        """Failover the master role to current replica node against a specific
+    STANDARD tier redis instance.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -157,6 +170,11 @@ def add_CloudRedisServicer_to_server(servicer, server):
         "UpdateInstance": grpc.unary_unary_rpc_method_handler(
             servicer.UpdateInstance,
             request_deserializer=google_dot_cloud_dot_redis__v1beta1_dot_proto_dot_cloud__redis__pb2.UpdateInstanceRequest.FromString,
+            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
+        ),
+        "FailoverInstance": grpc.unary_unary_rpc_method_handler(
+            servicer.FailoverInstance,
+            request_deserializer=google_dot_cloud_dot_redis__v1beta1_dot_proto_dot_cloud__redis__pb2.FailoverInstanceRequest.FromString,
             response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
         ),
         "DeleteInstance": grpc.unary_unary_rpc_method_handler(
