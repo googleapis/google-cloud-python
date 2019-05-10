@@ -1,4 +1,4 @@
-.. include:: /../scheduler/README.rst
+.. include:: README.rst
 
 This package includes clients for multiple versions of the Cloud Scheduler
 API. By default, you will get ``v1``, the latest stable version.
