@@ -443,6 +443,8 @@ class PartialRowsData(object):
             try:
                 response = self._read_next_response()
                 for chunk in response.chunks:
+                    if self.stop:
+                        raise StopIteration
                     self._process_chunk(chunk)
                     if chunk.commit_row:
                         self.last_scanned_row_key = self._previous_row.row_key
@@ -458,8 +460,6 @@ class PartialRowsData(object):
                 self.last_scanned_row_key = resp_last_key
 
     def _process_chunk(self, chunk):
-        if self.stop:
-            raise StopIteration
         if chunk.reset_row:
             self._validate_chunk_reset_row(chunk)
             self._row = None
