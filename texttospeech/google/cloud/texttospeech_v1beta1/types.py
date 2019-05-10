@@ -19,11 +19,9 @@ import sys
 
 from google.api_core.protobuf_helpers import get_messages
 
-from google.api import http_pb2
 from google.cloud.texttospeech_v1beta1.proto import cloud_tts_pb2
-from google.protobuf import descriptor_pb2
 
-_shared_modules = [http_pb2, descriptor_pb2]
+_shared_modules = []
 
 _local_modules = [cloud_tts_pb2]
 
