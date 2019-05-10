@@ -45,6 +45,7 @@ from google.cloud.ndb import _datastore_types
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
 from google.cloud.ndb import _options
+from google.cloud.ndb import _transaction
 from google.cloud.ndb import tasklets
 
 
@@ -91,8 +92,6 @@ __all__ = [
     "MetaModel",
     "Model",
     "Expando",
-    "transaction",
-    "transaction_async",
     "transactional",
     "transactional_async",
     "transactional_tasklet",
@@ -4348,7 +4347,7 @@ class Model(metaclass=MetaModel):
                 operation.
 
         Returns:
-            tuple[key.Key]: Keys for the newly allocated IDs.
+            Optional[Model]: The retrieved entity, if one is found.
         """
         return cls._get_by_id_async(
             id,
@@ -4431,7 +4430,8 @@ class Model(metaclass=MetaModel):
                 operation.
 
         Returns:
-            tasklets.Future: tuple[key.Key]: Keys for the newly allocated IDs.
+            tasklets.Future: Optional[Model]: The retrieved entity, if one is
+                found.
         """
         if app:
             if project:
@@ -4456,20 +4456,243 @@ class Model(metaclass=MetaModel):
 
     get_by_id_async = _get_by_id_async
 
+    @classmethod
+    @_options.ReadOptions.options
+    def _get_or_insert(
+        cls,
+        name,
+        parent=None,
+        namespace=None,
+        project=None,
+        app=None,
+        *,
+        read_consistency=None,
+        read_policy=None,
+        transaction=None,
+        retries=None,
+        timeout=None,
+        deadline=None,
+        force_writes=None,
+        use_cache=None,
+        use_memcache=None,
+        use_datastore=None,
+        memcache_timeout=None,
+        max_memcache_items=None,
+        _options=None,
+        **kw_model_args,
+    ):
+        """Transactionally retrieves an existing entity or creates a new one.
+
+        Will attempt to look up an entity with the given ``name`` and
+        ``parent``. If none is found a new entity will be created using the
+        given ``name`` and ``parent``, and passing any ``kw_model_args`` to the
+        constructor the ``Model`` class.
+
+        If not already in a transaction, a new transaction will be created and
+        this operation will be run in that transaction.
+
+        Args:
+            name (str): Name of the entity to load or create.
+            parent (Optional[key.Key]): Key for the parent of the entity to
+                load.
+            namespace (Optional[str]): Namespace for the entity to load. If not
+                passed, uses the client's value.
+            project (Optional[str]): Project id for the entity to load. If not
+                passed, uses the client's value.
+            app (str): DEPRECATED: Synonym for `project`.
+            **kw_model_args: Keyword arguments to pass to the constructor of
+                the model class if an instance for the specified key name does
+                not already exist. If an instance with the supplied ``name``
+                and ``parent`` already exists, these arguments will be
+                discarded.
+            read_consistency: Set this to ``ndb.EVENTUAL`` if, instead of
+                waiting for the Datastore to finish applying changes to all
+                returned results, you wish to get possibly-not-current results
+                faster. You can't do this if using a transaction.
+            read_policy: DEPRECATED: Synonym for ``read_consistency``.
+            transaction (bytes): Any results returned will be consistent with
+                the Datastore state represented by this transaction id.
+                Defaults to the currently running transaction. Cannot be used
+                with ``read_consistency=ndb.EVENTUAL``.
+            retries (int): Number of times to retry this operation in the case
+                of transient server errors. Operation will potentially be tried
+                up to ``retries`` + 1 times. Set to ``0`` to try operation only
+                once, with no retries.
+            timeout (float): Override the gRPC timeout, in seconds.
+            deadline (float): DEPRECATED: Synonym for ``timeout``.
+            force_writes (bool): Specifies whether a write request should
+                succeed even if the app is read-only. (This only applies to
+                user controlled read-only periods.)
+            use_cache (bool): Specifies whether to store entities in in-process
+                cache; overrides in-process cache policy for this operation.
+            use_memcache (bool): Specifies whether to store entities in
+                memcache; overrides memcache policy for this operation.
+            use_datastore (bool): Specifies whether to store entities in
+                Datastore; overrides Datastore policy for this operation.
+            memcache_timeout (int): Maximum lifetime for entities in memcache;
+                overrides memcache timeout policy for this operation.
+            max_memcache_items (int): Maximum batch size for the auto-batching
+                feature of the Context memcache methods. For example, with the
+                default size of max_memcache_items (100), up to 100 memcache
+                set operations will be combined into a single set_multi
+                operation.
+
+        Returns:
+            Model: The entity that was either just retrieved or created.
+        """
+        return cls._get_or_insert_async(
+            name,
+            parent=parent,
+            namespace=namespace,
+            project=project,
+            app=app,
+            _options=_options,
+            **kw_model_args,
+        ).result()
+
+    get_or_insert = _get_or_insert
+
+    @classmethod
+    @_options.ReadOptions.options
+    def _get_or_insert_async(
+        cls,
+        name,
+        parent=None,
+        namespace=None,
+        project=None,
+        app=None,
+        *,
+        read_consistency=None,
+        read_policy=None,
+        transaction=None,
+        retries=None,
+        timeout=None,
+        deadline=None,
+        force_writes=None,
+        use_cache=None,
+        use_memcache=None,
+        use_datastore=None,
+        memcache_timeout=None,
+        max_memcache_items=None,
+        _options=None,
+        **kw_model_args,
+    ):
+        """Transactionally retrieves an existing entity or creates a new one.
+
+        This is the asynchronous version of :meth:``_get_or_insert``.
+
+        Args:
+            name (str): Name of the entity to load or create.
+            parent (Optional[key.Key]): Key for the parent of the entity to
+                load.
+            namespace (Optional[str]): Namespace for the entity to load. If not
+                passed, uses the client's value.
+            project (Optional[str]): Project id for the entity to load. If not
+                passed, uses the client's value.
+            app (str): DEPRECATED: Synonym for `project`.
+            **kw_model_args: Keyword arguments to pass to the constructor of
+                the model class if an instance for the specified key name does
+                not already exist. If an instance with the supplied ``name``
+                and ``parent`` already exists, these arguments will be
+                discarded.
+            read_consistency: Set this to ``ndb.EVENTUAL`` if, instead of
+                waiting for the Datastore to finish applying changes to all
+                returned results, you wish to get possibly-not-current results
+                faster. You can't do this if using a transaction.
+            read_policy: DEPRECATED: Synonym for ``read_consistency``.
+            transaction (bytes): Any results returned will be consistent with
+                the Datastore state represented by this transaction id.
+                Defaults to the currently running transaction. Cannot be used
+                with ``read_consistency=ndb.EVENTUAL``.
+            retries (int): Number of times to retry this operation in the case
+                of transient server errors. Operation will potentially be tried
+                up to ``retries`` + 1 times. Set to ``0`` to try operation only
+                once, with no retries.
+            timeout (float): Override the gRPC timeout, in seconds.
+            deadline (float): DEPRECATED: Synonym for ``timeout``.
+            force_writes (bool): Specifies whether a write request should
+                succeed even if the app is read-only. (This only applies to
+                user controlled read-only periods.)
+            use_cache (bool): Specifies whether to store entities in in-process
+                cache; overrides in-process cache policy for this operation.
+            use_memcache (bool): Specifies whether to store entities in
+                memcache; overrides memcache policy for this operation.
+            use_datastore (bool): Specifies whether to store entities in
+                Datastore; overrides Datastore policy for this operation.
+            memcache_timeout (int): Maximum lifetime for entities in memcache;
+                overrides memcache timeout policy for this operation.
+            max_memcache_items (int): Maximum batch size for the auto-batching
+                feature of the Context memcache methods. For example, with the
+                default size of max_memcache_items (100), up to 100 memcache
+                set operations will be combined into a single set_multi
+                operation.
+
+        Returns:
+            tasklets.Future: Model: The entity that was either just retrieved
+                or created.
+        """
+        if not isinstance(name, str):
+            raise TypeError(
+                "'name' must be a string; received {!r}".format(name)
+            )
+
+        elif not name:
+            raise TypeError("'name' must not be an empty string.")
+
+        if app:
+            if project:
+                raise TypeError(
+                    "Can't pass 'app' and 'project' arguments together."
+                )
+
+            project = app
+
+        # Key class is weird about keyword args. If you want it to use defaults
+        # you have to not pass them at all.
+        key_args = {}
+
+        if project:
+            key_args["app"] = project
+
+        if namespace:
+            key_args["namespace"] = namespace
+
+        key = key_module.Key(cls._get_kind(), name, parent=parent, **key_args)
+
+        @tasklets.tasklet
+        def get_or_insert():
+            @tasklets.tasklet
+            def insert():
+                entity = cls(**kw_model_args)
+                entity._key = key
+                yield entity.put_async(_options=_options)
+
+                return entity
+
+            # We don't need to start a transaction just to check if the entity
+            # exists already
+            entity = yield key.get_async(_options=_options)
+            if entity is not None:
+                return entity
+
+            if _transaction.in_transaction():
+                entity = yield insert()
+
+            else:
+                entity = yield _transaction.transaction_async(insert)
+
+            return entity
+
+        return get_or_insert()
+
+    get_or_insert_async = _get_or_insert_async
+
 
 class Expando(Model):
     __slots__ = ()
 
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
-
-
-def transaction(*args, **kwargs):
-    raise NotImplementedError
-
-
-def transaction_async(*args, **kwargs):
-    raise NotImplementedError
 
 
 def transactional(*args, **kwargs):

@@ -654,8 +654,15 @@ class _TransactionalCommitBatch(_NonTransactionalCommitBatch):
             timeout (float): Timeout, in seconds, to pass to gRPC call. If
                 :data:`None` is passed, will use :data:`_DEFAULT_TIMEOUT`.
         """
-        if not self.mutations:
-            return
+        # It's tempting to do something like:
+        #
+        #     if not self.mutations:
+        #         return
+        #
+        # However, even if there are no mutations to save, we still need to
+        # send a COMMIT to the Datastore. It would appear that failing to do so
+        # will make subsequent writes hang indefinitely as Datastore apparently
+        # achieves consistency during a transaction by preventing writes.
 
         # Wait for any calls to AllocateIds that have been fired off so we
         # don't allocate ids again in the commit.

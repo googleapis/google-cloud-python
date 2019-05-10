@@ -720,17 +720,6 @@ class Test__TransactionalCommitBatch:
             assert allocating_ids.result() is None
 
     @staticmethod
-    def test_commit_nothing_to_do(in_context):
-        batch = _api._TransactionalCommitBatch(b"123", _options.Options())
-
-        eventloop = mock.Mock(spec=("queue_rpc", "run"))
-        with in_context.new(eventloop=eventloop).use():
-            future = batch.commit()
-            eventloop.queue_rpc.assert_not_called()
-
-        assert future.result() is None
-
-    @staticmethod
     @mock.patch("google.cloud.ndb._datastore_api._process_commit")
     @mock.patch("google.cloud.ndb._datastore_api._datastore_commit")
     def test_commit(datastore_commit, process_commit, in_context):

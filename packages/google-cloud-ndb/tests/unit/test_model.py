@@ -3178,6 +3178,175 @@ class TestModel:
 
         key.get_async.assert_called_once_with(_options=_options.ReadOptions())
 
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.model.key_module")
+    def test_get_or_insert_get(key_module):
+        entity = object()
+        key = key_module.Key.return_value
+        key.get_async.return_value = utils.future_result(entity)
+
+        class Simple(model.Model):
+            foo = model.IntegerProperty()
+
+        assert Simple.get_or_insert("one", foo=42) is entity
+
+        key_module.Key.assert_called_once_with("Simple", "one", parent=None)
+
+        key.get_async.assert_called_once_with(_options=_options.ReadOptions())
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.model.key_module")
+    def test_get_or_insert_get_w_app(key_module):
+        entity = object()
+        key = key_module.Key.return_value
+        key.get_async.return_value = utils.future_result(entity)
+
+        class Simple(model.Model):
+            foo = model.IntegerProperty()
+
+        assert Simple.get_or_insert("one", foo=42, app="himom") is entity
+
+        key_module.Key.assert_called_once_with(
+            "Simple", "one", parent=None, app="himom"
+        )
+
+        key.get_async.assert_called_once_with(_options=_options.ReadOptions())
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.model.key_module")
+    def test_get_or_insert_get_w_namespace(key_module):
+        entity = object()
+        key = key_module.Key.return_value
+        key.get_async.return_value = utils.future_result(entity)
+
+        class Simple(model.Model):
+            foo = model.IntegerProperty()
+
+        assert Simple.get_or_insert("one", foo=42, namespace="himom") is entity
+
+        key_module.Key.assert_called_once_with(
+            "Simple", "one", parent=None, namespace="himom"
+        )
+
+        key.get_async.assert_called_once_with(_options=_options.ReadOptions())
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_get_or_insert_get_w_app_and_project():
+        class Simple(model.Model):
+            foo = model.IntegerProperty()
+
+        with pytest.raises(TypeError):
+            Simple.get_or_insert("one", foo=42, app="himom", project="hidad")
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_get_or_insert_get_w_id_instead_of_name():
+        class Simple(model.Model):
+            foo = model.IntegerProperty()
+
+        with pytest.raises(TypeError):
+            Simple.get_or_insert(1, foo=42)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_get_or_insert_get_w_empty_name():
+        class Simple(model.Model):
+            foo = model.IntegerProperty()
+
+        with pytest.raises(TypeError):
+            Simple.get_or_insert("", foo=42)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.model._transaction")
+    @unittest.mock.patch("google.cloud.ndb.model.key_module")
+    def test_get_or_insert_insert_in_transaction(
+        patched_key_module, _transaction
+    ):
+        class MockKey(key_module.Key):
+            get_async = unittest.mock.Mock(
+                return_value=utils.future_result(None)
+            )
+
+        patched_key_module.Key = MockKey
+
+        class Simple(model.Model):
+            foo = model.IntegerProperty()
+
+            put_async = unittest.mock.Mock(
+                return_value=utils.future_result(None)
+            )
+
+        _transaction.in_transaction.return_value = True
+
+        entity = Simple.get_or_insert("one", foo=42)
+        assert entity.foo == 42
+        assert entity._key == MockKey("Simple", "one")
+        assert entity.put_async.called_once_with(
+            _options=_options.ReadOptions()
+        )
+
+        entity._key.get_async.assert_called_once_with(
+            _options=_options.ReadOptions()
+        )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.model._transaction")
+    @unittest.mock.patch("google.cloud.ndb.model.key_module")
+    def test_get_or_insert_insert_not_in_transaction(
+        patched_key_module, _transaction
+    ):
+        class MockKey(key_module.Key):
+            get_async = unittest.mock.Mock(
+                return_value=utils.future_result(None)
+            )
+
+        patched_key_module.Key = MockKey
+
+        class Simple(model.Model):
+            foo = model.IntegerProperty()
+
+            put_async = unittest.mock.Mock(
+                return_value=utils.future_result(None)
+            )
+
+        _transaction.in_transaction.return_value = False
+        _transaction.transaction_async = lambda f: f()
+
+        entity = Simple.get_or_insert("one", foo=42)
+        assert entity.foo == 42
+        assert entity._key == MockKey("Simple", "one")
+        assert entity.put_async.called_once_with(
+            _options=_options.ReadOptions()
+        )
+
+        entity._key.get_async.assert_called_once_with(
+            _options=_options.ReadOptions()
+        )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.model.key_module")
+    def test_get_or_insert_async(key_module):
+        entity = object()
+        key = key_module.Key.return_value
+        key.get_async.return_value = utils.future_result(entity)
+
+        class Simple(model.Model):
+            foo = model.IntegerProperty()
+
+        future = Simple.get_or_insert_async("one", foo=42)
+        assert future.result() is entity
+
+        key_module.Key.assert_called_once_with("Simple", "one", parent=None)
+
+        key.get_async.assert_called_once_with(_options=_options.ReadOptions())
+
 
 class Test_entity_from_protobuf:
     @staticmethod
@@ -3334,16 +3503,6 @@ class TestExpando:
     def test_constructor():
         with pytest.raises(NotImplementedError):
             model.Expando()
-
-
-def test_transaction():
-    with pytest.raises(NotImplementedError):
-        model.transaction()
-
-
-def test_transaction_async():
-    with pytest.raises(NotImplementedError):
-        model.transaction_async()
 
 
 def test_transactional():

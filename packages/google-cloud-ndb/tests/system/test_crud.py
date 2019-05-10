@@ -286,3 +286,46 @@ def test_get_by_id(ds_entity):
 
     entity = SomeKind.get_by_id(entity_id)
     assert entity.foo == 42
+
+
+@pytest.mark.usefixtures("client_context")
+def test_get_or_insert_get(ds_entity):
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    name = "Inigo Montoya"
+    assert SomeKind.get_by_id(name) is None
+
+    ds_entity(KIND, name, foo=42)
+    entity = SomeKind.get_or_insert(name, foo=21)
+    assert entity.foo == 42
+
+
+@pytest.mark.usefixtures("client_context")
+def test_get_or_insert_insert(dispose_of):
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    name = "Inigo Montoya"
+    assert SomeKind.get_by_id(name) is None
+
+    entity = SomeKind.get_or_insert(name, foo=21)
+    assert entity.foo == 21
+
+    dispose_of(entity._key._key)
+
+
+@pytest.mark.usefixtures("client_context")
+def test_get_or_insert_get_in_transaction(ds_entity):
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    name = "Inigo Montoya"
+    assert SomeKind.get_by_id(name) is None
+
+    def do_the_thing():
+        ds_entity(KIND, name, foo=42)
+        return SomeKind.get_or_insert(name, foo=21)
+
+    entity = ndb.transaction(do_the_thing)
+    assert entity.foo == 42
