@@ -312,6 +312,21 @@ class Client(ClientWithProject):
         return bucket
 
     def download_blob_to_file(self, blob_or_uri, file_obj, start=None, end=None):
+        """Download the contents of a blob object or blob URI into a file-like object.
+
+        Args:
+            blob_or_uri (Union[ \
+                :class:`~google.cloud.storage.blob.Blob`, \
+                 str, \
+            ]):
+                The blob resource to pass or URI to download.
+            file_obj (file):
+                A file handle to which to write the blob's data.
+            start (int):
+                Optional, the first byte in a range to be downloaded.
+            end (int):
+                Optional, The last byte in a range to be downloaded.
+        """
         try:
             blob_or_uri.download_to_file(file_obj, client=self, start=start, end=end)
         except AttributeError:
