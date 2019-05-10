@@ -462,17 +462,30 @@ class ReferenceField(_Field):
         return self.model.__database_path__
 
 
-class JSONField(_Field):
-    """Holds a dictionary of JSON serializable field data"""
+class DictField(_Field):
+    """
+    Holds an Dictionary of JSON serializable field data usually
+
+    The value of this field can be a dict or a valid json string. The string will be converted to a dict
+    """
     def __init__(self, required=False, default=None):
-        super(JSONField, self).__init__((dict, list), required=required, default=default)
+        super(DictField, self).__init__(dict, required=required, default=default)
 
     def validate(self, value):
-        value = super(JSONField, self).validate(value)
+        # Accept valid JSON as a value
+        if isinstance(value, str) and value:
+            try:
+                value = json.loads(value)
+            except json.JSONDecodeError:
+                raise InvalidValueError(self, value)
+        value = super(DictField, self).validate(value)
         if not value:
             return value
         # This will raise any errors if the data is not convertible to valid JSON
-        json.dumps(value)
+        try:
+            json.dumps(value)
+        except TypeError:
+            raise InvalidValueError(self, value)
         return value
 
 
