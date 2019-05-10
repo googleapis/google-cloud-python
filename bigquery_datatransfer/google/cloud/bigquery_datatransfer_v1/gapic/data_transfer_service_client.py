@@ -85,15 +85,6 @@ class DataTransferServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def project_data_source_path(cls, project, data_source):
-        """Return a fully-qualified project_data_source string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/dataSources/{data_source}",
-            project=project,
-            data_source=data_source,
-        )
-
-    @classmethod
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
@@ -101,12 +92,12 @@ class DataTransferServiceClient(object):
         )
 
     @classmethod
-    def project_transfer_config_path(cls, project, transfer_config):
-        """Return a fully-qualified project_transfer_config string."""
+    def project_data_source_path(cls, project, data_source):
+        """Return a fully-qualified project_data_source string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/transferConfigs/{transfer_config}",
+            "projects/{project}/dataSources/{data_source}",
             project=project,
-            transfer_config=transfer_config,
+            data_source=data_source,
         )
 
     @classmethod
@@ -117,6 +108,15 @@ class DataTransferServiceClient(object):
             project=project,
             transfer_config=transfer_config,
             run=run,
+        )
+
+    @classmethod
+    def project_transfer_config_path(cls, project, transfer_config):
+        """Return a fully-qualified project_transfer_config string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/transferConfigs/{transfer_config}",
+            project=project,
+            transfer_config=transfer_config,
         )
 
     def __init__(
