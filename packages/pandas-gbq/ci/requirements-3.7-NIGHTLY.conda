@@ -1,0 +1,7 @@
+pydata-google-auth
+google-cloud-bigquery==1.10.0
+pytest
+pytest-cov
+codecov
+coverage
+flake8
