@@ -33,10 +33,7 @@ LABEL_FILE = os.path.join(_SYS_TESTS_DIR, "data", "car.jpg")
 LANDMARK_FILE = os.path.join(_SYS_TESTS_DIR, "data", "landmark.jpg")
 TEXT_FILE = os.path.join(_SYS_TESTS_DIR, "data", "text.jpg")
 FULL_TEXT_FILE = os.path.join(_SYS_TESTS_DIR, "data", "full-text.jpg")
-USER_PROJECT = os.environ.get("GOOGLE_CLOUD_TESTS_USER_PROJECT")
-# Valid locations include 'us-west1', 'us-east1', 'asia-east1', 'europe-west1'
-LOCATION = os.environ.get("GOOGLE_CLOUD_TESTS_LOCATION")
-
+PROJECT_ID = os.environ.get("PROJECT_ID")
 
 
 class VisionSystemTestBase(unittest.TestCase):
@@ -124,13 +121,13 @@ class TestVisionClientLogo(VisionSystemTestBase):
         assert response.logo_annotations[0].description == "google"
 
 
-@unittest.skipUnless(USER_PROJECT, "USER_PROJECT not set in environment.")
-@unittest.skipUnless(LOCATION, "LOCATION not set in environment.")
+@unittest.skipUnless(PROJECT_ID, "PROJECT_ID not set in environment.")
 class TestVisionClientProductSearch(VisionSystemTestBase):
     def setUp(self):
         self.product_sets_to_delete = []
+        self.location = "us-west1"
         self.location_path = self.ps_client.location_path(
-            project=USER_PROJECT, location=LOCATION
+            project=PROJECT_ID, location=self.location
         )
 
     def tearDown(self):
@@ -139,11 +136,11 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
 
     def test_create_product_set(self):
         product_set = vision.types.ProductSet(
-            display_name='display name')
+            display_name="display name")
         product_set_id = "set" + unique_resource_id()
         product_set_path = self.ps_client.product_set_path(
-            project=USER_PROJECT, 
-            location=LOCATION, 
+            project=PROJECT_ID, 
+            location=self.location, 
             product_set=product_set_id
         )
         self.product_sets_to_delete.append(product_set_path)
@@ -156,11 +153,11 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
 
     def test_get_product_set(self):
         product_set = vision.types.ProductSet(
-            display_name='display name')
+            display_name="display name")
         product_set_id = "set" + unique_resource_id()
         product_set_path = self.ps_client.product_set_path(
-            project=USER_PROJECT, 
-            location=LOCATION, 
+            project=PROJECT_ID, 
+            location=self.location, 
             product_set=product_set_id
         )
         self.product_sets_to_delete.append(product_set_path)
@@ -177,11 +174,11 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
 
     def test_list_product_sets(self):
         product_set = vision.types.ProductSet(
-            display_name='display name')
+            display_name="display name")
         product_set_id = "set" + unique_resource_id()
         product_set_path = self.ps_client.product_set_path(
-            project=USER_PROJECT, 
-            location=LOCATION, 
+            project=PROJECT_ID, 
+            location=self.location, 
             product_set=product_set_id
         )
         self.product_sets_to_delete.append(product_set_path)
@@ -198,11 +195,11 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
 
     def test_update_product_set(self):
         product_set = vision.types.ProductSet(
-            display_name='display name')
+            display_name="display name")
         product_set_id = "set" + unique_resource_id()
         product_set_path = self.ps_client.product_set_path(
-            project=USER_PROJECT, 
-            location=LOCATION, 
+            project=PROJECT_ID, 
+            location=self.location, 
             product_set=product_set_id
         )
         self.product_sets_to_delete.append(product_set_path)
@@ -212,12 +209,12 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
             product_set_id=product_set_id
         )
         self.assertEqual(response.name, product_set_path)
-        new_display_name = 'updated name'
+        new_display_name = "updated name"
         updated_product_set_request = vision.types.ProductSet(
             name=product_set_path,
             display_name=new_display_name
         )
-        update_mask = vision.types.FieldMask(paths=['display_name'])
+        update_mask = vision.types.FieldMask(paths=["display_name"])
         updated_product_set = self.ps_client.update_product_set(
             product_set=updated_product_set_request, 
             update_mask=update_mask
