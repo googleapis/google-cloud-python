@@ -22,7 +22,6 @@ In a nutshell this library implements:
 from google.cloud.firestore_v1beta1.client import Client, DEFAULT_DATABASE
 from google.cloud.firestore_v1beta1.query import Query as FSQuery
 from google.cloud.firestore_v1beta1 import SERVER_TIMESTAMP
-from abc import ABCMeta
 import json
 from datetime import datetime, date
 
@@ -45,7 +44,7 @@ class _Field(object):
         return value
 
 
-class FirestoreModel(object, ABCMeta):
+class FirestoreModel(object):
     """Creates a firestore document under the collection [YourModel]
 
     Args:
