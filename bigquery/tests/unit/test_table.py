@@ -1947,6 +1947,51 @@ class TestRowIterator(unittest.TestCase):
     @unittest.skipIf(
         bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
     )
+    def test_to_dataframe_w_bqstorage_multiple_streams_return_unique_index(self):
+        from google.cloud.bigquery import schema
+        from google.cloud.bigquery import table as mut
+        from google.cloud.bigquery_storage_v1beta1 import reader
+
+        streams = [
+            {"name": "/projects/proj/dataset/dset/tables/tbl/streams/1234"},
+            {"name": "/projects/proj/dataset/dset/tables/tbl/streams/5678"},
+        ]
+        session = bigquery_storage_v1beta1.types.ReadSession(streams=streams)
+        session.avro_schema.schema = json.dumps({"fields": [{"name": "colA"}]})
+
+        bqstorage_client = mock.create_autospec(
+            bigquery_storage_v1beta1.BigQueryStorageClient)
+        bqstorage_client.create_read_session.return_value = session
+
+        mock_rowstream = mock.create_autospec(reader.ReadRowsStream)
+        bqstorage_client.read_rows.return_value = mock_rowstream
+
+        mock_rows = mock.create_autospec(reader.ReadRowsIterable)
+        mock_rowstream.rows.return_value = mock_rows
+
+        page_data_frame = pandas.DataFrame(
+            [{"colA": 1}, {"colA": -1}], columns=["colA"])
+        mock_page = mock.create_autospec(reader.ReadRowsPage)
+        mock_page.to_dataframe.return_value = page_data_frame
+        mock_pages = (mock_page, mock_page, mock_page)
+        type(mock_rows).pages = mock.PropertyMock(return_value=mock_pages)
+
+        row_iterator = self._make_one(
+            schema=[schema.SchemaField("colA", "IGNORED")],
+            table=mut.TableReference.from_string("proj.dset.tbl"),
+        )
+        got = row_iterator.to_dataframe(bqstorage_client=bqstorage_client)
+
+        self.assertEqual(list(got), ["colA"])
+        total_pages = len(streams) * len(mock_pages)
+        total_rows = len(page_data_frame) * total_pages
+        self.assertEqual(len(got.index), total_rows)
+        self.assertTrue(got.index.is_unique)
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(
+        bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+    )
     @unittest.skipIf(tqdm is None, "Requires `tqdm`")
     @mock.patch("tqdm.tqdm")
     def test_to_dataframe_w_bqstorage_updates_progress_bar(self, tqdm_mock):
@@ -2137,6 +2182,28 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(list(df), ["name", "age"])  # verify the column names
         self.assertEqual(df.name.dtype.name, "object")
         self.assertEqual(df.age.dtype.name, "int64")
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @mock.patch("google.cloud.bigquery.table.RowIterator.pages",
+                new_callable=mock.PropertyMock)
+    def test_to_dataframe_tabledata_list_w_multiple_pages_return_unique_index(self, mock_pages):
+        from google.cloud.bigquery import schema
+
+        iterator_schema = [
+            schema.SchemaField("name", "STRING", mode="REQUIRED"),
+        ]
+        pages = [[{"name": "Bengt"}], [{"name": "Sven"}]]
+
+        mock_pages.return_value = pages
+        row_iterator = self._make_one(schema=iterator_schema)
+
+        df = row_iterator.to_dataframe(bqstorage_client=None)
+
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 2)
+        self.assertEqual(list(df), ["name"])
+        self.assertEqual(df.name.dtype.name, "object")
+        self.assertTrue(df.index.is_unique)
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(
