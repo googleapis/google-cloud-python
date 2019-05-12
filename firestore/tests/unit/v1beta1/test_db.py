@@ -1,16 +1,6 @@
-from unittest import TestCase, mock
+from unittest import TestCase
 from google.cloud.firestore_v1beta1 import db
 import json
-
-
-class UserModel(db.FirestoreModel):
-    name = db.StringField(required=True)
-    age = db.IntegerField()
-    tags = db.ListField(db.StringField())
-
-
-class Messages(db.FirestoreModel):
-    user = db.ReferenceField(UserModel)
 
 
 class TestDB(TestCase):
