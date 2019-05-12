@@ -39,7 +39,8 @@ class _Field(object):
         # Assign a default value if None is provided
         if value is None:
             value = self.default
-        if not isinstance(value, self.type) or value is None:
+
+        if not isinstance(value, self.type) and value is not None:
             raise InvalidValueError(self, value)
         return value
 
