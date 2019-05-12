@@ -1,6 +1,7 @@
 from unittest import TestCase
-from google.cloud.firestore_v1beta1 import db
+from google.cloud.firestore_v1beta1 import db, SERVER_TIMESTAMP
 import json
+from datetime import datetime, date
 
 
 class TestDB(TestCase):
@@ -44,4 +45,19 @@ class TestDB(TestCase):
         self.assertEqual(dict_field.validate(json.dumps(valid_dict)), valid_dict)
         # A list is not a valid input of dict field
         self.assertRaises(db.InvalidValueError, dict_field.validate, [1, 2, 3])
+
+        # Date time Field
+        dt_field = db.DateTimeField(auto_add_now=True)
+        now = datetime.now()
+        self.assertEqual(dt_field.validate(now), now)
+        # Confirm that default is set to server timestamp
+        self.assertEqual(dt_field.validate(None), SERVER_TIMESTAMP)
+        # A string is not a date time object
+        self.assertRaises(db.InvalidValueError, dt_field.validate, "12-may-2019")
+        today = date.fromtimestamp(now.timestamp())
+        # A date item is a valid entry
+        self.assertEqual(dt_field.validate(today), today)
+        dt_field = db.DateTimeField(auto_now=True)
+        # This value is always updated to current time stamp on every update
+        self.assertEqual(dt_field.validate(now), SERVER_TIMESTAMP)
 
