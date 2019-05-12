@@ -25,7 +25,6 @@ from google.cloud.firestore_v1beta1 import SERVER_TIMESTAMP
 from abc import ABCMeta
 import json
 from datetime import datetime, date
-from typing import Type, Any
 
 
 class _Field(object):
@@ -50,14 +49,27 @@ class FirestoreModel(object, ABCMeta):
     """Creates a firestore document under the collection [YourModel]
 
     Args:
-        __parent__ Optional(Type[FirestoreModel]): If this is a sub-collection of another model,
+        __parent__ Optional(FirestoreModel.__class__): If this is a sub-collection of another model,
             give an instance of the parent
         **data (kwargs): Values for fields in the new record, e.g User(name="Bob")
 
     Attributes:
         id (str or int): Unique id identifying this record, if auto-generated, this is not available before `put()`
+
+        __sub_collection__ (str of FirestoreModel)(Optional class attribute):
+                1: A :class:`~.firestore_v1beta1.client.db.FirestoreModel` class where each document in this
+                    model is a subcollection of a record in the returned
+                    :class:`~.firestore_v1beta1.client.db.FirestoreModel`. e.g If you have a `User` model and each `User`
+                    has a collection of `Notes`. The model `Notes` would return `User`
+                2: A path representing a collection if you don't want your Model to be on the root of the current
+                    database, e.g In a shared database: `sales`
+
+        __database_props__ Tuple(Project, Credentials, database): A tuple of `Project`, `Credentials` and `database` in
+            that order
+            provide these values if you are not working on App Engine environment or any other case where you need to
+            the `Project`, `Credentials` and the `database` that the model is going to use
     """
-    def __init__(self, __parent__: Type['FirestoreModel'] = None, **data):
+    def __init__(self, __parent__=None, **data):
         self.__setup_fields()
         self.__model_name = type(self).__name__
         client = self.__init_client()
@@ -111,47 +123,6 @@ class FirestoreModel(object, ABCMeta):
             project, credentials, database = (None, None, DEFAULT_DATABASE)
         return Client(project=project, credentials=credentials, database=database)
 
-    @classmethod
-    def __database_props__(cls):
-        """
-        Override this method if you are not working on App Engine environment or any other case where you need to
-        the `Project`, `Credentials` and the `database` that the model is going to use
-
-        .. note::
-            This is a classmethod and therefore should be overridden as such, i.e. must be decorated with `@classmethod`
-
-        Returns:
-            (Project, Credentials, database): A tuple of `Project`, `Credentials` and `database` in that order
-
-        Raises:
-            NotImplementedError: Raised if this method is not overridden, You don't need to implement this method if
-                you're already in an authorized environment e.g. App Engine or Firebase Admin
-        """
-        raise NotImplementedError()
-
-    @classmethod
-    def __sub_collection__(cls):
-        """
-        Override this method this is a sub collection of another model, or just a constant path
-
-        .. note::
-            This is a classmethod and therefore should be overridden as such, i.e. must be decorated with `@classmethod`
-
-        Returns:
-            String: A path representing a collection if you don't want your Model to be on the root of the current
-                database, e.g In a shared database: `sales`
-
-            Type[Firestore]: A :class:`~.firestore_v1beta1.client.db.FirestoreModel` class where each document in this
-                model is a subcollection of a record in the returned
-                :class:`~.firestore_v1beta1.client.db.FirestoreModel`. e.g If you have a `User` model and each `User`
-                has a collection of `Notes`. The model `Notes` would return `User`
-
-        Raises:
-            NotImplementedError: Raised if this method is not overridden. You don't need to implement this method if
-                your model is not a subcollection
-        """
-        raise NotImplementedError()
-
     def __str__(self):
         return "<FirestoreModel %s>" % self.__model_name
 
@@ -196,14 +167,14 @@ class FirestoreModel(object, ABCMeta):
         self.__del__()
 
     @classmethod
-    def get(cls, id: str or int, __parent__: Type['FirestoreModel'] = None):
+    def get(cls, id, __parent__=None):
         """
         Get a model with the given id
 
         Args:
             id (str or int): A key or id of the model record, when a list is provided, `get` returns a list
                 models
-            __parent__ (Type[FirestoreModel]): If querying a sub collection of model, provide the parent instance
+            __parent__ (FirestoreModel): If querying a sub collection of model, provide the parent instance
 
         Returns:
             FirestoreModel: An instance of the firestore model calling get
@@ -216,14 +187,14 @@ class FirestoreModel(object, ABCMeta):
         return cls(__parent__=__parent__, id=id, **data.to_dict())
 
     @classmethod
-    def query(cls, offset=0, limit=0, __parent__: Type['FirestoreModel'] = None):
+    def query(cls, offset=0, limit=0, __parent__=None):
         """
         Create a query to this model
 
         Args:
             offset (int): The position in the database where the results begin
             limit (int): Maximum number of records to return
-            __parent__ (Type[FirestoreModel]): If querying a sub collection of model, provide the parent instance
+            __parent__ (FirestoreModel): If querying a sub collection of model, provide the parent instance
 
         Returns:
             An iterable query object
@@ -264,7 +235,7 @@ class Query(object):
             raise MalformedQueryError("Range filter queries i.e (<), (>), (<=) and (>=) "
                                       "can only be performed on a single field in a query")
 
-    def equal(self, field: str, value: Any):
+    def equal(self, field, value):
         """
         A query condition where field == value
 
@@ -278,7 +249,7 @@ class Query(object):
         self.__query = self.__query.filter(field, "==", self.__validate_value(field, value))
         return self
 
-    def greater_than(self, field: str, value: Any):
+    def greater_than(self, field, value):
         """
         A query condition where field > value
 
@@ -362,7 +333,7 @@ class Query(object):
         self.__query = self.__query.filter(field, "array_contains", value)
         return self
 
-    def order_by(self, field: str, direction: str = "ASC"):
+    def order_by(self, field, direction="ASC"):
         """
         Set an order for the query, accepts
 
@@ -391,7 +362,7 @@ class Query(object):
         Get the results of the query as a list
 
         Returns:
-            list (Type[FirestoreModel]): A list of models for the found results
+            list (FirestoreModel): A list of models for the found results
         """
         return [model for model in self]
 
@@ -438,7 +409,7 @@ class BytesField(_Field):
 
 class ListField(_Field):
     """A List field"""
-    def __init__(self, field_type: _Field):
+    def __init__(self, field_type):
         super(ListField, self).__init__(list, default=[])
         self.field_type = field_type
 
@@ -451,7 +422,7 @@ class ListField(_Field):
 
 class ReferenceField(_Field):
     """A field referencing another model"""
-    def __init__(self, model: Type[FirestoreModel], required=False):
+    def __init__(self, model, required=False):
         super(ReferenceField, self).__init__(model, required=required)
         self.model = model
 
