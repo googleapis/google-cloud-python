@@ -51,20 +51,26 @@ def test__maybe_wrap_exception(exception, expected_cls):
 def test__wrap_callback_errors_no_error():
     msg = mock.create_autospec(message.Message, instance=True)
     callback = mock.Mock()
+    on_callback_error = mock.Mock()
 
-    streaming_pull_manager._wrap_callback_errors(callback, msg)
+    streaming_pull_manager._wrap_callback_errors(callback, on_callback_error, msg)
 
     callback.assert_called_once_with(msg)
     msg.nack.assert_not_called()
+    on_callback_error.assert_not_called()
 
 
 def test__wrap_callback_errors_error():
-    msg = mock.create_autospec(message.Message, instance=True)
-    callback = mock.Mock(side_effect=ValueError("meep"))
+    callback_error = ValueError("meep")
 
-    streaming_pull_manager._wrap_callback_errors(callback, msg)
+    msg = mock.create_autospec(message.Message, instance=True)
+    callback = mock.Mock(side_effect=callback_error)
+    on_callback_error = mock.Mock()
+
+    streaming_pull_manager._wrap_callback_errors(callback, on_callback_error, msg)
 
     msg.nack.assert_called_once()
+    on_callback_error.assert_called_once_with(callback_error)
 
 
 def test_constructor_and_default_state():
@@ -319,7 +325,7 @@ def test_heartbeat_inactive():
 def test_open(heartbeater, dispatcher, leaser, background_consumer, resumable_bidi_rpc):
     manager = make_manager()
 
-    manager.open(mock.sentinel.callback)
+    manager.open(mock.sentinel.callback, mock.sentinel.on_callback_error)
 
     heartbeater.assert_called_once_with(manager)
     heartbeater.return_value.start.assert_called_once()
@@ -357,7 +363,7 @@ def test_open_already_active():
     manager._consumer.is_active = True
 
     with pytest.raises(ValueError, match="already open"):
-        manager.open(mock.sentinel.callback)
+        manager.open(mock.sentinel.callback, mock.sentinel.on_callback_error)
 
 
 def test_open_has_been_closed():
@@ -365,7 +371,7 @@ def test_open_has_been_closed():
     manager._closed = True
 
     with pytest.raises(ValueError, match="closed"):
-        manager.open(mock.sentinel.callback)
+        manager.open(mock.sentinel.callback, mock.sentinel.on_callback_error)
 
 
 def make_running_manager():
