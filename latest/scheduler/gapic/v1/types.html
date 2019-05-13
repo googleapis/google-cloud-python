@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Scheduler API Client &#8212; google-cloud 53e492c documentation</title>
+    <title>Types for Cloud Scheduler API Client &#8212; google-cloud f8e4ead documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -462,6 +462,33 @@ job with an incompatible
 [HttpMethod][google.cloud.scheduler.v1.HttpMethod].</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.scheduler_v1.types.HttpTarget.authorization_header">
+<code class="descname">authorization_header</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.HttpTarget.authorization_header" title="Permalink to this definition">#</a></dt>
+<dd><p>The mode for generating an <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> header for HTTP
+requests.  If specified, all <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> headers in the
+[HttpTarget.headers][google.cloud.scheduler.v1.HttpTarget.head
+ers] field will be overridden.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.scheduler_v1.types.HttpTarget.oauth_token">
+<code class="descname">oauth_token</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.HttpTarget.oauth_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If specified, an <a class="reference external" href="https://developers.google.com/identity/protocols/OAuth2">OAuth token</a>
+will be generated and attached as an <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> header
+in the HTTP request.  This type of authorization should be
+used when sending requests to a GCP endpoint.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.scheduler_v1.types.HttpTarget.oidc_token">
+<code class="descname">oidc_token</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.HttpTarget.oidc_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If specified, an <a class="reference external" href="https://developers.google.com/identity/protocols/OpenIDConnect">OIDC</a> token will be generated and
+attached as an <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> header in the HTTP request.
+This type of authorization should be used when sending
+requests to third party endpoints or Cloud Run.</p>
+</dd></dl>
+
 <dl class="class">
 <dt id="google.cloud.scheduler_v1.types.HttpTarget.HeadersEntry">
 <em class="property">class </em><code class="descname">HeadersEntry</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.HttpTarget.HeadersEntry" title="Permalink to this definition">#</a></dt>
@@ -495,6 +522,18 @@ job with an incompatible
 <dt>
 <code class="descname">http_method</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.HttpTarget.http_method</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">oauth_token</code></dt>
+<dd><p>Field google.cloud.scheduler.v1.HttpTarget.oauth_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">oidc_token</code></dt>
+<dd><p>Field google.cloud.scheduler.v1.HttpTarget.oidc_token</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -638,9 +677,31 @@ execution time according to the schedule.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.scheduler_v1.types.Job.attempt_deadline">
+<code class="descname">attempt_deadline</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.attempt_deadline" title="Permalink to this definition">#</a></dt>
+<dd><p>The deadline for job attempts. If the request handler does not
+respond by this deadline then the request is cancelled and the
+attempt is marked as a <code class="docutils literal notranslate"><span class="pre">DEADLINE_EXCEEDED</span></code> failure. The
+failed attempt can be viewed in execution logs. Cloud
+Scheduler will retry the job according to the
+[RetryConfig][google.cloud.scheduler.v1.RetryConfig].  The
+allowed duration for this deadline is: * For [HTTP
+targets][google.cloud.scheduler.v1.Job.http_target], between
+15 seconds and 30 minutes. * For [App Engine HTTP targets][go
+ogle.cloud.scheduler.v1.Job.app_engine_http_target],
+between 15 seconds and 24 hours.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">app_engine_http_target</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.Job.app_engine_http_target</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">attempt_deadline</code></dt>
+<dd><p>Field google.cloud.scheduler.v1.Job.attempt_deadline</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -807,6 +868,81 @@ paginate.  The page token is valid for only 2 hours.</p>
 <dt>
 <code class="descname">next_page_token</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.ListJobsResponse.next_page_token</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.scheduler_v1.types.OAuthToken">
+<em class="property">class </em><code class="descclassname">google.cloud.scheduler_v1.types.</code><code class="descname">OAuthToken</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.OAuthToken" title="Permalink to this definition">#</a></dt>
+<dd><p>Contains information needed for generating an <a class="reference external" href="https://developers.google.com/identity/protocols/OAuth2">OAuth
+token</a>. This
+type of authorization should be used when sending requests to a GCP
+endpoint.</p>
+<dl class="attribute">
+<dt id="google.cloud.scheduler_v1.types.OAuthToken.service_account_email">
+<code class="descname">service_account_email</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.OAuthToken.service_account_email" title="Permalink to this definition">#</a></dt>
+<dd><p><a class="reference external" href="https://cloud.google.com/iam/docs/service-accounts">Service account email</a> to be
+used for generating OAuth token. The service account must be
+within the same project as the job. The caller must have
+iam.serviceAccounts.actAs permission for the service account.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.scheduler_v1.types.OAuthToken.scope">
+<code class="descname">scope</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.OAuthToken.scope" title="Permalink to this definition">#</a></dt>
+<dd><p>OAuth scope to be used for generating OAuth access token. If
+not specified, “<a class="reference external" href="https://www.googleapis.com/auth/cloud">https://www.googleapis.com/auth/cloud</a>-
+platform” will be used.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">scope</code></dt>
+<dd><p>Field google.cloud.scheduler.v1.OAuthToken.scope</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">service_account_email</code></dt>
+<dd><p>Field google.cloud.scheduler.v1.OAuthToken.service_account_email</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.scheduler_v1.types.OidcToken">
+<em class="property">class </em><code class="descclassname">google.cloud.scheduler_v1.types.</code><code class="descname">OidcToken</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.OidcToken" title="Permalink to this definition">#</a></dt>
+<dd><p>Contains information needed for generating an <a class="reference external" href="https://developers.google.com/identity/protocols/OpenIDConnect">OpenID Connect
+token</a>.
+This type of authorization should be used when sending requests to third
+party endpoints or Cloud Run.</p>
+<dl class="attribute">
+<dt id="google.cloud.scheduler_v1.types.OidcToken.service_account_email">
+<code class="descname">service_account_email</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.OidcToken.service_account_email" title="Permalink to this definition">#</a></dt>
+<dd><p><a class="reference external" href="https://cloud.google.com/iam/docs/service-accounts">Service account email</a> to be
+used for generating OIDC token. The service account must be
+within the same project as the job. The caller must have
+iam.serviceAccounts.actAs permission for the service account.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.scheduler_v1.types.OidcToken.audience">
+<code class="descname">audience</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.OidcToken.audience" title="Permalink to this definition">#</a></dt>
+<dd><p>Audience to be used when generating OIDC token. If not
+specified, the URI specified in target will be used.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">audience</code></dt>
+<dd><p>Field google.cloud.scheduler.v1.OidcToken.audience</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">service_account_email</code></dt>
+<dd><p>Field google.cloud.scheduler.v1.OidcToken.service_account_email</p>
 </dd></dl>
 
 </dd></dl>
