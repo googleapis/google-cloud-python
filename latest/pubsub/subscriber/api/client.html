@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Subscriber Client API &#8212; google-cloud f8e4ead documentation</title>
+    <title>Subscriber Client API &#8212; google-cloud 6c5913d documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -124,15 +124,12 @@ to a retryable error and retry attempts failed.</li>
 <dd><p>Creates a snapshot from the requested subscription. Snapshots are used
 in Seek operations, which allow you to manage message acknowledgments in
 bulk. That is, you can set the acknowledgment state of messages in an
-existing subscription to the state captured by a snapshot. BETA: This
-feature is part of a beta release. This API might be changed in
-backward-incompatible ways and is not recommended for production use. It
-is not subject to any SLA or deprecation policy. If the snapshot already
-exists, returns <code class="docutils literal notranslate"><span class="pre">ALREADY_EXISTS</span></code>. If the requested subscription
-doesn’t exist, returns <code class="docutils literal notranslate"><span class="pre">NOT_FOUND</span></code>. If the backlog in the subscription
-is too old – and the resulting snapshot would expire in less than 1
-hour – then <code class="docutils literal notranslate"><span class="pre">FAILED_PRECONDITION</span></code> is returned. See also the
-<code class="docutils literal notranslate"><span class="pre">Snapshot.expire_time</span></code> field. If the name is not provided in the
+existing subscription to the state captured by a snapshot. If the
+snapshot already exists, returns <code class="docutils literal notranslate"><span class="pre">ALREADY_EXISTS</span></code>. If the requested
+subscription doesn’t exist, returns <code class="docutils literal notranslate"><span class="pre">NOT_FOUND</span></code>. If the backlog in the
+subscription is too old – and the resulting snapshot would expire in
+less than 1 hour – then <code class="docutils literal notranslate"><span class="pre">FAILED_PRECONDITION</span></code> is returned. See also
+the <code class="docutils literal notranslate"><span class="pre">Snapshot.expire_time</span></code> field. If the name is not provided in the
 request, the server will assign a random name for this snapshot on the
 same project as the subscription, conforming to the <a class="reference external" href="https://cloud.google.com/pubsub/docs/admin#resource_names">resource name
 format</a>.
@@ -261,19 +258,13 @@ will eventually redeliver the message.</p>
 messages are not expunged from the subscription’s backlog, even if they
 are acknowledged, until they fall out of the
 <code class="docutils literal notranslate"><span class="pre">message_retention_duration</span></code> window. This must be true if you would
-like to Seek to a timestamp. BETA: This feature is part of a beta
-release. This API might be changed in backward-incompatible ways and is
-not recommended for production use. It is not subject to any SLA or
-deprecation policy.</li>
+like to Seek to a timestamp.</li>
 <li><strong>message_retention_duration</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Duration" title="google.cloud.pubsub_v1.types.Duration"><em>Duration</em></a><em>]</em>) – <p>How long to retain unacknowledged messages in the subscription’s
 backlog, from the moment a message is published. If
 <code class="docutils literal notranslate"><span class="pre">retain_acked_messages</span></code> is true, then this also configures the
 retention of acknowledged messages, and thus configures how far back in
 time a <code class="docutils literal notranslate"><span class="pre">Seek</span></code> can be done. Defaults to 7 days. Cannot be more than 7
-days or less than 10 minutes. BETA: This feature is part of a beta
-release. This API might be changed in backward-incompatible ways and is
-not recommended for production use. It is not subject to any SLA or
-deprecation policy.</p>
+days or less than 10 minutes.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Duration" title="google.cloud.pubsub_v1.types.Duration"><code class="xref py py-class docutils literal notranslate"><span class="pre">Duration</span></code></a></p>
 </li>
@@ -291,10 +282,7 @@ expiration. A subscription is considered active as long as any connected
 subscriber is successfully consuming messages from the subscription or
 is issuing operations on the subscription. If <code class="docutils literal notranslate"><span class="pre">expiration_policy</span></code> is
 not set, a <em>default policy</em> with <code class="docutils literal notranslate"><span class="pre">ttl</span></code> of 31 days will be used. The
-minimum allowed value for <code class="docutils literal notranslate"><span class="pre">expiration_policy.ttl</span></code> is 1 day. BETA: This
-feature is part of a beta release. This API might be changed in
-backward-incompatible ways and is not recommended for production use. It
-is not subject to any SLA or deprecation policy.</p>
+minimum allowed value for <code class="docutils literal notranslate"><span class="pre">expiration_policy.ttl</span></code> is 1 day.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.ExpirationPolicy" title="google.cloud.pubsub_v1.types.ExpirationPolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExpirationPolicy</span></code></a></p>
 </li>
@@ -334,9 +322,6 @@ operations, which allow
 you to manage message acknowledgments in bulk. That is, you can set the
 acknowledgment state of messages in an existing subscription to the state
 captured by a snapshot.&lt;br&gt;&lt;br&gt;
-&lt;b&gt;BETA:&lt;/b&gt; This feature is part of a beta release. This API might be
-changed in backward-incompatible ways and is not recommended for production
-use. It is not subject to any SLA or deprecation policy.
 When the snapshot is deleted, all messages retained in the snapshot
 are immediately dropped. After a snapshot is deleted, a new one may be
 created with the same name, but the new one has no association with the old
@@ -506,8 +491,7 @@ set.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – REQUIRED: The resource for which the policy is being requested.
-<code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For example, a Project
-resource is specified as <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</li>
+See the operation documentation for the appropriate value for this field.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -591,10 +575,7 @@ to a retryable error and retry attempts failed.</li>
 operations, which allow
 you to manage message acknowledgments in bulk. That is, you can set the
 acknowledgment state of messages in an existing subscription to the state
-captured by a snapshot.&lt;br&gt;&lt;br&gt;
-&lt;b&gt;BETA:&lt;/b&gt; This feature is part of a beta release. This API might be
-changed in backward-incompatible ways and is not recommended for production
-use. It is not subject to any SLA or deprecation policy.</p>
+captured by a snapshot.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -927,10 +908,7 @@ operations, which allow
 you to manage message acknowledgments in bulk. That is, you can set the
 acknowledgment state of messages in an existing subscription to the state
 captured by a snapshot. Note that both the subscription and the snapshot
-must be on the same topic.&lt;br&gt;&lt;br&gt;
-&lt;b&gt;BETA:&lt;/b&gt; This feature is part of a beta release. This API might be
-changed in backward-incompatible ways and is not recommended for production
-use. It is not subject to any SLA or deprecation policy.</p>
+must be on the same topic.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1014,8 +992,7 @@ existing policy.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – REQUIRED: The resource for which the policy is being specified.
-<code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For example, a Project
-resource is specified as <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</li>
+See the operation documentation for the appropriate value for this field.</li>
 <li><strong>policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Policy" title="google.cloud.pubsub_v1.types.Policy"><em>Policy</em></a><em>]</em>) – <p>REQUIRED: The complete policy to be applied to the <code class="docutils literal notranslate"><span class="pre">resource</span></code>. The
 size of the policy is limited to a few 10s of KB. An empty policy is a
 valid policy but certain Cloud Platform services (such as Projects)
@@ -1236,6 +1213,9 @@ how callbacks are executed concurrently.</li>
 <dd><p>Returns permissions that a caller has on the specified resource. If the
 resource does not exist, this will return an empty set of permissions,
 not a NOT_FOUND error.</p>
+<p>Note: This operation is designed to be used for building
+permission-aware UIs and command-line tools, not for authorization
+checking. This operation may “fail open” without warning.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1255,8 +1235,7 @@ not a NOT_FOUND error.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – REQUIRED: The resource for which the policy detail is being requested.
-<code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For example, a Project
-resource is specified as <code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</li>
+See the operation documentation for the appropriate value for this field.</li>
 <li><strong>permissions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – The set of permissions to check for the <code class="docutils literal notranslate"><span class="pre">resource</span></code>. Permissions with
 wildcards (such as ‘*’ or ‘storage.*’) are not allowed. For more
 information see <a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM
@@ -1302,11 +1281,7 @@ to a retryable error and retry attempts failed.</li>
 operations, which allow
 you to manage message acknowledgments in bulk. That is, you can set the
 acknowledgment state of messages in an existing subscription to the state
-captured by a snapshot.&lt;br&gt;&lt;br&gt;
-&lt;b&gt;BETA:&lt;/b&gt; This feature is part of a beta release. This API might be
-changed in backward-incompatible ways and is not recommended for production
-use. It is not subject to any SLA or deprecation policy.
-Note that certain properties of a snapshot are not modifiable.</p>
+captured by a snapshot.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
