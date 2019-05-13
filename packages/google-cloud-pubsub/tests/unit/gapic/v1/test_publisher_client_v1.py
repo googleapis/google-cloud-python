@@ -66,7 +66,8 @@ class TestPublisherClient(object):
     def test_create_topic(self):
         # Setup Expected Response
         name_2 = "name2-1052831874"
-        expected_response = {"name": name_2}
+        kms_key_name = "kmsKeyName2094986649"
+        expected_response = {"name": name_2, "kms_key_name": kms_key_name}
         expected_response = pubsub_pb2.Topic(**expected_response)
 
         # Mock the API response
@@ -104,7 +105,8 @@ class TestPublisherClient(object):
     def test_update_topic(self):
         # Setup Expected Response
         name = "name3373707"
-        expected_response = {"name": name}
+        kms_key_name = "kmsKeyName2094986649"
+        expected_response = {"name": name, "kms_key_name": kms_key_name}
         expected_response = pubsub_pb2.Topic(**expected_response)
 
         # Mock the API response
@@ -191,7 +193,8 @@ class TestPublisherClient(object):
     def test_get_topic(self):
         # Setup Expected Response
         name = "name3373707"
-        expected_response = {"name": name}
+        kms_key_name = "kmsKeyName2094986649"
+        expected_response = {"name": name, "kms_key_name": kms_key_name}
         expected_response = pubsub_pb2.Topic(**expected_response)
 
         # Mock the API response
