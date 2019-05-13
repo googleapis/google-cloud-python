@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Tasks API Client &#8212; google-cloud 6c5913d documentation</title>
+    <title>Types for Cloud Tasks API Client &#8212; google-cloud 15074d2 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -96,9 +96,6 @@ neHttpRequest.app_engine_routing].</p>
 <dd><p>App Engine HTTP request.</p>
 <p>The message defines the HTTP request that is sent to an App Engine app
 when the task is dispatched.</p>
-<p>This proto can only be used for tasks in a queue which has
-[app_engine_http_queue][google.cloud.tasks.v2beta3.Queue.app_engine_http_queue]
-set.</p>
 <p>Using
 [AppEngineHttpRequest][google.cloud.tasks.v2beta3.AppEngineHttpRequest]
 requires
@@ -958,7 +955,7 @@ used when sending requests to a GCP endpoint.</p>
 <dd><p>If specified, an <a class="reference external" href="https://developers.google.com/identity/protocols/OpenIDConnect">OIDC</a> token will be generated and
 attached as an <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> header in the HTTP request.
 This type of authorization should be used when sending
-requests to third party endpoints.</p>
+requests to third party endpoints or Cloud Run.</p>
 </dd></dl>
 
 <dl class="class">
@@ -1159,12 +1156,12 @@ data that it contains.  Authorization for
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta3.types.ListTasksRequest.page_size">
 <code class="descname">page_size</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.ListTasksRequest.page_size" title="Permalink to this definition">#</a></dt>
-<dd><p>Requested page size. Fewer tasks than requested might be
-returned.  The maximum page size is 1000. If unspecified, the
-page size will be the maximum. Fewer tasks than requested
-might be returned, even if more tasks exist; use [next_page_
-token][google.cloud.tasks.v2beta3.ListTasksResponse.next_page
-_token] in the response to determine if more tasks exist.</p>
+<dd><p>Maximum page size.  Fewer tasks than requested might be
+returned, even if more tasks exist; use [next_page_token][go
+ogle.cloud.tasks.v2beta3.ListTasksResponse.next_page_token]
+in the response to determine if more tasks exist.  The maximum
+page size is 1000. If unspecified, the page size will be the
+maximum.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1285,7 +1282,7 @@ platform” will be used.</p>
 <dd><p>Contains information needed for generating an <a class="reference external" href="https://developers.google.com/identity/protocols/OpenIDConnect">OpenID Connect
 token</a>.
 This type of authorization should be used when sending requests to third
-party endpoints.</p>
+party endpoints or Cloud Run.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta3.types.OidcToken.service_account_email">
 <code class="descname">service_account_email</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.OidcToken.service_account_email" title="Permalink to this definition">#</a></dt>
@@ -1559,24 +1556,16 @@ will be unset if the queue has never been purged.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.tasks_v2beta3.types.Queue.log_sampling_ratio">
-<code class="descname">log_sampling_ratio</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Queue.log_sampling_ratio" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the fraction of operations to write to <a class="reference external" href="https://cloud.google.com/logging/docs/">Stackdriver
-Logging</a>. This
-field may contain any value between 0.0 and 1.0, inclusive.
-0.0 is the default and means that no operations are logged.</p>
+<dt id="google.cloud.tasks_v2beta3.types.Queue.stackdriver_logging_config">
+<code class="descname">stackdriver_logging_config</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Queue.stackdriver_logging_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration options for writing logs to <a class="reference external" href="https://cloud.google.com/logging/docs/">Stackdriver Logging</a>. If this field is
+unset, then no logs are written.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
 <code class="descname">app_engine_http_queue</code></dt>
 <dd><p>Field google.cloud.tasks.v2beta3.Queue.app_engine_http_queue</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">log_sampling_ratio</code></dt>
-<dd><p>Field google.cloud.tasks.v2beta3.Queue.log_sampling_ratio</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1601,6 +1590,12 @@ field may contain any value between 0.0 and 1.0, inclusive.
 <dt>
 <code class="descname">retry_config</code></dt>
 <dd><p>Field google.cloud.tasks.v2beta3.Queue.retry_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">stackdriver_logging_config</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta3.Queue.stackdriver_logging_config</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1920,6 +1915,28 @@ Platform services (such as Projects) might reject them.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.tasks_v2beta3.types.StackdriverLoggingConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">StackdriverLoggingConfig</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.StackdriverLoggingConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration options for writing logs to <a class="reference external" href="https://cloud.google.com/logging/docs/">Stackdriver
+Logging</a>.</p>
+<dl class="attribute">
+<dt id="google.cloud.tasks_v2beta3.types.StackdriverLoggingConfig.sampling_ratio">
+<code class="descname">sampling_ratio</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.StackdriverLoggingConfig.sampling_ratio" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies the fraction of operations to write to <a class="reference external" href="https://cloud.google.com/logging/docs/">Stackdriver
+Logging</a>. This
+field may contain any value between 0.0 and 1.0, inclusive.
+0.0 is the default and means that no operations are logged.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">sampling_ratio</code></dt>
+<dd><p>Field google.cloud.tasks.v2beta3.StackdriverLoggingConfig.sampling_ratio</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.tasks_v2beta3.types.Status">
 <em class="property">class </em><code class="descclassname">google.cloud.tasks_v2beta3.types.</code><code class="descname">Status</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Status" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
@@ -1985,11 +2002,8 @@ le.cloud.tasks.v2beta3.AppEngineHttpRequest] set.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta3.types.Task.http_request">
 <code class="descname">http_request</code><a class="headerlink" href="#google.cloud.tasks_v2beta3.types.Task.http_request" title="Permalink to this definition">#</a></dt>
-<dd><p>HTTP request that is sent to the task’s target.  Warning: This
-is an <a class="reference external" href="https://cloud.google.com/terms/launch-stages">alpha</a>
-feature. If you haven’t already joined, you can <a class="reference external" href="https://docs.google.com/forms/d/e/1FAIpQLSfc4uEy9CBHKYUSdnY1hdhKDCX7julVZHy3imOiR-XrU7bUNQ/viewform">use this form
-to sign up</a>.  An
-HTTP task is a task that has
+<dd><p>HTTP request that is sent to the task’s target.  An HTTP task
+is a task that has
 [HttpRequest][google.cloud.tasks.v2beta3.HttpRequest] set.</p>
 </dd></dl>
 
