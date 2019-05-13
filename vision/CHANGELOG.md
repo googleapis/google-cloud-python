@@ -6,6 +6,29 @@
 
 ## 0.36.0
 
+05-13-2019 16:18 PDT
+
+- Remove retries for DEADLINE_EXCEEDED (via synth). ([#7893](https://github.com/googleapis/google-cloud-python/pull/7893))
+- Add batch annotation for images and files, reorder methods (via synth).  ([#7845](https://github.com/googleapis/google-cloud-python/pull/7845))
+-  Update noxfile and docs configuration (via synth). ([#7839](https://github.com/googleapis/google-cloud-python/pull/7839))
+- Vision: Add nox session `docs`, reorder methods, modify samples in docstrings (via synth). ([#7787](https://github.com/googleapis/google-cloud-python/pull/7787))
+- Add routing header to method metadata (via synth).  ([#7604](https://github.com/googleapis/google-cloud-python/pull/7604))
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+- Copy lintified proto files (via synth). ([#7473](https://github.com/googleapis/google-cloud-python/pull/7473))
+- Vision: Add proto files for v1p4beta1
+
+### Implementation Changes
+
+### New Features
+
+### Dependencies
+
+### Documentation
+
+### Internal / Testing Changes
+
+## 0.36.0
+
 02-25-2019 15:02 PST
 
 
