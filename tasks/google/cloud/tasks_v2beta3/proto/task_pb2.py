@@ -478,12 +478,8 @@ Task = _reflection.GeneratedProtocolMessageType(
           App Engine task is a task that has [AppEngineHttpRequest][goog
           le.cloud.tasks.v2beta3.AppEngineHttpRequest] set.
       http_request:
-          HTTP request that is sent to the task's target.  Warning: This
-          is an `alpha <https://cloud.google.com/terms/launch-stages>`_
-          feature. If you haven't already joined, you can `use this form
-          to sign up <https://docs.google.com/forms/d/e/1FAIpQLSfc4uEy9C
-          BHKYUSdnY1hdhKDCX7julVZHy3imOiR-XrU7bUNQ/viewform>`_.  An
-          HTTP task is a task that has
+          HTTP request that is sent to the task's target.  An HTTP task
+          is a task that has
           [HttpRequest][google.cloud.tasks.v2beta3.HttpRequest] set.
       schedule_time:
           The time when the task is scheduled to be attempted.  For App

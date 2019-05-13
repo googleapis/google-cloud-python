@@ -834,7 +834,7 @@ HttpRequest = _reflection.GeneratedProtocolMessageType(
           /protocols/OpenIDConnect>`_ token will be generated and
           attached as an ``Authorization`` header in the HTTP request.
           This type of authorization should be used when sending
-          requests to third party endpoints.
+          requests to third party endpoints or Cloud Run.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.HttpRequest)
     ),
@@ -900,10 +900,6 @@ AppEngineHttpRequest = _reflection.GeneratedProtocolMessageType(
   
   The message defines the HTTP request that is sent to an App Engine app
   when the task is dispatched.
-  
-  This proto can only be used for tasks in a queue which has
-  [app\_engine\_http\_queue][google.cloud.tasks.v2beta3.Queue.app\_engine\_http\_queue]
-  set.
   
   Using
   [AppEngineHttpRequest][google.cloud.tasks.v2beta3.AppEngineHttpRequest]
@@ -1157,7 +1153,7 @@ OidcToken = _reflection.GeneratedProtocolMessageType(
         __doc__="""Contains information needed for generating an `OpenID Connect
   token <https://developers.google.com/identity/protocols/OpenIDConnect>`_.
   This type of authorization should be used when sending requests to third
-  party endpoints.
+  party endpoints or Cloud Run.
   
   
   Attributes:
