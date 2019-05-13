@@ -110,8 +110,7 @@ class TestCloudTasksClient(object):
     def test_get_queue(self):
         # Setup Expected Response
         name_2 = "name2-1052831874"
-        log_sampling_ratio = -1.25350193e8
-        expected_response = {"name": name_2, "log_sampling_ratio": log_sampling_ratio}
+        expected_response = {"name": name_2}
         expected_response = queue_pb2.Queue(**expected_response)
 
         # Mock the API response
@@ -149,8 +148,7 @@ class TestCloudTasksClient(object):
     def test_create_queue(self):
         # Setup Expected Response
         name = "name3373707"
-        log_sampling_ratio = -1.25350193e8
-        expected_response = {"name": name, "log_sampling_ratio": log_sampling_ratio}
+        expected_response = {"name": name}
         expected_response = queue_pb2.Queue(**expected_response)
 
         # Mock the API response
@@ -190,8 +188,7 @@ class TestCloudTasksClient(object):
     def test_update_queue(self):
         # Setup Expected Response
         name = "name3373707"
-        log_sampling_ratio = -1.25350193e8
-        expected_response = {"name": name, "log_sampling_ratio": log_sampling_ratio}
+        expected_response = {"name": name}
         expected_response = queue_pb2.Queue(**expected_response)
 
         # Mock the API response
@@ -260,8 +257,7 @@ class TestCloudTasksClient(object):
     def test_purge_queue(self):
         # Setup Expected Response
         name_2 = "name2-1052831874"
-        log_sampling_ratio = -1.25350193e8
-        expected_response = {"name": name_2, "log_sampling_ratio": log_sampling_ratio}
+        expected_response = {"name": name_2}
         expected_response = queue_pb2.Queue(**expected_response)
 
         # Mock the API response
@@ -299,8 +295,7 @@ class TestCloudTasksClient(object):
     def test_pause_queue(self):
         # Setup Expected Response
         name_2 = "name2-1052831874"
-        log_sampling_ratio = -1.25350193e8
-        expected_response = {"name": name_2, "log_sampling_ratio": log_sampling_ratio}
+        expected_response = {"name": name_2}
         expected_response = queue_pb2.Queue(**expected_response)
 
         # Mock the API response
@@ -338,8 +333,7 @@ class TestCloudTasksClient(object):
     def test_resume_queue(self):
         # Setup Expected Response
         name_2 = "name2-1052831874"
-        log_sampling_ratio = -1.25350193e8
-        expected_response = {"name": name_2, "log_sampling_ratio": log_sampling_ratio}
+        expected_response = {"name": name_2}
         expected_response = queue_pb2.Queue(**expected_response)
 
         # Mock the API response
