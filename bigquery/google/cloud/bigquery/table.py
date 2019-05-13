@@ -1408,7 +1408,7 @@ class RowIterator(HTTPIterator):
             # Indicate that the download has finished.
             progress_bar.close()
 
-        return pandas.concat(frames)
+        return pandas.concat(frames, ignore_index=True)
 
     def _to_dataframe_bqstorage_stream(
         self, bqstorage_client, dtypes, columns, session, stream, worker_queue
@@ -1585,7 +1585,7 @@ class RowIterator(HTTPIterator):
 
         # Update the progress bar one last time to close it.
         self._process_progress_updates(progress_queue, progress_bar)
-        return pandas.concat(frames)
+        return pandas.concat(frames, ignore_index=True)
 
     def _get_progress_bar(self, progress_bar_type):
         """Construct a tqdm progress bar object, if tqdm is installed."""
