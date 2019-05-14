@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-runtimeconfig/#history
 
+## 0.28.4
+
+05-14-2019 12:52 PST
+
+
+### Implementation Changes
+- Widen range for 'google-cloud-core'. ([#7976](https://github.com/googleapis/google-cloud-python/pull/7976))
+
 ## 0.28.3
 
 12-17-2018 17:01 PST
