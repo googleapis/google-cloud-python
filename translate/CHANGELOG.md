@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## 1.4.1
+
+05-14-2019 12:27 PDT
+
+### Implementation Changes
+- Widen range for 'google-cloud-core'. ([#7980](https://github.com/googleapis/google-cloud-python/pull/7980))
+
 ## 1.4.0
 
 04-02-2019 14:24 PDT
