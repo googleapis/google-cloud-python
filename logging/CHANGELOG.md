@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## 1.10.1
+
+05-14-2019 12:56 PST
+
+
+### Implementation Changes
+- Widen range for 'google-cloud-core'. ([#7974](https://github.com/googleapis/google-cloud-python/pull/7974))
+
 ## 1.10.0
 
 01-17-2019 15:37 PST
