@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.tasks_v2.proto.target_pb2 &#8212; google-cloud 46257ab documentation</title>
+    <title>google.cloud.tasks_v2.proto.target_pb2 &#8212; google-cloud f93e8ff documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -412,9 +412,6 @@
 <span class="s2">  The message defines the HTTP request that is sent to an App Engine app</span>
 <span class="s2">  when the task is dispatched.</span>
 <span class="s2">  </span>
-<span class="s2">  This proto can only be used for tasks in a queue which has</span>
-<span class="s2">  [app\_engine\_http\_queue][Queue.app\_engine\_http\_queue] set.</span>
-<span class="s2">  </span>
 <span class="s2">  Using [AppEngineHttpRequest][google.cloud.tasks.v2.AppEngineHttpRequest]</span>
 <span class="s2">  requires</span>
 <span class="s2">  ```appengine.applications.get`` &lt;https://cloud.google.com/appengine/docs/admin-api/access-control&gt;`_</span>
@@ -457,12 +454,17 @@
 <span class="s2">  Task dispatches also do not follow redirects.</span>
 <span class="s2">  </span>
 <span class="s2">  The task attempt has succeeded if the app&#39;s request handler returns an</span>
-<span class="s2">  HTTP response code in the range [``200`` - ``299``]. ``503`` is</span>
-<span class="s2">  considered an App Engine system error instead of an application error.</span>
-<span class="s2">  Requests returning error ``503`` will be retried regardless of retry</span>
-<span class="s2">  configuration and not counted against retry counts. Any other response</span>
-<span class="s2">  code or a failure to receive a response before the deadline is a failed</span>
-<span class="s2">  attempt.</span>
+<span class="s2">  HTTP response code in the range [``200`` - ``299``]. The task attempt</span>
+<span class="s2">  has failed if the app&#39;s handler returns a non-2xx response code or Cloud</span>
+<span class="s2">  Tasks does not receive response before the</span>
+<span class="s2">  [deadline][google.cloud.tasks.v2.Task.dispatch\_deadline]. Failed tasks</span>
+<span class="s2">  will be retried according to the [retry</span>
+<span class="s2">  configuration][Queue.RetryConfig]. ``503`` (Service Unavailable) is</span>
+<span class="s2">  considered an App Engine system error instead of an application error</span>
+<span class="s2">  and will cause Cloud Tasks&#39; traffic congestion control to temporarily</span>
+<span class="s2">  throttle the queue&#39;s dispatches. Unlike other types of task targets, a</span>
+<span class="s2">  ``429`` (Too Many Requests) response from an app handler does not cause</span>
+<span class="s2">  traffic congestion control to throttle the queue.</span>
 <span class="s2">  </span>
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>

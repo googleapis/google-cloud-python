@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.tasks_v2beta3.proto.target_pb2 &#8212; google-cloud 46257ab documentation</title>
+    <title>google.cloud.tasks_v2beta3.proto.target_pb2 &#8212; google-cloud f93e8ff documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -779,11 +779,6 @@
         <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.tasks_v2beta3.proto.target_pb2&quot;</span><span class="p">,</span>
         <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;HTTP request.</span>
 <span class="s2">  </span>
-<span class="s2">  Warning: This is an</span>
-<span class="s2">  `alpha &lt;https://cloud.google.com/terms/launch-stages&gt;`_ feature. If you</span>
-<span class="s2">  haven&#39;t already joined, you can `use this form to sign</span>
-<span class="s2">  up &lt;https://docs.google.com/forms/d/e/1FAIpQLSfc4uEy9CBHKYUSdnY1hdhKDCX7julVZHy3imOiR-XrU7bUNQ/viewform&gt;`_.</span>
-<span class="s2">  </span>
 <span class="s2">  The task will be pushed to the worker as an HTTP request. If the worker</span>
 <span class="s2">  or the redirected worker acknowledges the task by returning a successful</span>
 <span class="s2">  HTTP response code ([``200`` - ``299``]), the task will removed from the</span>
@@ -863,14 +858,16 @@
 <span class="s2">          If specified, an `OAuth token</span>
 <span class="s2">          &lt;https://developers.google.com/identity/protocols/OAuth2&gt;`_</span>
 <span class="s2">          will be generated and attached as an ``Authorization`` header</span>
-<span class="s2">          in the HTTP request.  This type of authorization should be</span>
-<span class="s2">          used when sending requests to a GCP endpoint.</span>
+<span class="s2">          in the HTTP request.  This type of authorization should</span>
+<span class="s2">          generally only be used when calling Google APIs hosted on</span>
+<span class="s2">          \*.googleapis.com.</span>
 <span class="s2">      oidc_token:</span>
 <span class="s2">          If specified, an `OIDC &lt;https://developers.google.com/identity</span>
 <span class="s2">          /protocols/OpenIDConnect&gt;`_ token will be generated and</span>
 <span class="s2">          attached as an ``Authorization`` header in the HTTP request.</span>
-<span class="s2">          This type of authorization should be used when sending</span>
-<span class="s2">          requests to third party endpoints or Cloud Run.</span>
+<span class="s2">          This type of authorization can be used for many scenarios,</span>
+<span class="s2">          including calling Cloud Run, or endpoints where you intend to</span>
+<span class="s2">          validate the token yourself.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
         <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta3.HttpRequest)</span>
     <span class="p">),</span>
@@ -981,12 +978,17 @@
 <span class="s2">  Task dispatches also do not follow redirects.</span>
 <span class="s2">  </span>
 <span class="s2">  The task attempt has succeeded if the app&#39;s request handler returns an</span>
-<span class="s2">  HTTP response code in the range [``200`` - ``299``]. ``503`` is</span>
-<span class="s2">  considered an App Engine system error instead of an application error.</span>
-<span class="s2">  Requests returning error ``503`` will be retried regardless of retry</span>
-<span class="s2">  configuration and not counted against retry counts. Any other response</span>
-<span class="s2">  code or a failure to receive a response before the deadline is a failed</span>
-<span class="s2">  attempt.</span>
+<span class="s2">  HTTP response code in the range [``200`` - ``299``]. The task attempt</span>
+<span class="s2">  has failed if the app&#39;s handler returns a non-2xx response code or Cloud</span>
+<span class="s2">  Tasks does not receive response before the</span>
+<span class="s2">  [deadline][google.cloud.tasks.v2beta3.Task.dispatch\_deadline]. Failed</span>
+<span class="s2">  tasks will be retried according to the [retry</span>
+<span class="s2">  configuration][Queue.RetryConfig]. ``503`` (Service Unavailable) is</span>
+<span class="s2">  considered an App Engine system error instead of an application error</span>
+<span class="s2">  and will cause Cloud Tasks&#39; traffic congestion control to temporarily</span>
+<span class="s2">  throttle the queue&#39;s dispatches. Unlike other types of task targets, a</span>
+<span class="s2">  ``429`` (Too Many Requests) response from an app handler does not cause</span>
+<span class="s2">  traffic congestion control to throttle the queue.</span>
 <span class="s2">  </span>
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
@@ -1159,8 +1161,8 @@
         <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.tasks_v2beta3.proto.target_pb2&quot;</span><span class="p">,</span>
         <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Contains information needed for generating an `OAuth</span>
 <span class="s2">  token &lt;https://developers.google.com/identity/protocols/OAuth2&gt;`_. This</span>
-<span class="s2">  type of authorization should be used when sending requests to a GCP</span>
-<span class="s2">  endpoint.</span>
+<span class="s2">  type of authorization should generally only be used when calling Google</span>
+<span class="s2">  APIs hosted on \*.googleapis.com.</span>
 <span class="s2">  </span>
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
@@ -1188,8 +1190,9 @@
         <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.tasks_v2beta3.proto.target_pb2&quot;</span><span class="p">,</span>
         <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Contains information needed for generating an `OpenID Connect</span>
 <span class="s2">  token &lt;https://developers.google.com/identity/protocols/OpenIDConnect&gt;`_.</span>
-<span class="s2">  This type of authorization should be used when sending requests to third</span>
-<span class="s2">  party endpoints or Cloud Run.</span>
+<span class="s2">  This type of authorization can be used for many scenarios, including</span>
+<span class="s2">  calling Cloud Run, or endpoints where you intend to validate the token</span>
+<span class="s2">  yourself.</span>
 <span class="s2">  </span>
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>

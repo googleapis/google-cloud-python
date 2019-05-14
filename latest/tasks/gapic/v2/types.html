@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Tasks API Client &#8212; google-cloud 46257ab documentation</title>
+    <title>Types for Cloud Tasks API Client &#8212; google-cloud f93e8ff documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -60,8 +60,6 @@
 <dd><p>App Engine HTTP request.</p>
 <p>The message defines the HTTP request that is sent to an App Engine app
 when the task is dispatched.</p>
-<p>This proto can only be used for tasks in a queue which has
-[app_engine_http_queue][Queue.app_engine_http_queue] set.</p>
 <p>Using [AppEngineHttpRequest][google.cloud.tasks.v2.AppEngineHttpRequest]
 requires
 <code class="docutils literal notranslate"><span class="pre">`appengine.applications.get</span></code> &lt;<a class="reference external" href="https://cloud.google.com/appengine/docs/admin-api/access-control">https://cloud.google.com/appengine/docs/admin-api/access-control</a>&gt;`_
@@ -100,12 +98,17 @@ restricted with
 <code class="docutils literal notranslate"><span class="pre">`login:</span> <span class="pre">required</span></code> &lt;<a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/config/appref">https://cloud.google.com/appengine/docs/standard/python/config/appref</a>&gt;`_
 Task dispatches also do not follow redirects.</p>
 <p>The task attempt has succeeded if the app’s request handler returns an
-HTTP response code in the range [<code class="docutils literal notranslate"><span class="pre">200</span></code> - <code class="docutils literal notranslate"><span class="pre">299</span></code>]. <code class="docutils literal notranslate"><span class="pre">503</span></code> is
-considered an App Engine system error instead of an application error.
-Requests returning error <code class="docutils literal notranslate"><span class="pre">503</span></code> will be retried regardless of retry
-configuration and not counted against retry counts. Any other response
-code or a failure to receive a response before the deadline is a failed
-attempt.</p>
+HTTP response code in the range [<code class="docutils literal notranslate"><span class="pre">200</span></code> - <code class="docutils literal notranslate"><span class="pre">299</span></code>]. The task attempt
+has failed if the app’s handler returns a non-2xx response code or Cloud
+Tasks does not receive response before the
+[deadline][google.cloud.tasks.v2.Task.dispatch_deadline]. Failed tasks
+will be retried according to the [retry
+configuration][Queue.RetryConfig]. <code class="docutils literal notranslate"><span class="pre">503</span></code> (Service Unavailable) is
+considered an App Engine system error instead of an application error
+and will cause Cloud Tasks’ traffic congestion control to temporarily
+throttle the queue’s dispatches. Unlike other types of task targets, a
+<code class="docutils literal notranslate"><span class="pre">429</span></code> (Too Many Requests) response from an app handler does not cause
+traffic congestion control to throttle the queue.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2.types.AppEngineHttpRequest.http_method">
 <code class="descname">http_method</code><a class="headerlink" href="#google.cloud.tasks_v2.types.AppEngineHttpRequest.http_method" title="Permalink to this definition">#</a></dt>
@@ -951,12 +954,12 @@ data that it contains.  Authorization for
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2.types.ListTasksRequest.page_size">
 <code class="descname">page_size</code><a class="headerlink" href="#google.cloud.tasks_v2.types.ListTasksRequest.page_size" title="Permalink to this definition">#</a></dt>
-<dd><p>Requested page size. Fewer tasks than requested might be
-returned.  The maximum page size is 1000. If unspecified, the
-page size will be the maximum. Fewer tasks than requested
-might be returned, even if more tasks exist; use [next_page_
-token][google.cloud.tasks.v2.ListTasksResponse.next_page_tok
-en] in the response to determine if more tasks exist.</p>
+<dd><p>Maximum page size.  Fewer tasks than requested might be
+returned, even if more tasks exist; use [next_page_token][go
+ogle.cloud.tasks.v2.ListTasksResponse.next_page_token] in
+the response to determine if more tasks exist.  The maximum
+page size is 1000. If unspecified, the page size will be the
+maximum.</p>
 </dd></dl>
 
 <dl class="attribute">
