@@ -431,7 +431,7 @@ class ReferenceField(_Field):
         value = super(ReferenceField, self).validate(value)
         if not value:
             return
-        return self.model.__database_path__
+        return value.__document__()
 
 
 class DictField(_Field):
