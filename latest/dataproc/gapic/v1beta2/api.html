@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Google Cloud Dataproc API &#8212; google-cloud 3bd0e39 documentation</title>
+    <title>Client for Google Cloud Dataproc API &#8212; google-cloud ccb4960 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -584,21 +584,34 @@ request body would be set as follows:</p>
 </pre></div>
 </div>
 <p>Note: currently only the following fields can be updated:</p>
-<table><tr><td><p>Mask</p>
-</td><td><p>Purpose</p>
-</td></tr><tr><td><p>labels</p>
-</td><td><p>Updates labels</p>
-</td></tr><tr><td><p>config.worker_config.num_instances</p>
-</td><td><p>Resize primary worker group</p>
-</td></tr><tr><td><p>config.secondary_worker_config.num_instances</p>
-</td><td><p>Resize secondary worker group</p>
-</td></tr><tr><td><p>config.lifecycle_config.auto_delete_ttl</p>
-</td><td><p>Reset MAX TTL duration</p>
-</td></tr><tr><td><p>config.lifecycle_config.auto_delete_time</p>
-</td><td><p>Update MAX TTL deletion timestamp</p>
-</td></tr><tr><td><p>config.lifecycle_config.idle_delete_ttl</p>
-</td><td><p>Update Idle TTL duration</p>
-</td></tr></table><p>If a dict is provided, it must be of the same form as the protobuf
+<table>
+<tr>
+<td><strong>Mask</strong></td><td><strong>Purpose</strong></td>
+</tr>
+<tr>
+<td>labels</td><td>Updates labels</td>
+</tr>
+<tr>
+<td>config.worker_config.num_instances</td><td>Resize primary worker
+group</td>
+</tr>
+<tr>
+<td>config.secondary_worker_config.num_instances</td><td>Resize secondary
+worker group</td>
+</tr>
+<tr>
+<td>config.lifecycle_config.auto_delete_ttl</td><td>Reset MAX TTL
+duration</td>
+</tr>
+<tr>
+<td>config.lifecycle_config.auto_delete_time</td><td>Update MAX TTL
+deletion timestamp</td>
+</tr>
+<tr>
+<td>config.lifecycle_config.idle_delete_ttl</td><td>Update Idle TTL
+duration</td>
+</tr>
+</table><p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.dataproc_v1beta2.types.FieldMask" title="google.cloud.dataproc_v1beta2.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
 </li>
 <li><strong>graceful_decommission_timeout</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.dataproc_v1beta2.types.Duration" title="google.cloud.dataproc_v1beta2.types.Duration"><em>Duration</em></a><em>]</em>) – <p>Optional. Timeout for graceful YARN decomissioning. Graceful
