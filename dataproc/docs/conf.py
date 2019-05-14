@@ -54,6 +54,7 @@ source_parsers = {".md": "recommonmark.parser.CommonMarkParser"}
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
+# source_suffix = ['.rst', '.md']
 source_suffix = [".rst", ".md"]
 
 # The encoding of source files.
@@ -130,10 +131,10 @@ html_theme = "alabaster"
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    #'description': 'Google Cloud Client Libraries for Python',
-    #'github_user': 'GoogleCloudPlatform',
-    #'github_repo': 'google-cloud-python',
-    #'github_banner': True,
+    "description": "Google Cloud Client Libraries for Python",
+    "github_user": "googleapis",
+    "github_repo": "google-cloud-python",
+    "github_banner": True,
     "font_family": "'Roboto', Georgia, sans",
     "head_font_family": "'Roboto', Georgia, serif",
     "code_font_family": "'Roboto Mono', 'Consolas', monospace",
@@ -226,18 +227,17 @@ html_theme_options = {
 # Output file base name for HTML help builder.
 htmlhelp_basename = "google-cloud-dataproc-doc"
 
-
 # -- Options for warnings ------------------------------------------------------
 
-
 suppress_warnings = [
-    # Temporarily suppress ths to avoid "more than one target found for
+    # Temporarily suppress this to avoid "more than one target found for
     # cross-reference" warning, which are intractable for us to avoid while in
     # a mono-repo.
     # See https://github.com/sphinx-doc/sphinx/blob
     # /2a65ffeef5c107c19084fabdd706cdff3f52d93c/sphinx/domains/python.py#L843
     "ref.python"
 ]
+
 # -- Options for LaTeX output ---------------------------------------------
 
 latex_elements = {
@@ -330,15 +330,20 @@ texinfo_documents = [
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 # texinfo_no_detailmenu = False
 
-# Configuration for intersphinx:
+# Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
+    "python": ("http://python.readthedocs.org/en/latest/", None),
+    "gax": ("https://gax-python.readthedocs.org/en/latest/", None),
     "google-auth": ("https://google-auth.readthedocs.io/en/stable", None),
     "google-gax": ("https://gax-python.readthedocs.io/en/latest/", None),
+    "google.api_core": (
+        "https://googleapis.github.io/google-cloud-python/latest",
+        None,
+    ),
     "grpc": ("https://grpc.io/grpc/python/", None),
     "requests": ("http://docs.python-requests.org/en/master/", None),
     "fastavro": ("https://fastavro.readthedocs.io/en/stable/", None),
     "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
-    "python": ("https://docs.python.org/3", None),
 }
 
 # Napoleon settings
