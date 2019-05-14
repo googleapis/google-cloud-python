@@ -196,7 +196,7 @@ class VideoIntelligenceServiceClient(object):
             >>>
             >>> client = videointelligence_v1.VideoIntelligenceServiceClient()
             >>>
-            >>> input_uri = 'gs://videodemomaker/cat.mp4'
+            >>> input_uri = 'gs://cloud-samples-data/video/cat.mp4'
             >>> features_element = enums.Feature.LABEL_DETECTION
             >>> features = [features_element]
             >>>
