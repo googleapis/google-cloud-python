@@ -1960,7 +1960,8 @@ class TestRowIterator(unittest.TestCase):
         session.avro_schema.schema = json.dumps({"fields": [{"name": "colA"}]})
 
         bqstorage_client = mock.create_autospec(
-            bigquery_storage_v1beta1.BigQueryStorageClient)
+            bigquery_storage_v1beta1.BigQueryStorageClient
+        )
         bqstorage_client.create_read_session.return_value = session
 
         mock_rowstream = mock.create_autospec(reader.ReadRowsStream)
@@ -1970,7 +1971,8 @@ class TestRowIterator(unittest.TestCase):
         mock_rowstream.rows.return_value = mock_rows
 
         page_data_frame = pandas.DataFrame(
-            [{"colA": 1}, {"colA": -1}], columns=["colA"])
+            [{"colA": 1}, {"colA": -1}], columns=["colA"]
+        )
         mock_page = mock.create_autospec(reader.ReadRowsPage)
         mock_page.to_dataframe.return_value = page_data_frame
         mock_pages = (mock_page, mock_page, mock_page)
@@ -2184,14 +2186,15 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(df.age.dtype.name, "int64")
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @mock.patch("google.cloud.bigquery.table.RowIterator.pages",
-                new_callable=mock.PropertyMock)
-    def test_to_dataframe_tabledata_list_w_multiple_pages_return_unique_index(self, mock_pages):
+    @mock.patch(
+        "google.cloud.bigquery.table.RowIterator.pages", new_callable=mock.PropertyMock
+    )
+    def test_to_dataframe_tabledata_list_w_multiple_pages_return_unique_index(
+        self, mock_pages
+    ):
         from google.cloud.bigquery import schema
 
-        iterator_schema = [
-            schema.SchemaField("name", "STRING", mode="REQUIRED"),
-        ]
+        iterator_schema = [schema.SchemaField("name", "STRING", mode="REQUIRED")]
         pages = [[{"name": "Bengt"}], [{"name": "Sven"}]]
 
         mock_pages.return_value = pages
