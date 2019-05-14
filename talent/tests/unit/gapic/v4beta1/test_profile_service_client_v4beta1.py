@@ -20,7 +20,6 @@ import pytest
 
 from google.cloud import talent_v4beta1
 from google.cloud.talent_v4beta1.proto import common_pb2
-from google.cloud.talent_v4beta1.proto import histogram_pb2
 from google.cloud.talent_v4beta1.proto import profile_pb2
 from google.cloud.talent_v4beta1.proto import profile_service_pb2
 from google.protobuf import empty_pb2
@@ -303,12 +302,12 @@ class TestProfileServiceClient(object):
         # Setup Expected Response
         estimated_total_size = 1882144769
         next_page_token = ""
-        histogram_query_results_element = {}
-        histogram_query_results = [histogram_query_results_element]
+        summarized_profiles_element = {}
+        summarized_profiles = [summarized_profiles_element]
         expected_response = {
             "estimated_total_size": estimated_total_size,
             "next_page_token": next_page_token,
-            "histogram_query_results": histogram_query_results,
+            "summarized_profiles": summarized_profiles,
         }
         expected_response = profile_service_pb2.SearchProfilesResponse(
             **expected_response
@@ -329,7 +328,7 @@ class TestProfileServiceClient(object):
         resources = list(paged_list_response)
         assert len(resources) == 1
 
-        assert expected_response.histogram_query_results[0] == resources[0]
+        assert expected_response.summarized_profiles[0] == resources[0]
 
         assert len(channel.requests) == 1
         expected_request = profile_service_pb2.SearchProfilesRequest(
