@@ -135,90 +135,70 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
             self.ps_client.delete_product_set(name=product_set)
 
     def test_create_product_set(self):
-        product_set = vision.types.ProductSet(
-            display_name="display name")
+        product_set = vision.types.ProductSet(display_name="display name")
         product_set_id = "set" + unique_resource_id()
         product_set_path = self.ps_client.product_set_path(
-            project=PROJECT_ID, 
-            location=self.location, 
-            product_set=product_set_id
+            project=PROJECT_ID, location=self.location, product_set=product_set_id
         )
         self.product_sets_to_delete.append(product_set_path)
         response = self.ps_client.create_product_set(
             parent=self.location_path,
             product_set=product_set,
-            product_set_id=product_set_id
+            product_set_id=product_set_id,
         )
         self.assertEqual(response.name, product_set_path)
 
     def test_get_product_set(self):
-        product_set = vision.types.ProductSet(
-            display_name="display name")
+        product_set = vision.types.ProductSet(display_name="display name")
         product_set_id = "set" + unique_resource_id()
         product_set_path = self.ps_client.product_set_path(
-            project=PROJECT_ID, 
-            location=self.location, 
-            product_set=product_set_id
+            project=PROJECT_ID, location=self.location, product_set=product_set_id
         )
         self.product_sets_to_delete.append(product_set_path)
         response = self.ps_client.create_product_set(
             parent=self.location_path,
             product_set=product_set,
-            product_set_id=product_set_id
+            product_set_id=product_set_id,
         )
         self.assertEqual(response.name, product_set_path)
-        get_response = self.ps_client.get_product_set(
-            name=product_set_path
-        )
+        get_response = self.ps_client.get_product_set(name=product_set_path)
         self.assertEqual(get_response.name, product_set_path)
 
     def test_list_product_sets(self):
-        product_set = vision.types.ProductSet(
-            display_name="display name")
+        product_set = vision.types.ProductSet(display_name="display name")
         product_set_id = "set" + unique_resource_id()
         product_set_path = self.ps_client.product_set_path(
-            project=PROJECT_ID, 
-            location=self.location, 
-            product_set=product_set_id
+            project=PROJECT_ID, location=self.location, product_set=product_set_id
         )
         self.product_sets_to_delete.append(product_set_path)
         response = self.ps_client.create_product_set(
             parent=self.location_path,
             product_set=product_set,
-            product_set_id=product_set_id
+            product_set_id=product_set_id,
         )
         self.assertEqual(response.name, product_set_path)
-        product_sets = self.ps_client.list_product_sets(
-            parent=self.location_path
-        )
+        product_sets = self.ps_client.list_product_sets(parent=self.location_path)
         self.assertGreater(len(list(product_sets)), 0)
 
     def test_update_product_set(self):
-        product_set = vision.types.ProductSet(
-            display_name="display name")
+        product_set = vision.types.ProductSet(display_name="display name")
         product_set_id = "set" + unique_resource_id()
         product_set_path = self.ps_client.product_set_path(
-            project=PROJECT_ID, 
-            location=self.location, 
-            product_set=product_set_id
+            project=PROJECT_ID, location=self.location, product_set=product_set_id
         )
         self.product_sets_to_delete.append(product_set_path)
         response = self.ps_client.create_product_set(
             parent=self.location_path,
             product_set=product_set,
-            product_set_id=product_set_id
+            product_set_id=product_set_id,
         )
         self.assertEqual(response.name, product_set_path)
         new_display_name = "updated name"
         updated_product_set_request = vision.types.ProductSet(
-            name=product_set_path,
-            display_name=new_display_name
+            name=product_set_path, display_name=new_display_name
         )
         update_mask = vision.types.FieldMask(paths=["display_name"])
         updated_product_set = self.ps_client.update_product_set(
-            product_set=updated_product_set_request, 
-            update_mask=update_mask
+            product_set=updated_product_set_request, update_mask=update_mask
         )
         self.assertEqual(updated_product_set.display_name, new_display_name)
-
-
