@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-dns/#history
 
+## 0.29.3
+
+05-14-2018 13:02 PST
+
+
+### Implementation Changes
+- Widen range for 'google-cloud-core'. ([#7972](https://github.com/googleapis/google-cloud-python/pull/7972))
+
 ## 0.29.2
 
 12-17-2018 16:47 PST
