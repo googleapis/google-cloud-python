@@ -5,6 +5,15 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## 1.1.1
+
+05-14-2019 12:59 PDT
+
+
+### Implementation Changes
+- Widen range for 'google-cloud-core'. ([#7973](https://github.com/googleapis/google-cloud-python/pull/7973))
+
+
 ## 1.1.0
 
 04-30-2019 12:29 PDT
