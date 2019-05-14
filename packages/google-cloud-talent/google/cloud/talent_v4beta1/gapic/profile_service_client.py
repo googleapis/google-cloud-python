@@ -885,7 +885,7 @@ class ProfileServiceClient(object):
 
         Returns:
             A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.talent_v4beta1.types.HistogramQueryResult` instances.
+            is an iterable of :class:`~google.cloud.talent_v4beta1.types.SummarizedProfile` instances.
             This object can also be configured to iterate over the pages
             of the response through the `options` parameter.
 
@@ -940,7 +940,7 @@ class ProfileServiceClient(object):
                 metadata=metadata,
             ),
             request=request,
-            items_field="histogram_query_results",
+            items_field="summarized_profiles",
             request_token_field="page_token",
             response_token_field="next_page_token",
         )
