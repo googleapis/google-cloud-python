@@ -22,7 +22,7 @@ import setuptools
 
 name = 'google-cloud-trace'
 description = 'Stackdriver Trace API client library'
-version = '0.20.2'
+version = '0.20.3'
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
