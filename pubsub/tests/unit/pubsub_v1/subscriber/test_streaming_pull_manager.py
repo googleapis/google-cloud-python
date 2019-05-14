@@ -62,7 +62,7 @@ def test__wrap_callback_errors_no_error():
     on_callback_error.assert_not_called()
 
 
-def test__wrap_callback_errors_error():
+def test__wrap_callback_errors_error_no_batch():
     callback_error = ValueError("meep")
 
     msg = mock.create_autospec(message.Message, instance=True)
@@ -72,6 +72,28 @@ def test__wrap_callback_errors_error():
     streaming_pull_manager._wrap_callback_errors(callback, on_callback_error, msg)
 
     msg.nack.assert_called_once()
+    on_callback_error.assert_called_once_with(callback_error)
+
+
+def test__wrap_callback_errors_error_with_batch():
+    callback_error = ValueError("meep")
+
+    messages = [
+        mock.create_autospec(message.Message, instance=True),
+        mock.create_autospec(message.Message, instance=True),
+    ]
+    # Some of the messages might have already been (N)ACK-ed in the callback,
+    # thus simulate that to verify the robustness of the MUT.
+    messages[0].nack.side_effect = message.AckStatusSentError
+
+    callback = mock.Mock(side_effect=callback_error)
+    on_callback_error = mock.Mock()
+
+    # If the call below does not raise AckStatusSentError, it means that the MUT
+    # handled the already (N)ACK-ed messages correctly.
+    streaming_pull_manager._wrap_callback_errors(callback, on_callback_error, messages)
+
+    assert all(len(msg.nack.mock_calls) == 1 for msg in messages)
     on_callback_error.assert_called_once_with(callback_error)
 
 
@@ -231,6 +253,9 @@ def test__maybe_release_messages_on_overload():
     manager = make_manager(
         flow_control=types.FlowControl(max_messages=10, max_bytes=1000)
     )
+    manager._batch_callback = False
+    manager._schedule_callbacks = mock.Mock()
+
     # Ensure load is exactly 1.0 (to verify that >= condition is used)
     _leaser = manager._leaser = mock.create_autospec(leaser.Leaser)
     _leaser.message_count = 10
@@ -243,7 +268,7 @@ def test__maybe_release_messages_on_overload():
 
     assert manager._messages_on_hold.qsize() == 1
     manager._leaser.add.assert_not_called()
-    manager._scheduler.schedule.assert_not_called()
+    manager._schedule_callbacks.assert_not_called()
 
 
 def test__maybe_release_messages_below_overload():
@@ -251,6 +276,8 @@ def test__maybe_release_messages_below_overload():
         flow_control=types.FlowControl(max_messages=10, max_bytes=1000)
     )
     manager._callback = mock.sentinel.callback
+    manager._batch_callback = False
+    manager._schedule_callbacks = mock.Mock()
 
     # init leaser message count to 8 to leave room for 2 more messages
     _leaser = manager._leaser = mock.create_autospec(leaser.Leaser)
@@ -279,12 +306,12 @@ def test__maybe_release_messages_below_overload():
     ]
     _leaser.add.assert_has_calls(expected_calls)
 
-    schedule_calls = manager._scheduler.schedule.mock_calls
-    assert len(schedule_calls) == 2
-    for _, call_args, _ in schedule_calls:
-        assert call_args[0] == mock.sentinel.callback
-        assert isinstance(call_args[1], message.Message)
-        assert call_args[1].ack_id in ("ack_foo", "ack_bar")
+    calls = manager._schedule_callbacks.mock_calls
+    assert len(calls) == 1
+    call_arg = calls[0][1][0]  # the first positional argument of the call
+    assert len(call_arg) == 2
+    assert all(isinstance(item, message.Message) for item in call_arg)
+    assert sorted(item.ack_id for item in call_arg) == ["ack_bar", "ack_foo"]
 
 
 def test_send_unary():
@@ -404,7 +431,7 @@ def test_heartbeat_inactive():
 def test_open(heartbeater, dispatcher, leaser, background_consumer, resumable_bidi_rpc):
     manager = make_manager()
 
-    manager.open(mock.sentinel.callback, mock.sentinel.on_callback_error)
+    manager.open(mock.sentinel.callback, False, mock.sentinel.on_callback_error)
 
     heartbeater.assert_called_once_with(manager)
     heartbeater.return_value.start.assert_called_once()
@@ -442,7 +469,7 @@ def test_open_already_active():
     manager._consumer.is_active = True
 
     with pytest.raises(ValueError, match="already open"):
-        manager.open(mock.sentinel.callback, mock.sentinel.on_callback_error)
+        manager.open(mock.sentinel.callback, False, mock.sentinel.on_callback_error)
 
 
 def test_open_has_been_closed():
@@ -450,16 +477,18 @@ def test_open_has_been_closed():
     manager._closed = True
 
     with pytest.raises(ValueError, match="closed"):
-        manager.open(mock.sentinel.callback, mock.sentinel.on_callback_error)
+        manager.open(mock.sentinel.callback, False, mock.sentinel.on_callback_error)
 
 
-def make_running_manager():
+def make_running_manager(batch_callback=False):
     manager = make_manager()
     manager._consumer = mock.create_autospec(bidi.BackgroundConsumer, instance=True)
     manager._consumer.is_active = True
     manager._dispatcher = mock.create_autospec(dispatcher.Dispatcher, instance=True)
     manager._leaser = mock.create_autospec(leaser.Leaser, instance=True)
     manager._heartbeater = mock.create_autospec(heartbeater.Heartbeater, instance=True)
+
+    manager._batch_callback = batch_callback
 
     return (
         manager,
@@ -552,6 +581,7 @@ def test__get_initial_request_wo_leaser():
 def test__on_response_no_leaser_overload():
     manager, _, dispatcher, leaser, _, scheduler = make_running_manager()
     manager._callback = mock.sentinel.callback
+    manager._schedule_callbacks = mock.Mock()
 
     # Set up the messages.
     response = types.StreamingPullResponse(
@@ -575,12 +605,11 @@ def test__on_response_no_leaser_overload():
     dispatcher.modify_ack_deadline.assert_called_once_with(
         [requests.ModAckRequest("fack", 10), requests.ModAckRequest("back", 10)]
     )
-
-    schedule_calls = scheduler.schedule.mock_calls
-    assert len(schedule_calls) == 2
-    for call in schedule_calls:
-        assert call[1][0] == mock.sentinel.callback
-        assert isinstance(call[1][1], message.Message)
+    calls = manager._schedule_callbacks.mock_calls
+    assert len(calls) == 1
+    call_arg = calls[0][1][0]  # the first positional argument of the call
+    assert all(isinstance(item, message.Message) for item in call_arg)
+    assert sorted(item.ack_id for item in call_arg) == ["back", "fack"]
 
     # the leaser load limit not hit, no messages had to be put on hold
     assert manager._messages_on_hold.qsize() == 0
@@ -589,6 +618,7 @@ def test__on_response_no_leaser_overload():
 def test__on_response_with_leaser_overload():
     manager, _, dispatcher, leaser, _, scheduler = make_running_manager()
     manager._callback = mock.sentinel.callback
+    manager._schedule_callbacks = mock.Mock()
 
     # Set up the messages.
     response = types.StreamingPullResponse(
@@ -622,12 +652,12 @@ def test__on_response_with_leaser_overload():
     )
 
     # one message should be scheduled, the leaser capacity allows for it
-    schedule_calls = scheduler.schedule.mock_calls
-    assert len(schedule_calls) == 1
-    call_args = schedule_calls[0][1]
-    assert call_args[0] == mock.sentinel.callback
-    assert isinstance(call_args[1], message.Message)
-    assert call_args[1].message_id == "1"
+    calls = manager._schedule_callbacks.mock_calls
+    assert len(calls) == 1
+    call_arg = calls[0][1][0]  # the first positional argument of the call
+    assert len(call_arg) == 1
+    assert isinstance(call_arg[0], message.Message)
+    assert call_arg[0].message_id == "1"
 
     # the rest of the messages should have been put on hold
     assert manager._messages_on_hold.qsize() == 2
@@ -639,6 +669,37 @@ def test__on_response_with_leaser_overload():
         else:
             assert isinstance(msg, message.Message)
             assert msg.message_id in ("2", "3")
+
+
+def test__schedule_callbacks_no_batch():
+    manager, _, _, _, _, scheduler = make_running_manager(batch_callback=False)
+    manager._callback = mock.sentinel.callback
+
+    messages = [
+        mock.create_autospec(message.Message, instance=True, ack_id="ack_foo"),
+        mock.create_autospec(message.Message, instance=True, ack_id="ack_bar"),
+    ]
+    manager._schedule_callbacks(messages)
+
+    assert scheduler.schedule.call_count == 2
+    expected_calls = [
+        mock.call(mock.sentinel.callback, messages[0]),
+        mock.call(mock.sentinel.callback, messages[1]),
+    ]
+    scheduler.schedule.assert_has_calls(expected_calls, any_order=True)
+
+
+def test__schedule_callbacks_with_batch():
+    manager, _, _, _, _, scheduler = make_running_manager(batch_callback=True)
+    manager._callback = mock.sentinel.callback
+
+    messages = [
+        mock.create_autospec(message.Message, instance=True, ack_id="ack_foo"),
+        mock.create_autospec(message.Message, instance=True, ack_id="ack_bar"),
+    ]
+    manager._schedule_callbacks(messages)
+
+    scheduler.schedule.assert_called_once_with(mock.sentinel.callback, messages)
 
 
 def test_retryable_stream_errors():

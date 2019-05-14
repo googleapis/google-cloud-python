@@ -124,19 +124,25 @@ class Client(object):
         """The underlying gapic API client."""
         return self._api
 
-    def subscribe(self, subscription, callback, flow_control=(), scheduler=None):
+    def subscribe(
+        self, subscription, callback, batch=False, flow_control=(), scheduler=None
+    ):
         """Asynchronously start receiving messages on a given subscription.
 
         This method starts a background thread to begin pulling messages from
         a Pub/Sub subscription and scheduling them to be processed using the
         provided ``callback``.
 
-        The ``callback`` will be called with an individual
-        :class:`google.cloud.pubsub_v1.subscriber.message.Message`. It is the
-        responsibility of the callback to either call ``ack()`` or ``nack()``
-        on the message when it finished processing. If an exception occurs in
-        the callback during processing, the exception is logged and the message
-        is ``nack()`` ed.
+        If ``batch`` is False (default), the ``callback`` will be called with an
+        individual :class:`google.cloud.pubsub_v1.subscriber.message.Message`.
+        If ``batch`` is True, the ``callback`` will be called with a list of
+        all messages received in a single response from the server, albeit
+        within limits imposed by the ``flow_control`` settings.
+
+        It is the responsibility of the callback to either call ``ack()`` or
+        ``nack()`` on the message(s) when it finishes processing. If an exception
+        occurs in the callback during processing, the exception is logged and the
+        messages are ``nack()`` ed.
 
         The ``flow_control`` argument can be used to control the rate of at
         which messages are pulled. The settings are relatively conservative by
@@ -186,10 +192,22 @@ class Client(object):
             subscription (str): The name of the subscription. The
                 subscription should have already been created (for example,
                 by using :meth:`create_subscription`).
-            callback (Callable[~google.cloud.pubsub_v1.subscriber.message.Message]):
-                The callback function. This function receives the message as
-                its only argument and will be called from a different thread/
-                process depending on the scheduling strategy.
+            callback ( \
+                Callable[ \
+                    Union[ \
+                        ~google.cloud.pubsub_v1.subscriber.message.Message, \
+                        List[~google.cloud.pubsub_v1.subscriber.message.Message], \
+                    ] \
+                ] \
+            ):
+                The callback function. This function receives the message (or
+                a list of messages if ``batch`` is ``True``) as its only argument
+                and will be called from a different thread/process depending on the
+                scheduling strategy.
+            batch (bool): If ``False`` (default), invoke ``callback`` for each
+                individual received message. If ``True``, invoke ``callback``
+                for each _group_ of messages received in a single server response
+                (within limits imposed by the ``flow_control`` settings).
             flow_control (~google.cloud.pubsub_v1.types.FlowControl): The flow control
                 settings. Use this to prevent situations where you are
                 inundated with too many messages at once.
@@ -209,6 +227,8 @@ class Client(object):
 
         future = futures.StreamingPullFuture(manager)
 
-        manager.open(callback=callback, on_callback_error=future.set_exception)
+        manager.open(
+            callback=callback, batch=batch, on_callback_error=future.set_exception
+        )
 
         return future

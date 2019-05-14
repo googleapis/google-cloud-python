@@ -53,24 +53,35 @@ def _maybe_wrap_exception(exception):
     return exception
 
 
-def _wrap_callback_errors(callback, on_callback_error, message):
-    """Wraps a user callback so that if an exception occurs the message is
+def _wrap_callback_errors(callback, on_callback_error, messages):
+    """Wrap a user callback so that if an exception occurs the messages are
     nacked.
 
     Args:
-        callback (Callable[None, Message]): The user callback.
-        message (~Message): The Pub/Sub message.
+        callback (Callable[Union[Message, List[Message]]]): The user callback.
+        on_callback_error (Callable[Exception]): The handler to invoke if
+            unhandled error occurs in ``callback``.
+        messages (Union[~Message, List[~Message]]): The Pub/Sub message(s).
     """
     try:
-        callback(message)
+        callback(messages)
     except Exception as exc:
         # Note: the likelihood of this failing is extremely low. This just adds
         # a message to a queue, so if this doesn't work the world is in an
         # unrecoverable state and this thread should just bail.
         _LOGGER.exception(
-            "Top-level exception occurred in callback while processing a message"
+            "Top-level exception occurred in callback while processing message(s)"
         )
-        message.nack()
+
+        if isinstance(messages, google.cloud.pubsub_v1.subscriber.message.Message):
+            messages = [messages]
+
+        for msg in messages:
+            try:
+                msg.nack()
+            except google.cloud.pubsub_v1.subscriber.message.AckStatusSentError:
+                pass  # this message does not have to be NACK-ed
+
         on_callback_error(exc)
 
 
@@ -259,11 +270,13 @@ class StreamingPullManager(object):
 
         The method tries to release as many messages as the current leaser load
         would allow. Each released message is added to the lease management,
-        and the user callback is scheduled for it.
+        and the user callback is scheduled for them.
 
         If there are currently no messageges on hold, or if the leaser is
         already overloaded, this method is effectively a no-op.
         """
+        released_messages = []
+
         while True:
             if self.load >= 1.0:
                 break  # already overloaded
@@ -273,15 +286,25 @@ class StreamingPullManager(object):
             except queue.Empty:
                 break
 
+            released_messages.append(msg)
+
             self.leaser.add(
                 [requests.LeaseRequest(ack_id=msg.ack_id, byte_size=msg.size)]
             )
             _LOGGER.debug(
-                "Released held message to leaser, scheduling callback for it, "
-                "still on hold %s.",
+                "Released held message to leaser, still on hold %s.",
                 self._messages_on_hold.qsize(),
             )
-            self._scheduler.schedule(self._callback, msg)
+
+        if not released_messages:
+            return
+
+        _LOGGER.debug(
+            "Scheduling %s for %s released message(s).",
+            "batch callback" if self._batch_callback else "callbacks",
+            len(released_messages),
+        )
+        self._schedule_callbacks(released_messages)
 
     def _send_unary_request(self, request):
         """Send a request using a separate unary request instead of over the
@@ -351,13 +374,24 @@ class StreamingPullManager(object):
         if self._rpc is not None and self._rpc.is_active:
             self._rpc.send(types.StreamingPullRequest())
 
-    def open(self, callback, on_callback_error):
+    def open(self, callback, batch, on_callback_error):
         """Begin consuming messages.
 
         Args:
-            callback (Callable[None, google.cloud.pubsub_v1.message.Message]):
-                A callback that will be called for each message received on the
+            callback (
+                Callable[
+                    Union[
+                        google.cloud.pubsub_v1.message.Message,
+                        List[google.cloud.pubsub_v1.message.Message],
+                    ]
+                ]
+            ):
+                A callback that will be called for messages received on the
                 stream.
+            batch (bool): If ``False``, invoke ``callback`` for each individual
+                message. If ``True``, invoke ``callback`` for each group of
+                messages received in a single server response (may be less than
+                a full group depending on the ``flow_control`` limits).
             on_callback_error (Callable[Exception]):
                 A callable that will be called if an exception is raised in
                 the provided `callback`.
@@ -371,6 +405,7 @@ class StreamingPullManager(object):
         self._callback = functools.partial(
             _wrap_callback_errors, callback, on_callback_error
         )
+        self._batch_callback = batch
 
         # Create the RPC
         self._rpc = bidi.ResumableBidiRpc(
@@ -480,7 +515,9 @@ class StreamingPullManager(object):
         redelivered multiple times.
 
         After the messages have all had their ack deadline updated, execute
-        the callback for each message using the executor.
+        the callback (individually or in a batch) using the executor for all
+        messages that have been added to the lease management, i.e. not put on
+        hold due to leaser overload.
         """
         _LOGGER.debug(
             "Processing %s received message(s), currenty on hold %s.",
@@ -516,12 +553,30 @@ class StreamingPullManager(object):
                 self._messages_on_hold.put(message)
 
         _LOGGER.debug(
-            "Scheduling callbacks for %s new messages, new total on hold %s.",
+            "Scheduling %s for %s new messages, new total on hold %s.",
+            "batch callback" if self._batch_callback else "callbacks",
             len(invoke_callbacks_for),
             self._messages_on_hold.qsize(),
         )
-        for msg in invoke_callbacks_for:
-            self._scheduler.schedule(self._callback, msg)
+        self._schedule_callbacks(invoke_callbacks_for)
+
+    def _schedule_callbacks(self, messages):
+        """Schedule callbacks for given messages for an async execution.
+
+        If the streaming pull manager was opened with `batch` == True, a single
+        batch callback will be scheduled for all given messages. Conversely, if
+        `batch` == False, a callback will be scheduled once for each message
+        in `messages`.
+
+        Args:
+            messages (Union[~Message, List[~Message]]): The Pub/Sub message(s)
+                to schedule the callbacks for.
+        """
+        if self._batch_callback:
+            self._scheduler.schedule(self._callback, messages)
+        else:
+            for msg in messages:
+                self._scheduler.schedule(self._callback, msg)
 
     def _should_recover(self, exception):
         """Determine if an error on the RPC stream should be recovered.

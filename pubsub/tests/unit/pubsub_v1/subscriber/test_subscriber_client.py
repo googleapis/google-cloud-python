@@ -68,12 +68,14 @@ def test_subscribe(manager_open):
     creds = mock.Mock(spec=credentials.Credentials)
     client = subscriber.Client(credentials=creds)
 
-    future = client.subscribe("sub_name_a", callback=mock.sentinel.callback)
+    future = client.subscribe(
+        "sub_name_a", callback=mock.sentinel.callback, batch=mock.sentinel.batch
+    )
     assert isinstance(future, futures.StreamingPullFuture)
 
     assert future._manager._subscription == "sub_name_a"
     manager_open.assert_called_once_with(
-        mock.ANY, mock.sentinel.callback, future.set_exception
+        mock.ANY, mock.sentinel.callback, mock.sentinel.batch, future.set_exception
     )
 
 
@@ -91,6 +93,7 @@ def test_subscribe_options(manager_open):
     future = client.subscribe(
         "sub_name_a",
         callback=mock.sentinel.callback,
+        batch=mock.sentinel.batch,
         flow_control=flow_control,
         scheduler=scheduler,
     )
@@ -100,5 +103,5 @@ def test_subscribe_options(manager_open):
     assert future._manager.flow_control == flow_control
     assert future._manager._scheduler == scheduler
     manager_open.assert_called_once_with(
-        mock.ANY, mock.sentinel.callback, future.set_exception
+        mock.ANY, mock.sentinel.callback, mock.sentinel.batch, future.set_exception
     )
