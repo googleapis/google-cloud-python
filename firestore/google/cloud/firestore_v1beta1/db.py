@@ -54,7 +54,8 @@ class FirestoreModel(object):
         **data (kwargs): Values for fields in the new record, e.g User(name="Bob")
 
     Attributes:
-        id (str or int): Unique id identifying this record, if auto-generated, this is not available before `put()`
+        id (str or int): Unique id identifying this record,
+            if auto-generated, this is not available before `put()`
 
         __sub_collection__ (str of FirestoreModel)(Optional class attribute):
                 1: A :class:`~.firestore_v1beta1.client.db.FirestoreModel` class where each document in this
@@ -103,11 +104,11 @@ class FirestoreModel(object):
                 raise Exception("__parent__ provided in a model that doesn't provide a subcollection")
             return cls.__name__
 
-    def _document_path(self):
+    def __document__(self):
         if not self.id:
             return None
         # Get's the absolute path: `projects/{project_id}/databases/{database_id}/documents/{document_path}
-        return self.__collection.document(self.id)._document_path()
+        return self.__collection.document(self.id)
 
     def _reference_path(self):
         if not self.id:
