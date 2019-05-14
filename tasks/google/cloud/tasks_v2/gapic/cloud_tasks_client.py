@@ -1395,7 +1395,7 @@ class CloudTasksClient(object):
 
         Tasks cannot be updated after creation; there is no UpdateTask command.
 
-        -  For ``App Engine queues``, the maximum task size is 100KB.
+        -  The maximum task size is 100KB.
 
         Example:
             >>> from google.cloud import tasks_v2
