@@ -38,7 +38,6 @@ for version in versions:
     s.move(library / f'google/cloud/translate_{version}', excludes=excludes)
     s.move(library / 'tests')
     s.move(library / f"docs/gapic/{version}")
-    s.move(library / "docs/conf.py")
 
 # translation -> translate
 s.replace(
