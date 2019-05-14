@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+## 0.28.4
+
+05-14-2019 12:54 PST
+
+
+### Implementation Changes
+- Widen range for 'google-cloud-core'. ([#7975](https://github.com/googleapis/google-cloud-python/pull/7975))
+
 ## 0.28.3
 
 12-17-2018 16:59 PST
