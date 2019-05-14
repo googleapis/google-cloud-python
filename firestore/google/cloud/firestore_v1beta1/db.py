@@ -28,6 +28,8 @@ from datetime import datetime, date
 
 class _Field(object):
     def __init__(self, field_type, default=None, required=False):
+        if type(self) is _Field:
+            raise Exception("You must extend _Field")
         self.type = field_type
         self.default = default
         self.required = required
@@ -70,7 +72,13 @@ class FirestoreModel(object):
             provide these values if you are not working on App Engine environment or any other case where you need to
             the `Project`, `Credentials` and the `database` that the model is going to use
     """
+
+    __database_props__ = (None, None, DEFAULT_DATABASE)
+    __sub_collection__ = None
+
     def __init__(self, __parent__=None, **data):
+        if type(self) is FirestoreModel:
+            raise Exception("You must extend FirestoreModel")
         self.__setup_fields()
         self.__model_name = type(self).__name__
         client = self.__init_client()
@@ -86,23 +94,22 @@ class FirestoreModel(object):
 
     @classmethod
     def __collection_path(cls, __parent__):
-        try:
-            sub_collection = cls.__sub_collection__
-            if isinstance(sub_collection, str):  # In this case the subcollection is just a path
-                return sub_collection + "/" + cls.__name__
-            if not issubclass(sub_collection, FirestoreModel):
-                raise SubCollectionError("`__sub_collection__` must return a subclass of `FirestoreModel`")
-            if not __parent__:  # We need to have a parent model to compare the subclass to
-                raise SubCollectionError("Variable `__parent__` is required to initialize a sub-collection")
-            # We expect the parent to be an instance of the model returned
-            if not isinstance(__parent__, sub_collection):
-                raise SubCollectionError("The __parent__ of a subcollection must be of the same instance as "
-                                         "the return of `__sub_collection__`")
-            return __parent__._reference_path() + "/" + cls.__name__
-        except AttributeError:
+        sub_collection = cls.__sub_collection__
+        if not sub_collection:
             if __parent__:
                 raise Exception("__parent__ provided in a model that doesn't provide a subcollection")
             return cls.__name__
+        if isinstance(sub_collection, str):  # In this case the subcollection is just a path
+            return sub_collection + "/" + cls.__name__
+        if not issubclass(sub_collection, FirestoreModel):
+            raise SubCollectionError("`__sub_collection__` must return a subclass of `FirestoreModel`")
+        if not __parent__:  # We need to have a parent model to compare the subclass to
+            raise SubCollectionError("Variable `__parent__` is required to initialize a sub-collection")
+        # We expect the parent to be an instance of the model returned
+        if not isinstance(__parent__, sub_collection):
+            raise SubCollectionError("The __parent__ of a subcollection must be of the same instance as "
+                                     "the return of `__sub_collection__`")
+        return __parent__._reference_path() + "/" + cls.__name__
 
     def __document__(self):
         if not self.id:
@@ -118,10 +125,7 @@ class FirestoreModel(object):
 
     @classmethod
     def __init_client(cls):
-        try:
-            project, credentials, database = cls.__database_props__
-        except AttributeError:
-            project, credentials, database = (None, None, DEFAULT_DATABASE)
+        project, credentials, database = cls.__database_props__
         return Client(project=project, credentials=credentials, database=database)
 
     def __str__(self):
@@ -135,6 +139,17 @@ class FirestoreModel(object):
                 continue
             value = getattr(self, attribute)
             if isinstance(value, _Field):
+                if isinstance(value, ReferenceField):
+                    sub_c = value.model.__sub_collection__
+                    if sub_c and issubclass(sub_c, FirestoreModel):
+                        if not self.__sub_collection__:
+                            raise ReferenceFieldError("Reference fields must belong to the same parent as the model, "
+                                                      "they therefore must have the same __sub_collection__, %s"
+                                                      "does not define a __sub_collection__" % type(self).__name__)
+                        if self.__sub_collection__ != sub_c:
+                            raise ReferenceFieldError("Reference fields must belong to the same parent as the model, "
+                                                      "they therefore must have the same __sub_collection__")
+
                 value.name = attribute
                 self.__fields[attribute] = value
                 setattr(self, attribute, value.default)
@@ -422,8 +437,21 @@ class ListField(_Field):
 
 
 class ReferenceField(_Field):
-    """A field referencing another model"""
+    """
+    A field referencing/pointing to another model.
+
+    Args:
+        model (FirestoreModel.__type__): The model at which this field will be referencing
+            NOTE:
+                A referenced model must meet one of the following:
+                    1. In the same subcollection as the current model
+                    2. In a static subcollection defined by a string path
+                    3. At the to level of the database
+        required (bool): Enforce that this model not store empty data
+    """
     def __init__(self, model, required=False):
+        if not issubclass(model, FirestoreModel):
+            raise ReferenceFieldError()
         super(ReferenceField, self).__init__(model, required=required)
         self.model = model
 
@@ -527,3 +555,12 @@ class SubCollectionError(Exception):
 
     def __str__(self):
         return "SubCollectionError: %s" % self.message
+
+
+class ReferenceFieldError(Exception):
+    """Raised when a reference field point's to a location the model can't resolve"""
+    def __init__(self, message):
+        self.message = message
+
+    def __str__(self):
+        return "ReferenceFieldError: %s" % self.message
