@@ -19,22 +19,29 @@ from synthtool import gcp
 gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
 
+
 # ----------------------------------------------------------------------------
 # Generate websecurityscanner GAPIC layer
 # ----------------------------------------------------------------------------
-library = gapic.py_library(
-    "websecurityscanner",
-    "v1alpha",
-    config_path="/google/cloud/websecurityscanner"
-    "/artman_websecurityscanner_v1alpha.yaml",
-    artman_output_name="websecurityscanner-v1alpha",
-    include_protos=True,
-)
+versions = ["v1alpha", "v1beta"]
 
-s.move(library / "google/cloud/websecurityscanner_v1alpha/proto")
-s.move(library / "google/cloud/websecurityscanner_v1alpha/gapic")
-s.move(library / "tests/unit/gapic/v1alpha")
-s.move(library / "docs/conf.py")
+for version in versions:
+	library = gapic.py_library(
+	    "websecurityscanner",
+	    version,
+	    config_path=f"/google/cloud/websecurityscanner"
+	    f"/artman_websecurityscanner_{version}.yaml",
+	    artman_output_name=f"websecurityscanner-{version}",
+	    include_protos=True,
+	)
+
+	s.move(library / f"google/cloud/websecurityscanner_{version}/proto")
+	s.move(library / f"google/cloud/websecurityscanner_{version}/gapic")
+	s.move(library / f"google/cloud/websecurityscanner_{version}/*.py")
+	s.move(library / f"docs/gapic/{version}")
+	s.move(library / f"tests/unit/gapic/{version}")
+
+s.move(library / "google/cloud/websecurityscanner.py")
 
 # ----------------------------------------------------------------------------
 # Add templated files

@@ -1,5 +1,5 @@
 {
-  "updateTime": "2019-05-10T12:48:57.007416Z",
+  "updateTime": "2019-05-15T20:52:52.851899Z",
   "sources": [
     {
       "generator": {
@@ -12,8 +12,8 @@
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "07883be5bf3c3233095e99d8e92b8094f5d7084a",
-        "internalRef": "247530843"
+        "sha": "275cdfcdc3188a60456f43acd139b8cc037379f4",
+        "internalRef": "248217300"
       }
     },
     {
@@ -33,6 +33,16 @@
         "language": "python",
         "generator": "gapic",
         "config": "google/cloud/websecurityscanner/artman_websecurityscanner_v1alpha.yaml"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "websecurityscanner",
+        "apiVersion": "v1beta",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/cloud/websecurityscanner/artman_websecurityscanner_v1beta.yaml"
       }
     }
   ]
