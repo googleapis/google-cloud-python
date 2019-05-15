@@ -16,9 +16,9 @@
 
 from __future__ import absolute_import
 
-from google.cloud.websecurityscanner_v1alpha import types
-from google.cloud.websecurityscanner_v1alpha.gapic import enums
-from google.cloud.websecurityscanner_v1alpha.gapic import web_security_scanner_client
+from google.cloud.websecurityscanner_v1beta import types
+from google.cloud.websecurityscanner_v1beta.gapic import enums
+from google.cloud.websecurityscanner_v1beta.gapic import web_security_scanner_client
 
 
 class WebSecurityScannerClient(web_security_scanner_client.WebSecurityScannerClient):
