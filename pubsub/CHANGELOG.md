@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 0.41.0
+
+05-15-2019 13:57 PDT
+
+
+### New Features
+- Add `kms_key_name` arg to `create_topic`; remove BETA warnings (via synth). ([#7936](https://github.com/googleapis/google-cloud-python/pull/7936))
+- Add message ordering (via synth). ([#7551](https://github.com/googleapis/google-cloud-python/pull/7551))
+
+### Implementation Changes
+- Propagate subscribe callback errors to main thread ([#7954](https://github.com/googleapis/google-cloud-python/pull/7954))
+- Fix pubsub Streaming Pull shutdown on RetryError ([#7863](https://github.com/googleapis/google-cloud-python/pull/7863))
+- Make PubSub subscriber Scheduler inherit from ABC ([#7690](https://github.com/googleapis/google-cloud-python/pull/7690))
+- Add routing header to method metadata (via synth). ([#7623](https://github.com/googleapis/google-cloud-python/pull/7623))
+
+### Internal / Testing Changes
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+- Add nox session `docs` (via synth). ([#7778](https://github.com/googleapis/google-cloud-python/pull/7778))
+- Pub/Sub (nit): wrong var name in sample ([#7705](https://github.com/googleapis/google-cloud-python/pull/7705))
+
 ## 0.40.0
 
 03-15-2019 14:09 PDT
