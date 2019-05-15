@@ -72,7 +72,9 @@ def test_subscribe(manager_open):
     assert isinstance(future, futures.StreamingPullFuture)
 
     assert future._manager._subscription == "sub_name_a"
-    manager_open.assert_called_once_with(mock.ANY, mock.sentinel.callback)
+    manager_open.assert_called_once_with(
+        mock.ANY, mock.sentinel.callback, future.set_exception
+    )
 
 
 @mock.patch(
@@ -97,4 +99,6 @@ def test_subscribe_options(manager_open):
     assert future._manager._subscription == "sub_name_a"
     assert future._manager.flow_control == flow_control
     assert future._manager._scheduler == scheduler
-    manager_open.assert_called_once_with(mock.ANY, mock.sentinel.callback)
+    manager_open.assert_called_once_with(
+        mock.ANY, mock.sentinel.callback, future.set_exception
+    )

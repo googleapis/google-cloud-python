@@ -18,6 +18,7 @@ import datetime
 import threading
 import time
 
+import mock
 import pytest
 import six
 
@@ -176,6 +177,34 @@ def test_subscribe_to_messages_async_callbacks(
     assert callback.calls >= 2
 
     future.cancel()
+
+
+class TestStreamingPull(object):
+    def test_streaming_pull_callback_error_propagation(
+        self, publisher, topic_path, subscriber, subscription_path, cleanup
+    ):
+        # Make sure the topic and subscription get deleted.
+        cleanup.append((publisher.delete_topic, topic_path))
+        cleanup.append((subscriber.delete_subscription, subscription_path))
+
+        # create a topic and subscribe to it
+        publisher.create_topic(topic_path)
+        subscriber.create_subscription(subscription_path, topic_path)
+
+        # publish a messages and wait until published
+        future = publisher.publish(topic_path, b"hello!")
+        future.result(timeout=30)
+
+        # Now subscribe to the topic and verify that an error in the callback
+        # is propagated through the streaming pull future.
+        class CallbackError(Exception):
+            pass
+
+        callback = mock.Mock(side_effect=CallbackError)
+        future = subscriber.subscribe(subscription_path, callback)
+
+        with pytest.raises(CallbackError):
+            future.result(timeout=30)
 
 
 class AckCallback(object):
