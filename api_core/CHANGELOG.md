@@ -8,17 +8,9 @@
 
 05-15-2019 10:29 PDT
 
-### Implementation Changes
-
 ### New Features
 
 - Refactor 'client_info' support. ([#7849](https://github.com/googleapis/google-cloud-python/pull/7849))
-
-### Dependencies
-
-### Documentation
-
-### Internal / Testing Changes
 
 ## 1.10.0
 
