@@ -4,10 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+## 0.20.3
+
+05-14-2019 12:30 PST
+
+### Implementation Changes
+- Widen range for 'google-cloud-core'.([#7979](https://github.com/googleapis/google-cloud-python/pull/7979))
+
 ## 0.20.2
 
 12-17-2018 17:06 PST
-
 
 ### Documentation
 - Document Python 2 deprecation ([#6910](https://github.com/googleapis/google-cloud-python/pull/6910))
