@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 1.11.0
+
+05-15-2019 10:29 PDT
+
+### Implementation Changes
+
+### New Features
+
+- Refactor 'client_info' support. ([#7849](https://github.com/googleapis/google-cloud-python/pull/7849))
+
+### Dependencies
+
+### Documentation
+
+### Internal / Testing Changes
+
 ## 1.10.0
 
 04-29-2019 10:12 PDT
