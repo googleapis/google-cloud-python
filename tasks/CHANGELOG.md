@@ -16,7 +16,7 @@
 - Update docstrings (via synth). ([#7940](https://github.com/googleapis/google-cloud-python/pull/7940))
 
 ### Internal / Testing Changes
--  Add nox session `docs`, reorder methods (via synth). ([#7783](https://github.com/googleapis/google-cloud-python/pull/7783))
+- Add nox session `docs`, reorder methods (via synth). ([#7783](https://github.com/googleapis/google-cloud-python/pull/7783))
 
 ## 1.0.0
 
