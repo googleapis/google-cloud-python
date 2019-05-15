@@ -16,6 +16,7 @@ import datetime
 import time
 
 import mock
+import pytest
 import pytz
 from six.moves import queue
 from google.protobuf import timestamp_pb2
@@ -161,6 +162,28 @@ def test_nack():
             requests.NackRequest(ack_id="bogus_ack_id", byte_size=30)
         )
         check_call_types(put, requests.NackRequest)
+
+
+def test_repeated_ack_nack_not_allowed():
+    msg = create_message(b"foo", ack_id="bogus_ack_id")
+    with mock.patch.object(msg._request_queue, "put") as put:
+        msg.ack()
+        put.reset_mock()
+        with pytest.raises(message.AckStatusSentError):
+            msg.ack()
+        with pytest.raises(message.AckStatusSentError):
+            msg.nack()
+        put.assert_not_called()
+
+    msg = create_message(b"bar", ack_id="bogus_ack_id_2")
+    with mock.patch.object(msg._request_queue, "put") as put:
+        msg.nack()
+        put.reset_mock()
+        with pytest.raises(message.AckStatusSentError):
+            msg.ack()
+        with pytest.raises(message.AckStatusSentError):
+            msg.nack()
+        put.assert_not_called()
 
 
 def test_repr():

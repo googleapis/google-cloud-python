@@ -17,6 +17,7 @@ from __future__ import absolute_import
 import datetime
 import json
 import math
+import threading
 import time
 
 from google.api_core import datetime_helpers
@@ -47,6 +48,10 @@ def _indent(lines, prefix="  "):
     for line in lines.split("\n"):
         indented.append(prefix + line)
     return "\n".join(indented)
+
+
+class AckStatusSentError(Exception):
+    """An error raised on attempt to (N)ACK an already (N)ACK-ed Message."""
 
 
 class Message(object):
@@ -98,6 +103,10 @@ class Message(object):
         # was received. Tracking this provides us a way to be smart about
         # the default lease deadline.
         self._received_timestamp = time.time()
+
+        # whether or not an ACK/NACK request has been sent for the message
+        self._ack_status_sent = False
+        self._ack_status_lock = threading.Lock()
 
         # The policy should lease this message, telling PubSub that it has
         # it until it is acked or otherwise dropped.
@@ -183,13 +192,22 @@ class Message(object):
             Acks in Pub/Sub are best effort. You should always
             ensure that your processing code is idempotent, as you may
             receive any given message more than once.
+
+        Raises:
+            ~.pubsub_v1.subscriber.message.AckStatusSentError: If the message
+                has already been ACK-ed or NACK-ed.
         """
-        time_to_ack = math.ceil(time.time() - self._received_timestamp)
-        self._request_queue.put(
-            requests.AckRequest(
-                ack_id=self._ack_id, byte_size=self.size, time_to_ack=time_to_ack
+        with self._ack_status_lock:
+            if self._ack_status_sent:
+                raise AckStatusSentError("Message already ACK/NACK-ed")
+
+            time_to_ack = math.ceil(time.time() - self._received_timestamp)
+            self._request_queue.put(
+                requests.AckRequest(
+                    ack_id=self._ack_id, byte_size=self.size, time_to_ack=time_to_ack
+                )
             )
-        )
+            self._ack_status_sent = True
 
     def drop(self):
         """Release the message from lease management.
@@ -242,7 +260,16 @@ class Message(object):
         """Decline to acknowldge the given message.
 
         This will cause the message to be re-delivered to the subscription.
+
+        Raises:
+            ~.pubsub_v1.subscriber.message.AckStatusSentError: If the message
+                has already been ACK-ed or NACK-ed.
         """
-        self._request_queue.put(
-            requests.NackRequest(ack_id=self._ack_id, byte_size=self.size)
-        )
+        with self._ack_status_lock:
+            if self._ack_status_sent:
+                raise AckStatusSentError("Message already ACK/NACK-ed")
+
+            self._request_queue.put(
+                requests.NackRequest(ack_id=self._ack_id, byte_size=self.size)
+            )
+            self._ack_status_sent = True
