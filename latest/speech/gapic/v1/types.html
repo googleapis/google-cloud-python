@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Speech API Client &#8212; google-cloud d149f80 documentation</title>
+    <title>Types for Cloud Speech API Client &#8212; google-cloud f4ab042 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -457,6 +457,12 @@ premium feature.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.speech_v1.types.RecognitionConfig.metadata">
+<code class="descname">metadata</code><a class="headerlink" href="#google.cloud.speech_v1.types.RecognitionConfig.metadata" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> Metadata regarding this request.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.speech_v1.types.RecognitionConfig.model">
 <code class="descname">model</code><a class="headerlink" href="#google.cloud.speech_v1.types.RecognitionConfig.model" title="Permalink to this definition">#</a></dt>
 <dd><p><em>Optional</em> Which model to select for the given request. Select
@@ -546,6 +552,12 @@ receive an error.</p>
 
 <dl class="attribute">
 <dt>
+<code class="descname">metadata</code></dt>
+<dd><p>Field google.cloud.speech.v1.RecognitionConfig.metadata</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
 <code class="descname">model</code></dt>
 <dd><p>Field google.cloud.speech.v1.RecognitionConfig.model</p>
 </dd></dl>
@@ -572,6 +584,120 @@ receive an error.</p>
 <dt>
 <code class="descname">use_enhanced</code></dt>
 <dd><p>Field google.cloud.speech.v1.RecognitionConfig.use_enhanced</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.speech_v1.types.RecognitionMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.speech_v1.types.</code><code class="descname">RecognitionMetadata</code><a class="headerlink" href="#google.cloud.speech_v1.types.RecognitionMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Description of audio data to be recognized.</p>
+<dl class="attribute">
+<dt id="google.cloud.speech_v1.types.RecognitionMetadata.interaction_type">
+<code class="descname">interaction_type</code><a class="headerlink" href="#google.cloud.speech_v1.types.RecognitionMetadata.interaction_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The use case most closely describing the audio content to be
+recognized.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1.types.RecognitionMetadata.industry_naics_code_of_audio">
+<code class="descname">industry_naics_code_of_audio</code><a class="headerlink" href="#google.cloud.speech_v1.types.RecognitionMetadata.industry_naics_code_of_audio" title="Permalink to this definition">#</a></dt>
+<dd><p>The industry vertical to which this speech recognition request
+most closely applies. This is most indicative of the topics
+contained in the audio. Use the 6-digit NAICS code to identify
+the industry vertical - see <a class="reference external" href="https://www.naics.com/search/">https://www.naics.com/search/</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1.types.RecognitionMetadata.microphone_distance">
+<code class="descname">microphone_distance</code><a class="headerlink" href="#google.cloud.speech_v1.types.RecognitionMetadata.microphone_distance" title="Permalink to this definition">#</a></dt>
+<dd><p>The audio type that most closely describes the audio being
+recognized.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1.types.RecognitionMetadata.original_media_type">
+<code class="descname">original_media_type</code><a class="headerlink" href="#google.cloud.speech_v1.types.RecognitionMetadata.original_media_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The original media the speech was recorded on.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1.types.RecognitionMetadata.recording_device_type">
+<code class="descname">recording_device_type</code><a class="headerlink" href="#google.cloud.speech_v1.types.RecognitionMetadata.recording_device_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The type of device the speech was recorded with.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1.types.RecognitionMetadata.recording_device_name">
+<code class="descname">recording_device_name</code><a class="headerlink" href="#google.cloud.speech_v1.types.RecognitionMetadata.recording_device_name" title="Permalink to this definition">#</a></dt>
+<dd><p>The device used to make the recording. Examples ‘Nexus 5X’ or
+‘Polycom SoundStation IP 6000’ or ‘POTS’ or ‘VoIP’ or
+‘Cardioid Microphone’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1.types.RecognitionMetadata.original_mime_type">
+<code class="descname">original_mime_type</code><a class="headerlink" href="#google.cloud.speech_v1.types.RecognitionMetadata.original_mime_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Mime type of the original audio file. For example
+<code class="docutils literal notranslate"><span class="pre">audio/m4a</span></code>, <code class="docutils literal notranslate"><span class="pre">audio/x-alaw-basic</span></code>, <code class="docutils literal notranslate"><span class="pre">audio/mp3</span></code>,
+<code class="docutils literal notranslate"><span class="pre">audio/3gpp</span></code>. A list of possible audio mime types is
+maintained at <a class="reference external" href="http://www.iana.org/assignments/media">http://www.iana.org/assignments/media</a>-
+types/media-types.xhtml#audio</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1.types.RecognitionMetadata.audio_topic">
+<code class="descname">audio_topic</code><a class="headerlink" href="#google.cloud.speech_v1.types.RecognitionMetadata.audio_topic" title="Permalink to this definition">#</a></dt>
+<dd><p>Description of the content. Eg. “Recordings of federal supreme
+court hearings from 2012”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">audio_topic</code></dt>
+<dd><p>Field google.cloud.speech.v1.RecognitionMetadata.audio_topic</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">industry_naics_code_of_audio</code></dt>
+<dd><p>Field google.cloud.speech.v1.RecognitionMetadata.industry_naics_code_of_audio</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">interaction_type</code></dt>
+<dd><p>Field google.cloud.speech.v1.RecognitionMetadata.interaction_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">microphone_distance</code></dt>
+<dd><p>Field google.cloud.speech.v1.RecognitionMetadata.microphone_distance</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">original_media_type</code></dt>
+<dd><p>Field google.cloud.speech.v1.RecognitionMetadata.original_media_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">original_mime_type</code></dt>
+<dd><p>Field google.cloud.speech.v1.RecognitionMetadata.original_mime_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">recording_device_name</code></dt>
+<dd><p>Field google.cloud.speech.v1.RecognitionMetadata.recording_device_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">recording_device_type</code></dt>
+<dd><p>Field google.cloud.speech.v1.RecognitionMetadata.recording_device_type</p>
 </dd></dl>
 
 </dd></dl>
@@ -863,12 +989,27 @@ indicating <code class="docutils literal notranslate"><span class="pre">stabilit
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.speech_v1.types.StreamingRecognitionResult.result_end_time">
+<code class="descname">result_end_time</code><a class="headerlink" href="#google.cloud.speech_v1.types.StreamingRecognitionResult.result_end_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Time offset of the end of this result relative to
+the beginning of the audio.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.speech_v1.types.StreamingRecognitionResult.channel_tag">
 <code class="descname">channel_tag</code><a class="headerlink" href="#google.cloud.speech_v1.types.StreamingRecognitionResult.channel_tag" title="Permalink to this definition">#</a></dt>
 <dd><p>For multi-channel audio, this is the channel number
 corresponding to the recognized result for the audio from that
 channel. For audio_channel_count = N, its output values can
 range from ‘1’ to ‘N’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1.types.StreamingRecognitionResult.language_code">
+<code class="descname">language_code</code><a class="headerlink" href="#google.cloud.speech_v1.types.StreamingRecognitionResult.language_code" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The <a class="reference external" href="https://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP-47</a> language tag of the language
+in this result. This language code was detected to have the
+most likelihood of being spoken in the audio.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -887,6 +1028,18 @@ range from ‘1’ to ‘N’.</p>
 <dt>
 <code class="descname">is_final</code></dt>
 <dd><p>Field google.cloud.speech.v1.StreamingRecognitionResult.is_final</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">language_code</code></dt>
+<dd><p>Field google.cloud.speech.v1.StreamingRecognitionResult.language_code</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">result_end_time</code></dt>
+<dd><p>Field google.cloud.speech.v1.StreamingRecognitionResult.result_end_time</p>
 </dd></dl>
 
 <dl class="attribute">
