@@ -19,6 +19,10 @@ from __future__ import absolute_import
 from google.cloud.bigtable_admin_v2 import types
 from google.cloud.bigtable_admin_v2.gapic import bigtable_instance_admin_client
 from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+from google.cloud.bigtable_admin_v2.gapic.transports import (
+    bigtable_table_admin_grpc_transport,
+    bigtable_instance_admin_grpc_transport,
+)
 from google.cloud.bigtable_admin_v2.gapic import enums
 
 
@@ -34,4 +38,29 @@ class BigtableTableAdminClient(bigtable_table_admin_client.BigtableTableAdminCli
     enums = enums
 
 
-__all__ = ("enums", "types", "BigtableInstanceAdminClient", "BigtableTableAdminClient")
+class BigtableTableAdminGrpcTransport(
+    bigtable_table_admin_grpc_transport.BigtableTableAdminGrpcTransport
+):
+    __doc__ = (
+        bigtable_table_admin_grpc_transport.BigtableTableAdminGrpcTransport.__doc__
+    )
+    enums = enums
+
+
+class BigtableInstanceAdminGrpcTransport(
+    bigtable_instance_admin_grpc_transport.BigtableInstanceAdminGrpcTransport
+):
+    __doc__ = (
+        bigtable_instance_admin_grpc_transport.BigtableInstanceAdminGrpcTransport.__doc__
+    )
+    enums = enums
+
+
+__all__ = (
+    "enums",
+    "types",
+    "BigtableInstanceAdminClient",
+    "BigtableTableAdminClient",
+    "BigtableTableAdminGrpcTransport",
+    "BigtableInstanceAdminGrpcTransport",
+)

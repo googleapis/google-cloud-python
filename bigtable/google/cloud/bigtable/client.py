@@ -122,6 +122,9 @@ class Client(ClientWithProject):
     _table_data_client = None
     _table_admin_client = None
     _instance_admin_client = None
+    _table_data_transport = None
+    _table_admin_transport = None
+    _instance_admin_transport = None
 
     def __init__(
         self,
@@ -130,6 +133,7 @@ class Client(ClientWithProject):
         read_only=False,
         admin=False,
         client_info=_CLIENT_INFO,
+        transport=None,
         channel=None,
     ):
         if read_only and admin:
@@ -144,6 +148,7 @@ class Client(ClientWithProject):
         self._client_info = client_info
         self._emulator_host = os.getenv(BIGTABLE_EMULATOR)
         self._emulator_channel = None
+        self._transport = transport
 
         if self._emulator_host is not None:
             self._emulator_channel = grpc.insecure_channel(self._emulator_host)
@@ -265,6 +270,54 @@ class Client(ClientWithProject):
                 bigtable_admin_v2.BigtableInstanceAdminClient
             )(self)
         return self._instance_admin_client
+
+    @property
+    def table_data_transport(self):
+        """Getter for the gRPC stub used for the Table Admin Transport API.
+
+        :rtype: :class:`.bigtable_grpc_transport.BigtableGrpcTransport
+        :returns: A BigtableGrpcTransport instance.
+        """
+        if self._table_data_transport is None:
+            self._table_data_transport = bigtable_v2.BigtableGrpcTransport()
+        return self._table_data_transport
+
+    @property
+    def table_admin_transport(self):
+        """Getter for the gRPC stub used for the Instance Transport API.
+        :rtype: :class:`.bigtable_instance_admin_grpc_transport.BigtableTableAdminGrpcTransport
+        :returns: A BigtableTableAdminGrpcTransport instance.
+        :raises: :class:`ValueError <exceptions.ValueError>` if the current
+                 client is not an admin client or if it has not been
+                 :meth:`start`-ed.
+        """
+
+        if self._table_admin_transport is None:
+            if not self._admin:
+                raise ValueError("Client is not an admin client.")
+            self._table_admin_transport = (
+                bigtable_admin_v2.BigtableTableAdminGrpcTransport()
+            )
+        return self._table_admin_transport
+
+    @property
+    def instance_admin_transport(self):
+        """Getter for the gRPC stub used for the Instance Transport API.
+
+        :rtype: :class:`.bigtable_instance_admin_grpc_transport.BigtableInstanceAdminGrpcTransport
+        :returns: A BigtableInstanceAdminGrpcTransport instance.
+        :raises: :class:`ValueError <exceptions.ValueError>` if the current
+                 client is not an admin client or if it has not been
+                 :meth:`start`-ed.
+        """
+
+        if self._instance_admin_transport is None:
+            if not self._admin:
+                raise ValueError("Client is not an admin client.")
+            self._instance_admin_transport = (
+                bigtable_admin_v2.BigtableInstanceAdminGrpcTransport()
+            )
+        return self._instance_admin_transport
 
     def instance(self, instance_id, display_name=None, instance_type=None, labels=None):
         """Factory to create a instance associated with this client.

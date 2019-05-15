@@ -16,12 +16,13 @@
 
 from __future__ import absolute_import
 
-from google.cloud.bigtable_v2 import types
 from google.cloud.bigtable_v2.gapic import bigtable_client
+from google.cloud.bigtable_v2.gapic.transports import bigtable_grpc_transport
 
 
 class BigtableClient(bigtable_client.BigtableClient):
     __doc__ = bigtable_client.BigtableClient.__doc__
 
 
-__all__ = ("types", "BigtableClient")
+class BigtableGrpcTransport(bigtable_grpc_transport.BigtableGrpcTransport):
+    __doc__ = bigtable_grpc_transport.BigtableGrpcTransport.__doc__

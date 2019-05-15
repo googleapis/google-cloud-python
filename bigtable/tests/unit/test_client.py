@@ -313,6 +313,95 @@ class TestClient(unittest.TestCase):
         already = client._instance_admin_client = object()
         self.assertIs(client.instance_admin_client, already)
 
+    def test_table_data_transport_not_initialized_no_admin_flag(self):
+        from google.cloud.bigtable_v2 import BigtableGrpcTransport
+
+        credentials = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=credentials)
+
+        table_data_transport = client.table_data_transport
+        self.assertIsInstance(table_data_transport, BigtableGrpcTransport)
+        self.assertIs(table_data_transport, client._table_data_transport)
+
+    def test_table_data_transport_not_initialized_w_admin(self):
+        from google.cloud.bigtable_v2 import BigtableGrpcTransport
+
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, admin=True
+        )
+
+        table_data_transport = client.table_data_transport
+        self.assertIsInstance(table_data_transport, BigtableGrpcTransport)
+        self.assertIs(table_data_transport, client._table_data_transport)
+
+    def test_table_data_transport_initialized(self):
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, admin=True
+        )
+
+        already = client._table_data_transport = object()
+        self.assertIs(client.table_data_transport, already)
+
+    def test_table_admin_transport_not_initialized_no_admin_flag(self):
+        credentials = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=credentials)
+
+        with self.assertRaises(ValueError):
+            client.table_admin_transport
+
+    def test_table_admin_transport_initialized(self):
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, admin=True
+        )
+
+        already = client._table_admin_transport = object()
+        self.assertIs(client.table_admin_transport, already)
+
+    def test_table_admin_transport_not_initialized_w_admin(self):
+        from google.cloud.bigtable_admin_v2 import BigtableTableAdminGrpcTransport
+
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, admin=True
+        )
+
+        table_admin_transport = client.table_admin_transport
+        self.assertIsInstance(table_admin_transport, BigtableTableAdminGrpcTransport)
+        self.assertIs(table_admin_transport, client._table_admin_transport)
+
+    def test_instance_admin_transport_not_initialized_no_admin_flag(self):
+        credentials = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=credentials)
+
+        with self.assertRaises(ValueError):
+            client.instance_admin_transport
+
+    def test_instance_admin_transport_initialized(self):
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, admin=True
+        )
+
+        already = client._instance_admin_transport = object()
+        self.assertIs(client.instance_admin_transport, already)
+
+    def test_instance_admin_transport_not_initialized_w_admin(self):
+        from google.cloud.bigtable_admin_v2 import BigtableInstanceAdminGrpcTransport
+
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, admin=True
+        )
+
+        instance_admin_transport = client.instance_admin_transport
+        self.assertIsInstance(
+            instance_admin_transport, BigtableInstanceAdminGrpcTransport
+        )
+        self.assertIs(instance_admin_transport, client._instance_admin_transport)
+
     def test_instance_factory_defaults(self):
         from google.cloud.bigtable.instance import Instance
 
