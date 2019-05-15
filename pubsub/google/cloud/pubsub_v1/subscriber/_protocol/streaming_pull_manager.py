@@ -52,7 +52,7 @@ def _maybe_wrap_exception(exception):
     return exception
 
 
-def _wrap_callback_errors(callback, message):
+def _wrap_callback_errors(callback, on_callback_error, message):
     """Wraps a user callback so that if an exception occurs the message is
     nacked.
 
@@ -62,14 +62,15 @@ def _wrap_callback_errors(callback, message):
     """
     try:
         callback(message)
-    except Exception:
+    except Exception as exc:
         # Note: the likelihood of this failing is extremely low. This just adds
         # a message to a queue, so if this doesn't work the world is in an
         # unrecoverable state and this thread should just bail.
         _LOGGER.exception(
-            "Top-level exception occurred in callback while processing a " "message"
+            "Top-level exception occurred in callback while processing a message"
         )
         message.nack()
+        on_callback_error(exc)
 
 
 class StreamingPullManager(object):
@@ -299,13 +300,16 @@ class StreamingPullManager(object):
         if self._rpc is not None and self._rpc.is_active:
             self._rpc.send(types.StreamingPullRequest())
 
-    def open(self, callback):
+    def open(self, callback, on_callback_error):
         """Begin consuming messages.
 
         Args:
-            callback (Callable[None, google.cloud.pubsub_v1.message.Messages]):
+            callback (Callable[None, google.cloud.pubsub_v1.message.Message]):
                 A callback that will be called for each message received on the
                 stream.
+            on_callback_error (Callable[Exception]):
+                A callable that will be called if an exception is raised in
+                the provided `callback`.
         """
         if self.is_active:
             raise ValueError("This manager is already open.")
@@ -313,7 +317,9 @@ class StreamingPullManager(object):
         if self._closed:
             raise ValueError("This manager has been closed and can not be re-used.")
 
-        self._callback = functools.partial(_wrap_callback_errors, callback)
+        self._callback = functools.partial(
+            _wrap_callback_errors, callback, on_callback_error
+        )
 
         # Create the RPC
         self._rpc = bidi.ResumableBidiRpc(
