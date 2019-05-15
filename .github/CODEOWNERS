@@ -5,11 +5,6 @@
 # taken by someone else.
 *                         @crwilcox
 
-# Thea Flowers is the author of the new google.api_core library.
-api_core/                   @theacodes
-core/                       @theacodes
-docs/core/                  @theacodes
-
 # BigQuery suite of APIs
 bigquery/                   @googleapis/api-bigquery
 docs/bigquery/              @googleapis/api-bigquery
