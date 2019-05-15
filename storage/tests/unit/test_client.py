@@ -17,6 +17,7 @@ import json
 import unittest
 
 import mock
+import pytest
 import requests
 from six.moves import http_client
 
@@ -542,6 +543,19 @@ class TestClient(unittest.TestCase):
         blob.download_to_file.assert_called_once_with(
             file_obj, client=client, start=None, end=None
         )
+
+    def test_download_blob_to_file_with_invalid_uri(self):
+        project = "PROJECT"
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+        blob = mock.Mock()
+        file_obj = io.BytesIO()
+
+        with mock.patch("google.cloud.storage.client.Blob", return_value=blob):
+            with pytest.raises(ValueError, match="URI scheme must be gs"):
+                client.download_blob_to_file(
+                    "http://bucket_name/path/to/object", file_obj
+                )
 
     def test_list_buckets_wo_project(self):
         CREDENTIALS = _make_credentials()
