@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## 0.32.2
+
+05-14-2019 13:06 PST
+
+
+### Implementation Changes
+- Widen range for 'google-cloud-core'. ([#7970](https://github.com/googleapis/google-cloud-python/pull/7970))
+
 ## 0.32.1
 
 12-17-2018 16:38 PST
