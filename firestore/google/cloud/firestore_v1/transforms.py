@@ -88,3 +88,64 @@ class ArrayRemove(_ValueList):
     Args:
         values (List | Tuple): values to remove.
     """
+
+
+class _NumericValue(object):
+    """Hold a single integer / float value.
+
+    Args:
+        value (int | float): value held in the helper.
+    """
+
+    def __init__(self, value):
+        if not isinstance(value, (int, float)):
+            raise ValueError("Pass an integer / float value.")
+
+        self._value = value
+
+    @property
+    def value(self):
+        """Value used by the transform.
+
+        Returns:
+            (Integer | Float) value passed in the constructor.
+        """
+        return self._value
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return self._value == other._value
+
+
+class Increment(_NumericValue):
+    """Field transform: increment a numeric field with specified value.
+
+    See:
+    https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1#google.firestore.v1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1.ArrayValue.google.firestore.v1.DocumentTransform.FieldTransform.increment
+
+    Args:
+        value (int | float): value used to increment the field.
+    """
+
+
+class Maximum(_NumericValue):
+    """Field transform: bound numeric field with specified value.
+
+    See:
+    https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1#google.firestore.v1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1.ArrayValue.google.firestore.v1.DocumentTransform.FieldTransform.maximum
+
+    Args:
+        value (int | float): value used to bound the field.
+    """
+
+
+class Minimum(_NumericValue):
+    """Field transform: bound numeric field with specified value.
+
+    See:
+    https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1#google.firestore.v1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1.ArrayValue.google.firestore.v1.DocumentTransform.FieldTransform.minimum
+
+    Args:
+        value (int | float): value used to bound the field.
+    """
