@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.11.3
+
+05-14-2019 13:09 PDT
+
+### Implementation Changes
+
+- Widen range for 'google-cloud-core'. ([#7969](https://github.com/googleapis/google-cloud-python/pull/7969))
+
 ## 1.11.2
 
 04-05-2019 08:16 PDT
