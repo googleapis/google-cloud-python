@@ -1,4 +1,6 @@
-# Copyright 2018 Google LLC
+# -*- coding: utf-8 -*-
+#
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +16,8 @@
 
 from __future__ import absolute_import
 
-from google.cloud.websecurityscanner_v1alpha import WebSecurityScannerClient
-from google.cloud.websecurityscanner_v1alpha import enums
-from google.cloud.websecurityscanner_v1alpha import types
+from google.cloud.websecurityscanner_v1beta import WebSecurityScannerClient
+from google.cloud.websecurityscanner_v1beta import enums
+from google.cloud.websecurityscanner_v1beta import types
 
 __all__ = ("enums", "types", "WebSecurityScannerClient")
