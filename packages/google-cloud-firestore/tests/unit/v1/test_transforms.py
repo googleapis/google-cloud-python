@@ -63,3 +63,51 @@ class Test_ValueList(unittest.TestCase):
         inst = self._make_one(values)
         other = self._make_one(values)
         self.assertTrue(inst == other)
+
+
+class Test_NumericValue(unittest.TestCase):
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.firestore_v1.transforms import _NumericValue
+
+        return _NumericValue
+
+    def _make_one(self, values):
+        return self._get_target_class()(values)
+
+    def test_ctor_w_invalid_types(self):
+        invalid_values = (None, u"phred", b"DEADBEEF", [], {}, object())
+        for invalid_value in invalid_values:
+            with self.assertRaises(ValueError):
+                self._make_one(invalid_value)
+
+    def test_ctor_w_int(self):
+        values = (-10, -1, 0, 1, 10)
+        for value in values:
+            inst = self._make_one(value)
+            self.assertEqual(inst.value, value)
+
+    def test_ctor_w_float(self):
+        values = (-10.0, -1.0, 0.0, 1.0, 10.0)
+        for value in values:
+            inst = self._make_one(value)
+            self.assertEqual(inst.value, value)
+
+    def test___eq___other_type(self):
+        value = 3.1415926
+        inst = self._make_one(value)
+        other = object()
+        self.assertFalse(inst == other)
+
+    def test___eq___different_value(self):
+        value = 3.1415926
+        other_value = 2.71828
+        inst = self._make_one(value)
+        other = self._make_one(other_value)
+        self.assertFalse(inst == other)
+
+    def test___eq___same_value(self):
+        value = 3.1415926
+        inst = self._make_one(value)
+        other = self._make_one(value)
+        self.assertTrue(inst == other)
