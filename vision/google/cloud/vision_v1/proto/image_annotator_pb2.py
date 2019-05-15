@@ -4475,8 +4475,9 @@ InputConfig = _reflection.GeneratedProtocolMessageType(
           requests. It does not work for AsyncBatchAnnotateFiles
           requests.
       mime_type:
-          The type of the file. Currently only "application/pdf" and
-          "image/tiff" are supported. Wildcards are not supported.
+          The type of the file. Currently only "application/pdf",
+          "image/tiff" and "image/gif" are supported. Wildcards are not
+          supported.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.InputConfig)
     ),
