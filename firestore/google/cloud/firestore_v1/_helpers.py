@@ -404,6 +404,9 @@ class DocumentExtractor(object):
         self.server_timestamps = []
         self.array_removes = {}
         self.array_unions = {}
+        self.increments = {}
+        self.minimums = {}
+        self.maximums = {}
         self.set_fields = {}
         self.empty_document = False
 
@@ -427,6 +430,15 @@ class DocumentExtractor(object):
             elif isinstance(value, transforms.ArrayUnion):
                 self.array_unions[field_path] = value.values
 
+            elif isinstance(value, transforms.Increment):
+                self.increments[field_path] = value.value
+
+            elif isinstance(value, transforms.Maximum):
+                self.maximums[field_path] = value.value
+
+            elif isinstance(value, transforms.Minimum):
+                self.minimums[field_path] = value.value
+
             else:
                 self.field_paths.append(field_path)
                 set_field_value(self.set_fields, field_path, value)
@@ -436,12 +448,24 @@ class DocumentExtractor(object):
 
     @property
     def has_transforms(self):
-        return bool(self.server_timestamps or self.array_removes or self.array_unions)
+        return bool(
+            self.server_timestamps
+            or self.array_removes
+            or self.array_unions
+            or self.increments
+            or self.maximums
+            or self.minimums
+        )
 
     @property
     def transform_paths(self):
         return sorted(
-            self.server_timestamps + list(self.array_removes) + list(self.array_unions)
+            self.server_timestamps
+            + list(self.array_removes)
+            + list(self.array_unions)
+            + list(self.increments)
+            + list(self.maximums)
+            + list(self.minimums)
         )
 
     def _get_update_mask(self, allow_empty_mask=False):
@@ -499,6 +523,33 @@ class DocumentExtractor(object):
                     ),
                 )
                 for path, values in self.array_unions.items()
+            ]
+            + [
+                (
+                    path,
+                    write_pb2.DocumentTransform.FieldTransform(
+                        field_path=path.to_api_repr(), increment=encode_value(value)
+                    ),
+                )
+                for path, value in self.increments.items()
+            ]
+            + [
+                (
+                    path,
+                    write_pb2.DocumentTransform.FieldTransform(
+                        field_path=path.to_api_repr(), maximum=encode_value(value)
+                    ),
+                )
+                for path, value in self.maximums.items()
+            ]
+            + [
+                (
+                    path,
+                    write_pb2.DocumentTransform.FieldTransform(
+                        field_path=path.to_api_repr(), minimum=encode_value(value)
+                    ),
+                )
+                for path, value in self.minimums.items()
             ]
         )
         field_transforms = [
