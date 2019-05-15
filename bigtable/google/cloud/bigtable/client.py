@@ -275,7 +275,7 @@ class Client(ClientWithProject):
     def table_data_transport(self):
         """Getter for the gRPC stub used for the Table Admin Transport API.
 
-        :rtype: :class:`.bigtable_grpc_transport.BigtableGrpcTransport
+        :rtype: :class:`.bigtable_grpc_transport.BigtableGrpcTransport`
         :returns: A BigtableGrpcTransport instance.
         """
         if self._table_data_transport is None:
@@ -285,7 +285,7 @@ class Client(ClientWithProject):
     @property
     def table_admin_transport(self):
         """Getter for the gRPC stub used for the Instance Transport API.
-        :rtype: :class:`.bigtable_instance_admin_grpc_transport.BigtableTableAdminGrpcTransport
+        :rtype: :class:`.bigtable_instance_admin_grpc_transport.BigtableTableAdminGrpcTransport`
         :returns: A BigtableTableAdminGrpcTransport instance.
         :raises: :class:`ValueError <exceptions.ValueError>` if the current
                  client is not an admin client or if it has not been
@@ -304,7 +304,7 @@ class Client(ClientWithProject):
     def instance_admin_transport(self):
         """Getter for the gRPC stub used for the Instance Transport API.
 
-        :rtype: :class:`.bigtable_instance_admin_grpc_transport.BigtableInstanceAdminGrpcTransport
+        :rtype: :class:`.bigtable_instance_admin_grpc_transport.BigtableInstanceAdminGrpcTransport`
         :returns: A BigtableInstanceAdminGrpcTransport instance.
         :raises: :class:`ValueError <exceptions.ValueError>` if the current
                  client is not an admin client or if it has not been
