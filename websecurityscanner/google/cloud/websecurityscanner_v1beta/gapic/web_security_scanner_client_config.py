@@ -1,0 +1,89 @@
+config = {
+    "interfaces": {
+        "google.cloud.websecurityscanner.v1beta.WebSecurityScanner": {
+            "retry_codes": {
+                "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
+                "non_idempotent": [],
+                "idempotent2": ["UNAVAILABLE"],
+            },
+            "retry_params": {
+                "default": {
+                    "initial_retry_delay_millis": 100,
+                    "retry_delay_multiplier": 1.3,
+                    "max_retry_delay_millis": 60000,
+                    "initial_rpc_timeout_millis": 20000,
+                    "rpc_timeout_multiplier": 1.0,
+                    "max_rpc_timeout_millis": 20000,
+                    "total_timeout_millis": 600000,
+                }
+            },
+            "methods": {
+                "CreateScanConfig": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "DeleteScanConfig": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "GetScanConfig": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "ListScanConfigs": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "UpdateScanConfig": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "StartScanRun": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "GetScanRun": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "ListScanRuns": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "StopScanRun": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "ListCrawledUrls": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent2",
+                    "retry_params_name": "default",
+                },
+                "GetFinding": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "ListFindings": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "ListFindingTypeStats": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+            },
+        }
+    }
+}

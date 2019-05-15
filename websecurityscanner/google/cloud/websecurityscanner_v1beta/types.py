@@ -19,13 +19,16 @@ import sys
 
 from google.api_core.protobuf_helpers import get_messages
 
-from google.cloud.websecurityscanner_v1alpha.proto import crawled_url_pb2
-from google.cloud.websecurityscanner_v1alpha.proto import finding_addon_pb2
-from google.cloud.websecurityscanner_v1alpha.proto import finding_pb2
-from google.cloud.websecurityscanner_v1alpha.proto import finding_type_stats_pb2
-from google.cloud.websecurityscanner_v1alpha.proto import scan_config_pb2
-from google.cloud.websecurityscanner_v1alpha.proto import scan_run_pb2
-from google.cloud.websecurityscanner_v1alpha.proto import web_security_scanner_pb2
+from google.cloud.websecurityscanner_v1beta.proto import crawled_url_pb2
+from google.cloud.websecurityscanner_v1beta.proto import finding_addon_pb2
+from google.cloud.websecurityscanner_v1beta.proto import finding_pb2
+from google.cloud.websecurityscanner_v1beta.proto import finding_type_stats_pb2
+from google.cloud.websecurityscanner_v1beta.proto import scan_config_error_pb2
+from google.cloud.websecurityscanner_v1beta.proto import scan_config_pb2
+from google.cloud.websecurityscanner_v1beta.proto import scan_run_error_trace_pb2
+from google.cloud.websecurityscanner_v1beta.proto import scan_run_pb2
+from google.cloud.websecurityscanner_v1beta.proto import scan_run_warning_trace_pb2
+from google.cloud.websecurityscanner_v1beta.proto import web_security_scanner_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 from google.protobuf import timestamp_pb2
@@ -37,8 +40,11 @@ _local_modules = [
     finding_addon_pb2,
     finding_pb2,
     finding_type_stats_pb2,
+    scan_config_error_pb2,
     scan_config_pb2,
+    scan_run_error_trace_pb2,
     scan_run_pb2,
+    scan_run_warning_trace_pb2,
     web_security_scanner_pb2,
 ]
 
@@ -50,7 +56,7 @@ for module in _shared_modules:
         names.append(name)
 for module in _local_modules:
     for name, message in get_messages(module).items():
-        message.__module__ = "google.cloud.websecurityscanner_v1alpha.types"
+        message.__module__ = "google.cloud.websecurityscanner_v1beta.types"
         setattr(sys.modules[__name__], name, message)
         names.append(name)
 
