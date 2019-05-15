@@ -3347,6 +3347,80 @@ class TestModel:
 
         key.get_async.assert_called_once_with(_options=_options.ReadOptions())
 
+    @staticmethod
+    def test_populate():
+        class Simple(model.Model):
+            foo = model.IntegerProperty()
+            bar = model.StringProperty()
+
+        entity = Simple()
+        entity.populate(foo=3, bar="baz")
+
+        assert entity.foo == 3
+        assert entity.bar == "baz"
+
+    @staticmethod
+    def test_has_complete_key_no_key():
+        class Simple(model.Model):
+            pass
+
+        entity = Simple()
+        assert not entity.has_complete_key()
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_has_complete_key_incomplete_key():
+        class Simple(model.Model):
+            pass
+
+        entity = Simple(key=key_module.Key("Simple", None))
+        assert not entity.has_complete_key()
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_has_complete_key_complete_with_id():
+        class Simple(model.Model):
+            pass
+
+        entity = Simple(id="happiness")
+        assert entity.has_complete_key()
+
+    @staticmethod
+    def test_to_dict():
+        class Simple(model.Model):
+            foo = model.IntegerProperty()
+            bar = model.StringProperty()
+
+        entity = Simple(foo=3, bar="baz")
+        assert entity.to_dict() == {"foo": 3, "bar": "baz"}
+
+    @staticmethod
+    def test_to_dict_with_include():
+        class Simple(model.Model):
+            foo = model.IntegerProperty()
+            bar = model.StringProperty()
+
+        entity = Simple(foo=3, bar="baz")
+        assert entity.to_dict(include={"foo"}) == {"foo": 3}
+
+    @staticmethod
+    def test_to_dict_with_exclude():
+        class Simple(model.Model):
+            foo = model.IntegerProperty()
+            bar = model.StringProperty()
+
+        entity = Simple(foo=3, bar="baz")
+        assert entity.to_dict(exclude=("bar",)) == {"foo": 3}
+
+    @staticmethod
+    def test_to_dict_with_projection():
+        class Simple(model.Model):
+            foo = model.IntegerProperty()
+            bar = model.StringProperty()
+
+        entity = Simple(foo=3, bar="baz", projection=("foo",))
+        assert entity.to_dict() == {"foo": 3}
+
 
 class Test_entity_from_protobuf:
     @staticmethod

@@ -4687,6 +4687,60 @@ class Model(metaclass=MetaModel):
 
     get_or_insert_async = _get_or_insert_async
 
+    def _populate(self, **kwargs):
+        """Populate an instance from keyword arguments.
+
+        Each keyword argument will be used to set a corresponding property.
+        Each keyword must refer to a valid property name. This is similar to
+        passing keyword arguments to the ``Model`` constructor, except that no
+        provision for key, id, or parent are made.
+
+        Arguments:
+            **kwargs: Keyword arguments corresponding to poperties of this
+                model class.
+        """
+        self._set_attributes(kwargs)
+
+    populate = _populate
+
+    def _has_complete_key(self):
+        """Return whether this entity has a complete key.
+
+        Returns:
+            bool: :data:``True`` if and only if entity has a key and that key
+                has a name or an id.
+        """
+        return self._key is not None and self._key.id() is not None
+
+    has_complete_key = _has_complete_key
+
+    def _to_dict(self, include=None, *, exclude=None):
+        """Return a ``dict`` containing the entity's property values.
+
+        Arguments:
+            include (Optional[Union[list, tuple, set]]): Set of property names
+                to include. Default is to include all names.
+            exclude (Optional[Union[list, tuple, set]]): Set of property names
+                to exclude. Default is to not exclude any names.
+        """
+        values = {}
+        for prop in self._properties.values():
+            name = prop._code_name
+            if include is not None and name not in include:
+                continue
+            if exclude is not None and name in exclude:
+                continue
+
+            try:
+                values[name] = prop._get_for_dict(self)
+            except UnprojectedPropertyError:
+                # Ignore unprojected property errors, rather than failing
+                pass
+
+        return values
+
+    to_dict = _to_dict
+
 
 class Expando(Model):
     __slots__ = ()
