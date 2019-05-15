@@ -27,6 +27,7 @@ from google.protobuf import any_pb2
 from google.protobuf import struct_pb2
 from google.protobuf import timestamp_pb2
 from google.rpc import status_pb2
+from google.type import expr_pb2
 
 _shared_modules = [
     policy_pb2,
@@ -35,6 +36,7 @@ _shared_modules = [
     struct_pb2,
     timestamp_pb2,
     status_pb2,
+    expr_pb2,
 ]
 
 _local_modules = [asset_service_pb2, assets_pb2]
