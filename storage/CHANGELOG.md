@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## 1.15.1
+
+05-14-2019 12:33 PDT
+
+### Implementation Changes
+- Widen range for 'google-cloud-core'. ([#7978](https://github.com/googleapis/google-cloud-python/pull/7978))
+
 ## 1.15.0
 
 04-17-2019 15:37 PDT
