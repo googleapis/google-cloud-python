@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## 1.8.1
+
+05-14-2019 12:50 PST
+
+
+### Implementation Changes
+- Widen range for 'google-cloud-core'. ([#7977](https://github.com/googleapis/google-cloud-python/pull/7977))
+
 ## 1.8.0
 
 03-05-2019 12:57 PST
