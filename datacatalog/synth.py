@@ -29,6 +29,7 @@ library = gapic.py_library(
     version,
     config_path='/google/cloud/datacatalog/artman_datacatalog_v1beta1.yaml',
     artman_output_name='datacatalog-v1beta1',
+    include_protos=True,
 )
 
 s.move(
