@@ -860,12 +860,33 @@ class TestClient(unittest.TestCase):
         # Check the IDs returned.
         self.assertEqual([key._id for key in result], list(range(num_ids)))
 
-    def test_allocate_ids_with_completed_key(self):
+    def test_allocate_ids_w_completed_key(self):
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
         COMPLETE_KEY = _Key(self.PROJECT)
         self.assertRaises(ValueError, client.allocate_ids, COMPLETE_KEY, 2)
+
+    def test_reserve_ids_w_completed_key(self):
+
+        num_ids = 2
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds,_use_grpc=False)
+        COMPLETE_KEY = _Key(self.PROJECT)
+        alloc_ids = mock.Mock(return_value=None, spec=[])
+        ds_api = mock.Mock(reserve_ids=alloc_ids, spec=["reserve_ids"])
+        client._datastore_api_internal = ds_api
+        result = client.reserve_ids(COMPLETE_KEY, num_ids)
+
+        self.assertIsNone(result)
+
+    def test_reserve_ids_w_partial_key(self):
+
+        incomplete_key = _Key(self.PROJECT)
+        incomplete_key._id = None
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds)
+        self.assertRaises(ValueError, client.reserve_ids, incomplete_key, 2)
 
     def test_key_w_project(self):
         KIND = "KIND"
