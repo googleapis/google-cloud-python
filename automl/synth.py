@@ -26,7 +26,7 @@ versions = ["v1beta1"]
 # Generate automl GAPIC layer
 # ----------------------------------------------------------------------------
 for version in versions:
-    library = gapic.py_library("automl", version)
+    library = gapic.py_library("automl", version, include_protos=True)
     s.move(library / f"google/cloud/automl_{version}")
     s.move(library / f"tests/unit/gapic/{version}")
     s.move(library / f"docs/gapic/{version}")
