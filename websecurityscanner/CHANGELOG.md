@@ -10,8 +10,6 @@
 
 
 ### Implementation Changes
-- Retry DEADLINE_EXCEEDED (via synth).  ([#7947](https://github.com/googleapis/google-cloud-python/pull/7947))
-- Remove retries for DEADLINE_EXCEEDED (via synth). ([#7895](https://github.com/googleapis/google-cloud-python/pull/7895))
 - Add routing header to method metadata (via synth).  ([#7605](https://github.com/googleapis/google-cloud-python/pull/7605))
 - Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
 - Protoc-generated serialization update. ([#7101](https://github.com/googleapis/google-cloud-python/pull/7101))
@@ -27,7 +25,7 @@
 
 ### Internal / Testing Changes
 - Update noxfile (via synth). ([#7803](https://github.com/googleapis/google-cloud-python/pull/7803))
-- Add session `docs` to nox (via synth). ([#7788](https://github.com/googleapis/google-cloud-python/pull/7788))
+- Fix 'docs' session in nox. ([#7788](https://github.com/googleapis/google-cloud-python/pull/7788))
 - Add nox session 'docs' (via synth). ([#7747](https://github.com/googleapis/google-cloud-python/pull/7747))
 - Copy lintified proto files (via synth). ([#7474](https://github.com/googleapis/google-cloud-python/pull/7474))
 - Add clarifying comment to blacken nox target. ([#7409](https://github.com/googleapis/google-cloud-python/pull/7409))
