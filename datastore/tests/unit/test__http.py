@@ -29,26 +29,27 @@ class Test__request(unittest.TestCase):
 
     def test_success(self):
         from google.cloud import _http as connection_module
-        from google.cloud.datastore._http import _CLIENT_INFO
 
         project = "PROJECT"
         method = "METHOD"
         data = b"DATA"
         base_url = "http://api-url"
+        user_agent = "USER AGENT"
+        client_info = _make_client_info(user_agent)
         response_data = "CONTENT"
 
         http = _make_requests_session([_make_response(content=response_data)])
 
         # Call actual function under test.
-        response = self._call_fut(http, project, method, data, base_url)
+        response = self._call_fut(http, project, method, data, base_url, client_info)
         self.assertEqual(response, response_data)
 
         # Check that the mocks were called as expected.
         expected_url = _build_expected_url(base_url, project, method)
         expected_headers = {
             "Content-Type": "application/x-protobuf",
-            "User-Agent": connection_module.DEFAULT_USER_AGENT,
-            connection_module.CLIENT_INFO_HEADER: _CLIENT_INFO,
+            "User-Agent": user_agent,
+            connection_module.CLIENT_INFO_HEADER: user_agent,
         }
         http.request.assert_called_once_with(
             method="POST", url=expected_url, headers=expected_headers, data=data
@@ -63,6 +64,8 @@ class Test__request(unittest.TestCase):
         method = "METHOD"
         data = "DATA"
         uri = "http://api-url"
+        user_agent = "USER AGENT"
+        client_info = _make_client_info(user_agent)
 
         error = status_pb2.Status()
         error.message = "Entity value is indexed."
@@ -73,7 +76,7 @@ class Test__request(unittest.TestCase):
         )
 
         with self.assertRaises(BadRequest) as exc:
-            self._call_fut(http, project, method, data, uri)
+            self._call_fut(http, project, method, data, uri, client_info)
 
         expected_message = "400 Entity value is indexed."
         self.assertEqual(str(exc.exception), expected_message)
@@ -93,6 +96,7 @@ class Test__rpc(unittest.TestCase):
         project = "projectOK"
         method = "beginTransaction"
         base_url = "test.invalid"
+        client_info = _make_client_info()
         request_pb = datastore_pb2.BeginTransactionRequest(project_id=project)
 
         response_pb = datastore_pb2.BeginTransactionResponse(transaction=b"7830rmc")
@@ -106,13 +110,19 @@ class Test__rpc(unittest.TestCase):
                 project,
                 method,
                 base_url,
+                client_info,
                 request_pb,
                 datastore_pb2.BeginTransactionResponse,
             )
             self.assertEqual(result, response_pb)
 
             mock_request.assert_called_once_with(
-                http, project, method, request_pb.SerializeToString(), base_url
+                http,
+                project,
+                method,
+                request_pb.SerializeToString(),
+                base_url,
+                client_info,
             )
 
 
@@ -149,8 +159,12 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         http = _make_requests_session(
             [_make_response(content=rsp_pb.SerializeToString())]
         )
+        client_info = _make_client_info()
         client = mock.Mock(
-            _http=http, _base_url="test.invalid", spec=["_http", "_base_url"]
+            _http=http,
+            _base_url="test.invalid",
+            _client_info=client_info,
+            spec=["_http", "_base_url", "_client_info"],
         )
 
         # Make request.
@@ -182,8 +196,12 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         http = _make_requests_session(
             [_make_response(content=rsp_pb.SerializeToString())]
         )
+        client_info = _make_client_info()
         client = mock.Mock(
-            _http=http, _base_url="test.invalid", spec=["_http", "_base_url"]
+            _http=http,
+            _base_url="test.invalid",
+            _client_info=client_info,
+            spec=["_http", "_base_url", "_client_info"],
         )
 
         # Make request.
@@ -214,8 +232,12 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         http = _make_requests_session(
             [_make_response(content=rsp_pb.SerializeToString())]
         )
+        client_info = _make_client_info()
         client = mock.Mock(
-            _http=http, _base_url="test.invalid", spec=["_http", "_base_url"]
+            _http=http,
+            _base_url="test.invalid",
+            _client_info=client_info,
+            spec=["_http", "_base_url", "_client_info"],
         )
 
         # Make request.
@@ -249,8 +271,12 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         http = _make_requests_session(
             [_make_response(content=rsp_pb.SerializeToString())]
         )
+        client_info = _make_client_info()
         client = mock.Mock(
-            _http=http, _base_url="test.invalid", spec=["_http", "_base_url"]
+            _http=http,
+            _base_url="test.invalid",
+            _client_info=client_info,
+            spec=["_http", "_base_url", "_client_info"],
         )
 
         # Make request.
@@ -284,8 +310,12 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         http = _make_requests_session(
             [_make_response(content=rsp_pb.SerializeToString())]
         )
+        client_info = _make_client_info()
         client = mock.Mock(
-            _http=http, _base_url="test.invalid", spec=["_http", "_base_url"]
+            _http=http,
+            _base_url="test.invalid",
+            _client_info=client_info,
+            spec=["_http", "_base_url", "_client_info"],
         )
 
         # Make request.
@@ -320,8 +350,12 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         http = _make_requests_session(
             [_make_response(content=rsp_pb.SerializeToString())]
         )
+        client_info = _make_client_info()
         client = mock.Mock(
-            _http=http, _base_url="test.invalid", spec=["_http", "_base_url"]
+            _http=http,
+            _base_url="test.invalid",
+            _client_info=client_info,
+            spec=["_http", "_base_url", "_client_info"],
         )
 
         # Make request.
@@ -355,8 +389,12 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         http = _make_requests_session(
             [_make_response(content=rsp_pb.SerializeToString())]
         )
+        client_info = _make_client_info()
         client = mock.Mock(
-            _http=http, _base_url="test.invalid", spec=["_http", "_base_url"]
+            _http=http,
+            _base_url="test.invalid",
+            _client_info=client_info,
+            spec=["_http", "_base_url", "_client_info"],
         )
 
         # Make request.
@@ -399,8 +437,12 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         http = _make_requests_session(
             [_make_response(content=rsp_pb.SerializeToString())]
         )
+        client_info = _make_client_info()
         client = mock.Mock(
-            _http=http, _base_url="test.invalid", spec=["_http", "_base_url"]
+            _http=http,
+            _base_url="test.invalid",
+            _client_info=client_info,
+            spec=["_http", "_base_url", "_client_info"],
         )
 
         # Make request.
@@ -440,8 +482,12 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         http = _make_requests_session(
             [_make_response(content=rsp_pb.SerializeToString())]
         )
+        client_info = _make_client_info()
         client = mock.Mock(
-            _http=http, _base_url="test.invalid", spec=["_http", "_base_url"]
+            _http=http,
+            _base_url="test.invalid",
+            _client_info=client_info,
+            spec=["_http", "_base_url", "_client_info"],
         )
 
         # Make request.
@@ -480,8 +526,12 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         http = _make_requests_session(
             [_make_response(content=rsp_pb.SerializeToString())]
         )
+        client_info = _make_client_info()
         client = mock.Mock(
-            _http=http, _base_url="test.invalid", spec=["_http", "_base_url"]
+            _http=http,
+            _base_url="test.invalid",
+            _client_info=client_info,
+            spec=["_http", "_base_url", "_client_info"],
         )
 
         # Make request.
@@ -522,8 +572,12 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         http = _make_requests_session(
             [_make_response(content=rsp_pb.SerializeToString())]
         )
+        client_info = _make_client_info()
         client = mock.Mock(
-            _http=http, _base_url="test.invalid", spec=["_http", "_base_url"]
+            _http=http,
+            _base_url="test.invalid",
+            _client_info=client_info,
+            spec=["_http", "_base_url", "_client_info"],
         )
 
         # Make request.
@@ -550,8 +604,12 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         http = _make_requests_session(
             [_make_response(content=rsp_pb.SerializeToString())]
         )
+        client_info = _make_client_info()
         client = mock.Mock(
-            _http=http, _base_url="test.invalid", spec=["_http", "_base_url"]
+            _http=http,
+            _base_url="test.invalid",
+            _client_info=client_info,
+            spec=["_http", "_base_url", "_client_info"],
         )
 
         # Make request.
@@ -586,8 +644,12 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         http = _make_requests_session(
             [_make_response(content=rsp_pb.SerializeToString())]
         )
+        client_info = _make_client_info()
         client = mock.Mock(
-            _http=http, _base_url="test.invalid", spec=["_http", "_base_url"]
+            _http=http,
+            _base_url="test.invalid",
+            _client_info=client_info,
+            spec=["_http", "_base_url", "_client_info"],
         )
 
         # Make request.
@@ -623,8 +685,12 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         http = _make_requests_session(
             [_make_response(content=rsp_pb.SerializeToString())]
         )
+        client_info = _make_client_info()
         client = mock.Mock(
-            _http=http, _base_url="test.invalid", spec=["_http", "_base_url"]
+            _http=http,
+            _base_url="test.invalid",
+            _client_info=client_info,
+            spec=["_http", "_base_url", "_client_info"],
         )
 
         # Make request.
@@ -653,8 +719,12 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         http = _make_requests_session(
             [_make_response(content=rsp_pb.SerializeToString())]
         )
+        client_info = _make_client_info()
         client = mock.Mock(
-            _http=http, _base_url="test.invalid", spec=["_http", "_base_url"]
+            _http=http,
+            _base_url="test.invalid",
+            _client_info=client_info,
+            spec=["_http", "_base_url", "_client_info"],
         )
 
         # Make request.
@@ -678,8 +748,12 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         http = _make_requests_session(
             [_make_response(content=rsp_pb.SerializeToString())]
         )
+        client_info = _make_client_info()
         client = mock.Mock(
-            _http=http, _base_url="test.invalid", spec=["_http", "_base_url"]
+            _http=http,
+            _base_url="test.invalid",
+            _client_info=client_info,
+            spec=["_http", "_base_url", "_client_info"],
         )
 
         # Make request.
@@ -711,8 +785,12 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         http = _make_requests_session(
             [_make_response(content=rsp_pb.SerializeToString())]
         )
+        client_info = _make_client_info()
         client = mock.Mock(
-            _http=http, _base_url="test.invalid", spec=["_http", "_base_url"]
+            _http=http,
+            _base_url="test.invalid",
+            _client_info=client_info,
+            spec=["_http", "_base_url", "_client_info"],
         )
 
         # Make request.
@@ -760,14 +838,24 @@ def _make_key_pb(project, id_=1234):
     return Key(*path_args, project=project).to_protobuf()
 
 
+_USER_AGENT = "TESTING USER AGENT"
+
+
+def _make_client_info(user_agent=_USER_AGENT):
+    from google.api_core.client_info import ClientInfo
+
+    client_info = mock.create_autospec(ClientInfo)
+    client_info.to_user_agent.return_value = user_agent
+    return client_info
+
+
 def _verify_protobuf_call(http, expected_url, pb):
     from google.cloud import _http as connection_module
-    from google.cloud.datastore._http import _CLIENT_INFO
 
     expected_headers = {
         "Content-Type": "application/x-protobuf",
-        "User-Agent": connection_module.DEFAULT_USER_AGENT,
-        connection_module.CLIENT_INFO_HEADER: _CLIENT_INFO,
+        "User-Agent": _USER_AGENT,
+        connection_module.CLIENT_INFO_HEADER: _USER_AGENT,
     }
 
     http.request.assert_called_once_with(

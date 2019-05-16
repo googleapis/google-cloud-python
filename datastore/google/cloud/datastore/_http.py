@@ -20,8 +20,6 @@ from google.cloud import _http as connection_module
 from google.cloud import exceptions
 from google.cloud.datastore_v1.proto import datastore_pb2 as _datastore_pb2
 
-from google.cloud.datastore import __version__
-
 
 DATASTORE_API_HOST = "datastore.googleapis.com"
 """Datastore API request host."""
@@ -32,10 +30,8 @@ API_VERSION = "v1"
 API_URL_TEMPLATE = "{api_base}/{api_version}/projects" "/{project}:{method}"
 """A template for the URL of a particular API call."""
 
-_CLIENT_INFO = connection_module.CLIENT_INFO_TEMPLATE.format(__version__)
 
-
-def _request(http, project, method, data, base_url):
+def _request(http, project, method, data, base_url, client_info):
     """Make a request over the Http transport to the Cloud Datastore API.
 
     :type http: :class:`requests.Session`
@@ -55,15 +51,19 @@ def _request(http, project, method, data, base_url):
     :type base_url: str
     :param base_url: The base URL where the API lives.
 
+    :type client_info: :class:`google.api_core.client_info.ClientInfo`
+    :param client_info: used to generate user agent.
+
     :rtype: str
     :returns: The string response content from the API call.
     :raises: :class:`google.cloud.exceptions.GoogleCloudError` if the
              response code is not 200 OK.
     """
+    user_agent = client_info.to_user_agent()
     headers = {
         "Content-Type": "application/x-protobuf",
-        "User-Agent": connection_module.DEFAULT_USER_AGENT,
-        connection_module.CLIENT_INFO_HEADER: _CLIENT_INFO,
+        "User-Agent": user_agent,
+        connection_module.CLIENT_INFO_HEADER: user_agent,
     }
     api_url = build_api_url(project, method, base_url)
 
@@ -78,7 +78,7 @@ def _request(http, project, method, data, base_url):
     return response.content
 
 
-def _rpc(http, project, method, base_url, request_pb, response_pb_cls):
+def _rpc(http, project, method, base_url, client_info, request_pb, response_pb_cls):
     """Make a protobuf RPC request.
 
     :type http: :class:`requests.Session`
@@ -94,6 +94,9 @@ def _rpc(http, project, method, base_url, request_pb, response_pb_cls):
     :type base_url: str
     :param base_url: The base URL where the API lives.
 
+    :type client_info: :class:`google.api_core.client_info.ClientInfo`
+    :param client_info: used to generate user agent.
+
     :type request_pb: :class:`google.protobuf.message.Message` instance
     :param request_pb: the protobuf instance representing the request.
 
@@ -106,7 +109,7 @@ def _rpc(http, project, method, base_url, request_pb, response_pb_cls):
     :returns: The RPC message parsed from the response.
     """
     req_data = request_pb.SerializeToString()
-    response = _request(http, project, method, req_data, base_url)
+    response = _request(http, project, method, req_data, base_url, client_info)
     return response_pb_cls.FromString(response)
 
 
@@ -172,6 +175,7 @@ class HTTPDatastoreAPI(object):
             project_id,
             "lookup",
             self.client._base_url,
+            self.client._client_info,
             request_pb,
             _datastore_pb2.LookupResponse,
         )
@@ -217,6 +221,7 @@ class HTTPDatastoreAPI(object):
             project_id,
             "runQuery",
             self.client._base_url,
+            self.client._client_info,
             request_pb,
             _datastore_pb2.RunQueryResponse,
         )
@@ -240,6 +245,7 @@ class HTTPDatastoreAPI(object):
             project_id,
             "beginTransaction",
             self.client._base_url,
+            self.client._client_info,
             request_pb,
             _datastore_pb2.BeginTransactionResponse,
         )
@@ -278,6 +284,7 @@ class HTTPDatastoreAPI(object):
             project_id,
             "commit",
             self.client._base_url,
+            self.client._client_info,
             request_pb,
             _datastore_pb2.CommitResponse,
         )
@@ -304,6 +311,7 @@ class HTTPDatastoreAPI(object):
             project_id,
             "rollback",
             self.client._base_url,
+            self.client._client_info,
             request_pb,
             _datastore_pb2.RollbackResponse,
         )
@@ -327,6 +335,7 @@ class HTTPDatastoreAPI(object):
             project_id,
             "allocateIds",
             self.client._base_url,
+            self.client._client_info,
             request_pb,
             _datastore_pb2.AllocateIdsResponse,
         )
