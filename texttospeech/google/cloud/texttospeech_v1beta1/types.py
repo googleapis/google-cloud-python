@@ -21,13 +21,13 @@ from google.api_core.protobuf_helpers import get_messages
 
 from google.cloud.texttospeech_v1beta1.proto import cloud_tts_pb2
 
-_shared_modules = []  # pragma: NO COVER
+_shared_modules = []
 
 _local_modules = [cloud_tts_pb2]
 
 names = []
 
-for module in _shared_modules:  # pragma: NO COVER
+for module in _shared_modules:
     for name, message in get_messages(module).items():
         setattr(sys.modules[__name__], name, message)
         names.append(name)
