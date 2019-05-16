@@ -5,6 +5,21 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## 1.2.0
+
+05-16-2019 12:25 PDT
+
+
+### New Features
+- Add support for numeric transforms: `increment` / `maximum` / `minimum`. ([#7989](https://github.com/googleapis/google-cloud-python/pull/7989))
+- Add `client_info` support to V1 client. ([#7877](https://github.com/googleapis/google-cloud-python/pull/7877)) and ([#7898](https://github.com/googleapis/google-cloud-python/pull/7898))
+
+### Dependencies
+- Pin `google-cloud-core >= 1.0.0, < 2.0dev`. ([#7993](https://github.com/googleapis/google-cloud-python/pull/7993))
+
+### Internal / Testing Changes
+- Add nox session `docs`,  add routing header to method metadata, reorder methods (via synth).. ([#7771](https://github.com/googleapis/google-cloud-python/pull/7771))
+
 ## 1.1.0
 
 04-30-2019 12:29 PDT
