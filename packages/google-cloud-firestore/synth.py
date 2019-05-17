@@ -57,4 +57,10 @@ for version, artman_config in versions:
 templated_files = common.py_library(unit_cov_level=97, cov_level=100)
 s.move(templated_files)
 
+s.replace(
+    "noxfile.py",
+    "GOOGLE_APPLICATION_CREDENTIALS",
+    "FIRESTORE_APPLICATION_CREDENTIALS",
+)
+
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
