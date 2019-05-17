@@ -31,6 +31,15 @@ class TestDB(TestCase):
         # None required field defaults to None
         self.assertIsNone(integer_field.validate(None))
 
+        # Float field
+        float_field = db.FloatingPointNumberField()
+        # Should accept both float and integer values
+        self.assertEqual(float_field.validate(0), 0)
+        self.assertEqual(float_field.validate(1), 1)
+        self.assertEqual(float_field.validate(0.6667), 0.6667)
+        self.assertEqual(float_field.validate(3.142), 3.142)
+        self.assertRaises(db.InvalidValueError, float_field.validate, "10234")
+
         # List Field
         list_field = db.ListField(field_type=db.IntegerField())
         self.assertEqual(list_field.validate([1, 2, 3, 4]), [1, 2, 3, 4])
@@ -60,4 +69,13 @@ class TestDB(TestCase):
         dt_field = db.DateTimeField(auto_now=True)
         # This value is always updated to current time stamp on every update
         self.assertEqual(dt_field.validate(now), SERVER_TIMESTAMP)
+
+        # Boolean field
+        bool_field = db.BooleanField(required=True)
+        self.assertTrue(bool_field.validate(True))
+        self.assertFalse(bool_field.validate(False))
+        self.assertRaises(db.InvalidValueError, bool_field.validate, "some string")
+        self.assertRaises(db.InvalidValueError, bool_field.validate, None)  # None is not a valid boolean value
+        bool_field = db.BooleanField()
+        self.assertIsNone(bool_field.validate(None))
 
