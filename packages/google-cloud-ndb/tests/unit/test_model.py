@@ -2543,9 +2543,104 @@ class TestStructuredProperty:
 
 class TestLocalStructuredProperty:
     @staticmethod
-    def test_constructor():
+    def test_constructor_indexed():
+        class Simple(model.Model):
+            pass
+
         with pytest.raises(NotImplementedError):
-            model.LocalStructuredProperty()
+            model.LocalStructuredProperty(Simple, name="ent", indexed=True)
+
+    @staticmethod
+    def test__validate():
+        class Simple(model.Model):
+            pass
+
+        prop = model.LocalStructuredProperty(Simple, name="ent")
+        value = Simple()
+        assert prop._validate(value) is None
+
+    @staticmethod
+    def test__validate_invalid():
+        class Simple(model.Model):
+            pass
+
+        class NotSimple(model.Model):
+            pass
+
+        prop = model.LocalStructuredProperty(Simple, name="ent")
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(NotSimple())
+
+    @staticmethod
+    def test__validate_dict():
+        class Simple(model.Model):
+            pass
+
+        prop = model.LocalStructuredProperty(Simple, name="ent")
+        value = {}
+        assert prop._validate(value) is None
+
+    @staticmethod
+    def test__validate_dict_invalid():
+        class Simple(model.Model):
+            pass
+
+        prop = model.LocalStructuredProperty(Simple, name="ent")
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate({"key": "value"})
+
+    @pytest.mark.usefixtures("in_context")
+    def test__to_base_type(self):
+        class Simple(model.Model):
+            pass
+
+        prop = model.LocalStructuredProperty(Simple, name="ent")
+        value = Simple()
+        entity = entity_module.Entity()
+        pb = helpers.entity_to_protobuf(entity)
+        expected = pb.SerializePartialToString()
+        assert prop._to_base_type(value) == expected
+
+    @pytest.mark.usefixtures("in_context")
+    def test__to_base_type_invalid(self):
+        class Simple(model.Model):
+            pass
+
+        class NotSimple(model.Model):
+            pass
+
+        prop = model.LocalStructuredProperty(Simple, name="ent")
+        with pytest.raises(TypeError):
+            prop._to_base_type(NotSimple())
+
+    def test__from_base_type(self):
+        class Simple(model.Model):
+            pass
+
+        prop = model.LocalStructuredProperty(Simple, name="ent")
+        entity = entity_module.Entity()
+        expected = Simple()
+        assert prop._from_base_type(entity) == expected
+
+    def test__from_base_type_bytes(self):
+        class Simple(model.Model):
+            pass
+
+        prop = model.LocalStructuredProperty(Simple, name="ent")
+        pb = helpers.entity_to_protobuf(entity_module.Entity())
+        value = pb.SerializePartialToString()
+        expected = Simple()
+        assert prop._from_base_type(value) == expected
+
+    def test__from_base_type_keep_keys(self):
+        class Simple(model.Model):
+            pass
+
+        prop = model.LocalStructuredProperty(Simple, name="ent")
+        entity = entity_module.Entity()
+        entity.key = "key"
+        expected = Simple()
+        assert prop._from_base_type(entity) == expected
 
 
 class TestGenericProperty:

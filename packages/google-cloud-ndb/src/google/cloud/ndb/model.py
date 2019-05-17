@@ -39,6 +39,7 @@ import zlib
 
 from google.cloud.datastore import entity as entity_module
 from google.cloud.datastore import helpers
+from google.cloud.datastore_v1.proto import entity_pb2
 
 from google.cloud.ndb import _datastore_api
 from google.cloud.ndb import _datastore_types
@@ -294,20 +295,20 @@ class ModelAdapter:
         raise exceptions.NoLongerImplementedError()
 
 
-def _entity_from_protobuf(protobuf):
-    """Deserialize an entity from a protobuffer.
+def _entity_from_ds_entity(ds_entity, model_class=None):
+    """Create an entity from a datastore entity.
 
     Args:
-        protobuf (google.cloud.datastore_v1.types.Entity): An entity protobuf
-            to be deserialized.
+        ds_entity (google.cloud.datastore_v1.types.Entity): An entity to be
+        deserialized.
 
     Returns:
         .Model: The deserialized entity.
     """
-    ds_entity = helpers.entity_from_protobuf(protobuf)
-    model_class = Model._lookup_model(ds_entity.kind)
+    model_class = model_class or Model._lookup_model(ds_entity.kind)
     entity = model_class()
-    entity._key = key_module.Key._from_ds_key(ds_entity.key)
+    if ds_entity.key:
+        entity._key = key_module.Key._from_ds_key(ds_entity.key)
     for name, value in ds_entity.items():
         prop = getattr(model_class, name, None)
         if not (prop is not None and isinstance(prop, Property)):
@@ -322,7 +323,21 @@ def _entity_from_protobuf(protobuf):
     return entity
 
 
-def _entity_to_protobuf(entity):
+def _entity_from_protobuf(protobuf):
+    """Deserialize an entity from a protobuffer.
+
+    Args:
+        protobuf (google.cloud.datastore_v1.types.Entity): An entity protobuf
+            to be deserialized.
+
+    Returns:
+        .Model: The deserialized entity.
+    """
+    ds_entity = helpers.entity_from_protobuf(protobuf)
+    return _entity_from_ds_entity(ds_entity)
+
+
+def _entity_to_protobuf(entity, set_key=True):
     """Serialize an entity to a protobuffer.
 
     Args:
@@ -348,10 +363,14 @@ def _entity_to_protobuf(entity):
                 value = value[0]
             data[prop._name] = value
 
-    key = entity._key
-    if key is None:
-        key = key_module.Key(entity._get_kind(), None)
-    ds_entity = entity_module.Entity(key._key)
+    ds_entity = None
+    if set_key:
+        key = entity._key
+        if key is None:
+            key = key_module.Key(entity._get_kind(), None)
+        ds_entity = entity_module.Entity(key._key)
+    else:
+        ds_entity = entity_module.Entity()
     ds_entity.update(data)
 
     # Then, use datatore to get the protocol buffer
@@ -3342,10 +3361,93 @@ class StructuredProperty(Property):
 
 
 class LocalStructuredProperty(BlobProperty):
-    __slots__ = ()
+    """A property that contains ndb.Model value.
+    .. note::
+        Unlike most property types, a :class:`LocalStructuredProperty`
+        is **not** indexed.
+    .. automethod:: _to_base_type
+    .. automethod:: _from_base_type
+    .. automethod:: _validate
+    Args:
+        kls (ndb.Model): The class of the property.
+        name (str): The name of the property.
+        compressed (bool): Indicates if the value should be compressed (via
+            ``zlib``).
+        repeated (bool): Indicates if this property is repeated, i.e. contains
+            multiple values.
+        required (bool): Indicates if this property is required on the given
+            model type.
+        default (Any): The default value for this property.
+        validator (Callable[[~google.cloud.ndb.model.Property, Any], bool]): A
+            validator to be used to check values.
+        verbose_name (str): A longer, user-friendly name for this property.
+        write_empty_list (bool): Indicates if an empty list should be written
+            to the datastore.
+    """
 
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    _kls = None
+    _keep_keys = False
+    _kwargs = None
+
+    def __init__(self, kls, **kwargs):
+        indexed = kwargs.pop("indexed", False)
+        if indexed:
+            raise NotImplementedError(
+                "Cannot index LocalStructuredProperty {}.".format(self._name)
+            )
+        keep_keys = kwargs.pop("keep_keys", False)
+        super(LocalStructuredProperty, self).__init__(**kwargs)
+        self._kls = kls
+        self._keep_keys = keep_keys
+
+    def _validate(self, value):
+        """Validate a ``value`` before setting it.
+        Args:
+            value: The value to check.
+        Raises:
+            .BadValueError: If ``value`` is not a given class.
+        """
+        if isinstance(value, dict):
+            # A dict is assumed to be the result of a _to_dict() call.
+            value = self._kls(**value)
+
+        if not isinstance(value, self._kls):
+            raise exceptions.BadValueError(
+                "Expected {}, got {!r}".format(self._kls.__name__, value)
+            )
+
+    def _to_base_type(self, value):
+        """Convert a value to the "base" value type for this property.
+        Args:
+            value: The given class value to be converted.
+        Returns:
+            bytes
+        Raises:
+            TypeError: If ``value`` is not a given class.
+        """
+        if not isinstance(value, self._kls):
+            raise TypeError(
+                "Cannot convert to bytes expected {} value; "
+                "received {}".format(self._kls.__name__, value)
+            )
+        pb = _entity_to_protobuf(value, set_key=self._keep_keys)
+        return pb.SerializePartialToString()
+
+    def _from_base_type(self, value):
+        """Convert a value from the "base" value type for this property.
+        Args:
+            value(~google.cloud.datastore.Entity or bytes): The value to be
+            converted.
+        Returns:
+            The converted value with given class.
+        """
+        if isinstance(value, bytes):
+            pb = entity_pb2.Entity()
+            pb.MergeFromString(value)
+            value = helpers.entity_from_protobuf(pb)
+        if not self._keep_keys and value.key:
+            value.key = None
+        return _entity_from_ds_entity(value, model_class=self._kls)
 
 
 class GenericProperty(Property):
