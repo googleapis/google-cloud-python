@@ -2914,6 +2914,36 @@ class TestModel:
         )
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.model._datastore_api")
+    def test__put_w_hooks(_datastore_api):
+        class Simple(model.Model):
+            def __init__(self):
+                super(Simple, self).__init__()
+                self.pre_put_calls = []
+                self.post_put_calls = []
+
+            def _pre_put_hook(self, *args, **kwargs):
+                self.pre_put_calls.append((args, kwargs))
+
+            def _post_put_hook(self, future, *args, **kwargs):
+                assert isinstance(future, tasklets.Future)
+                self.post_put_calls.append((args, kwargs))
+
+        entity = Simple()
+        _datastore_api.put.return_value = future = tasklets.Future()
+        future.set_result(None)
+
+        entity_pb = model._entity_to_protobuf(entity)
+        assert entity._put() == entity.key
+        _datastore_api.put.assert_called_once_with(
+            entity_pb, _options.Options()
+        )
+
+        assert entity.pre_put_calls == [((), {})]
+        assert entity.post_put_calls == [((), {})]
+
+    @staticmethod
     def test__lookup_model():
         class ThisKind(model.Model):
             pass
@@ -3042,6 +3072,56 @@ class TestModel:
             key_module.Key("Simple", None),
         ]
         assert call_options == _options.Options()
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.model._datastore_api")
+    def test_allocate_ids_w_hooks(_datastore_api):
+        completed = [
+            entity_pb2.Key(
+                partition_id=entity_pb2.PartitionId(project_id="testing"),
+                path=[entity_pb2.Key.PathElement(kind="Simple", id=21)],
+            ),
+            entity_pb2.Key(
+                partition_id=entity_pb2.PartitionId(project_id="testing"),
+                path=[entity_pb2.Key.PathElement(kind="Simple", id=42)],
+            ),
+        ]
+        _datastore_api.allocate.return_value = utils.future_result(completed)
+
+        class Simple(model.Model):
+            pre_allocate_id_calls = []
+            post_allocate_id_calls = []
+
+            @classmethod
+            def _pre_allocate_ids_hook(cls, *args, **kwargs):
+                cls.pre_allocate_id_calls.append((args, kwargs))
+
+            @classmethod
+            def _post_allocate_ids_hook(
+                cls, size, max, parent, future, *args, **kwargs
+            ):
+                assert isinstance(future, tasklets.Future)
+                cls.post_allocate_id_calls.append(
+                    ((size, max, parent) + args, kwargs)
+                )
+
+        keys = Simple.allocate_ids(2)
+        assert keys == (
+            key_module.Key("Simple", 21),
+            key_module.Key("Simple", 42),
+        )
+
+        call_keys, call_options = _datastore_api.allocate.call_args[0]
+        call_keys = [key_module.Key._from_ds_key(key) for key in call_keys]
+        assert call_keys == [
+            key_module.Key("Simple", None),
+            key_module.Key("Simple", None),
+        ]
+        assert call_options == _options.Options()
+
+        assert Simple.pre_allocate_id_calls == [((2, None, None), {})]
+        assert Simple.post_allocate_id_calls == [((2, None, None), {})]
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")

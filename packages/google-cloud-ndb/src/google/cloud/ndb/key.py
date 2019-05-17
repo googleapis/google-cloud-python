@@ -86,6 +86,7 @@ namespace. To explicitly select the empty namespace pass ``namespace=""``.
 
 
 import base64
+import functools
 
 from google.cloud.datastore import _app_engine_key_pb2
 from google.cloud.datastore import key as _key_module
@@ -773,7 +774,6 @@ class Key:
         """
         return self.get_async(_options=_options).result()
 
-    @tasklets.tasklet
     @_options.ReadOptions.options
     def get_async(
         self,
@@ -835,9 +835,23 @@ class Key:
         """
         from google.cloud.ndb import model  # avoid circular import
 
-        entity_pb = yield _datastore_api.lookup(self._key, _options)
-        if entity_pb is not _datastore_api._NOT_FOUND:
-            return model._entity_from_protobuf(entity_pb)
+        cls = model.Model._kind_map.get(self.kind())
+
+        @tasklets.tasklet
+        def get():
+            if cls:
+                cls._pre_get_hook(self)
+
+            entity_pb = yield _datastore_api.lookup(self._key, _options)
+            if entity_pb is not _datastore_api._NOT_FOUND:
+                return model._entity_from_protobuf(entity_pb)
+
+        future = get()
+        if cls:
+            future.add_done_callback(
+                functools.partial(cls._post_get_hook, self)
+            )
+        return future
 
     @_options.Options.options
     def delete(
@@ -932,7 +946,20 @@ class Key:
                 set operations will be combined into a single set_multi
                 operation.
         """
-        return _datastore_api.delete(self._key, _options)
+        from google.cloud.ndb import model  # avoid circular import
+
+        cls = model.Model._kind_map.get(self.kind())
+        if cls:
+            cls._pre_delete_hook(self)
+
+        future = _datastore_api.delete(self._key, _options)
+
+        if cls:
+            future.add_done_callback(
+                functools.partial(cls._post_delete_hook, self)
+            )
+
+        return future
 
     @classmethod
     def from_old_key(cls, old_key):

@@ -536,18 +536,55 @@ class TestKey:
     @unittest.mock.patch("google.cloud.ndb.key._datastore_api")
     @unittest.mock.patch("google.cloud.ndb.model._entity_from_protobuf")
     def test_get(_entity_from_protobuf, _datastore_api):
+        class Simple(model.Model):
+            pass
+
         ds_future = tasklets.Future()
         ds_future.set_result("ds_entity")
         _datastore_api.lookup.return_value = ds_future
         _entity_from_protobuf.return_value = "the entity"
 
-        key = key_module.Key("a", "b", app="c")
+        key = key_module.Key("Simple", "b", app="c")
         assert key.get() == "the entity"
 
         _datastore_api.lookup.assert_called_once_with(
             key._key, _options.ReadOptions()
         )
         _entity_from_protobuf.assert_called_once_with("ds_entity")
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.key._datastore_api")
+    @unittest.mock.patch("google.cloud.ndb.model._entity_from_protobuf")
+    def test_get_w_hooks(_entity_from_protobuf, _datastore_api):
+        class Simple(model.Model):
+            pre_get_calls = []
+            post_get_calls = []
+
+            @classmethod
+            def _pre_get_hook(cls, *args, **kwargs):
+                cls.pre_get_calls.append((args, kwargs))
+
+            @classmethod
+            def _post_get_hook(cls, key, future, *args, **kwargs):
+                assert isinstance(future, tasklets.Future)
+                cls.post_get_calls.append(((key,) + args, kwargs))
+
+        ds_future = tasklets.Future()
+        ds_future.set_result("ds_entity")
+        _datastore_api.lookup.return_value = ds_future
+        _entity_from_protobuf.return_value = "the entity"
+
+        key = key_module.Key("Simple", 42)
+        assert key.get() == "the entity"
+
+        _datastore_api.lookup.assert_called_once_with(
+            key._key, _options.ReadOptions()
+        )
+        _entity_from_protobuf.assert_called_once_with("ds_entity")
+
+        assert Simple.pre_get_calls == [((key,), {})]
+        assert Simple.post_get_calls == [((key,), {})]
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -584,15 +621,48 @@ class TestKey:
     @pytest.mark.usefixtures("in_context")
     @unittest.mock.patch("google.cloud.ndb.key._datastore_api")
     def test_delete(_datastore_api):
+        class Simple(model.Model):
+            pass
+
         future = tasklets.Future()
         _datastore_api.delete.return_value = future
         future.set_result("result")
 
-        key = key_module.Key("a", "b", app="c")
+        key = key_module.Key("Simple", "b", app="c")
         assert key.delete() == "result"
         _datastore_api.delete.assert_called_once_with(
             key._key, _options.Options()
         )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.key._datastore_api")
+    def test_delete_w_hooks(_datastore_api):
+        class Simple(model.Model):
+            pre_delete_calls = []
+            post_delete_calls = []
+
+            @classmethod
+            def _pre_delete_hook(cls, *args, **kwargs):
+                cls.pre_delete_calls.append((args, kwargs))
+
+            @classmethod
+            def _post_delete_hook(cls, key, future, *args, **kwargs):
+                assert isinstance(future, tasklets.Future)
+                cls.post_delete_calls.append(((key,) + args, kwargs))
+
+        future = tasklets.Future()
+        _datastore_api.delete.return_value = future
+        future.set_result("result")
+
+        key = key_module.Key("Simple", 42)
+        assert key.delete() == "result"
+        _datastore_api.delete.assert_called_once_with(
+            key._key, _options.Options()
+        )
+
+        assert Simple.pre_delete_calls == [((key,), {})]
+        assert Simple.post_delete_calls == [((key,), {})]
 
     @staticmethod
     @unittest.mock.patch("google.cloud.ndb.key._datastore_api")

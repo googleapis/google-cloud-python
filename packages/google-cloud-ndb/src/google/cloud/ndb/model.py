@@ -4006,7 +4006,6 @@ class Model(metaclass=MetaModel):
 
     put = _put
 
-    @tasklets.tasklet
     @_options.Options.options
     def _put_async(
         self,
@@ -4055,12 +4054,20 @@ class Model(metaclass=MetaModel):
             tasklets.Future: The eventual result will be the key for the
                 entity. This is always a complete key.
         """
-        entity_pb = _entity_to_protobuf(self)
-        key_pb = yield _datastore_api.put(entity_pb, _options)
-        if key_pb:
-            ds_key = helpers.key_from_protobuf(key_pb)
-            self._key = key_module.Key._from_ds_key(ds_key)
-        return self._key
+
+        @tasklets.tasklet
+        def put(self):
+            self._pre_put_hook()
+            entity_pb = _entity_to_protobuf(self)
+            key_pb = yield _datastore_api.put(entity_pb, _options)
+            if key_pb:
+                ds_key = helpers.key_from_protobuf(key_pb)
+                self._key = key_module.Key._from_ds_key(ds_key)
+            return self._key
+
+        future = put(self)
+        future.add_done_callback(self._post_put_hook)
+        return future
 
     put_async = _put_async
 
@@ -4199,7 +4206,6 @@ class Model(metaclass=MetaModel):
     allocate_ids = _allocate_ids
 
     @classmethod
-    @tasklets.tasklet
     @_options.Options.options
     def _allocate_ids_async(
         cls,
@@ -4262,18 +4268,30 @@ class Model(metaclass=MetaModel):
         if not size:
             raise TypeError("Must pass non-zero 'size' to 'allocate_ids'")
 
-        kind = cls._get_kind()
-        keys = [
-            key_module.Key(kind, None, parent=parent)._key for _ in range(size)
-        ]
-        key_pbs = yield _datastore_api.allocate(keys, _options)
-        keys = tuple(
-            (
-                key_module.Key._from_ds_key(helpers.key_from_protobuf(key_pb))
-                for key_pb in key_pbs
+        @tasklets.tasklet
+        def allocate_ids():
+            cls._pre_allocate_ids_hook(size, max, parent)
+            kind = cls._get_kind()
+            keys = [
+                key_module.Key(kind, None, parent=parent)._key
+                for _ in range(size)
+            ]
+            key_pbs = yield _datastore_api.allocate(keys, _options)
+            keys = tuple(
+                (
+                    key_module.Key._from_ds_key(
+                        helpers.key_from_protobuf(key_pb)
+                    )
+                    for key_pb in key_pbs
+                )
             )
+            return keys
+
+        future = allocate_ids()
+        future.add_done_callback(
+            functools.partial(cls._post_allocate_ids_hook, size, max, parent)
         )
-        return keys
+        return future
 
     allocate_ids_async = _allocate_ids_async
 
@@ -4740,6 +4758,38 @@ class Model(metaclass=MetaModel):
         return values
 
     to_dict = _to_dict
+
+    @classmethod
+    def _pre_allocate_ids_hook(cls, size, max, parent):
+        pass
+
+    @classmethod
+    def _post_allocate_ids_hook(cls, size, max, parent, future):
+        pass
+
+    @classmethod
+    def _pre_delete_hook(self, key):
+        pass
+
+    @classmethod
+    def _post_delete_hook(self, key, future):
+        pass
+
+    @classmethod
+    def _pre_get_hook(self, key):
+        pass
+
+    @classmethod
+    def _post_get_hook(self, key, future):
+        pass
+
+    @classmethod
+    def _pre_put_hook(self):
+        pass
+
+    @classmethod
+    def _post_put_hook(self, future):
+        pass
 
 
 class Expando(Model):
