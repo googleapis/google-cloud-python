@@ -4,6 +4,40 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.12.0
+
+05-16-2019 11:25 PDT
+
+### Implementation Changes
+- Remove duplicates from index on pandas DataFrames returned by `to_dataframe()`. ([#7953](https://github.com/googleapis/google-cloud-python/pull/7953))
+- Prevent error when time partitioning is populated with empty dict ([#7904](https://github.com/googleapis/google-cloud-python/pull/7904))
+- Preserve order in `to_dataframe` with BQ Storage from queries containing `ORDER BY` ([#7793](https://github.com/googleapis/google-cloud-python/pull/7793))
+- Respect `progress_bar_type` in `to_dataframe` when used with BQ Storage API ([#7697](https://github.com/googleapis/google-cloud-python/pull/7697))
+- Refactor QueryJob.query to read from resource dictionary ([#7763](https://github.com/googleapis/google-cloud-python/pull/7763))
+- Close the `to_dataframe` progress bar when finished. ([#7757](https://github.com/googleapis/google-cloud-python/pull/7757))
+- Ensure that `KeyboardInterrupt` during `to_dataframe`no longer hangs. ([#7698](https://github.com/googleapis/google-cloud-python/pull/7698))
+- Raise ValueError when BQ Storage is required but missing ([#7726](https://github.com/googleapis/google-cloud-python/pull/7726))
+- Make `total_rows` available on RowIterator before iteration ([#7622](https://github.com/googleapis/google-cloud-python/pull/7622))
+- Avoid masking auth errors in `to_dataframe` with BQ Storage API ([#7674](https://github.com/googleapis/google-cloud-python/pull/7674))
+
+### New Features
+- Add support for passing `client_info`. ([#7849](https://github.com/googleapis/google-cloud-python/pull/7849) and ([#7806](https://github.com/googleapis/google-cloud-python/pull/7806))
+- Phase 1 for storing schemas for later use. ([#7761](https://github.com/googleapis/google-cloud-python/pull/7761))
+- Add `destination` and related properties to LoadJob. ([#7710](https://github.com/googleapis/google-cloud-python/pull/7710))
+- Add `clustering_fields` property to TableListItem ([#7692](https://github.com/googleapis/google-cloud-python/pull/7692))
+- Add `created` and `expires` properties to TableListItem ([#7684](https://github.com/googleapis/google-cloud-python/pull/7684))
+
+### Dependencies
+- Pin `google-cloud-core >= 1.0.0, < 2.0dev`. ([#7993](https://github.com/googleapis/google-cloud-python/pull/7993))
+- Add `[all]` extras to install all extra dependencies ([#7610](https://github.com/googleapis/google-cloud-python/pull/7610))
+
+### Documentation
+- Move table and dataset snippets to samples/ directory ([#7683](https://github.com/googleapis/google-cloud-python/pull/7683))
+
+### Internal / Testing Changes
+- Blacken unit tests. ([#7960](https://github.com/googleapis/google-cloud-python/pull/7960))
+- Cleanup client tests with method to create minimal table resource ([#7802](https://github.com/googleapis/google-cloud-python/pull/7802))
+
 ## 1.11.2
 
 04-05-2019 08:16 PDT
