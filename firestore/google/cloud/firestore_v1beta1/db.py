@@ -527,8 +527,8 @@ class InvalidValueError(ValueError):
         self.value = value
 
     def __str__(self):
-        return "InvalidValueError %s is not a valid value for field %s of type %s" %\
-            (self.value, self.field.name, self.field.type)
+        return "%s is not a valid value for field %s of type %s" %\
+            (self.value, self.field.name, type(self.field).__name__)
 
 
 class MalformedQueryError(Exception):
@@ -537,7 +537,7 @@ class MalformedQueryError(Exception):
         self.message = message
 
     def __str__(self):
-        return "MalformedQueryError %s" % self.message
+        return self.message
 
 
 class InvalidPropertyError(Exception):
@@ -547,7 +547,7 @@ class InvalidPropertyError(Exception):
         self.model_name = model_name
 
     def __str__(self):
-        return "InvalidPropertyError: %s not found in model %s" % (self.prop_name, self.model_name)
+        return "%s not found in model %s" % (self.prop_name, self.model_name)
 
 
 class SubCollectionError(Exception):
@@ -556,7 +556,7 @@ class SubCollectionError(Exception):
         self.message = message
 
     def __str__(self):
-        return "SubCollectionError: %s" % self.message
+        return self.message
 
 
 class ReferenceFieldError(Exception):
@@ -565,4 +565,4 @@ class ReferenceFieldError(Exception):
         self.message = message
 
     def __str__(self):
-        return "ReferenceFieldError: %s" % self.message
+        return self.message
