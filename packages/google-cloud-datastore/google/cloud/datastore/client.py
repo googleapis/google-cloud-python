@@ -18,6 +18,7 @@ import os
 from google.cloud._helpers import _LocalStack
 from google.cloud._helpers import _determine_default_project as _base_default_project
 from google.cloud.client import ClientWithProject
+from google.cloud.datastore import __version__
 from google.cloud.datastore import helpers
 from google.cloud.datastore._http import HTTPDatastoreAPI
 from google.cloud.datastore.batch import Batch
@@ -32,16 +33,26 @@ from google.cloud.environment_vars import GCD_HOST
 try:
     from google.cloud.datastore._gapic import make_datastore_api
 
-    _HAVE_GRPC = True
 except ImportError:  # pragma: NO COVER
+    from google.api_core import client_info
+
     make_datastore_api = None
     _HAVE_GRPC = False
+    _CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
+else:
+    from google.api_core.gapic_v1 import client_info
+
+    _HAVE_GRPC = True
+    _CLIENT_INFO = client_info.ClientInfo(
+        client_library_version=__version__, gapic_version=__version__
+    )
 
 
 _MAX_LOOPS = 128
 """Maximum number of iterations to wait for deferred keys."""
 _DATASTORE_BASE_URL = "https://datastore.googleapis.com"
 """Datastore API request URL base."""
+
 
 _USE_GRPC = _HAVE_GRPC and not os.getenv(DISABLE_GRPC, False)
 
@@ -182,6 +193,14 @@ class Client(ClientWithProject):
                         passed), falls back to the default inferred from the
                         environment.
 
+    :type client_info: :class:`google.api_core.gapic_v1.client_info.ClientInfo`
+                       or :class:`google.api_core.client_info.ClientInfo`
+    :param client_info: (Optional) The client info used to send a user-agent
+                        string along with API requests. If ``None``, then
+                        default info will be used. Generally,
+                        you only need to set this if you're developing your
+                        own library or partner tool.
+
     :type _http: :class:`~requests.Session`
     :param _http: (Optional) HTTP object to make requests. Can be any object
                   that defines ``request()`` with the same interface as
@@ -204,12 +223,19 @@ class Client(ClientWithProject):
     """The scopes required for authenticating as a Cloud Datastore consumer."""
 
     def __init__(
-        self, project=None, namespace=None, credentials=None, _http=None, _use_grpc=None
+        self,
+        project=None,
+        namespace=None,
+        credentials=None,
+        client_info=_CLIENT_INFO,
+        _http=None,
+        _use_grpc=None,
     ):
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http
         )
         self.namespace = namespace
+        self._client_info = client_info
         self._batch_stack = _LocalStack()
         self._datastore_api_internal = None
         if _use_grpc is None:

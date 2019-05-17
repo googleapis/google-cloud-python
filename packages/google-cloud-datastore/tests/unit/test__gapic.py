@@ -41,7 +41,8 @@ class Test_make_datastore_api(unittest.TestCase):
         client = mock.Mock(
             _base_url=base_url,
             _credentials=mock.sentinel.credentials,
-            spec=["_base_url", "_credentials"],
+            _client_info=mock.sentinel.client_info,
+            spec=["_base_url", "_credentials", "_client_info"],
         )
         ds_api = self._call_fut(client)
         self.assertIs(ds_api, mock.sentinel.ds_client)
@@ -52,7 +53,7 @@ class Test_make_datastore_api(unittest.TestCase):
             "datastore.googleapis.com:443",
         )
         mock_klass.assert_called_once_with(
-            channel=mock.sentinel.channel, client_info=mock.ANY
+            channel=mock.sentinel.channel, client_info=mock.sentinel.client_info
         )
 
     @mock.patch(
@@ -70,12 +71,13 @@ class Test_make_datastore_api(unittest.TestCase):
         client = mock.Mock(
             _base_url=base_url,
             _credentials=mock.sentinel.credentials,
-            spec=["_base_url", "_credentials"],
+            _client_info=mock.sentinel.client_info,
+            spec=["_base_url", "_credentials", "_client_info"],
         )
         ds_api = self._call_fut(client)
         self.assertIs(ds_api, mock.sentinel.ds_client)
 
         make_chan.assert_called_once_with(host)
         mock_klass.assert_called_once_with(
-            channel=mock.sentinel.channel, client_info=mock.ANY
+            channel=mock.sentinel.channel, client_info=mock.sentinel.client_info
         )
