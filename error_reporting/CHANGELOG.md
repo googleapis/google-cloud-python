@@ -4,6 +4,34 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+## 0.31.0
+
+05-17-2019 08:23 PDT
+
+### Implementation Changes
+- Add routing header to method metadata (via synth). ([#7594](https://github.com/googleapis/google-cloud-python/pull/7594))
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+
+### New Features
+- Add `client_info` support to Client. ([#7903](https://github.com/googleapis/google-cloud-python/pull/7903))
+
+### Dependencies
+- Pin `google-cloud-logging >= 1.11.0`. ([#8015](https://github.com/googleapis/google-cloud-python/pull/8015))
+
+### Documentation
+- Update client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+
+### Internal / Testing Changes
+- Add nox session `docs` (via synth). ([#7770](https://github.com/googleapis/google-cloud-python/pull/7770))
+- Fix docstring replace in synth ([#7458](https://github.com/googleapis/google-cloud-python/pull/7458))
+- Copy lintified proto files (via synth). ([#7447](https://github.com/googleapis/google-cloud-python/pull/7447))
+- Add clarifying comment to blacken nox target (via synth). ([#7391](https://github.com/googleapis/google-cloud-python/pull/7391))
+- Add protos as an artifact to library ([#7205](https://github.com/googleapis/google-cloud-python/pull/7205))
+- Update copyright headers. ([#7144](https://github.com/googleapis/google-cloud-python/pull/7144))
+- Protoc-generated serialization update. ([#7082](https://github.com/googleapis/google-cloud-python/pull/7082))
+- Pick up stub docstring fix in GAPIC generator. ([#6970](https://github.com/googleapis/google-cloud-python/pull/6970))
+- Fix formatting ([#7002](https://github.com/googleapis/google-cloud-python/pull/7002))
+
 ## 0.30.1
 
 12-17-2018 18:17 PST
