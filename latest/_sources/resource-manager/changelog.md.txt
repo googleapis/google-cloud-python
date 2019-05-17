@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+## 0.29.0
+
+05-16-2019 12:31 PDT
+
+
+### Implementation Changes
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+
+### New Features
+- Add `client_info` support to client / connection. ([#7870](https://github.com/googleapis/google-cloud-python/pull/7870))
+
+### Dependencies
+- Pin `google-cloud-core >= 1.0.0, < 2.0dev`. ([#7993](https://github.com/googleapis/google-cloud-python/pull/7993))
+
+### Documentation
+- Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+
 ## 0.28.3
 
 12-17-2018 16:59 PST
