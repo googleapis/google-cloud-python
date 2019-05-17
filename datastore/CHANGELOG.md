@@ -4,6 +4,32 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## 1.8.0
+
+05-17-2019 08:28 PDT
+
+### Implementation Changes
+- Add routing header to method metadata (via synth). ([#7593](https://github.com/googleapis/google-cloud-python/pull/7593))
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+
+### New Features
+- Add `client_info` support to client. ([#8013](https://github.com/googleapis/google-cloud-python/pull/8013))
+
+### Dependencies
+- Pin `google-cloud-core >= 1.0.0, < 2.0dev`. ([#7993](https://github.com/googleapis/google-cloud-python/pull/7993))
+
+### Documentation
+- Update client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+- Pick up stub docstring fix in GAPIC generator. ([#6968](https://github.com/googleapis/google-cloud-python/pull/6968))
+
+### Internal / Testing Changes
+- Add nox session `docs` (via synth). ([#7768](https://github.com/googleapis/google-cloud-python/pull/7768))
+- Copy lintified proto files (via synth). ([#7446](https://github.com/googleapis/google-cloud-python/pull/7446))
+- Add clarifying comment to blacken nox target. ([#7389](https://github.com/googleapis/google-cloud-python/pull/7389))
+- Add protos as an artifact to library ([#7205](https://github.com/googleapis/google-cloud-python/pull/7205))
+- Update copyright headers ([#7142](https://github.com/googleapis/google-cloud-python/pull/7142))
+- Protoc-generated serialization update. ([#7080](https://github.com/googleapis/google-cloud-python/pull/7080))
+
 ## 1.7.3
 
 12-17-2018 16:45 PST
