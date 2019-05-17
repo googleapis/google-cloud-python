@@ -228,7 +228,7 @@ def test_{{ service.name|snake_case }}_auth_adc():
 
 
 def test_{{ service.name|snake_case }}_host_no_port():
-    {% with host = (service.host|default('localhost')).split(':')[0] -%}
+    {% with host = (service.host|default('localhost', true)).split(':')[0] -%}
     client = {{ service.name }}(
         credentials=credentials.AnonymousCredentials(),
         host='{{ host }}',
@@ -239,7 +239,7 @@ def test_{{ service.name|snake_case }}_host_no_port():
 
 
 def test_{{ service.name|snake_case }}_host_with_port():
-    {% with host = (service.host|default('localhost')).split(':')[0] -%}
+    {% with host = (service.host|default('localhost', true)).split(':')[0] -%}
     client = {{ service.name }}(
         credentials=credentials.AnonymousCredentials(),
         host='{{ host }}:8000',
