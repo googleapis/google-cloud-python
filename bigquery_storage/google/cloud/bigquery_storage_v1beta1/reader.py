@@ -33,7 +33,6 @@ from google.cloud.bigquery_storage_v1beta1 import types
 
 
 _STREAM_RESUMPTION_EXCEPTIONS = (
-    google.api_core.exceptions.DeadlineExceeded,
     google.api_core.exceptions.ServiceUnavailable,
 )
 _FASTAVRO_REQUIRED = "fastavro is required to parse Avro blocks"
