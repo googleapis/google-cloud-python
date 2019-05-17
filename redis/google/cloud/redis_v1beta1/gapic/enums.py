@@ -18,6 +18,23 @@
 import enum
 
 
+class FailoverInstanceRequest(object):
+    class DataProtectionMode(enum.IntEnum):
+        """
+        Attributes:
+          DATA_PROTECTION_MODE_UNSPECIFIED (int)
+          LIMITED_DATA_LOSS (int): Instance failover will be protected with data loss control. More
+          specifically, the failover will only be performed if the current
+          replication offset diff between master and replica is under a certain
+          threshold.
+          FORCE_DATA_LOSS (int): Instance failover will be performed without data loss control.
+        """
+
+        DATA_PROTECTION_MODE_UNSPECIFIED = 0
+        LIMITED_DATA_LOSS = 1
+        FORCE_DATA_LOSS = 2
+
+
 class Instance(object):
     class State(enum.IntEnum):
         """
@@ -31,9 +48,10 @@ class Instance(object):
           may cause the instance to become unusable while the update is in
           progress.
           DELETING (int): Redis instance is being deleted.
-          REPAIRING (int): Redis instance is being repaired and may be unusable. Details can be
-          found in the ``status_message`` field.
+          REPAIRING (int): Redis instance is being repaired and may be unusable.
           MAINTENANCE (int): Maintenance is being performed on this Redis instance.
+          IMPORTING (int): Redis instance is importing data (availability may be affected).
+          FAILING_OVER (int): Redis instance is failing over (availability may be affected).
         """
 
         STATE_UNSPECIFIED = 0
@@ -43,6 +61,8 @@ class Instance(object):
         DELETING = 4
         REPAIRING = 5
         MAINTENANCE = 6
+        IMPORTING = 8
+        FAILING_OVER = 10
 
     class Tier(enum.IntEnum):
         """

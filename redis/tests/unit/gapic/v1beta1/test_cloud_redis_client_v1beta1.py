@@ -393,3 +393,86 @@ class TestCloudRedisClient(object):
         response = client.delete_instance(name)
         exception = response.exception()
         assert exception.errors[0] == error
+
+    def test_failover_instance(self):
+        # Setup Expected Response
+        name_2 = "name2-1052831874"
+        display_name = "displayName1615086568"
+        location_id = "locationId552319461"
+        alternative_location_id = "alternativeLocationId-718920621"
+        redis_version = "redisVersion-685310444"
+        reserved_ip_range = "reservedIpRange-1082940580"
+        host = "host3208616"
+        port = 3446913
+        current_location_id = "currentLocationId1312712735"
+        status_message = "statusMessage-239442758"
+        memory_size_gb = 34199707
+        authorized_network = "authorizedNetwork-1733809270"
+        expected_response = {
+            "name": name_2,
+            "display_name": display_name,
+            "location_id": location_id,
+            "alternative_location_id": alternative_location_id,
+            "redis_version": redis_version,
+            "reserved_ip_range": reserved_ip_range,
+            "host": host,
+            "port": port,
+            "current_location_id": current_location_id,
+            "status_message": status_message,
+            "memory_size_gb": memory_size_gb,
+            "authorized_network": authorized_network,
+        }
+        expected_response = cloud_redis_pb2.Instance(**expected_response)
+        operation = operations_pb2.Operation(
+            name="operations/test_failover_instance", done=True
+        )
+        operation.response.Pack(expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = redis_v1beta1.CloudRedisClient()
+
+        # Setup Request
+        name = client.instance_path("[PROJECT]", "[LOCATION]", "[INSTANCE]")
+        data_protection_mode = (
+            enums.FailoverInstanceRequest.DataProtectionMode.DATA_PROTECTION_MODE_UNSPECIFIED
+        )
+
+        response = client.failover_instance(name, data_protection_mode)
+        result = response.result()
+        assert expected_response == result
+
+        assert len(channel.requests) == 1
+        expected_request = cloud_redis_pb2.FailoverInstanceRequest(
+            name=name, data_protection_mode=data_protection_mode
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_failover_instance_exception(self):
+        # Setup Response
+        error = status_pb2.Status()
+        operation = operations_pb2.Operation(
+            name="operations/test_failover_instance_exception", done=True
+        )
+        operation.error.CopyFrom(error)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = redis_v1beta1.CloudRedisClient()
+
+        # Setup Request
+        name = client.instance_path("[PROJECT]", "[LOCATION]", "[INSTANCE]")
+        data_protection_mode = (
+            enums.FailoverInstanceRequest.DataProtectionMode.DATA_PROTECTION_MODE_UNSPECIFIED
+        )
+
+        response = client.failover_instance(name, data_protection_mode)
+        exception = response.exception()
+        assert exception.errors[0] == error
