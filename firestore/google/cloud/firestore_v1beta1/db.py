@@ -515,6 +515,8 @@ class DateTimeField(_Field):
         # Return server timestamp as the value
         if value == SERVER_TIMESTAMP or self.auto_now:
             return SERVER_TIMESTAMP
+        if value is None and self.default == SERVER_TIMESTAMP:
+            return SERVER_TIMESTAMP
         return super(DateTimeField, self).validate(value)
 
 
