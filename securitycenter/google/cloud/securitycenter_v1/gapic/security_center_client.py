@@ -86,21 +86,6 @@ class SecurityCenterClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def organization_path(cls, organization):
-        """Return a fully-qualified organization string."""
-        return google.api_core.path_template.expand(
-            "organizations/{organization}", organization=organization
-        )
-
-    @classmethod
-    def organization_settings_path(cls, organization):
-        """Return a fully-qualified organization_settings string."""
-        return google.api_core.path_template.expand(
-            "organizations/{organization}/organizationSettings",
-            organization=organization,
-        )
-
-    @classmethod
     def asset_path(cls, organization, asset):
         """Return a fully-qualified asset string."""
         return google.api_core.path_template.expand(
@@ -116,22 +101,6 @@ class SecurityCenterClient(object):
             "organizations/{organization}/assets/{asset}/securityMarks",
             organization=organization,
             asset=asset,
-        )
-
-    @classmethod
-    def source_path(cls, organization, source):
-        """Return a fully-qualified source string."""
-        return google.api_core.path_template.expand(
-            "organizations/{organization}/sources/{source}",
-            organization=organization,
-            source=source,
-        )
-
-    @classmethod
-    def organization_sources_path(cls, organization):
-        """Return a fully-qualified organization_sources string."""
-        return google.api_core.path_template.expand(
-            "organizations/{organization}/sources/-", organization=organization
         )
 
     @classmethod
@@ -152,6 +121,37 @@ class SecurityCenterClient(object):
             organization=organization,
             source=source,
             finding=finding,
+        )
+
+    @classmethod
+    def organization_path(cls, organization):
+        """Return a fully-qualified organization string."""
+        return google.api_core.path_template.expand(
+            "organizations/{organization}", organization=organization
+        )
+
+    @classmethod
+    def organization_settings_path(cls, organization):
+        """Return a fully-qualified organization_settings string."""
+        return google.api_core.path_template.expand(
+            "organizations/{organization}/organizationSettings",
+            organization=organization,
+        )
+
+    @classmethod
+    def organization_sources_path(cls, organization):
+        """Return a fully-qualified organization_sources string."""
+        return google.api_core.path_template.expand(
+            "organizations/{organization}/sources/-", organization=organization
+        )
+
+    @classmethod
+    def source_path(cls, organization, source):
+        """Return a fully-qualified source string."""
+        return google.api_core.path_template.expand(
+            "organizations/{organization}/sources/{source}",
+            organization=organization,
+            source=source,
         )
 
     def __init__(
@@ -717,11 +717,11 @@ class SecurityCenterClient(object):
                 -  integer literals without quotes.
                 -  boolean literals ``true`` and ``false`` without quotes.
 
-                The following field and operator combinations are supported: name \|
-                ``=`` update\_time \| ``>``, ``<``, ``>=``, ``<=``
-                iam\_policy.policy\_blob \| '=', ':' resource\_properties \| '=', ':',
-                ``>``, ``<``, ``>=``, ``<=`` security\_marks \| '=', ':'
-                security\_center\_properties.resource\_name \| '=', ':'
+                The following field and operator combinations are supported: name \| '='
+                update\_time \| '>', '<', '>=', '<=', '=' create\_time \| '>', '<',
+                '>=', '<=', '=' iam\_policy.policy\_blob \| '=', ':'
+                resource\_properties \| '=', ':', '>', '<', '>=', '<=' security\_marks
+                \| '=', ':' security\_center\_properties.resource\_name \| '=', ':'
                 security\_center\_properties.resource\_type \| '=', ':'
                 security\_center\_properties.resource\_parent \| '=', ':'
                 security\_center\_properties.resource\_project \| '=', ':'
