@@ -754,11 +754,13 @@ class Bucket(_PropertyMixin):
                            properties to return.
 
         :type fields: str
-        :param fields: (Optional) Selector specifying which fields to include
-                       in a partial response. Must be a list of fields. For
-                       example to get a partial response with just the next
-                       page token and the language of each blob returned:
-                       ``'items/contentLanguage,nextPageToken'``.
+        :param fields:
+            (Optional) Selector specifying which fields to include
+            in a partial response. Must be a list of fields. For
+            example to get a partial response with just the next
+            page token and the ID and language of each blob returned:
+            ``'items(name,contentLanguage),nextPageToken'``.
+            See: https://cloud.google.com/storage/docs/json_api/v1/parameters#fields
 
         :type client: :class:`~google.cloud.storage.client.Client`
         :param client: (Optional) The client to use.  If not passed, falls back
