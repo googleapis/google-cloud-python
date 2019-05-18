@@ -63,8 +63,9 @@ class TestDB(TestCase):
         self.assertEqual(dt_field.validate(None), SERVER_TIMESTAMP)
         # A string is not a date time object
         self.assertRaises(db.InvalidValueError, dt_field.validate, "12-may-2019")
-        today = date.fromtimestamp(now.timestamp())
+        today = now.date()
         # A date item is a valid entry
+        self.assertIsInstance(today, date)
         self.assertEqual(dt_field.validate(today), today)
         dt_field = db.DateTimeField(auto_now=True)
         # This value is always updated to current time stamp on every update
@@ -78,4 +79,13 @@ class TestDB(TestCase):
         self.assertRaises(db.InvalidValueError, bool_field.validate, None)  # None is not a valid boolean value
         bool_field = db.BooleanField()
         self.assertIsNone(bool_field.validate(None))
+
+        # Bytes field
+        some_bytes = bytes(b"bavnkvnkjwenegkv,erngvanavnwisnkversnvaern")
+        bytes_field = db.BytesField(default=some_bytes)
+        other_bytes = bytes(b"qwertytuyioutryewwertyrytuyterwqwewqrwetry")
+        self.assertEqual(bytes_field.validate(None), some_bytes)
+        self.assertEqual(bytes_field.validate(other_bytes), other_bytes)
+        self.assertRaises(db.InvalidValueError, bytes_field.validate, "some_string")
+
 
