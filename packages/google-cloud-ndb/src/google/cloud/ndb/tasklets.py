@@ -502,8 +502,23 @@ def set_context(*args, **kwargs):
     raise NotImplementedError
 
 
-def synctasklet(*args, **kwargs):
-    raise NotImplementedError
+def synctasklet(wrapped):
+    """A decorator to run a tasklet as a function when called.
+
+    Use this to wrap a request handler function that will be called by some
+    web application framework (e.g. a Django view function or a
+    webapp.RequestHandler.get method).
+
+    Args:
+        wrapped (callable): The wrapped function.
+    """
+    taskletfunc = tasklet(wrapped)
+
+    @functools.wraps(wrapped)
+    def synctasklet_wrapper(*args, **kwargs):
+        return taskletfunc(*args, **kwargs).result()
+
+    return synctasklet_wrapper
 
 
 def toplevel(*args, **kwargs):

@@ -593,9 +593,17 @@ def test_set_context():
         tasklets.set_context()
 
 
+@pytest.mark.usefixtures("in_context")
 def test_synctasklet():
-    with pytest.raises(NotImplementedError):
-        tasklets.synctasklet()
+    @tasklets.synctasklet
+    def generator_function(value):
+        future = tasklets.Future(value)
+        future.set_result(value)
+        x = yield future
+        return x + 3
+
+    result = generator_function(8)
+    assert result == 11
 
 
 def test_toplevel():
