@@ -98,12 +98,26 @@ class AutoMlClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def location_path(cls, project, location):
-        """Return a fully-qualified location string."""
+    def annotation_spec_path(cls, project, location, dataset, annotation_spec):
+        """Return a fully-qualified annotation_spec string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}",
+            "projects/{project}/locations/{location}/datasets/{dataset}/annotationSpecs/{annotation_spec}",
             project=project,
             location=location,
+            dataset=dataset,
+            annotation_spec=annotation_spec,
+        )
+
+    @classmethod
+    def column_spec_path(cls, project, location, dataset, table_spec, column_spec):
+        """Return a fully-qualified column_spec string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}/datasets/{dataset}/tableSpecs/{table_spec}/columnSpecs/{column_spec}",
+            project=project,
+            location=location,
+            dataset=dataset,
+            table_spec=table_spec,
+            column_spec=column_spec,
         )
 
     @classmethod
@@ -114,6 +128,15 @@ class AutoMlClient(object):
             project=project,
             location=location,
             dataset=dataset,
+        )
+
+    @classmethod
+    def location_path(cls, project, location):
+        """Return a fully-qualified location string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}",
+            project=project,
+            location=location,
         )
 
     @classmethod
@@ -138,17 +161,6 @@ class AutoMlClient(object):
         )
 
     @classmethod
-    def annotation_spec_path(cls, project, location, dataset, annotation_spec):
-        """Return a fully-qualified annotation_spec string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}/datasets/{dataset}/annotationSpecs/{annotation_spec}",
-            project=project,
-            location=location,
-            dataset=dataset,
-            annotation_spec=annotation_spec,
-        )
-
-    @classmethod
     def table_spec_path(cls, project, location, dataset, table_spec):
         """Return a fully-qualified table_spec string."""
         return google.api_core.path_template.expand(
@@ -157,18 +169,6 @@ class AutoMlClient(object):
             location=location,
             dataset=dataset,
             table_spec=table_spec,
-        )
-
-    @classmethod
-    def column_spec_path(cls, project, location, dataset, table_spec, column_spec):
-        """Return a fully-qualified column_spec string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}/datasets/{dataset}/tableSpecs/{table_spec}/columnSpecs/{column_spec}",
-            project=project,
-            location=location,
-            dataset=dataset,
-            table_spec=table_spec,
-            column_spec=column_spec,
         )
 
     def __init__(
