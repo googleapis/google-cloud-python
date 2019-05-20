@@ -22,7 +22,7 @@ import six
 try:
     from google.cloud.error_reporting._gapic import make_report_error_api
 except ImportError:  # pragma: NO COVER
-    from google.api_core import ciient_info  # noqa
+    from google.api_core import client_info  # noqa
 
     _HAVE_GRPC = False
 else:
