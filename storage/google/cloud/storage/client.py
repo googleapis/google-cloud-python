@@ -26,6 +26,7 @@ from google.cloud.storage._http import Connection
 from google.cloud.storage.batch import Batch
 from google.cloud.storage.bucket import Bucket
 from google.cloud.storage.blob import Blob
+from google.cloud.storage.hmac_key import HMACKeyMetadata
 
 
 _marker = object()
@@ -476,6 +477,26 @@ class Client(ClientWithProject):
             blob_or_uri = Blob(path, bucket)
 
             blob_or_uri.download_to_file(file_obj, client=self, start=start, end=end)
+
+    def create_hmac_key(self, service_account_email):
+        """Create an HMAC key for a service account.
+
+        :type service_account_email: str
+        :param service_account_email: e-mail address of the service account
+
+        :rtype:
+            Tuple[:class:`~google.cloud.storage.hmac_key.HMACKeyMetadata`, str]
+        :returns: metadata for the created key, plus the bytes of the key's secret, which is an 40-character base64-encoded string.
+        """
+        path = "/projects/%s/hmacKeys".format(self.project)
+        qs_params = {"serviceAccountEmail": service_account_email}
+        api_response = self._base_connection.api_request(
+            method="POST", path=path, query_params=qs_params
+        )
+        metadata = HMACKeyMetadata(self)
+        metadata._properties = api_response["metadata"]
+        secret = api_response["secret"]
+        return metadata, secret
 
 
 def _item_to_bucket(iterator, item):

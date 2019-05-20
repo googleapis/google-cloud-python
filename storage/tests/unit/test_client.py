@@ -821,3 +821,56 @@ class TestClient(unittest.TestCase):
                 client.download_blob_to_file(
                     "http://bucket_name/path/to/object", file_obj
                 )
+
+    def test_create_hmac_key(self):
+        import datetime
+        from pytz import UTC
+        from six.moves.urllib.parse import urlencode
+        from google.cloud.storage.hmac_key import HMACKeyMetadata
+
+        PROJECT = "PROJECT"
+        ACCESS_ID = "ACCESS-ID"
+        CREDENTIALS = _make_credentials()
+        EMAIL = "storage-user-123@example.com"
+        SECRET = "a" * 40
+        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now_stamp = "{}Z".format(now.isoformat())
+        RESOURCE = {
+            "kind": "storage#hmacKey",
+            "metadata": {
+                "accessId": ACCESS_ID,
+                "etag": "ETAG",
+                "id": "projects/{}/hmacKeys/{}".format(PROJECT, ACCESS_ID),
+                "project": PROJECT,
+                "state": "ACTIVE",
+                "serviceAccountEmail": EMAIL,
+                "timeCreated": now_stamp,
+                "updated": now_stamp,
+            },
+            "secret": SECRET,
+        }
+
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
+        http = _make_requests_session([_make_json_response(RESOURCE)])
+        client._http_internal = http
+
+        metadata, secret = client.create_hmac_key(service_account_email=EMAIL)
+
+        self.assertIsInstance(metadata, HMACKeyMetadata)
+        self.assertIs(metadata._client, client)
+        self.assertEqual(metadata._properties, RESOURCE["metadata"])
+        self.assertEqual(secret, RESOURCE["secret"])
+
+        URI = "/".join(
+            [
+                client._connection.API_BASE_URL,
+                "storage",
+                client._connection.API_VERSION,
+                "projects/%s/hmacKeys",
+            ]
+        )
+        QS_PARAMS = {"serviceAccountEmail": EMAIL}
+        FULL_URI = "{}?{}".format(URI, urlencode(QS_PARAMS))
+        http.request.assert_called_once_with(
+            method="POST", url=FULL_URI, data=None, headers=mock.ANY
+        )
