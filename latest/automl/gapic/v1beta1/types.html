@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud AutoML API Client &#8212; google-cloud ffc97ed documentation</title>
+    <title>Types for Cloud AutoML API Client &#8212; google-cloud 9221c53 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -3208,7 +3208,9 @@ already is). The document .JSONL file contains, per line, a proto
 that wraps a Document proto with input_config set. Only PDF
 documents are supported now, and each document may be up to 2MB
 large. Currently annotations on documents cannot be specified at
-import. Any given .JSONL file must be 100MB or smaller.</li>
+import. Any given .JSONL file must be 100MB or smaller. Three sample
+CSV rows: TRAIN,gs://folder/file1.jsonl
+VALIDATE,gs://folder/file2.jsonl TEST,gs://folder/file3.jsonl</li>
 <li>For Tables: Either
 [gcs_source][google.cloud.automl.v1beta1.InputConfig.gcs_source] or</li>
 </ul>
@@ -4295,8 +4297,7 @@ model formats: “tflite”, “edgetpu_tflite”, “core_ml”,
 “docker”.  Under the directory given as the destination a new
 one with name “model-export–”, where timestamp is in YYYY-MM-
 DDThh:mm:ss.sssZ ISO-8601 format, will be created. Inside the
-model and any of its supporting files will be written, as
-described  <a class="reference external" href="https://cloud.google.com/vision/automl/docs/deploy#deployment_to_devices">here</a>.</p>
+model and any of its supporting files will be written.</p>
 </dd></dl>
 
 <dl class="attribute">

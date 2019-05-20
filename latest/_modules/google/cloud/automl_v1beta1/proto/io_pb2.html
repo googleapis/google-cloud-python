@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.automl_v1beta1.proto.io_pb2 &#8212; google-cloud ffc97ed documentation</title>
+    <title>google.cloud.automl_v1beta1.proto.io_pb2 &#8212; google-cloud 9221c53 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -1024,8 +1024,9 @@
 <span class="s2">     that wraps a Document proto with input\_config set. Only PDF</span>
 <span class="s2">     documents are supported now, and each document may be up to 2MB</span>
 <span class="s2">     large. Currently annotations on documents cannot be specified at</span>
-<span class="s2">     import. Any given .JSONL file must be 100MB or smaller.</span>
-
+<span class="s2">     import. Any given .JSONL file must be 100MB or smaller. Three sample</span>
+<span class="s2">     CSV rows: TRAIN,gs://folder/file1.jsonl</span>
+<span class="s2">     VALIDATE,gs://folder/file2.jsonl TEST,gs://folder/file3.jsonl </span>
 <span class="s2">  -  For Tables: Either</span>
 <span class="s2">     [gcs\_source][google.cloud.automl.v1beta1.InputConfig.gcs\_source] or</span>
 <span class="s2">  </span>
@@ -1162,7 +1163,7 @@
 <span class="s2">     wraps a Document proto with input\_config set. Only PDF documents are</span>
 <span class="s2">     supported now, and each document must be up to 2MB large. Any given</span>
 <span class="s2">     .JSONL file must be 100MB or smaller, and no more than 20 files may</span>
-<span class="s2">     be given.</span>
+<span class="s2">     be given. </span>
 <span class="s2">  </span>
 <span class="s2">  -  For Tables: Either</span>
 <span class="s2">     [gcs\_source][google.cloud.automl.v1beta1.InputConfig.gcs\_source] or</span>
@@ -1521,9 +1522,7 @@
 <span class="s2">          &quot;docker&quot;.  Under the directory given as the destination a new</span>
 <span class="s2">          one with name &quot;model-export--&quot;, where timestamp is in YYYY-MM-</span>
 <span class="s2">          DDThh:mm:ss.sssZ ISO-8601 format, will be created. Inside the</span>
-<span class="s2">          model and any of its supporting files will be written, as</span>
-<span class="s2">          described  `here &lt;https://cloud.google.com/vision/automl/docs/</span>
-<span class="s2">          deploy#deployment_to_devices&gt;`__.</span>
+<span class="s2">          model and any of its supporting files will be written.</span>
 <span class="s2">      gcr_destination:</span>
 <span class="s2">          The GCR location where model image is to be pushed to. This</span>
 <span class="s2">          location may only be set for the following model formats:</span>
