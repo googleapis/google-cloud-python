@@ -37,6 +37,10 @@ try:
 except ImportError:  # pragma: NO COVER
     pandas = None
 try:
+    import pyarrow
+except ImportError:  # pragma: NO COVER
+    pyarrow = None
+try:
     import IPython
     from IPython.utils import io
     from IPython.testing import tools
@@ -621,6 +625,67 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(
             sorted(row_tuples, key=by_wavelength), sorted(ROWS, key=by_wavelength)
         )
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_load_table_from_dataframe_w_nulls(self):
+        """Test that a DataFrame with null columns can be uploaded if a
+        BigQuery schema is specified.
+
+        See: https://github.com/googleapis/google-cloud-python/issues/7370
+        """
+        # TODO: make table with certain schema. Try to load / append to that table with a bunch of null columns.
+        # Schema with all scalar types.
+        table_schema = (
+            bigquery.SchemaField("bool_col", "BOOLEAN"),
+            bigquery.SchemaField("bytes_col", "BYTES"),
+            bigquery.SchemaField("date_col", "DATE"),
+            bigquery.SchemaField("dt_col", "DATETIME"),
+            bigquery.SchemaField("float_col", "FLOAT"),
+            bigquery.SchemaField("geo_col", "GEOGRAPHY"),
+            bigquery.SchemaField("int_col", "INTEGER"),
+            bigquery.SchemaField("num_col", "NUMERIC"),
+            bigquery.SchemaField("str_col", "STRING"),
+            bigquery.SchemaField("time_col", "TIME"),
+            bigquery.SchemaField("ts_col", "TIMESTAMP"),
+        )
+        num_rows = 100
+        nulls = [None] * num_rows
+        dataframe = pandas.DataFrame(
+            {
+                "bool_col": nulls,
+                "bytes_col": nulls,
+                "date_col": nulls,
+                "dt_col": nulls,
+                "float_col": nulls,
+                "geo_col": nulls,
+                "int_col": nulls,
+                "num_col": nulls,
+                "str_col": nulls,
+                "time_col": nulls,
+                "ts_col": nulls,
+            }
+        )
+
+        dataset_id = _make_dataset_id("bq_load_test")
+        self.temp_dataset(dataset_id)
+        table_id = "{}.{}.load_table_from_dataframe_w_nulls".format(
+            Config.CLIENT.project, dataset_id
+        )
+        table = retry_403(Config.CLIENT.create_table)(
+            Table(table_id, schema=table_schema)
+        )
+        self.to_delete.insert(0, table)
+
+        job_config = bigquery.LoadJobConfig(schema=table_schema)
+        load_job = Config.CLIENT.load_table_from_dataframe(
+            dataframe, table_id, job_config=job_config
+        )
+        load_job.result()
+
+        table = Config.CLIENT.get_table(table)
+        self.assertEqual(tuple(table.schema), table_schema)
+        self.assertEqual(table.num_rows, num_rows)
 
     def test_load_avro_from_uri_then_dump_table(self):
         from google.cloud.bigquery.job import CreateDisposition

@@ -44,6 +44,7 @@ from google.cloud.client import ClientWithProject
 from google.cloud.bigquery._helpers import _record_field_to_json
 from google.cloud.bigquery._helpers import _str_or_none
 from google.cloud.bigquery._http import Connection
+from google.cloud.bigquery import _pandas_helpers
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetListItem
 from google.cloud.bigquery.dataset import DatasetReference
@@ -1274,6 +1275,12 @@ class Client(ClientWithProject):
             job_config (google.cloud.bigquery.job.LoadJobConfig, optional):
                 Extra configuration options for the job.
 
+                To override the default pandas data type conversions, supply
+                a BigQuery schema in the job configuration. If a schema is
+                supplied, the BigQuery schema will be used to determine the
+                correct pandas to parquet type conversion. Indexes are not
+                loaded. Requires the :mod:`pyarrow` library.
+
         Returns:
             google.cloud.bigquery.job.LoadJob: A new load job.
 
@@ -1296,7 +1303,10 @@ class Client(ClientWithProject):
         os.close(tmpfd)
 
         try:
-            dataframe.to_parquet(tmppath)
+            if job_config.schema:
+                _pandas_helpers.to_parquet(dataframe, job_config.schema, tmppath)
+            else:
+                dataframe.to_parquet(tmppath)
 
             with open(tmppath, "rb") as parquet_file:
                 return self.load_table_from_file(
