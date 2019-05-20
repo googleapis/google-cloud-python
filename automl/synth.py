@@ -14,6 +14,8 @@
 
 """This script is used to synthesize generated parts of this library."""
 
+import re
+
 import synthtool as s
 from synthtool import gcp
 
@@ -30,6 +32,8 @@ for version in versions:
     s.move(library / f"google/cloud/automl_{version}")
     s.move(library / f"tests/unit/gapic/{version}")
     s.move(library / f"docs/gapic/{version}")
+
+s.move(library / f"docs/conf.py")
 
 # Use the highest version library to generate import alias.
 s.move(library / "google/cloud/automl.py")
@@ -51,6 +55,23 @@ s.replace(
     "^(\s+)(::)\n\n\s+?([^\s])",
     "    \g<1>\g<2>\n    \g<1>\g<3>",
 )
+
+# Remove 'raw-latex' sections with sample JSON Lines files
+s.replace(
+    "google/cloud/**/io_pb2.py",
+    r"""Sample
+     in-line JSON Lines file.*?\}`\n""",
+    "\n",
+    flags=re.DOTALL,
+)
+s.replace(
+    "google/cloud/**/io_pb2.py",
+    r"""Sample in-line JSON Lines file \(presented here with
+     artificial line breaks, but the only actual line break is denoted by.*?\}`\n""",
+    "\n",
+    flags=re.DOTALL,
+)
+
 
 # ----------------------------------------------------------------------------
 # Add templated files
