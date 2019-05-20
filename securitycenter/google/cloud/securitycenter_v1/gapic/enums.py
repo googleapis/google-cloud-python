@@ -128,3 +128,22 @@ class OrganizationSettings(object):
             INCLUSION_MODE_UNSPECIFIED = 0
             INCLUDE_ONLY = 1
             EXCLUDE = 2
+
+
+class RunAssetDiscoveryResponse(object):
+    class State(enum.IntEnum):
+        """
+        The state of an asset discovery run.
+
+        Attributes:
+          STATE_UNSPECIFIED (int): Asset discovery run state was unspecified.
+          COMPLETED (int): Asset discovery run completed successfully.
+          SUPERSEDED (int): Asset discovery run was cancelled with tasks still pending, as another
+          run for the same organization was started with a higher priority.
+          TERMINATED (int): Asset discovery run was killed and terminated.
+        """
+
+        STATE_UNSPECIFIED = 0
+        COMPLETED = 1
+        SUPERSEDED = 2
+        TERMINATED = 3

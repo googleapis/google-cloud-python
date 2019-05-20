@@ -24,13 +24,13 @@ from google.cloud import securitycenter_v1
 from google.cloud.securitycenter_v1 import enums
 from google.cloud.securitycenter_v1.proto import finding_pb2
 from google.cloud.securitycenter_v1.proto import organization_settings_pb2
+from google.cloud.securitycenter_v1.proto import run_asset_discovery_response_pb2
 from google.cloud.securitycenter_v1.proto import security_marks_pb2
 from google.cloud.securitycenter_v1.proto import securitycenter_service_pb2
 from google.cloud.securitycenter_v1.proto import source_pb2
 from google.iam.v1 import iam_policy_pb2
 from google.iam.v1 import policy_pb2
 from google.longrunning import operations_pb2
-from google.protobuf import empty_pb2
 from google.protobuf import timestamp_pb2
 
 
@@ -558,7 +558,9 @@ class TestSecurityCenterClient(object):
     def test_run_asset_discovery(self):
         # Setup Expected Response
         expected_response = {}
-        expected_response = empty_pb2.Empty(**expected_response)
+        expected_response = run_asset_discovery_response_pb2.RunAssetDiscoveryResponse(
+            **expected_response
+        )
         operation = operations_pb2.Operation(
             name="operations/test_run_asset_discovery", done=True
         )
