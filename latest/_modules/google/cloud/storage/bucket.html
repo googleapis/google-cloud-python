@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.bucket &#8212; google-cloud 948a256 documentation</title>
+    <title>google.cloud.storage.bucket &#8212; google-cloud 583638b documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -790,11 +790,13 @@
 <span class="sd">                           properties to return.</span>
 
 <span class="sd">        :type fields: str</span>
-<span class="sd">        :param fields: (Optional) Selector specifying which fields to include</span>
-<span class="sd">                       in a partial response. Must be a list of fields. For</span>
-<span class="sd">                       example to get a partial response with just the next</span>
-<span class="sd">                       page token and the language of each blob returned:</span>
-<span class="sd">                       ``&#39;items/contentLanguage,nextPageToken&#39;``.</span>
+<span class="sd">        :param fields:</span>
+<span class="sd">            (Optional) Selector specifying which fields to include</span>
+<span class="sd">            in a partial response. Must be a list of fields. For</span>
+<span class="sd">            example to get a partial response with just the next</span>
+<span class="sd">            page token and the ID and language of each blob returned:</span>
+<span class="sd">            ``&#39;items(name,contentLanguage),nextPageToken&#39;``.</span>
+<span class="sd">            See: https://cloud.google.com/storage/docs/json_api/v1/parameters#fields</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client`</span>
 <span class="sd">        :param client: (Optional) The client to use.  If not passed, falls back</span>
