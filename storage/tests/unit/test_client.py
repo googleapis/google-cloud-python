@@ -612,33 +612,6 @@ class TestClient(unittest.TestCase):
             file_obj, client=client, start=None, end=None
         )
 
-    def test_download_blob_to_file_with_uri(self):
-        project = "PROJECT"
-        credentials = _make_credentials()
-        client = self._make_one(project=project, credentials=credentials)
-        blob = mock.Mock()
-        file_obj = io.BytesIO()
-
-        with mock.patch("google.cloud.storage.client.Blob", return_value=blob):
-            client.download_blob_to_file("gs://bucket_name/path/to/object", file_obj)
-
-        blob.download_to_file.assert_called_once_with(
-            file_obj, client=client, start=None, end=None
-        )
-
-    def test_download_blob_to_file_with_invalid_uri(self):
-        project = "PROJECT"
-        credentials = _make_credentials()
-        client = self._make_one(project=project, credentials=credentials)
-        blob = mock.Mock()
-        file_obj = io.BytesIO()
-
-        with mock.patch("google.cloud.storage.client.Blob", return_value=blob):
-            with pytest.raises(ValueError, match="URI scheme must be gs"):
-                client.download_blob_to_file(
-                    "http://bucket_name/path/to/object", file_obj
-                )
-
     def test_list_buckets_wo_project(self):
         CREDENTIALS = _make_credentials()
         client = self._make_one(project=None, credentials=CREDENTIALS)
@@ -787,7 +760,7 @@ class TestClient(unittest.TestCase):
         uri_parts = urlparse(requested_url)
         self.assertEqual(parse_qs(uri_parts.query), expected_query)
 
-    def test_page_empty_response(self):
+    def test_list_buckets_page_empty_response(self):
         from google.api_core import page_iterator
 
         project = "PROJECT"
@@ -798,7 +771,7 @@ class TestClient(unittest.TestCase):
         iterator._page = page
         self.assertEqual(list(page), [])
 
-    def test_page_non_empty_response(self):
+    def test_list_buckets_page_non_empty_response(self):
         import six
         from google.cloud.storage.bucket import Bucket
 
@@ -821,3 +794,30 @@ class TestClient(unittest.TestCase):
         self.assertEqual(page.remaining, 0)
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, blob_name)
+
+    def test_download_blob_to_file_with_uri(self):
+        project = "PROJECT"
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+        blob = mock.Mock()
+        file_obj = io.BytesIO()
+
+        with mock.patch("google.cloud.storage.client.Blob", return_value=blob):
+            client.download_blob_to_file("gs://bucket_name/path/to/object", file_obj)
+
+        blob.download_to_file.assert_called_once_with(
+            file_obj, client=client, start=None, end=None
+        )
+
+    def test_download_blob_to_file_with_invalid_uri(self):
+        project = "PROJECT"
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+        blob = mock.Mock()
+        file_obj = io.BytesIO()
+
+        with mock.patch("google.cloud.storage.client.Blob", return_value=blob):
+            with pytest.raises(ValueError, match="URI scheme must be gs"):
+                client.download_blob_to_file(
+                    "http://bucket_name/path/to/object", file_obj
+                )

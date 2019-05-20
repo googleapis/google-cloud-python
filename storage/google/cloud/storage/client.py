@@ -343,57 +343,6 @@ class Client(ClientWithProject):
         bucket.create(client=self, project=project)
         return bucket
 
-    def download_blob_to_file(self, blob_or_uri, file_obj, start=None, end=None):
-        """Download the contents of a blob object or blob URI into a file-like object.
-
-        Args:
-            blob_or_uri (Union[ \
-            :class:`~google.cloud.storage.blob.Blob`, \
-             str, \
-            ]):
-                The blob resource to pass or URI to download.
-            file_obj (file):
-                A file handle to which to write the blob's data.
-            start (int):
-                Optional. The first byte in a range to be downloaded.
-            end (int):
-                Optional. The last byte in a range to be downloaded.
-
-        Examples:
-            Download a blob using using a blob resource.
-
-            >>> from google.cloud import storage
-            >>> client = storage.Client()
-
-            >>> bucket = client.get_bucket('my-bucket-name')
-            >>> blob = storage.Blob('path/to/blob', bucket)
-
-            >>> with open('file-to-download-to') as file_obj:
-            >>>     client.download_blob_to_file(blob, file)  # API request.
-
-
-            Download a blob using a URI.
-
-            >>> from google.cloud import storage
-            >>> client = storage.Client()
-
-            >>> with open('file-to-download-to') as file_obj:
-            >>>     client.download_blob_to_file(
-            >>>         'gs://bucket_name/path/to/blob', file)
-
-
-        """
-        try:
-            blob_or_uri.download_to_file(file_obj, client=self, start=start, end=end)
-        except AttributeError:
-            scheme, netloc, path, query, frag = urlsplit(blob_or_uri)
-            if scheme != "gs":
-                raise ValueError("URI scheme must be gs")
-            bucket = Bucket(self, name=netloc)
-            blob_or_uri = Blob(path, bucket)
-
-            blob_or_uri.download_to_file(file_obj, client=self, start=start, end=end)
-
     def list_buckets(
         self,
         max_results=None,
@@ -476,6 +425,57 @@ class Client(ClientWithProject):
             max_results=max_results,
             extra_params=extra_params,
         )
+
+    def download_blob_to_file(self, blob_or_uri, file_obj, start=None, end=None):
+        """Download the contents of a blob object or blob URI into a file-like object.
+
+        Args:
+            blob_or_uri (Union[ \
+            :class:`~google.cloud.storage.blob.Blob`, \
+             str, \
+            ]):
+                The blob resource to pass or URI to download.
+            file_obj (file):
+                A file handle to which to write the blob's data.
+            start (int):
+                Optional. The first byte in a range to be downloaded.
+            end (int):
+                Optional. The last byte in a range to be downloaded.
+
+        Examples:
+            Download a blob using using a blob resource.
+
+            >>> from google.cloud import storage
+            >>> client = storage.Client()
+
+            >>> bucket = client.get_bucket('my-bucket-name')
+            >>> blob = storage.Blob('path/to/blob', bucket)
+
+            >>> with open('file-to-download-to') as file_obj:
+            >>>     client.download_blob_to_file(blob, file)  # API request.
+
+
+            Download a blob using a URI.
+
+            >>> from google.cloud import storage
+            >>> client = storage.Client()
+
+            >>> with open('file-to-download-to') as file_obj:
+            >>>     client.download_blob_to_file(
+            >>>         'gs://bucket_name/path/to/blob', file)
+
+
+        """
+        try:
+            blob_or_uri.download_to_file(file_obj, client=self, start=start, end=end)
+        except AttributeError:
+            scheme, netloc, path, query, frag = urlsplit(blob_or_uri)
+            if scheme != "gs":
+                raise ValueError("URI scheme must be gs")
+            bucket = Bucket(self, name=netloc)
+            blob_or_uri = Blob(path, bucket)
+
+            blob_or_uri.download_to_file(file_obj, client=self, start=start, end=end)
 
 
 def _item_to_bucket(iterator, item):
