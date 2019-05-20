@@ -988,8 +988,9 @@ InputConfig = _reflection.GeneratedProtocolMessageType(
      that wraps a Document proto with input\_config set. Only PDF
      documents are supported now, and each document may be up to 2MB
      large. Currently annotations on documents cannot be specified at
-     import. Any given .JSONL file must be 100MB or smaller.
-
+     import. Any given .JSONL file must be 100MB or smaller. Three sample
+     CSV rows: TRAIN,gs://folder/file1.jsonl
+     VALIDATE,gs://folder/file2.jsonl TEST,gs://folder/file3.jsonl 
   -  For Tables: Either
      [gcs\_source][google.cloud.automl.v1beta1.InputConfig.gcs\_source] or
   
@@ -1126,7 +1127,7 @@ BatchPredictInputConfig = _reflection.GeneratedProtocolMessageType(
      wraps a Document proto with input\_config set. Only PDF documents are
      supported now, and each document must be up to 2MB large. Any given
      .JSONL file must be 100MB or smaller, and no more than 20 files may
-     be given.
+     be given. 
   
   -  For Tables: Either
      [gcs\_source][google.cloud.automl.v1beta1.InputConfig.gcs\_source] or
@@ -1485,9 +1486,7 @@ ModelExportOutputConfig = _reflection.GeneratedProtocolMessageType(
           "docker".  Under the directory given as the destination a new
           one with name "model-export--", where timestamp is in YYYY-MM-
           DDThh:mm:ss.sssZ ISO-8601 format, will be created. Inside the
-          model and any of its supporting files will be written, as
-          described  `here <https://cloud.google.com/vision/automl/docs/
-          deploy#deployment_to_devices>`__.
+          model and any of its supporting files will be written.
       gcr_destination:
           The GCR location where model image is to be pushed to. This
           location may only be set for the following model formats:
