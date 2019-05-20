@@ -758,7 +758,7 @@ class Bucket(_PropertyMixin):
             (Optional) Selector specifying which fields to include
             in a partial response. Must be a list of fields. For
             example to get a partial response with just the next
-            page token and the ID and language of each blob returned:
+            page token and the name and language of each blob returned:
             ``'items(name,contentLanguage),nextPageToken'``.
             See: https://cloud.google.com/storage/docs/json_api/v1/parameters#fields
 
