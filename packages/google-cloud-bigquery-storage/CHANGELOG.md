@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## 0.5.0
+
+05-20-2019 09:23 PDT
+
+### Implementation Changes
+
+- Increase default deadline on ReadRows. ([#8030](https://github.com/googleapis/google-cloud-python/pull/8030))
+- Respect timeout on `client.read_rows`. Don't resume on `DEADLINE_EXCEEDED` errors. ([#8025](https://github.com/googleapis/google-cloud-python/pull/8025))
+
+### Documentation
+
+- Use alabaster theme everwhere. ([#8021](https://github.com/googleapis/google-cloud-python/pull/8021))
+
 ## 0.4.0
 
 04-16-2019 13:46 PDT
