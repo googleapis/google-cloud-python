@@ -137,13 +137,52 @@ class TestHMACKeyMetadata(unittest.TestCase):
     def test_path_w_access_id_w_explicit_project(self):
         access_id = "ACCESS-ID"
         project = "OTHER-PROJECT"
-        client = _Client()
         metadata = self._make_one()
         metadata._properties["accessId"] = access_id
         metadata._properties["projectId"] = project
 
         expected_path = "/projects/{}/hmacKeys/{}".format(project, access_id)
         self.assertEqual(metadata.path, expected_path)
+
+    def test_exists_miss_no_project_set(self):
+        from google.cloud.exceptions import NotFound
+
+        access_id = "ACCESS-ID"
+        connection = mock.Mock(spec=["api_request"])
+        connection.api_request.side_effect = NotFound("testing")
+        client = _Client(connection)
+        metadata = self._make_one(client)
+        metadata._properties["accessId"] = access_id
+
+        self.assertFalse(metadata.exists())
+
+        expected_path = "/projects/{}/hmacKeys/{}".format(
+            client.DEFAULT_PROJECT, access_id
+        )
+        expected_kwargs = {"method": "GET", "path": expected_path}
+        connection.api_request.assert_called_once_with(**expected_kwargs)
+
+    def test_exists_hit_w_project_set(self):
+        project = "PROJECT-ID"
+        access_id = "ACCESS-ID"
+        email = "service-account@example.com"
+        resource = {
+            "kind": "storage#hmacKeyMetadata",
+            "accessId": access_id,
+            "serviceAccountEmail": email,
+        }
+        connection = mock.Mock(spec=["api_request"])
+        connection.api_request.return_value = resource
+        client = _Client(connection)
+        metadata = self._make_one(client)
+        metadata._properties["accessId"] = access_id
+        metadata._properties["projectId"] = project
+
+        self.assertTrue(metadata.exists())
+
+        expected_path = "/projects/{}/hmacKeys/{}".format(project, access_id)
+        expected_kwargs = {"method": "GET", "path": expected_path}
+        connection.api_request.assert_called_once_with(**expected_kwargs)
 
 
 class _Client(object):

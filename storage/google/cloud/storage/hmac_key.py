@@ -138,3 +138,16 @@ class HMACKeyMetadata(object):
             project = self._client.project
 
         return "/projects/{}/hmacKeys/{}".format(project, self.access_id)
+
+    def exists(self):
+        """Determine whether or not the key for this metadata exists.
+
+        :rtype: bool
+        :returns: True if the key exists in Cloud Storage.
+        """
+        try:
+            self._client._connection.api_request(method="GET", path=self.path)
+        except NotFound:
+            return False
+        else:
+            return True
