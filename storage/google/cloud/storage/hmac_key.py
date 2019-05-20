@@ -161,3 +161,14 @@ class HMACKeyMetadata(object):
         self._properties = self._client._connection.api_request(
             method="GET", path=self.path
         )
+
+    def update(self):
+        """Save writable properties to Cloud Storage.
+
+        :raises :class:`~google.api_core.exceptions.NotFound`:
+            if the key does not exist on the back-end.
+        """
+        payload = {"state": self.state}
+        self._properties = self._client._connection.api_request(
+            method="POST", path=self.path, data=payload
+        )
