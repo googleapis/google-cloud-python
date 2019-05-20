@@ -161,6 +161,7 @@ class Context(object):
         self._project = None
         self._connection = None
         self._use_bqstorage_api = None
+        self._maximum_bytes_billed = None
 
     @property
     def credentials(self):
@@ -236,6 +237,32 @@ class Context(object):
     @use_bqstorage_api.setter
     def use_bqstorage_api(self, value):
         self._use_bqstorage_api = value
+
+    @property
+    def maximum_bytes_billed(self):
+        """int: Maximum bytes to be billed for this job or :data:`None` if not set.
+
+        Example:
+            Manually setting the context maximum_bytes_billed:
+
+            >>> from google.cloud.bigquery import magics
+            >>> magics.context.maximum_bytes_billed = '123'
+
+        Raises:
+            ValueError: If the parameters are invalid.
+        """
+        return self._maximum_bytes_billed
+
+    @maximum_bytes_billed.setter
+    def maximum_bytes_billed(self, value):
+        try:
+            value = int(value)
+            self._maximum_bytes_billed = value
+            job_config = bigquery.job.QueryJobConfig()
+            job_config.maximum_bytes_billed = self._maximum_bytes_billed
+
+        except:
+            raise ValueError("value is not a valid integer.")
 
 
 context = Context()
@@ -372,6 +399,7 @@ def _cell_magic(line, query):
     job_config = bigquery.job.QueryJobConfig()
     job_config.query_parameters = params
     job_config.use_legacy_sql = args.use_legacy_sql
+    job_config.maximum_bytes_billed = context.maximum_bytes_billed
     query_job = _run_query(client, query, job_config)
 
     if not args.verbose:
