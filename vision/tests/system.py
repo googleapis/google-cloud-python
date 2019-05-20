@@ -124,6 +124,7 @@ class TestVisionClientLogo(VisionSystemTestBase):
 @unittest.skipUnless(PROJECT_ID, "PROJECT_ID not set in environment.")
 class TestVisionClientProductSearch(VisionSystemTestBase):
     def setUp(self):
+        self.products_to_delete = []
         self.product_sets_to_delete = []
         self.location = "us-west1"
         self.location_path = self.ps_client.location_path(
@@ -131,6 +132,8 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         )
 
     def tearDown(self):
+        for product in self.products_to_delete:
+            self.ps_client.delete_product(name=product)
         for product_set in self.product_sets_to_delete:
             self.ps_client.delete_product_set(name=product_set)
 
@@ -202,3 +205,98 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
             product_set=updated_product_set_request, update_mask=update_mask
         )
         self.assertEqual(updated_product_set.display_name, new_display_name)
+
+    def test_create_product(self):
+        product = vision.types.Product(
+            display_name="product display name", product_category="apparel"
+        )
+        product_id = "product" + unique_resource_id()
+        product_path = self.ps_client.product_path(
+            project=PROJECT_ID, location=self.location, product=product_id
+        )
+        self.products_to_delete.append(product_path)
+        response = self.ps_client.create_product(
+            parent=self.location_path, product=product, product_id=product_id
+        )
+        self.assertEqual(response.name, product_path)
+
+    def test_get_product(self):
+        product = vision.types.Product(
+            display_name="product display name", product_category="apparel"
+        )
+        product_id = "product" + unique_resource_id()
+        product_path = self.ps_client.product_path(
+            project=PROJECT_ID, location=self.location, product=product_id
+        )
+        self.products_to_delete.append(product_path)
+        response = self.ps_client.create_product(
+            parent=self.location_path, product=product, product_id=product_id
+        )
+        self.assertEqual(response.name, product_path)
+        get_response = self.ps_client.get_product(name=product_path)
+        self.assertEqual(get_response.name, product_path)
+
+    def test_update_product(self):
+        product = vision.types.Product(
+            display_name="product display name", product_category="apparel"
+        )
+        product_id = "product" + unique_resource_id()
+        product_path = self.ps_client.product_path(
+            project=PROJECT_ID, location=self.location, product=product_id
+        )
+        self.products_to_delete.append(product_path)
+        response = self.ps_client.create_product(
+            parent=self.location_path, product=product, product_id=product_id
+        )
+        self.assertEqual(response.name, product_path)
+        new_display_name = "updated product name"
+        updated_product_request = vision.types.Product(
+            name=product_path, display_name=new_display_name
+        )
+        update_mask = vision.types.FieldMask(paths=["display_name"])
+        updated_product = self.ps_client.update_product(
+            product=updated_product_request, update_mask=update_mask
+        )
+        self.assertEqual(updated_product.display_name, new_display_name)
+
+    def test_list_products_in_product_set(self):
+        # Create the ProductSet
+        product_set = vision.types.ProductSet(display_name="display name")
+        product_set_id = "set" + unique_resource_id()
+        product_set_path = self.ps_client.product_set_path(
+            project=PROJECT_ID, location=self.location, product_set=product_set_id
+        )
+        self.product_sets_to_delete.append(product_set_path)
+        response = self.ps_client.create_product_set(
+            parent=self.location_path,
+            product_set=product_set,
+            product_set_id=product_set_id,
+        )
+        self.assertEqual(response.name, product_set_path)
+        # Create the Product
+        product = vision.types.Product(
+            display_name="product display name", product_category="apparel"
+        )
+        product_id = "product" + unique_resource_id()
+        product_path = self.ps_client.product_path(
+            project=PROJECT_ID, location=self.location, product=product_id
+        )
+        self.products_to_delete.append(product_path)
+        response = self.ps_client.create_product(
+            parent=self.location_path, product=product, product_id=product_id
+        )
+        self.assertEqual(response.name, product_path)
+        # Add the Product to the ProductSet
+        self.ps_client.add_product_to_product_set(
+            name=product_set_path, product=product_path
+        )
+        # List the Products in the ProductSet
+        listed_products = list(
+            self.ps_client.list_products_in_product_set(name=product_set_path)
+        )
+        self.assertEqual(len(listed_products), 1)
+        self.assertEqual(listed_products[0].name, product_path)
+        # Remove the Product from the ProductSet
+        self.ps_client.remove_product_from_product_set(
+            name=product_set_path, product=product_path
+        )
