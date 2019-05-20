@@ -17,11 +17,6 @@
 
 - Use alabaster theme everwhere. ([#8021](https://github.com/googleapis/google-cloud-python/pull/8021))
 
-### Internal / Testing Changes
-
-- Never retry on `DEADLINE_EXCEEDED` error codes. Respect user deadlines. Retry would never succeed, anyway. ([#7879](https://github.com/googleapis/google-cloud-python/pull/7879))
-- Revert [#7879](https://github.com/googleapis/google-cloud-python/pull/7879). Retry `DEADLINE_EXCEEDED` since some client methods set a short deadline at first to reduce tail latency. ([#7921](https://github.com/googleapis/google-cloud-python/pull/7921))
-
 ## 0.4.0
 
 04-16-2019 13:46 PDT
