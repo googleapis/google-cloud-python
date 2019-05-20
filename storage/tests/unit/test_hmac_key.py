@@ -285,6 +285,57 @@ class TestHMACKeyMetadata(unittest.TestCase):
         }
         connection.api_request.assert_called_once_with(**expected_kwargs)
 
+    def test_delete_not_inactive(self):
+        metadata = self._make_one()
+        for state in ("ACTIVE", "DELETED"):
+            metadata._properties["state"] = state
+
+            with self.assertRaises(ValueError):
+                metadata.delete()
+
+    def test_delete_miss_no_project_set(self):
+        from google.cloud.exceptions import NotFound
+
+        access_id = "ACCESS-ID"
+        connection = mock.Mock(spec=["api_request"])
+        connection.api_request.side_effect = NotFound("testing")
+        client = _Client(connection)
+        metadata = self._make_one(client)
+        metadata._properties["accessId"] = access_id
+        metadata.state = "INACTIVE"
+
+        with self.assertRaises(NotFound):
+            metadata.delete()
+
+        expected_path = "/projects/{}/hmacKeys/{}".format(
+            client.DEFAULT_PROJECT, access_id
+        )
+        expected_kwargs = {
+            "method": "DELETE",
+            "path": expected_path,
+        }
+        connection.api_request.assert_called_once_with(**expected_kwargs)
+
+    def test_delete_hit_w_project_set(self):
+        project = "PROJECT-ID"
+        access_id = "ACCESS-ID"
+        connection = mock.Mock(spec=["api_request"])
+        connection.api_request.return_value = {}
+        client = _Client(connection)
+        metadata = self._make_one(client)
+        metadata._properties["accessId"] = access_id
+        metadata._properties["projectId"] = project
+        metadata.state = "INACTIVE"
+
+        metadata.delete()
+
+        expected_path = "/projects/{}/hmacKeys/{}".format(project, access_id)
+        expected_kwargs = {
+            "method": "DELETE",
+            "path": expected_path,
+        }
+        connection.api_request.assert_called_once_with(**expected_kwargs)
+
 
 class _Client(object):
     DEFAULT_PROJECT = "project-123"

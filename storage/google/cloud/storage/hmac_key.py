@@ -172,3 +172,16 @@ class HMACKeyMetadata(object):
         self._properties = self._client._connection.api_request(
             method="POST", path=self.path, data=payload
         )
+
+    def delete(self):
+        """Delete the key from Cloud Storage.
+
+        :raises :class:`~google.api_core.exceptions.NotFound`:
+            if the key does not exist on the back-end.
+        """
+        if self.state != self.INACTIVE_STATE:
+            raise ValueError("Cannot delete key if not in 'INACTIVE' state.")
+
+        self._client._connection.api_request(
+            method="DELETE", path=self.path
+        )
