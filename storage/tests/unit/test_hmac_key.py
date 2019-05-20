@@ -14,6 +14,8 @@
 
 import unittest
 
+import mock
+
 
 class TestHMACKeyMetadata(unittest.TestCase):
     @staticmethod
@@ -24,7 +26,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
 
     def _make_one(self, client=None, *args, **kw):
         if client is None:
-            client = object()
+            client = _Client()
         return self._get_target_class()(client, *args, **kw)
 
     def test_ctor_defaults(self):
@@ -114,3 +116,39 @@ class TestHMACKeyMetadata(unittest.TestCase):
         now_stamp = "{}Z".format(now.isoformat())
         metadata._properties["updated"] = now_stamp
         self.assertEqual(metadata.updated, now.replace(tzinfo=UTC))
+
+    def test_path_wo_access_id(self):
+        metadata = self._make_one()
+
+        with self.assertRaises(ValueError):
+            metadata.path
+
+    def test_path_w_access_id_wo_project(self):
+        access_id = "ACCESS-ID"
+        client = _Client()
+        metadata = self._make_one()
+        metadata._properties["accessId"] = access_id
+
+        expected_path = "/projects/{}/hmacKeys/{}".format(
+            client.DEFAULT_PROJECT, access_id
+        )
+        self.assertEqual(metadata.path, expected_path)
+
+    def test_path_w_access_id_w_explicit_project(self):
+        access_id = "ACCESS-ID"
+        project = "OTHER-PROJECT"
+        client = _Client()
+        metadata = self._make_one()
+        metadata._properties["accessId"] = access_id
+        metadata._properties["projectId"] = project
+
+        expected_path = "/projects/{}/hmacKeys/{}".format(project, access_id)
+        self.assertEqual(metadata.path, expected_path)
+
+
+class _Client(object):
+    DEFAULT_PROJECT = "project-123"
+
+    def __init__(self, connection=None, project=DEFAULT_PROJECT):
+        self._connection = connection
+        self.project = project

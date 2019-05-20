@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from google.cloud.exceptions import NotFound
 from google.cloud._helpers import _rfc3339_to_datetime
 
 
@@ -124,3 +125,16 @@ class HMACKeyMetadata(object):
         value = self._properties.get("updated")
         if value is not None:
             return _rfc3339_to_datetime(value)
+
+    @property
+    def path(self):
+        """Resource path for the metadata's key."""
+
+        if self.access_id is None:
+            raise ValueError("No 'access_id' set.")
+
+        project = self.project
+        if project is None:
+            project = self._client.project
+
+        return "/projects/{}/hmacKeys/{}".format(project, self.access_id)
