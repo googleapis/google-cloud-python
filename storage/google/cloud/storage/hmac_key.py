@@ -151,3 +151,13 @@ class HMACKeyMetadata(object):
             return False
         else:
             return True
+
+    def reload(self):
+        """Reload properties from Cloud Storage.
+
+        :raises :class:`~google.api_core.exceptions.NotFound`:
+            if the key does not exist on the back-end.
+        """
+        self._properties = self._client._connection.api_request(
+            method="GET", path=self.path
+        )
