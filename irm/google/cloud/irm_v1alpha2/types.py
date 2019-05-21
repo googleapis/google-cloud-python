@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 from __future__ import absolute_import
 import sys
 
@@ -24,6 +25,7 @@ from google.cloud.irm_v1alpha2.proto import incidents_service_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 from google.protobuf import timestamp_pb2
+
 
 _shared_modules = [empty_pb2, field_mask_pb2, timestamp_pb2]
 
@@ -40,5 +42,6 @@ for module in _local_modules:
         message.__module__ = "google.cloud.irm_v1alpha2.types"
         setattr(sys.modules[__name__], name, message)
         names.append(name)
+
 
 __all__ = tuple(sorted(names))
