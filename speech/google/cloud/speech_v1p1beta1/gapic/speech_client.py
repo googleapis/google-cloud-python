@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.speech.v1p1beta1 Speech API."""
 
 import pkg_resources
@@ -34,6 +35,7 @@ from google.cloud.speech_v1p1beta1.gapic.transports import speech_grpc_transport
 from google.cloud.speech_v1p1beta1.proto import cloud_speech_pb2
 from google.cloud.speech_v1p1beta1.proto import cloud_speech_pb2_grpc
 from google.longrunning import operations_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-speech").version
 
