@@ -14,10 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 from __future__ import absolute_import
 
 from google.cloud.bigquery_storage_v1beta1 import BigQueryStorageClient
 from google.cloud.bigquery_storage_v1beta1 import enums
 from google.cloud.bigquery_storage_v1beta1 import types
+
 
 __all__ = ("enums", "types", "BigQueryStorageClient")
