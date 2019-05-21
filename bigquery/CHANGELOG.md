@@ -19,7 +19,6 @@
 ### Internal / Testing Changes
 
 - Add empty lines (via synth). ([#8049](https://github.com/googleapis/google-cloud-python/pull/8049))
--
 
 ## 1.12.0
 
