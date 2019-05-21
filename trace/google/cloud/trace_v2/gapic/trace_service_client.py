@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.devtools.cloudtrace.v2 TraceService API."""
 
 import pkg_resources
@@ -37,6 +38,7 @@ from google.protobuf import empty_pb2
 from google.protobuf import timestamp_pb2
 from google.protobuf import wrappers_pb2
 from google.rpc import status_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-trace").version
 
