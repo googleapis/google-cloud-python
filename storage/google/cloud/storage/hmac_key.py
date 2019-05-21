@@ -101,7 +101,7 @@ class HMACKeyMetadata(object):
 
     @property
     def time_created(self):
-        """Retrieve the timestamp at which the bucket was created.
+        """Retrieve the timestamp at which the HMAC key was created.
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
         :returns: Datetime object parsed from RFC3339 valid timestamp, or
@@ -114,7 +114,7 @@ class HMACKeyMetadata(object):
 
     @property
     def updated(self):
-        """Retrieve the timestamp at which the bucket was created.
+        """Retrieve the timestamp at which the HMAC key was created.
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
         :returns: Datetime object parsed from RFC3339 valid timestamp, or
