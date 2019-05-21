@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Documents &#8212; google-cloud 8a47072 documentation</title>
+    <title>Documents &#8212; google-cloud 04b4f23 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -88,7 +88,7 @@ referred to as the “kind”).</td>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The
 child collection.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">CollectionReference</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="collection.html#google.cloud.firestore_v1beta1.collection.CollectionReference" title="google.cloud.firestore_v1beta1.collection.CollectionReference">CollectionReference</a></td>
 </tr>
 </tbody>
 </table>
@@ -114,7 +114,7 @@ document does not exist at the time of <cite>snapshot</cite>, the
 iterator will be empty</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Sequence[CollectionReference]</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Sequence[<a class="reference internal" href="collection.html#google.cloud.firestore_v1beta1.collection.CollectionReference" title="google.cloud.firestore_v1beta1.collection.CollectionReference">CollectionReference</a>]</p>
 </td>
 </tr>
 </tbody>
@@ -202,7 +202,7 @@ the time of <cite>snapshot</cite>, the snapshot <cite>reference</cite>, <cite>da
 </p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">DocumentSnapshot</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#google.cloud.firestore_v1beta1.document.DocumentSnapshot" title="google.cloud.firestore_v1beta1.document.DocumentSnapshot">DocumentSnapshot</a></p>
 </td>
 </tr>
 </tbody>
@@ -268,7 +268,7 @@ doc_watch.unsubscribe()</p>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The
 parent collection.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">CollectionReference</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="collection.html#google.cloud.firestore_v1beta1.collection.CollectionReference" title="google.cloud.firestore_v1beta1.collection.CollectionReference">CollectionReference</a></td>
 </tr>
 </tbody>
 </table>
@@ -476,13 +476,13 @@ all fields stored for the document (i.e. a hand-picked selection of
 fields may have been retrieved).</p>
 <p>Instances of this class are not intended to be constructed by hand,
 rather they’ll be returned as responses to various methods, such as
-<a class="reference internal" href="#google.cloud.firestore_v1beta1.document.DocumentReference.get" title="google.cloud.firestore_v1beta1.document.DocumentReference.get"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get()</span></code></a>.</p>
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">get()</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>reference</strong> (<em>DocumentReference</em>) – A
+<li><strong>reference</strong> (<a class="reference internal" href="#google.cloud.firestore_v1beta1.document.DocumentReference" title="google.cloud.firestore_v1beta1.document.DocumentReference"><em>DocumentReference</em></a>) – A
 document reference corresponding to the document that contains
 the data in this snapshot.</li>
 <li><strong>data</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference internal" href="../asset/gapic/v1/types.html#google.cloud.asset_v1.types.Any" title="google.cloud.asset_v1.types.Any"><em>Any</em></a><em>]</em>) – The data retrieved in the snapshot.</li>
@@ -632,7 +632,7 @@ in the snapshot.</td>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A document
 reference corresponding to this document.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">DocumentReference</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.firestore_v1beta1.document.DocumentReference" title="google.cloud.firestore_v1beta1.document.DocumentReference">DocumentReference</a></td>
 </tr>
 </tbody>
 </table>

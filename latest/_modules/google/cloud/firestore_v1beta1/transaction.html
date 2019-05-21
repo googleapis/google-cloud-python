@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.firestore_v1beta1.transaction &#8212; google-cloud 8a47072 documentation</title>
+    <title>google.cloud.firestore_v1beta1.transaction &#8212; google-cloud 04b4f23 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -82,11 +82,11 @@
     <span class="sd">&quot;&quot;&quot;Accumulate read-and-write operations to be sent in a transaction.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        client (~.firestore_v1beta1.client.Client): The client that</span>
+<span class="sd">        client (~google.cloud.firestore_v1beta1.client.Client): The client that</span>
 <span class="sd">            created this transaction.</span>
 <span class="sd">        max_attempts (Optional[int]): The maximum number of attempts for</span>
 <span class="sd">            the transaction (i.e. allowing retries). Defaults to</span>
-<span class="sd">            :attr:`~.firestore_v1beta1.transaction.MAX_ATTEMPTS`.</span>
+<span class="sd">            :attr:`~google.cloud.firestore_v1beta1.transaction.MAX_ATTEMPTS`.</span>
 <span class="sd">        read_only (Optional[bool]): Flag indicating if the transaction</span>
 <span class="sd">            should be read-only or should allow writes. Defaults to</span>
 <span class="sd">            :data:`False`.</span>
@@ -242,10 +242,10 @@
     <span class="sd">&quot;&quot;&quot;Provide a callable object to use as a transactional decorater.</span>
 
 <span class="sd">    This is surfaced via</span>
-<span class="sd">    :func:`~.firestore_v1beta1.transaction.transactional`.</span>
+<span class="sd">    :func:`~google.cloud.firestore_v1beta1.transaction.transactional`.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        to_wrap (Callable[~.firestore_v1beta1.transaction.Transaction, \</span>
+<span class="sd">        to_wrap (Callable[~google.cloud.firestore_v1beta1.transaction.Transaction, \</span>
 <span class="sd">            Any]): A callable that should be run (and retried) in a</span>
 <span class="sd">            transaction.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -270,7 +270,7 @@
 <span class="sd">        it will have staged writes).</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            transaction (~.firestore_v1beta1.transaction.Transaction): A</span>
+<span class="sd">            transaction (~google.cloud.firestore_v1beta1.transaction.Transaction): A</span>
 <span class="sd">                transaction to execute the callable within.</span>
 <span class="sd">            args (Tuple[Any, ...]): The extra positional arguments to pass</span>
 <span class="sd">                along to the wrapped callable.</span>
@@ -307,7 +307,7 @@
 <span class="sd">        not be caught.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            transaction (~.firestore_v1beta1.transaction.Transaction): The</span>
+<span class="sd">            transaction (~google.cloud.firestore_v1beta1.transaction.Transaction): The</span>
 <span class="sd">                transaction to be ``Commit``-ed.</span>
 
 <span class="sd">        Returns:</span>
@@ -330,7 +330,7 @@
         <span class="sd">&quot;&quot;&quot;Execute the wrapped callable within a transaction.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            transaction (~.firestore_v1beta1.transaction.Transaction): A</span>
+<span class="sd">            transaction (~google.cloud.firestore_v1beta1.transaction.Transaction): A</span>
 <span class="sd">                transaction to execute the callable within.</span>
 <span class="sd">            args (Tuple[Any, ...]): The extra positional arguments to pass</span>
 <span class="sd">                along to the wrapped callable.</span>
@@ -367,12 +367,12 @@
     <span class="sd">&quot;&quot;&quot;Decorate a callable so that it runs in a transaction.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        to_wrap (Callable[~.firestore_v1beta1.transaction.Transaction, \</span>
+<span class="sd">        to_wrap (Callable[~google.cloud.firestore_v1beta1.transaction.Transaction, \</span>
 <span class="sd">            Any]): A callable that should be run (and retried) in a</span>
 <span class="sd">            transaction.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        Callable[~.firestore_v1beta1.transaction.Transaction, Any]: the</span>
+<span class="sd">        Callable[~google.cloud.firestore_v1beta1.transaction.Transaction, Any]: the</span>
 <span class="sd">        wrapped callable.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">_Transactional</span><span class="p">(</span><span class="n">to_wrap</span><span class="p">)</span></div>
@@ -388,7 +388,7 @@
 <span class="sd">    our own retry to special-case the ``INVALID_ARGUMENT`` error.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        client (~.firestore_v1beta1.client.Client): A client with</span>
+<span class="sd">        client (~google.cloud.firestore_v1beta1.client.Client): A client with</span>
 <span class="sd">            GAPIC client and configuration details.</span>
 <span class="sd">        write_pbs (List[google.cloud.proto.firestore.v1beta1.\</span>
 <span class="sd">            write_pb2.Write, ...]): A ``Write`` protobuf instance to</span>
