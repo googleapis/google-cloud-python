@@ -1518,6 +1518,48 @@ class Test_Bucket(unittest.TestCase):
         _, _, kwargs = client._connection.api_request.mock_calls[0]
         self.assertNotIn("labels", kwargs["data"])
 
+    def test_location_type_getter_unset(self):
+        klass = self._get_target_class()
+        bucket = self._make_one()
+        self.assertIsNone(bucket.location_type)
+
+    def test_location_type_getter_set(self):
+        klass = self._get_target_class()
+        properties = {"locationType": klass.REGION_LOCATION_TYPE}
+        bucket = self._make_one(properties=properties)
+        self.assertEqual(bucket.location_type, klass.REGION_LOCATION_TYPE)
+
+    def test_location_type_setter_invalid(self):
+        NAME = "name"
+        bucket = self._make_one(name=NAME)
+        with self.assertRaises(ValueError):
+            bucket.location_type = "BOGUS"
+        self.assertFalse("locationType" in bucket._changes)
+
+    def test_location_type_setter_MULTI_REGION(self):
+        klass = self._get_target_class()
+        NAME = "name"
+        bucket = self._make_one(name=NAME)
+        bucket.location_type = klass.MULTI_REGION_LOCATION_TYPE
+        self.assertEqual(bucket.location_type, klass.MULTI_REGION_LOCATION_TYPE)
+        self.assertTrue("locationType" in bucket._changes)
+
+    def test_location_type_setter_REGION(self):
+        klass = self._get_target_class()
+        NAME = "name"
+        bucket = self._make_one(name=NAME)
+        bucket.location_type = klass.REGION_LOCATION_TYPE
+        self.assertEqual(bucket.location_type, klass.REGION_LOCATION_TYPE)
+        self.assertTrue("locationType" in bucket._changes)
+
+    def test_location_type_setter_DUAL_REGION(self):
+        klass = self._get_target_class()
+        NAME = "name"
+        bucket = self._make_one(name=NAME)
+        bucket.location_type = klass.DUAL_REGION_LOCATION_TYPE
+        self.assertEqual(bucket.location_type, klass.DUAL_REGION_LOCATION_TYPE)
+        self.assertTrue("locationType" in bucket._changes)
+
     def test_get_logging_w_prefix(self):
         NAME = "name"
         LOG_BUCKET = "logs"

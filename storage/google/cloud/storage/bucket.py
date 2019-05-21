@@ -434,6 +434,31 @@ class Bucket(_PropertyMixin):
     https://cloud.google.com/storage/docs/storage-classes
     """
 
+    MULTI_REGION_LOCATION_TYPE = "MULTI_REGION"
+    """Location type: data will be replicated across regions in a multi-region.
+
+    Provides highest availability across largest area.
+    """
+
+    REGION_LOCATION_TYPE = "REGION"
+    """Location type: data will be stored within a single region.
+
+    Provides lowest latency within a single region.
+    """
+
+    DUAL_REGION_LOCATION_TYPE = "DUAL_REGION"
+    """Location type: data will be stored within two primary regions.
+
+    Provides high availability and low latency across two regions.
+    """
+
+    _LOCATION_TYPES = (
+        MULTI_REGION_LOCATION_TYPE,
+        REGION_LOCATION_TYPE,
+        DUAL_REGION_LOCATION_TYPE,
+    )
+    """Allowed values for :attr:`location_type`."""
+
     def __init__(self, client, name=None, user_project=None):
         name = _validate_name(name)
         super(Bucket, self).__init__(name=name)
@@ -1407,6 +1432,38 @@ class Bucket(_PropertyMixin):
         """
         warnings.warn(_LOCATION_SETTER_MESSAGE, DeprecationWarning, stacklevel=2)
         self._location = value
+
+    @property
+    def location_type(self):
+        """Retrieve or set the location type for the bucket.
+
+        See https://cloud.google.com/storage/docs/storage-classes
+
+        :setter: Set the location type for this bucket.
+        :getter: Gets the the location type for this bucket.
+
+        :rtype: str or ``NoneType``
+        :returns:
+            If set, one of :attr:`MULTI_REGION_LOCATION_TYPE`,
+            :attr:`REGION_LOCATION_TYPE`, or :attr:`DUAL_REGION_LOCATION_TYPE`,
+            else ``None``.
+        """
+        return self._properties.get("locationType")
+
+    @location_type.setter
+    def location_type(self, value):
+        """Set the location type for the bucket.
+
+        See https://cloud.google.com/storage/docs/storage-classes
+
+        :type value: str
+        :param value:
+            One of :attr:`MULTI_REGION_LOCATION_TYPE`,
+            :attr:`REGION_LOCATION_TYPE`, or :attr:`DUAL_REGION_LOCATION_TYPE`,
+        """
+        if value not in self._LOCATION_TYPES:
+            raise ValueError("Invalid location type: %s" % (value,))
+        self._patch_property("locationType", value)
 
     def get_logging(self):
         """Return info about access logging for this bucket.
