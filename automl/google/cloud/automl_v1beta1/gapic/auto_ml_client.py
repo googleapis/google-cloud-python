@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.automl.v1beta1 AutoMl API."""
 
 import functools
@@ -48,6 +49,7 @@ from google.cloud.automl_v1beta1.proto import table_spec_pb2
 from google.longrunning import operations_pb2 as longrunning_operations_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-automl").version
 
