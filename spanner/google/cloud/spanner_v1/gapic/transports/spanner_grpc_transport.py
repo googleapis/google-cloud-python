@@ -14,8 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pkg_resources
-import grpc_gcp
 
 import google.api_core.grpc_helpers
 
