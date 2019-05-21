@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 from __future__ import absolute_import
 import sys
 
@@ -45,6 +46,7 @@ from google.type import latlng_pb2
 from google.type import money_pb2
 from google.type import postal_address_pb2
 from google.type import timeofday_pb2
+
 
 _shared_modules = [
     duration_pb2,
@@ -89,5 +91,6 @@ for module in _local_modules:
         message.__module__ = "google.cloud.talent_v4beta1.types"
         setattr(sys.modules[__name__], name, message)
         names.append(name)
+
 
 __all__ = tuple(sorted(names))

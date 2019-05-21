@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 from __future__ import absolute_import
 
 from google.cloud.talent_v4beta1 import ApplicationServiceClient
@@ -25,6 +26,7 @@ from google.cloud.talent_v4beta1 import ProfileServiceClient
 from google.cloud.talent_v4beta1 import TenantServiceClient
 from google.cloud.talent_v4beta1 import enums
 from google.cloud.talent_v4beta1 import types
+
 
 __all__ = (
     "enums",
