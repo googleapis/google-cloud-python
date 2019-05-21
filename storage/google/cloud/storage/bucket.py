@@ -386,15 +386,48 @@ class Bucket(_PropertyMixin):
     This is used in Bucket.delete() and Bucket.make_public().
     """
 
+    STANDARD_STORAGE_CLASS = "STANDARD"
+    """Storage class for objects accessed more than once per month."""
+
+    NEARLINE_STORAGE_CLASS = "NEARLINE"
+    """Storage class for objects accessed at most once per month."""
+
+    COLDLINE_STORAGE_CLASS = "COLDLINE"
+    """Storage class for objects accessed at most once per year."""
+
+    MULTI_REGIONAL_LEGACY_STORAGE_CLASS = "MULTI_REGIONAL"
+    """Legacy storage class.
+
+    Alias for :attr:`STANDARD_STORAGE_CLASS`.
+
+    Implies :attr:`MULTI_REGION_LOCATION_TYPE` for :attr:`location_type`.
+    """
+
+    REGIONAL_LEGACY_STORAGE_CLASS = "REGIONAL"
+    """Legacy storage class.
+
+    Alias for :attr:`STANDARD_STORAGE_CLASS`.
+
+    Implies :attr:`REGION_LOCATION_TYPE` for :attr:`location_type`.
+    """
+
+    DURABLE_REDUCED_AVAILABILITY_LEGACY_STORAGE_CLASS = "DURABLE_REDUCED_AVAILABILITY"
+    """Legacy storage class.
+
+    Similar to :attr:`NEARLINE_STORAGE_CLASS`.
+    """
+
     _STORAGE_CLASSES = (
-        "MULTI_REGIONAL",
-        "REGIONAL",
-        "NEARLINE",
-        "COLDLINE",
-        "STANDARD",  # alias for MULTI_REGIONAL/REGIONAL, based on location
-        "DURABLE_REDUCED_AVAILABILITY",  # deprecated
+        STANDARD_STORAGE_CLASS,
+        NEARLINE_STORAGE_CLASS,
+        COLDLINE_STORAGE_CLASS,
+        MULTI_REGIONAL_LEGACY_STORAGE_CLASS,  # deprecated
+        REGIONAL_LEGACY_STORAGE_CLASS,  # deprecated
+        DURABLE_REDUCED_AVAILABILITY_LEGACY_STORAGE_CLASS,  # deprecated
     )
     """Allowed values for :attr:`storage_class`.
+
+    Default value is :attr:`STANDARD_STORAGE_CLASS`.
 
     See
     https://cloud.google.com/storage/docs/json_api/v1/buckets#storageClass
@@ -1531,9 +1564,14 @@ class Bucket(_PropertyMixin):
         :getter: Gets the the storage class for this bucket.
 
         :rtype: str or ``NoneType``
-        :returns: If set, one of "MULTI_REGIONAL", "REGIONAL",
-                  "NEARLINE", "COLDLINE", "STANDARD", or
-                  "DURABLE_REDUCED_AVAILABILITY", else ``None``.
+        :returns:
+            If set, one of :attr:`NEARLINE_STORAGE_CLASS`,
+            :attr:`COLDLINE_STORAGE_CLASS`, :attr:`STANDARD_STORAGE_CLASS`,
+            :attr:`MULTI_REGIONAL_LEGACY_STORAGE_CLASS`,
+            :attr:`REGIONAL_LEGACY_STORAGE_CLASS`,
+            or
+            :attr:`DURABLE_REDUCED_AVAILABILITY_LEGACY_STORAGE_CLASS`,
+            else ``None``.
         """
         return self._properties.get("storageClass")
 
@@ -1544,8 +1582,13 @@ class Bucket(_PropertyMixin):
         See https://cloud.google.com/storage/docs/storage-classes
 
         :type value: str
-        :param value: one of "MULTI_REGIONAL", "REGIONAL", "NEARLINE",
-                      "COLDLINE", "STANDARD", or "DURABLE_REDUCED_AVAILABILITY"
+        :param value:
+            One of :attr:`NEARLINE_STORAGE_CLASS`,
+            :attr:`COLDLINE_STORAGE_CLASS`, :attr:`STANDARD_STORAGE_CLASS`,
+            :attr:`MULTI_REGIONAL_LEGACY_STORAGE_CLASS`,
+            :attr:`REGIONAL_LEGACY_STORAGE_CLASS`,
+            or
+            :attr:`DURABLE_REDUCED_AVAILABILITY_LEGACY_STORAGE_CLASS`,
         """
         if value not in self._STORAGE_CLASSES:
             raise ValueError("Invalid storage class: %s" % (value,))

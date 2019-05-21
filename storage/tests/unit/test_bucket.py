@@ -1680,10 +1680,10 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(bucket.self_link, SELF_LINK)
 
     def test_storage_class_getter(self):
-        STORAGE_CLASS = "http://example.com/self/"
-        properties = {"storageClass": STORAGE_CLASS}
+        klass = self._get_target_class()
+        properties = {"storageClass": klass.NEARLINE_STORAGE_CLASS}
         bucket = self._make_one(properties=properties)
-        self.assertEqual(bucket.storage_class, STORAGE_CLASS)
+        self.assertEqual(bucket.storage_class, klass.NEARLINE_STORAGE_CLASS)
 
     def test_storage_class_setter_invalid(self):
         NAME = "name"
@@ -1693,45 +1693,56 @@ class Test_Bucket(unittest.TestCase):
         self.assertFalse("storageClass" in bucket._changes)
 
     def test_storage_class_setter_STANDARD(self):
+        klass = self._get_target_class()
         NAME = "name"
         bucket = self._make_one(name=NAME)
-        bucket.storage_class = "STANDARD"
-        self.assertEqual(bucket.storage_class, "STANDARD")
+        bucket.storage_class = klass.STANDARD_STORAGE_CLASS
+        self.assertEqual(bucket.storage_class, klass.STANDARD_STORAGE_CLASS)
         self.assertTrue("storageClass" in bucket._changes)
 
     def test_storage_class_setter_NEARLINE(self):
+        klass = self._get_target_class()
         NAME = "name"
         bucket = self._make_one(name=NAME)
-        bucket.storage_class = "NEARLINE"
-        self.assertEqual(bucket.storage_class, "NEARLINE")
+        bucket.storage_class = klass.NEARLINE_STORAGE_CLASS
+        self.assertEqual(bucket.storage_class, klass.NEARLINE_STORAGE_CLASS)
         self.assertTrue("storageClass" in bucket._changes)
 
     def test_storage_class_setter_COLDLINE(self):
+        klass = self._get_target_class()
         NAME = "name"
         bucket = self._make_one(name=NAME)
-        bucket.storage_class = "COLDLINE"
-        self.assertEqual(bucket.storage_class, "COLDLINE")
+        bucket.storage_class = klass.COLDLINE_STORAGE_CLASS
+        self.assertEqual(bucket.storage_class, klass.COLDLINE_STORAGE_CLASS)
         self.assertTrue("storageClass" in bucket._changes)
 
     def test_storage_class_setter_MULTI_REGIONAL(self):
+        klass = self._get_target_class()
         NAME = "name"
         bucket = self._make_one(name=NAME)
-        bucket.storage_class = "MULTI_REGIONAL"
-        self.assertEqual(bucket.storage_class, "MULTI_REGIONAL")
+        bucket.storage_class = klass.MULTI_REGIONAL_LEGACY_STORAGE_CLASS
+        self.assertEqual(
+            bucket.storage_class, klass.MULTI_REGIONAL_LEGACY_STORAGE_CLASS
+        )
         self.assertTrue("storageClass" in bucket._changes)
 
     def test_storage_class_setter_REGIONAL(self):
+        klass = self._get_target_class()
         NAME = "name"
         bucket = self._make_one(name=NAME)
-        bucket.storage_class = "REGIONAL"
-        self.assertEqual(bucket.storage_class, "REGIONAL")
+        bucket.storage_class = klass.REGIONAL_LEGACY_STORAGE_CLASS
+        self.assertEqual(bucket.storage_class, klass.REGIONAL_LEGACY_STORAGE_CLASS)
         self.assertTrue("storageClass" in bucket._changes)
 
     def test_storage_class_setter_DURABLE_REDUCED_AVAILABILITY(self):
+        klass = self._get_target_class()
         NAME = "name"
         bucket = self._make_one(name=NAME)
-        bucket.storage_class = "DURABLE_REDUCED_AVAILABILITY"
-        self.assertEqual(bucket.storage_class, "DURABLE_REDUCED_AVAILABILITY")
+        bucket.storage_class = klass.DURABLE_REDUCED_AVAILABILITY_LEGACY_STORAGE_CLASS
+        self.assertEqual(
+            bucket.storage_class,
+            klass.DURABLE_REDUCED_AVAILABILITY_LEGACY_STORAGE_CLASS,
+        )
         self.assertTrue("storageClass" in bucket._changes)
 
     def test_time_created(self):
