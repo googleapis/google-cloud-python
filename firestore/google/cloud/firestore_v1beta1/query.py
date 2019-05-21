@@ -14,8 +14,8 @@
 
 """Classes for representing queries for the Google Cloud Firestore API.
 
-A :class:`~.firestore_v1beta1.query.Query` can be created directly from
-a :class:`~.firestore_v1beta1.collection.Collection` and that can be
+A :class:`~google.cloud.firestore_v1beta1.query.Query` can be created directly from
+a :class:`~google.cloud.firestore_v1beta1.collection.Collection` and that can be
 a more common way to create a query than direct usage of the constructor.
 """
 import copy
@@ -71,7 +71,7 @@ class Query(object):
     would modify an instance instead return a new instance.
 
     Args:
-        parent (~.firestore_v1beta1.collection.Collection): The collection
+        parent (~google.cloud.firestore_v1beta1.collection.Collection): The collection
             that this query applies to.
         projection (Optional[google.cloud.proto.firestore.v1beta1.\
             query_pb2.StructuredQuery.Projection]): A projection of document
@@ -157,7 +157,7 @@ class Query(object):
         """The client of the parent collection.
 
         Returns:
-            ~.firestore_v1beta1.client.Client: The client that owns
+            ~google.cloud.firestore_v1beta1.client.Client: The client that owns
             this query.
         """
         return self._parent._client
@@ -165,11 +165,11 @@ class Query(object):
     def select(self, field_paths):
         """Project documents matching query to a limited set of fields.
 
-        See :meth:`~.firestore_v1beta1.client.Client.field_path` for
+        See :meth:`~google.cloud.firestore_v1beta1.client.Client.field_path` for
         more information on **field paths**.
 
         If the current query already has a projection set (i.e. has already
-        called :meth:`~.firestore_v1beta1.query.Query.select`), this
+        called :meth:`~google.cloud.firestore_v1beta1.query.Query.select`), this
         will overwrite it.
 
         Args:
@@ -178,7 +178,7 @@ class Query(object):
                 of document fields in the query results.
 
         Returns:
-            ~.firestore_v1beta1.query.Query: A "projected" query. Acts as
+            ~google.cloud.firestore_v1beta1.query.Query: A "projected" query. Acts as
             a copy of the current query, modified with the newly added
             projection.
         Raises:
@@ -208,10 +208,10 @@ class Query(object):
     def where(self, field_path, op_string, value):
         """Filter the query on a field.
 
-        See :meth:`~.firestore_v1beta1.client.Client.field_path` for
+        See :meth:`~google.cloud.firestore_v1beta1.client.Client.field_path` for
         more information on **field paths**.
 
-        Returns a new :class:`~.firestore_v1beta1.query.Query` that
+        Returns a new :class:`~google.cloud.firestore_v1beta1.query.Query` that
         filters on a specific field path, according to an operation (e.g.
         ``==`` or "equals") and a particular value to be paired with that
         operation.
@@ -227,7 +227,7 @@ class Query(object):
                 allowed operation.
 
         Returns:
-            ~.firestore_v1beta1.query.Query: A filtered query. Acts as a
+            ~google.cloud.firestore_v1beta1.query.Query: A filtered query. Acts as a
             copy of the current query, modified with the newly added filter.
 
         Raises:
@@ -283,10 +283,10 @@ class Query(object):
     def order_by(self, field_path, direction=ASCENDING):
         """Modify the query to add an order clause on a specific field.
 
-        See :meth:`~.firestore_v1beta1.client.Client.field_path` for
+        See :meth:`~google.cloud.firestore_v1beta1.client.Client.field_path` for
         more information on **field paths**.
 
-        Successive :meth:`~.firestore_v1beta1.query.Query.order_by` calls
+        Successive :meth:`~google.cloud.firestore_v1beta1.query.Query.order_by` calls
         will further refine the ordering of results returned by the query
         (i.e. the new "order by" fields will be added to existing ones).
 
@@ -298,7 +298,7 @@ class Query(object):
                 :attr:`ASCENDING`.
 
         Returns:
-            ~.firestore_v1beta1.query.Query: An ordered query. Acts as a
+            ~google.cloud.firestore_v1beta1.query.Query: An ordered query. Acts as a
             copy of the current query, modified with the newly added
             "order by" constraint.
 
@@ -333,7 +333,7 @@ class Query(object):
                 the query.
 
         Returns:
-            ~.firestore_v1beta1.query.Query: A limited query. Acts as a
+            ~google.cloud.firestore_v1beta1.query.Query: A limited query. Acts as a
             copy of the current query, modified with the newly added
             "limit" filter.
         """
@@ -359,7 +359,7 @@ class Query(object):
                 of query results. (Must be non-negative.)
 
         Returns:
-            ~.firestore_v1beta1.query.Query: An offset query. Acts as a
+            ~google.cloud.firestore_v1beta1.query.Query: An offset query. Acts as a
             copy of the current query, modified with the newly added
             "offset" field.
         """
@@ -381,10 +381,10 @@ class Query(object):
 
         When the query is sent to the server, the ``document_fields`` will
         be used in the order given by fields set by
-        :meth:`~.firestore_v1beta1.query.Query.order_by`.
+        :meth:`~google.cloud.firestore_v1beta1.query.Query.order_by`.
 
         Args:
-            document_fields (Union[~.firestore_v1beta1.\
+            document_fields (Union[~google.cloud.firestore_v1beta1.\
                 document.DocumentSnapshot, dict, list, tuple]): a document
                 snapshot or a dictionary/list/tuple of fields representing a
                 query results cursor. A cursor is a collection of values that
@@ -396,7 +396,7 @@ class Query(object):
                 cursor (:data:`True`) or an ``end_at`` cursor (:data:`False`).
 
         Returns:
-            ~.firestore_v1beta1.query.Query: A query with cursor. Acts as
+            ~google.cloud.firestore_v1beta1.query.Query: A query with cursor. Acts as
             a copy of the current query, modified with the newly added
             "start at" cursor.
         """
@@ -436,22 +436,22 @@ class Query(object):
 
         If the current query already has specified a start cursor -- either
         via this method or
-        :meth:`~.firestore_v1beta1.query.Query.start_after` -- this will
+        :meth:`~google.cloud.firestore_v1beta1.query.Query.start_after` -- this will
         overwrite it.
 
         When the query is sent to the server, the ``document_fields`` will
         be used in the order given by fields set by
-        :meth:`~.firestore_v1beta1.query.Query.order_by`.
+        :meth:`~google.cloud.firestore_v1beta1.query.Query.order_by`.
 
         Args:
-            document_fields (Union[~.firestore_v1beta1.\
+            document_fields (Union[~google.cloud.firestore_v1beta1.\
                 document.DocumentSnapshot, dict, list, tuple]): a document
                 snapshot or a dictionary/list/tuple of fields representing a
                 query results cursor. A cursor is a collection of values that
                 represent a position in a query result set.
 
         Returns:
-            ~.firestore_v1beta1.query.Query: A query with cursor. Acts as
+            ~google.cloud.firestore_v1beta1.query.Query: A query with cursor. Acts as
             a copy of the current query, modified with the newly added
             "start at" cursor.
         """
@@ -465,22 +465,22 @@ class Query(object):
 
         If the current query already has specified a start cursor -- either
         via this method or
-        :meth:`~.firestore_v1beta1.query.Query.start_at` -- this will
+        :meth:`~google.cloud.firestore_v1beta1.query.Query.start_at` -- this will
         overwrite it.
 
         When the query is sent to the server, the ``document_fields`` will
         be used in the order given by fields set by
-        :meth:`~.firestore_v1beta1.query.Query.order_by`.
+        :meth:`~google.cloud.firestore_v1beta1.query.Query.order_by`.
 
         Args:
-            document_fields (Union[~.firestore_v1beta1.\
+            document_fields (Union[~google.cloud.firestore_v1beta1.\
                 document.DocumentSnapshot, dict, list, tuple]): a document
                 snapshot or a dictionary/list/tuple of fields representing a
                 query results cursor. A cursor is a collection of values that
                 represent a position in a query result set.
 
         Returns:
-            ~.firestore_v1beta1.query.Query: A query with cursor. Acts as
+            ~google.cloud.firestore_v1beta1.query.Query: A query with cursor. Acts as
             a copy of the current query, modified with the newly added
             "start after" cursor.
         """
@@ -494,22 +494,22 @@ class Query(object):
 
         If the current query already has specified an end cursor -- either
         via this method or
-        :meth:`~.firestore_v1beta1.query.Query.end_at` -- this will
+        :meth:`~google.cloud.firestore_v1beta1.query.Query.end_at` -- this will
         overwrite it.
 
         When the query is sent to the server, the ``document_fields`` will
         be used in the order given by fields set by
-        :meth:`~.firestore_v1beta1.query.Query.order_by`.
+        :meth:`~google.cloud.firestore_v1beta1.query.Query.order_by`.
 
         Args:
-            document_fields (Union[~.firestore_v1beta1.\
+            document_fields (Union[~google.cloud.firestore_v1beta1.\
                 document.DocumentSnapshot, dict, list, tuple]): a document
                 snapshot or a dictionary/list/tuple of fields representing a
                 query results cursor. A cursor is a collection of values that
                 represent a position in a query result set.
 
         Returns:
-            ~.firestore_v1beta1.query.Query: A query with cursor. Acts as
+            ~google.cloud.firestore_v1beta1.query.Query: A query with cursor. Acts as
             a copy of the current query, modified with the newly added
             "end before" cursor.
         """
@@ -523,22 +523,22 @@ class Query(object):
 
         If the current query already has specified an end cursor -- either
         via this method or
-        :meth:`~.firestore_v1beta1.query.Query.end_before` -- this will
+        :meth:`~google.cloud.firestore_v1beta1.query.Query.end_before` -- this will
         overwrite it.
 
         When the query is sent to the server, the ``document_fields`` will
         be used in the order given by fields set by
-        :meth:`~.firestore_v1beta1.query.Query.order_by`.
+        :meth:`~google.cloud.firestore_v1beta1.query.Query.order_by`.
 
         Args:
-            document_fields (Union[~.firestore_v1beta1.\
+            document_fields (Union[~google.cloud.firestore_v1beta1.\
                 document.DocumentSnapshot, dict, list, tuple]): a document
                 snapshot or a dictionary/list/tuple of fields representing a
                 query results cursor. A cursor is a collection of values that
                 represent a position in a query result set.
 
         Returns:
-            ~.firestore_v1beta1.query.Query: A query with cursor. Acts as
+            ~google.cloud.firestore_v1beta1.query.Query: A query with cursor. Acts as
             a copy of the current query, modified with the newly added
             "end at" cursor.
         """
@@ -722,12 +722,12 @@ class Query(object):
         allowed).
 
         Args:
-            transaction (Optional[~.firestore_v1beta1.transaction.\
+            transaction (Optional[~google.cloud.firestore_v1beta1.transaction.\
                 Transaction]): An existing transaction that this query will
                 run in.
 
         Yields:
-            ~.firestore_v1beta1.document.DocumentSnapshot: The next
+            ~google.cloud.firestore_v1beta1.document.DocumentSnapshot: The next
             document that fulfills the query.
         """
         parent_path, expected_prefix = self._parent._parent_info()
@@ -752,7 +752,7 @@ class Query(object):
         provided callback is run on the snapshot of the documents.
 
         Args:
-            callback(~.firestore.query.QuerySnapshot): a callback to run when
+            callback(~google.cloud.firestore.query.QuerySnapshot): a callback to run when
                 a change occurs.
 
         Example:
@@ -870,8 +870,8 @@ def _enum_from_direction(direction):
 
     Args:
         direction (str): A direction to order by. Must be one of
-            :attr:`~.firestore.Query.ASCENDING` or
-            :attr:`~.firestore.Query.DESCENDING`.
+            :attr:`~google.cloud.firestore.Query.ASCENDING` or
+            :attr:`~google.cloud.firestore.Query.DESCENDING`.
 
     Returns:
         int: The enum corresponding to ``direction``.
@@ -942,14 +942,14 @@ def _query_response_to_snapshot(response_pb, collection, expected_prefix):
     Args:
         response_pb (google.cloud.proto.firestore.v1beta1.\
             firestore_pb2.RunQueryResponse): A
-        collection (~.firestore_v1beta1.collection.CollectionReference): A
+        collection (~google.cloud.firestore_v1beta1.collection.CollectionReference): A
             reference to the collection that initiated the query.
         expected_prefix (str): The expected prefix for fully-qualified
             document names returned in the query results. This can be computed
             directly from ``collection`` via :meth:`_parent_info`.
 
     Returns:
-        Optional[~.firestore.document.DocumentSnapshot]: A
+        Optional[~google.cloud.firestore.document.DocumentSnapshot]: A
         snapshot of the data returned in the query. If ``response_pb.document``
         is not set, the snapshot will be :data:`None`.
     """
