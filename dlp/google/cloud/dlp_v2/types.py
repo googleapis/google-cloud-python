@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 from __future__ import absolute_import
 import sys
 
@@ -29,6 +30,7 @@ from google.protobuf import timestamp_pb2
 from google.rpc import status_pb2
 from google.type import date_pb2
 from google.type import timeofday_pb2
+
 
 _shared_modules = [
     any_pb2,
@@ -54,5 +56,6 @@ for module in _local_modules:
         message.__module__ = "google.cloud.dlp_v2.types"
         setattr(sys.modules[__name__], name, message)
         names.append(name)
+
 
 __all__ = tuple(sorted(names))
