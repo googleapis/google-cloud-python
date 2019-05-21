@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.model &#8212; google-cloud 42a05e5 documentation</title>
+    <title>google.cloud.bigquery.model &#8212; google-cloud 25b988f documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -304,6 +304,9 @@
 <span class="sd">            google.cloud.bigquery.model.Model: Model parsed from ``resource``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">this</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="c1"># Keep a reference to the resource as a workaround to find unknown</span>
+        <span class="c1"># field values.</span>
+        <span class="n">this</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">resource</span>
 
         <span class="c1"># Convert from millis-from-epoch to timestamp well-known type.</span>
         <span class="c1"># TODO: Remove this hack once CL 238585470 hits prod.</span>
@@ -315,12 +318,9 @@
             <span class="n">start_time</span> <span class="o">=</span> <span class="n">datetime_helpers</span><span class="o">.</span><span class="n">from_microseconds</span><span class="p">(</span><span class="mf">1e3</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">start_time</span><span class="p">))</span>
             <span class="n">training_run</span><span class="p">[</span><span class="s2">&quot;startTime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime_helpers</span><span class="o">.</span><span class="n">to_rfc3339</span><span class="p">(</span><span class="n">start_time</span><span class="p">)</span>
 
-        <span class="n">this</span><span class="o">.</span><span class="n">_proto</span> <span class="o">=</span> <span class="n">json_format</span><span class="o">.</span><span class="n">ParseDict</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">Model</span><span class="p">())</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">itervalues</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_PROPERTY_TO_API_FIELD</span><span class="p">):</span>
-            <span class="c1"># Leave missing keys unset. This allows us to use setdefault in the</span>
-            <span class="c1"># getters where we want a default value other than None.</span>
-            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">:</span>
-                <span class="n">this</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="n">this</span><span class="o">.</span><span class="n">_proto</span> <span class="o">=</span> <span class="n">json_format</span><span class="o">.</span><span class="n">ParseDict</span><span class="p">(</span>
+            <span class="n">resource</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">Model</span><span class="p">(),</span> <span class="n">ignore_unknown_fields</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">this</span></div>
 
     <span class="k">def</span> <span class="nf">_build_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_fields</span><span class="p">):</span>
@@ -340,6 +340,7 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_proto</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">ModelReference</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -378,7 +379,12 @@
 <span class="sd">                Model reference parsed from ``resource``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ref</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
-        <span class="n">ref</span><span class="o">.</span><span class="n">_proto</span> <span class="o">=</span> <span class="n">json_format</span><span class="o">.</span><span class="n">ParseDict</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">ModelReference</span><span class="p">())</span>
+        <span class="c1"># Keep a reference to the resource as a workaround to find unknown</span>
+        <span class="c1"># field values.</span>
+        <span class="n">ref</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">resource</span>
+        <span class="n">ref</span><span class="o">.</span><span class="n">_proto</span> <span class="o">=</span> <span class="n">json_format</span><span class="o">.</span><span class="n">ParseDict</span><span class="p">(</span>
+            <span class="n">resource</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">ModelReference</span><span class="p">(),</span> <span class="n">ignore_unknown_fields</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">ref</span></div>
 
 <div class="viewcode-block" id="ModelReference.from_string"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.model.ModelReference.html#google.cloud.bigquery.model.ModelReference.from_string">[docs]</a>    <span class="nd">@classmethod</span>
