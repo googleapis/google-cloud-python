@@ -143,12 +143,12 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         product_set_path = self.ps_client.product_set_path(
             project=PROJECT_ID, location=self.location, product_set=product_set_id
         )
-        self.product_sets_to_delete.append(product_set_path)
         response = self.ps_client.create_product_set(
             parent=self.location_path,
             product_set=product_set,
             product_set_id=product_set_id,
         )
+        self.product_sets_to_delete.append(response.name)
         self.assertEqual(response.name, product_set_path)
 
     def test_get_product_set(self):
@@ -157,12 +157,12 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         product_set_path = self.ps_client.product_set_path(
             project=PROJECT_ID, location=self.location, product_set=product_set_id
         )
-        self.product_sets_to_delete.append(product_set_path)
         response = self.ps_client.create_product_set(
             parent=self.location_path,
             product_set=product_set,
             product_set_id=product_set_id,
         )
+        self.product_sets_to_delete.append(response.name)
         self.assertEqual(response.name, product_set_path)
         get_response = self.ps_client.get_product_set(name=product_set_path)
         self.assertEqual(get_response.name, product_set_path)
@@ -173,12 +173,12 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         product_set_path = self.ps_client.product_set_path(
             project=PROJECT_ID, location=self.location, product_set=product_set_id
         )
-        self.product_sets_to_delete.append(product_set_path)
         response = self.ps_client.create_product_set(
             parent=self.location_path,
             product_set=product_set,
             product_set_id=product_set_id,
         )
+        self.product_sets_to_delete.append(response.name)
         self.assertEqual(response.name, product_set_path)
         product_sets = self.ps_client.list_product_sets(parent=self.location_path)
         self.assertGreater(len(list(product_sets)), 0)
@@ -189,12 +189,12 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         product_set_path = self.ps_client.product_set_path(
             project=PROJECT_ID, location=self.location, product_set=product_set_id
         )
-        self.product_sets_to_delete.append(product_set_path)
         response = self.ps_client.create_product_set(
             parent=self.location_path,
             product_set=product_set,
             product_set_id=product_set_id,
         )
+        self.product_sets_to_delete.append(response.name)
         self.assertEqual(response.name, product_set_path)
         new_display_name = "updated name"
         updated_product_set_request = vision.types.ProductSet(
@@ -214,10 +214,10 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         product_path = self.ps_client.product_path(
             project=PROJECT_ID, location=self.location, product=product_id
         )
-        self.products_to_delete.append(product_path)
         response = self.ps_client.create_product(
             parent=self.location_path, product=product, product_id=product_id
         )
+        self.products_to_delete.append(response.name)
         self.assertEqual(response.name, product_path)
 
     def test_get_product(self):
@@ -228,10 +228,10 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         product_path = self.ps_client.product_path(
             project=PROJECT_ID, location=self.location, product=product_id
         )
-        self.products_to_delete.append(product_path)
         response = self.ps_client.create_product(
             parent=self.location_path, product=product, product_id=product_id
         )
+        self.products_to_delete.append(response.name)
         self.assertEqual(response.name, product_path)
         get_response = self.ps_client.get_product(name=product_path)
         self.assertEqual(get_response.name, product_path)
@@ -244,10 +244,10 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         product_path = self.ps_client.product_path(
             project=PROJECT_ID, location=self.location, product=product_id
         )
-        self.products_to_delete.append(product_path)
         response = self.ps_client.create_product(
             parent=self.location_path, product=product, product_id=product_id
         )
+        self.products_to_delete.append(response.name)
         self.assertEqual(response.name, product_path)
         new_display_name = "updated product name"
         updated_product_request = vision.types.Product(
@@ -266,12 +266,12 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         product_set_path = self.ps_client.product_set_path(
             project=PROJECT_ID, location=self.location, product_set=product_set_id
         )
-        self.product_sets_to_delete.append(product_set_path)
         response = self.ps_client.create_product_set(
             parent=self.location_path,
             product_set=product_set,
             product_set_id=product_set_id,
         )
+        self.product_sets_to_delete.append(response.name)
         self.assertEqual(response.name, product_set_path)
         # Create the Product
         product = vision.types.Product(
@@ -281,10 +281,10 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         product_path = self.ps_client.product_path(
             project=PROJECT_ID, location=self.location, product=product_id
         )
-        self.products_to_delete.append(product_path)
         response = self.ps_client.create_product(
             parent=self.location_path, product=product, product_id=product_id
         )
+        self.products_to_delete.append(response.name)
         self.assertEqual(response.name, product_path)
         # Add the Product to the ProductSet
         self.ps_client.add_product_to_product_set(
