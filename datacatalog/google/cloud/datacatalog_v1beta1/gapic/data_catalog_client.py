@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.datacatalog.v1beta1 DataCatalog API."""
 
 import pkg_resources
@@ -34,6 +35,7 @@ from google.cloud.datacatalog_v1beta1.gapic.transports import (
 )
 from google.cloud.datacatalog_v1beta1.proto import datacatalog_pb2
 from google.cloud.datacatalog_v1beta1.proto import datacatalog_pb2_grpc
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     "google-cloud-datacatalog"
