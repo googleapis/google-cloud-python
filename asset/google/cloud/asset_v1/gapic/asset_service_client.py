@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.asset.v1 AssetService API."""
 
 import pkg_resources
@@ -37,6 +38,7 @@ from google.cloud.asset_v1.proto import asset_service_pb2_grpc
 from google.cloud.asset_v1.proto import assets_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import timestamp_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-asset").version
 
