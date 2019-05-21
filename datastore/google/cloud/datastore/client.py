@@ -654,18 +654,21 @@ class Client(ClientWithProject):
             Datastore.
 
         :type complete_key: :class:`google.cloud.datastore.key.Key`
-        :param complete_key: Partial key to use as base for allocated IDs.
+        :param complete_key: Partial key to use as base for reserved IDs.
 
         :type num_ids: int
         :param num_ids: The number of IDs to reserve.
 
         :rtype: list of :class:`google.cloud.datastore.key.Key`
         :returns: []
-        :raises: :class:`ValueError` if ``incomplete_key`` is not a
-                 partial key.
+        :raises: :class:`ValueError` if `complete_key`` is not a
+                 Complete key.
         """
         if complete_key.is_partial:
             raise ValueError(("Key is not Complete.", complete_key))
+
+        if not isinstance(num_ids, int):
+            raise ValueError(("num_ids is not a valid integer.", num_ids))
 
         complete_key_pb = complete_key.to_protobuf()
         complete_key_pbs = [complete_key_pb] * num_ids

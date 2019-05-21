@@ -876,17 +876,27 @@ class TestClient(unittest.TestCase):
         alloc_ids = mock.Mock(return_value=None, spec=[])
         ds_api = mock.Mock(reserve_ids=alloc_ids, spec=["reserve_ids"])
         client._datastore_api_internal = ds_api
+        self.assertTrue(not COMPLETE_KEY.is_partial)
+        self.assertIsInstance(num_ids, int)
         result = client.reserve_ids(COMPLETE_KEY, num_ids)
 
         self.assertIsNone(result)
 
     def test_reserve_ids_w_partial_key(self):
-
+        num_ids = 2
         incomplete_key = _Key(self.PROJECT)
         incomplete_key._id = None
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
-        self.assertRaises(ValueError, client.reserve_ids, incomplete_key, 2)
+        self.assertIsInstance(num_ids, int)
+        self.assertRaises(ValueError, client.reserve_ids, incomplete_key, num_ids)
+
+    def test_reserve_ids_w_wrong_num_ids(self):
+        num_ids = "2"
+        complete_key = _Key(self.PROJECT)
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds)
+        self.assertRaises(ValueError, client.reserve_ids, complete_key, num_ids)
 
     def test_key_w_project(self):
         KIND = "KIND"
