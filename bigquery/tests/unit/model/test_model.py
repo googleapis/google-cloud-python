@@ -165,6 +165,22 @@ def test_from_api_repr_w_minimal_resource(target_class):
     assert len(got.label_columns) == 0
 
 
+def test_from_api_repr_w_unknown_fields(target_class):
+    from google.cloud.bigquery import ModelReference
+
+    resource = {
+        "modelReference": {
+            "projectId": "my-project",
+            "datasetId": "my_dataset",
+            "modelId": "my_model",
+        },
+        "thisFieldIsNotInTheProto": "just ignore me",
+    }
+    got = target_class.from_api_repr(resource)
+    assert got.reference == ModelReference.from_string("my-project.my_dataset.my_model")
+    assert got._properties is resource
+
+
 @pytest.mark.parametrize(
     "resource,filter_fields,expected",
     [

@@ -37,6 +37,20 @@ def test_from_api_repr(target_class):
     assert got.path == "/projects/my-project/datasets/my_dataset/models/my_model"
 
 
+def test_from_api_repr_w_unknown_fields(target_class):
+    resource = {
+        "projectId": "my-project",
+        "datasetId": "my_dataset",
+        "modelId": "my_model",
+        "thisFieldIsNotInTheProto": "just ignore me",
+    }
+    got = target_class.from_api_repr(resource)
+    assert got.project == "my-project"
+    assert got.dataset_id == "my_dataset"
+    assert got.model_id == "my_model"
+    assert got._properties is resource
+
+
 def test_to_api_repr(target_class):
     ref = target_class.from_string("my-project.my_dataset.my_model")
     got = ref.to_api_repr()
