@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.datastore.v1 Datastore API."""
 
 import pkg_resources
@@ -34,6 +35,7 @@ from google.cloud.datastore_v1.proto import datastore_pb2
 from google.cloud.datastore_v1.proto import datastore_pb2_grpc
 from google.cloud.datastore_v1.proto import entity_pb2
 from google.cloud.datastore_v1.proto import query_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     "google-cloud-datastore"
