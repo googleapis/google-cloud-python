@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.firestore.v1beta1 Firestore API."""
 
 import functools
@@ -41,6 +42,7 @@ from google.cloud.firestore_v1beta1.proto import query_pb2
 from google.cloud.firestore_v1beta1.proto import write_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import timestamp_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     "google-cloud-firestore"
