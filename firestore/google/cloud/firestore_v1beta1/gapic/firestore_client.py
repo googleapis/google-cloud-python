@@ -147,8 +147,8 @@ class FirestoreClient(object):
         """Constructor.
 
         Args:
-            transport (Union[~.FirestoreGrpcTransport,
-                    Callable[[~.Credentials, type], ~.FirestoreGrpcTransport]): A transport
+            transport (Union[~google.cloud.FirestoreGrpcTransport,
+                    Callable[[~google.cloud.Credentials, type], ~.FirestoreGrpcTransport]): A transport
                 instance, responsible for actually making the API calls.
                 The default transport uses the gRPC protocol.
                 This argument may also be a callable which returns a
