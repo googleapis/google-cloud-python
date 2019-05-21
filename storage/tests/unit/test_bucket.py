@@ -299,16 +299,23 @@ class Test_Bucket(unittest.TestCase):
         bucket._properties = properties or {}
         return bucket
 
+    def test_ctor_w_invalid_name(self):
+        NAME = "#invalid"
+        with self.assertRaises(ValueError):
+            self._make_one(name=NAME)
+
     def test_ctor(self):
         NAME = "name"
         properties = {"key": "value"}
         bucket = self._make_one(name=NAME, properties=properties)
         self.assertEqual(bucket.name, NAME)
         self.assertEqual(bucket._properties, properties)
+        self.assertEqual(list(bucket._changes), [])
         self.assertFalse(bucket._acl.loaded)
         self.assertIs(bucket._acl.bucket, bucket)
         self.assertFalse(bucket._default_object_acl.loaded)
         self.assertIs(bucket._default_object_acl.bucket, bucket)
+        self.assertEqual(list(bucket._label_removals), [])
         self.assertIsNone(bucket.user_project)
 
     def test_ctor_w_user_project(self):
@@ -319,11 +326,13 @@ class Test_Bucket(unittest.TestCase):
         bucket = self._make_one(client, name=NAME, user_project=USER_PROJECT)
         self.assertEqual(bucket.name, NAME)
         self.assertEqual(bucket._properties, {})
-        self.assertEqual(bucket.user_project, USER_PROJECT)
+        self.assertEqual(list(bucket._changes), [])
         self.assertFalse(bucket._acl.loaded)
         self.assertIs(bucket._acl.bucket, bucket)
         self.assertFalse(bucket._default_object_acl.loaded)
         self.assertIs(bucket._default_object_acl.bucket, bucket)
+        self.assertEqual(list(bucket._label_removals), [])
+        self.assertEqual(bucket.user_project, USER_PROJECT)
 
     def test_blob_wo_keys(self):
         from google.cloud.storage.blob import Blob
