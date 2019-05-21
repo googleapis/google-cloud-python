@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.12.1
+
+05-21-2019 11:16 PDT
+
+### Implementation Changes
+
+- Don't raise error when encountering unknown fields in Models API. ([#8083](https://github.com/googleapis/google-cloud-python/pull/8083))
+
+### Documentation
+
+- Use alabaster theme everwhere. ([#8021](https://github.com/googleapis/google-cloud-python/pull/8021))
+
+### Internal / Testing Changes
+
+- Add empty lines (via synth). ([#8049](https://github.com/googleapis/google-cloud-python/pull/8049))
+
 ## 1.12.0
 
 05-16-2019 11:25 PDT
