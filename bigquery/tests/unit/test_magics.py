@@ -549,6 +549,88 @@ def test_bigquery_magic_without_bqstorage(monkeypatch):
 
 
 @pytest.mark.usefixtures("ipython_interactive")
+def test_maximum_bytes_billed_w_int_magic():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context._project = None
+
+    bqstorage_mock = mock.create_autospec(
+        bigquery_storage_v1beta1.BigQueryStorageClient
+    )
+
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    default_patch = mock.patch(
+        "google.auth.default", return_value=(credentials_mock, "general-project")
+    )
+    run_query_patch = mock.patch(
+        "google.cloud.bigquery.magics._run_query", autospec=True
+    )
+
+    sql = "SELECT 17 AS num"
+    result = pandas.DataFrame([17], columns=["num"])
+    query_job_mock = mock.create_autospec(
+        google.cloud.bigquery.job.QueryJob, instance=True
+    )
+    query_job_mock.to_dataframe.return_value = result
+    with run_query_patch as run_query_mock, default_patch:
+        run_query_mock.return_value = query_job_mock
+        return_value = ip.run_cell_magic("bigquery", "--maximum_bytes_billed=123456789", sql)
+
+        bqstorage_mock.assert_not_called()
+        query_job_mock.to_dataframe.assert_called_once_with(bqstorage_client=None)
+    assert isinstance(return_value, pandas.DataFrame)
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+def test_maximum_bytes_billed_w_string_params():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context._project = None
+
+    sql = "SELECT 17 AS num"
+
+    with pytest.raises(ValueError):
+        ip.run_cell_magic("bigquery", "--maximum_bytes_billed=abc", sql)
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+def test_maximum_bytes_billed_w_none__magic():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context._project = None
+
+    bqstorage_mock = mock.create_autospec(
+        bigquery_storage_v1beta1.BigQueryStorageClient
+    )
+
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    default_patch = mock.patch(
+        "google.auth.default", return_value=(credentials_mock, "general-project")
+    )
+    run_query_patch = mock.patch(
+        "google.cloud.bigquery.magics._run_query", autospec=True
+    )
+
+    sql = "SELECT 17 AS num"
+    result = pandas.DataFrame([17], columns=["num"])
+    query_job_mock = mock.create_autospec(
+        google.cloud.bigquery.job.QueryJob, instance=True
+    )
+    query_job_mock.to_dataframe.return_value = result
+    with run_query_patch as run_query_mock, default_patch:
+        run_query_mock.return_value = query_job_mock
+        return_value = ip.run_cell_magic("bigquery", "--maximum_bytes_billed=None", sql)
+
+        bqstorage_mock.assert_not_called()
+        query_job_mock.to_dataframe.assert_called_once_with(bqstorage_client=None)
+    assert isinstance(return_value, pandas.DataFrame)
+
+
+@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_with_project():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")
@@ -652,3 +734,23 @@ def test_bigquery_magic_with_improperly_formatted_params():
 
     with pytest.raises(SyntaxError):
         ip.run_cell_magic("bigquery", "--params {17}", sql)
+
+
+def test_maximum_bytes_billed_set_value():
+    """When Application Default Credentials are set, the context credentials
+    will be created the first time it is called
+    """
+
+    from google.cloud.bigquery import QueryJobConfig
+    job_config = QueryJobConfig()
+    magics.context.maximum_bytes_billed = 1234567489
+    assert job_config.maximum_bytes_billed == magics.context.maximum_bytes_billed
+
+
+def test_maximum_bytes_billed_set_string():
+    """When Application Default Credentials are set, the context credentials
+    will be created the first time it is called
+    """
+    with pytest.raises(ValueError):
+        magics.context.maximum_bytes_billed = "abc"
+

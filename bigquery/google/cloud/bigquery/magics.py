@@ -161,7 +161,7 @@ class Context(object):
         self._project = None
         self._connection = None
         self._use_bqstorage_api = None
-        self._maximum_bytes_billed = None
+        self._maximum_bytes_billed = 0
 
     @property
     def credentials(self):
@@ -261,7 +261,7 @@ class Context(object):
             job_config = bigquery.job.QueryJobConfig()
             job_config.maximum_bytes_billed = self._maximum_bytes_billed
 
-        except:
+        except Exception:
             raise ValueError("value is not a valid integer.")
 
 
@@ -317,6 +317,13 @@ def _run_query(client, query, job_config=None):
     type=str,
     default=None,
     help=("Project to use for executing this query. Defaults to the context project."),
+)
+@magic_arguments.argument(
+    "--maximum_bytes_billed",
+    default=None,
+    help=(
+        "maximum_bytes_billed to use for executing this query. Defaults to the context maximum_bytes_billed."
+    ),
 )
 @magic_arguments.argument(
     "--use_legacy_sql",
@@ -399,7 +406,17 @@ def _cell_magic(line, query):
     job_config = bigquery.job.QueryJobConfig()
     job_config.query_parameters = params
     job_config.use_legacy_sql = args.use_legacy_sql
-    job_config.maximum_bytes_billed = context.maximum_bytes_billed
+
+    if args.maximum_bytes_billed == "None":
+        job_config.maximum_bytes_billed = 0
+    elif args.maximum_bytes_billed is not None:
+        try:
+            value = int(args.maximum_bytes_billed)
+            job_config.maximum_bytes_billed = value
+        except Exception:
+            raise ValueError("value is not a valid integer.")
+    else:
+        job_config.maximum_bytes_billed = context.maximum_bytes_billed
     query_job = _run_query(client, query, job_config)
 
     if not args.verbose:
