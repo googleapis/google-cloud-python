@@ -14,10 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 from __future__ import absolute_import
 
 from google.cloud.irm_v1alpha2 import IncidentServiceClient
 from google.cloud.irm_v1alpha2 import enums
 from google.cloud.irm_v1alpha2 import types
+
 
 __all__ = ("enums", "types", "IncidentServiceClient")

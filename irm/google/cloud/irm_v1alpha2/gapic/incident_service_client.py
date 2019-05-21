@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.irm.v1alpha2 IncidentService API."""
 
 import functools
@@ -37,6 +38,7 @@ from google.cloud.irm_v1alpha2.proto import incidents_service_pb2
 from google.cloud.irm_v1alpha2.proto import incidents_service_pb2_grpc
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-irm").version
 
