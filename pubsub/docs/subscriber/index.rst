@@ -5,9 +5,7 @@ Subscribing to messages is handled through the
 :class:`~.pubsub_v1.subscriber.client.Client` class (aliased as
 ``google.cloud.pubsub.SubscriberClient``). This class provides a
 :meth:`~.pubsub_v1.subscriber.client.Client.subscribe` method to
-attach to subscriptions on existing topics,  and (most importantly) a
-:meth:`~.pubsub_v1.subscriber.policy.thread.Policy.open` method that
-consumes messages from Pub/Sub.
+attach to subscriptions on existing topics.
 
 Instantiating a subscriber client is straightforward:
 
