@@ -19,7 +19,6 @@ try:
     import pyarrow.parquet
 except ImportError:  # pragma: NO COVER
     pyarrow = None
-import six.moves
 
 
 def pyarrow_datetime():
@@ -39,7 +38,7 @@ def pyarrow_timestamp():
 
 
 BQ_TO_ARROW_SCALARS = {}
-if pyarrow is not None:
+if pyarrow is not None:  # pragma: NO COVER
     BQ_TO_ARROW_SCALARS = {
         "BOOL": pyarrow.bool_,
         "BOOLEAN": pyarrow.bool_,
@@ -95,7 +94,6 @@ def to_parquet(dataframe, bq_schema, filepath):
         raise ValueError("pyarrow is required for BigQuery schema conversion")
 
     if len(bq_schema) != len(dataframe.columns):
-        # TODO: match names, too.
         raise ValueError(
             "Number of columns in schema must match number of columns in dataframe"
         )
@@ -110,6 +108,5 @@ def to_parquet(dataframe, bq_schema, filepath):
             )
         )
 
-    # TODO: make pyarrow table and write to parquet.
     arrow_table = pyarrow.Table.from_arrays(arrow_arrays, names=column_names)
     pyarrow.parquet.write_table(arrow_table, filepath)

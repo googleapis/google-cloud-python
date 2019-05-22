@@ -634,7 +634,6 @@ class TestBigQuery(unittest.TestCase):
 
         See: https://github.com/googleapis/google-cloud-python/issues/7370
         """
-        # TODO: make table with certain schema. Try to load / append to that table with a bunch of null columns.
         # Schema with all scalar types.
         table_schema = (
             bigquery.SchemaField("bool_col", "BOOLEAN"),

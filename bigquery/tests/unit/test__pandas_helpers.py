@@ -12,7 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pyarrow.types
+import functools
+
+try:
+    import pandas
+except ImportError:  # pragma: NO COVER
+    pandas = None
+try:
+    import pyarrow
+    import pyarrow.types
+except ImportError:  # pragma: NO COVER
+    pyarrow = None
 import pytest
 
 from google.cloud.bigquery import schema
@@ -29,13 +39,22 @@ def is_none(value):
     return value is None
 
 
+def is_datetime(type_):
+    # See: https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#datetime-type
+    return all_(
+        pyarrow.types.is_timestamp,
+        lambda type_: type_.unit == "us",
+        lambda type_: type_.tz is None,
+    )(type_)
+
+
 def is_numeric(type_):
     # See: https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric-type
     return all_(
         pyarrow.types.is_decimal,
         lambda type_: type_.precision == 38,
         lambda type_: type_.scale == 9,
-    )
+    )(type_)
 
 
 def is_timestamp(type_):
@@ -44,23 +63,34 @@ def is_timestamp(type_):
         pyarrow.types.is_timestamp,
         lambda type_: type_.unit == "us",
         lambda type_: type_.tz == "UTC",
-    )
+    )(type_)
 
 
-def is_datetime(type_):
-    # See: https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#datetime-type
-    return all_(
-        pyarrow.types.is_timestamp,
-        lambda type_: type_.unit == "us",
-        lambda type_: type_.tz is None,
-    )
+def do_all(functions, value):
+    return all((func(value) for func in functions))
 
 
 def all_(*functions):
-    def do_all(value):
-        return all((func(value) for func in functions))
+    return functools.partial(do_all, functions)
 
-    return do_all
+
+@pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
+def test_is_datetime():
+    assert is_datetime(pyarrow.timestamp("us", tz=None))
+    assert not is_datetime(pyarrow.timestamp("ms", tz=None))
+    assert not is_datetime(pyarrow.timestamp("us", tz="UTC"))
+    assert not is_datetime(pyarrow.string())
+
+
+def test_do_all():
+    assert do_all((lambda _: True, lambda _: True), None)
+    assert not do_all((lambda _: True, lambda _: False), None)
+    assert not do_all((lambda _: False,), None)
+
+
+def test_all_():
+    assert all_(lambda _: True, lambda _: True)(None)
+    assert not all_(lambda _: True, lambda _: False)(None)
 
 
 @pytest.mark.parametrize(
@@ -83,6 +113,7 @@ def all_(*functions):
         ("TIME", "NULLABLE", pyarrow.types.is_time64),
         ("DATETIME", "NULLABLE", is_datetime),
         ("GEOGRAPHY", "NULLABLE", pyarrow.types.is_string),
+        ("UNKNOWN_TYPE", "NULLABLE", is_none),
         # TODO: Use pyarrow.struct(fields) for record (struct) fields.
         ("RECORD", "NULLABLE", is_none),
         ("STRUCT", "NULLABLE", is_none),
@@ -106,7 +137,26 @@ def all_(*functions):
         ("RECORD", "REPEATED", is_none),
     ],
 )
+@pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
 def test_bq_to_arrow_data_type(module_under_test, bq_type, bq_mode, is_correct_type):
     field = schema.SchemaField("ignored_name", bq_type, mode=bq_mode)
     got = module_under_test.bq_to_arrow_data_type(field)
     assert is_correct_type(got)
+
+
+@pytest.mark.skipIf(pandas is None, "Requires `pandas`")
+def test_to_parquet_without_pyarrow(module_under_test, monkeypatch):
+    monkeypatch.setattr(module_under_test, "pyarrow", None)
+    with pytest.raises(ValueError) as exc:
+        module_under_test.to_parquet(pandas.DataFrame(), (), None)
+    assert "pyarrow is required" in str(exc)
+
+
+@pytest.mark.skipIf(pandas is None, "Requires `pandas`")
+@pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
+def test_to_parquet_w_missing_columns(module_under_test, monkeypatch):
+    with pytest.raises(ValueError) as exc:
+        module_under_test.to_parquet(
+            pandas.DataFrame(), (schema.SchemaField("not_found", "STRING"),), None
+        )
+    assert "columns in schema must match" in str(exc)
