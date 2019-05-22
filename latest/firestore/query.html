@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Queries &#8212; google-cloud 694e9f2 documentation</title>
+    <title>Queries &#8212; google-cloud 4ddc53d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -151,7 +151,7 @@ represent a position in a query result set.</td>
 a copy of the current query, modified with the newly added
 “end at” cursor.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query" title="google.cloud.firestore_v1beta1.query.Query">Query</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Query</td>
 </tr>
 </tbody>
 </table>
@@ -183,7 +183,7 @@ represent a position in a query result set.</td>
 a copy of the current query, modified with the newly added
 “end before” cursor.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query" title="google.cloud.firestore_v1beta1.query.Query">Query</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Query</td>
 </tr>
 </tbody>
 </table>
@@ -211,7 +211,7 @@ the query.</td>
 copy of the current query, modified with the newly added
 “limit” filter.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query" title="google.cloud.firestore_v1beta1.query.Query">Query</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Query</td>
 </tr>
 </tbody>
 </table>
@@ -234,7 +234,7 @@ of query results. (Must be non-negative.)</td>
 copy of the current query, modified with the newly added
 “offset” field.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query" title="google.cloud.firestore_v1beta1.query.Query">Query</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Query</td>
 </tr>
 </tbody>
 </table>
@@ -300,7 +300,7 @@ copy of the current query, modified with the newly added
 “order by” constraint.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query" title="google.cloud.firestore_v1beta1.query.Query">Query</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Query</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
@@ -335,7 +335,7 @@ of document fields in the query results.</td>
 a copy of the current query, modified with the newly added
 projection.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query" title="google.cloud.firestore_v1beta1.query.Query">Query</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Query</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If any <code class="docutils literal notranslate"><span class="pre">field_path</span></code> is invalid.</td>
 </tr>
@@ -369,7 +369,7 @@ represent a position in a query result set.</td>
 a copy of the current query, modified with the newly added
 “start after” cursor.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query" title="google.cloud.firestore_v1beta1.query.Query">Query</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Query</td>
 </tr>
 </tbody>
 </table>
@@ -401,7 +401,7 @@ represent a position in a query result set.</td>
 a copy of the current query, modified with the newly added
 “start at” cursor.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query" title="google.cloud.firestore_v1beta1.query.Query">Query</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Query</td>
 </tr>
 </tbody>
 </table>
@@ -431,7 +431,7 @@ allowed).</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>transaction</strong> (<em>Optional</em><em>[</em><em>                Transaction</em><em>]</em>) – An existing transaction that this query will
 run in.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Yields:</th><td class="field-body"><em>~google.cloud.firestore_v1beta1.document.DocumentSnapshot</em> – The next
+<tr class="field-even field"><th class="field-name">Yields:</th><td class="field-body"><em>~.firestore_v1beta1.document.DocumentSnapshot</em> – The next
 document that fulfills the query.</td>
 </tr>
 </tbody>
@@ -468,7 +468,7 @@ allowed operation.</li>
 copy of the current query, modified with the newly added filter.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#google.cloud.firestore_v1beta1.query.Query" title="google.cloud.firestore_v1beta1.query.Query">Query</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Query</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
