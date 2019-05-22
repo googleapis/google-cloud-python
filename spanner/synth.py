@@ -37,9 +37,7 @@ s.move(library / "tests")
 # Add grpcio-gcp options
 s.replace(
     "google/cloud/spanner_v1/gapic/transports/spanner_grpc_transport.py",
-    "# limitations under the License.\n" "\n" "import google.api_core.grpc_helpers\n",
-    "# limitations under the License.\n"
-    "\n"
+    "import google.api_core.grpc_helpers\n",
     "import pkg_resources\n"
     "import grpc_gcp\n"
     "\n"
