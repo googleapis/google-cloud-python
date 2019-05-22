@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.webrisk.v1beta1 WebRiskServiceV1Beta1 API."""
 
 import pkg_resources
@@ -32,6 +33,7 @@ from google.cloud.webrisk_v1beta1.gapic.transports import (
 )
 from google.cloud.webrisk_v1beta1.proto import webrisk_pb2
 from google.cloud.webrisk_v1beta1.proto import webrisk_pb2_grpc
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-webrisk").version
 
