@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.logging.v2 LoggingServiceV2 API."""
 
 import functools
@@ -37,6 +38,7 @@ from google.cloud.logging_v2.proto import log_entry_pb2
 from google.cloud.logging_v2.proto import logging_pb2
 from google.cloud.logging_v2.proto import logging_pb2_grpc
 from google.protobuf import empty_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-logging").version
 
