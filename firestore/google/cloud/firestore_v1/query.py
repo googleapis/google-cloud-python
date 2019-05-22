@@ -14,8 +14,8 @@
 
 """Classes for representing queries for the Google Cloud Firestore API.
 
-A :class:`~.firestore_v1.query.Query` can be created directly from
-a :class:`~.firestore_v1.collection.Collection` and that can be
+A :class:`~google.cloud.firestore_v1.query.Query` can be created directly from
+a :class:`~google.cloud.firestore_v1.collection.Collection` and that can be
 a more common way to create a query than direct usage of the constructor.
 """
 import copy
@@ -172,11 +172,11 @@ class Query(object):
     def select(self, field_paths):
         """Project documents matching query to a limited set of fields.
 
-        See :meth:`~.firestore_v1.client.Client.field_path` for
+        See :meth:`~google.cloud.firestore_v1.client.Client.field_path` for
         more information on **field paths**.
 
         If the current query already has a projection set (i.e. has already
-        called :meth:`~.firestore_v1.query.Query.select`), this
+        called :meth:`~google.cloud.firestore_v1.query.Query.select`), this
         will overwrite it.
 
         Args:
@@ -216,10 +216,10 @@ class Query(object):
     def where(self, field_path, op_string, value):
         """Filter the query on a field.
 
-        See :meth:`~.firestore_v1.client.Client.field_path` for
+        See :meth:`~google.cloud.firestore_v1.client.Client.field_path` for
         more information on **field paths**.
 
-        Returns a new :class:`~.firestore_v1.query.Query` that
+        Returns a new :class:`~google.cloud.firestore_v1.query.Query` that
         filters on a specific field path, according to an operation (e.g.
         ``==`` or "equals") and a particular value to be paired with that
         operation.
@@ -292,11 +292,11 @@ class Query(object):
     def order_by(self, field_path, direction=ASCENDING):
         """Modify the query to add an order clause on a specific field.
 
-        See :meth:`~.firestore_v1.client.Client.field_path` for
+        See :meth:`~google.cloud.firestore_v1.client.Client.field_path` for
         more information on **field paths**.
 
-        Successive :meth:`~.firestore_v1.query.Query.order_by` calls
-        will further refine the ordering of results returned by the query
+        Successive :meth:`~google.cloud.firestore_v1.query.Query.order_by`
+        calls will further refine the ordering of results returned by the query
         (i.e. the new "order by" fields will be added to existing ones).
 
         Args:
@@ -393,7 +393,7 @@ class Query(object):
 
         When the query is sent to the server, the ``document_fields`` will
         be used in the order given by fields set by
-        :meth:`~.firestore_v1.query.Query.order_by`.
+        :meth:`~google.cloud.firestore_v1.query.Query.order_by`.
 
         Args:
             document_fields (Union[~.firestore_v1.\
@@ -449,12 +449,12 @@ class Query(object):
 
         If the current query already has specified a start cursor -- either
         via this method or
-        :meth:`~.firestore_v1.query.Query.start_after` -- this will
-        overwrite it.
+        :meth:`~google.cloud.firestore_v1.query.Query.start_after` -- this
+        will overwrite it.
 
         When the query is sent to the server, the ``document_fields`` will
         be used in the order given by fields set by
-        :meth:`~.firestore_v1.query.Query.order_by`.
+        :meth:`~google.cloud.firestore_v1.query.Query.order_by`.
 
         Args:
             document_fields (Union[~.firestore_v1.\
@@ -478,12 +478,12 @@ class Query(object):
 
         If the current query already has specified a start cursor -- either
         via this method or
-        :meth:`~.firestore_v1.query.Query.start_at` -- this will
+        :meth:`~google.cloud.firestore_v1.query.Query.start_at` -- this will
         overwrite it.
 
         When the query is sent to the server, the ``document_fields`` will
         be used in the order given by fields set by
-        :meth:`~.firestore_v1.query.Query.order_by`.
+        :meth:`~google.cloud.firestore_v1.query.Query.order_by`.
 
         Args:
             document_fields (Union[~.firestore_v1.\
@@ -507,12 +507,12 @@ class Query(object):
 
         If the current query already has specified an end cursor -- either
         via this method or
-        :meth:`~.firestore_v1.query.Query.end_at` -- this will
+        :meth:`~google.cloud.firestore_v1.query.Query.end_at` -- this will
         overwrite it.
 
         When the query is sent to the server, the ``document_fields`` will
         be used in the order given by fields set by
-        :meth:`~.firestore_v1.query.Query.order_by`.
+        :meth:`~google.cloud.firestore_v1.query.Query.order_by`.
 
         Args:
             document_fields (Union[~.firestore_v1.\
@@ -536,12 +536,12 @@ class Query(object):
 
         If the current query already has specified an end cursor -- either
         via this method or
-        :meth:`~.firestore_v1.query.Query.end_before` -- this will
+        :meth:`~google.cloud.firestore_v1.query.Query.end_before` -- this will
         overwrite it.
 
         When the query is sent to the server, the ``document_fields`` will
         be used in the order given by fields set by
-        :meth:`~.firestore_v1.query.Query.order_by`.
+        :meth:`~google.cloud.firestore_v1.query.Query.order_by`.
 
         Args:
             document_fields (Union[~.firestore_v1.\
@@ -888,8 +888,8 @@ def _enum_from_direction(direction):
 
     Args:
         direction (str): A direction to order by. Must be one of
-            :attr:`~.firestore.Query.ASCENDING` or
-            :attr:`~.firestore.Query.DESCENDING`.
+            :attr:`~google.cloud.firestore.Query.ASCENDING` or
+            :attr:`~google.cloud.firestore.Query.DESCENDING`.
 
     Returns:
         int: The enum corresponding to ``direction``.

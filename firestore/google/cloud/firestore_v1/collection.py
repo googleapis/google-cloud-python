@@ -40,7 +40,7 @@ class CollectionReference(object):
             that contain a sub-collection.
         kwargs (dict): The keyword arguments for the constructor. The only
             supported keyword is ``client`` and it must be a
-            :class:`~.firestore_v1.client.Client` if provided. It
+            :class:`~google.cloud.firestore_v1.client.Client` if provided. It
             represents the client that created this collection reference.
 
     Raises:
@@ -210,7 +210,7 @@ class CollectionReference(object):
         """Create a "select" query with this collection as parent.
 
         See
-        :meth:`~.firestore_v1.query.Query.select` for
+        :meth:`~google.cloud.firestore_v1.query.Query.select` for
         more information on this method.
 
         Args:
@@ -228,7 +228,7 @@ class CollectionReference(object):
         """Create a "where" query with this collection as parent.
 
         See
-        :meth:`~.firestore_v1.query.Query.where` for
+        :meth:`~google.cloud.firestore_v1.query.Query.where` for
         more information on this method.
 
         Args:
@@ -251,7 +251,7 @@ class CollectionReference(object):
         """Create an "order by" query with this collection as parent.
 
         See
-        :meth:`~.firestore_v1.query.Query.order_by` for
+        :meth:`~google.cloud.firestore_v1.query.Query.order_by` for
         more information on this method.
 
         Args:
@@ -259,8 +259,8 @@ class CollectionReference(object):
                 field names) on which to order the query results.
             kwargs (Dict[str, Any]): The keyword arguments to pass along
                 to the query. The only supported keyword is ``direction``,
-                see :meth:`~.firestore_v1.query.Query.order_by` for
-                more information.
+                see :meth:`~google.cloud.firestore_v1.query.Query.order_by`
+                for more information.
 
         Returns:
             ~.firestore_v1.query.Query: An "order by" query.
@@ -272,7 +272,7 @@ class CollectionReference(object):
         """Create a limited query with this collection as parent.
 
         See
-        :meth:`~.firestore_v1.query.Query.limit` for
+        :meth:`~google.cloud.firestore_v1.query.Query.limit` for
         more information on this method.
 
         Args:
@@ -289,7 +289,7 @@ class CollectionReference(object):
         """Skip to an offset in a query with this collection as parent.
 
         See
-        :meth:`~.firestore_v1.query.Query.offset` for
+        :meth:`~google.cloud.firestore_v1.query.Query.offset` for
         more information on this method.
 
         Args:
@@ -306,7 +306,7 @@ class CollectionReference(object):
         """Start query at a cursor with this collection as parent.
 
         See
-        :meth:`~.firestore_v1.query.Query.start_at` for
+        :meth:`~google.cloud.firestore_v1.query.Query.start_at` for
         more information on this method.
 
         Args:
@@ -326,7 +326,7 @@ class CollectionReference(object):
         """Start query after a cursor with this collection as parent.
 
         See
-        :meth:`~.firestore_v1.query.Query.start_after` for
+        :meth:`~google.cloud.firestore_v1.query.Query.start_after` for
         more information on this method.
 
         Args:
@@ -346,7 +346,7 @@ class CollectionReference(object):
         """End query before a cursor with this collection as parent.
 
         See
-        :meth:`~.firestore_v1.query.Query.end_before` for
+        :meth:`~google.cloud.firestore_v1.query.Query.end_before` for
         more information on this method.
 
         Args:
@@ -366,7 +366,7 @@ class CollectionReference(object):
         """End query at a cursor with this collection as parent.
 
         See
-        :meth:`~.firestore_v1.query.Query.end_at` for
+        :meth:`~google.cloud.firestore_v1.query.Query.end_at` for
         more information on this method.
 
         Args:
