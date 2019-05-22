@@ -210,6 +210,79 @@ class TestClient(unittest.TestCase):
         self.assertIs(table_data_client._client_info, client_info)
         self.assertIs(client._table_data_client, table_data_client)
 
+    def test_data_transport_not_initialized_w_admin_flag(self):
+        from google.cloud.bigtable_v2.gapic.transports import bigtable_grpc_transport
+
+        channel = mock.Mock()
+
+        client = self._make_one(project=self.PROJECT, admin=True)
+
+        client.data_transport = channel
+        self.assertTrue(callable(client.data_transport))
+        data_transport = client.data_transport(
+            default_class=bigtable_grpc_transport.BigtableGrpcTransport
+        )
+        self.assertIsInstance(
+            data_transport, bigtable_grpc_transport.BigtableGrpcTransport
+        )
+
+        self.assertIsInstance(
+            client._data_transport(
+                default_class=bigtable_grpc_transport.BigtableGrpcTransport
+            ),
+            bigtable_grpc_transport.BigtableGrpcTransport,
+        )
+
+    def test_table_data_client_not_initialized_w_data_transport_w_channel(self):
+        from google.cloud.bigtable.client import _CLIENT_INFO
+        from google.cloud.bigtable_v2 import BigtableClient
+        from google.cloud.bigtable_v2.gapic.transports import bigtable_grpc_transport
+
+        client = self._make_one(project=self.PROJECT, admin=True)
+
+        channel = mock.Mock()
+
+        client.data_transport = channel
+
+        self.assertTrue(callable(client.data_transport))
+        data_transport = client.data_transport(
+            default_class=bigtable_grpc_transport.BigtableGrpcTransport
+        )
+
+        table_data_client = client.table_data_client
+        self.assertIsInstance(
+            data_transport, bigtable_grpc_transport.BigtableGrpcTransport
+        )
+
+        self.assertIsInstance(
+            table_data_client.transport, bigtable_grpc_transport.BigtableGrpcTransport
+        )
+
+        self.assertIsInstance(table_data_client, BigtableClient)
+        self.assertIs(table_data_client._client_info, _CLIENT_INFO)
+        self.assertIs(client._table_data_client, table_data_client)
+
+    def test_table_data_client_not_initialized_w_data_transport_w_credentials(self):
+        from google.cloud.bigtable.client import _CLIENT_INFO
+        from google.cloud.bigtable_v2 import BigtableClient
+
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, admin=True
+        )
+
+        client.data_transport = None
+        data_transport = client.data_transport
+        self.assertTrue(callable(data_transport))
+
+        self.assertIsNot(client._credentials, None)
+
+        table_data_client = client.table_data_client
+
+        self.assertIsInstance(table_data_client, BigtableClient)
+        self.assertIs(table_data_client._client_info, _CLIENT_INFO)
+        self.assertIs(client._table_data_client, table_data_client)
+
     def test_table_data_client_initialized(self):
         credentials = _make_credentials()
         client = self._make_one(
@@ -226,7 +299,66 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(ValueError):
             client.table_admin_client()
 
-    def test_table_admin_client_not_initialized_w_admin_flag(self):
+    def test_admin_transport_not_initialized_w_admin_flag(self):
+        from google.cloud.bigtable_admin_v2.gapic.transports import (
+            bigtable_table_admin_grpc_transport,
+        )
+
+        channel = mock.Mock()
+
+        client = self._make_one(project=self.PROJECT, admin=True)
+
+        client.admin_transport = channel
+        self.assertTrue(callable(client.admin_transport))
+        admin_transport = client.admin_transport(
+            default_class=bigtable_table_admin_grpc_transport.BigtableTableAdminGrpcTransport
+        )
+        self.assertIsInstance(
+            admin_transport,
+            bigtable_table_admin_grpc_transport.BigtableTableAdminGrpcTransport,
+        )
+
+        self.assertIsInstance(
+            client._admin_transport(
+                default_class=bigtable_table_admin_grpc_transport.BigtableTableAdminGrpcTransport
+            ),
+            bigtable_table_admin_grpc_transport.BigtableTableAdminGrpcTransport,
+        )
+
+    def test_table_admin_client_not_initialized_w_admin_transport_w_channel(self):
+        from google.cloud.bigtable.client import _CLIENT_INFO
+        from google.cloud.bigtable_admin_v2 import BigtableTableAdminClient
+        from google.cloud.bigtable_admin_v2.gapic.transports import (
+            bigtable_table_admin_grpc_transport,
+        )
+
+        client = self._make_one(project=self.PROJECT, admin=True)
+
+        channel = mock.Mock()
+
+        client.admin_transport = channel
+
+        self.assertTrue(callable(client.admin_transport))
+        admin_transport = client.admin_transport(
+            default_class=bigtable_table_admin_grpc_transport.BigtableTableAdminGrpcTransport
+        )
+
+        table_admin_client = client.table_admin_client
+        self.assertIsInstance(
+            admin_transport,
+            bigtable_table_admin_grpc_transport.BigtableTableAdminGrpcTransport,
+        )
+
+        self.assertIsInstance(
+            table_admin_client.transport,
+            bigtable_table_admin_grpc_transport.BigtableTableAdminGrpcTransport,
+        )
+
+        self.assertIsInstance(table_admin_client, BigtableTableAdminClient)
+        self.assertIs(table_admin_client._client_info, _CLIENT_INFO)
+        self.assertIs(client._table_admin_client, table_admin_client)
+
+    def test_table_admin_client_not_initialized_w_admin_transport_w_credentials(self):
         from google.cloud.bigtable.client import _CLIENT_INFO
         from google.cloud.bigtable_admin_v2 import BigtableTableAdminClient
 
@@ -235,7 +367,14 @@ class TestClient(unittest.TestCase):
             project=self.PROJECT, credentials=credentials, admin=True
         )
 
+        client.admin_transport = None
+        admin_transport = client.admin_transport
+        self.assertTrue(callable(admin_transport))
+
+        self.assertIsNot(client._credentials, None)
+
         table_admin_client = client.table_admin_client
+
         self.assertIsInstance(table_admin_client, BigtableTableAdminClient)
         self.assertIs(table_admin_client._client_info, _CLIENT_INFO)
         self.assertIs(client._table_admin_client, table_admin_client)
@@ -283,6 +422,54 @@ class TestClient(unittest.TestCase):
         )
 
         instance_admin_client = client.instance_admin_client
+        self.assertIsInstance(instance_admin_client, BigtableInstanceAdminClient)
+        self.assertIs(instance_admin_client._client_info, _CLIENT_INFO)
+        self.assertIs(client._instance_admin_client, instance_admin_client)
+
+    def test_instance_admin_client_not_initialized_w_admin_flag_w_channel(self):
+        from google.cloud.bigtable.client import _CLIENT_INFO
+        from google.cloud.bigtable_admin_v2 import BigtableInstanceAdminClient
+        from google.cloud.bigtable_admin_v2.gapic.transports import (
+            bigtable_instance_admin_grpc_transport,
+        )
+
+        client = self._make_one(project=self.PROJECT, admin=True)
+
+        channel = mock.Mock()
+
+        client.admin_transport = channel
+        admin_transport = client.admin_transport(
+            default_class=bigtable_instance_admin_grpc_transport.BigtableInstanceAdminGrpcTransport
+        )
+        self.assertIsInstance(
+            admin_transport,
+            bigtable_instance_admin_grpc_transport.BigtableInstanceAdminGrpcTransport,
+        )
+
+        instance_admin_client = client.instance_admin_client
+        self.assertIsInstance(instance_admin_client, BigtableInstanceAdminClient)
+        self.assertIs(instance_admin_client._client_info, _CLIENT_INFO)
+        self.assertIs(client._instance_admin_client, instance_admin_client)
+
+    def test_instance_admin_client_not_initialized_w_admin_transport_w_credentials(
+        self
+    ):
+        from google.cloud.bigtable.client import _CLIENT_INFO
+        from google.cloud.bigtable_admin_v2 import BigtableInstanceAdminClient
+
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, admin=True
+        )
+
+        client.admin_transport = None
+        admin_transport = client.admin_transport
+        self.assertTrue(callable(admin_transport))
+
+        self.assertIsNot(client._credentials, None)
+
+        instance_admin_client = client.instance_admin_client
+
         self.assertIsInstance(instance_admin_client, BigtableInstanceAdminClient)
         self.assertIs(instance_admin_client._client_info, _CLIENT_INFO)
         self.assertIs(client._instance_admin_client, instance_admin_client)

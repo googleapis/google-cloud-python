@@ -35,6 +35,11 @@ from google.api_core.gapic_v1 import client_info
 
 from google.cloud import bigtable_v2
 from google.cloud import bigtable_admin_v2
+from google.cloud.bigtable_v2.gapic.transports import bigtable_grpc_transport
+from google.cloud.bigtable_admin_v2.gapic.transports import (
+    bigtable_table_admin_grpc_transport,
+    bigtable_instance_admin_grpc_transport,
+)
 
 from google.cloud.bigtable import __version__
 from google.cloud.bigtable.instance import Instance
@@ -61,15 +66,30 @@ READ_ONLY_SCOPE = "https://www.googleapis.com/auth/bigtable.data.readonly"
 
 
 def _create_gapic_client(client_class):
-    def inner(self):
+    def inner(self, transport=None):
         if self._emulator_host is None:
-            return client_class(
-                credentials=self._credentials, client_info=self._client_info
-            )
+            if transport is not None:
+                return client_class(transport=transport, client_info=self._client_info)
+            else:
+                return client_class(
+                    credentials=self._credentials, client_info=self._client_info
+                )
         else:
             return client_class(
                 channel=self._emulator_channel, client_info=self._client_info
             )
+
+    return inner
+
+
+def transport(channel=None):
+    def inner(credentials=None, default_class=None):
+        if channel is not None:
+            return default_class(channel=channel)
+        elif credentials is not None:
+            return default_class(credentials=credentials)
+        else:
+            return None
 
     return inner
 
@@ -122,6 +142,8 @@ class Client(ClientWithProject):
     _table_data_client = None
     _table_admin_client = None
     _instance_admin_client = None
+    _admin_transport = None
+    _data_transport = None
 
     def __init__(
         self,
@@ -140,6 +162,7 @@ class Client(ClientWithProject):
         # NOTE: We set the scopes **before** calling the parent constructor.
         #       It **may** use those scopes in ``with_scopes_if_required``.
         self._read_only = bool(read_only)
+        self._credentials = credentials
         self._admin = bool(admin)
         self._client_info = client_info
         self._emulator_host = os.getenv(BIGTABLE_EMULATOR)
@@ -213,8 +236,15 @@ class Client(ClientWithProject):
         :returns: A BigtableClient object.
         """
         if self._table_data_client is None:
+            if self._data_transport is not None:
+                transport = self.data_transport(
+                    default_class=bigtable_grpc_transport.BigtableGrpcTransport
+                )
+            else:
+                transport = None
+
             self._table_data_client = _create_gapic_client(bigtable_v2.BigtableClient)(
-                self
+                self, transport=transport
             )
         return self._table_data_client
 
@@ -237,9 +267,15 @@ class Client(ClientWithProject):
         if self._table_admin_client is None:
             if not self._admin:
                 raise ValueError("Client is not an admin client.")
+            if self._admin_transport is not None:
+                transport = self.admin_transport(
+                    default_class=bigtable_table_admin_grpc_transport.BigtableTableAdminGrpcTransport
+                )
+            else:
+                transport = None
             self._table_admin_client = _create_gapic_client(
                 bigtable_admin_v2.BigtableTableAdminClient
-            )(self)
+            )(self, transport=transport)
         return self._table_admin_client
 
     @property
@@ -261,10 +297,43 @@ class Client(ClientWithProject):
         if self._instance_admin_client is None:
             if not self._admin:
                 raise ValueError("Client is not an admin client.")
+            if self._admin_transport is not None:
+                transport = self.admin_transport(
+                    default_class=bigtable_instance_admin_grpc_transport.BigtableInstanceAdminGrpcTransport
+                )
+            else:
+                transport = None
             self._instance_admin_client = _create_gapic_client(
                 bigtable_admin_v2.BigtableInstanceAdminClient
-            )(self)
+            )(self, transport=transport)
         return self._instance_admin_client
+
+    @property
+    def data_transport(self):
+        return self._data_transport
+
+    @data_transport.setter
+    def data_transport(self, channel=None):
+        if self._data_transport is None:
+            if channel is not None:
+                self._data_transport = transport(channel=channel)
+            elif self._credentials is not None:
+                self._data_transport = transport()
+
+    @property
+    def admin_transport(self):
+        return self._admin_transport
+
+    @admin_transport.setter
+    def admin_transport(self, channel=None):
+
+        if self._admin_transport is None:
+            if not self._admin:
+                raise ValueError("Client is not an admin client.")
+            if channel is not None:
+                self._admin_transport = transport(channel=channel)
+            elif self._credentials is not None:
+                self._admin_transport = transport()
 
     def instance(self, instance_id, display_name=None, instance_type=None, labels=None):
         """Factory to create a instance associated with this client.
