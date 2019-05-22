@@ -1272,14 +1272,15 @@ class Client(ClientWithProject):
             project (str, optional):
                 Project ID of the project of where to run the job. Defaults
                 to the client's project.
-            job_config (google.cloud.bigquery.job.LoadJobConfig, optional):
+            job_config (~google.cloud.bigquery.job.LoadJobConfig, optional):
                 Extra configuration options for the job.
 
                 To override the default pandas data type conversions, supply
-                a BigQuery schema in the job configuration. If a schema is
-                supplied, the BigQuery schema will be used to determine the
-                correct pandas to parquet type conversion. Indexes are not
-                loaded. Requires the :mod:`pyarrow` library.
+                a value for
+                :attr:`~google.cloud.bigquery.job.LoadJobConfig.schema` with
+                column names matching those of the dataframe. The BigQuery
+                schema is used to determine the correct data type conversion.
+                Indexes are not loaded. Requires the :mod:`pyarrow` library.
 
         Returns:
             google.cloud.bigquery.job.LoadJob: A new load job.
