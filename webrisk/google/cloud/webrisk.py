@@ -14,10 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 from __future__ import absolute_import
 
 from google.cloud.webrisk_v1beta1 import WebRiskServiceV1Beta1Client
 from google.cloud.webrisk_v1beta1 import enums
 from google.cloud.webrisk_v1beta1 import types
+
 
 __all__ = ("enums", "types", "WebRiskServiceV1Beta1Client")
