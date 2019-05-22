@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 import google.api_core.grpc_helpers
 
 from google.cloud.videointelligence_v1p3beta1.proto import video_intelligence_pb2_grpc
