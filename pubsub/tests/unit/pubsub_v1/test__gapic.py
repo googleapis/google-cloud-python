@@ -18,47 +18,45 @@ from google.cloud.pubsub_v1 import _gapic
 
 class SourceClass(object):
     def __init__(self):
-        self.x = 'x'
+        self.x = "x"
 
     def method(self):
-        return 'source class instance method'
+        return "source class instance method"
 
     @staticmethod
     def static_method():
-        return 'source class static method'
+        return "source class static method"
 
     @classmethod
     def class_method(cls):
-        return 'source class class method'
+        return "source class class method"
 
     @classmethod
     def blacklisted_method(cls):
-        return 'source class blacklisted method'
+        return "source class blacklisted method"
 
 
 def test__gapic():
-
     @_gapic.add_methods(SourceClass, ("blacklisted_method",))
     class Foo(object):
         def __init__(self):
             self.api = SourceClass()
 
         def method(self):
-            return 'foo class instance method'
-
+            return "foo class instance method"
 
     foo = Foo()
 
     # Any method that's callable and not blacklisted is "inherited".
-    assert set(['method', 'static_method', 'class_method']) <= set(dir(foo))
-    assert 'blacklisted_method' not in dir(foo)
+    assert set(["method", "static_method", "class_method"]) <= set(dir(foo))
+    assert "blacklisted_method" not in dir(foo)
 
     # Source Class's static and class methods become static methods.
     assert type(Foo.__dict__["static_method"]) == staticmethod
-    assert foo.static_method() == 'source class static method'
+    assert foo.static_method() == "source class static method"
     assert type(Foo.__dict__["class_method"]) == staticmethod
-    assert foo.class_method() == 'source class class method'
+    assert foo.class_method() == "source class class method"
 
     # The decorator changes the behavior of instance methods of the wrapped class.
-    # method() is called upon an instance of the Source Class. 
-    assert foo.method() == 'source class instance method'
+    # method() is called upon an instance of the Source Class.
+    assert foo.method() == "source class instance method"
