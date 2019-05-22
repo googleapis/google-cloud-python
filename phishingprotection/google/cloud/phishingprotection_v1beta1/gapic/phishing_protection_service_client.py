@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.phishingprotection.v1beta1 PhishingProtectionServiceV1Beta1 API."""
 
 import pkg_resources
@@ -36,8 +37,9 @@ from google.cloud.phishingprotection_v1beta1.gapic.transports import (
 from google.cloud.phishingprotection_v1beta1.proto import phishingprotection_pb2
 from google.cloud.phishingprotection_v1beta1.proto import phishingprotection_pb2_grpc
 
+
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-phishingprotection"
+    "google-cloud-phishing-protection"
 ).version
 
 

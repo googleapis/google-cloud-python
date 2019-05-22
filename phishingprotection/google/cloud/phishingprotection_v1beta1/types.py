@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 from __future__ import absolute_import
 import sys
 
@@ -21,13 +22,14 @@ from google.api_core.protobuf_helpers import get_messages
 
 from google.cloud.phishingprotection_v1beta1.proto import phishingprotection_pb2
 
+
 _shared_modules = []
 
 _local_modules = [phishingprotection_pb2]
 
 names = []
 
-for module in _shared_modules:
+for module in _shared_modules:  # pragma: NO COVER
     for name, message in get_messages(module).items():
         setattr(sys.modules[__name__], name, message)
         names.append(name)
@@ -36,5 +38,6 @@ for module in _local_modules:
         message.__module__ = "google.cloud.phishingprotection_v1beta1.types"
         setattr(sys.modules[__name__], name, message)
         names.append(name)
+
 
 __all__ = tuple(sorted(names))
