@@ -46,11 +46,11 @@ class Transaction(batch.WriteBatch):
     """Accumulate read-and-write operations to be sent in a transaction.
 
     Args:
-        client (~google.cloud.firestore_v1beta1.client.Client): The client that
+        client (~.firestore_v1beta1.client.Client): The client that
             created this transaction.
         max_attempts (Optional[int]): The maximum number of attempts for
             the transaction (i.e. allowing retries). Defaults to
-            :attr:`~google.cloud.firestore_v1beta1.transaction.MAX_ATTEMPTS`.
+            :attr:`~.firestore_v1beta1.transaction.MAX_ATTEMPTS`.
         read_only (Optional[bool]): Flag indicating if the transaction
             should be read-only or should allow writes. Defaults to
             :data:`False`.
@@ -206,10 +206,10 @@ class _Transactional(object):
     """Provide a callable object to use as a transactional decorater.
 
     This is surfaced via
-    :func:`~google.cloud.firestore_v1beta1.transaction.transactional`.
+    :func:`~.firestore_v1beta1.transaction.transactional`.
 
     Args:
-        to_wrap (Callable[~google.cloud.firestore_v1beta1.transaction.Transaction, \
+        to_wrap (Callable[~.firestore_v1beta1.transaction.Transaction, \
             Any]): A callable that should be run (and retried) in a
             transaction.
     """
@@ -234,7 +234,7 @@ class _Transactional(object):
         it will have staged writes).
 
         Args:
-            transaction (~google.cloud.firestore_v1beta1.transaction.Transaction): A
+            transaction (~.firestore_v1beta1.transaction.Transaction): A
                 transaction to execute the callable within.
             args (Tuple[Any, ...]): The extra positional arguments to pass
                 along to the wrapped callable.
@@ -271,7 +271,7 @@ class _Transactional(object):
         not be caught.
 
         Args:
-            transaction (~google.cloud.firestore_v1beta1.transaction.Transaction): The
+            transaction (~.firestore_v1beta1.transaction.Transaction): The
                 transaction to be ``Commit``-ed.
 
         Returns:
@@ -294,7 +294,7 @@ class _Transactional(object):
         """Execute the wrapped callable within a transaction.
 
         Args:
-            transaction (~google.cloud.firestore_v1beta1.transaction.Transaction): A
+            transaction (~.firestore_v1beta1.transaction.Transaction): A
                 transaction to execute the callable within.
             args (Tuple[Any, ...]): The extra positional arguments to pass
                 along to the wrapped callable.
@@ -331,12 +331,12 @@ def transactional(to_wrap):
     """Decorate a callable so that it runs in a transaction.
 
     Args:
-        to_wrap (Callable[~google.cloud.firestore_v1beta1.transaction.Transaction, \
+        to_wrap (Callable[~.firestore_v1beta1.transaction.Transaction, \
             Any]): A callable that should be run (and retried) in a
             transaction.
 
     Returns:
-        Callable[~google.cloud.firestore_v1beta1.transaction.Transaction, Any]: the
+        Callable[~.firestore_v1beta1.transaction.Transaction, Any]: the
         wrapped callable.
     """
     return _Transactional(to_wrap)
@@ -352,7 +352,7 @@ def _commit_with_retry(client, write_pbs, transaction_id):
     our own retry to special-case the ``INVALID_ARGUMENT`` error.
 
     Args:
-        client (~google.cloud.firestore_v1beta1.client.Client): A client with
+        client (~.firestore_v1beta1.client.Client): A client with
             GAPIC client and configuration details.
         write_pbs (List[google.cloud.proto.firestore.v1beta1.\
             write_pb2.Write, ...]): A ``Write`` protobuf instance to

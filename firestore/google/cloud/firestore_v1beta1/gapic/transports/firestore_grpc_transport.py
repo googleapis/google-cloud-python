@@ -75,7 +75,7 @@ class FirestoreGrpcTransport(object):
 
         Args:
             address (str): The host for the channel to use.
-            credentials (~google.cloud.Credentials): The
+            credentials (~.Credentials): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If
                 none are specified, the client will attempt to ascertain
