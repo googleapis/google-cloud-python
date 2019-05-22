@@ -220,11 +220,11 @@ def reference_value_to_document(reference_value, client):
 
     Args:
         reference_value (str): A document reference value.
-        client (~google.cloud.firestore_v1.client.Client): A client that has
+        client (~.firestore_v1.client.Client): A client that has
             a document factory.
 
     Returns:
-        ~google.cloud.firestore_v1.document.DocumentReference: The document
+        ~.firestore_v1.document.DocumentReference: The document
         corresponding to ``reference_value``.
 
     Raises:
@@ -255,7 +255,7 @@ def decode_value(value, client):
     Args:
         value (google.cloud.firestore_v1.types.Value): A
             Firestore protobuf to be decoded / parsed / converted.
-        client (~google.cloud.firestore_v1.client.Client): A client that has
+        client (~.firestore_v1.client.Client): A client that has
             a document factory.
 
     Returns:
@@ -301,7 +301,7 @@ def decode_dict(value_fields, client):
     Args:
         value_fields (google.protobuf.pyext._message.MessageMapContainer): A
             protobuf map of Firestore ``Value``-s.
-        client (~google.cloud.firestore_v1.client.Client): A client that has
+        client (~.firestore_v1.client.Client): A client that has
             a document factory.
 
     Returns:
@@ -851,7 +851,7 @@ def pbs_for_update(document_path, field_updates, option):
         document_path (str): A fully-qualified document path.
         field_updates (dict): Field names or paths to update and values
             to update with.
-        option (optional[~google.cloud.firestore_v1.client.WriteOption]): A
+        option (optional[~.firestore_v1.client.WriteOption]): A
            write option to make assertions / preconditions on the server
            state of the document before applying changes.
 
@@ -890,7 +890,7 @@ def pb_for_delete(document_path, option):
 
     Args:
         document_path (str): A fully-qualified document path.
-        option (optional[~google.cloud.firestore_v1.client.WriteOption]): A
+        option (optional[~.firestore_v1.client.WriteOption]): A
            write option to make assertions / preconditions on the server
            state of the document before applying changes.
 
@@ -916,7 +916,7 @@ def get_transaction_id(transaction, read_operation=True):
     """Get the transaction ID from a ``Transaction`` object.
 
     Args:
-        transaction (Optional[~google.cloud.firestore_v1.transaction.\
+        transaction (Optional[~.firestore_v1.transaction.\
             Transaction]): An existing transaction that this query will
             run in.
         read_operation (Optional[bool]): Indicates if the transaction ID
@@ -979,7 +979,7 @@ class LastUpdateOption(WriteOption):
     """Option used to assert a "last update" condition on a write operation.
 
     This will typically be created by
-    :meth:`~google.cloud.firestore_v1.client.Client.write_option`.
+    :meth:`~.firestore_v1.client.Client.write_option`.
 
     Args:
         last_update_time (google.protobuf.timestamp_pb2.Timestamp): A
@@ -1019,7 +1019,7 @@ class ExistsOption(WriteOption):
     """Option used to assert existence on a write operation.
 
     This will typically be created by
-    :meth:`~google.cloud.firestore_v1.client.Client.write_option`.
+    :meth:`~.firestore_v1.client.Client.write_option`.
 
     Args:
         exists (bool): Indicates if the document being modified

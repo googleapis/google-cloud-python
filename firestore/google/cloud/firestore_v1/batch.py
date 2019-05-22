@@ -22,11 +22,11 @@ class WriteBatch(object):
     """Accumulate write operations to be sent in a batch.
 
     This has the same set of methods for write operations that
-    :class:`~google.cloud.firestore_v1.document.DocumentReference` does,
-    e.g. :meth:`~google.cloud.firestore_v1.document.DocumentReference.create`.
+    :class:`~.firestore_v1.document.DocumentReference` does,
+    e.g. :meth:`~.firestore_v1.document.DocumentReference.create`.
 
     Args:
-        client (~google.cloud.firestore_v1.client.Client): The client that
+        client (~.firestore_v1.client.Client): The client that
             created this batch.
     """
 
@@ -54,7 +54,7 @@ class WriteBatch(object):
         batch will fail when :meth:`commit`-ed.
 
         Args:
-            reference (~google.cloud.firestore_v1.document.DocumentReference): A
+            reference (~.firestore_v1.document.DocumentReference): A
                 document reference to be created in this batch.
             document_data (dict): Property names and values to use for
                 creating a document.
@@ -66,12 +66,12 @@ class WriteBatch(object):
         """Add a "change" to replace a document.
 
         See
-        :meth:`~google.cloud.firestore_v1.document.DocumentReference.set` for
+        :meth:`~.firestore_v1.document.DocumentReference.set` for
         more information on how ``option`` determines how the change is
         applied.
 
         Args:
-            reference (~google.cloud.firestore_v1.document.DocumentReference):
+            reference (~.firestore_v1.document.DocumentReference):
                 A document reference that will have values set in this batch.
             document_data (dict):
                 Property names and values to use for replacing a document.
@@ -94,15 +94,15 @@ class WriteBatch(object):
         """Add a "change" to update a document.
 
         See
-        :meth:`~google.cloud.firestore_v1.document.DocumentReference.update` for
+        :meth:`~.firestore_v1.document.DocumentReference.update` for
         more information on ``field_updates`` and ``option``.
 
         Args:
-            reference (~google.cloud.firestore_v1.document.DocumentReference): A
+            reference (~.firestore_v1.document.DocumentReference): A
                document reference that will be deleted in this batch.
             field_updates (dict): Field names or paths to update and values
                 to update with.
-            option (Optional[~google.cloud.firestore_v1.client.WriteOption]): A
+            option (Optional[~.firestore_v1.client.WriteOption]): A
                write option to make assertions / preconditions on the server
                state of the document before applying changes.
         """
@@ -117,14 +117,14 @@ class WriteBatch(object):
         """Add a "change" to delete a document.
 
         See
-        :meth:`~google.cloud.firestore_v1.document.DocumentReference.delete` for
+        :meth:`~.firestore_v1.document.DocumentReference.delete` for
         more information on how ``option`` determines how the change is
         applied.
 
         Args:
-            reference (~google.cloud.firestore_v1.document.DocumentReference): A
+            reference (~.firestore_v1.document.DocumentReference): A
                document reference that will be deleted in this batch.
-            option (Optional[~google.cloud.firestore_v1.client.WriteOption]): A
+            option (Optional[~.firestore_v1.client.WriteOption]): A
                write option to make assertions / preconditions on the server
                state of the document before applying changes.
         """
