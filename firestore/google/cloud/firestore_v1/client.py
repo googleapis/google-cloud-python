@@ -40,7 +40,7 @@ from google.cloud.firestore_v1.transaction import Transaction
 
 
 DEFAULT_DATABASE = "(default)"
-"""str: The default database used in a :class:`~google.cloud.firestore.client.Client`."""
+"""str: The default database used in a :class:`~google.cloud.firestore_v1.client.Client`."""
 _BAD_OPTION_ERR = (
     "Exactly one of ``last_update_time`` or ``exists`` " "must be provided."
 )
@@ -108,8 +108,8 @@ class Client(ClientWithProject):
         """Lazy-loading getter GAPIC Firestore API.
 
         Returns:
-            ~.gapic.firestore.v1.firestore_client.FirestoreClient: The
-            GAPIC client with the credentials of the current client.
+            :class:`~google.cloud.gapic.firestore.v1`.firestore_client.FirestoreClient:
+            <The GAPIC client with the credentials of the current client.
         """
         if self._firestore_api_internal is None:
             self._firestore_api_internal = firestore_client.FirestoreClient(
@@ -185,8 +185,8 @@ class Client(ClientWithProject):
                 * A tuple of collection path segments
 
         Returns:
-            ~.firestore_v1.collection.CollectionReference: A reference
-            to a collection in the Firestore database.
+            :class:`~google.cloud.firestore_v1.collection.CollectionReference`:
+            A reference to a collection in the Firestore database.
         """
         if len(collection_path) == 1:
             path = collection_path[0].split(_helpers.DOCUMENT_PATH_DELIMITER)
@@ -248,8 +248,8 @@ class Client(ClientWithProject):
                 * A tuple of document path segments
 
         Returns:
-            ~.firestore_v1.document.DocumentReference: A reference
-            to a document in a collection.
+            :class:`~google.cloud.firestore_v1.document.DocumentReference`:
+            A reference to a document in a collection.
         """
         if len(document_path) == 1:
             path = document_path[0].split(_helpers.DOCUMENT_PATH_DELIMITER)
@@ -326,6 +326,10 @@ class Client(ClientWithProject):
         Raises:
             TypeError: If anything other than exactly one argument is
                 provided by the caller.
+
+        Returns:
+            :class:`~google.cloud.firestore_v1.client.WriteOption`:
+            The option to be used to configure a write message.
         """
         if len(kwargs) != 1:
             raise TypeError(_BAD_OPTION_ERR)
@@ -366,9 +370,9 @@ class Client(ClientWithProject):
                 paths (``.``-delimited list of field names) to use as a
                 projection of document fields in the returned results. If
                 no value is provided, all fields will be returned.
-            transaction (Optional[~.firestore_v1.transaction.\
-                Transaction]): An existing transaction that these
-                ``references`` will be retrieved in.
+            transaction (Optional[:class:`~google.cloud.firestore_v1.transaction.Transaction`]):
+                An existing transaction that these ``references`` will be
+                retrieved in.
 
         Yields:
             .DocumentSnapshot: The next document snapshot that fulfills the
@@ -391,7 +395,7 @@ class Client(ClientWithProject):
         """List top-level collections of the client's database.
 
         Returns:
-            Sequence[~.firestore_v1.collection.CollectionReference]:
+            Sequence[:class:`~google.cloud.firestore_v1.collection.CollectionReference`]:
                 iterator of subcollections of the current document.
         """
         iterator = self._firestore_api.list_collection_ids(
@@ -405,9 +409,9 @@ class Client(ClientWithProject):
         """Get a batch instance from this client.
 
         Returns:
-            ~.firestore_v1.batch.WriteBatch: A "write" batch to be
-            used for accumulating document changes and sending the changes
-            all at once.
+            :class:`~google.cloud.firestore_v1.batch.WriteBatch`:
+            A "write" batch to be used for accumulating document changes and
+            sending the changes all at once.
         """
         return WriteBatch(self)
 
@@ -424,8 +428,8 @@ class Client(ClientWithProject):
                 constructor.
 
         Returns:
-            ~.firestore_v1.transaction.Transaction: A transaction
-            attached to this client.
+            :class:`~google.cloud.firestore_v1.transaction.Transaction`:
+            A transaction attached to this client.
         """
         return Transaction(self, **kwargs)
 
@@ -493,8 +497,8 @@ def _parse_batch_get(get_doc_response, reference_map, client):
         reference_map (Dict[str, .DocumentReference]): A mapping (produced
             by :func:`_reference_info`) of fully-qualified document paths to
             document references.
-        client (~.firestore_v1.client.Client): A client that has
-            a document factory.
+        client (:class:`~google.cloud.firestore_v1.client.Client`):
+            A client that has a document factory.
 
     Returns:
        [.DocumentSnapshot]: The retrieved snapshot.

@@ -162,8 +162,8 @@ class DocumentReference(object):
         """Collection that owns the current document.
 
         Returns:
-            ~.firestore_v1.collection.CollectionReference: The
-            parent collection.
+            :class:`~google.cloud.firestore_v1.collection.CollectionReference`:
+            The parent collection.
         """
         parent_path = self._path[:-1]
         return self._client.collection(*parent_path)
@@ -176,8 +176,8 @@ class DocumentReference(object):
                 referred to as the "kind").
 
         Returns:
-            ~.firestore_v1.collection.CollectionReference: The
-            child collection.
+            :class:`~google.cloud.firestore_v1.collection.CollectionReference`:
+            The child collection.
         """
         child_path = self._path + (collection_id,)
         return self._client.collection(*child_path)
@@ -190,12 +190,13 @@ class DocumentReference(object):
                 creating a document.
 
         Returns:
-            google.cloud.firestore_v1.types.WriteResult: The
-            write result corresponding to the committed document. A write
-            result contains an ``update_time`` field.
+            :class:`~google.cloud.firestore_v1.types.WriteResult`:
+                The write result corresponding to the committed document.
+                A write result contains an ``update_time`` field.
 
         Raises:
-            ~google.cloud.exceptions.Conflict: If the document already exists.
+            :class:`~google.cloud.exceptions.Conflict`:
+                If the document already exists.
         """
         batch = self._client.batch()
         batch.create(self, document_data)
@@ -224,8 +225,8 @@ class DocumentReference(object):
                 of the document.
 
         Returns:
-            google.cloud.firestore_v1.types.WriteResult: The
-            write result corresponding to the committed document. A write
+            :class:`~google.cloud.firestore_v1.types.WriteResult`:
+            The write result corresponding to the committed document. A write
             result contains an ``update_time`` field.
         """
         batch = self._client.batch()
@@ -364,13 +365,13 @@ class DocumentReference(object):
         Args:
             field_updates (dict): Field names or paths to update and values
                 to update with.
-            option (Optional[~.firestore_v1.client.WriteOption]): A
-               write option to make assertions / preconditions on the server
-               state of the document before applying changes.
+            option (Optional[:class:`~google.cloud.firestore_v1.client.WriteOption`]):
+                A write option to make assertions / preconditions on the server
+                state of the document before applying changes.
 
         Returns:
-            google.cloud.firestore_v1.types.WriteResult: The
-            write result corresponding to the updated document. A write
+            :class:`~google.cloud.firestore_v1.types.WriteResult`:
+            The write result corresponding to the updated document. A write
             result contains an ``update_time`` field.
 
         Raises:
@@ -385,16 +386,16 @@ class DocumentReference(object):
         """Delete the current document in the Firestore database.
 
         Args:
-            option (Optional[~.firestore_v1.client.WriteOption]): A
-               write option to make assertions / preconditions on the server
-               state of the document before applying changes.
+            option (Optional[:class:`~google.cloud.firestore_v1.client.WriteOption`]):
+                A write option to make assertions / preconditions on the server
+                state of the document before applying changes.
 
         Returns:
-            google.protobuf.timestamp_pb2.Timestamp: The time that the delete
-            request was received by the server. If the document did not exist
-            when the delete was sent (i.e. nothing was deleted), this method
-            will still succeed and will still return the time that the
-            request was received by the server.
+            :class:`google.protobuf.timestamp_pb2.Timestamp`:
+            The time that the delete request was received by the server.
+            If the document did not exist when the delete was sent (i.e.
+            nothing was deleted), this method will still succeed and will
+            still return the time that the request was received by the server.
         """
         write_pb = _helpers.pb_for_delete(self._document_path, option)
         commit_response = self._client._firestore_api.commit(
@@ -421,16 +422,17 @@ class DocumentReference(object):
                 paths (``.``-delimited list of field names) to use as a
                 projection of document fields in the returned results. If
                 no value is provided, all fields will be returned.
-            transaction (Optional[~.firestore_v1.transaction.\
-                Transaction]): An existing transaction that this reference
+            transaction (Optional[:class:`~google.cloud.firestore_v1.transaction.Transaction`]):
+                An existing transaction that this reference
                 will be retrieved in.
 
         Returns:
-            ~.firestore_v1.document.DocumentSnapshot: A snapshot of
-                the current document. If the document does not exist at
-                the time of `snapshot`, the snapshot `reference`, `data`,
-                `update_time`, and `create_time` attributes will all be
-                `None` and `exists` will be `False`.
+            :class:`~google.cloud.firestore_v1.document.DocumentSnapshot`:
+                A snapshot of the current document. If the document does not
+                exist at the time of the snapshot is taken, the snapshot's
+                :attr:`reference`, :attr:`data`, :attr:`update_time`, and
+                :attr:`create_time` attributes will all be ``None`` and
+                its :attr:`exists` attribute will be ``False``.
         """
         if isinstance(field_paths, six.string_types):
             raise ValueError("'field_paths' must be a sequence of paths, not a string.")
@@ -477,7 +479,7 @@ class DocumentReference(object):
             are ignored. Defaults to a sensible value set by the API.
 
         Returns:
-            Sequence[~.firestore_v1.collection.CollectionReference]:
+            Sequence[:class:`~google.cloud.firestore_v1.collection.CollectionReference`]:
                 iterator of subcollections of the current document. If the
                 document does not exist at the time of `snapshot`, the
                 iterator will be empty
@@ -498,10 +500,13 @@ class DocumentReference(object):
         provided callback is run on the snapshot.
 
         Args:
-            callback(~.firestore.document.DocumentSnapshot):a callback to run
-                when a change occurs
+            callback(Callable[[:class:`~google.cloud.firestore.document.DocumentSnapshot`], NoneType]):
+                a callback to run when a change occurs
 
         Example:
+
+        .. code-block:: python
+
             from google.cloud import firestore_v1
 
             db = firestore_v1.Client()
@@ -535,18 +540,20 @@ class DocumentSnapshot(object):
     :meth:`~google.cloud.DocumentReference.get`.
 
     Args:
-        reference (~.firestore_v1.document.DocumentReference): A
-            document reference corresponding to the document that contains
+        reference (:class:`~google.cloud.firestore_v1.document.DocumentReference`):
+            A document reference corresponding to the document that contains
             the data in this snapshot.
-        data (Dict[str, Any]): The data retrieved in the snapshot.
-        exists (bool): Indicates if the document existed at the time the
-            snapshot was retrieved.
-        read_time (google.protobuf.timestamp_pb2.Timestamp): The time that
-            this snapshot was read from the server.
-        create_time (google.protobuf.timestamp_pb2.Timestamp): The time that
-            this document was created.
-        update_time (google.protobuf.timestamp_pb2.Timestamp): The time that
-            this document was last updated.
+        data (Dict[str, Any]):
+            The data retrieved in the snapshot.
+        exists (bool):
+            Indicates if the document existed at the time the snapshot was
+            retrieved.
+        read_time (:class:`google.protobuf.timestamp_pb2.Timestamp`):
+            The time that this snapshot was read from the server.
+        create_time (:class:`google.protobuf.timestamp_pb2.Timestamp`):
+            The time that this document was created.
+        update_time (:class:`google.protobuf.timestamp_pb2.Timestamp`):
+            The time that this document was last updated.
     """
 
     def __init__(self, reference, data, exists, read_time, create_time, update_time):
@@ -556,11 +563,8 @@ class DocumentSnapshot(object):
         self._data = copy.deepcopy(data)
         self._exists = exists
         self.read_time = read_time
-        """google.protobuf.timestamp_pb2.Timestamp: Time snapshot was read."""
         self.create_time = create_time
-        """google.protobuf.timestamp_pb2.Timestamp: Document's creation."""
         self.update_time = update_time
-        """google.protobuf.timestamp_pb2.Timestamp: Document's last update."""
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -577,8 +581,8 @@ class DocumentSnapshot(object):
         """The client that owns the document reference for this snapshot.
 
         Returns:
-            ~.firestore_v1.client.Client: The client that owns this
-            document.
+            :class:`~google.cloud.firestore_v1.client.Client`:
+            The client that owns this document.
         """
         return self._reference._client
 
@@ -608,8 +612,8 @@ class DocumentSnapshot(object):
         """Document reference corresponding to document that owns this data.
 
         Returns:
-            ~.firestore_v1.document.DocumentReference: A document
-            reference corresponding to this document.
+            :class:`~google.cloud.firestore_v1.document.DocumentReference`:
+            A document reference corresponding to this document.
         """
         return self._reference
 
@@ -702,8 +706,9 @@ def _get_document_path(client, path):
               documents/{document_path}``
 
     Args:
-        client (~.firestore_v1.client.Client): The client that holds
-            configuration details and a GAPIC client object.
+        client (:class:`~google.cloud.firestore_v1.client.Client`):
+            The client that holds configuration details and a GAPIC client
+            object.
         path (Tuple[str, ...]): The components in a document path.
 
     Returns:
