@@ -48,12 +48,12 @@ for version in versions:
             # f'test_video_intelligence_service_client_{version}.py',
         ],
     )
-
-s.replace(
-    "**/*/*video_intelligence_service_client.py",
-    "'google-cloud-video-intelligence', \).version",
-    "'google-cloud-videointelligence', ).version",
-)
+    s.replace(
+        f"google/cloud/videointelligence_{version}/gapic/"
+        f"*video_intelligence_service_client.py",
+        "google-cloud-video-intelligence",
+        "google-cloud-videointelligence",
+    )
 
 s.replace(
     "tests/unit/gapic/**/test_video_intelligence_service_client_*.py",

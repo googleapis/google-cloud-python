@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.videointelligence.v1 VideoIntelligenceService API."""
 
 import pkg_resources
@@ -37,6 +38,7 @@ from google.cloud.videointelligence_v1.gapic.transports import (
 from google.cloud.videointelligence_v1.proto import video_intelligence_pb2
 from google.cloud.videointelligence_v1.proto import video_intelligence_pb2_grpc
 from google.longrunning import operations_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     "google-cloud-videointelligence"
