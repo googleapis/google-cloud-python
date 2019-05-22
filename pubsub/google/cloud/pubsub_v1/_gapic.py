@@ -15,7 +15,6 @@
 from __future__ import absolute_import
 
 import functools
-import inspect
 
 
 def add_methods(source_class, blacklist=()):
