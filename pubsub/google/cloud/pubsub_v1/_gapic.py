@@ -33,7 +33,7 @@ def add_methods(source_class, blacklist=()):
         # For instance methods, we need to send self.api rather
         # than self, since that is where the actual methods were declared.
 
-        if isinstance(lookup_fx, classmethod) or isinstance(lookup_fx, staticmethod):
+        if isinstance(lookup_fx, (classmethod, staticmethod)):
             fx = lambda *a, **kw: wrapped_fx(*a, **kw)  # noqa
             return staticmethod(functools.wraps(wrapped_fx)(fx))
         else:
