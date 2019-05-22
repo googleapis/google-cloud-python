@@ -1,4 +1,4 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2019, Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -59,8 +59,7 @@ def add_methods(source_class, blacklist=()):
 
             # Add a wrapper method to this object.
             lookup_fx = source_class.__dict__[name]
-            wrapped_fx = getattr(source_class, name)
-            fx = wrap(wrapped_fx, lookup_fx)
+            fx = wrap(attr, lookup_fx)
 
             setattr(cls, name, fx)
 
