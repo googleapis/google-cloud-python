@@ -29,7 +29,7 @@ def organization_id():
 def test_list_all_assets(organization_id):
     """Demonstrate listing and printing all assets."""
     # [START demo_list_all_assets]
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
 
     client = securitycenter.SecurityCenterClient()
     # organization_id is the numeric ID of the organization.
@@ -47,7 +47,7 @@ def test_list_all_assets(organization_id):
 def test_list_assets_with_filters(organization_id):
     """Demonstrate listing assets with a filter."""
     # [START demo_list_assets_with_filter]
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
 
     client = securitycenter.SecurityCenterClient()
 
@@ -74,7 +74,7 @@ def test_list_assets_with_filters_and_read_time(organization_id):
 
     from google.protobuf.timestamp_pb2 import Timestamp
 
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
 
     client = securitycenter.SecurityCenterClient()
 
@@ -108,7 +108,7 @@ def test_list_point_in_time_changes(organization_id):
     from datetime import timedelta
 
     from google.protobuf.duration_pb2 import Duration
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
 
     client = securitycenter.SecurityCenterClient()
 
@@ -139,7 +139,7 @@ def test_list_point_in_time_changes(organization_id):
 def test_group_assets(organization_id):
     """Demonstrates grouping all assets by type. """
     # [START group_all_assets]
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
 
     client = securitycenter.SecurityCenterClient()
 
@@ -160,7 +160,7 @@ def test_group_assets(organization_id):
 def test_group_filtered_assets(organization_id):
     """Demonstrates grouping assets by type with a filter. """
     # [START group_all_assets]
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
 
     client = securitycenter.SecurityCenterClient()
 
@@ -188,7 +188,7 @@ def test_group_assets_by_changes(organization_id):
     # [START group_all_assets_by_change]
     from datetime import timedelta
 
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
     from google.protobuf.duration_pb2 import Duration
 
     client = securitycenter.SecurityCenterClient()

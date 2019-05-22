@@ -29,7 +29,7 @@ def organization_id():
 @pytest.fixture(scope="module")
 def asset_name(organization_id):
     """Returns a random asset name from existing assets."""
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
 
     client = securitycenter.SecurityCenterClient()
     # organization_id is the numeric ID of the organization.
@@ -50,7 +50,7 @@ def asset_name(organization_id):
 @pytest.fixture(scope="module")
 def source_name(organization_id):
     """Creates a new source in the organization."""
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
 
     client = securitycenter.SecurityCenterClient()
     org_name = "organizations/{org_id}".format(org_id=organization_id)
@@ -67,7 +67,7 @@ def source_name(organization_id):
 @pytest.fixture(scope="module")
 def finding_name(source_name):
     """Creates a new finding a returns it name."""
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
     from google.cloud.securitycenter_v1.proto.finding_pb2 import Finding
     from google.protobuf.timestamp_pb2 import Timestamp
 
@@ -102,7 +102,7 @@ def finding_name(source_name):
 def test_add_to_asset(asset_name):
     """Add new security marks to an asset."""
     # [START add_marks_to_asset]
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
     from google.protobuf import field_mask_pb2
 
     # Create a new client.
@@ -135,7 +135,7 @@ def test_clear_from_asset(asset_name):
     # Make sure they are there first
     test_add_to_asset(asset_name)
     # [START clear_marks_asset]
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
     from google.protobuf import field_mask_pb2
 
     # Create a new client.
@@ -169,7 +169,7 @@ def test_delete_and_update_marks(asset_name):
     # Make sure they are there first
     test_add_to_asset(asset_name)
     # [START delete_and_update_marks]
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
     from google.protobuf import field_mask_pb2
 
     client = securitycenter.SecurityCenterClient()
@@ -193,7 +193,7 @@ def test_delete_and_update_marks(asset_name):
 def test_add_to_finding(finding_name):
     """Adds security marks to a finding. """
     # [START add_marks_to_finding]
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
     from google.protobuf import field_mask_pb2
 
     client = securitycenter.SecurityCenterClient()
@@ -223,7 +223,7 @@ def test_list_assets_with_query_marks(organization_id, asset_name):
     """Lists assets with a filter on security marks. """
     test_add_to_asset(asset_name)
     # [START demo_list_assets_with_security_marks]
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
 
     client = securitycenter.SecurityCenterClient()
 
@@ -249,7 +249,7 @@ def test_list_findings_with_query_marks(source_name, finding_name):
     test_add_to_finding(finding_name)
     i = -1
     # [START demo_list_findings_with_security_marks]
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
 
     client = securitycenter.SecurityCenterClient()
 

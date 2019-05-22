@@ -27,7 +27,7 @@ def organization_id():
 def test_get_settings(organization_id):
     """Example showing how to retreive current organization settings."""
     # [START get_org_settings]
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
 
     client = securitycenter.SecurityCenterClient()
     # organization_id is numeric ID for the organization. e.g.
@@ -45,7 +45,7 @@ def test_update_asset_discovery_org_settings(organization_id):
     """Example showing how to update the asset discovery configuration
     for an organization."""
     # [START update_org_settings]
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
     from google.protobuf import field_mask_pb2
 
     # Create the client

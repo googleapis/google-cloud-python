@@ -29,7 +29,7 @@ def organization_id():
 
 @pytest.fixture(scope="module")
 def source_name(organization_id):
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
 
     client = securitycenter.SecurityCenterClient()
     org_name = "organizations/{org_id}".format(org_id=organization_id)
@@ -47,7 +47,7 @@ def source_name(organization_id):
 def test_create_source(organization_id):
     """Create a new findings source. """
     # [START create_source]
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
 
     client = securitycenter.SecurityCenterClient()
     # organization_id is the numeric ID of the organization. e.g.:
@@ -68,8 +68,7 @@ def test_create_source(organization_id):
 def test_get_source(source_name):
     """Gets an existing source."""
     # [START get_source]
-    from google.cloud import securitycenter as securitycenter
-    from google.protobuf import field_mask_pb2
+    from google.cloud import securitycenter
 
     client = securitycenter.SecurityCenterClient()
 
@@ -88,7 +87,7 @@ def test_get_source(source_name):
 def test_update_source(source_name):
     """Updates a source's display name."""
     # [START update_source]
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
     from google.protobuf import field_mask_pb2
 
     client = securitycenter.SecurityCenterClient()
@@ -115,7 +114,7 @@ def test_add_user_to_source(source_name):
     """Gives a user findingsEditor permission to the source."""
     user_email = "csccclienttest@gmail.com"
     # [START update_source_iam]
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
     from google.iam.v1 import policy_pb2
 
     client = securitycenter.SecurityCenterClient()
@@ -157,7 +156,7 @@ def test_list_source(organization_id):
     """Lists finding sources."""
     i = -1
     # [START list_sources]
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
 
     # Create a new client.
     client = securitycenter.SecurityCenterClient()
@@ -175,7 +174,7 @@ def test_list_source(organization_id):
 def test_create_finding(source_name):
     """Creates a new finding."""
     # [START create_finding]
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
     from google.cloud.securitycenter_v1.proto.finding_pb2 import Finding
     from google.protobuf.timestamp_pb2 import Timestamp
 
@@ -220,7 +219,7 @@ def test_create_finding(source_name):
 def test_create_finding_with_source_properties(source_name):
     """Demonstrate creating a new finding with source properties. """
     # [START create_finding_with_properties]
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
     from google.cloud.securitycenter_v1.proto.finding_pb2 import Finding
     from google.protobuf.timestamp_pb2 import Timestamp
     from google.protobuf.struct_pb2 import Value
@@ -270,7 +269,7 @@ def test_create_finding_with_source_properties(source_name):
 
 def test_update_finding(source_name):
     # [START update_finding]
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
     from google.protobuf.struct_pb2 import Value
     from google.protobuf import field_mask_pb2
     from google.protobuf.timestamp_pb2 import Timestamp
@@ -316,7 +315,7 @@ def test_update_finding(source_name):
 def test_update_finding_state(source_name):
     """Demonstrate updating only a finding state."""
     # [START update_finding_state]
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
     from google.cloud.securitycenter_v1.proto.finding_pb2 import Finding
     from google.protobuf.timestamp_pb2 import Timestamp
     from datetime import datetime
@@ -346,7 +345,7 @@ def test_trouble_shoot(source_name):
     """Demonstrate calling test_iam_permissions to determine if the
     service account has the correct permisions."""
     # [START test_iam_permissions]
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
 
     # Create a client.
     client = securitycenter.SecurityCenterClient()
@@ -383,7 +382,7 @@ def test_trouble_shoot(source_name):
 
 def test_list_all_findings(organization_id):
     # [START list_all_findings]
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
 
     # Create a client.
     client = securitycenter.SecurityCenterClient()
@@ -407,7 +406,7 @@ def test_list_all_findings(organization_id):
 
 def test_list_filtered_findings(source_name):
     # [START list_filtered_findings]
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
 
     # Create a new client.
     client = securitycenter.SecurityCenterClient()
@@ -437,7 +436,7 @@ def test_list_filtered_findings(source_name):
 
 def test_list_findings_at_time(source_name):
     # [START list_findings_at_a_time]
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
     from google.protobuf.timestamp_pb2 import Timestamp
     from datetime import timedelta, datetime
 
@@ -474,7 +473,7 @@ def test_get_iam_policy(source_name):
     """Gives a user findingsEditor permission to the source."""
     user_email = "csccclienttest@gmail.com"
     # [START get_source_iam]
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
     from google.iam.v1 import policy_pb2
 
     client = securitycenter.SecurityCenterClient()
@@ -494,7 +493,7 @@ def test_get_iam_policy(source_name):
 def test_group_all_findings(organization_id):
     """Demonstrates grouping all findings across an organization."""
     # [START group_all_findings]
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
 
     # Create a client.
     client = securitycenter.SecurityCenterClient()
@@ -515,7 +514,7 @@ def test_group_all_findings(organization_id):
 def test_group_filtered_findings(source_name):
     """Demonstrates grouping all findings across an organization."""
     # [START group_filtered_findings]
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
 
     # Create a client.
     client = securitycenter.SecurityCenterClient()
@@ -542,7 +541,7 @@ def test_group_findings_at_time(source_name):
     i = -1
     # [START group_findings_at_time]
     from datetime import datetime, timedelta
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
     from google.protobuf.timestamp_pb2 import Timestamp
 
     # Create a client.
@@ -575,7 +574,7 @@ def test_group_findings_and_changes(source_name):
     # [START group_filtered_findings_with_changes]
     from datetime import timedelta
 
-    from google.cloud import securitycenter as securitycenter
+    from google.cloud import securitycenter
     from google.protobuf.duration_pb2 import Duration
 
     # Create a client.
