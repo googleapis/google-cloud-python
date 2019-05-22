@@ -1,4 +1,4 @@
-.. include:: /../redis/README.rst
+.. include:: README.rst
 
 Api Reference
 -------------
