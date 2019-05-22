@@ -67,10 +67,13 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
             client_secret(str): The OAuth 2.0 client secret. Must be specified
                 for refresh, can be left as None if the token can not be
                 refreshed.
-            scopes (Sequence[str]): The scopes that were originally used
-                to obtain authorization. This is a purely informative parameter
-                that can be used by :meth:`has_scopes`. OAuth 2.0 credentials
-                can not request additional scopes after authorization.
+            scopes (Sequence[str]): The scopes used to obtain authorization.
+                This parameter is used by :meth:`has_scopes`. OAuth 2.0
+                credentials can not request additional scopes after
+                authorization. The scopes must be derivable from the refresh
+                token if refresh information is provided (e.g. The refresh
+                token scopes are a superset of this or contain a wild card
+                scope like 'https://www.googleapis.com/auth/any-api').
         """
         super(Credentials, self).__init__()
         self.token = token
@@ -133,12 +136,23 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
         access_token, refresh_token, expiry, grant_response = (
             _client.refresh_grant(
                 request, self._token_uri, self._refresh_token, self._client_id,
-                self._client_secret))
+                self._client_secret, self._scopes))
 
         self.token = access_token
         self.expiry = expiry
         self._refresh_token = refresh_token
         self._id_token = grant_response.get('id_token')
+
+        if self._scopes and 'scopes' in grant_response:
+            requested_scopes = frozenset(self._scopes)
+            granted_scopes = frozenset(grant_response['scopes'].split())
+            scopes_requested_but_not_granted = (
+                requested_scopes - granted_scopes)
+            if scopes_requested_but_not_granted:
+                raise exceptions.RefreshError(
+                    'Not all requested scopes were granted by the '
+                    'authorization server, missing scopes {}.'.format(
+                        ', '.join(scopes_requested_but_not_granted)))
 
     @classmethod
     def from_authorized_user_info(cls, info, scopes=None):

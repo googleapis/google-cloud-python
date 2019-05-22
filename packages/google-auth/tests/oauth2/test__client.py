@@ -37,6 +37,11 @@ with open(os.path.join(DATA_DIR, 'privatekey.pem'), 'rb') as fh:
 
 SIGNER = crypt.RSASigner.from_string(PRIVATE_KEY_BYTES, '1')
 
+SCOPES_AS_LIST = ['https://www.googleapis.com/auth/pubsub',
+                  'https://www.googleapis.com/auth/logging.write']
+SCOPES_AS_STRING = ('https://www.googleapis.com/auth/pubsub'
+                    ' https://www.googleapis.com/auth/logging.write')
+
 
 def test__handle_error_response():
     response_data = json.dumps({
@@ -198,6 +203,35 @@ def test_refresh_grant(unused_utcnow):
     })
 
     # Check result
+    assert token == 'token'
+    assert refresh_token == 'new_refresh_token'
+    assert expiry == datetime.datetime.min + datetime.timedelta(seconds=500)
+    assert extra_data['extra'] == 'data'
+
+
+@mock.patch('google.auth._helpers.utcnow', return_value=datetime.datetime.min)
+def test_refresh_grant_with_scopes(unused_utcnow):
+    request = make_request({
+        'access_token': 'token',
+        'refresh_token': 'new_refresh_token',
+        'expires_in': 500,
+        'extra': 'data',
+        'scope': SCOPES_AS_STRING})
+
+    token, refresh_token, expiry, extra_data = _client.refresh_grant(
+        request, 'http://example.com', 'refresh_token', 'client_id',
+        'client_secret', SCOPES_AS_LIST)
+
+    # Check request call.
+    verify_request_params(request, {
+        'grant_type': _client._REFRESH_GRANT_TYPE,
+        'refresh_token': 'refresh_token',
+        'client_id': 'client_id',
+        'client_secret': 'client_secret',
+        'scope': SCOPES_AS_STRING
+    })
+
+    # Check result.
     assert token == 'token'
     assert refresh_token == 'new_refresh_token'
     assert expiry == datetime.datetime.min + datetime.timedelta(seconds=500)

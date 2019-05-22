@@ -201,7 +201,8 @@ def id_token_jwt_grant(request, token_uri, assertion):
     return id_token, expiry, response_data
 
 
-def refresh_grant(request, token_uri, refresh_token, client_id, client_secret):
+def refresh_grant(request, token_uri, refresh_token, client_id, client_secret,
+                  scopes=None):
     """Implements the OAuth 2.0 refresh token grant.
 
     For more details, see `rfc678 section 6`_.
@@ -215,6 +216,10 @@ def refresh_grant(request, token_uri, refresh_token, client_id, client_secret):
             token.
         client_id (str): The OAuth 2.0 application's client ID.
         client_secret (str): The Oauth 2.0 appliaction's client secret.
+        scopes (Optional(Sequence[str])): Scopes to request. If present, all
+            scopes must be authorized for the refresh token. Useful if refresh
+            token has a wild card scope (e.g.
+            'https://www.googleapis.com/auth/any-api').
 
     Returns:
         Tuple[str, Optional[str], Optional[datetime], Mapping[str, str]]: The
@@ -233,6 +238,8 @@ def refresh_grant(request, token_uri, refresh_token, client_id, client_secret):
         'client_secret': client_secret,
         'refresh_token': refresh_token,
     }
+    if scopes:
+        body['scope'] = ' '.join(scopes)
 
     response_data = _token_endpoint_request(request, token_uri, body)
 

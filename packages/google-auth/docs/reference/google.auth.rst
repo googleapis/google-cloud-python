@@ -12,6 +12,7 @@ Subpackages
 .. toctree::
 
     google.auth.compute_engine
+    google.auth.crypt
     google.auth.transport
 
 Submodules
@@ -21,7 +22,6 @@ Submodules
 
    google.auth.app_engine
    google.auth.credentials
-   google.auth.crypt
    google.auth.environment_vars
    google.auth.exceptions
    google.auth.iam
