@@ -1,4 +1,4 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2019, Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,28 +25,20 @@ def add_methods(source_class, blacklist=()):
     not added.
     """
 
-    def wrap(wrapped_fx):
+    def wrap(wrapped_fx, lookup_fx):
         """Wrap a GAPIC method; preserve its name and docstring."""
-        # If this is a static or class method, then we need to *not*
+        # If this is a static or class method, then we do *not*
         # send self as the first argument.
         #
-        # Similarly, for instance methods, we need to send self.api rather
+        # For instance methods, we need to send self.api rather
         # than self, since that is where the actual methods were declared.
-        instance_method = True
 
-        # If this is a bound method it's a classmethod.
-        self = getattr(wrapped_fx, "__self__", None)
-        if issubclass(type(self), type):
-            instance_method = False
-
-        # Okay, we have figured out what kind of method this is; send
-        # down the correct wrapper function.
-        if instance_method:
+        if isinstance(lookup_fx, (classmethod, staticmethod)):
+            fx = lambda *a, **kw: wrapped_fx(*a, **kw)  # noqa
+            return staticmethod(functools.wraps(wrapped_fx)(fx))
+        else:
             fx = lambda self, *a, **kw: wrapped_fx(self.api, *a, **kw)  # noqa
             return functools.wraps(wrapped_fx)(fx)
-
-        fx = lambda *a, **kw: wrapped_fx(*a, **kw)  # noqa
-        return staticmethod(functools.wraps(wrapped_fx)(fx))
 
     def actual_decorator(cls):
         # Reflectively iterate over most of the methods on the source class
@@ -66,7 +58,9 @@ def add_methods(source_class, blacklist=()):
                 continue
 
             # Add a wrapper method to this object.
-            fx = wrap(getattr(source_class, name))
+            lookup_fx = source_class.__dict__[name]
+            fx = wrap(attr, lookup_fx)
+
             setattr(cls, name, fx)
 
         # Return the augmented class.
