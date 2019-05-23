@@ -36,7 +36,7 @@ class SourceClass(object):
         return "source class blacklisted method"
 
 
-def test__gapic():
+def test_add_method():
     @_gapic.add_methods(SourceClass, ("blacklisted_method",))
     class Foo(object):
         def __init__(self):
@@ -58,5 +58,6 @@ def test__gapic():
     assert foo.class_method() == "source class class method"
 
     # The decorator changes the behavior of instance methods of the wrapped class.
-    # method() is called upon an instance of the Source Class.
+    # method() is called on an instance of the Source Class (stored as an
+    # attribute on the wrapped class).
     assert foo.method() == "source class instance method"
