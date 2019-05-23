@@ -14,7 +14,6 @@
 
 import pytest
 
-from google.api import client_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import naming
@@ -110,25 +109,6 @@ def test_build_no_annotations_no_version():
     assert n.version == ''
 
 
-def test_build_with_annotations():
-    proto = descriptor_pb2.FileDescriptorProto(
-        name='spanner.proto',
-        package='google.spanner.v1',
-    )
-    proto.options.Extensions[client_pb2.client_package].MergeFrom(
-        client_pb2.Package(
-            namespace=['Google', 'Cloud'],
-            title='Spanner',
-            version='v1',
-        ),
-    )
-    n = naming.Naming.build(proto)
-    assert n.name == 'Spanner'
-    assert n.namespace == ('Google', 'Cloud')
-    assert n.version == 'v1'
-    assert n.product_name == 'Spanner'
-
-
 def test_build_no_namespace():
     protos = (
         descriptor_pb2.FileDescriptorProto(
@@ -141,32 +121,6 @@ def test_build_no_namespace():
     assert n.namespace == ()
     assert n.version == ''
     assert n.product_name == 'Foo'
-
-
-def test_inconsistent_metadata_error():
-    # Set up the first proto.
-    proto1 = descriptor_pb2.FileDescriptorProto(
-        name='spanner.proto',
-        package='google.spanner.v1',
-    )
-    proto1.options.Extensions[client_pb2.client_package].MergeFrom(
-        client_pb2.Package(namespace=['Google', 'Cloud']),
-    )
-
-    # Set up the second proto.
-    # Note that
-    proto2 = descriptor_pb2.FileDescriptorProto(
-        name='spanner2.proto',
-        package='google.spanner.v1',
-    )
-    proto2.options.Extensions[client_pb2.client_package].MergeFrom(
-        client_pb2.Package(title='Spanner', namespace=['Google', 'Cloud']),
-    )
-
-    # This should error. Even though the data in the metadata is consistent,
-    # it is expected to exactly match, and it does not.
-    with pytest.raises(ValueError):
-        naming.Naming.build(proto1, proto2)
 
 
 def test_inconsistent_package_error():

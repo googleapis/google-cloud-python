@@ -17,7 +17,6 @@ import os
 import re
 from typing import Iterable, Sequence, Tuple
 
-from google.api import client_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic import utils
@@ -116,37 +115,6 @@ class Naming:
             raise ValueError('All protos must have the same proto package '
                              'up to and including the version.')
 
-        # Iterate over the metadata annotations and collect the package
-        # information from there.
-        #
-        # This creates a naming class non-empty metadata annotation and
-        # uses Python's set logic to de-duplicate. There should only be one.
-        explicit_pkgs = set()
-        for fd in file_descriptors:
-            pkg = fd.options.Extensions[client_pb2.client_package]
-            naming = cls(
-                name=pkg.title or pkg.product_title,
-                namespace=tuple(pkg.namespace),
-                version=pkg.version,
-            )
-            if naming:
-                explicit_pkgs.add(naming)
-
-        # Sanity check: Ensure that any google.api.metadata provisions were
-        # consistent.
-        if len(explicit_pkgs) > 1:
-            raise ValueError(
-                'If the google.api.client_package annotation is provided in '
-                'more than one file, it must be consistent.',
-            )
-
-        # Merge the package naming information and the metadata naming
-        # information, with the latter being preferred.
-        # Return a Naming object which effectively merges them.
-        if len(explicit_pkgs):
-            return dataclasses.replace(package_info,
-                **dataclasses.asdict(explicit_pkgs.pop()),
-            )
         return package_info
 
     def __bool__(self):

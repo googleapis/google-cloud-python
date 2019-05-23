@@ -42,7 +42,7 @@ setup(
     include_package_data=True,
     install_requires=(
         'click >= 6.7',
-        'googleapis-common-protos >= 1.6.0b8',
+        'googleapis-common-protos >= 1.6.0',
         'jinja2 >= 2.10',
         'protobuf >= 3.7.1',
         'pypandoc >= 1.4',
