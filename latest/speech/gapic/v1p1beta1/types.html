@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Speech API Client &#8212; google-cloud d9127d7 documentation</title>
+    <title>Types for Cloud Speech API Client &#8212; google-cloud fdca431 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -256,7 +256,13 @@ corresponding to sequential portions of audio.</p>
 <dl class="class">
 <dt id="google.cloud.speech_v1p1beta1.types.Operation">
 <em class="property">class </em><code class="descclassname">google.cloud.speech_v1p1beta1.types.</code><code class="descname">Operation</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.Operation" title="Permalink to this definition">#</a></dt>
-<dd><dl class="attribute">
+<dd><dl class="method">
+<dt id="google.cloud.speech_v1p1beta1.types.Operation.deserialize">
+<code class="descname">deserialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.Operation.deserialize" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates new method instance from given serialized data.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.speech_v1p1beta1.types.Operation.done">
 <code class="descname">done</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.Operation.done" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.Operation.done</p>
@@ -284,6 +290,23 @@ corresponding to sequential portions of audio.</p>
 <dt id="google.cloud.speech_v1p1beta1.types.Operation.response">
 <code class="descname">response</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.Operation.response" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.Operation.response</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.speech_v1p1beta1.types.OperationInfo">
+<em class="property">class </em><code class="descclassname">google.cloud.speech_v1p1beta1.types.</code><code class="descname">OperationInfo</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.OperationInfo" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.OperationInfo.metadata_type">
+<code class="descname">metadata_type</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.OperationInfo.metadata_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.OperationInfo.metadata_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.OperationInfo.response_type">
+<code class="descname">response_type</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.OperationInfo.response_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.OperationInfo.response_type</p>
 </dd></dl>
 
 </dd></dl>
@@ -854,6 +877,27 @@ specific words and phrases, for example, if specific commands
 are typically spoken by the user. This can also be used to add
 additional words to the vocabulary of the recognizer. See
 <a class="reference external" href="/speech-to-text/quotas#content">usage limits</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.SpeechContext.boost">
+<code class="descname">boost</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.SpeechContext.boost" title="Permalink to this definition">#</a></dt>
+<dd><p>Hint Boost. Positive value will increase the probability that
+a specific phrase will be recognized over other similar
+sounding phrases. The higher the boost, the higher the chance
+of false positive recognition as well. Negative boost values
+would correspond to anti-biasing. Anti-biasing is not enabled,
+so negative boost will simply be ignored. Though <code class="docutils literal notranslate"><span class="pre">boost</span></code> can
+accept a wide range of positive values, most use cases are
+best served with values between 0 and 20. We recommend using a
+binary search approach to finding the optimal value for your
+use case.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">boost</code></dt>
+<dd><p>Field google.cloud.speech.v1p1beta1.SpeechContext.boost</p>
 </dd></dl>
 
 <dl class="attribute">
