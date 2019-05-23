@@ -71,6 +71,9 @@ class RecognitionConfig(object):
           number of bytes (octets) as specified in RFC 5574. In other words, each
           RTP header is replaced with a single byte containing the block length.
           Only Speex wideband is supported. ``sample_rate_hertz`` must be 16000.
+          MP3 (int): MP3 audio. Support all standard MP3 bitrates (which range from 32-320
+          kbps). When using this encoding, ``sample_rate_hertz`` can be optionally
+          unset if not known.
         """
 
         ENCODING_UNSPECIFIED = 0
@@ -81,6 +84,7 @@ class RecognitionConfig(object):
         AMR_WB = 5
         OGG_OPUS = 6
         SPEEX_WITH_HEADER_BYTE = 7
+        MP3 = 8
 
 
 class RecognitionMetadata(object):
