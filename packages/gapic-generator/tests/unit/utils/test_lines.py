@@ -15,6 +15,43 @@
 from gapic.utils import lines
 
 
+def test_sort_lines():
+    assert lines.sort_lines(
+        'import foo\nimport bar',
+    ) == 'import bar\nimport foo'
+
+
+def test_sort_lines_keeps_leading_newline():
+    assert lines.sort_lines(
+        '\nimport foo\nimport bar',
+    ) == '\nimport bar\nimport foo'
+
+
+def test_sort_lines_keeps_trailing_newline():
+    assert lines.sort_lines(
+        'import foo\nimport bar\n',
+    ) == 'import bar\nimport foo\n'
+
+
+def test_sort_lines_eliminates_blank_lines():
+    assert lines.sort_lines(
+        'import foo\n\n\nimport bar',
+    ) == 'import bar\nimport foo'
+
+
+def test_sort_lines_dedupe():
+    assert lines.sort_lines(
+        'import foo\nimport bar\nimport foo',
+    ) == 'import bar\nimport foo'
+
+
+def test_sort_lines_no_dedupe():
+    assert lines.sort_lines(
+        'import foo\nimport bar\nimport foo',
+        dedupe=False,
+    ) == 'import bar\nimport foo\nimport foo'
+
+
 def test_wrap_noop():
     assert lines.wrap('foo bar baz', width=80) == 'foo bar baz'
 

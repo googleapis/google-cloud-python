@@ -8,6 +8,7 @@ import grpc
 import pytest
 
 {# Import the service itself as well as every proto module that it imports. -#}
+{% filter sort_lines -%}
 from google import auth
 from google.auth import credentials
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import {{ service.name }}
@@ -17,9 +18,12 @@ from google.api_core import future
 from google.api_core import operations_v1
 from google.longrunning import operations_pb2
 {% endif -%}
-{% for import_ in service.python_modules -%}
-{{ import_ }}
-{% endfor %}
+{% for method in service.methods.values() -%}
+{% for ref_type in method.ref_types -%}
+{{ ref_type.ident.python_import }}
+{% endfor -%}
+{% endfor -%}
+{% endfilter %}
 
 
 {% for method in service.methods.values() -%}
@@ -45,7 +49,11 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc'):
         {% elif method.server_streaming -%}
         call.return_value = iter([{{ method.output.ident }}()])
         {% else -%}
-        call.return_value = {{ method.output.ident }}()
+        call.return_value = {{ method.output.ident }}(
+            {%- for field in method.output.fields.values() | rejectattr('message') %}
+            {{ field.name }}={{ field.mock_value }},
+            {%- endfor %}
+        )
         {% endif -%}
         response = client.{{ method.name|snake_case }}(request)
 
@@ -63,7 +71,10 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc'):
     for message in response:
         assert isinstance(message, {{ method.output.ident }})
     {% else -%}
-    assert isinstance(response, {{ method.output.ident }})
+    assert isinstance(response, {{ method.client_output.ident }})
+    {% for field in method.output.fields.values() | rejectattr('message') -%}
+    assert response.{{ field.name }} == {{ field.mock_value }}
+    {% endfor %}
     {% endif %}
 
 {% if method.field_headers %}
@@ -155,6 +166,53 @@ def test_{{ method.name|snake_case }}_flattened_error():
             {%- endfor %}
         )
 {% endif %} {#- method.flattened_fields #}
+
+
+{% if method.paged_result_field %}
+def test_{{ method.name|snake_case }}_pager():
+    client = {{ service.name }}(
+        credentials=credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client._transport.{{ method.name|snake_case }}),
+            '__call__') as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[
+                    {{ method.paged_result_field.message.ident }}(),
+                    {{ method.paged_result_field.message.ident }}(),
+                    {{ method.paged_result_field.message.ident }}(),
+                ],
+                next_page_token='abc',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[],
+                next_page_token='def',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[
+                    {{ method.paged_result_field.message.ident }}(),
+                ],
+                next_page_token='ghi',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[
+                    {{ method.paged_result_field.message.ident }}(),
+                    {{ method.paged_result_field.message.ident }}(),
+                ],
+            ),
+            RuntimeError,
+        )
+        results = [i for i in client.{{ method.name|snake_case }}(
+            request={},
+        )]
+        assert len(results) == 6
+        assert all([isinstance(i, {{ method.paged_result_field.message.ident }})
+                   for i in results])
+{% endif %} {#- method.paged_response_field #}
 
 {% endfor -%} {#- method in methods #}
 

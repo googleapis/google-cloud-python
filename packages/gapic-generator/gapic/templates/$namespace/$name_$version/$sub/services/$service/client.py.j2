@@ -9,9 +9,13 @@ from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials
 
-{% for import_ in service.python_modules -%}
-{{ import_ }}
-{% endfor %}
+{% filter sort_lines -%}
+{% for method in service.methods.values() -%}
+{% for ref_type in method.ref_types -%}
+{{ ref_type.ident.python_import }}
+{% endfor -%}
+{% endfor -%}
+{% endfilter %}
 from .transports import _transport_registry
 from .transports import {{ service.name }}Transport
 
@@ -58,7 +62,7 @@ class {{ service.name }}:
             retry: retries.Retry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
-            ) -> {{ method.output.ident }}:
+            ) -> {{ method.client_output.ident }}:
         r"""{{ method.meta.doc|rst(width=72, indent=8) }}
 
         Args:
@@ -80,18 +84,18 @@ class {{ service.name }}:
         {%- if not method.void %}
 
         Returns:
-            {{ method.output.ident.sphinx }}:
-                {{ method.output.meta.doc|wrap(width=72, indent=16) }}
+            {{ method.client_output.ident.sphinx }}:
+                {{ method.client_output.meta.doc|wrap(width=72, indent=16) }}
         {%- endif %}
         """
-        {%- if method.flattened_fields %}
+        {% if method.flattened_fields -%}
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         if request is not None and any([{{ method.flattened_fields.values()|join(', ', attribute='name') }}]):
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
-        {%- endif %}
 
+        {% endif -%}
         # Create or coerce a protobuf request object.
         {% if method.flattened_fields -%}
         # If we have keyword arguments corresponding to fields on the
@@ -139,16 +143,23 @@ class {{ service.name }}:
             timeout=timeout,
             metadata=metadata,
         )
-        {%- if method.output.lro_response is defined %}
+        {%- if method.lro %}
 
-        # Wrap the response in an operation future
+        # Wrap the response in an operation future.
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            {{ method.output.lro_response.ident }},
-            {%- if method.output.lro_metadata %}
-            metadata_type={{ method.output.lro_metadata.ident }},
-            {%- endif %}
+            {{ method.lro.response_type.ident }},
+            metadata_type={{ method.lro.metadata_type.ident }},
+        )
+        {%- elif method.paged_result_field %}
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = {{ method.client_output.ident }}(
+            method=rpc,
+            request=request,
+            response=response,
         )
         {%- endif %}
         {%- if not method.void %}

@@ -411,27 +411,6 @@ class _ProtoBuilder:
             *[p.all_messages for p in self.prior_protos.values()],
         )
 
-    def _get_operation_type(self,
-            response_type: wrappers.Method,
-            metadata_type: wrappers.Method = None,
-            ) -> wrappers.PythonType:
-        """Return a wrapper around Operation that designates the end result.
-
-        Args:
-            response_type (~.wrappers.Method): The response type that
-                the Operation ultimately uses.
-            metadata_type (~.wrappers.Method): The metadata type that
-                the Operation ultimately uses, if any.
-
-        Returns:
-            ~.wrappers.OperationType: An OperationType object, which is
-                sent down to templates, and aware of the LRO types used.
-        """
-        return wrappers.OperationType(
-            lro_response=response_type,
-            lro_metadata=metadata_type,
-        )
-
     def _load_children(self, children: Sequence, loader: Callable, *,
                        address: metadata.Address, path: Tuple[int]) -> Mapping:
         """Return wrapped versions of arbitrary children from a Descriptor.
@@ -525,36 +504,37 @@ class _ProtoBuilder:
         # Iterate over the methods and collect them into a dictionary.
         answer = collections.OrderedDict()
         for meth_pb, i in zip(methods, range(0, sys.maxsize)):
-            lro = meth_pb.options.Extensions[operations_pb2.operation_info]
+            lro = None
 
             # If the output type is google.longrunning.Operation, we use
             # a specialized object in its place.
-            output_type = self.api_messages[meth_pb.output_type.lstrip('.')]
             if meth_pb.output_type.endswith('google.longrunning.Operation'):
-                if not lro.response_type or not lro.metadata_type:
+                op = meth_pb.options.Extensions[operations_pb2.operation_info]
+                if not op.response_type or not op.metadata_type:
                     raise TypeError(
                         f'rpc {meth_pb.name} returns a google.longrunning.'
                         'Operation, but is missing a response type or '
                         'metadata type.',
                     )
-                output_type = self._get_operation_type(
-                    response_type=self.api_messages[
-                        address.resolve(lro.response_type)
-                    ],
-                    metadata_type=self.api_messages.get(
-                        address.resolve(lro.metadata_type),
-                    ),
+                lro = wrappers.OperationInfo(
+                    response_type=self.api_messages[address.resolve(
+                        op.response_type,
+                    )],
+                    metadata_type=self.api_messages[address.resolve(
+                        op.metadata_type,
+                    )],
                 )
 
             # Create the method wrapper object.
             answer[meth_pb.name] = wrappers.Method(
                 input=self.api_messages[meth_pb.input_type.lstrip('.')],
+                lro=lro,
                 method_pb=meth_pb,
                 meta=metadata.Metadata(
                     address=address.child(meth_pb.name, path + (i,)),
                     documentation=self.docs.get(path + (i,), self.EMPTY),
                 ),
-                output=output_type,
+                output=self.api_messages[meth_pb.output_type.lstrip('.')],
             )
 
         # Done; return the answer.

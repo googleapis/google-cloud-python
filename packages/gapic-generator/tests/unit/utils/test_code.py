@@ -12,25 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from gapic.utils.cache import cached_property
-from gapic.utils.case import to_snake_case
-from gapic.utils.code import empty
-from gapic.utils.doc import doc
-from gapic.utils.filename import to_valid_filename
-from gapic.utils.filename import to_valid_module_name
-from gapic.utils.lines import sort_lines
-from gapic.utils.lines import wrap
-from gapic.utils.rst import rst
+
+from gapic.utils import code
 
 
-__all__ = (
-    'cached_property',
-    'doc',
-    'empty',
-    'rst',
-    'sort_lines',
-    'to_snake_case',
-    'to_valid_filename',
-    'to_valid_module_name',
-    'wrap',
-)
+def test_empty_empty():
+    assert code.empty('')
+
+
+def test_empty_comments():
+    assert code.empty('# The rain in Wales...\n# falls mainly...')
+
+
+def test_empty_whitespace():
+    assert code.empty('    ')
+
+
+def test_empty_whitespace_comments():
+    assert code.empty('    # The rain in Wales...')
+
+
+def test_empty_code():
+    assert not code.empty('import this')

@@ -46,6 +46,72 @@ def test_method_not_void():
     assert not method.void
 
 
+def test_method_client_output():
+    output = make_message(name='Input', module='baz')
+    method = make_method('DoStuff', output_message=output)
+    assert method.client_output is method.output
+
+
+def test_method_client_output_empty():
+    empty = make_message(name='Empty', package='google.protobuf')
+    method = make_method('Meh', output_message=empty)
+    assert method.client_output == wrappers.PrimitiveType.build(None)
+
+
+def test_method_client_output_paged():
+    paged = make_field(name='foos', message=make_message('Foo'), repeated=True)
+    input_msg = make_message(name='ListFoosRequest', fields=(
+        make_field(name='parent', type=9),      # str
+        make_field(name='page_size', type=5),   # int
+        make_field(name='page_token', type=9),  # str
+    ))
+    output_msg = make_message(name='ListFoosResponse', fields=(
+        paged,
+        make_field(name='next_page_token', type=9),  # str
+    ))
+    method = make_method('ListFoos',
+        input_message=input_msg,
+        output_message=output_msg,
+    )
+    assert method.paged_result_field == paged
+    assert method.client_output.ident.name == 'ListFoosPager'
+
+
+def test_method_paged_result_field_not_first():
+    paged = make_field(name='foos', message=make_message('Foo'), repeated=True)
+    input_msg = make_message(name='ListFoosRequest', fields=(
+        make_field(name='parent', type=9),      # str
+        make_field(name='page_size', type=5),   # int
+        make_field(name='page_token', type=9),  # str
+    ))
+    output_msg = make_message(name='ListFoosResponse', fields=(
+        make_field(name='next_page_token', type=9),  # str
+        paged,
+    ))
+    method = make_method('ListFoos',
+        input_message=input_msg,
+        output_message=output_msg,
+    )
+    assert method.paged_result_field == paged
+
+
+def test_method_paged_result_field_no_page_field():
+    input_msg = make_message(name='ListFoosRequest', fields=(
+        make_field(name='parent', type=9),      # str
+        make_field(name='page_size', type=5),   # int
+        make_field(name='page_token', type=9),  # str
+    ))
+    output_msg = make_message(name='ListFoosResponse', fields=(
+        make_field(name='foos', message=make_message('Foo'), repeated=False),
+        make_field(name='next_page_token', type=9),  # str
+    ))
+    method = make_method('ListFoos',
+        input_message=input_msg,
+        output_message=output_msg,
+    )
+    assert method.paged_result_field is None
+
+
 def test_method_field_headers_none():
     method = make_method('DoSomething')
     assert isinstance(method.field_headers, collections.Sequence)
@@ -150,6 +216,7 @@ def make_method(
             name=name,
             package=package,
             module=module,
+            parent=(f'{name}Service',),
         )),
     )
 

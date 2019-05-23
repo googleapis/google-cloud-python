@@ -31,7 +31,7 @@ import collections
 import dataclasses
 import re
 from itertools import chain
-from typing import List, Mapping, Sequence, Set, Union
+from typing import List, Mapping, Optional, Sequence, Set, Union
 
 from google.api import annotations_pb2
 from google.api import client_pb2
@@ -39,7 +39,6 @@ from google.api import field_behavior_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic import utils
-from gapic.schema import imp
 from gapic.schema import metadata
 
 
@@ -67,7 +66,7 @@ class Field:
     @property
     def is_primitive(self) -> bool:
         """Return True if the field is a primitive, False otherwise."""
-        return isinstance(self.type, PythonType)
+        return isinstance(self.type, PrimitiveType)
 
     @utils.cached_property
     def mock_value(self) -> str:
@@ -75,7 +74,7 @@ class Field:
         # For primitives, send a truthy value computed from the
         # field name.
         answer = 'None'
-        if isinstance(self.type, PythonType):
+        if isinstance(self.type, PrimitiveType):
             if self.type.python_type == bool:
                 answer = 'True'
             elif self.type.python_type == str:
@@ -87,7 +86,7 @@ class Field:
             elif self.type.python_type == float:
                 answer = f'0.{sum([ord(i) for i in self.name])}'
             else:  # Impossible; skip coverage checks.
-                raise TypeError('Unrecognized PythonType. This should '
+                raise TypeError('Unrecognized PrimitiveType. This should '
                                 'never happen; please file an issue.')
 
         # If this is an enum, select the first truthy value (or the zero
@@ -139,7 +138,7 @@ class Field:
                 self.options.Extensions[field_behavior_pb2.field_behavior])
 
     @utils.cached_property
-    def type(self) -> Union['MessageType', 'EnumType', 'PythonType']:
+    def type(self) -> Union['MessageType', 'EnumType', 'PrimitiveType']:
         """Return the type of this field."""
         # If this is a message or enum, return the appropriate thing.
         if self.type_name and self.message:
@@ -158,15 +157,15 @@ class Field:
         # 10, 11, and 14 are intentionally missing. They correspond to
         # group (unused), message (covered above), and enum (covered above).
         if self.field_pb.type in (1, 2):
-            return PythonType(python_type=float)
+            return PrimitiveType.build(float)
         if self.field_pb.type in (3, 4, 5, 6, 7, 13, 15, 16, 17, 18):
-            return PythonType(python_type=int)
+            return PrimitiveType.build(int)
         if self.field_pb.type == 8:
-            return PythonType(python_type=bool)
+            return PrimitiveType.build(bool)
         if self.field_pb.type == 9:
-            return PythonType(python_type=str)
+            return PrimitiveType.build(str)
         if self.field_pb.type == 12:
-            return PythonType(python_type=bytes)
+            return PrimitiveType.build(bytes)
 
         # This should never happen.
         raise TypeError('Unrecognized protobuf type. This code should '
@@ -349,79 +348,60 @@ class PythonType:
     :meth:`Field.type` can return an object and the caller can be confident
     that a ``name`` property will be present.
     """
-    python_type: type
+    meta: metadata.Metadata
 
-    @property
-    def name(self) -> str:
-        return self.python_type.__name__
+    def __eq__(self, other):
+        return self.meta == other.meta
+
+    def __ne__(self, other):
+        return not self == other
 
     @utils.cached_property
     def ident(self) -> metadata.Address:
-        """Return the identifier to be used in templates.
+        """Return the identifier to be used in templates."""
+        return self.meta.address
 
-        Primitives have no import, and no module to reference, so this
-        is simply the name of the class (e.g. "int", "str").
-        """
-        return metadata.Address(name=self.name)
+    @property
+    def name(self) -> str:
+        return self.ident.name
 
 
 @dataclasses.dataclass(frozen=True)
-class OperationType:
-    """Wrapper class for :class:`~.operations.Operation`.
+class PrimitiveType(PythonType):
+    """A representation of a Python primitive type."""
+    python_type: type
 
-    This exists for interface consistency, so Operations can be used
-    alongside :class:`~.MessageType` instances.
-    """
-    lro_response: MessageType
-    lro_metadata: MessageType = None
+    @classmethod
+    def build(cls, primitive_type: type):
+        """Return a PrimitiveType object for the given Python primitive type.
 
-    @property
-    def ident(self) -> metadata.Address:
-        return self.meta.address
+        Args:
+            primitive_type (cls): A Python primitive type, such as
+                :class:`int` or :class:`str`. Despite not being a type,
+                ``None`` is also accepted here.
 
-    @utils.cached_property
-    def meta(self) -> metadata.Metadata:
-        """Return a Metadata object."""
-        return metadata.Metadata(
-            address=metadata.Address(
-                name='Operation',
-                module='operation',
-                package=('google', 'api_core'),
-                collisions=self.lro_response.meta.address.collisions,
-            ),
-            documentation=descriptor_pb2.SourceCodeInfo.Location(
-                leading_comments='An object representing a long-running '
-                                 'operation. \n\n'
-                                 'The result type for the operation will be '
-                                 ':class:`{ident}`: {doc}'.format(
-                                     doc=self.lro_response.meta.doc,
-                                     ident=self.lro_response.ident.sphinx,
-                                 ),
-            ),
-        )
-
-    @property
-    def name(self) -> str:
-        """Return the class name."""
-        # This is always "Operation", because it is always a reference to
-        # `google.api_core.operation.Operation`.
-        #
-        # This is hard-coded rather than subclassing PythonType (above) so
-        # that this generator is not forced to take an entire dependency
-        # on google.api_core just to get these strings.
-        return 'Operation'
-
-    def with_context(self, *, collisions: Set[str]) -> 'OperationType':
-        """Return a derivative of this operation with the provided context.
-
-        This method is used to address naming collisions. The returned
-        ``OperationType`` object aliases module names to avoid naming
-        collisions in the file being written.
+        Returns:
+            ~.PrimitiveType: The instantiated PrimitiveType object.
         """
-        return dataclasses.replace(self,
-            lro_response=self.lro_response.with_context(collisions=collisions),
-            lro_metadata=self.lro_metadata.with_context(collisions=collisions),
-        )
+        # Primitives have no import, and no module to reference, so the
+        # address just uses the name of the class (e.g. "int", "str").
+        return cls(meta=metadata.Metadata(address=metadata.Address(
+            name='None' if primitive_type is None else primitive_type.__name__,
+        )), python_type=primitive_type)
+
+    def __eq__(self, other):
+        # If we are sent the actual Python type (not the PrimitiveType object),
+        # claim to be equal to that.
+        if not hasattr(other, 'meta'):
+            return self.python_type is other
+        return super().__eq__(other)
+
+
+@dataclasses.dataclass(frozen=True)
+class OperationInfo:
+    """Representation of long-running operation info."""
+    response_type: MessageType
+    metadata_type: MessageType
 
 
 @dataclasses.dataclass(frozen=True)
@@ -430,12 +410,71 @@ class Method:
     method_pb: descriptor_pb2.MethodDescriptorProto
     input: MessageType
     output: MessageType
+    lro: OperationInfo = dataclasses.field(default=None)
     meta: metadata.Metadata = dataclasses.field(
         default_factory=metadata.Metadata,
     )
 
     def __getattr__(self, name):
         return getattr(self.method_pb, name)
+
+    @utils.cached_property
+    def client_output(self):
+        """Return the output from the client layer.
+
+        This takes into account transformations made by the outer GAPIC
+        client to transform the output from the transport.
+
+        Returns:
+            Union[~.MessageType, ~.PythonType]:
+                A description of the return type.
+        """
+        # Void messages ultimately return None.
+        if self.void:
+            return PrimitiveType.build(None)
+
+        # If this method is an LRO, return a PythonType instance representing
+        # that.
+        if self.lro:
+            return PythonType(meta=metadata.Metadata(
+                address=metadata.Address(
+                    name='Operation',
+                    module='operation',
+                    package=('google', 'api_core'),
+                    collisions=self.lro.response_type.ident.collisions,
+                ),
+                documentation=utils.doc(
+                    'An object representing a long-running operation. \n\n'
+                    'The result type for the operation will be '
+                    ':class:`{ident}`: {doc}'.format(
+                        doc=self.lro.response_type.meta.doc,
+                        ident=self.lro.response_type.ident.sphinx,
+                    ),
+                ),
+            ))
+
+        # If this method is paginated, return that method's pager class.
+        if self.paged_result_field:
+            return PythonType(meta=metadata.Metadata(
+                address=metadata.Address(
+                    name=f'{self.name}Pager',
+                    package=self.ident.api_naming.module_namespace + (
+                        self.ident.api_naming.versioned_module_name,
+                        'services',
+                        utils.to_snake_case(self.ident.parent[-1]),
+                    ),
+                    module='pagers',
+                    collisions=self.input.ident.collisions,
+                ),
+                documentation=utils.doc(
+                    f'{self.output.meta.doc}\n\n'
+                    'Iterating over this object will yield results and '
+                    'resolve additional pages automatically.',
+                ),
+            ))
+
+        # Return the usual output.
+        return self.output
 
     @property
     def field_headers(self) -> Sequence[str]:
@@ -489,9 +528,29 @@ class Method:
         return bool(self.options.Extensions[annotations_pb2.http].get)
 
     @property
-    def lro(self) -> bool:
-        """Return True if this is an LRO method, False otherwise."""
-        return getattr(self.output, 'lro_response', None)
+    def ident(self) -> metadata.Address:
+        """Return the identifier data to be used in templates."""
+        return self.meta.address
+
+    @utils.cached_property
+    def paged_result_field(self) -> Optional[Field]:
+        """Return the response pagination field if the method is paginated."""
+        # If the request field lacks any of the expected pagination fields,
+        # then the method is not paginated.
+        for page_field in ((self.input, int, 'page_size'),
+                           (self.input, str, 'page_token'),
+                           (self.output, str, 'next_page_token')):
+            field = page_field[0].fields.get(page_field[2], None)
+            if not field or field.type != page_field[1]:
+                return None
+
+        # Return the first repeated field.
+        for field in self.output.fields.values():
+            if field.repeated and field.message:
+                return field
+
+        # We found no repeated fields. Return None.
+        return None
 
     @utils.cached_property
     def ref_types(self) -> Sequence[Union[MessageType, EnumType]]:
@@ -499,7 +558,7 @@ class Method:
         # Begin with the input (request) and output (response) messages.
         answer = [self.input]
         if not self.void:
-            answer.append(self.output)
+            answer.append(self.client_output)
 
         # If this method has flattening that is honored, add its
         # composite types.
@@ -512,10 +571,9 @@ class Method:
 
         # If this method has LRO, it is possible (albeit unlikely) that
         # the LRO messages reside in a different module.
-        if getattr(self.output, 'lro_response', None):
-            answer.append(self.output.lro_response)
-        if getattr(self.output, 'lro_metadata', None):
-            answer.append(self.output.lro_metadata)
+        if self.lro:
+            answer.append(self.lro.response_type)
+            answer.append(self.lro.metadata_type)
 
         # Done; return the answer.
         return tuple(answer)
@@ -550,6 +608,11 @@ class Service:
 
     def __getattr__(self, name):
         return getattr(self.service_pb, name)
+
+    @property
+    def has_lro(self) -> bool:
+        """Return whether the service has a long-running method."""
+        return any([m.lro for m in self.methods.values()])
 
     @property
     def host(self) -> str:
@@ -607,28 +670,6 @@ class Service:
 
         # Done; return the answer.
         return frozenset(answer)
-
-    @utils.cached_property
-    def python_modules(self) -> Sequence[imp.Import]:
-        """Return a sequence of Python modules, for import.
-
-        The results of this method are in alphabetical order (by package,
-        then module), and do not contain duplicates.
-
-        Returns:
-            Sequence[~.imp.Import]: The package and module, intended for
-                use in templates.
-        """
-        answer = set()
-        for method in self.methods.values():
-            for t in method.ref_types:
-                answer.add(t.ident.python_import)
-        return tuple(sorted(list(answer)))
-
-    @property
-    def has_lro(self) -> bool:
-        """Return whether the service has a long-running method."""
-        return any([m.lro for m in self.methods.values()])
 
     def with_context(self, *, collisions: Set[str]) -> 'Service':
         """Return a derivative of this service with the provided context.

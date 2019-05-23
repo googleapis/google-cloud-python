@@ -12,25 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from gapic.utils.cache import cached_property
-from gapic.utils.case import to_snake_case
-from gapic.utils.code import empty
-from gapic.utils.doc import doc
-from gapic.utils.filename import to_valid_filename
-from gapic.utils.filename import to_valid_module_name
-from gapic.utils.lines import sort_lines
-from gapic.utils.lines import wrap
-from gapic.utils.rst import rst
+from google.protobuf import descriptor_pb2
 
 
-__all__ = (
-    'cached_property',
-    'doc',
-    'empty',
-    'rst',
-    'sort_lines',
-    'to_snake_case',
-    'to_valid_filename',
-    'to_valid_module_name',
-    'wrap',
-)
+def doc(text: str) -> descriptor_pb2.SourceCodeInfo.Location:
+    """Return a Location object with the given documentation.
+
+    This convenience method instantates a protobuf location object,
+    which is expected by the Metadata class, and allows for classes
+    not based on protobuf locations to easily conform to the interface.
+    """
+    return descriptor_pb2.SourceCodeInfo.Location(leading_comments=text)

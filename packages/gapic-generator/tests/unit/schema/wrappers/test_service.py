@@ -74,28 +74,34 @@ def test_service_python_modules():
         get_method('Jump', 'foo.bacon.JumpRequest', 'foo.bacon.JumpResponse'),
         get_method('Yawn', 'a.b.v1.c.YawnRequest', 'x.y.v1.z.YawnResponse'),
     ))
-    assert service.python_modules == (
+    imports = set()
+    for m in service.methods.values():
+        imports = imports.union({i.ident.python_import for i in m.ref_types})
+    assert imports == {
         imp.Import(package=('a', 'b', 'v1'), module='c'),
         imp.Import(package=('foo',), module='bacon'),
         imp.Import(package=('foo',), module='bar'),
         imp.Import(package=('foo',), module='baz'),
         imp.Import(package=('x', 'y', 'v1'), module='z'),
-    )
+    }
 
 
 def test_service_python_modules_lro():
     service = make_service_with_method_options()
-    assert service.python_modules == (
+    method = service.methods['DoBigThing']
+    imports = {i.ident.python_import for i in method.ref_types}
+    assert imports == {
         imp.Import(package=('foo',), module='bar'),
         imp.Import(package=('foo',), module='baz'),
         imp.Import(package=('foo',), module='qux'),
         imp.Import(package=('google', 'api_core'), module='operation'),
-    )
+    }
 
 
 def test_service_python_modules_signature():
     service = make_service_with_method_options(
         in_fields=(
+            # type=5 is int, so nothing is added.
             descriptor_pb2.FieldDescriptorProto(name='secs', type=5),
             descriptor_pb2.FieldDescriptorProto(
                 name='d',
@@ -105,14 +111,17 @@ def test_service_python_modules_signature():
         ),
         method_signature='secs,d',
     )
-    # type=5 is int, so nothing is added.
-    assert service.python_modules == (
+
+    # Ensure that the service will have the expected imports.
+    method = service.methods['DoBigThing']
+    imports = {i.ident.python_import for i in method.ref_types}
+    assert imports == {
         imp.Import(package=('a', 'b', 'c'), module='v2'),
         imp.Import(package=('foo',), module='bar'),
         imp.Import(package=('foo',), module='baz'),
         imp.Import(package=('foo',), module='qux'),
         imp.Import(package=('google', 'api_core'), module='operation'),
-    )
+    }
 
 
 def test_service_no_lro():
@@ -188,6 +197,7 @@ def get_method(name: str,
         ) -> wrappers.Method:
     input_ = get_message(in_type, fields=in_fields)
     output = get_message(out_type)
+    lro = None
 
     # Define a method descriptor. Set the field headers if appropriate.
     method_pb = descriptor_pb2.MethodDescriptorProto(
@@ -196,9 +206,9 @@ def get_method(name: str,
         output_type=output.ident.proto,
     )
     if lro_response_type:
-        output = wrappers.OperationType(
-            lro_response=get_message(lro_response_type),
-            lro_metadata=get_message(lro_metadata_type),
+        lro = wrappers.OperationInfo(
+            response_type=get_message(lro_response_type),
+            metadata_type=get_message(lro_metadata_type),
         )
     if http_rule:
         ext_key = annotations_pb2.http
@@ -211,6 +221,7 @@ def get_method(name: str,
         method_pb=method_pb,
         input=input_,
         output=output,
+        lro=lro,
     )
 
 

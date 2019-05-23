@@ -15,6 +15,29 @@
 import textwrap
 
 
+def sort_lines(text: str, dedupe: bool = True) -> str:
+    """Sort the individual lines of a block of text.
+
+    Args:
+        dedupe (bool): Remove duplicate lines with the same text.
+            Useful for dealing with import statements in templates.
+    """
+    # Preserve leading or trailing newlines.
+    leading = '\n' if text.startswith('\n') else ''
+    trailing = '\n' if text.endswith('\n') else ''
+
+    # Split the text into individual lines, throwing away any empty lines.
+    lines = [i for i in text.strip().split('\n') if i.strip()]
+
+    # De-duplicate the lines if requested.
+    if dedupe:
+        lines = list(set(lines))
+
+    # Return the final string.
+    answer = '\n'.join(sorted(lines))
+    return f'{leading}{answer}{trailing}'
+
+
 def wrap(text: str, width: int, *, offset: int = None, indent: int = 0) -> str:
     """Wrap the given string to the given width.
 

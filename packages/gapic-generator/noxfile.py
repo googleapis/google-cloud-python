@@ -117,13 +117,16 @@ def showcase_unit(session):
         )
 
         # Install the library.
-        session.install(tmp_dir)
+        session.chdir(tmp_dir)
+        session.install('-e', tmp_dir)
 
         # Run the tests.
         session.run(
             'py.test',
             '--quiet',
-            os.path.join(tmp_dir, 'tests', 'unit'),
+            '--cov=google',
+            '--cov-report=term',
+            os.path.join('tests', 'unit'),
         )
 
 

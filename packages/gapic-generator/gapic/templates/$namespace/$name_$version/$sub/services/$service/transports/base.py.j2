@@ -10,9 +10,12 @@ from google.api_core import operations_v1
 {%- endif %}
 from google.auth import credentials
 
-{% for import_ in service.python_modules -%}
-{{ import_ }}
-{% endfor %}
+{% filter sort_lines -%}
+{% for method in service.methods.values() -%}
+{{ method.input.ident.python_import }}
+{{ method.output.ident.python_import }}
+{% endfor -%}
+{% endfilter %}
 
 class {{ service.name }}Transport(metaclass=abc.ABCMeta):
     """Abstract transport class for {{ service.name }}."""

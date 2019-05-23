@@ -58,10 +58,6 @@ class Address:
         Because we import modules as a whole, rather than individual
         members from modules, this is consistently `module.Name`.
         """
-        # Edge case: For google.protobuf.Empty, use None instead.
-        if self.proto == 'google.protobuf.Empty':
-            return 'None'
-
         # Most (but not all) types are in a module.
         if self.module:
             # If collisions are registered and conflict with our module,
@@ -108,8 +104,14 @@ class Address:
     @cached_property
     def python_import(self) -> imp.Import:
         """Return the Python import for this type."""
-        # If there is no naming object, this is a special case for operation.
-        # FIXME(#34): OperationType does not work well. Fix or expunge it.
+        # If there is no naming object, then this is a special case for
+        # Python types.
+        #
+        # FIXME: This does not attempt to do an isinstance check on PythonType
+        # to avoid a circular dependency.
+        # That part is fine, but a check for the absence of `api_naming` is
+        # less than ideal; the condition works, but it is a weak correlation
+        # that may not hold up over time.
         if not self.api_naming:
             return imp.Import(
                 package=self.package,

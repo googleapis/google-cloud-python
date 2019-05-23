@@ -51,6 +51,18 @@ def test_get_response():
     assert cgr.file[0].content == 'I am a template result.\n'
 
 
+def test_get_response_ignores_empty_files():
+    g = make_generator()
+    with mock.patch.object(jinja2.FileSystemLoader, 'list_templates') as lt:
+        lt.return_value = ['foo/bar/baz.py.j2']
+        with mock.patch.object(jinja2.Environment, 'get_template') as gt:
+            gt.return_value = jinja2.Template('# Meaningless comment')
+            cgr = g.get_response(api_schema=make_api())
+    lt.assert_called_once()
+    gt.assert_called_once()
+    assert len(cgr.file) == 0
+
+
 def test_get_response_ignores_private_files():
     g = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, 'list_templates') as lt:
