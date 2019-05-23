@@ -868,7 +868,6 @@ class TestClient(unittest.TestCase):
         self.assertRaises(ValueError, client.allocate_ids, COMPLETE_KEY, 2)
 
     def test_reserve_ids_w_completed_key(self):
-
         num_ids = 2
         creds = _make_credentials()
         client = self._make_one(credentials=creds,_use_grpc=False)
