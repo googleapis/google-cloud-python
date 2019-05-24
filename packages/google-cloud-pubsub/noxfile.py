@@ -23,6 +23,12 @@ import nox
 
 LOCAL_DEPS = (os.path.join("..", "api_core"), os.path.join("..", "core"))
 
+BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
+
+if os.path.exists("samples"):
+    BLACK_PATHS.append("samples")
+
+
 @nox.session(python="3.7")
 def lint(session):
     """Run linters.
@@ -31,13 +37,7 @@ def lint(session):
     serious code quality issues.
     """
     session.install("flake8", "black", *LOCAL_DEPS)
-    session.run(
-        "black",
-        "--check",
-        "google",
-        "tests",
-        "docs",
-    )
+    session.run("black", "--check", *BLACK_PATHS)
     session.run("flake8", "google", "tests")
 
 
@@ -52,12 +52,7 @@ def blacken(session):
     check the state of the `gcp_ubuntu_config` we use for that Kokoro run.
     """
     session.install("black")
-    session.run(
-        "black",
-        "google",
-        "tests",
-        "docs",
-    )
+    session.run("black", *BLACK_PATHS)
 
 
 @nox.session(python="3.7")
@@ -140,21 +135,24 @@ def cover(session):
 
     session.run("coverage", "erase")
 
+
 @nox.session(python="3.7")
 def docs(session):
     """Build the docs for this library."""
 
-    session.install('-e', '.')
-    session.install('sphinx', 'alabaster', 'recommonmark')
+    session.install("-e", ".")
+    session.install("sphinx", "alabaster", "recommonmark")
 
-    shutil.rmtree(os.path.join('docs', '_build'), ignore_errors=True)
+    shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
-        'sphinx-build',
-        '-W',  # warnings as errors
-        '-T',  # show full traceback on exception
-        '-N',  # no colors
-        '-b', 'html',
-        '-d', os.path.join('docs', '_build', 'doctrees', ''),
-        os.path.join('docs', ''),
-        os.path.join('docs', '_build', 'html', ''),
+        "sphinx-build",
+        "-W",  # warnings as errors
+        "-T",  # show full traceback on exception
+        "-N",  # no colors
+        "-b",
+        "html",
+        "-d",
+        os.path.join("docs", "_build", "doctrees", ""),
+        os.path.join("docs", ""),
+        os.path.join("docs", "_build", "html", ""),
     )
