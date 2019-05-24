@@ -34,7 +34,7 @@ def main():
         author="Google LLC",
         author_email="googleapis-packages@google.com",
         license="Apache 2.0",
-        url="https://github.com/GoogleCloudPlatform/google-cloud-python",
+        url="https://github.com/googleapis/python-ndb",
         classifiers=[
             "Development Status :: 3 - Alpha",
             "Intended Audience :: Developers",
