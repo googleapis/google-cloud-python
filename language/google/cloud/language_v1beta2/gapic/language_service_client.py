@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.language.v1beta2 LanguageService API."""
 
 import pkg_resources
@@ -32,6 +33,7 @@ from google.cloud.language_v1beta2.gapic.transports import (
 )
 from google.cloud.language_v1beta2.proto import language_service_pb2
 from google.cloud.language_v1beta2.proto import language_service_pb2_grpc
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-language").version
 
