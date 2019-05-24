@@ -14,10 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 from __future__ import absolute_import
 
 from google.cloud.websecurityscanner_v1beta import WebSecurityScannerClient
 from google.cloud.websecurityscanner_v1beta import enums
 from google.cloud.websecurityscanner_v1beta import types
+
 
 __all__ = ("enums", "types", "WebSecurityScannerClient")

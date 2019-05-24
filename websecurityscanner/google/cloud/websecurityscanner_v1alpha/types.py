@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 from __future__ import absolute_import
 import sys
 
@@ -29,6 +30,7 @@ from google.cloud.websecurityscanner_v1alpha.proto import web_security_scanner_p
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 from google.protobuf import timestamp_pb2
+
 
 _shared_modules = [empty_pb2, field_mask_pb2, timestamp_pb2]
 
@@ -53,5 +55,6 @@ for module in _local_modules:
         message.__module__ = "google.cloud.websecurityscanner_v1alpha.types"
         setattr(sys.modules[__name__], name, message)
         names.append(name)
+
 
 __all__ = tuple(sorted(names))
