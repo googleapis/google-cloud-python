@@ -20,6 +20,7 @@ import sys
 
 from google.api_core.protobuf_helpers import get_messages
 
+from google.cloud.dataproc_v1beta2.proto import autoscaling_policies_pb2
 from google.cloud.dataproc_v1beta2.proto import clusters_pb2
 from google.cloud.dataproc_v1beta2.proto import jobs_pb2
 from google.cloud.dataproc_v1beta2.proto import operations_pb2 as proto_operations_pb2
@@ -43,7 +44,13 @@ _shared_modules = [
     status_pb2,
 ]
 
-_local_modules = [clusters_pb2, jobs_pb2, proto_operations_pb2, workflow_templates_pb2]
+_local_modules = [
+    autoscaling_policies_pb2,
+    clusters_pb2,
+    jobs_pb2,
+    proto_operations_pb2,
+    workflow_templates_pb2,
+]
 
 names = []
 
