@@ -37,8 +37,8 @@ class DocumentReference(object):
             that contain a sub-collection (as well as the base document).
         kwargs (dict): The keyword arguments for the constructor. The only
             supported keyword is ``client`` and it must be a
-            :class:`~.firestore_v1beta1.client.Client`. It represents
-            the client that created this document reference.
+            :class:`~google.cloud.firestore_v1beta1.client.Client`.
+            It represents the client that created this document reference.
 
     Raises:
         ValueError: if
@@ -242,7 +242,7 @@ class DocumentReference(object):
 
         Each key in ``field_updates`` can either be a field name or a
         **field path** (For more information on **field paths**, see
-        :meth:`~.firestore_v1beta1.client.Client.field_path`.) To
+        :meth:`~google.cloud.firestore_v1beta1.client.Client.field_path`.) To
         illustrate this, consider a document with
 
         .. code-block:: python
@@ -312,8 +312,8 @@ class DocumentReference(object):
            ``field_updates``.
 
         To delete / remove a field from an existing document, use the
-        :attr:`~.firestore_v1beta1.transforms.DELETE_FIELD` sentinel. So
-        with the example above, sending
+        :attr:`~google.cloud.firestore_v1beta1.transforms.DELETE_FIELD`
+        sentinel. So with the example above, sending
 
         .. code-block:: python
 
@@ -336,8 +336,8 @@ class DocumentReference(object):
 
         To set a field to the current time on the server when the
         update is received, use the
-        :attr:`~.firestore_v1beta1.transforms.SERVER_TIMESTAMP` sentinel.
-        Sending
+        :attr:`~google.cloud.firestore_v1beta1.transforms.SERVER_TIMESTAMP`
+        sentinel.  Sending
 
         .. code-block:: python
 
@@ -408,8 +408,8 @@ class DocumentReference(object):
     def get(self, field_paths=None, transaction=None):
         """Retrieve a snapshot of the current document.
 
-        See :meth:`~.firestore_v1beta1.client.Client.field_path` for
-        more information on **field paths**.
+        See :meth:`~google.cloud.firestore_v1beta1.client.Client.field_path`
+        for more information on **field paths**.
 
         If a ``transaction`` is used and it already has write operations
         added, this method cannot be used (i.e. read-after-write is not
@@ -531,7 +531,7 @@ class DocumentSnapshot(object):
 
     Instances of this class are not intended to be constructed by hand,
     rather they'll be returned as responses to various methods, such as
-    :meth:`~.DocumentReference.get`.
+    :meth:`~google.cloud.DocumentReference.get`.
 
     Args:
         reference (~.firestore_v1beta1.document.DocumentReference): A
@@ -652,8 +652,8 @@ class DocumentSnapshot(object):
            >>> snapshot.get('top1.middle2.bottom3')
            20
 
-        See :meth:`~.firestore_v1beta1.client.Client.field_path` for
-        more information on **field paths**.
+        See :meth:`~google.cloud.firestore_v1beta1.client.Client.field_path`
+        for more information on **field paths**.
 
         A copy is returned since the data may contain mutable values,
         but the data stored in the snapshot must remain immutable.

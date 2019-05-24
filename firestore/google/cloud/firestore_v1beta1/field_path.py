@@ -216,7 +216,7 @@ def get_nested_value(field_path, data):
        >>> get_nested_value('top1.middle2.bottom3', data)
        20
 
-    See :meth:`~.firestore_v1beta1.client.Client.field_path` for
+    See :meth:`~google.cloud.firestore_v1beta1.client.Client.field_path` for
     more information on **field paths**.
 
     Args:

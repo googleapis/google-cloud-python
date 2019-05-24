@@ -928,7 +928,7 @@ class LastUpdateOption(WriteOption):
     """Option used to assert a "last update" condition on a write operation.
 
     This will typically be created by
-    :meth:`~.firestore_v1beta1.client.Client.write_option`.
+    :meth:`~google.cloud.firestore_v1beta1.client.Client.write_option`.
 
     Args:
         last_update_time (google.protobuf.timestamp_pb2.Timestamp): A
@@ -968,7 +968,7 @@ class ExistsOption(WriteOption):
     """Option used to assert existence on a write operation.
 
     This will typically be created by
-    :meth:`~.firestore_v1beta1.client.Client.write_option`.
+    :meth:`~google.cloud.firestore_v1beta1.client.Client.write_option`.
 
     Args:
         exists (bool): Indicates if the document being modified
