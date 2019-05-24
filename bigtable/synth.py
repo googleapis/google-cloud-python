@@ -83,6 +83,18 @@ s.replace(
     "__doc__)\n",
 )
 
+s.replace(
+    ["google/cloud/bigtable_v2/gapic/bigtable_client.py"],
+    "if ``true_mutations`` is empty, and at most\n\n\s*100000.",
+    "if ``true_mutations`` is empty, and at most 100000.",
+)
+
+s.replace(
+    ["google/cloud/bigtable_v2/gapic/bigtable_client.py"],
+    "if ``false_mutations`` is empty, and at most\n\n\s*100000.",
+    "if ``false_mutations`` is empty, and at most 100000.",
+)
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
