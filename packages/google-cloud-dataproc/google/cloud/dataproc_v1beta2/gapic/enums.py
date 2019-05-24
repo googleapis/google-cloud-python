@@ -19,6 +19,33 @@
 import enum
 
 
+class Component(enum.IntEnum):
+    """
+    Cluster components that can be activated.
+
+    Attributes:
+      COMPONENT_UNSPECIFIED (int): Unspecified component.
+      ANACONDA (int): The Anaconda python distribution.
+      DRUID (int): The Druid query engine.
+      HIVE_WEBHCAT (int): The Hive Web HCatalog (the REST service for accessing HCatalog).
+      JUPYTER (int): The Jupyter Notebook.
+      KERBEROS (int): The Kerberos security feature.
+      PRESTO (int): The Presto query engine.
+      ZEPPELIN (int): The Zeppelin notebook.
+      ZOOKEEPER (int): The Zookeeper service.
+    """
+
+    COMPONENT_UNSPECIFIED = 0
+    ANACONDA = 5
+    DRUID = 9
+    HIVE_WEBHCAT = 3
+    JUPYTER = 1
+    KERBEROS = 7
+    PRESTO = 6
+    ZEPPELIN = 4
+    ZOOKEEPER = 8
+
+
 class ClusterOperationStatus(object):
     class State(enum.IntEnum):
         """
@@ -186,6 +213,25 @@ class LoggingConfig(object):
         ERROR = 6
         FATAL = 7
         OFF = 8
+
+
+class ReservationAffinity(object):
+    class Type(enum.IntEnum):
+        """
+        Indicates whether to consume capacity from an reservation or not.
+
+        Attributes:
+          TYPE_UNSPECIFIED (int)
+          NO_RESERVATION (int): Do not consume from any allocated capacity.
+          ANY_RESERVATION (int): Consume any reservation available.
+          SPECIFIC_RESERVATION (int): Must consume from a specific reservation. Must specify key value fields
+          for specifying the reservations.
+        """
+
+        TYPE_UNSPECIFIED = 0
+        NO_RESERVATION = 1
+        ANY_RESERVATION = 2
+        SPECIFIC_RESERVATION = 3
 
 
 class WorkflowMetadata(object):
