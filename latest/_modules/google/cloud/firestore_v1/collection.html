@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.firestore_v1beta1.collection &#8212; google-cloud 599fd59 documentation</title>
+    <title>google.cloud.firestore_v1.collection &#8212; google-cloud 42e8e37 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -33,7 +33,7 @@
 
           <div class="body" role="main">
             
-  <h1>Source code for google.cloud.firestore_v1beta1.collection</h1><div class="highlight"><pre>
+  <h1>Source code for google.cloud.firestore_v1.collection</h1><div class="highlight"><pre>
 <span></span><span class="c1"># Copyright 2017 Google LLC All rights reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
@@ -54,16 +54,16 @@
 
 <span class="kn">import</span> <span class="nn">six</span>
 
-<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1</span> <span class="k">import</span> <span class="n">_helpers</span>
-<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1</span> <span class="k">import</span> <span class="n">query</span> <span class="k">as</span> <span class="n">query_mod</span>
-<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.proto</span> <span class="k">import</span> <span class="n">document_pb2</span>
-<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.watch</span> <span class="k">import</span> <span class="n">Watch</span>
-<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1</span> <span class="k">import</span> <span class="n">document</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1</span> <span class="k">import</span> <span class="n">_helpers</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1</span> <span class="k">import</span> <span class="n">query</span> <span class="k">as</span> <span class="n">query_mod</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1.proto</span> <span class="k">import</span> <span class="n">document_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1.watch</span> <span class="k">import</span> <span class="n">Watch</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1</span> <span class="k">import</span> <span class="n">document</span>
 
 <span class="n">_AUTO_ID_CHARS</span> <span class="o">=</span> <span class="s2">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789&quot;</span>
 
 
-<div class="viewcode-block" id="CollectionReference"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1beta1.collection.CollectionReference">[docs]</a><span class="k">class</span> <span class="nc">CollectionReference</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="CollectionReference"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1.collection.CollectionReference">[docs]</a><span class="k">class</span> <span class="nc">CollectionReference</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A reference to a collection in a Firestore database.</span>
 
 <span class="sd">    The collection may already exist or this class can facilitate creation</span>
@@ -76,7 +76,7 @@
 <span class="sd">            that contain a sub-collection.</span>
 <span class="sd">        kwargs (dict): The keyword arguments for the constructor. The only</span>
 <span class="sd">            supported keyword is ``client`` and it must be a</span>
-<span class="sd">            :class:`~.firestore_v1beta1.client.Client` if provided. It</span>
+<span class="sd">            :class:`~google.cloud.firestore_v1.client.Client` if provided. It</span>
 <span class="sd">            represents the client that created this collection reference.</span>
 
 <span class="sd">    Raises:</span>
@@ -117,8 +117,8 @@
         <span class="sd">&quot;&quot;&quot;Document that owns the current collection.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Optional[~.firestore_v1beta1.document.DocumentReference]: The</span>
-<span class="sd">            parent document, if the current collection is not a</span>
+<span class="sd">            Optional[:class:`~google.cloud.firestore_v1.document.DocumentReference`]:</span>
+<span class="sd">            The parent document, if the current collection is not a</span>
 <span class="sd">            top-level collection.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -127,7 +127,7 @@
             <span class="n">parent_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="o">*</span><span class="n">parent_path</span><span class="p">)</span>
 
-<div class="viewcode-block" id="CollectionReference.document"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1beta1.collection.CollectionReference.document">[docs]</a>    <span class="k">def</span> <span class="nf">document</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="CollectionReference.document"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1.collection.CollectionReference.document">[docs]</a>    <span class="k">def</span> <span class="nf">document</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a sub-document underneath the current collection.</span>
 
 <span class="sd">        Args:</span>
@@ -137,8 +137,8 @@
 <span class="sd">                uppercase and lowercase and letters.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            ~.firestore_v1beta1.document.DocumentReference: The child</span>
-<span class="sd">            document.</span>
+<span class="sd">            :class:`~google.cloud.firestore_v1.document.DocumentReference`:</span>
+<span class="sd">            The child document.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">document_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">document_id</span> <span class="o">=</span> <span class="n">_auto_id</span><span class="p">()</span>
@@ -168,7 +168,7 @@
         <span class="n">expected_prefix</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">DOCUMENT_PATH_DELIMITER</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">parent_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">parent_path</span><span class="p">,</span> <span class="n">expected_prefix</span>
 
-<div class="viewcode-block" id="CollectionReference.add"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1beta1.collection.CollectionReference.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_data</span><span class="p">,</span> <span class="n">document_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="CollectionReference.add"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1.collection.CollectionReference.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_data</span><span class="p">,</span> <span class="n">document_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a document in the Firestore database with the provided data.</span>
 
 <span class="sd">        Args:</span>
@@ -181,12 +181,12 @@
 <span class="sd">                uppercase and lowercase letters).</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Tuple[google.protobuf.timestamp_pb2.Timestamp, \</span>
-<span class="sd">                ~.firestore_v1beta1.document.DocumentReference]: Pair of</span>
+<span class="sd">            Tuple[:class:`google.protobuf.timestamp_pb2.Timestamp`, \</span>
+<span class="sd">                :class:`~google.cloud.firestore_v1.document.DocumentReference`]:</span>
+<span class="sd">                Pair of</span>
 
-<span class="sd">            * The ``update_time`` when the document was created (or</span>
-<span class="sd">              overwritten).</span>
-<span class="sd">            * A document reference for the created document.</span>
+<span class="sd">                * The ``update_time`` when the document was created/overwritten.</span>
+<span class="sd">                * A document reference for the created document.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            ~google.cloud.exceptions.Conflict: If ``document_id`` is provided</span>
@@ -215,7 +215,7 @@
             <span class="n">write_result</span> <span class="o">=</span> <span class="n">document_ref</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">document_data</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">write_result</span><span class="o">.</span><span class="n">update_time</span><span class="p">,</span> <span class="n">document_ref</span></div>
 
-<div class="viewcode-block" id="CollectionReference.list_documents"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1beta1.collection.CollectionReference.list_documents">[docs]</a>    <span class="k">def</span> <span class="nf">list_documents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="CollectionReference.list_documents"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1.collection.CollectionReference.list_documents">[docs]</a>    <span class="k">def</span> <span class="nf">list_documents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List all subdocuments of the current collection.</span>
 
 <span class="sd">        Args:</span>
@@ -224,7 +224,7 @@
 <span class="sd">            are ignored. Defaults to a sensible value set by the API.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Sequence[~.firestore_v1beta1.collection.DocumentReference]:</span>
+<span class="sd">            Sequence[:class:`~google.cloud.firestore_v1.collection.DocumentReference`]:</span>
 <span class="sd">                iterator of subdocuments of the current collection. If the</span>
 <span class="sd">                collection does not exist at the time of `snapshot`, the</span>
 <span class="sd">                iterator will be empty</span>
@@ -242,11 +242,11 @@
         <span class="n">iterator</span><span class="o">.</span><span class="n">item_to_value</span> <span class="o">=</span> <span class="n">_item_to_document_ref</span>
         <span class="k">return</span> <span class="n">iterator</span></div>
 
-<div class="viewcode-block" id="CollectionReference.select"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1beta1.collection.CollectionReference.select">[docs]</a>    <span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_paths</span><span class="p">):</span>
+<div class="viewcode-block" id="CollectionReference.select"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1.collection.CollectionReference.select">[docs]</a>    <span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_paths</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a &quot;select&quot; query with this collection as parent.</span>
 
 <span class="sd">        See</span>
-<span class="sd">        :meth:`~.firestore_v1beta1.query.Query.select` for</span>
+<span class="sd">        :meth:`~google.cloud.firestore_v1.query.Query.select` for</span>
 <span class="sd">        more information on this method.</span>
 
 <span class="sd">        Args:</span>
@@ -255,16 +255,17 @@
 <span class="sd">                of document fields in the query results.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            ~.firestore_v1beta1.query.Query: A &quot;projected&quot; query.</span>
+<span class="sd">            :class:`~google.cloud.firestore_v1.query.Query`:</span>
+<span class="sd">            A &quot;projected&quot; query.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">query</span> <span class="o">=</span> <span class="n">query_mod</span><span class="o">.</span><span class="n">Query</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">field_paths</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CollectionReference.where"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1beta1.collection.CollectionReference.where">[docs]</a>    <span class="k">def</span> <span class="nf">where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_path</span><span class="p">,</span> <span class="n">op_string</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="CollectionReference.where"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1.collection.CollectionReference.where">[docs]</a>    <span class="k">def</span> <span class="nf">where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_path</span><span class="p">,</span> <span class="n">op_string</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a &quot;where&quot; query with this collection as parent.</span>
 
 <span class="sd">        See</span>
-<span class="sd">        :meth:`~.firestore_v1beta1.query.Query.where` for</span>
+<span class="sd">        :meth:`~google.cloud.firestore_v1.query.Query.where` for</span>
 <span class="sd">        more information on this method.</span>
 
 <span class="sd">        Args:</span>
@@ -278,16 +279,17 @@
 <span class="sd">                allowed operation.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            ~.firestore_v1beta1.query.Query: A filtered query.</span>
+<span class="sd">            :class:`~google.cloud.firestore_v1.query.Query`:</span>
+<span class="sd">            A filtered query.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">query</span> <span class="o">=</span> <span class="n">query_mod</span><span class="o">.</span><span class="n">Query</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">field_path</span><span class="p">,</span> <span class="n">op_string</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CollectionReference.order_by"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1beta1.collection.CollectionReference.order_by">[docs]</a>    <span class="k">def</span> <span class="nf">order_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="CollectionReference.order_by"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1.collection.CollectionReference.order_by">[docs]</a>    <span class="k">def</span> <span class="nf">order_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create an &quot;order by&quot; query with this collection as parent.</span>
 
 <span class="sd">        See</span>
-<span class="sd">        :meth:`~.firestore_v1beta1.query.Query.order_by` for</span>
+<span class="sd">        :meth:`~google.cloud.firestore_v1.query.Query.order_by` for</span>
 <span class="sd">        more information on this method.</span>
 
 <span class="sd">        Args:</span>
@@ -295,20 +297,21 @@
 <span class="sd">                field names) on which to order the query results.</span>
 <span class="sd">            kwargs (Dict[str, Any]): The keyword arguments to pass along</span>
 <span class="sd">                to the query. The only supported keyword is ``direction``,</span>
-<span class="sd">                see :meth:`~.firestore_v1beta1.query.Query.order_by` for</span>
-<span class="sd">                more information.</span>
+<span class="sd">                see :meth:`~google.cloud.firestore_v1.query.Query.order_by`</span>
+<span class="sd">                for more information.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            ~.firestore_v1beta1.query.Query: An &quot;order by&quot; query.</span>
+<span class="sd">            :class:`~google.cloud.firestore_v1.query.Query`:</span>
+<span class="sd">            An &quot;order by&quot; query.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">query</span> <span class="o">=</span> <span class="n">query_mod</span><span class="o">.</span><span class="n">Query</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">field_path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CollectionReference.limit"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1beta1.collection.CollectionReference.limit">[docs]</a>    <span class="k">def</span> <span class="nf">limit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">):</span>
+<div class="viewcode-block" id="CollectionReference.limit"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1.collection.CollectionReference.limit">[docs]</a>    <span class="k">def</span> <span class="nf">limit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a limited query with this collection as parent.</span>
 
 <span class="sd">        See</span>
-<span class="sd">        :meth:`~.firestore_v1beta1.query.Query.limit` for</span>
+<span class="sd">        :meth:`~google.cloud.firestore_v1.query.Query.limit` for</span>
 <span class="sd">        more information on this method.</span>
 
 <span class="sd">        Args:</span>
@@ -316,16 +319,17 @@
 <span class="sd">                the query.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            ~.firestore_v1beta1.query.Query: A limited query.</span>
+<span class="sd">            :class:`~google.cloud.firestore_v1.query.Query`:</span>
+<span class="sd">            A limited query.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">query</span> <span class="o">=</span> <span class="n">query_mod</span><span class="o">.</span><span class="n">Query</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="n">count</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CollectionReference.offset"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1beta1.collection.CollectionReference.offset">[docs]</a>    <span class="k">def</span> <span class="nf">offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_to_skip</span><span class="p">):</span>
+<div class="viewcode-block" id="CollectionReference.offset"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1.collection.CollectionReference.offset">[docs]</a>    <span class="k">def</span> <span class="nf">offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_to_skip</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Skip to an offset in a query with this collection as parent.</span>
 
 <span class="sd">        See</span>
-<span class="sd">        :meth:`~.firestore_v1beta1.query.Query.offset` for</span>
+<span class="sd">        :meth:`~google.cloud.firestore_v1.query.Query.offset` for</span>
 <span class="sd">        more information on this method.</span>
 
 <span class="sd">        Args:</span>
@@ -333,92 +337,97 @@
 <span class="sd">                of query results. (Must be non-negative.)</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            ~.firestore_v1beta1.query.Query: An offset query.</span>
+<span class="sd">            :class:`~google.cloud.firestore_v1.query.Query`:</span>
+<span class="sd">            An offset query.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">query</span> <span class="o">=</span> <span class="n">query_mod</span><span class="o">.</span><span class="n">Query</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">offset</span><span class="p">(</span><span class="n">num_to_skip</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CollectionReference.start_at"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1beta1.collection.CollectionReference.start_at">[docs]</a>    <span class="k">def</span> <span class="nf">start_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_fields</span><span class="p">):</span>
+<div class="viewcode-block" id="CollectionReference.start_at"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1.collection.CollectionReference.start_at">[docs]</a>    <span class="k">def</span> <span class="nf">start_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_fields</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Start query at a cursor with this collection as parent.</span>
 
 <span class="sd">        See</span>
-<span class="sd">        :meth:`~.firestore_v1beta1.query.Query.start_at` for</span>
+<span class="sd">        :meth:`~google.cloud.firestore_v1.query.Query.start_at` for</span>
 <span class="sd">        more information on this method.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            document_fields (Union[~.firestore_v1beta1.\</span>
-<span class="sd">                document.DocumentSnapshot, dict, list, tuple]): a document</span>
-<span class="sd">                snapshot or a dictionary/list/tuple of fields representing a</span>
-<span class="sd">                query results cursor. A cursor is a collection of values that</span>
-<span class="sd">                represent a position in a query result set.</span>
+<span class="sd">            document_fields (Union[:class:`~google.cloud.firestore_v1.\</span>
+<span class="sd">                document.DocumentSnapshot`, dict, list, tuple]):</span>
+<span class="sd">                A document snapshot or a dictionary/list/tuple of fields</span>
+<span class="sd">                representing a query results cursor. A cursor is a collection</span>
+<span class="sd">                of values that represent a position in a query result set.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            ~.firestore_v1beta1.query.Query: A query with cursor.</span>
+<span class="sd">            :class:`~google.cloud.firestore_v1.query.Query`:</span>
+<span class="sd">            A query with cursor.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">query</span> <span class="o">=</span> <span class="n">query_mod</span><span class="o">.</span><span class="n">Query</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">start_at</span><span class="p">(</span><span class="n">document_fields</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CollectionReference.start_after"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1beta1.collection.CollectionReference.start_after">[docs]</a>    <span class="k">def</span> <span class="nf">start_after</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_fields</span><span class="p">):</span>
+<div class="viewcode-block" id="CollectionReference.start_after"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1.collection.CollectionReference.start_after">[docs]</a>    <span class="k">def</span> <span class="nf">start_after</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_fields</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Start query after a cursor with this collection as parent.</span>
 
 <span class="sd">        See</span>
-<span class="sd">        :meth:`~.firestore_v1beta1.query.Query.start_after` for</span>
+<span class="sd">        :meth:`~google.cloud.firestore_v1.query.Query.start_after` for</span>
 <span class="sd">        more information on this method.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            document_fields (Union[~.firestore_v1beta1.\</span>
-<span class="sd">                document.DocumentSnapshot, dict, list, tuple]): a document</span>
-<span class="sd">                snapshot or a dictionary/list/tuple of fields representing a</span>
-<span class="sd">                query results cursor. A cursor is a collection of values that</span>
-<span class="sd">                represent a position in a query result set.</span>
+<span class="sd">            document_fields (Union[:class:`~google.cloud.firestore_v1.\</span>
+<span class="sd">                document.DocumentSnapshot`, dict, list, tuple]):</span>
+<span class="sd">                A document snapshot or a dictionary/list/tuple of fields</span>
+<span class="sd">                representing a query results cursor. A cursor is a collection</span>
+<span class="sd">                of values that represent a position in a query result set.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            ~.firestore_v1beta1.query.Query: A query with cursor.</span>
+<span class="sd">            :class:`~google.cloud.firestore_v1.query.Query`:</span>
+<span class="sd">            A query with cursor.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">query</span> <span class="o">=</span> <span class="n">query_mod</span><span class="o">.</span><span class="n">Query</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">start_after</span><span class="p">(</span><span class="n">document_fields</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CollectionReference.end_before"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1beta1.collection.CollectionReference.end_before">[docs]</a>    <span class="k">def</span> <span class="nf">end_before</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_fields</span><span class="p">):</span>
+<div class="viewcode-block" id="CollectionReference.end_before"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1.collection.CollectionReference.end_before">[docs]</a>    <span class="k">def</span> <span class="nf">end_before</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_fields</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;End query before a cursor with this collection as parent.</span>
 
 <span class="sd">        See</span>
-<span class="sd">        :meth:`~.firestore_v1beta1.query.Query.end_before` for</span>
+<span class="sd">        :meth:`~google.cloud.firestore_v1.query.Query.end_before` for</span>
 <span class="sd">        more information on this method.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            document_fields (Union[~.firestore_v1beta1.\</span>
-<span class="sd">                document.DocumentSnapshot, dict, list, tuple]): a document</span>
-<span class="sd">                snapshot or a dictionary/list/tuple of fields representing a</span>
-<span class="sd">                query results cursor. A cursor is a collection of values that</span>
-<span class="sd">                represent a position in a query result set.</span>
+<span class="sd">            document_fields (Union[:class:`~google.cloud.firestore_v1.\</span>
+<span class="sd">                document.DocumentSnapshot`, dict, list, tuple]):</span>
+<span class="sd">                A document snapshot or a dictionary/list/tuple of fields</span>
+<span class="sd">                representing a query results cursor. A cursor is a collection</span>
+<span class="sd">                of values that represent a position in a query result set.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            ~.firestore_v1beta1.query.Query: A query with cursor.</span>
+<span class="sd">            :class:`~google.cloud.firestore_v1.query.Query`:</span>
+<span class="sd">            A query with cursor.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">query</span> <span class="o">=</span> <span class="n">query_mod</span><span class="o">.</span><span class="n">Query</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">end_before</span><span class="p">(</span><span class="n">document_fields</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CollectionReference.end_at"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1beta1.collection.CollectionReference.end_at">[docs]</a>    <span class="k">def</span> <span class="nf">end_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_fields</span><span class="p">):</span>
+<div class="viewcode-block" id="CollectionReference.end_at"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1.collection.CollectionReference.end_at">[docs]</a>    <span class="k">def</span> <span class="nf">end_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_fields</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;End query at a cursor with this collection as parent.</span>
 
 <span class="sd">        See</span>
-<span class="sd">        :meth:`~.firestore_v1beta1.query.Query.end_at` for</span>
+<span class="sd">        :meth:`~google.cloud.firestore_v1.query.Query.end_at` for</span>
 <span class="sd">        more information on this method.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            document_fields (Union[~.firestore_v1beta1.\</span>
-<span class="sd">                document.DocumentSnapshot, dict, list, tuple]): a document</span>
-<span class="sd">                snapshot or a dictionary/list/tuple of fields representing a</span>
-<span class="sd">                query results cursor. A cursor is a collection of values that</span>
-<span class="sd">                represent a position in a query result set.</span>
+<span class="sd">            document_fields (Union[:class:`~google.cloud.firestore_v1.\</span>
+<span class="sd">                document.DocumentSnapshot`, dict, list, tuple]):</span>
+<span class="sd">                A document snapshot or a dictionary/list/tuple of fields</span>
+<span class="sd">                representing a query results cursor. A cursor is a collection</span>
+<span class="sd">                of values that represent a position in a query result set.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            ~.firestore_v1beta1.query.Query: A query with cursor.</span>
+<span class="sd">            :class:`~google.cloud.firestore_v1.query.Query`:</span>
+<span class="sd">            A query with cursor.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">query</span> <span class="o">=</span> <span class="n">query_mod</span><span class="o">.</span><span class="n">Query</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">end_at</span><span class="p">(</span><span class="n">document_fields</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CollectionReference.get"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1beta1.collection.CollectionReference.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="CollectionReference.get"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1.collection.CollectionReference.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deprecated alias for :meth:`stream`.&quot;&quot;&quot;</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
             <span class="s2">&quot;&#39;Collection.get&#39; is deprecated:  please use &#39;Collection.stream&#39; instead.&quot;</span><span class="p">,</span>
@@ -427,7 +436,7 @@
         <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CollectionReference.stream"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1beta1.collection.CollectionReference.stream">[docs]</a>    <span class="k">def</span> <span class="nf">stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="CollectionReference.stream"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1.collection.CollectionReference.stream">[docs]</a>    <span class="k">def</span> <span class="nf">stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Read the documents in this collection.</span>
 
 <span class="sd">        This sends a ``RunQuery`` RPC and then returns an iterator which</span>
@@ -446,31 +455,31 @@
 <span class="sd">        allowed).</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            transaction (Optional[~.firestore_v1beta1.transaction.\</span>
-<span class="sd">                Transaction]): An existing transaction that the query will</span>
-<span class="sd">                run in.</span>
+<span class="sd">            transaction (Optional[:class:`~google.cloud.firestore_v1.transaction.\</span>
+<span class="sd">                Transaction`]):</span>
+<span class="sd">                An existing transaction that the query will run in.</span>
 
 <span class="sd">        Yields:</span>
-<span class="sd">            ~.firestore_v1beta1.document.DocumentSnapshot: The next</span>
-<span class="sd">            document that fulfills the query.</span>
+<span class="sd">            :class:`~google.cloud.firestore_v1.document.DocumentSnapshot`:</span>
+<span class="sd">            The next document that fulfills the query.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">query</span> <span class="o">=</span> <span class="n">query_mod</span><span class="o">.</span><span class="n">Query</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CollectionReference.on_snapshot"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1beta1.collection.CollectionReference.on_snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">on_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
+<div class="viewcode-block" id="CollectionReference.on_snapshot"><a class="viewcode-back" href="../../../../firestore/collection.html#google.cloud.firestore_v1.collection.CollectionReference.on_snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">on_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Monitor the documents in this collection.</span>
 
 <span class="sd">        This starts a watch on this collection using a background thread. The</span>
 <span class="sd">        provided callback is run on the snapshot of the documents.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            callback(~.firestore.collection.CollectionSnapshot): a callback</span>
-<span class="sd">                to run when a change occurs.</span>
+<span class="sd">            callback (Callable[[:class:`~google.cloud.firestore.collection.CollectionSnapshot`], NoneType]):</span>
+<span class="sd">                a callback to run when a change occurs.</span>
 
 <span class="sd">        Example:</span>
-<span class="sd">            from google.cloud import firestore_v1beta1</span>
+<span class="sd">            from google.cloud import firestore_v1</span>
 
-<span class="sd">            db = firestore_v1beta1.Client()</span>
+<span class="sd">            db = firestore_v1.Client()</span>
 <span class="sd">            collection_ref = db.collection(u&#39;users&#39;)</span>
 
 <span class="sd">            def on_snapshot(collection_snapshot):</span>

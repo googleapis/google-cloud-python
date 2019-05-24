@@ -1,6 +1,6 @@
 Documents
 ~~~~~~~~~
 
-.. automodule:: google.cloud.firestore_v1beta1.document
+.. automodule:: google.cloud.firestore_v1.document
   :members:
   :show-inheritance:

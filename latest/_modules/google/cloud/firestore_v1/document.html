@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.firestore_v1beta1.document &#8212; google-cloud 599fd59 documentation</title>
+    <title>google.cloud.firestore_v1.document &#8212; google-cloud 42e8e37 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -33,7 +33,7 @@
 
           <div class="body" role="main">
             
-  <h1>Source code for google.cloud.firestore_v1beta1.document</h1><div class="highlight"><pre>
+  <h1>Source code for google.cloud.firestore_v1.document</h1><div class="highlight"><pre>
 <span></span><span class="c1"># Copyright 2017 Google LLC All rights reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
@@ -55,13 +55,13 @@
 <span class="kn">import</span> <span class="nn">six</span>
 
 <span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">exceptions</span>
-<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1</span> <span class="k">import</span> <span class="n">_helpers</span>
-<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1</span> <span class="k">import</span> <span class="n">field_path</span> <span class="k">as</span> <span class="n">field_path_module</span>
-<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.proto</span> <span class="k">import</span> <span class="n">common_pb2</span>
-<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.watch</span> <span class="k">import</span> <span class="n">Watch</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1</span> <span class="k">import</span> <span class="n">_helpers</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1</span> <span class="k">import</span> <span class="n">field_path</span> <span class="k">as</span> <span class="n">field_path_module</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1.proto</span> <span class="k">import</span> <span class="n">common_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1.watch</span> <span class="k">import</span> <span class="n">Watch</span>
 
 
-<div class="viewcode-block" id="DocumentReference"><a class="viewcode-back" href="../../../../firestore/document.html#google.cloud.firestore_v1beta1.document.DocumentReference">[docs]</a><span class="k">class</span> <span class="nc">DocumentReference</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentReference"><a class="viewcode-back" href="../../../../firestore/document.html#google.cloud.firestore_v1.document.DocumentReference">[docs]</a><span class="k">class</span> <span class="nc">DocumentReference</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A reference to a document in a Firestore database.</span>
 
 <span class="sd">    The document may already exist or can be created by this class.</span>
@@ -73,7 +73,7 @@
 <span class="sd">            that contain a sub-collection (as well as the base document).</span>
 <span class="sd">        kwargs (dict): The keyword arguments for the constructor. The only</span>
 <span class="sd">            supported keyword is ``client`` and it must be a</span>
-<span class="sd">            :class:`~.firestore_v1beta1.client.Client`. It represents</span>
+<span class="sd">            :class:`~google.cloud.firestore_v1.client.Client`. It represents</span>
 <span class="sd">            the client that created this document reference.</span>
 
 <span class="sd">    Raises:</span>
@@ -198,13 +198,13 @@
         <span class="sd">&quot;&quot;&quot;Collection that owns the current document.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            ~.firestore_v1beta1.collection.CollectionReference: The</span>
-<span class="sd">            parent collection.</span>
+<span class="sd">            :class:`~google.cloud.firestore_v1.collection.CollectionReference`:</span>
+<span class="sd">            The parent collection.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">parent_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="o">*</span><span class="n">parent_path</span><span class="p">)</span>
 
-<div class="viewcode-block" id="DocumentReference.collection"><a class="viewcode-back" href="../../../../firestore/document.html#google.cloud.firestore_v1beta1.document.DocumentReference.collection">[docs]</a>    <span class="k">def</span> <span class="nf">collection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_id</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentReference.collection"><a class="viewcode-back" href="../../../../firestore/document.html#google.cloud.firestore_v1.document.DocumentReference.collection">[docs]</a>    <span class="k">def</span> <span class="nf">collection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a sub-collection underneath the current document.</span>
 
 <span class="sd">        Args:</span>
@@ -212,13 +212,13 @@
 <span class="sd">                referred to as the &quot;kind&quot;).</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            ~.firestore_v1beta1.collection.CollectionReference: The</span>
-<span class="sd">            child collection.</span>
+<span class="sd">            :class:`~google.cloud.firestore_v1.collection.CollectionReference`:</span>
+<span class="sd">            The child collection.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">child_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">+</span> <span class="p">(</span><span class="n">collection_id</span><span class="p">,)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="o">*</span><span class="n">child_path</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="DocumentReference.create"><a class="viewcode-back" href="../../../../firestore/document.html#google.cloud.firestore_v1beta1.document.DocumentReference.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_data</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentReference.create"><a class="viewcode-back" href="../../../../firestore/document.html#google.cloud.firestore_v1.document.DocumentReference.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create the current document in the Firestore database.</span>
 
 <span class="sd">        Args:</span>
@@ -226,19 +226,20 @@
 <span class="sd">                creating a document.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            google.cloud.firestore_v1beta1.types.WriteResult: The</span>
-<span class="sd">            write result corresponding to the committed document. A write</span>
-<span class="sd">            result contains an ``update_time`` field.</span>
+<span class="sd">            :class:`~google.cloud.firestore_v1.types.WriteResult`:</span>
+<span class="sd">                The write result corresponding to the committed document.</span>
+<span class="sd">                A write result contains an ``update_time`` field.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            ~google.cloud.exceptions.Conflict: If the document already exists.</span>
+<span class="sd">            :class:`~google.cloud.exceptions.Conflict`:</span>
+<span class="sd">                If the document already exists.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">batch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">batch</span><span class="p">()</span>
         <span class="n">batch</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_data</span><span class="p">)</span>
         <span class="n">write_results</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">_first_write_result</span><span class="p">(</span><span class="n">write_results</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="DocumentReference.set"><a class="viewcode-back" href="../../../../firestore/document.html#google.cloud.firestore_v1beta1.document.DocumentReference.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_data</span><span class="p">,</span> <span class="n">merge</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentReference.set"><a class="viewcode-back" href="../../../../firestore/document.html#google.cloud.firestore_v1.document.DocumentReference.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_data</span><span class="p">,</span> <span class="n">merge</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Replace the current document in the Firestore database.</span>
 
 <span class="sd">        A write ``option`` can be specified to indicate preconditions of</span>
@@ -260,8 +261,8 @@
 <span class="sd">                of the document.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            google.cloud.firestore_v1beta1.types.WriteResult: The</span>
-<span class="sd">            write result corresponding to the committed document. A write</span>
+<span class="sd">            :class:`~google.cloud.firestore_v1.types.WriteResult`:</span>
+<span class="sd">            The write result corresponding to the committed document. A write</span>
 <span class="sd">            result contains an ``update_time`` field.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">batch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">batch</span><span class="p">()</span>
@@ -269,7 +270,7 @@
         <span class="n">write_results</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">_first_write_result</span><span class="p">(</span><span class="n">write_results</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="DocumentReference.update"><a class="viewcode-back" href="../../../../firestore/document.html#google.cloud.firestore_v1beta1.document.DocumentReference.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_updates</span><span class="p">,</span> <span class="n">option</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentReference.update"><a class="viewcode-back" href="../../../../firestore/document.html#google.cloud.firestore_v1.document.DocumentReference.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_updates</span><span class="p">,</span> <span class="n">option</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update an existing document in the Firestore database.</span>
 
 <span class="sd">        By default, this method verifies that the document exists on the</span>
@@ -278,7 +279,7 @@
 
 <span class="sd">        Each key in ``field_updates`` can either be a field name or a</span>
 <span class="sd">        **field path** (For more information on **field paths**, see</span>
-<span class="sd">        :meth:`~.firestore_v1beta1.client.Client.field_path`.) To</span>
+<span class="sd">        :meth:`~google.cloud.firestore_v1.client.Client.field_path`.) To</span>
 <span class="sd">        illustrate this, consider a document with</span>
 
 <span class="sd">        .. code-block:: python</span>
@@ -348,8 +349,8 @@
 <span class="sd">           ``field_updates``.</span>
 
 <span class="sd">        To delete / remove a field from an existing document, use the</span>
-<span class="sd">        :attr:`~.firestore_v1beta1.transforms.DELETE_FIELD` sentinel. So</span>
-<span class="sd">        with the example above, sending</span>
+<span class="sd">        :attr:`~google.cloud.firestore_v1.transforms.DELETE_FIELD` sentinel.</span>
+<span class="sd">        So with the example above, sending</span>
 
 <span class="sd">        .. code-block:: python</span>
 
@@ -372,7 +373,8 @@
 
 <span class="sd">        To set a field to the current time on the server when the</span>
 <span class="sd">        update is received, use the</span>
-<span class="sd">        :attr:`~.firestore_v1beta1.transforms.SERVER_TIMESTAMP` sentinel.</span>
+<span class="sd">        :attr:`~google.cloud.firestore_v1.transforms.SERVER_TIMESTAMP`</span>
+<span class="sd">        sentinel.</span>
 <span class="sd">        Sending</span>
 
 <span class="sd">        .. code-block:: python</span>
@@ -399,13 +401,13 @@
 <span class="sd">        Args:</span>
 <span class="sd">            field_updates (dict): Field names or paths to update and values</span>
 <span class="sd">                to update with.</span>
-<span class="sd">            option (Optional[~.firestore_v1beta1.client.WriteOption]): A</span>
-<span class="sd">               write option to make assertions / preconditions on the server</span>
-<span class="sd">               state of the document before applying changes.</span>
+<span class="sd">            option (Optional[:class:`~google.cloud.firestore_v1.client.WriteOption`]):</span>
+<span class="sd">                A write option to make assertions / preconditions on the server</span>
+<span class="sd">                state of the document before applying changes.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            google.cloud.firestore_v1beta1.types.WriteResult: The</span>
-<span class="sd">            write result corresponding to the updated document. A write</span>
+<span class="sd">            :class:`~google.cloud.firestore_v1.types.WriteResult`:</span>
+<span class="sd">            The write result corresponding to the updated document. A write</span>
 <span class="sd">            result contains an ``update_time`` field.</span>
 
 <span class="sd">        Raises:</span>
@@ -416,20 +418,20 @@
         <span class="n">write_results</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">_first_write_result</span><span class="p">(</span><span class="n">write_results</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="DocumentReference.delete"><a class="viewcode-back" href="../../../../firestore/document.html#google.cloud.firestore_v1beta1.document.DocumentReference.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentReference.delete"><a class="viewcode-back" href="../../../../firestore/document.html#google.cloud.firestore_v1.document.DocumentReference.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete the current document in the Firestore database.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            option (Optional[~.firestore_v1beta1.client.WriteOption]): A</span>
-<span class="sd">               write option to make assertions / preconditions on the server</span>
-<span class="sd">               state of the document before applying changes.</span>
+<span class="sd">            option (Optional[:class:`~google.cloud.firestore_v1.client.WriteOption`]):</span>
+<span class="sd">                A write option to make assertions / preconditions on the server</span>
+<span class="sd">                state of the document before applying changes.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            google.protobuf.timestamp_pb2.Timestamp: The time that the delete</span>
-<span class="sd">            request was received by the server. If the document did not exist</span>
-<span class="sd">            when the delete was sent (i.e. nothing was deleted), this method</span>
-<span class="sd">            will still succeed and will still return the time that the</span>
-<span class="sd">            request was received by the server.</span>
+<span class="sd">            :class:`google.protobuf.timestamp_pb2.Timestamp`:</span>
+<span class="sd">            The time that the delete request was received by the server.</span>
+<span class="sd">            If the document did not exist when the delete was sent (i.e.</span>
+<span class="sd">            nothing was deleted), this method will still succeed and will</span>
+<span class="sd">            still return the time that the request was received by the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">write_pb</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">pb_for_delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_document_path</span><span class="p">,</span> <span class="n">option</span><span class="p">)</span>
         <span class="n">commit_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_firestore_api</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span>
@@ -441,10 +443,10 @@
 
         <span class="k">return</span> <span class="n">commit_response</span><span class="o">.</span><span class="n">commit_time</span></div>
 
-<div class="viewcode-block" id="DocumentReference.get"><a class="viewcode-back" href="../../../../firestore/document.html#google.cloud.firestore_v1beta1.document.DocumentReference.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_paths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transaction</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentReference.get"><a class="viewcode-back" href="../../../../firestore/document.html#google.cloud.firestore_v1.document.DocumentReference.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_paths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transaction</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve a snapshot of the current document.</span>
 
-<span class="sd">        See :meth:`~.firestore_v1beta1.client.Client.field_path` for</span>
+<span class="sd">        See :meth:`~google.cloud.firestore_v1.client.Client.field_path` for</span>
 <span class="sd">        more information on **field paths**.</span>
 
 <span class="sd">        If a ``transaction`` is used and it already has write operations</span>
@@ -456,16 +458,17 @@
 <span class="sd">                paths (``.``-delimited list of field names) to use as a</span>
 <span class="sd">                projection of document fields in the returned results. If</span>
 <span class="sd">                no value is provided, all fields will be returned.</span>
-<span class="sd">            transaction (Optional[~.firestore_v1beta1.transaction.\</span>
-<span class="sd">                Transaction]): An existing transaction that this reference</span>
+<span class="sd">            transaction (Optional[:class:`~google.cloud.firestore_v1.transaction.Transaction`]):</span>
+<span class="sd">                An existing transaction that this reference</span>
 <span class="sd">                will be retrieved in.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            ~.firestore_v1beta1.document.DocumentSnapshot: A snapshot of</span>
-<span class="sd">                the current document. If the document does not exist at</span>
-<span class="sd">                the time of `snapshot`, the snapshot `reference`, `data`,</span>
-<span class="sd">                `update_time`, and `create_time` attributes will all be</span>
-<span class="sd">                `None` and `exists` will be `False`.</span>
+<span class="sd">            :class:`~google.cloud.firestore_v1.document.DocumentSnapshot`:</span>
+<span class="sd">                A snapshot of the current document. If the document does not</span>
+<span class="sd">                exist at the time of the snapshot is taken, the snapshot&#39;s</span>
+<span class="sd">                :attr:`reference`, :attr:`data`, :attr:`update_time`, and</span>
+<span class="sd">                :attr:`create_time` attributes will all be ``None`` and</span>
+<span class="sd">                its :attr:`exists` attribute will be ``False``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field_paths</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;field_paths&#39; must be a sequence of paths, not a string.&quot;</span><span class="p">)</span>
@@ -503,7 +506,7 @@
             <span class="n">update_time</span><span class="o">=</span><span class="n">update_time</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="DocumentReference.collections"><a class="viewcode-back" href="../../../../firestore/document.html#google.cloud.firestore_v1beta1.document.DocumentReference.collections">[docs]</a>    <span class="k">def</span> <span class="nf">collections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentReference.collections"><a class="viewcode-back" href="../../../../firestore/document.html#google.cloud.firestore_v1.document.DocumentReference.collections">[docs]</a>    <span class="k">def</span> <span class="nf">collections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List subcollections of the current document.</span>
 
 <span class="sd">        Args:</span>
@@ -512,7 +515,7 @@
 <span class="sd">            are ignored. Defaults to a sensible value set by the API.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Sequence[~.firestore_v1beta1.collection.CollectionReference]:</span>
+<span class="sd">            Sequence[:class:`~google.cloud.firestore_v1.collection.CollectionReference`]:</span>
 <span class="sd">                iterator of subcollections of the current document. If the</span>
 <span class="sd">                document does not exist at the time of `snapshot`, the</span>
 <span class="sd">                iterator will be empty</span>
@@ -526,20 +529,23 @@
         <span class="n">iterator</span><span class="o">.</span><span class="n">item_to_value</span> <span class="o">=</span> <span class="n">_item_to_collection_ref</span>
         <span class="k">return</span> <span class="n">iterator</span></div>
 
-<div class="viewcode-block" id="DocumentReference.on_snapshot"><a class="viewcode-back" href="../../../../firestore/document.html#google.cloud.firestore_v1beta1.document.DocumentReference.on_snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">on_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentReference.on_snapshot"><a class="viewcode-back" href="../../../../firestore/document.html#google.cloud.firestore_v1.document.DocumentReference.on_snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">on_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Watch this document.</span>
 
 <span class="sd">        This starts a watch on this document using a background thread. The</span>
 <span class="sd">        provided callback is run on the snapshot.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            callback(~.firestore.document.DocumentSnapshot):a callback to run</span>
-<span class="sd">                when a change occurs</span>
+<span class="sd">            callback(Callable[[:class:`~google.cloud.firestore.document.DocumentSnapshot`], NoneType]):</span>
+<span class="sd">                a callback to run when a change occurs</span>
 
 <span class="sd">        Example:</span>
-<span class="sd">            from google.cloud import firestore_v1beta1</span>
 
-<span class="sd">            db = firestore_v1beta1.Client()</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from google.cloud import firestore_v1</span>
+
+<span class="sd">            db = firestore_v1.Client()</span>
 <span class="sd">            collection_ref = db.collection(u&#39;users&#39;)</span>
 
 <span class="sd">            def on_snapshot(document_snapshot):</span>
@@ -558,7 +564,7 @@
         <span class="k">return</span> <span class="n">Watch</span><span class="o">.</span><span class="n">for_document</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">DocumentSnapshot</span><span class="p">,</span> <span class="n">DocumentReference</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="DocumentSnapshot"><a class="viewcode-back" href="../../../../firestore/document.html#google.cloud.firestore_v1beta1.document.DocumentSnapshot">[docs]</a><span class="k">class</span> <span class="nc">DocumentSnapshot</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentSnapshot"><a class="viewcode-back" href="../../../../firestore/document.html#google.cloud.firestore_v1.document.DocumentSnapshot">[docs]</a><span class="k">class</span> <span class="nc">DocumentSnapshot</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A snapshot of document data in a Firestore database.</span>
 
 <span class="sd">    This represents data retrieved at a specific time and may not contain</span>
@@ -567,21 +573,23 @@
 
 <span class="sd">    Instances of this class are not intended to be constructed by hand,</span>
 <span class="sd">    rather they&#39;ll be returned as responses to various methods, such as</span>
-<span class="sd">    :meth:`~.DocumentReference.get`.</span>
+<span class="sd">    :meth:`~google.cloud.DocumentReference.get`.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        reference (~.firestore_v1beta1.document.DocumentReference): A</span>
-<span class="sd">            document reference corresponding to the document that contains</span>
+<span class="sd">        reference (:class:`~google.cloud.firestore_v1.document.DocumentReference`):</span>
+<span class="sd">            A document reference corresponding to the document that contains</span>
 <span class="sd">            the data in this snapshot.</span>
-<span class="sd">        data (Dict[str, Any]): The data retrieved in the snapshot.</span>
-<span class="sd">        exists (bool): Indicates if the document existed at the time the</span>
-<span class="sd">            snapshot was retrieved.</span>
-<span class="sd">        read_time (google.protobuf.timestamp_pb2.Timestamp): The time that</span>
-<span class="sd">            this snapshot was read from the server.</span>
-<span class="sd">        create_time (google.protobuf.timestamp_pb2.Timestamp): The time that</span>
-<span class="sd">            this document was created.</span>
-<span class="sd">        update_time (google.protobuf.timestamp_pb2.Timestamp): The time that</span>
-<span class="sd">            this document was last updated.</span>
+<span class="sd">        data (Dict[str, Any]):</span>
+<span class="sd">            The data retrieved in the snapshot.</span>
+<span class="sd">        exists (bool):</span>
+<span class="sd">            Indicates if the document existed at the time the snapshot was</span>
+<span class="sd">            retrieved.</span>
+<span class="sd">        read_time (:class:`google.protobuf.timestamp_pb2.Timestamp`):</span>
+<span class="sd">            The time that this snapshot was read from the server.</span>
+<span class="sd">        create_time (:class:`google.protobuf.timestamp_pb2.Timestamp`):</span>
+<span class="sd">            The time that this document was created.</span>
+<span class="sd">        update_time (:class:`google.protobuf.timestamp_pb2.Timestamp`):</span>
+<span class="sd">            The time that this document was last updated.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">exists</span><span class="p">,</span> <span class="n">read_time</span><span class="p">,</span> <span class="n">create_time</span><span class="p">,</span> <span class="n">update_time</span><span class="p">):</span>
@@ -591,11 +599,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_exists</span> <span class="o">=</span> <span class="n">exists</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">read_time</span> <span class="o">=</span> <span class="n">read_time</span>
-        <span class="sd">&quot;&quot;&quot;google.protobuf.timestamp_pb2.Timestamp: Time snapshot was read.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">create_time</span> <span class="o">=</span> <span class="n">create_time</span>
-        <span class="sd">&quot;&quot;&quot;google.protobuf.timestamp_pb2.Timestamp: Document&#39;s creation.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_time</span> <span class="o">=</span> <span class="n">update_time</span>
-        <span class="sd">&quot;&quot;&quot;google.protobuf.timestamp_pb2.Timestamp: Document&#39;s last update.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
@@ -612,8 +617,8 @@
         <span class="sd">&quot;&quot;&quot;The client that owns the document reference for this snapshot.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            ~.firestore_v1beta1.client.Client: The client that owns this</span>
-<span class="sd">            document.</span>
+<span class="sd">            :class:`~google.cloud.firestore_v1.client.Client`:</span>
+<span class="sd">            The client that owns this document.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reference</span><span class="o">.</span><span class="n">_client</span>
 
@@ -643,12 +648,12 @@
         <span class="sd">&quot;&quot;&quot;Document reference corresponding to document that owns this data.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            ~.firestore_v1beta1.document.DocumentReference: A document</span>
-<span class="sd">            reference corresponding to this document.</span>
+<span class="sd">            :class:`~google.cloud.firestore_v1.document.DocumentReference`:</span>
+<span class="sd">            A document reference corresponding to this document.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reference</span>
 
-<div class="viewcode-block" id="DocumentSnapshot.get"><a class="viewcode-back" href="../../../../firestore/document.html#google.cloud.firestore_v1beta1.document.DocumentSnapshot.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_path</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentSnapshot.get"><a class="viewcode-back" href="../../../../firestore/document.html#google.cloud.firestore_v1.document.DocumentSnapshot.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_path</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a value from the snapshot data.</span>
 
 <span class="sd">        If the data is nested, for example:</span>
@@ -688,7 +693,7 @@
 <span class="sd">           &gt;&gt;&gt; snapshot.get(&#39;top1.middle2.bottom3&#39;)</span>
 <span class="sd">           20</span>
 
-<span class="sd">        See :meth:`~.firestore_v1beta1.client.Client.field_path` for</span>
+<span class="sd">        See :meth:`~google.cloud.firestore_v1.client.Client.field_path` for</span>
 <span class="sd">        more information on **field paths**.</span>
 
 <span class="sd">        A copy is returned since the data may contain mutable values,</span>
@@ -712,7 +717,7 @@
         <span class="n">nested_data</span> <span class="o">=</span> <span class="n">field_path_module</span><span class="o">.</span><span class="n">get_nested_value</span><span class="p">(</span><span class="n">field_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">nested_data</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="DocumentSnapshot.to_dict"><a class="viewcode-back" href="../../../../firestore/document.html#google.cloud.firestore_v1beta1.document.DocumentSnapshot.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentSnapshot.to_dict"><a class="viewcode-back" href="../../../../firestore/document.html#google.cloud.firestore_v1.document.DocumentSnapshot.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the data contained in this snapshot.</span>
 
 <span class="sd">        A copy is returned since the data may contain mutable values,</span>
@@ -737,8 +742,9 @@
 <span class="sd">              documents/{document_path}``</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        client (~.firestore_v1beta1.client.Client): The client that holds</span>
-<span class="sd">            configuration details and a GAPIC client object.</span>
+<span class="sd">        client (:class:`~google.cloud.firestore_v1.client.Client`):</span>
+<span class="sd">            The client that holds configuration details and a GAPIC client</span>
+<span class="sd">            object.</span>
 <span class="sd">        path (Tuple[str, ...]): The components in a document path.</span>
 
 <span class="sd">    Returns:</span>
@@ -760,7 +766,7 @@
 <span class="sd">            request.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        ~google.cloud.proto.firestore.v1beta1.\</span>
+<span class="sd">        ~google.cloud.proto.firestore.v1.\</span>
 <span class="sd">            firestore_pb2.BatchGetDocumentsResponse: The single &quot;get&quot;</span>
 <span class="sd">        response in the batch.</span>
 
@@ -787,12 +793,12 @@
 <span class="sd">    at the same time).</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        write_results (List[google.cloud.proto.firestore.v1beta1.\</span>
+<span class="sd">        write_results (List[google.cloud.proto.firestore.v1.\</span>
 <span class="sd">            write_pb2.WriteResult, ...]: The write results from a</span>
 <span class="sd">            ``CommitResponse``.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        google.cloud.firestore_v1beta1.types.WriteResult: The</span>
+<span class="sd">        google.cloud.firestore_v1.types.WriteResult: The</span>
 <span class="sd">        lone write result from ``write_results``.</span>
 
 <span class="sd">    Raises:</span>
