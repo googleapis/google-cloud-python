@@ -19,58 +19,57 @@ import os
 
 import setuptools
 
-name = 'google-cloud-datacatalog'
-description = 'Google Cloud Data Catalog API API client library'
-version = '0.1.0'
+name = "google-cloud-datacatalog"
+description = "Google Cloud Data Catalog API API client library"
+version = "0.1.0"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
-release_status = 'Development Status :: 3 - Alpha'
+release_status = "Development Status :: 3 - Alpha"
 dependencies = [
-    'google-api-core[grpc] >= 1.4.1, < 2.0.0dev',
+    "google-api-core[grpc] >= 1.4.1, < 2.0.0dev",
     'enum34; python_version < "3.4"',
 ]
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
-readme_filename = os.path.join(package_root, 'README.rst')
-with io.open(readme_filename, encoding='utf-8') as readme_file:
+readme_filename = os.path.join(package_root, "README.rst")
+with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
 packages = [
-    package for package in setuptools.find_packages()
-    if package.startswith('google')
+    package for package in setuptools.find_packages() if package.startswith("google")
 ]
 
-namespaces = ['google']
-if 'google.cloud' in packages:
-    namespaces.append('google.cloud')
+namespaces = ["google"]
+if "google.cloud" in packages:
+    namespaces.append("google.cloud")
 
 setuptools.setup(
     name=name,
     version=version,
     description=description,
     long_description=readme,
-    author='Google LLC',
-    author_email='googleapis-packages@google.com',
-    license='Apache 2.0',
-    url='https://github.com/googleapis/google-cloud-python',
+    author="Google LLC",
+    author_email="googleapis-packages@google.com",
+    license="Apache 2.0",
+    url="https://github.com/googleapis/google-cloud-python",
     classifiers=[
         release_status,
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache Software License',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Operating System :: OS Independent',
-        'Topic :: Internet',
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: Apache Software License",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 2",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Operating System :: OS Independent",
+        "Topic :: Internet",
     ],
-    platforms='Posix; MacOS X; Windows',
+    platforms="Posix; MacOS X; Windows",
     packages=packages,
     namespace_packages=namespaces,
     install_requires=dependencies,
