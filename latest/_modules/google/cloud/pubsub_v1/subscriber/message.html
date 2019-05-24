@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.subscriber.message &#8212; google-cloud b6ccb38 documentation</title>
+    <title>google.cloud.pubsub_v1.subscriber.message &#8212; google-cloud 436afc7 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -106,7 +106,7 @@
 <span class="sd">            published.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">ack_id</span><span class="p">,</span> <span class="n">request_queue</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">ack_id</span><span class="p">,</span> <span class="n">request_queue</span><span class="p">,</span> <span class="n">autolease</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct the Message.</span>
 
 <span class="sd">        .. note::</span>
@@ -121,6 +121,9 @@
 <span class="sd">            request_queue (queue.Queue): A queue provided by the policy that</span>
 <span class="sd">                can accept requests; the policy is responsible for handling</span>
 <span class="sd">                those requests.</span>
+<span class="sd">            autolease (bool): An optional flag determining whether a new Message</span>
+<span class="sd">                instance should automatically lease itself upon creation.</span>
+<span class="sd">                Defaults to :data:`True`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_message</span> <span class="o">=</span> <span class="n">message</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ack_id</span> <span class="o">=</span> <span class="n">ack_id</span>
@@ -134,7 +137,8 @@
 
         <span class="c1"># The policy should lease this message, telling PubSub that it has</span>
         <span class="c1"># it until it is acked or otherwise dropped.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lease</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">autolease</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lease</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Get an abbreviated version of the data.</span>
@@ -244,8 +248,10 @@
         <span class="sd">&quot;&quot;&quot;Inform the policy to lease this message continually.</span>
 
 <span class="sd">        .. note::</span>
-<span class="sd">            This method is called by the constructor, and you should never</span>
-<span class="sd">            need to call it manually.</span>
+<span class="sd">            By default this method is called by the constructor, and you should</span>
+<span class="sd">            never need to call it manually, unless the</span>
+<span class="sd">            :class:`~.pubsub_v1.subscriber.message.Message` instance was</span>
+<span class="sd">            created with ``autolease=False``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
             <span class="n">requests</span><span class="o">.</span><span class="n">LeaseRequest</span><span class="p">(</span><span class="n">ack_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ack_id</span><span class="p">,</span> <span class="n">byte_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
