@@ -33,6 +33,7 @@ import mimetypes
 import os
 import time
 import warnings
+import functools
 
 from six.moves.urllib.parse import parse_qsl
 from six.moves.urllib.parse import quote
@@ -651,8 +652,6 @@ class Blob(_PropertyMixin):
             _raise_from_invalid_response(exc)
 
     def _call_api(self, retry, **kwargs):
-        import functools
-
         call = functools.partial(self._do_download, **kwargs)
         if retry:
             call = retry(call)
