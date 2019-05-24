@@ -37,10 +37,31 @@ def _make_response(status=http_client.OK, content=b"", headers={}):
     return response
 
 
+def _make_response_error(
+    status=http_client.INTERNAL_SERVER_ERROR, content=b"", headers={}
+):
+    response = requests.Response()
+    response.status_code = status
+    response._content = content
+    response.headers = headers
+    response.request = requests.Request()
+    return response
+
+
 def _make_json_response(data, status=http_client.OK, headers=None):
     headers = headers or {}
     headers["Content-Type"] = "application/json"
     return _make_response(
+        status=status, content=json.dumps(data).encode("utf-8"), headers=headers
+    )
+
+
+def _make_json_response_w_error(
+    data, status=http_client.INTERNAL_SERVER_ERROR, headers=None
+):
+    headers = headers or {}
+    headers["Content-Type"] = "application/json"
+    return _make_response_error(
         status=status, content=json.dumps(data).encode("utf-8"), headers=headers
     )
 
@@ -525,6 +546,7 @@ class TestClient(unittest.TestCase):
             method="POST", url=URI, data=mock.ANY, headers=mock.ANY
         )
         json_expected = {"name": bucket_name}
+
         json_sent = http.request.call_args_list[0][1]["data"]
         self.assertEqual(json_expected, json.loads(json_sent))
 
@@ -734,6 +756,70 @@ class TestClient(unittest.TestCase):
         http.request.assert_called_once_with(
             method="GET", url=mock.ANY, data=mock.ANY, headers=mock.ANY
         )
+
+    def test_list_buckets_retry_none(self):
+        PROJECT = "foo-bar"
+        CREDENTIALS = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
+
+        MAX_RESULTS = 10
+        PAGE_TOKEN = "ABCD"
+        PREFIX = "subfolder"
+        PROJECTION = "full"
+        FIELDS = "items/id,nextPageToken"
+
+        data = {"items": []}
+        http = _make_requests_session([_make_json_response(data)])
+        client._http_internal = http
+
+        iterator = client.list_buckets(
+            max_results=MAX_RESULTS,
+            page_token=PAGE_TOKEN,
+            prefix=PREFIX,
+            projection=PROJECTION,
+            fields=FIELDS,
+            retry=None,
+        )
+
+        buckets = list(iterator)
+        self.assertEqual(buckets, [])
+
+    def test_list_buckets_retry_error(self):
+        PROJECT = "foo-bar"
+        CREDENTIALS = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
+
+        MAX_RESULTS = 10
+        PAGE_TOKEN = "ABCD"
+        PREFIX = "subfolder"
+        PROJECTION = "full"
+        FIELDS = "items/id,nextPageToken"
+
+        data = {"items": []}
+
+        from google.cloud.exceptions import InternalServerError
+
+        mock_obj = mock.Mock()
+        mock_obj.side_effect = InternalServerError
+
+        http = _make_requests_session([_make_json_response_w_error(data)])
+
+        client._http_internal = http
+
+        with mock.patch(
+            "google.api_core.page_iterator.HTTPIterator",
+            new=mock.MagicMock(return_value=http),
+        ):
+            iterator = client.list_buckets(
+                max_results=MAX_RESULTS,
+                page_token=PAGE_TOKEN,
+                prefix=PREFIX,
+                projection=PROJECTION,
+                fields=FIELDS,
+                retry=None,
+            )
+
+        self.assertEqual(iterator.call_count, 0)
 
     def test_list_buckets_all_arguments(self):
         from six.moves.urllib.parse import parse_qs

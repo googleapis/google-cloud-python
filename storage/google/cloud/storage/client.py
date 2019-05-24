@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """Client for interacting with the Google Cloud Storage API."""
+import functools
 
 from six.moves.urllib.parse import urlsplit
 
@@ -26,6 +27,7 @@ from google.cloud.storage._http import Connection
 from google.cloud.storage.batch import Batch
 from google.cloud.storage.bucket import Bucket
 from google.cloud.storage.blob import Blob
+from google.cloud.storage.retry import DEFAULT_RETRY
 
 
 _marker = object()
@@ -283,7 +285,9 @@ class Client(ClientWithProject):
         except NotFound:
             return None
 
-    def create_bucket(self, bucket_or_name, requester_pays=None, project=None):
+    def create_bucket(
+        self, bucket_or_name, requester_pays=None, project=None, retry=DEFAULT_RETRY
+    ):
         """API call: create a new bucket via a POST request.
 
         See
@@ -301,6 +305,8 @@ class Client(ClientWithProject):
             project (str):
                 Optional. the project under which the  bucket is to be created.
                 If not passed, uses the project set on the client.
+            retry (google.api_core.retry.Retry):
+                Optional. How to retry the RPC.
 
         Returns:
             google.cloud.storage.bucket.Bucket
@@ -340,10 +346,10 @@ class Client(ClientWithProject):
 
         if requester_pays is not None:
             bucket.requester_pays = requester_pays
-        bucket.create(client=self, project=project)
+        bucket.create(client=self, project=project, retry=retry)
         return bucket
 
-    def download_blob_to_file(self, blob_or_uri, file_obj, start=None, end=None):
+    def download_blob_to_file(self, blob_or_uri, file_obj, start=None, end=None, retry=DEFAULT_RETRY):
         """Download the contents of a blob object or blob URI into a file-like object.
 
         Args:
@@ -358,6 +364,8 @@ class Client(ClientWithProject):
                 Optional. The first byte in a range to be downloaded.
             end (int):
                 Optional. The last byte in a range to be downloaded.
+            retry (:class:`google.api_core.retry.Retry`):
+                (Optional) How to retry the RPC.
 
         Examples:
             Download a blob using using a blob resource.
@@ -384,7 +392,8 @@ class Client(ClientWithProject):
 
         """
         try:
-            blob_or_uri.download_to_file(file_obj, client=self, start=start, end=end)
+            blob_or_uri.download_to_file(file_obj, retry, client=self, start=start, end=end)
+
         except AttributeError:
             scheme, netloc, path, query, frag = urlsplit(blob_or_uri)
             if scheme != "gs":
@@ -392,7 +401,7 @@ class Client(ClientWithProject):
             bucket = Bucket(self, name=netloc)
             blob_or_uri = Blob(path, bucket)
 
-            blob_or_uri.download_to_file(file_obj, client=self, start=start, end=end)
+            blob_or_uri.download_to_file(file_obj, retry, client=self, start=start, end=end)
 
     def list_buckets(
         self,
@@ -402,6 +411,7 @@ class Client(ClientWithProject):
         projection="noAcl",
         fields=None,
         project=None,
+        retry=DEFAULT_RETRY,
     ):
         """Get all buckets in the project associated to the client.
 
@@ -445,6 +455,9 @@ class Client(ClientWithProject):
         :param project: (Optional) the project whose buckets are to be listed.
                         If not passed, uses the project set on the client.
 
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
+
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :raises ValueError: if both ``project`` is ``None`` and the client's
                             project is also ``None``.
@@ -467,7 +480,8 @@ class Client(ClientWithProject):
         if fields is not None:
             extra_params["fields"] = fields
 
-        return page_iterator.HTTPIterator(
+        api_response = self._call_api(
+            retry,
             client=self,
             api_request=self._connection.api_request,
             path="/b",
@@ -476,6 +490,13 @@ class Client(ClientWithProject):
             max_results=max_results,
             extra_params=extra_params,
         )
+        return api_response
+
+    def _call_api(self, retry, **kwargs):
+        call = functools.partial(page_iterator.HTTPIterator, **kwargs)
+        if retry:
+            call = retry(call)
+        return call()
 
 
 def _item_to_bucket(iterator, item):

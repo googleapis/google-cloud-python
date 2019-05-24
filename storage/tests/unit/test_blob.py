@@ -20,11 +20,39 @@ import json
 import os
 import tempfile
 import unittest
+import requests
 
 import google.cloud.storage.blob
 import mock
 import six
 from six.moves import http_client
+
+
+def _make_response_error(
+    status=http_client.INTERNAL_SERVER_ERROR, content=b"", headers={}
+):
+    response = requests.Response()
+    response.status_code = status
+    response._content = content
+    response.headers = headers
+    response.request = requests.Request()
+    return response
+
+
+def _make_requests_session(responses):
+    session = mock.create_autospec(requests.Session, instance=True)
+    session.request.side_effect = responses
+    return session
+
+
+def _make_json_response_w_error(
+    data, status=http_client.INTERNAL_SERVER_ERROR, headers=None
+):
+    headers = headers or {}
+    headers["Content-Type"] = "application/json"
+    return _make_response_error(
+        status=status, content=json.dumps(data).encode("utf-8"), headers=headers
+    )
 
 
 def _make_credentials():
@@ -934,6 +962,26 @@ class Test_Blob(unittest.TestCase):
             headers={"accept-encoding": "gzip"},
             stream=True,
         )
+
+    def test_download_to_file_retry_error(self):
+        blob_name = "blob-name"
+        transport = self._mock_download_transport()
+        # Create a fake client/bucket and use them in the Blob() constructor.
+        client = mock.Mock(_http=transport, spec=[u"_http"])
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+        file_obj = io.BytesIO()
+        data = {"items": []}
+        http = _make_requests_session([_make_json_response_w_error(data)])
+        with mock.patch(
+            "google.cloud.storage.blob.Blob._do_download",
+            new=mock.MagicMock(return_value=http),
+        ):
+            blob.download_to_file(file_obj, retry=None)
+
+        # Make sure the media link is still unknown.
+        self.assertIsNone(blob.media_link)
+        self.assertEqual(transport.request.call_count, 0)
 
     def test_download_to_file_wo_media_link(self):
         blob_name = "blob-name"

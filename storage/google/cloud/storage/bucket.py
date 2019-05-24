@@ -19,6 +19,7 @@ import copy
 import datetime
 import json
 import warnings
+import functools
 
 import six
 
@@ -40,6 +41,7 @@ from google.cloud.storage.acl import DefaultObjectACL
 from google.cloud.storage.blob import Blob
 from google.cloud.storage.notification import BucketNotification
 from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
+from google.cloud.storage.retry import DEFAULT_RETRY
 
 
 _LOCATION_SETTER_MESSAGE = (
@@ -545,7 +547,7 @@ class Bucket(_PropertyMixin):
         except NotFound:
             return False
 
-    def create(self, client=None, project=None, location=None):
+    def create(self, retry=DEFAULT_RETRY, client=None, project=None, location=None):
         """Creates current bucket.
 
         If the bucket already exists, will raise
@@ -567,12 +569,15 @@ class Bucket(_PropertyMixin):
         :raises ValueError: if :attr:`user_project` is set.
         :raises ValueError: if ``project`` is None and client's
                             :attr:`project` is also None.
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
 
         :type location: str
         :param location: Optional. The location of the bucket. If not passed,
                          the default location, US, will be used. See
                          https://cloud.google.com/storage/docs/bucket-locations
         """
+
         if self.user_project is not None:
             raise ValueError("Cannot create bucket with 'user_project' set.")
 
@@ -591,7 +596,9 @@ class Bucket(_PropertyMixin):
         if location is not None:
             properties["location"] = location
 
-        api_response = client._connection.api_request(
+        api_response = self._call_api(
+            client,
+            retry,
             method="POST",
             path="/b",
             query_params=query_params,
@@ -599,6 +606,12 @@ class Bucket(_PropertyMixin):
             _target_object=self,
         )
         self._set_properties(api_response)
+
+    def _call_api(self, client, retry, **kwargs):
+        call = functools.partial(client._connection.api_request, **kwargs)
+        if retry:
+            call = retry(call)
+        return call()
 
     def patch(self, client=None):
         """Sends all changed properties in a PATCH request.

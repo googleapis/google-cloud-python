@@ -14,8 +14,37 @@
 
 import datetime
 import unittest
-
+from six.moves import http_client
+import requests
 import mock
+import json
+
+
+def _make_response_error(
+    status=http_client.INTERNAL_SERVER_ERROR, content=b"", headers={}
+):
+    response = requests.Response()
+    response.status_code = status
+    response._content = content
+    response.headers = headers
+    response.request = requests.Request()
+    return response
+
+
+def _make_requests_session(responses):
+    session = mock.create_autospec(requests.Session, instance=True)
+    session.request.side_effect = responses
+    return session
+
+
+def _make_json_response_w_error(
+    data, status=http_client.INTERNAL_SERVER_ERROR, headers=None
+):
+    headers = headers or {}
+    headers["Content-Type"] = "application/json"
+    return _make_response_error(
+        status=status, content=json.dumps(data).encode("utf-8"), headers=headers
+    )
 
 
 def _create_signing_credentials():
@@ -586,7 +615,50 @@ class Test_Bucket(unittest.TestCase):
         connection = _Connection(DATA)
         client = _Client(connection, project=PROJECT)
         bucket = self._make_one(client=client, name=BUCKET_NAME)
+
         bucket.create()
+
+        kw, = connection._requested
+        self.assertEqual(kw["method"], "POST")
+        self.assertEqual(kw["path"], "/b")
+        self.assertEqual(kw["query_params"], {"project": PROJECT})
+        self.assertEqual(kw["data"], DATA)
+
+    def test_create_retry_error(self):
+        PROJECT = "PROJECT"
+        BUCKET_NAME = "bucket-name"
+        DATA = {"name": BUCKET_NAME}
+        connection = _Connection(DATA)
+        client = _Client(connection, project=PROJECT)
+        bucket = self._make_one(client=client, name=BUCKET_NAME)
+        data = {"items": []}
+        http = _make_requests_session([_make_json_response_w_error(data)])
+        with mock.patch(
+            "google.cloud.storage._http.Connection.api_request",
+            new=mock.MagicMock(return_value=http),
+        ):
+            bucket.create()
+
+        kw, = connection._requested
+        self.assertEqual(kw["method"], "POST")
+        self.assertEqual(kw["path"], "/b")
+        self.assertEqual(kw["query_params"], {"project": PROJECT})
+        self.assertEqual(kw["data"], DATA)
+
+    def test_create_retry_error_none(self):
+        PROJECT = "PROJECT"
+        BUCKET_NAME = "bucket-name"
+        DATA = {"name": BUCKET_NAME}
+        connection = _Connection(DATA)
+        client = _Client(connection, project=PROJECT)
+        bucket = self._make_one(client=client, name=BUCKET_NAME)
+        data = {"items": []}
+        http = _make_requests_session([_make_json_response_w_error(data)])
+        with mock.patch(
+            "google.cloud.storage._http.Connection.api_request",
+            new=mock.MagicMock(return_value=http),
+        ):
+            bucket.create(retry=None)
 
         kw, = connection._requested
         self.assertEqual(kw["method"], "POST")

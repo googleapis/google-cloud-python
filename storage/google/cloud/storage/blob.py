@@ -58,7 +58,7 @@ from google.cloud.storage._signing import generate_signed_url_v2
 from google.cloud.storage._signing import generate_signed_url_v4
 from google.cloud.storage.acl import ACL
 from google.cloud.storage.acl import ObjectACL
-
+from google.cloud.storage.retry import DEFAULT_RETRY
 
 _API_ACCESS_ENDPOINT = "https://storage.googleapis.com"
 _DEFAULT_CONTENT_TYPE = u"application/octet-stream"
@@ -585,7 +585,9 @@ class Blob(_PropertyMixin):
             while not download.finished:
                 download.consume_next_chunk(transport)
 
-    def download_to_file(self, file_obj, client=None, start=None, end=None):
+    def download_to_file(
+        self, file_obj, client=None, start=None, end=None, retry=DEFAULT_RETRY
+    ):
         """Download the contents of this blob into a file-like object.
 
         .. note::
@@ -625,6 +627,9 @@ class Blob(_PropertyMixin):
         :type end: int
         :param end: Optional, The last byte in a range to be downloaded.
 
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
+
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
         download_url = self._get_download_url()
@@ -633,9 +638,25 @@ class Blob(_PropertyMixin):
 
         transport = self._get_transport(client)
         try:
-            self._do_download(transport, file_obj, download_url, headers, start, end)
+            self._call_api(
+                retry,
+                transport=transport,
+                file_obj=file_obj,
+                download_url=download_url,
+                headers=headers,
+                start=start,
+                end=end,
+            )
         except resumable_media.InvalidResponse as exc:
             _raise_from_invalid_response(exc)
+
+    def _call_api(self, retry, **kwargs):
+        import functools
+
+        call = functools.partial(self._do_download, **kwargs)
+        if retry:
+            call = retry(call)
+        return call()
 
     def download_to_filename(self, filename, client=None, start=None, end=None):
         """Download the contents of this blob into a named file.
