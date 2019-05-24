@@ -28,7 +28,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n!com.google.cloud.dataproc.v1beta2B\tJobsProtoP\001ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataproc"
     ),
     serialized_pb=_b(
-        '\n.google/cloud/dataproc_v1beta2/proto/jobs.proto\x12\x1dgoogle.cloud.dataproc.v1beta2\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xcb\x02\n\rLoggingConfig\x12\\\n\x11\x64river_log_levels\x18\x02 \x03(\x0b\x32\x41.google.cloud.dataproc.v1beta2.LoggingConfig.DriverLogLevelsEntry\x1aj\n\x14\x44riverLogLevelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x41\n\x05value\x18\x02 \x01(\x0e\x32\x32.google.cloud.dataproc.v1beta2.LoggingConfig.Level:\x02\x38\x01"p\n\x05Level\x12\x15\n\x11LEVEL_UNSPECIFIED\x10\x00\x12\x07\n\x03\x41LL\x10\x01\x12\t\n\x05TRACE\x10\x02\x12\t\n\x05\x44\x45\x42UG\x10\x03\x12\x08\n\x04INFO\x10\x04\x12\x08\n\x04WARN\x10\x05\x12\t\n\x05\x45RROR\x10\x06\x12\t\n\x05\x46\x41TAL\x10\x07\x12\x07\n\x03OFF\x10\x08"\xdd\x02\n\tHadoopJob\x12\x1b\n\x11main_jar_file_uri\x18\x01 \x01(\tH\x00\x12\x14\n\nmain_class\x18\x02 \x01(\tH\x00\x12\x0c\n\x04\x61rgs\x18\x03 \x03(\t\x12\x15\n\rjar_file_uris\x18\x04 \x03(\t\x12\x11\n\tfile_uris\x18\x05 \x03(\t\x12\x14\n\x0c\x61rchive_uris\x18\x06 \x03(\t\x12L\n\nproperties\x18\x07 \x03(\x0b\x32\x38.google.cloud.dataproc.v1beta2.HadoopJob.PropertiesEntry\x12\x44\n\x0elogging_config\x18\x08 \x01(\x0b\x32,.google.cloud.dataproc.v1beta2.LoggingConfig\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\x08\n\x06\x64river"\xdb\x02\n\x08SparkJob\x12\x1b\n\x11main_jar_file_uri\x18\x01 \x01(\tH\x00\x12\x14\n\nmain_class\x18\x02 \x01(\tH\x00\x12\x0c\n\x04\x61rgs\x18\x03 \x03(\t\x12\x15\n\rjar_file_uris\x18\x04 \x03(\t\x12\x11\n\tfile_uris\x18\x05 \x03(\t\x12\x14\n\x0c\x61rchive_uris\x18\x06 \x03(\t\x12K\n\nproperties\x18\x07 \x03(\x0b\x32\x37.google.cloud.dataproc.v1beta2.SparkJob.PropertiesEntry\x12\x44\n\x0elogging_config\x18\x08 \x01(\x0b\x32,.google.cloud.dataproc.v1beta2.LoggingConfig\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\x08\n\x06\x64river"\xda\x02\n\nPySparkJob\x12\x1c\n\x14main_python_file_uri\x18\x01 \x01(\t\x12\x0c\n\x04\x61rgs\x18\x02 \x03(\t\x12\x18\n\x10python_file_uris\x18\x03 \x03(\t\x12\x15\n\rjar_file_uris\x18\x04 \x03(\t\x12\x11\n\tfile_uris\x18\x05 \x03(\t\x12\x14\n\x0c\x61rchive_uris\x18\x06 \x03(\t\x12M\n\nproperties\x18\x07 \x03(\x0b\x32\x39.google.cloud.dataproc.v1beta2.PySparkJob.PropertiesEntry\x12\x44\n\x0elogging_config\x18\x08 \x01(\x0b\x32,.google.cloud.dataproc.v1beta2.LoggingConfig\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\x1c\n\tQueryList\x12\x0f\n\x07queries\x18\x01 \x03(\t"\xb0\x03\n\x07HiveJob\x12\x18\n\x0equery_file_uri\x18\x01 \x01(\tH\x00\x12>\n\nquery_list\x18\x02 \x01(\x0b\x32(.google.cloud.dataproc.v1beta2.QueryListH\x00\x12\x1b\n\x13\x63ontinue_on_failure\x18\x03 \x01(\x08\x12U\n\x10script_variables\x18\x04 \x03(\x0b\x32;.google.cloud.dataproc.v1beta2.HiveJob.ScriptVariablesEntry\x12J\n\nproperties\x18\x05 \x03(\x0b\x32\x36.google.cloud.dataproc.v1beta2.HiveJob.PropertiesEntry\x12\x15\n\rjar_file_uris\x18\x06 \x03(\t\x1a\x36\n\x14ScriptVariablesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\t\n\x07queries"\xe5\x03\n\x0bSparkSqlJob\x12\x18\n\x0equery_file_uri\x18\x01 \x01(\tH\x00\x12>\n\nquery_list\x18\x02 \x01(\x0b\x32(.google.cloud.dataproc.v1beta2.QueryListH\x00\x12Y\n\x10script_variables\x18\x03 \x03(\x0b\x32?.google.cloud.dataproc.v1beta2.SparkSqlJob.ScriptVariablesEntry\x12N\n\nproperties\x18\x04 \x03(\x0b\x32:.google.cloud.dataproc.v1beta2.SparkSqlJob.PropertiesEntry\x12\x15\n\rjar_file_uris\x18\x38 \x03(\t\x12\x44\n\x0elogging_config\x18\x06 \x01(\x0b\x32,.google.cloud.dataproc.v1beta2.LoggingConfig\x1a\x36\n\x14ScriptVariablesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\t\n\x07queries"\xf3\x03\n\x06PigJob\x12\x18\n\x0equery_file_uri\x18\x01 \x01(\tH\x00\x12>\n\nquery_list\x18\x02 \x01(\x0b\x32(.google.cloud.dataproc.v1beta2.QueryListH\x00\x12\x1b\n\x13\x63ontinue_on_failure\x18\x03 \x01(\x08\x12T\n\x10script_variables\x18\x04 \x03(\x0b\x32:.google.cloud.dataproc.v1beta2.PigJob.ScriptVariablesEntry\x12I\n\nproperties\x18\x05 \x03(\x0b\x32\x35.google.cloud.dataproc.v1beta2.PigJob.PropertiesEntry\x12\x15\n\rjar_file_uris\x18\x06 \x03(\t\x12\x44\n\x0elogging_config\x18\x07 \x01(\x0b\x32,.google.cloud.dataproc.v1beta2.LoggingConfig\x1a\x36\n\x14ScriptVariablesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\t\n\x07queries":\n\x0cJobPlacement\x12\x14\n\x0c\x63luster_name\x18\x01 \x01(\t\x12\x14\n\x0c\x63luster_uuid\x18\x02 \x01(\t"\xcc\x03\n\tJobStatus\x12=\n\x05state\x18\x01 \x01(\x0e\x32..google.cloud.dataproc.v1beta2.JobStatus.State\x12\x0f\n\x07\x64\x65tails\x18\x02 \x01(\t\x12\x34\n\x10state_start_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x43\n\x08substate\x18\x07 \x01(\x0e\x32\x31.google.cloud.dataproc.v1beta2.JobStatus.Substate"\xa9\x01\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07PENDING\x10\x01\x12\x0e\n\nSETUP_DONE\x10\x08\x12\x0b\n\x07RUNNING\x10\x02\x12\x12\n\x0e\x43\x41NCEL_PENDING\x10\x03\x12\x12\n\x0e\x43\x41NCEL_STARTED\x10\x07\x12\r\n\tCANCELLED\x10\x04\x12\x08\n\x04\x44ONE\x10\x05\x12\t\n\x05\x45RROR\x10\x06\x12\x13\n\x0f\x41TTEMPT_FAILURE\x10\t"H\n\x08Substate\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\r\n\tSUBMITTED\x10\x01\x12\n\n\x06QUEUED\x10\x02\x12\x10\n\x0cSTALE_STATUS\x10\x03"2\n\x0cJobReference\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06job_id\x18\x02 \x01(\t"\x96\x02\n\x0fYarnApplication\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x43\n\x05state\x18\x02 \x01(\x0e\x32\x34.google.cloud.dataproc.v1beta2.YarnApplication.State\x12\x10\n\x08progress\x18\x03 \x01(\x02\x12\x14\n\x0ctracking_url\x18\x04 \x01(\t"\x87\x01\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x07\n\x03NEW\x10\x01\x12\x0e\n\nNEW_SAVING\x10\x02\x12\r\n\tSUBMITTED\x10\x03\x12\x0c\n\x08\x41\x43\x43\x45PTED\x10\x04\x12\x0b\n\x07RUNNING\x10\x05\x12\x0c\n\x08\x46INISHED\x10\x06\x12\n\n\x06\x46\x41ILED\x10\x07\x12\n\n\x06KILLED\x10\x08"\xf2\x07\n\x03Job\x12>\n\treference\x18\x01 \x01(\x0b\x32+.google.cloud.dataproc.v1beta2.JobReference\x12>\n\tplacement\x18\x02 \x01(\x0b\x32+.google.cloud.dataproc.v1beta2.JobPlacement\x12>\n\nhadoop_job\x18\x03 \x01(\x0b\x32(.google.cloud.dataproc.v1beta2.HadoopJobH\x00\x12<\n\tspark_job\x18\x04 \x01(\x0b\x32\'.google.cloud.dataproc.v1beta2.SparkJobH\x00\x12@\n\x0bpyspark_job\x18\x05 \x01(\x0b\x32).google.cloud.dataproc.v1beta2.PySparkJobH\x00\x12:\n\x08hive_job\x18\x06 \x01(\x0b\x32&.google.cloud.dataproc.v1beta2.HiveJobH\x00\x12\x38\n\x07pig_job\x18\x07 \x01(\x0b\x32%.google.cloud.dataproc.v1beta2.PigJobH\x00\x12\x43\n\rspark_sql_job\x18\x0c \x01(\x0b\x32*.google.cloud.dataproc.v1beta2.SparkSqlJobH\x00\x12\x38\n\x06status\x18\x08 \x01(\x0b\x32(.google.cloud.dataproc.v1beta2.JobStatus\x12@\n\x0estatus_history\x18\r \x03(\x0b\x32(.google.cloud.dataproc.v1beta2.JobStatus\x12I\n\x11yarn_applications\x18\t \x03(\x0b\x32..google.cloud.dataproc.v1beta2.YarnApplication\x12\x14\n\x0csubmitted_by\x18\n \x01(\t\x12"\n\x1a\x64river_output_resource_uri\x18\x11 \x01(\t\x12 \n\x18\x64river_control_files_uri\x18\x0f \x01(\t\x12>\n\x06labels\x18\x12 \x03(\x0b\x32..google.cloud.dataproc.v1beta2.Job.LabelsEntry\x12@\n\nscheduling\x18\x14 \x01(\x0b\x32,.google.cloud.dataproc.v1beta2.JobScheduling\x12\x10\n\x08job_uuid\x18\x16 \x01(\t\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\n\n\x08type_job".\n\rJobScheduling\x12\x1d\n\x15max_failures_per_hour\x18\x01 \x01(\x05"{\n\x10SubmitJobRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x03 \x01(\t\x12/\n\x03job\x18\x02 \x01(\x0b\x32".google.cloud.dataproc.v1beta2.Job\x12\x12\n\nrequest_id\x18\x04 \x01(\t"C\n\rGetJobRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x03 \x01(\t\x12\x0e\n\x06job_id\x18\x02 \x01(\t"\x95\x02\n\x0fListJobsRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x06 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x14\n\x0c\x63luster_name\x18\x04 \x01(\t\x12Y\n\x11job_state_matcher\x18\x05 \x01(\x0e\x32>.google.cloud.dataproc.v1beta2.ListJobsRequest.JobStateMatcher\x12\x0e\n\x06\x66ilter\x18\x07 \x01(\t"6\n\x0fJobStateMatcher\x12\x07\n\x03\x41LL\x10\x00\x12\n\n\x06\x41\x43TIVE\x10\x01\x12\x0e\n\nNON_ACTIVE\x10\x02"\xa8\x01\n\x10UpdateJobRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x02 \x01(\t\x12\x0e\n\x06job_id\x18\x03 \x01(\t\x12/\n\x03job\x18\x04 \x01(\x0b\x32".google.cloud.dataproc.v1beta2.Job\x12/\n\x0bupdate_mask\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"]\n\x10ListJobsResponse\x12\x30\n\x04jobs\x18\x01 \x03(\x0b\x32".google.cloud.dataproc.v1beta2.Job\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"F\n\x10\x43\x61ncelJobRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x03 \x01(\t\x12\x0e\n\x06job_id\x18\x02 \x01(\t"F\n\x10\x44\x65leteJobRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x03 \x01(\t\x12\x0e\n\x06job_id\x18\x02 \x01(\t2\x8b\x08\n\rJobController\x12\xa8\x01\n\tSubmitJob\x12/.google.cloud.dataproc.v1beta2.SubmitJobRequest\x1a".google.cloud.dataproc.v1beta2.Job"F\x82\xd3\xe4\x93\x02@";/v1beta2/projects/{project_id}/regions/{region}/jobs:submit:\x01*\x12\xa1\x01\n\x06GetJob\x12,.google.cloud.dataproc.v1beta2.GetJobRequest\x1a".google.cloud.dataproc.v1beta2.Job"E\x82\xd3\xe4\x93\x02?\x12=/v1beta2/projects/{project_id}/regions/{region}/jobs/{job_id}\x12\xa9\x01\n\x08ListJobs\x12..google.cloud.dataproc.v1beta2.ListJobsRequest\x1a/.google.cloud.dataproc.v1beta2.ListJobsResponse"<\x82\xd3\xe4\x93\x02\x36\x12\x34/v1beta2/projects/{project_id}/regions/{region}/jobs\x12\xac\x01\n\tUpdateJob\x12/.google.cloud.dataproc.v1beta2.UpdateJobRequest\x1a".google.cloud.dataproc.v1beta2.Job"J\x82\xd3\xe4\x93\x02\x44\x32=/v1beta2/projects/{project_id}/regions/{region}/jobs/{job_id}:\x03job\x12\xb1\x01\n\tCancelJob\x12/.google.cloud.dataproc.v1beta2.CancelJobRequest\x1a".google.cloud.dataproc.v1beta2.Job"O\x82\xd3\xe4\x93\x02I"D/v1beta2/projects/{project_id}/regions/{region}/jobs/{job_id}:cancel:\x01*\x12\x9b\x01\n\tDeleteJob\x12/.google.cloud.dataproc.v1beta2.DeleteJobRequest\x1a\x16.google.protobuf.Empty"E\x82\xd3\xe4\x93\x02?*=/v1beta2/projects/{project_id}/regions/{region}/jobs/{job_id}Bw\n!com.google.cloud.dataproc.v1beta2B\tJobsProtoP\x01ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataprocb\x06proto3'
+        '\n.google/cloud/dataproc_v1beta2/proto/jobs.proto\x12\x1dgoogle.cloud.dataproc.v1beta2\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xcb\x02\n\rLoggingConfig\x12\\\n\x11\x64river_log_levels\x18\x02 \x03(\x0b\x32\x41.google.cloud.dataproc.v1beta2.LoggingConfig.DriverLogLevelsEntry\x1aj\n\x14\x44riverLogLevelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x41\n\x05value\x18\x02 \x01(\x0e\x32\x32.google.cloud.dataproc.v1beta2.LoggingConfig.Level:\x02\x38\x01"p\n\x05Level\x12\x15\n\x11LEVEL_UNSPECIFIED\x10\x00\x12\x07\n\x03\x41LL\x10\x01\x12\t\n\x05TRACE\x10\x02\x12\t\n\x05\x44\x45\x42UG\x10\x03\x12\x08\n\x04INFO\x10\x04\x12\x08\n\x04WARN\x10\x05\x12\t\n\x05\x45RROR\x10\x06\x12\t\n\x05\x46\x41TAL\x10\x07\x12\x07\n\x03OFF\x10\x08"\xdd\x02\n\tHadoopJob\x12\x1b\n\x11main_jar_file_uri\x18\x01 \x01(\tH\x00\x12\x14\n\nmain_class\x18\x02 \x01(\tH\x00\x12\x0c\n\x04\x61rgs\x18\x03 \x03(\t\x12\x15\n\rjar_file_uris\x18\x04 \x03(\t\x12\x11\n\tfile_uris\x18\x05 \x03(\t\x12\x14\n\x0c\x61rchive_uris\x18\x06 \x03(\t\x12L\n\nproperties\x18\x07 \x03(\x0b\x32\x38.google.cloud.dataproc.v1beta2.HadoopJob.PropertiesEntry\x12\x44\n\x0elogging_config\x18\x08 \x01(\x0b\x32,.google.cloud.dataproc.v1beta2.LoggingConfig\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\x08\n\x06\x64river"\xdb\x02\n\x08SparkJob\x12\x1b\n\x11main_jar_file_uri\x18\x01 \x01(\tH\x00\x12\x14\n\nmain_class\x18\x02 \x01(\tH\x00\x12\x0c\n\x04\x61rgs\x18\x03 \x03(\t\x12\x15\n\rjar_file_uris\x18\x04 \x03(\t\x12\x11\n\tfile_uris\x18\x05 \x03(\t\x12\x14\n\x0c\x61rchive_uris\x18\x06 \x03(\t\x12K\n\nproperties\x18\x07 \x03(\x0b\x32\x37.google.cloud.dataproc.v1beta2.SparkJob.PropertiesEntry\x12\x44\n\x0elogging_config\x18\x08 \x01(\x0b\x32,.google.cloud.dataproc.v1beta2.LoggingConfig\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\x08\n\x06\x64river"\xda\x02\n\nPySparkJob\x12\x1c\n\x14main_python_file_uri\x18\x01 \x01(\t\x12\x0c\n\x04\x61rgs\x18\x02 \x03(\t\x12\x18\n\x10python_file_uris\x18\x03 \x03(\t\x12\x15\n\rjar_file_uris\x18\x04 \x03(\t\x12\x11\n\tfile_uris\x18\x05 \x03(\t\x12\x14\n\x0c\x61rchive_uris\x18\x06 \x03(\t\x12M\n\nproperties\x18\x07 \x03(\x0b\x32\x39.google.cloud.dataproc.v1beta2.PySparkJob.PropertiesEntry\x12\x44\n\x0elogging_config\x18\x08 \x01(\x0b\x32,.google.cloud.dataproc.v1beta2.LoggingConfig\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\x1c\n\tQueryList\x12\x0f\n\x07queries\x18\x01 \x03(\t"\xb0\x03\n\x07HiveJob\x12\x18\n\x0equery_file_uri\x18\x01 \x01(\tH\x00\x12>\n\nquery_list\x18\x02 \x01(\x0b\x32(.google.cloud.dataproc.v1beta2.QueryListH\x00\x12\x1b\n\x13\x63ontinue_on_failure\x18\x03 \x01(\x08\x12U\n\x10script_variables\x18\x04 \x03(\x0b\x32;.google.cloud.dataproc.v1beta2.HiveJob.ScriptVariablesEntry\x12J\n\nproperties\x18\x05 \x03(\x0b\x32\x36.google.cloud.dataproc.v1beta2.HiveJob.PropertiesEntry\x12\x15\n\rjar_file_uris\x18\x06 \x03(\t\x1a\x36\n\x14ScriptVariablesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\t\n\x07queries"\xe5\x03\n\x0bSparkSqlJob\x12\x18\n\x0equery_file_uri\x18\x01 \x01(\tH\x00\x12>\n\nquery_list\x18\x02 \x01(\x0b\x32(.google.cloud.dataproc.v1beta2.QueryListH\x00\x12Y\n\x10script_variables\x18\x03 \x03(\x0b\x32?.google.cloud.dataproc.v1beta2.SparkSqlJob.ScriptVariablesEntry\x12N\n\nproperties\x18\x04 \x03(\x0b\x32:.google.cloud.dataproc.v1beta2.SparkSqlJob.PropertiesEntry\x12\x15\n\rjar_file_uris\x18\x38 \x03(\t\x12\x44\n\x0elogging_config\x18\x06 \x01(\x0b\x32,.google.cloud.dataproc.v1beta2.LoggingConfig\x1a\x36\n\x14ScriptVariablesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\t\n\x07queries"\xf3\x03\n\x06PigJob\x12\x18\n\x0equery_file_uri\x18\x01 \x01(\tH\x00\x12>\n\nquery_list\x18\x02 \x01(\x0b\x32(.google.cloud.dataproc.v1beta2.QueryListH\x00\x12\x1b\n\x13\x63ontinue_on_failure\x18\x03 \x01(\x08\x12T\n\x10script_variables\x18\x04 \x03(\x0b\x32:.google.cloud.dataproc.v1beta2.PigJob.ScriptVariablesEntry\x12I\n\nproperties\x18\x05 \x03(\x0b\x32\x35.google.cloud.dataproc.v1beta2.PigJob.PropertiesEntry\x12\x15\n\rjar_file_uris\x18\x06 \x03(\t\x12\x44\n\x0elogging_config\x18\x07 \x01(\x0b\x32,.google.cloud.dataproc.v1beta2.LoggingConfig\x1a\x36\n\x14ScriptVariablesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\t\n\x07queries"\xa2\x02\n\tSparkRJob\x12\x17\n\x0fmain_r_file_uri\x18\x01 \x01(\t\x12\x0c\n\x04\x61rgs\x18\x02 \x03(\t\x12\x11\n\tfile_uris\x18\x03 \x03(\t\x12\x14\n\x0c\x61rchive_uris\x18\x04 \x03(\t\x12L\n\nproperties\x18\x05 \x03(\x0b\x32\x38.google.cloud.dataproc.v1beta2.SparkRJob.PropertiesEntry\x12\x44\n\x0elogging_config\x18\x06 \x01(\x0b\x32,.google.cloud.dataproc.v1beta2.LoggingConfig\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01":\n\x0cJobPlacement\x12\x14\n\x0c\x63luster_name\x18\x01 \x01(\t\x12\x14\n\x0c\x63luster_uuid\x18\x02 \x01(\t"\xcc\x03\n\tJobStatus\x12=\n\x05state\x18\x01 \x01(\x0e\x32..google.cloud.dataproc.v1beta2.JobStatus.State\x12\x0f\n\x07\x64\x65tails\x18\x02 \x01(\t\x12\x34\n\x10state_start_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x43\n\x08substate\x18\x07 \x01(\x0e\x32\x31.google.cloud.dataproc.v1beta2.JobStatus.Substate"\xa9\x01\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07PENDING\x10\x01\x12\x0e\n\nSETUP_DONE\x10\x08\x12\x0b\n\x07RUNNING\x10\x02\x12\x12\n\x0e\x43\x41NCEL_PENDING\x10\x03\x12\x12\n\x0e\x43\x41NCEL_STARTED\x10\x07\x12\r\n\tCANCELLED\x10\x04\x12\x08\n\x04\x44ONE\x10\x05\x12\t\n\x05\x45RROR\x10\x06\x12\x13\n\x0f\x41TTEMPT_FAILURE\x10\t"H\n\x08Substate\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\r\n\tSUBMITTED\x10\x01\x12\n\n\x06QUEUED\x10\x02\x12\x10\n\x0cSTALE_STATUS\x10\x03"2\n\x0cJobReference\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06job_id\x18\x02 \x01(\t"\x96\x02\n\x0fYarnApplication\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x43\n\x05state\x18\x02 \x01(\x0e\x32\x34.google.cloud.dataproc.v1beta2.YarnApplication.State\x12\x10\n\x08progress\x18\x03 \x01(\x02\x12\x14\n\x0ctracking_url\x18\x04 \x01(\t"\x87\x01\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x07\n\x03NEW\x10\x01\x12\x0e\n\nNEW_SAVING\x10\x02\x12\r\n\tSUBMITTED\x10\x03\x12\x0c\n\x08\x41\x43\x43\x45PTED\x10\x04\x12\x0b\n\x07RUNNING\x10\x05\x12\x0c\n\x08\x46INISHED\x10\x06\x12\n\n\x06\x46\x41ILED\x10\x07\x12\n\n\x06KILLED\x10\x08"\xb3\x08\n\x03Job\x12>\n\treference\x18\x01 \x01(\x0b\x32+.google.cloud.dataproc.v1beta2.JobReference\x12>\n\tplacement\x18\x02 \x01(\x0b\x32+.google.cloud.dataproc.v1beta2.JobPlacement\x12>\n\nhadoop_job\x18\x03 \x01(\x0b\x32(.google.cloud.dataproc.v1beta2.HadoopJobH\x00\x12<\n\tspark_job\x18\x04 \x01(\x0b\x32\'.google.cloud.dataproc.v1beta2.SparkJobH\x00\x12@\n\x0bpyspark_job\x18\x05 \x01(\x0b\x32).google.cloud.dataproc.v1beta2.PySparkJobH\x00\x12:\n\x08hive_job\x18\x06 \x01(\x0b\x32&.google.cloud.dataproc.v1beta2.HiveJobH\x00\x12\x38\n\x07pig_job\x18\x07 \x01(\x0b\x32%.google.cloud.dataproc.v1beta2.PigJobH\x00\x12?\n\x0bspark_r_job\x18\x15 \x01(\x0b\x32(.google.cloud.dataproc.v1beta2.SparkRJobH\x00\x12\x43\n\rspark_sql_job\x18\x0c \x01(\x0b\x32*.google.cloud.dataproc.v1beta2.SparkSqlJobH\x00\x12\x38\n\x06status\x18\x08 \x01(\x0b\x32(.google.cloud.dataproc.v1beta2.JobStatus\x12@\n\x0estatus_history\x18\r \x03(\x0b\x32(.google.cloud.dataproc.v1beta2.JobStatus\x12I\n\x11yarn_applications\x18\t \x03(\x0b\x32..google.cloud.dataproc.v1beta2.YarnApplication\x12\x14\n\x0csubmitted_by\x18\n \x01(\t\x12"\n\x1a\x64river_output_resource_uri\x18\x11 \x01(\t\x12 \n\x18\x64river_control_files_uri\x18\x0f \x01(\t\x12>\n\x06labels\x18\x12 \x03(\x0b\x32..google.cloud.dataproc.v1beta2.Job.LabelsEntry\x12@\n\nscheduling\x18\x14 \x01(\x0b\x32,.google.cloud.dataproc.v1beta2.JobScheduling\x12\x10\n\x08job_uuid\x18\x16 \x01(\t\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\n\n\x08type_job".\n\rJobScheduling\x12\x1d\n\x15max_failures_per_hour\x18\x01 \x01(\x05"{\n\x10SubmitJobRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x03 \x01(\t\x12/\n\x03job\x18\x02 \x01(\x0b\x32".google.cloud.dataproc.v1beta2.Job\x12\x12\n\nrequest_id\x18\x04 \x01(\t"C\n\rGetJobRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x03 \x01(\t\x12\x0e\n\x06job_id\x18\x02 \x01(\t"\x95\x02\n\x0fListJobsRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x06 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x14\n\x0c\x63luster_name\x18\x04 \x01(\t\x12Y\n\x11job_state_matcher\x18\x05 \x01(\x0e\x32>.google.cloud.dataproc.v1beta2.ListJobsRequest.JobStateMatcher\x12\x0e\n\x06\x66ilter\x18\x07 \x01(\t"6\n\x0fJobStateMatcher\x12\x07\n\x03\x41LL\x10\x00\x12\n\n\x06\x41\x43TIVE\x10\x01\x12\x0e\n\nNON_ACTIVE\x10\x02"\xa8\x01\n\x10UpdateJobRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x02 \x01(\t\x12\x0e\n\x06job_id\x18\x03 \x01(\t\x12/\n\x03job\x18\x04 \x01(\x0b\x32".google.cloud.dataproc.v1beta2.Job\x12/\n\x0bupdate_mask\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"]\n\x10ListJobsResponse\x12\x30\n\x04jobs\x18\x01 \x03(\x0b\x32".google.cloud.dataproc.v1beta2.Job\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"F\n\x10\x43\x61ncelJobRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x03 \x01(\t\x12\x0e\n\x06job_id\x18\x02 \x01(\t"F\n\x10\x44\x65leteJobRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x03 \x01(\t\x12\x0e\n\x06job_id\x18\x02 \x01(\t2\x8b\x08\n\rJobController\x12\xa8\x01\n\tSubmitJob\x12/.google.cloud.dataproc.v1beta2.SubmitJobRequest\x1a".google.cloud.dataproc.v1beta2.Job"F\x82\xd3\xe4\x93\x02@";/v1beta2/projects/{project_id}/regions/{region}/jobs:submit:\x01*\x12\xa1\x01\n\x06GetJob\x12,.google.cloud.dataproc.v1beta2.GetJobRequest\x1a".google.cloud.dataproc.v1beta2.Job"E\x82\xd3\xe4\x93\x02?\x12=/v1beta2/projects/{project_id}/regions/{region}/jobs/{job_id}\x12\xa9\x01\n\x08ListJobs\x12..google.cloud.dataproc.v1beta2.ListJobsRequest\x1a/.google.cloud.dataproc.v1beta2.ListJobsResponse"<\x82\xd3\xe4\x93\x02\x36\x12\x34/v1beta2/projects/{project_id}/regions/{region}/jobs\x12\xac\x01\n\tUpdateJob\x12/.google.cloud.dataproc.v1beta2.UpdateJobRequest\x1a".google.cloud.dataproc.v1beta2.Job"J\x82\xd3\xe4\x93\x02\x44\x32=/v1beta2/projects/{project_id}/regions/{region}/jobs/{job_id}:\x03job\x12\xb1\x01\n\tCancelJob\x12/.google.cloud.dataproc.v1beta2.CancelJobRequest\x1a".google.cloud.dataproc.v1beta2.Job"O\x82\xd3\xe4\x93\x02I"D/v1beta2/projects/{project_id}/regions/{region}/jobs/{job_id}:cancel:\x01*\x12\x9b\x01\n\tDeleteJob\x12/.google.cloud.dataproc.v1beta2.DeleteJobRequest\x1a\x16.google.protobuf.Empty"E\x82\xd3\xe4\x93\x02?*=/v1beta2/projects/{project_id}/regions/{region}/jobs/{job_id}Bw\n!com.google.cloud.dataproc.v1beta2B\tJobsProtoP\x01ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataprocb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -131,8 +131,8 @@ _JOBSTATUS_STATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3325,
-    serialized_end=3494,
+    serialized_start=3618,
+    serialized_end=3787,
 )
 _sym_db.RegisterEnumDescriptor(_JOBSTATUS_STATE)
 
@@ -157,8 +157,8 @@ _JOBSTATUS_SUBSTATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3496,
-    serialized_end=3568,
+    serialized_start=3789,
+    serialized_end=3861,
 )
 _sym_db.RegisterEnumDescriptor(_JOBSTATUS_SUBSTATE)
 
@@ -202,8 +202,8 @@ _YARNAPPLICATION_STATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3766,
-    serialized_end=3901,
+    serialized_start=4059,
+    serialized_end=4194,
 )
 _sym_db.RegisterEnumDescriptor(_YARNAPPLICATION_STATE)
 
@@ -225,8 +225,8 @@ _LISTJOBSREQUEST_JOBSTATEMATCHER = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=5382,
-    serialized_end=5436,
+    serialized_start=5740,
+    serialized_end=5794,
 )
 _sym_db.RegisterEnumDescriptor(_LISTJOBSREQUEST_JOBSTATEMATCHER)
 
@@ -1809,6 +1809,191 @@ _PIGJOB = _descriptor.Descriptor(
 )
 
 
+_SPARKRJOB_PROPERTIESENTRY = _descriptor.Descriptor(
+    name="PropertiesEntry",
+    full_name="google.cloud.dataproc.v1beta2.SparkRJob.PropertiesEntry",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="key",
+            full_name="google.cloud.dataproc.v1beta2.SparkRJob.PropertiesEntry.key",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value",
+            full_name="google.cloud.dataproc.v1beta2.SparkRJob.PropertiesEntry.value",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=_b("8\001"),
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=832,
+    serialized_end=881,
+)
+
+_SPARKRJOB = _descriptor.Descriptor(
+    name="SparkRJob",
+    full_name="google.cloud.dataproc.v1beta2.SparkRJob",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="main_r_file_uri",
+            full_name="google.cloud.dataproc.v1beta2.SparkRJob.main_r_file_uri",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="args",
+            full_name="google.cloud.dataproc.v1beta2.SparkRJob.args",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="file_uris",
+            full_name="google.cloud.dataproc.v1beta2.SparkRJob.file_uris",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="archive_uris",
+            full_name="google.cloud.dataproc.v1beta2.SparkRJob.archive_uris",
+            index=3,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="properties",
+            full_name="google.cloud.dataproc.v1beta2.SparkRJob.properties",
+            index=4,
+            number=5,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="logging_config",
+            full_name="google.cloud.dataproc.v1beta2.SparkRJob.logging_config",
+            index=5,
+            number=6,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_SPARKRJOB_PROPERTIESENTRY],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3048,
+    serialized_end=3338,
+)
+
+
 _JOBPLACEMENT = _descriptor.Descriptor(
     name="JobPlacement",
     full_name="google.cloud.dataproc.v1beta2.JobPlacement",
@@ -1861,8 +2046,8 @@ _JOBPLACEMENT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3047,
-    serialized_end=3105,
+    serialized_start=3340,
+    serialized_end=3398,
 )
 
 
@@ -1954,8 +2139,8 @@ _JOBSTATUS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3108,
-    serialized_end=3568,
+    serialized_start=3401,
+    serialized_end=3861,
 )
 
 
@@ -2011,8 +2196,8 @@ _JOBREFERENCE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3570,
-    serialized_end=3620,
+    serialized_start=3863,
+    serialized_end=3913,
 )
 
 
@@ -2104,8 +2289,8 @@ _YARNAPPLICATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3623,
-    serialized_end=3901,
+    serialized_start=3916,
+    serialized_end=4194,
 )
 
 
@@ -2161,8 +2346,8 @@ _JOB_LABELSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4857,
-    serialized_end=4902,
+    serialized_start=5215,
+    serialized_end=5260,
 )
 
 _JOB = _descriptor.Descriptor(
@@ -2299,9 +2484,27 @@ _JOB = _descriptor.Descriptor(
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
+            name="spark_r_job",
+            full_name="google.cloud.dataproc.v1beta2.Job.spark_r_job",
+            index=7,
+            number=21,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
             name="spark_sql_job",
             full_name="google.cloud.dataproc.v1beta2.Job.spark_sql_job",
-            index=7,
+            index=8,
             number=12,
             type=11,
             cpp_type=10,
@@ -2319,7 +2522,7 @@ _JOB = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="status",
             full_name="google.cloud.dataproc.v1beta2.Job.status",
-            index=8,
+            index=9,
             number=8,
             type=11,
             cpp_type=10,
@@ -2337,7 +2540,7 @@ _JOB = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="status_history",
             full_name="google.cloud.dataproc.v1beta2.Job.status_history",
-            index=9,
+            index=10,
             number=13,
             type=11,
             cpp_type=10,
@@ -2355,7 +2558,7 @@ _JOB = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="yarn_applications",
             full_name="google.cloud.dataproc.v1beta2.Job.yarn_applications",
-            index=10,
+            index=11,
             number=9,
             type=11,
             cpp_type=10,
@@ -2373,7 +2576,7 @@ _JOB = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="submitted_by",
             full_name="google.cloud.dataproc.v1beta2.Job.submitted_by",
-            index=11,
+            index=12,
             number=10,
             type=9,
             cpp_type=9,
@@ -2391,7 +2594,7 @@ _JOB = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="driver_output_resource_uri",
             full_name="google.cloud.dataproc.v1beta2.Job.driver_output_resource_uri",
-            index=12,
+            index=13,
             number=17,
             type=9,
             cpp_type=9,
@@ -2409,7 +2612,7 @@ _JOB = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="driver_control_files_uri",
             full_name="google.cloud.dataproc.v1beta2.Job.driver_control_files_uri",
-            index=13,
+            index=14,
             number=15,
             type=9,
             cpp_type=9,
@@ -2427,7 +2630,7 @@ _JOB = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="labels",
             full_name="google.cloud.dataproc.v1beta2.Job.labels",
-            index=14,
+            index=15,
             number=18,
             type=11,
             cpp_type=10,
@@ -2445,7 +2648,7 @@ _JOB = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="scheduling",
             full_name="google.cloud.dataproc.v1beta2.Job.scheduling",
-            index=15,
+            index=16,
             number=20,
             type=11,
             cpp_type=10,
@@ -2463,7 +2666,7 @@ _JOB = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="job_uuid",
             full_name="google.cloud.dataproc.v1beta2.Job.job_uuid",
-            index=16,
+            index=17,
             number=22,
             type=9,
             cpp_type=9,
@@ -2495,8 +2698,8 @@ _JOB = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=3904,
-    serialized_end=4914,
+    serialized_start=4197,
+    serialized_end=5272,
 )
 
 
@@ -2534,8 +2737,8 @@ _JOBSCHEDULING = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4916,
-    serialized_end=4962,
+    serialized_start=5274,
+    serialized_end=5320,
 )
 
 
@@ -2627,8 +2830,8 @@ _SUBMITJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4964,
-    serialized_end=5087,
+    serialized_start=5322,
+    serialized_end=5445,
 )
 
 
@@ -2702,8 +2905,8 @@ _GETJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5089,
-    serialized_end=5156,
+    serialized_start=5447,
+    serialized_end=5514,
 )
 
 
@@ -2849,8 +3052,8 @@ _LISTJOBSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5159,
-    serialized_end=5436,
+    serialized_start=5517,
+    serialized_end=5794,
 )
 
 
@@ -2960,8 +3163,8 @@ _UPDATEJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5439,
-    serialized_end=5607,
+    serialized_start=5797,
+    serialized_end=5965,
 )
 
 
@@ -3017,8 +3220,8 @@ _LISTJOBSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5609,
-    serialized_end=5702,
+    serialized_start=5967,
+    serialized_end=6060,
 )
 
 
@@ -3092,8 +3295,8 @@ _CANCELJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5704,
-    serialized_end=5774,
+    serialized_start=6062,
+    serialized_end=6132,
 )
 
 
@@ -3167,8 +3370,8 @@ _DELETEJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5776,
-    serialized_end=5846,
+    serialized_start=6134,
+    serialized_end=6204,
 )
 
 _LOGGINGCONFIG_DRIVERLOGLEVELSENTRY.fields_by_name[
@@ -3261,6 +3464,9 @@ _PIGJOB.oneofs_by_name["queries"].fields.append(_PIGJOB.fields_by_name["query_li
 _PIGJOB.fields_by_name["query_list"].containing_oneof = _PIGJOB.oneofs_by_name[
     "queries"
 ]
+_SPARKRJOB_PROPERTIESENTRY.containing_type = _SPARKRJOB
+_SPARKRJOB.fields_by_name["properties"].message_type = _SPARKRJOB_PROPERTIESENTRY
+_SPARKRJOB.fields_by_name["logging_config"].message_type = _LOGGINGCONFIG
 _JOBSTATUS.fields_by_name["state"].enum_type = _JOBSTATUS_STATE
 _JOBSTATUS.fields_by_name[
     "state_start_time"
@@ -3278,6 +3484,7 @@ _JOB.fields_by_name["spark_job"].message_type = _SPARKJOB
 _JOB.fields_by_name["pyspark_job"].message_type = _PYSPARKJOB
 _JOB.fields_by_name["hive_job"].message_type = _HIVEJOB
 _JOB.fields_by_name["pig_job"].message_type = _PIGJOB
+_JOB.fields_by_name["spark_r_job"].message_type = _SPARKRJOB
 _JOB.fields_by_name["spark_sql_job"].message_type = _SPARKSQLJOB
 _JOB.fields_by_name["status"].message_type = _JOBSTATUS
 _JOB.fields_by_name["status_history"].message_type = _JOBSTATUS
@@ -3294,6 +3501,8 @@ _JOB.oneofs_by_name["type_job"].fields.append(_JOB.fields_by_name["hive_job"])
 _JOB.fields_by_name["hive_job"].containing_oneof = _JOB.oneofs_by_name["type_job"]
 _JOB.oneofs_by_name["type_job"].fields.append(_JOB.fields_by_name["pig_job"])
 _JOB.fields_by_name["pig_job"].containing_oneof = _JOB.oneofs_by_name["type_job"]
+_JOB.oneofs_by_name["type_job"].fields.append(_JOB.fields_by_name["spark_r_job"])
+_JOB.fields_by_name["spark_r_job"].containing_oneof = _JOB.oneofs_by_name["type_job"]
 _JOB.oneofs_by_name["type_job"].fields.append(_JOB.fields_by_name["spark_sql_job"])
 _JOB.fields_by_name["spark_sql_job"].containing_oneof = _JOB.oneofs_by_name["type_job"]
 _SUBMITJOBREQUEST.fields_by_name["job"].message_type = _JOB
@@ -3314,6 +3523,7 @@ DESCRIPTOR.message_types_by_name["QueryList"] = _QUERYLIST
 DESCRIPTOR.message_types_by_name["HiveJob"] = _HIVEJOB
 DESCRIPTOR.message_types_by_name["SparkSqlJob"] = _SPARKSQLJOB
 DESCRIPTOR.message_types_by_name["PigJob"] = _PIGJOB
+DESCRIPTOR.message_types_by_name["SparkRJob"] = _SPARKRJOB
 DESCRIPTOR.message_types_by_name["JobPlacement"] = _JOBPLACEMENT
 DESCRIPTOR.message_types_by_name["JobStatus"] = _JOBSTATUS
 DESCRIPTOR.message_types_by_name["JobReference"] = _JOBREFERENCE
@@ -3753,6 +3963,58 @@ _sym_db.RegisterMessage(PigJob)
 _sym_db.RegisterMessage(PigJob.ScriptVariablesEntry)
 _sym_db.RegisterMessage(PigJob.PropertiesEntry)
 
+SparkRJob = _reflection.GeneratedProtocolMessageType(
+    "SparkRJob",
+    (_message.Message,),
+    dict(
+        PropertiesEntry=_reflection.GeneratedProtocolMessageType(
+            "PropertiesEntry",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_SPARKRJOB_PROPERTIESENTRY,
+                __module__="google.cloud.dataproc_v1beta2.proto.jobs_pb2"
+                # @@protoc_insertion_point(class_scope:google.cloud.dataproc.v1beta2.SparkRJob.PropertiesEntry)
+            ),
+        ),
+        DESCRIPTOR=_SPARKRJOB,
+        __module__="google.cloud.dataproc_v1beta2.proto.jobs_pb2",
+        __doc__="""A Cloud Dataproc job for running `Apache
+  SparkR <https://spark.apache.org/docs/latest/sparkr.html>`__
+  applications on YARN.
+  
+  
+  Attributes:
+      main_r_file_uri:
+          Required. The HCFS URI of the main R file to use as the
+          driver. Must be a .R file.
+      args:
+          Optional. The arguments to pass to the driver. Do not include
+          arguments, such as ``--conf``, that can be set as job
+          properties, since a collision may occur that causes an
+          incorrect job submission.
+      file_uris:
+          Optional. HCFS URIs of files to be copied to the working
+          directory of R drivers and distributed tasks. Useful for
+          naively parallel tasks.
+      archive_uris:
+          Optional. HCFS URIs of archives to be extracted in the working
+          directory of Spark drivers and tasks. Supported file types:
+          .jar, .tar, .tar.gz, .tgz, and .zip.
+      properties:
+          Optional. A mapping of property names to values, used to
+          configure SparkR. Properties that conflict with values set by
+          the Cloud Dataproc API may be overwritten. Can include
+          properties set in /etc/spark/conf/spark-defaults.conf and
+          classes in user code.
+      logging_config:
+          Optional. The runtime log config for job execution.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.dataproc.v1beta2.SparkRJob)
+    ),
+)
+_sym_db.RegisterMessage(SparkRJob)
+_sym_db.RegisterMessage(SparkRJob.PropertiesEntry)
+
 JobPlacement = _reflection.GeneratedProtocolMessageType(
     "JobPlacement",
     (_message.Message,),
@@ -3816,11 +4078,10 @@ JobReference = _reflection.GeneratedProtocolMessageType(
           job belongs to.
       job_id:
           Optional. The job ID, which must be unique within the project.
-          The job ID is generated by the server upon job submission or
-          provided by the user as a means to perform retries without
-          creating duplicate jobs. The ID must contain only letters
-          (a-z, A-Z), numbers (0-9), underscores (\_), or hyphens (-).
-          The maximum length is 100 characters.
+          The ID must contain only letters (a-z, A-Z), numbers (0-9),
+          underscores (\_), or hyphens (-). The maximum length is 100
+          characters.  If not specified by the caller, the job ID will
+          be provided by the server.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.dataproc.v1beta2.JobReference)
     ),
@@ -3899,6 +4160,8 @@ Job = _reflection.GeneratedProtocolMessageType(
           Job is a Hive job.
       pig_job:
           Job is a Pig job.
+      spark_r_job:
+          Job is a SparkR job.
       spark_sql_job:
           Job is a SparkSql job.
       status:
@@ -4185,6 +4448,7 @@ _SPARKSQLJOB_SCRIPTVARIABLESENTRY._options = None
 _SPARKSQLJOB_PROPERTIESENTRY._options = None
 _PIGJOB_SCRIPTVARIABLESENTRY._options = None
 _PIGJOB_PROPERTIESENTRY._options = None
+_SPARKRJOB_PROPERTIESENTRY._options = None
 _JOB_LABELSENTRY._options = None
 
 _JOBCONTROLLER = _descriptor.ServiceDescriptor(
@@ -4193,8 +4457,8 @@ _JOBCONTROLLER = _descriptor.ServiceDescriptor(
     file=DESCRIPTOR,
     index=0,
     serialized_options=None,
-    serialized_start=5849,
-    serialized_end=6884,
+    serialized_start=6207,
+    serialized_end=7242,
     methods=[
         _descriptor.MethodDescriptor(
             name="SubmitJob",

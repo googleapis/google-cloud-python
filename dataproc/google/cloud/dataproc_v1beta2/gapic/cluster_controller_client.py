@@ -35,6 +35,8 @@ from google.cloud.dataproc_v1beta2.gapic import enums
 from google.cloud.dataproc_v1beta2.gapic.transports import (
     cluster_controller_grpc_transport,
 )
+from google.cloud.dataproc_v1beta2.proto import autoscaling_policies_pb2
+from google.cloud.dataproc_v1beta2.proto import autoscaling_policies_pb2_grpc
 from google.cloud.dataproc_v1beta2.proto import clusters_pb2
 from google.cloud.dataproc_v1beta2.proto import clusters_pb2_grpc
 from google.cloud.dataproc_v1beta2.proto import operations_pb2 as proto_operations_pb2
@@ -396,6 +398,10 @@ class ClusterControllerClient(object):
                     <tr>
                     <td>config.lifecycle_config.idle_delete_ttl</td><td>Update Idle TTL
                     duration</td>
+                    </tr>
+                    <tr>
+                    <td>config.autoscaling_config.policy_uri</td><td>Use, stop using, or change
+                    autoscaling policies</td>
                     </tr>
                     </table>
 
