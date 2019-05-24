@@ -54,7 +54,7 @@ retry_bad_copy = RetryErrors(exceptions.BadRequest, error_predicate=_bad_copy)
 
 def _empty_bucket(bucket):
     """Empty a bucket of all existing blobs (including multiple versions)."""
-    for blob in bucket.list_blobs(versions=True):
+    for blob in list(bucket.list_blobs(versions=True)):
         try:
             blob.delete()
         except exceptions.NotFound:
@@ -83,9 +83,8 @@ def setUpModule():
 
 
 def tearDownModule():
-    _empty_bucket(Config.TEST_BUCKET)
     errors = (exceptions.Conflict, exceptions.TooManyRequests)
-    retry = RetryErrors(errors, max_tries=9)
+    retry = RetryErrors(errors, max_tries=15)
     retry(_empty_bucket)(Config.TEST_BUCKET)
     retry(Config.TEST_BUCKET.delete)(force=True)
 
