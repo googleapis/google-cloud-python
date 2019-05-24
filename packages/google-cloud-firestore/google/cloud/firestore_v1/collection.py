@@ -40,7 +40,7 @@ class CollectionReference(object):
             that contain a sub-collection.
         kwargs (dict): The keyword arguments for the constructor. The only
             supported keyword is ``client`` and it must be a
-            :class:`~.firestore_v1.client.Client` if provided. It
+            :class:`~google.cloud.firestore_v1.client.Client` if provided. It
             represents the client that created this collection reference.
 
     Raises:
@@ -81,8 +81,8 @@ class CollectionReference(object):
         """Document that owns the current collection.
 
         Returns:
-            Optional[~.firestore_v1.document.DocumentReference]: The
-            parent document, if the current collection is not a
+            Optional[:class:`~google.cloud.firestore_v1.document.DocumentReference`]:
+            The parent document, if the current collection is not a
             top-level collection.
         """
         if len(self._path) == 1:
@@ -101,8 +101,8 @@ class CollectionReference(object):
                 uppercase and lowercase and letters.
 
         Returns:
-            ~.firestore_v1.document.DocumentReference: The child
-            document.
+            :class:`~google.cloud.firestore_v1.document.DocumentReference`:
+            The child document.
         """
         if document_id is None:
             document_id = _auto_id()
@@ -145,12 +145,12 @@ class CollectionReference(object):
                 uppercase and lowercase letters).
 
         Returns:
-            Tuple[google.protobuf.timestamp_pb2.Timestamp, \
-                ~.firestore_v1.document.DocumentReference]: Pair of
+            Tuple[:class:`google.protobuf.timestamp_pb2.Timestamp`, \
+                :class:`~google.cloud.firestore_v1.document.DocumentReference`]:
+                Pair of
 
-            * The ``update_time`` when the document was created (or
-              overwritten).
-            * A document reference for the created document.
+                * The ``update_time`` when the document was created/overwritten.
+                * A document reference for the created document.
 
         Raises:
             ~google.cloud.exceptions.Conflict: If ``document_id`` is provided
@@ -188,7 +188,7 @@ class CollectionReference(object):
             are ignored. Defaults to a sensible value set by the API.
 
         Returns:
-            Sequence[~.firestore_v1.collection.DocumentReference]:
+            Sequence[:class:`~google.cloud.firestore_v1.collection.DocumentReference`]:
                 iterator of subdocuments of the current collection. If the
                 collection does not exist at the time of `snapshot`, the
                 iterator will be empty
@@ -210,7 +210,7 @@ class CollectionReference(object):
         """Create a "select" query with this collection as parent.
 
         See
-        :meth:`~.firestore_v1.query.Query.select` for
+        :meth:`~google.cloud.firestore_v1.query.Query.select` for
         more information on this method.
 
         Args:
@@ -219,7 +219,8 @@ class CollectionReference(object):
                 of document fields in the query results.
 
         Returns:
-            ~.firestore_v1.query.Query: A "projected" query.
+            :class:`~google.cloud.firestore_v1.query.Query`:
+            A "projected" query.
         """
         query = query_mod.Query(self)
         return query.select(field_paths)
@@ -228,7 +229,7 @@ class CollectionReference(object):
         """Create a "where" query with this collection as parent.
 
         See
-        :meth:`~.firestore_v1.query.Query.where` for
+        :meth:`~google.cloud.firestore_v1.query.Query.where` for
         more information on this method.
 
         Args:
@@ -242,7 +243,8 @@ class CollectionReference(object):
                 allowed operation.
 
         Returns:
-            ~.firestore_v1.query.Query: A filtered query.
+            :class:`~google.cloud.firestore_v1.query.Query`:
+            A filtered query.
         """
         query = query_mod.Query(self)
         return query.where(field_path, op_string, value)
@@ -251,7 +253,7 @@ class CollectionReference(object):
         """Create an "order by" query with this collection as parent.
 
         See
-        :meth:`~.firestore_v1.query.Query.order_by` for
+        :meth:`~google.cloud.firestore_v1.query.Query.order_by` for
         more information on this method.
 
         Args:
@@ -259,11 +261,12 @@ class CollectionReference(object):
                 field names) on which to order the query results.
             kwargs (Dict[str, Any]): The keyword arguments to pass along
                 to the query. The only supported keyword is ``direction``,
-                see :meth:`~.firestore_v1.query.Query.order_by` for
-                more information.
+                see :meth:`~google.cloud.firestore_v1.query.Query.order_by`
+                for more information.
 
         Returns:
-            ~.firestore_v1.query.Query: An "order by" query.
+            :class:`~google.cloud.firestore_v1.query.Query`:
+            An "order by" query.
         """
         query = query_mod.Query(self)
         return query.order_by(field_path, **kwargs)
@@ -272,7 +275,7 @@ class CollectionReference(object):
         """Create a limited query with this collection as parent.
 
         See
-        :meth:`~.firestore_v1.query.Query.limit` for
+        :meth:`~google.cloud.firestore_v1.query.Query.limit` for
         more information on this method.
 
         Args:
@@ -280,7 +283,8 @@ class CollectionReference(object):
                 the query.
 
         Returns:
-            ~.firestore_v1.query.Query: A limited query.
+            :class:`~google.cloud.firestore_v1.query.Query`:
+            A limited query.
         """
         query = query_mod.Query(self)
         return query.limit(count)
@@ -289,7 +293,7 @@ class CollectionReference(object):
         """Skip to an offset in a query with this collection as parent.
 
         See
-        :meth:`~.firestore_v1.query.Query.offset` for
+        :meth:`~google.cloud.firestore_v1.query.Query.offset` for
         more information on this method.
 
         Args:
@@ -297,7 +301,8 @@ class CollectionReference(object):
                 of query results. (Must be non-negative.)
 
         Returns:
-            ~.firestore_v1.query.Query: An offset query.
+            :class:`~google.cloud.firestore_v1.query.Query`:
+            An offset query.
         """
         query = query_mod.Query(self)
         return query.offset(num_to_skip)
@@ -306,18 +311,19 @@ class CollectionReference(object):
         """Start query at a cursor with this collection as parent.
 
         See
-        :meth:`~.firestore_v1.query.Query.start_at` for
+        :meth:`~google.cloud.firestore_v1.query.Query.start_at` for
         more information on this method.
 
         Args:
-            document_fields (Union[~.firestore_v1.\
-                document.DocumentSnapshot, dict, list, tuple]): a document
-                snapshot or a dictionary/list/tuple of fields representing a
-                query results cursor. A cursor is a collection of values that
-                represent a position in a query result set.
+            document_fields (Union[:class:`~google.cloud.firestore_v1.\
+                document.DocumentSnapshot`, dict, list, tuple]):
+                A document snapshot or a dictionary/list/tuple of fields
+                representing a query results cursor. A cursor is a collection
+                of values that represent a position in a query result set.
 
         Returns:
-            ~.firestore_v1.query.Query: A query with cursor.
+            :class:`~google.cloud.firestore_v1.query.Query`:
+            A query with cursor.
         """
         query = query_mod.Query(self)
         return query.start_at(document_fields)
@@ -326,18 +332,19 @@ class CollectionReference(object):
         """Start query after a cursor with this collection as parent.
 
         See
-        :meth:`~.firestore_v1.query.Query.start_after` for
+        :meth:`~google.cloud.firestore_v1.query.Query.start_after` for
         more information on this method.
 
         Args:
-            document_fields (Union[~.firestore_v1.\
-                document.DocumentSnapshot, dict, list, tuple]): a document
-                snapshot or a dictionary/list/tuple of fields representing a
-                query results cursor. A cursor is a collection of values that
-                represent a position in a query result set.
+            document_fields (Union[:class:`~google.cloud.firestore_v1.\
+                document.DocumentSnapshot`, dict, list, tuple]):
+                A document snapshot or a dictionary/list/tuple of fields
+                representing a query results cursor. A cursor is a collection
+                of values that represent a position in a query result set.
 
         Returns:
-            ~.firestore_v1.query.Query: A query with cursor.
+            :class:`~google.cloud.firestore_v1.query.Query`:
+            A query with cursor.
         """
         query = query_mod.Query(self)
         return query.start_after(document_fields)
@@ -346,18 +353,19 @@ class CollectionReference(object):
         """End query before a cursor with this collection as parent.
 
         See
-        :meth:`~.firestore_v1.query.Query.end_before` for
+        :meth:`~google.cloud.firestore_v1.query.Query.end_before` for
         more information on this method.
 
         Args:
-            document_fields (Union[~.firestore_v1.\
-                document.DocumentSnapshot, dict, list, tuple]): a document
-                snapshot or a dictionary/list/tuple of fields representing a
-                query results cursor. A cursor is a collection of values that
-                represent a position in a query result set.
+            document_fields (Union[:class:`~google.cloud.firestore_v1.\
+                document.DocumentSnapshot`, dict, list, tuple]):
+                A document snapshot or a dictionary/list/tuple of fields
+                representing a query results cursor. A cursor is a collection
+                of values that represent a position in a query result set.
 
         Returns:
-            ~.firestore_v1.query.Query: A query with cursor.
+            :class:`~google.cloud.firestore_v1.query.Query`:
+            A query with cursor.
         """
         query = query_mod.Query(self)
         return query.end_before(document_fields)
@@ -366,18 +374,19 @@ class CollectionReference(object):
         """End query at a cursor with this collection as parent.
 
         See
-        :meth:`~.firestore_v1.query.Query.end_at` for
+        :meth:`~google.cloud.firestore_v1.query.Query.end_at` for
         more information on this method.
 
         Args:
-            document_fields (Union[~.firestore_v1.\
-                document.DocumentSnapshot, dict, list, tuple]): a document
-                snapshot or a dictionary/list/tuple of fields representing a
-                query results cursor. A cursor is a collection of values that
-                represent a position in a query result set.
+            document_fields (Union[:class:`~google.cloud.firestore_v1.\
+                document.DocumentSnapshot`, dict, list, tuple]):
+                A document snapshot or a dictionary/list/tuple of fields
+                representing a query results cursor. A cursor is a collection
+                of values that represent a position in a query result set.
 
         Returns:
-            ~.firestore_v1.query.Query: A query with cursor.
+            :class:`~google.cloud.firestore_v1.query.Query`:
+            A query with cursor.
         """
         query = query_mod.Query(self)
         return query.end_at(document_fields)
@@ -410,13 +419,13 @@ class CollectionReference(object):
         allowed).
 
         Args:
-            transaction (Optional[~.firestore_v1.transaction.\
-                Transaction]): An existing transaction that the query will
-                run in.
+            transaction (Optional[:class:`~google.cloud.firestore_v1.transaction.\
+                Transaction`]):
+                An existing transaction that the query will run in.
 
         Yields:
-            ~.firestore_v1.document.DocumentSnapshot: The next
-            document that fulfills the query.
+            :class:`~google.cloud.firestore_v1.document.DocumentSnapshot`:
+            The next document that fulfills the query.
         """
         query = query_mod.Query(self)
         return query.stream(transaction=transaction)
@@ -428,8 +437,8 @@ class CollectionReference(object):
         provided callback is run on the snapshot of the documents.
 
         Args:
-            callback(~.firestore.collection.CollectionSnapshot): a callback
-                to run when a change occurs.
+            callback (Callable[[:class:`~google.cloud.firestore.collection.CollectionSnapshot`], NoneType]):
+                a callback to run when a change occurs.
 
         Example:
             from google.cloud import firestore_v1
