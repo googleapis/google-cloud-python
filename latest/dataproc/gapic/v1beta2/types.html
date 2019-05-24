@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Google Cloud Dataproc API Client &#8212; google-cloud a02e99e documentation</title>
+    <title>Types for Google Cloud Dataproc API Client &#8212; google-cloud 599fd59 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -93,6 +93,228 @@ this instance.</p>
 <dt id="google.cloud.dataproc_v1beta2.types.Any.value">
 <code class="descname">value</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.Any.value" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Any.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1beta2.types.AutoscalingConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1beta2.types.</code><code class="descname">AutoscalingConfig</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.AutoscalingConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Autoscaling Policy config associated with the cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.AutoscalingConfig.policy_uri">
+<code class="descname">policy_uri</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.AutoscalingConfig.policy_uri" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The autoscaling policy used by the cluster.  Only
+resource names including projectid and location (region) are
+valid. Examples:  -  <code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/compute/v1/p</span>
+<span class="pre">rojects/[project_id]/locations/[dataproc_region]/autoscalingPo</span>
+<span class="pre">licies/[policy_id]</span></code> -  <code class="docutils literal notranslate"><span class="pre">projects/[project_id]/locations/[dat</span>
+<span class="pre">aproc_region]/autoscalingPolicies/[policy_id]</span></code>  Note that the
+policy must be in the same project and Cloud Dataproc region.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">policy_uri</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.AutoscalingConfig.policy_uri</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1beta2.types.AutoscalingPolicy">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1beta2.types.</code><code class="descname">AutoscalingPolicy</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.AutoscalingPolicy" title="Permalink to this definition">#</a></dt>
+<dd><p>Describes an autoscaling policy for Dataproc cluster autoscaler.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.AutoscalingPolicy.id">
+<code class="descname">id</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.AutoscalingPolicy.id" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The policy id.  The id must contain only letters
+(a-z, A-Z), numbers (0-9), underscores (_), and hyphens (-).
+Cannot begin or end with underscore or hyphen. Must consist of
+between 3 and 50 characters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.AutoscalingPolicy.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.AutoscalingPolicy.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The “resource name” of the policy, as described
+in <a class="reference external" href="https://cloud.google.com/apis/design/resource_names">https://cloud.google.com/apis/design/resource_names</a> of the
+form <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/regions/{region}/autoscalingPolic</span>
+<span class="pre">ies/{policy_id}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.AutoscalingPolicy.algorithm">
+<code class="descname">algorithm</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.AutoscalingPolicy.algorithm" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Autoscaling algorithm for policy.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.AutoscalingPolicy.worker_config">
+<code class="descname">worker_config</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.AutoscalingPolicy.worker_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Describes how the autoscaler will operate for
+primary workers.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.AutoscalingPolicy.secondary_worker_config">
+<code class="descname">secondary_worker_config</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.AutoscalingPolicy.secondary_worker_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Describes how the autoscaler will operate for
+secondary workers.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.AutoscalingPolicy.basic_algorithm">
+<code class="descname">basic_algorithm</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.AutoscalingPolicy.basic_algorithm" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.AutoscalingPolicy.basic_algorithm</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">id</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.AutoscalingPolicy.id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.AutoscalingPolicy.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">secondary_worker_config</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.AutoscalingPolicy.secondary_worker_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">worker_config</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.AutoscalingPolicy.worker_config</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1beta2.types.BasicAutoscalingAlgorithm">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1beta2.types.</code><code class="descname">BasicAutoscalingAlgorithm</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.BasicAutoscalingAlgorithm" title="Permalink to this definition">#</a></dt>
+<dd><p>Basic algorithm for autoscaling.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.BasicAutoscalingAlgorithm.yarn_config">
+<code class="descname">yarn_config</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.BasicAutoscalingAlgorithm.yarn_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. YARN autoscaling configuration.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.BasicAutoscalingAlgorithm.cooldown_period">
+<code class="descname">cooldown_period</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.BasicAutoscalingAlgorithm.cooldown_period" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Duration between scaling events. A scaling period
+starts after the update operation from the previous event has
+completed.  Bounds: [2m, 1d]. Default: 2m.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cooldown_period</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.BasicAutoscalingAlgorithm.cooldown_period</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">yarn_config</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.BasicAutoscalingAlgorithm.yarn_config</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1beta2.types.BasicYarnAutoscalingConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1beta2.types.</code><code class="descname">BasicYarnAutoscalingConfig</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.BasicYarnAutoscalingConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Basic autoscaling configurations for YARN.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.BasicYarnAutoscalingConfig.graceful_decommission_timeout">
+<code class="descname">graceful_decommission_timeout</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.BasicYarnAutoscalingConfig.graceful_decommission_timeout" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Timeout for YARN graceful decommissioning of Node
+Managers. Specifies the duration to wait for jobs to complete
+before forcefully removing workers (and potentially
+interrupting jobs). Only applicable to downscaling operations.
+Bounds: [0s, 1d].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.BasicYarnAutoscalingConfig.scale_up_factor">
+<code class="descname">scale_up_factor</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.BasicYarnAutoscalingConfig.scale_up_factor" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Fraction of average pending memory in the last
+cooldown period for which to add workers. A scale-up factor of
+1.0 will result in scaling up so that there is no pending
+memory remaining after the update (more aggressive scaling). A
+scale-up factor closer to 0 will result in a smaller magnitude
+of scaling up (less aggressive scaling).  Bounds: [0.0, 1.0].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.BasicYarnAutoscalingConfig.scale_down_factor">
+<code class="descname">scale_down_factor</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.BasicYarnAutoscalingConfig.scale_down_factor" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Fraction of average pending memory in the last
+cooldown period for which to remove workers. A scale-down
+factor of 1 will result in scaling down so that there is no
+available memory remaining after the update (more aggressive
+scaling). A scale-down factor of 0 disables removing workers,
+which can be beneficial for autoscaling a single job.  Bounds:
+[0.0, 1.0].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.BasicYarnAutoscalingConfig.scale_up_min_worker_fraction">
+<code class="descname">scale_up_min_worker_fraction</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.BasicYarnAutoscalingConfig.scale_up_min_worker_fraction" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Minimum scale-up threshold as a fraction of total
+cluster size before scaling occurs. For example, in a
+20-worker cluster, a threshold of 0.1 means the autoscaler
+must recommend at least a 2-worker scale-up for the cluster to
+scale. A threshold of 0 means the autoscaler will scale up on
+any recommended change.  Bounds: [0.0, 1.0]. Default: 0.0.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.BasicYarnAutoscalingConfig.scale_down_min_worker_fraction">
+<code class="descname">scale_down_min_worker_fraction</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.BasicYarnAutoscalingConfig.scale_down_min_worker_fraction" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Minimum scale-down threshold as a fraction of total
+cluster size before scaling occurs. For example, in a
+20-worker cluster, a threshold of 0.1 means the autoscaler
+must recommend at least a 2 worker scale-down for the cluster
+to scale. A threshold of 0 means the autoscaler will scale
+down on any recommended change.  Bounds: [0.0, 1.0]. Default:
+0.0.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">graceful_decommission_timeout</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.BasicYarnAutoscalingConfig.graceful_decommission_timeout</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">scale_down_factor</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.BasicYarnAutoscalingConfig.scale_down_factor</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">scale_down_min_worker_fraction</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.BasicYarnAutoscalingConfig.scale_down_min_worker_fraction</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">scale_up_factor</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.BasicYarnAutoscalingConfig.scale_up_factor</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">scale_up_min_worker_fraction</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.BasicYarnAutoscalingConfig.scale_up_min_worker_fraction</p>
 </dd></dl>
 
 </dd></dl>
@@ -292,19 +514,20 @@ testing purposes only. It may be changed before final release.</p>
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1beta2.types.ClusterConfig.config_bucket">
 <code class="descname">config_bucket</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.ClusterConfig.config_bucket" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional. A Cloud Storage staging bucket used for sharing
-generated SSH keys and config. If you do not specify a staging
-bucket, Cloud Dataproc will determine an appropriate Cloud
-Storage location (US, ASIA, or EU) for your cluster’s staging
-bucket according to the Google Compute Engine zone where your
-cluster is deployed, and then it will create and manage this
-project-level, per-location bucket for you.</p>
+<dd><p>Optional. A Google Cloud Storage bucket used to stage job
+dependencies, config files, and job driver console output. If
+you do not specify a staging bucket, Cloud Dataproc will
+determine a Cloud Storage location (US, ASIA, or EU) for your
+cluster’s staging bucket according to the Google Compute
+Engine zone where your cluster is deployed, and then create
+and manage this project-level, per-location bucket (see <a class="reference external" href="/dataproc/docs/concepts/configuring-clusters/staging-bucket">Cloud
+Dataproc staging bucket</a>).</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1beta2.types.ClusterConfig.gce_cluster_config">
 <code class="descname">gce_cluster_config</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.ClusterConfig.gce_cluster_config" title="Permalink to this definition">#</a></dt>
-<dd><p>Required. The shared Compute Engine config settings for all
+<dd><p>Optional. The shared Compute Engine config settings for all
 instances in a cluster.</p>
 </dd></dl>
 
@@ -362,6 +585,32 @@ else       … worker specific actions …     fi</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.ClusterConfig.autoscaling_config">
+<code class="descname">autoscaling_config</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.ClusterConfig.autoscaling_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Autoscaling config for the policy associated with
+the cluster. Cluster does not autoscale if this field is
+unset.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.ClusterConfig.endpoint_config">
+<code class="descname">endpoint_config</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.ClusterConfig.endpoint_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Port/endpoint configuration for this cluster</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.ClusterConfig.security_config">
+<code class="descname">security_config</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.ClusterConfig.security_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Security related configuration.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">autoscaling_config</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.ClusterConfig.autoscaling_config</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">config_bucket</code></dt>
 <dd><p>Field google.cloud.dataproc.v1beta2.ClusterConfig.config_bucket</p>
@@ -371,6 +620,12 @@ else       … worker specific actions …     fi</p>
 <dt>
 <code class="descname">encryption_config</code></dt>
 <dd><p>Field google.cloud.dataproc.v1beta2.ClusterConfig.encryption_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">endpoint_config</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.ClusterConfig.endpoint_config</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -401,6 +656,12 @@ else       … worker specific actions …     fi</p>
 <dt>
 <code class="descname">secondary_worker_config</code></dt>
 <dd><p>Field google.cloud.dataproc.v1beta2.ClusterConfig.secondary_worker_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">security_config</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.ClusterConfig.security_config</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -807,6 +1068,38 @@ reported by the agent.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.dataproc_v1beta2.types.CreateAutoscalingPolicyRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1beta2.types.</code><code class="descname">CreateAutoscalingPolicyRequest</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.CreateAutoscalingPolicyRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>A request to create an autoscaling policy.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.CreateAutoscalingPolicyRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.CreateAutoscalingPolicyRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The “resource name” of the region, as described in
+<a class="reference external" href="https://cloud.google.com/apis/design/resource_names">https://cloud.google.com/apis/design/resource_names</a> of the
+form <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/regions/{region}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.CreateAutoscalingPolicyRequest.policy">
+<code class="descname">policy</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.CreateAutoscalingPolicyRequest.policy" title="Permalink to this definition">#</a></dt>
+<dd><p>The autoscaling policy to create.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.CreateAutoscalingPolicyRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">policy</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.CreateAutoscalingPolicyRequest.policy</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.dataproc_v1beta2.types.CreateClusterRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1beta2.types.</code><code class="descname">CreateClusterRequest</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.CreateClusterRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>A request to create a cluster.</p>
@@ -899,6 +1192,29 @@ form <code class="docutils literal notranslate"><span class="pre">projects/{proj
 <dt>
 <code class="descname">template</code></dt>
 <dd><p>Field google.cloud.dataproc.v1beta2.CreateWorkflowTemplateRequest.template</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1beta2.types.DeleteAutoscalingPolicyRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1beta2.types.</code><code class="descname">DeleteAutoscalingPolicyRequest</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.DeleteAutoscalingPolicyRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>A request to delete an autoscaling policy.</p>
+<p>Autoscaling policies in use by one or more clusters will not be deleted.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.DeleteAutoscalingPolicyRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.DeleteAutoscalingPolicyRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The “resource name” of the autoscaling policy, as
+described in
+<a class="reference external" href="https://cloud.google.com/apis/design/resource_names">https://cloud.google.com/apis/design/resource_names</a> of the
+form <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/regions/{region}/autoscalingPolic</span>
+<span class="pre">ies/{policy_id}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.DeleteAutoscalingPolicyRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -1229,6 +1545,55 @@ for all instances in the cluster.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.dataproc_v1beta2.types.EndpointConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1beta2.types.</code><code class="descname">EndpointConfig</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.EndpointConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Endpoint config for this cluster</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.EndpointConfig.http_ports">
+<code class="descname">http_ports</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.EndpointConfig.http_ports" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The map of port descriptions to URLs. Will only
+be populated if enable_http_port_access is true.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.EndpointConfig.enable_http_port_access">
+<code class="descname">enable_http_port_access</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.EndpointConfig.enable_http_port_access" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. If true, enable http access to specific ports on the
+cluster from external sources. Defaults to false.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1beta2.types.EndpointConfig.HttpPortsEntry">
+<em class="property">class </em><code class="descname">HttpPortsEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.EndpointConfig.HttpPortsEntry" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.EndpointConfig.HttpPortsEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.EndpointConfig.HttpPortsEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.EndpointConfig.HttpPortsEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.EndpointConfig.HttpPortsEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.EndpointConfig.HttpPortsEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.EndpointConfig.HttpPortsEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">enable_http_port_access</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.EndpointConfig.enable_http_port_access</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">http_ports</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.EndpointConfig.http_ports</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.dataproc_v1beta2.types.FieldMask">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1beta2.types.</code><code class="descname">FieldMask</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.FieldMask" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
@@ -1280,8 +1645,9 @@ URL, partial URI, or short name are valid. Examples:  -  <code class="docutils l
 communications. Cannot be specified with network_uri.  A full
 URL, partial URI, or short name are valid. Examples:  -  <code class="docutils literal notranslate"><span class="pre">htt</span>
 <span class="pre">ps://www.googleapis.com/compute/v1/projects/[project_id]/regio</span>
-<span class="pre">ns/us-east1/sub0</span></code> -  <code class="docutils literal notranslate"><span class="pre">projects/[project_id]/regions/us-</span>
-<span class="pre">east1/sub0</span></code> -  <code class="docutils literal notranslate"><span class="pre">sub0</span></code></p>
+<span class="pre">ns/us-east1/subnetworks/sub0</span></code> -
+<code class="docutils literal notranslate"><span class="pre">projects/[project_id]/regions/us-east1/subnetworks/sub0</span></code> -
+<code class="docutils literal notranslate"><span class="pre">sub0</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1339,6 +1705,13 @@ instances</a>).</p>
 (see <a class="reference external" href="https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata">Project and instance metadata</a>).</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.GceClusterConfig.reservation_affinity">
+<code class="descname">reservation_affinity</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.GceClusterConfig.reservation_affinity" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Reservation Affinity for consuming Zonal
+reservation.</p>
+</dd></dl>
+
 <dl class="class">
 <dt id="google.cloud.dataproc_v1beta2.types.GceClusterConfig.MetadataEntry">
 <em class="property">class </em><code class="descname">MetadataEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.GceClusterConfig.MetadataEntry" title="Permalink to this definition">#</a></dt>
@@ -1376,6 +1749,12 @@ instances</a>).</p>
 
 <dl class="attribute">
 <dt>
+<code class="descname">reservation_affinity</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.GceClusterConfig.reservation_affinity</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
 <code class="descname">service_account</code></dt>
 <dd><p>Field google.cloud.dataproc.v1beta2.GceClusterConfig.service_account</p>
 </dd></dl>
@@ -1402,6 +1781,28 @@ instances</a>).</p>
 <dt>
 <code class="descname">zone_uri</code></dt>
 <dd><p>Field google.cloud.dataproc.v1beta2.GceClusterConfig.zone_uri</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1beta2.types.GetAutoscalingPolicyRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1beta2.types.</code><code class="descname">GetAutoscalingPolicyRequest</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.GetAutoscalingPolicyRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>A request to fetch an autoscaling policy.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.GetAutoscalingPolicyRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.GetAutoscalingPolicyRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The “resource name” of the autoscaling policy, as
+described in
+<a class="reference external" href="https://cloud.google.com/apis/design/resource_names">https://cloud.google.com/apis/design/resource_names</a> of the
+form <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/regions/{region}/autoscalingPolic</span>
+<span class="pre">ies/{policy_id}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.GetAutoscalingPolicyRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -1821,6 +2222,73 @@ Hive SerDes and UDFs.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.dataproc_v1beta2.types.InstanceGroupAutoscalingPolicyConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1beta2.types.</code><code class="descname">InstanceGroupAutoscalingPolicyConfig</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.InstanceGroupAutoscalingPolicyConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration for the size bounds of an instance group, including its
+proportional size to other groups.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.InstanceGroupAutoscalingPolicyConfig.min_instances">
+<code class="descname">min_instances</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.InstanceGroupAutoscalingPolicyConfig.min_instances" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Minimum number of instances for this group.  Primary
+workers - Bounds: [2, max_instances]. Default: 2. Secondary
+workers - Bounds: [0, max_instances]. Default: 0.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.InstanceGroupAutoscalingPolicyConfig.max_instances">
+<code class="descname">max_instances</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.InstanceGroupAutoscalingPolicyConfig.max_instances" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Maximum number of instances for this group. Required
+for primary workers. Note that by default, clusters will not
+use secondary workers. Required for secondary workers if the
+minimum secondary instances is set.  Primary workers - Bounds:
+[min_instances, ). Required. Secondary workers - Bounds:
+[min_instances, ). Default: 0.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.InstanceGroupAutoscalingPolicyConfig.weight">
+<code class="descname">weight</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.InstanceGroupAutoscalingPolicyConfig.weight" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Weight for the instance group, which is used to
+determine the fraction of total workers in the cluster from
+this instance group. For example, if primary workers have
+weight 2, and secondary workers have weight 1, the cluster
+will have approximately 2 primary workers for each secondary
+worker.  The cluster may not reach the specified balance if
+constrained by min/max bounds or other autoscaling settings.
+For example, if <code class="docutils literal notranslate"><span class="pre">max_instances</span></code> for secondary workers is 0,
+then only primary workers will be added. The cluster can also
+be out of balance when created.  If weight is not set on any
+instance group, the cluster will default to equal weight for
+all groups: the cluster will attempt to maintain an equal
+number of workers in each group within the configured size
+bounds for each group. If weight is set for one group only,
+the cluster will default to zero weight on the unset group.
+For example if weight is set only on primary workers, the
+cluster will use primary workers only and no secondary
+workers.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">max_instances</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.InstanceGroupAutoscalingPolicyConfig.max_instances</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">min_instances</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.InstanceGroupAutoscalingPolicyConfig.min_instances</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">weight</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.InstanceGroupAutoscalingPolicyConfig.weight</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.dataproc_v1beta2.types.InstanceGroupConfig">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1beta2.types.</code><code class="descname">InstanceGroupConfig</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.InstanceGroupConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The config settings for Compute Engine resources in an
@@ -2176,6 +2644,12 @@ job.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.Job.spark_r_job">
+<code class="descname">spark_r_job</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.Job.spark_r_job" title="Permalink to this definition">#</a></dt>
+<dd><p>Job is a SparkR job.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.dataproc_v1beta2.types.Job.spark_sql_job">
 <code class="descname">spark_sql_job</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.Job.spark_sql_job" title="Permalink to this definition">#</a></dt>
 <dd><p>Job is a SparkSql job.</p>
@@ -2343,6 +2817,12 @@ reference.job_id that may be reused over time.</p>
 
 <dl class="attribute">
 <dt>
+<code class="descname">spark_r_job</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.Job.spark_r_job</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
 <code class="descname">spark_sql_job</code></dt>
 <dd><p>Field google.cloud.dataproc.v1beta2.Job.spark_sql_job</p>
 </dd></dl>
@@ -2420,11 +2900,10 @@ job belongs to.</p>
 <dt id="google.cloud.dataproc_v1beta2.types.JobReference.job_id">
 <code class="descname">job_id</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.JobReference.job_id" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The job ID, which must be unique within the project.
-The job ID is generated by the server upon job submission or
-provided by the user as a means to perform retries without
-creating duplicate jobs. The ID must contain only letters
-(a-z, A-Z), numbers (0-9), underscores (_), or hyphens (-).
-The maximum length is 100 characters.</p>
+The ID must contain only letters (a-z, A-Z), numbers (0-9),
+underscores (_), or hyphens (-). The maximum length is 100
+characters.  If not specified by the caller, the job ID will
+be provided by the server.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2520,6 +2999,204 @@ status reported by the agent.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.dataproc_v1beta2.types.KerberosConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1beta2.types.</code><code class="descname">KerberosConfig</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.KerberosConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies Kerberos related configuration.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.KerberosConfig.enable_kerberos">
+<code class="descname">enable_kerberos</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.KerberosConfig.enable_kerberos" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Flag to indicate whether to Kerberize the cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.KerberosConfig.root_principal_password_uri">
+<code class="descname">root_principal_password_uri</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.KerberosConfig.root_principal_password_uri" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The Cloud Storage URI of a KMS encrypted file
+containing the root principal password.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.KerberosConfig.kms_key_uri">
+<code class="descname">kms_key_uri</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.KerberosConfig.kms_key_uri" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The uri of the KMS key used to encrypt various
+sensitive files.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.KerberosConfig.keystore_uri">
+<code class="descname">keystore_uri</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.KerberosConfig.keystore_uri" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The Cloud Storage URI of the keystore file used for
+SSL encryption. If not provided, Dataproc will provide a self-
+signed certificate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.KerberosConfig.truststore_uri">
+<code class="descname">truststore_uri</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.KerberosConfig.truststore_uri" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The Cloud Storage URI of the truststore file used
+for SSL encryption. If not provided, Dataproc will provide a
+self-signed certificate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.KerberosConfig.keystore_password_uri">
+<code class="descname">keystore_password_uri</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.KerberosConfig.keystore_password_uri" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The Cloud Storage URI of a KMS encrypted file
+containing the password to the user provided keystore. For the
+self-signed certificate, this password is generated by
+Dataproc.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.KerberosConfig.key_password_uri">
+<code class="descname">key_password_uri</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.KerberosConfig.key_password_uri" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The Cloud Storage URI of a KMS encrypted file
+containing the password to the user provided key. For the
+self-signed certificate, this password is generated by
+Dataproc.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.KerberosConfig.truststore_password_uri">
+<code class="descname">truststore_password_uri</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.KerberosConfig.truststore_password_uri" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The Cloud Storage URI of a KMS encrypted file
+containing the password to the user provided truststore. For
+the self-signed certificate, this password is generated by
+Dataproc.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.KerberosConfig.cross_realm_trust_realm">
+<code class="descname">cross_realm_trust_realm</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.KerberosConfig.cross_realm_trust_realm" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The remote realm the Dataproc on-cluster KDC will
+trust, should the user enable cross realm trust.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.KerberosConfig.cross_realm_trust_kdc">
+<code class="descname">cross_realm_trust_kdc</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.KerberosConfig.cross_realm_trust_kdc" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The KDC (IP or hostname) for the remote trusted
+realm in a cross realm trust relationship.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.KerberosConfig.cross_realm_trust_admin_server">
+<code class="descname">cross_realm_trust_admin_server</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.KerberosConfig.cross_realm_trust_admin_server" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The admin server (IP or hostname) for the remote
+trusted realm in a cross realm trust relationship.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.KerberosConfig.cross_realm_trust_shared_password_uri">
+<code class="descname">cross_realm_trust_shared_password_uri</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.KerberosConfig.cross_realm_trust_shared_password_uri" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The Cloud Storage URI of a KMS encrypted file
+containing the shared password between the on-cluster Kerberos
+realm and the remote trusted realm, in a cross realm trust
+relationship.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.KerberosConfig.kdc_db_key_uri">
+<code class="descname">kdc_db_key_uri</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.KerberosConfig.kdc_db_key_uri" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The Cloud Storage URI of a KMS encrypted file
+containing the master key of the KDC database.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.KerberosConfig.tgt_lifetime_hours">
+<code class="descname">tgt_lifetime_hours</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.KerberosConfig.tgt_lifetime_hours" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The lifetime of the ticket granting ticket, in
+hours. If not specified, or user specifies 0, then default
+value 10 will be used.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cross_realm_trust_admin_server</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.KerberosConfig.cross_realm_trust_admin_server</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cross_realm_trust_kdc</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.KerberosConfig.cross_realm_trust_kdc</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cross_realm_trust_realm</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.KerberosConfig.cross_realm_trust_realm</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cross_realm_trust_shared_password_uri</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.KerberosConfig.cross_realm_trust_shared_password_uri</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">enable_kerberos</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.KerberosConfig.enable_kerberos</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">kdc_db_key_uri</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.KerberosConfig.kdc_db_key_uri</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">key_password_uri</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.KerberosConfig.key_password_uri</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">keystore_password_uri</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.KerberosConfig.keystore_password_uri</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">keystore_uri</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.KerberosConfig.keystore_uri</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">kms_key_uri</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.KerberosConfig.kms_key_uri</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">root_principal_password_uri</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.KerberosConfig.root_principal_password_uri</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">tgt_lifetime_hours</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.KerberosConfig.tgt_lifetime_hours</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">truststore_password_uri</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.KerberosConfig.truststore_password_uri</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">truststore_uri</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.KerberosConfig.truststore_uri</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.dataproc_v1beta2.types.LifecycleConfig">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1beta2.types.</code><code class="descname">LifecycleConfig</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.LifecycleConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies the cluster auto-delete schedule configuration.</p>
@@ -2571,6 +3248,83 @@ day after its creation..</p>
 <dt>
 <code class="descname">idle_delete_ttl</code></dt>
 <dd><p>Field google.cloud.dataproc.v1beta2.LifecycleConfig.idle_delete_ttl</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1beta2.types.ListAutoscalingPoliciesRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1beta2.types.</code><code class="descname">ListAutoscalingPoliciesRequest</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.ListAutoscalingPoliciesRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>A request to list autoscaling policies in a project.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.ListAutoscalingPoliciesRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.ListAutoscalingPoliciesRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The “resource name” of the region, as described in
+<a class="reference external" href="https://cloud.google.com/apis/design/resource_names">https://cloud.google.com/apis/design/resource_names</a> of the
+form <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/regions/{region}</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.ListAutoscalingPoliciesRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.ListAutoscalingPoliciesRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The maximum number of results to return in each
+response.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.ListAutoscalingPoliciesRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.ListAutoscalingPoliciesRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The page token, returned by a previous call, to
+request the next page of results.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.ListAutoscalingPoliciesRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.ListAutoscalingPoliciesRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.ListAutoscalingPoliciesRequest.parent</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1beta2.types.ListAutoscalingPoliciesResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1beta2.types.</code><code class="descname">ListAutoscalingPoliciesResponse</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.ListAutoscalingPoliciesResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>A response to a request to list autoscaling policies in a project.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.ListAutoscalingPoliciesResponse.policies">
+<code class="descname">policies</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.ListAutoscalingPoliciesResponse.policies" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Autoscaling policies list.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.ListAutoscalingPoliciesResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.ListAutoscalingPoliciesResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. This token is included in the response if there
+are more results to fetch.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.ListAutoscalingPoliciesResponse.next_page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">policies</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.ListAutoscalingPoliciesResponse.policies</p>
 </dd></dl>
 
 </dd></dl>
@@ -3699,6 +4453,68 @@ entirety (substring matches are not sufficient).</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.dataproc_v1beta2.types.ReservationAffinity">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1beta2.types.</code><code class="descname">ReservationAffinity</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.ReservationAffinity" title="Permalink to this definition">#</a></dt>
+<dd><p>Reservation Affinity for consuming Zonal reservation.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.ReservationAffinity.consume_reservation_type">
+<code class="descname">consume_reservation_type</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.ReservationAffinity.consume_reservation_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Type of reservation to consume</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.ReservationAffinity.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.ReservationAffinity.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Corresponds to the label key of reservation
+resource.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.ReservationAffinity.values">
+<code class="descname">values</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.ReservationAffinity.values" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Corresponds to the label values of reservation
+resource.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">consume_reservation_type</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.ReservationAffinity.consume_reservation_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">key</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.ReservationAffinity.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">values</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.ReservationAffinity.values</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1beta2.types.SecurityConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1beta2.types.</code><code class="descname">SecurityConfig</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.SecurityConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Security related configuration, including encryption, Kerberos, etc.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.SecurityConfig.kerberos_config">
+<code class="descname">kerberos_config</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.SecurityConfig.kerberos_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Kerberos related configuration.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">kerberos_config</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.SecurityConfig.kerberos_config</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.dataproc_v1beta2.types.SoftwareConfig">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1beta2.types.</code><code class="descname">SoftwareConfig</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.SoftwareConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies the selection and config of software inside the cluster.</p>
@@ -3709,15 +4525,15 @@ entirety (substring matches are not sufficient).</p>
 be one of the supported <a class="reference external" href="/dataproc/docs/concepts/versioning/dataproc-versions#supported_cloud_dataproc_versions">Cloud Dataproc Versions</a>, such as “1.2”
 (including a subminor version, such as “1.2.29”), or the
 <a class="reference external" href="/dataproc/docs/concepts/versioning/dataproc-versions#other_versions">“preview” version</a>. If unspecified, it defaults to
-the latest version.</p>
+the latest Debian version.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.dataproc_v1beta2.types.SoftwareConfig.properties">
 <code class="descname">properties</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.SoftwareConfig.properties" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The properties to set on daemon config files.
-Property keys are specified in <code class="docutils literal notranslate"><span class="pre">prefix:property</span></code> format,
-such as <code class="docutils literal notranslate"><span class="pre">core:fs.defaultFS</span></code>. The following are supported
+Property keys are specified in <code class="docutils literal notranslate"><span class="pre">prefix:property</span></code> format, for
+example <code class="docutils literal notranslate"><span class="pre">core:hadoop.tmp.dir</span></code>. The following are supported
 prefixes and their mappings:  -  capacity-scheduler:
 <code class="docutils literal notranslate"><span class="pre">capacity-scheduler.xml</span></code> -  core: <code class="docutils literal notranslate"><span class="pre">core-site.xml</span></code> -
 distcp: <code class="docutils literal notranslate"><span class="pre">distcp-default.xml</span></code> -  hdfs: <code class="docutils literal notranslate"><span class="pre">hdfs-site.xml</span></code> -
@@ -3725,6 +4541,12 @@ hive: <code class="docutils literal notranslate"><span class="pre">hive-site.xml
 <code class="docutils literal notranslate"><span class="pre">pig.properties</span></code> -  spark: <code class="docutils literal notranslate"><span class="pre">spark-defaults.conf</span></code> -  yarn:
 <code class="docutils literal notranslate"><span class="pre">yarn-site.xml</span></code>  For more information, see <a class="reference external" href="/dataproc/docs/concepts/cluster-properties">Cluster
 properties</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.SoftwareConfig.optional_components">
+<code class="descname">optional_components</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.SoftwareConfig.optional_components" title="Permalink to this definition">#</a></dt>
+<dd><p>The set of optional components to activate on the cluster.</p>
 </dd></dl>
 
 <dl class="class">
@@ -3748,6 +4570,12 @@ properties</a>.</p>
 <dt>
 <code class="descname">image_version</code></dt>
 <dd><p>Field google.cloud.dataproc.v1beta2.SoftwareConfig.image_version</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">optional_components</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.SoftwareConfig.optional_components</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3899,6 +4727,115 @@ classes in user code.</p>
 <dt>
 <code class="descname">properties</code></dt>
 <dd><p>Field google.cloud.dataproc.v1beta2.SparkJob.properties</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1beta2.types.SparkRJob">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1beta2.types.</code><code class="descname">SparkRJob</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.SparkRJob" title="Permalink to this definition">#</a></dt>
+<dd><p>A Cloud Dataproc job for running <a class="reference external" href="https://spark.apache.org/docs/latest/sparkr.html">Apache
+SparkR</a>
+applications on YARN.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.SparkRJob.main_r_file_uri">
+<code class="descname">main_r_file_uri</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.SparkRJob.main_r_file_uri" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The HCFS URI of the main R file to use as the
+driver. Must be a .R file.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.SparkRJob.args">
+<code class="descname">args</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.SparkRJob.args" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The arguments to pass to the driver. Do not include
+arguments, such as <code class="docutils literal notranslate"><span class="pre">--conf</span></code>, that can be set as job
+properties, since a collision may occur that causes an
+incorrect job submission.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.SparkRJob.file_uris">
+<code class="descname">file_uris</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.SparkRJob.file_uris" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. HCFS URIs of files to be copied to the working
+directory of R drivers and distributed tasks. Useful for
+naively parallel tasks.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.SparkRJob.archive_uris">
+<code class="descname">archive_uris</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.SparkRJob.archive_uris" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. HCFS URIs of archives to be extracted in the working
+directory of Spark drivers and tasks. Supported file types:
+.jar, .tar, .tar.gz, .tgz, and .zip.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.SparkRJob.properties">
+<code class="descname">properties</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.SparkRJob.properties" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. A mapping of property names to values, used to
+configure SparkR. Properties that conflict with values set by
+the Cloud Dataproc API may be overwritten. Can include
+properties set in /etc/spark/conf/spark-defaults.conf and
+classes in user code.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.SparkRJob.logging_config">
+<code class="descname">logging_config</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.SparkRJob.logging_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The runtime log config for job execution.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dataproc_v1beta2.types.SparkRJob.PropertiesEntry">
+<em class="property">class </em><code class="descname">PropertiesEntry</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.SparkRJob.PropertiesEntry" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.SparkRJob.PropertiesEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.SparkRJob.PropertiesEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.SparkRJob.PropertiesEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.SparkRJob.PropertiesEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.SparkRJob.PropertiesEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.SparkRJob.PropertiesEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">archive_uris</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.SparkRJob.archive_uris</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">args</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.SparkRJob.args</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">file_uris</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.SparkRJob.file_uris</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">logging_config</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.SparkRJob.logging_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">main_r_file_uri</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.SparkRJob.main_r_file_uri</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">properties</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.SparkRJob.properties</p>
 </dd></dl>
 
 </dd></dl>
@@ -4228,6 +5165,24 @@ value.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.dataproc_v1beta2.types.UpdateAutoscalingPolicyRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1beta2.types.</code><code class="descname">UpdateAutoscalingPolicyRequest</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.UpdateAutoscalingPolicyRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>A request to update an autoscaling policy.</p>
+<dl class="attribute">
+<dt id="google.cloud.dataproc_v1beta2.types.UpdateAutoscalingPolicyRequest.policy">
+<code class="descname">policy</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.UpdateAutoscalingPolicyRequest.policy" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The updated autoscaling policy.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">policy</code></dt>
+<dd><p>Field google.cloud.dataproc.v1beta2.UpdateAutoscalingPolicyRequest.policy</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.dataproc_v1beta2.types.UpdateClusterRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.dataproc_v1beta2.types.</code><code class="descname">UpdateClusterRequest</code><a class="headerlink" href="#google.cloud.dataproc_v1beta2.types.UpdateClusterRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>A request to update a cluster.</p>
@@ -4312,7 +5267,11 @@ timestamp  .. raw:: html     &lt;/td&gt;  .. raw:: html     &lt;/tr&gt;
 config.lifecycle_config.idle_delete_ttl  .. raw:: html
 &lt;/td&gt;  .. raw:: html     &lt;td&gt;  Update Idle TTL duration  ..
 raw:: html     &lt;/td&gt;  .. raw:: html     &lt;/tr&gt;  .. raw:: html
-&lt;/table&gt;</p>
+&lt;tr&gt;  .. raw:: html     &lt;td&gt;
+config.autoscaling_config.policy_uri  .. raw:: html
+&lt;/td&gt;  .. raw:: html     &lt;td&gt;  Use, stop using, or change
+autoscaling policies  .. raw:: html     &lt;/td&gt;  .. raw:: html
+&lt;/tr&gt;  .. raw:: html     &lt;/table&gt;</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -4735,7 +5694,7 @@ RUNNING state.</p>
 <dd><p>Required. The template id.  The id must contain only letters
 (a-z, A-Z), numbers (0-9), underscores (_), and hyphens (-).
 Cannot begin or end with underscore or hyphen. Must consist of
-between 3 and 50 characters.</p>
+between 3 and 50 characters.  .</p>
 </dd></dl>
 
 <dl class="attribute">
