@@ -13,9 +13,11 @@
 # limitations under the License.
 
 import logging
+import types as stdlib_types
 
 import mock
 import pytest
+from six.moves import queue
 
 from google.api_core import bidi
 from google.api_core import exceptions
@@ -113,6 +115,23 @@ def make_manager(**kwargs):
     )
 
 
+def fake_leaser_add(leaser, init_msg_count=0, init_bytes=0):
+    """Add a simplified fake add() method to a leaser instance.
+
+    The fake add() method actually increases the leaser's internal message count
+    by one for each message, and the total bytes by 10 for each message (hardcoded,
+    regardless of the actual message size).
+    """
+
+    def fake_add(self, items):
+        self.message_count += len(items)
+        self.bytes += len(items) * 10
+
+    leaser.message_count = init_msg_count
+    leaser.bytes = init_bytes
+    leaser.add = stdlib_types.MethodType(fake_add, leaser)
+
+
 def test_ack_deadline():
     manager = make_manager()
     assert manager.ack_deadline == 10
@@ -206,6 +225,66 @@ def test_maybe_resume_consumer_wo_consumer_set():
         flow_control=types.FlowControl(max_messages=10, max_bytes=1000)
     )
     manager.maybe_resume_consumer()  # no raise
+
+
+def test__maybe_release_messages_on_overload():
+    manager = make_manager(
+        flow_control=types.FlowControl(max_messages=10, max_bytes=1000)
+    )
+    # Ensure load is exactly 1.0 (to verify that >= condition is used)
+    _leaser = manager._leaser = mock.create_autospec(leaser.Leaser)
+    _leaser.message_count = 10
+    _leaser.bytes = 1000
+
+    msg = mock.create_autospec(message.Message, instance=True, ack_id="ack", size=11)
+    manager._messages_on_hold.put(msg)
+
+    manager._maybe_release_messages()
+
+    assert manager._messages_on_hold.qsize() == 1
+    manager._leaser.add.assert_not_called()
+    manager._scheduler.schedule.assert_not_called()
+
+
+def test__maybe_release_messages_below_overload():
+    manager = make_manager(
+        flow_control=types.FlowControl(max_messages=10, max_bytes=1000)
+    )
+    manager._callback = mock.sentinel.callback
+
+    # init leaser message count to 8 to leave room for 2 more messages
+    _leaser = manager._leaser = mock.create_autospec(leaser.Leaser)
+    fake_leaser_add(_leaser, init_msg_count=8, init_bytes=200)
+    _leaser.add = mock.Mock(wraps=_leaser.add)  # to spy on calls
+
+    messages = [
+        mock.create_autospec(message.Message, instance=True, ack_id="ack_foo", size=11),
+        mock.create_autospec(message.Message, instance=True, ack_id="ack_bar", size=22),
+        mock.create_autospec(message.Message, instance=True, ack_id="ack_baz", size=33),
+    ]
+    for msg in messages:
+        manager._messages_on_hold.put(msg)
+
+    # the actual call of MUT
+    manager._maybe_release_messages()
+
+    assert manager._messages_on_hold.qsize() == 1
+    msg = manager._messages_on_hold.get_nowait()
+    assert msg.ack_id == "ack_baz"
+
+    assert len(_leaser.add.mock_calls) == 2
+    expected_calls = [
+        mock.call([requests.LeaseRequest(ack_id="ack_foo", byte_size=11)]),
+        mock.call([requests.LeaseRequest(ack_id="ack_bar", byte_size=22)]),
+    ]
+    _leaser.add.assert_has_calls(expected_calls)
+
+    schedule_calls = manager._scheduler.schedule.mock_calls
+    assert len(schedule_calls) == 2
+    for _, call_args, _ in schedule_calls:
+        assert call_args[0] == mock.sentinel.callback
+        assert isinstance(call_args[1], message.Message)
+        assert call_args[1].ack_id in ("ack_foo", "ack_bar")
 
 
 def test_send_unary():
@@ -470,8 +549,8 @@ def test__get_initial_request_wo_leaser():
     assert initial_request.modify_deadline_seconds == []
 
 
-def test_on_response():
-    manager, _, dispatcher, _, _, scheduler = make_running_manager()
+def test__on_response_no_leaser_overload():
+    manager, _, dispatcher, leaser, _, scheduler = make_running_manager()
     manager._callback = mock.sentinel.callback
 
     # Set up the messages.
@@ -486,6 +565,9 @@ def test_on_response():
         ]
     )
 
+    # adjust message bookkeeping in leaser
+    fake_leaser_add(leaser, init_msg_count=0, init_bytes=0)
+
     # Actually run the method and prove that modack and schedule
     # are called in the expected way.
     manager._on_response(response)
@@ -499,6 +581,64 @@ def test_on_response():
     for call in schedule_calls:
         assert call[1][0] == mock.sentinel.callback
         assert isinstance(call[1][1], message.Message)
+
+    # the leaser load limit not hit, no messages had to be put on hold
+    assert manager._messages_on_hold.qsize() == 0
+
+
+def test__on_response_with_leaser_overload():
+    manager, _, dispatcher, leaser, _, scheduler = make_running_manager()
+    manager._callback = mock.sentinel.callback
+
+    # Set up the messages.
+    response = types.StreamingPullResponse(
+        received_messages=[
+            types.ReceivedMessage(
+                ack_id="fack", message=types.PubsubMessage(data=b"foo", message_id="1")
+            ),
+            types.ReceivedMessage(
+                ack_id="back", message=types.PubsubMessage(data=b"bar", message_id="2")
+            ),
+            types.ReceivedMessage(
+                ack_id="zack", message=types.PubsubMessage(data=b"baz", message_id="3")
+            ),
+        ]
+    )
+
+    # Adjust message bookkeeping in leaser. Pick 99 messages, which is just below
+    # the default FlowControl.max_messages limit.
+    fake_leaser_add(leaser, init_msg_count=99, init_bytes=990)
+
+    # Actually run the method and prove that modack and schedule
+    # are called in the expected way.
+    manager._on_response(response)
+
+    dispatcher.modify_ack_deadline.assert_called_once_with(
+        [
+            requests.ModAckRequest("fack", 10),
+            requests.ModAckRequest("back", 10),
+            requests.ModAckRequest("zack", 10),
+        ]
+    )
+
+    # one message should be scheduled, the leaser capacity allows for it
+    schedule_calls = scheduler.schedule.mock_calls
+    assert len(schedule_calls) == 1
+    call_args = schedule_calls[0][1]
+    assert call_args[0] == mock.sentinel.callback
+    assert isinstance(call_args[1], message.Message)
+    assert call_args[1].message_id == "1"
+
+    # the rest of the messages should have been put on hold
+    assert manager._messages_on_hold.qsize() == 2
+    while True:
+        try:
+            msg = manager._messages_on_hold.get_nowait()
+        except queue.Empty:
+            break
+        else:
+            assert isinstance(msg, message.Message)
+            assert msg.message_id in ("2", "3")
 
 
 def test_retryable_stream_errors():

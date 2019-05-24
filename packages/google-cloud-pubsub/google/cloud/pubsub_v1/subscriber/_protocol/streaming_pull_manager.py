@@ -21,6 +21,7 @@ import threading
 
 import grpc
 import six
+from six.moves import queue
 
 from google.api_core import bidi
 from google.api_core import exceptions
@@ -115,6 +116,16 @@ class StreamingPullManager(object):
             )
         else:
             self._scheduler = scheduler
+
+        # A FIFO queue for the messages that have been received from the server,
+        # but not yet added to the lease management (and not sent to user callback),
+        # because the FlowControl limits have been hit.
+        self._messages_on_hold = queue.Queue()
+
+        # A lock ensuring that pausing / resuming the consumer are both atomic
+        # operations that cannot be executed concurrently. Needed for properly
+        # syncing these operations with the current leaser load.
+        self._pause_resume_lock = threading.Lock()
 
         # The threads created in ``.open()``.
         self._dispatcher = None
@@ -211,26 +222,72 @@ class StreamingPullManager(object):
 
     def maybe_pause_consumer(self):
         """Check the current load and pause the consumer if needed."""
-        if self.load >= 1.0:
-            if self._consumer is not None and not self._consumer.is_paused:
-                _LOGGER.debug("Message backlog over load at %.2f, pausing.", self.load)
-                self._consumer.pause()
+        with self._pause_resume_lock:
+            if self.load >= 1.0:
+                if self._consumer is not None and not self._consumer.is_paused:
+                    _LOGGER.debug(
+                        "Message backlog over load at %.2f, pausing.", self.load
+                    )
+                    self._consumer.pause()
 
     def maybe_resume_consumer(self):
-        """Check the current load and resume the consumer if needed."""
-        # If we have been paused by flow control, check and see if we are
-        # back within our limits.
-        #
-        # In order to not thrash too much, require us to have passed below
-        # the resume threshold (80% by default) of each flow control setting
-        # before restarting.
-        if self._consumer is None or not self._consumer.is_paused:
-            return
+        """Check the load and held messages and resume the consumer if needed.
 
-        if self.load < self.flow_control.resume_threshold:
-            self._consumer.resume()
-        else:
-            _LOGGER.debug("Did not resume, current load is %s", self.load)
+        If there are messages held internally, release those messages before
+        resuming the consumer. That will avoid leaser overload.
+        """
+        with self._pause_resume_lock:
+            # If we have been paused by flow control, check and see if we are
+            # back within our limits.
+            #
+            # In order to not thrash too much, require us to have passed below
+            # the resume threshold (80% by default) of each flow control setting
+            # before restarting.
+            if self._consumer is None or not self._consumer.is_paused:
+                return
+
+            _LOGGER.debug("Current load: %.2f", self.load)
+
+            # Before maybe resuming the background consumer, release any messages
+            # currently on hold, if the current load allows for it.
+            self._maybe_release_messages()
+
+            if self.load < self.flow_control.resume_threshold:
+                _LOGGER.debug("Current load is %.2f, resuming consumer.", self.load)
+                self._consumer.resume()
+            else:
+                _LOGGER.debug("Did not resume, current load is %.2f.", self.load)
+
+    def _maybe_release_messages(self):
+        """Release (some of) the held messages if the current load allows for it.
+
+        The method tries to release as many messages as the current leaser load
+        would allow. Each released message is added to the lease management,
+        and the user callback is scheduled for it.
+
+        If there are currently no messageges on hold, or if the leaser is
+        already overloaded, this method is effectively a no-op.
+
+        The method assumes the caller has acquired the ``_pause_resume_lock``.
+        """
+        while True:
+            if self.load >= 1.0:
+                break  # already overloaded
+
+            try:
+                msg = self._messages_on_hold.get_nowait()
+            except queue.Empty:
+                break
+
+            self.leaser.add(
+                [requests.LeaseRequest(ack_id=msg.ack_id, byte_size=msg.size)]
+            )
+            _LOGGER.debug(
+                "Released held message to leaser, scheduling callback for it, "
+                "still on hold %s.",
+                self._messages_on_hold.qsize(),
+            )
+            self._scheduler.schedule(self._callback, msg)
 
     def _send_unary_request(self, request):
         """Send a request using a separate unary request instead of over the
@@ -431,9 +488,10 @@ class StreamingPullManager(object):
         After the messages have all had their ack deadline updated, execute
         the callback for each message using the executor.
         """
-
         _LOGGER.debug(
-            "Scheduling callbacks for %s messages.", len(response.received_messages)
+            "Processing %s received message(s), currenty on hold %s.",
+            len(response.received_messages),
+            self._messages_on_hold.qsize(),
         )
 
         # Immediately modack the messages we received, as this tells the server
@@ -443,12 +501,33 @@ class StreamingPullManager(object):
             for message in response.received_messages
         ]
         self._dispatcher.modify_ack_deadline(items)
+
+        invoke_callbacks_for = []
+
         for received_message in response.received_messages:
             message = google.cloud.pubsub_v1.subscriber.message.Message(
-                received_message.message, received_message.ack_id, self._scheduler.queue
+                received_message.message,
+                received_message.ack_id,
+                self._scheduler.queue,
+                autolease=False,
             )
-            # TODO: Immediately lease instead of using the callback queue.
-            self._scheduler.schedule(self._callback, message)
+            if self.load < 1.0:
+                req = requests.LeaseRequest(
+                    ack_id=message.ack_id, byte_size=message.size
+                )
+                self.leaser.add([req])
+                invoke_callbacks_for.append(message)
+                self.maybe_pause_consumer()
+            else:
+                self._messages_on_hold.put(message)
+
+        _LOGGER.debug(
+            "Scheduling callbacks for %s new messages, new total on hold %s.",
+            len(invoke_callbacks_for),
+            self._messages_on_hold.qsize(),
+        )
+        for msg in invoke_callbacks_for:
+            self._scheduler.schedule(self._callback, msg)
 
     def _should_recover(self, exception):
         """Determine if an error on the RPC stream should be recovered.
