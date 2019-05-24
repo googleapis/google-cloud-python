@@ -1519,7 +1519,6 @@ class Test_Bucket(unittest.TestCase):
         self.assertNotIn("labels", kwargs["data"])
 
     def test_location_type_getter_unset(self):
-        klass = self._get_target_class()
         bucket = self._make_one()
         self.assertIsNone(bucket.location_type)
 
