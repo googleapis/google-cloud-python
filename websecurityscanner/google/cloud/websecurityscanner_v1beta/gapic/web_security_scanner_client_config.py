@@ -4,7 +4,6 @@ config = {
             "retry_codes": {
                 "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
                 "non_idempotent": [],
-                "idempotent2": ["UNAVAILABLE"],
             },
             "retry_params": {
                 "default": {
@@ -65,7 +64,7 @@ config = {
                 },
                 "ListCrawledUrls": {
                     "timeout_millis": 60000,
-                    "retry_codes_name": "idempotent2",
+                    "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "GetFinding": {
