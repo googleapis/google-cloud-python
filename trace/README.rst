@@ -64,7 +64,7 @@ Mac/Linux
     pip install virtualenv
     virtualenv <your-env>
     source <your-env>/bin/activate
-    <your-env>/bin/pip install gapic-google-cloud-trace-v1
+    <your-env>/bin/pip install google-cloud-trace
 
 
 Windows
@@ -75,7 +75,7 @@ Windows
     pip install virtualenv
     virtualenv <your-env>
     <your-env>\Scripts\activate
-    <your-env>\Scripts\pip.exe install gapic-google-cloud-trace-v1
+    <your-env>\Scripts\pip.exe install google-cloud-trace
 
 For more information on setting up your Python development environment,
 such as installing ``pip`` and ``virtualenv`` on your system, please refer
@@ -88,7 +88,7 @@ Example Usage
 
 .. code-block:: python
 
-  from google.cloud.gapic.trace.v1 import trace_service_client
+  from google.cloud.trace_v1 import trace_service_client
 
   client = trace_service_client.TraceServiceClient()
   project_id = 'your-project-123'
