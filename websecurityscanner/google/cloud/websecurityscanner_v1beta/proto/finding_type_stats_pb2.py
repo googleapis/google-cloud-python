@@ -22,10 +22,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.websecurityscanner.v1beta",
     syntax="proto3",
     serialized_options=_b(
-        "\n*com.google.cloud.websecurityscanner.v1betaB\025FindingTypeStatsProtoP\001ZXgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1beta;websecurityscanner"
+        "\n*com.google.cloud.websecurityscanner.v1betaB\025FindingTypeStatsProtoP\001ZXgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1beta;websecurityscanner\312\002&Google\\Cloud\\WebSecurityScanner\\V1beta"
     ),
     serialized_pb=_b(
-        '\nEgoogle/cloud/websecurityscanner_v1beta/proto/finding_type_stats.proto\x12&google.cloud.websecurityscanner.v1beta\x1a\x1cgoogle/api/annotations.proto"?\n\x10\x46indingTypeStats\x12\x14\n\x0c\x66inding_type\x18\x01 \x01(\t\x12\x15\n\rfinding_count\x18\x02 \x01(\x05\x42\x9f\x01\n*com.google.cloud.websecurityscanner.v1betaB\x15\x46indingTypeStatsProtoP\x01ZXgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1beta;websecurityscannerb\x06proto3'
+        '\nEgoogle/cloud/websecurityscanner_v1beta/proto/finding_type_stats.proto\x12&google.cloud.websecurityscanner.v1beta\x1a\x1cgoogle/api/annotations.proto"?\n\x10\x46indingTypeStats\x12\x14\n\x0c\x66inding_type\x18\x01 \x01(\t\x12\x15\n\rfinding_count\x18\x02 \x01(\x05\x42\xc8\x01\n*com.google.cloud.websecurityscanner.v1betaB\x15\x46indingTypeStatsProtoP\x01ZXgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1beta;websecurityscanner\xca\x02&Google\\Cloud\\WebSecurityScanner\\V1betab\x06proto3'
     ),
     dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
 )
