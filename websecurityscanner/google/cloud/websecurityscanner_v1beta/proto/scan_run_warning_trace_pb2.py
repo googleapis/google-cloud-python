@@ -19,10 +19,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.websecurityscanner.v1beta",
     syntax="proto3",
     serialized_options=_b(
-        "\n*com.google.cloud.websecurityscanner.v1betaB\030ScanRunWarningTraceProtoP\001ZXgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1beta;websecurityscanner"
+        "\n*com.google.cloud.websecurityscanner.v1betaB\030ScanRunWarningTraceProtoP\001ZXgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1beta;websecurityscanner\312\002&Google\\Cloud\\WebSecurityScanner\\V1beta"
     ),
     serialized_pb=_b(
-        '\nIgoogle/cloud/websecurityscanner_v1beta/proto/scan_run_warning_trace.proto\x12&google.cloud.websecurityscanner.v1beta"\xed\x01\n\x13ScanRunWarningTrace\x12N\n\x04\x63ode\x18\x01 \x01(\x0e\x32@.google.cloud.websecurityscanner.v1beta.ScanRunWarningTrace.Code"\x85\x01\n\x04\x43ode\x12\x14\n\x10\x43ODE_UNSPECIFIED\x10\x00\x12\x1e\n\x1aINSUFFICIENT_CRAWL_RESULTS\x10\x01\x12\x1a\n\x16TOO_MANY_CRAWL_RESULTS\x10\x02\x12\x17\n\x13TOO_MANY_FUZZ_TASKS\x10\x03\x12\x12\n\x0e\x42LOCKED_BY_IAP\x10\x04\x42\xa2\x01\n*com.google.cloud.websecurityscanner.v1betaB\x18ScanRunWarningTraceProtoP\x01ZXgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1beta;websecurityscannerb\x06proto3'
+        '\nIgoogle/cloud/websecurityscanner_v1beta/proto/scan_run_warning_trace.proto\x12&google.cloud.websecurityscanner.v1beta"\xed\x01\n\x13ScanRunWarningTrace\x12N\n\x04\x63ode\x18\x01 \x01(\x0e\x32@.google.cloud.websecurityscanner.v1beta.ScanRunWarningTrace.Code"\x85\x01\n\x04\x43ode\x12\x14\n\x10\x43ODE_UNSPECIFIED\x10\x00\x12\x1e\n\x1aINSUFFICIENT_CRAWL_RESULTS\x10\x01\x12\x1a\n\x16TOO_MANY_CRAWL_RESULTS\x10\x02\x12\x17\n\x13TOO_MANY_FUZZ_TASKS\x10\x03\x12\x12\n\x0e\x42LOCKED_BY_IAP\x10\x04\x42\xcb\x01\n*com.google.cloud.websecurityscanner.v1betaB\x18ScanRunWarningTraceProtoP\x01ZXgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1beta;websecurityscanner\xca\x02&Google\\Cloud\\WebSecurityScanner\\V1betab\x06proto3'
     ),
 )
 
