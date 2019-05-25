@@ -45,7 +45,7 @@ _local_modules = [asset_service_pb2, assets_pb2]
 
 names = []
 
-for module in _shared_modules:
+for module in _shared_modules:  # pragma: NO COVER
     for name, message in get_messages(module).items():
         setattr(sys.modules[__name__], name, message)
         names.append(name)
