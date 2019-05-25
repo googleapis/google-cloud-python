@@ -46,7 +46,7 @@ _local_modules = [
 
 names = []
 
-for module in _shared_modules:
+for module in _shared_modules:  # pragma: NO COVER
     for name, message in get_messages(module).items():
         setattr(sys.modules[__name__], name, message)
         names.append(name)
