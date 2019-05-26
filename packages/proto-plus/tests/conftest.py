@@ -20,9 +20,9 @@ from google.protobuf import message
 from google.protobuf import reflection
 from google.protobuf import symbol_database
 
+from proto._file_info import _FileInfo
 from proto.marshal import Marshal
 from proto.marshal import rules
-from proto.message import _FileInfo
 
 
 def pytest_runtest_setup(item):

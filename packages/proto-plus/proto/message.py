@@ -15,23 +15,20 @@
 import collections
 import collections.abc
 import copy
-import inspect
 import re
 import sys
-import uuid
 from typing import List, Type
 
 from google.protobuf import descriptor_pb2
-from google.protobuf import descriptor_pool
 from google.protobuf import message
-from google.protobuf import reflection
 from google.protobuf import symbol_database
 
+from proto import _descriptor_info
+from proto import _file_info
 from proto.fields import Field
 from proto.fields import MapField
 from proto.fields import RepeatedField
 from proto.marshal import Marshal
-from proto.marshal.rules.message import MessageRule
 from proto.primitives import ProtoType
 
 
@@ -43,21 +40,9 @@ class MessageMeta(type):
         if not bases:
             return super().__new__(mcls, name, bases, attrs)
 
-        # Pull a reference to the module where this class is being
-        # declared.
-        module = sys.modules.get(attrs.get('__module__'))
-        proto_module = getattr(module, '__protobuf__', object())
-
-        # A package and full name should be present.
-        package = getattr(proto_module, 'package', '')
-        marshal = Marshal(name=getattr(proto_module, 'marshal', package))
-        local_path = tuple(attrs.get('__qualname__', name).split('.'))
-
-        # Sanity check: We get the wrong full name if a class is declared
-        # inside a function local scope; correct this.
-        if '<locals>' in local_path:
-            ix = local_path.index('<locals>')
-            local_path = local_path[:ix - 1] + local_path[ix + 1:]
+        # Get the essential information about the proto package, and where
+        # this component belongs within the file.
+        local_path, package, marshal = _descriptor_info.compile(name, attrs)
 
         # Determine the full name in protocol buffers.
         full_name = '.'.join((package,) + local_path).lstrip('.')
@@ -176,16 +161,19 @@ class MessageMeta(type):
 
         # Get or create the information about the file, including the
         # descriptor to which the new message descriptor shall be added.
-        file_info = _FileInfo.registry.setdefault(filename, _FileInfo(
-            descriptor=descriptor_pb2.FileDescriptorProto(
+        file_info = _file_info._FileInfo.registry.setdefault(
+            filename,
+            _file_info._FileInfo(
+                descriptor=descriptor_pb2.FileDescriptorProto(
+                    name=filename,
+                    package=package,
+                    syntax='proto3',
+                ),
+                messages=collections.OrderedDict(),
                 name=filename,
-                package=package,
-                syntax='proto3',
+                nested={},
             ),
-            messages=collections.OrderedDict(),
-            name=filename,
-            nested={},
-        ))
+        )
 
         # Ensure any imports that would be necessary are assigned to the file
         # descriptor proto being created.
@@ -535,119 +523,6 @@ class _MessageInfo:
         loaded, then this method returns None.
         """
         return self._pb
-
-
-class _FileInfo(collections.namedtuple(
-        '_FileInfo', ['descriptor', 'messages', 'name', 'nested'])):
-    registry = {}  # Mapping[str, '_FileInfo']
-
-    def generate_file_pb(self):
-        """Generate the descriptors for all protos in the file.
-
-        This method takes the file descriptor attached to the parent
-        message and generates the immutable descriptors for all of the
-        messages in the file descriptor. (This must be done in one fell
-        swoop for immutability and to resolve proto cross-referencing.)
-
-        This is run automatically when the last proto in the file is
-        generated, as determined by the module's __all__ tuple.
-        """
-        pool = descriptor_pool.Default()
-
-        # Salt the filename in the descriptor.
-        # This allows re-use of the filename by other proto messages if
-        # needed (e.g. if __all__ is not used).
-        self.descriptor.name = '{prefix}_{salt}.proto'.format(
-            prefix=self.descriptor.name[:-6],
-            salt=str(uuid.uuid4())[0:8],
-        )
-
-        # Add the file descriptor.
-        pool.Add(self.descriptor)
-
-        # Adding the file descriptor to the pool created a descriptor for
-        # each message; go back through our wrapper messages and associate
-        # them with the internal protobuf version.
-        for full_name, proto_plus_message in self.messages.items():
-            # Get the descriptor from the pool, and create the protobuf
-            # message based on it.
-            descriptor = pool.FindMessageTypeByName(full_name)
-            pb_message = reflection.GeneratedProtocolMessageType(
-                descriptor.name,
-                (message.Message,),
-                {'DESCRIPTOR': descriptor, '__module__': None},
-            )
-
-            # Register the message with the marshal so it is wrapped
-            # appropriately.
-            proto_plus_message._meta._pb = pb_message
-            proto_plus_message._meta.marshal.register(
-                pb_message,
-                MessageRule(pb_message, proto_plus_message)
-            )
-
-            # Iterate over any fields on the message and, if their type
-            # is a message still referenced as a string, resolve the reference.
-            for field in proto_plus_message._meta.fields.values():
-                if field.message and isinstance(field.message, str):
-                    field.message = self.messages[field.message]
-
-        # We no longer need to track this file's info; remove it from
-        # the module's registry and from this object.
-        self.registry.pop(self.name)
-
-    def ready(self, new_class):
-        """Return True if a file descriptor may added, False otherwise.
-
-        This determine if all the messages that we plan to create have been
-        created, as best as we are able.
-
-        Since messages depend on one another, we create descriptor protos
-        (which reference each other using strings) and wait until we have
-        built everything that is going to be in the module, and then
-        use the descriptor protos to instantiate the actual descriptors in
-        one fell swoop.
-
-        Args:
-            new_class (~.MessageMeta): The new class currently undergoing
-                creation.
-        """
-        # If there are any nested descriptors that have not been assigned to
-        # the descriptors that should contain them, then we are not ready.
-        if len(self.nested):
-            return False
-
-        # If there are any unresolved fields (fields with a composite message
-        # declared as a string), ensure that the corresponding message is
-        # declared.
-        for field in self.unresolved_fields:
-            if field.message not in self.messages:
-                return False
-
-        # If the module in which this class is defined provides a
-        # __protobuf__ property, it may have a manifest.
-        #
-        # Do not generate the file descriptor until every member of the
-        # manifest has been populated.
-        module = inspect.getmodule(new_class)
-        manifest = frozenset()
-        if hasattr(module, '__protobuf__'):
-            manifest = module.__protobuf__.manifest.difference(
-                {new_class.__name__},
-            )
-        if not all([hasattr(module, i) for i in manifest]):
-            return False
-
-        # Okay, we are ready.
-        return True
-
-    @property
-    def unresolved_fields(self):
-        """Return fields with referencing message types as strings."""
-        for proto_plus_message in self.messages.values():
-            for field in proto_plus_message._meta.fields.values():
-                if field.message and isinstance(field.message, str):
-                    yield field
 
 
 __all__ = (
