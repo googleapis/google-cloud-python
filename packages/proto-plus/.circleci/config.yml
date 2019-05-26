@@ -55,7 +55,7 @@ jobs:
       - run:
           name: Install nox and codecov.
           command: |
-            pip install --pre nox-automation
+            pip install nox
             pip install codecov
       - run:
           name: Run unit tests.
@@ -72,7 +72,7 @@ jobs:
       - run:
           name: Install nox and codecov.
           command: |
-            pip install --pre nox-automation
+            pip install nox
             pip install codecov
       - run:
           name: Run unit tests.
@@ -89,7 +89,7 @@ jobs:
       - run:
           name: Install nox and codecov.
           command: |
-            pip install --pre nox-automation
+            pip install nox
             pip install codecov
       - run:
           name: Run unit tests.
@@ -106,7 +106,7 @@ jobs:
       - run:
           name: Install nox and codecov.
           command: |
-            pip install --pre nox-automation
+            pip install nox
             pip install codecov
       - run:
           name: Run unit tests.
@@ -123,7 +123,7 @@ jobs:
       - run:
           name: Install nox and codecov.
           command: |
-            pip install --pre nox-automation
+            pip install nox
             pip install codecov
       - run:
           name: Run unit tests.
@@ -140,7 +140,7 @@ jobs:
       - run:
           name: Install nox and codecov.
           command: |
-            pip install --pre nox-automation
+            pip install nox
             pip install codecov
       - run:
           name: Run unit tests.
@@ -156,7 +156,7 @@ jobs:
       - checkout
       - run:
           name: Install nox.
-          command: pip install --pre nox-automation
+          command: pip install nox
       - run:
           name: Build the documentation.
           command: nox -s docs
