@@ -26,7 +26,9 @@ class Options:
     on unrecognized arguments (essentially, we throw them away, but we do
     warn if it looks like it was meant for us).
     """
-    templates: Tuple[str]
+    templates: Tuple[str] = dataclasses.field(default=('DEFAULT',))
+    namespace: Tuple[str] = dataclasses.field(default=())
+    name: str = ''
 
     @classmethod
     def build(cls, opt_string: str) -> 'Options':
@@ -54,15 +56,17 @@ class Options:
             if not opt.startswith('python-gapic-'):
                 continue
 
-            # Set the option.
+            # Set the option, using a key with the "python-gapic-" prefix
+            # stripped.
+            #
             # Just assume everything is a list at this point, and the
             # final instantiation step can de-list-ify where appropriate.
-            opts.setdefault(opt, [])
-            opts[opt].append(value)
+            opts.setdefault(opt[len('python-gapic-'):], [])
+            opts[opt[len('python-gapic-'):]].append(value)
 
         # If templates are specified, one of the specified directories
         # may be our default; perform that replacement.
-        templates = opts.pop('python-gapic-templates', ['DEFAULT'])
+        templates = opts.pop('templates', ['DEFAULT'])
         while 'DEFAULT' in templates:
             templates[templates.index('DEFAULT')] = os.path.realpath(
                 os.path.join(os.path.dirname(__file__), '..', 'templates'),
@@ -70,13 +74,15 @@ class Options:
 
         # Build the options instance.
         answer = Options(
+            name=opts.pop('name', ['']).pop(),
+            namespace=tuple(opts.pop('namespace', [])),
             templates=tuple([os.path.expanduser(i) for i in templates]),
         )
 
         # If there are any options remaining, then we failed to recognize
         # them -- complain.
         for key in opts.keys():
-            warnings.warn(f'Unrecognized option: `{key}`.')
+            warnings.warn(f'Unrecognized option: `python-gapic-{key}`.')
 
         # Done; return the built options.
         return answer

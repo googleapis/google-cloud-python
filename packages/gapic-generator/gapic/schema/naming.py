@@ -20,6 +20,7 @@ from typing import Iterable, Sequence, Tuple
 from google.protobuf import descriptor_pb2
 
 from gapic import utils
+from gapic.generator import options
 
 
 @dataclasses.dataclass(frozen=True)
@@ -44,7 +45,8 @@ class Naming:
 
     @classmethod
     def build(cls,
-            *file_descriptors: Iterable[descriptor_pb2.FileDescriptorProto]
+            *file_descriptors: Iterable[descriptor_pb2.FileDescriptorProto],
+            opts: options.Options = options.Options(),
             ) -> 'Naming':
         """Return a full Naming instance based on these file descriptors.
 
@@ -115,6 +117,25 @@ class Naming:
             raise ValueError('All protos must have the same proto package '
                              'up to and including the version.')
 
+        # If a naming information was provided on the CLI, override the naming
+        # value.
+        #
+        # We are liberal about what formats we take on the CLI; it will
+        # likely make sense to many users to use dot-separated namespaces and
+        # snake case, so handle that and do the right thing.
+        if opts.name:
+            package_info = dataclasses.replace(package_info, name=' '.join([
+                i.capitalize() for i in opts.name.replace('_', ' ').split(' ')
+            ]))
+        if opts.namespace:
+            package_info = dataclasses.replace(package_info, namespace=tuple([
+                # The join-and-split on "." here causes us to expand out
+                # dot notation that we may have been sent; e.g. a one-tuple
+                # with ('x.y',) will become a two-tuple: ('x', 'y')
+                i.capitalize() for i in '.'.join(opts.namespace).split('.')
+            ]))
+
+        # Done; return the naming information.
         return package_info
 
     def __bool__(self):

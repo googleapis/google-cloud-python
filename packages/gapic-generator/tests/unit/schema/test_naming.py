@@ -16,6 +16,7 @@ import pytest
 
 from google.protobuf import descriptor_pb2
 
+from gapic.generator import options
 from gapic.schema import naming
 
 
@@ -142,6 +143,72 @@ def test_subpackages():
     assert n.name == 'Ads'
     assert n.namespace == ('Google',)
     assert n.version == 'v0'
+
+
+def test_cli_override_name():
+    FileDesc = descriptor_pb2.FileDescriptorProto
+    proto1 = FileDesc(package='google.cloud.videointelligence.v1')
+    n = naming.Naming.build(proto1,
+        opts=options.Options(name='Video Intelligence'),
+    )
+    assert n.namespace == ('Google', 'Cloud')
+    assert n.name == 'Video Intelligence'
+    assert n.version == 'v1'
+
+
+def test_cli_override_name_underscores():
+    FileDesc = descriptor_pb2.FileDescriptorProto
+    proto1 = FileDesc(package='google.cloud.videointelligence.v1')
+    n = naming.Naming.build(proto1,
+        opts=options.Options(name='video_intelligence'),
+    )
+    assert n.namespace == ('Google', 'Cloud')
+    assert n.name == 'Video Intelligence'
+    assert n.version == 'v1'
+
+
+def test_cli_override_namespace():
+    FileDesc = descriptor_pb2.FileDescriptorProto
+    proto1 = FileDesc(package='google.spanner.v1')
+    n = naming.Naming.build(proto1,
+        opts=options.Options(namespace=('google', 'cloud')),
+    )
+    assert n.namespace == ('Google', 'Cloud')
+    assert n.name == 'Spanner'
+    assert n.version == 'v1'
+
+
+def test_cli_override_namespace_dotted():
+    FileDesc = descriptor_pb2.FileDescriptorProto
+    proto1 = FileDesc(package='google.spanner.v1')
+    n = naming.Naming.build(proto1,
+        opts=options.Options(namespace=('google.cloud',)),
+    )
+    assert n.namespace == ('Google', 'Cloud')
+    assert n.name == 'Spanner'
+    assert n.version == 'v1'
+
+
+def test_cli_override_name_and_namespace():
+    FileDesc = descriptor_pb2.FileDescriptorProto
+    proto1 = FileDesc(package='google.translation.v2')
+    n = naming.Naming.build(proto1,
+        opts=options.Options(namespace=('google', 'cloud'), name='translate'),
+    )
+    assert n.namespace == ('Google', 'Cloud')
+    assert n.name == 'Translate'
+    assert n.version == 'v2'
+
+
+def test_cli_override_name_and_namespace_versionless():
+    FileDesc = descriptor_pb2.FileDescriptorProto
+    proto1 = FileDesc(package='google.translation')
+    n = naming.Naming.build(proto1,
+        opts=options.Options(namespace=('google', 'cloud'), name='translate'),
+    )
+    assert n.namespace == ('Google', 'Cloud')
+    assert n.name == 'Translate'
+    assert not n.version
 
 
 def make_naming(**kwargs) -> naming.Naming:

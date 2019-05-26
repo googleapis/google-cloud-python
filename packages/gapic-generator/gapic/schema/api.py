@@ -26,6 +26,7 @@ from typing import Callable, List, Mapping, Sequence, Set, Tuple
 from google.longrunning import operations_pb2
 from google.protobuf import descriptor_pb2
 
+from gapic.generator import options
 from gapic.schema import metadata
 from gapic.schema import wrappers
 from gapic.schema import naming as api_naming
@@ -179,7 +180,8 @@ class API:
     @classmethod
     def build(cls,
             file_descriptors: Sequence[descriptor_pb2.FileDescriptorProto],
-            package: str = '') -> 'API':
+            package: str = '',
+            opts: options.Options = options.Options()) -> 'API':
         """Build the internal API schema based on the request.
 
         Args:
@@ -190,12 +192,13 @@ class API:
                 code should be explicitly generated (including subpackages).
                 Protos with packages outside this list are considered imports
                 rather than explicit targets.
+            opts (~.options.Options): CLI options passed to the generator.
         """
         # Save information about the overall naming for this API.
         naming = api_naming.Naming.build(*filter(
             lambda fd: fd.package.startswith(package),
             file_descriptors,
-        ))
+        ), opts=opts)
 
         # Iterate over each FileDescriptorProto and fill out a Proto
         # object describing it, and save these to the instance.
