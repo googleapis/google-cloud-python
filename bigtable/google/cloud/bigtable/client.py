@@ -37,8 +37,8 @@ from google.cloud import bigtable_v2
 from google.cloud import bigtable_admin_v2
 from google.cloud.bigtable_v2.gapic.transports import bigtable_grpc_transport
 from google.cloud.bigtable_admin_v2.gapic.transports import (
-    bigtable_table_admin_grpc_transport,
     bigtable_instance_admin_grpc_transport,
+    bigtable_table_admin_grpc_transport,
 )
 
 from google.cloud.bigtable import __version__
@@ -66,11 +66,26 @@ READ_ONLY_SCOPE = "https://www.googleapis.com/auth/bigtable.data.readonly"
 
 
 def _create_gapic_client(client_class):
-    def inner(self, transport=None):
+    def inner(self, transport_class=None):
         if self._emulator_host is None:
-            if transport is not None:
-                return client_class(transport=transport, client_info=self._client_info)
+            if transport_class is not None:
+                if self._channel is not None:
+                    # Use transport with channel
+                    transport_obj = _transport(
+                        channel=self._channel, default_class=transport_class
+                    )
+                    return client_class(
+                        transport=transport_obj, client_info=self._client_info
+                    )
+                else:
+                    # Use transport as pointer to function with credentials
+                    return client_class(
+                        transport=_transport,
+                        credentials=self._credentials,
+                        client_info=self._client_info,
+                    )
             else:
+                # Use credentials
                 return client_class(
                     credentials=self._credentials, client_info=self._client_info
                 )
@@ -82,16 +97,27 @@ def _create_gapic_client(client_class):
     return inner
 
 
-def transport(channel=None):
-    def inner(credentials=None, default_class=None):
+def _transport(channel=None, credentials=None, default_class=None):
+    """ Returns a object for gRPC class passed in argument default_class.
+    Args:
+
+        channel (grpc.Channel): A ``Channel`` instance through
+                which to make calls. If not passed, it's None.
+
+        credentials (google.auth.credentials.Credentials): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If not passed, it's None.
+
+        default_class (GrpcTransport): A transport
+                instance, responsible for actually making the API calls.
+                The default transport uses the gRPC protocol.. Defaults to None.
+    """
+    if default_class is not None:
         if channel is not None:
             return default_class(channel=channel)
         elif credentials is not None:
             return default_class(credentials=credentials)
-        else:
-            return None
-
-    return inner
+    return None
 
 
 class Client(ClientWithProject):
@@ -237,14 +263,12 @@ class Client(ClientWithProject):
         """
         if self._table_data_client is None:
             if self._data_transport is not None:
-                transport = self.data_transport(
-                    default_class=bigtable_grpc_transport.BigtableGrpcTransport
-                )
+                transport_class = bigtable_grpc_transport.BigtableGrpcTransport
             else:
-                transport = None
+                transport_class = None
 
             self._table_data_client = _create_gapic_client(bigtable_v2.BigtableClient)(
-                self, transport=transport
+                self, transport_class=transport_class
             )
         return self._table_data_client
 
@@ -268,14 +292,15 @@ class Client(ClientWithProject):
             if not self._admin:
                 raise ValueError("Client is not an admin client.")
             if self._admin_transport is not None:
-                transport = self.admin_transport(
-                    default_class=bigtable_table_admin_grpc_transport.BigtableTableAdminGrpcTransport
+                transport_class = (
+                    bigtable_table_admin_grpc_transport.BigtableTableAdminGrpcTransport
                 )
             else:
-                transport = None
+                transport_class = None
+
             self._table_admin_client = _create_gapic_client(
                 bigtable_admin_v2.BigtableTableAdminClient
-            )(self, transport=transport)
+            )(self, transport_class=transport_class)
         return self._table_admin_client
 
     @property
@@ -297,43 +322,34 @@ class Client(ClientWithProject):
         if self._instance_admin_client is None:
             if not self._admin:
                 raise ValueError("Client is not an admin client.")
+
             if self._admin_transport is not None:
-                transport = self.admin_transport(
-                    default_class=bigtable_instance_admin_grpc_transport.BigtableInstanceAdminGrpcTransport
+                transport_class = (
+                    bigtable_instance_admin_grpc_transport.BigtableInstanceAdminGrpcTransport
                 )
             else:
-                transport = None
+                transport_class = None
             self._instance_admin_client = _create_gapic_client(
                 bigtable_admin_v2.BigtableInstanceAdminClient
-            )(self, transport=transport)
+            )(self, transport_class=transport_class)
         return self._instance_admin_client
 
-    @property
-    def data_transport(self):
-        return self._data_transport
-
-    @data_transport.setter
     def data_transport(self, channel=None):
         if self._data_transport is None:
-            if channel is not None:
-                self._data_transport = transport(channel=channel)
-            elif self._credentials is not None:
-                self._data_transport = transport()
+            self._data_transport = _transport
+            self._channel = channel
 
-    @property
-    def admin_transport(self):
-        return self._admin_transport
+        return self._data_transport
 
-    @admin_transport.setter
     def admin_transport(self, channel=None):
-
         if self._admin_transport is None:
             if not self._admin:
                 raise ValueError("Client is not an admin client.")
-            if channel is not None:
-                self._admin_transport = transport(channel=channel)
-            elif self._credentials is not None:
-                self._admin_transport = transport()
+
+            self._admin_transport = _transport
+            self._channel = channel
+
+        return self._admin_transport
 
     def instance(self, instance_id, display_name=None, instance_type=None, labels=None):
         """Factory to create a instance associated with this client.
