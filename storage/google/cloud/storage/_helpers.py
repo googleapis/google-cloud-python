@@ -19,6 +19,7 @@ These are *not* part of the API.
 
 import base64
 from hashlib import md5
+import functools
 
 
 def _validate_name(name):
@@ -263,3 +264,10 @@ def _base64_md5hash(buffer_object):
     _write_buffer_to_hash(buffer_object, hash_obj)
     digest_bytes = hash_obj.digest()
     return base64.b64encode(digest_bytes)
+
+
+def _call_api(fcn_call, retry, **kwargs):
+    call = functools.partial(fcn_call, **kwargs)
+    if retry:
+        call = retry(call)
+    return call()

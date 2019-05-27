@@ -13,8 +13,6 @@
 # limitations under the License.
 
 """Client for interacting with the Google Cloud Storage API."""
-import functools
-
 from six.moves.urllib.parse import urlsplit
 
 from google.auth.credentials import AnonymousCredentials
@@ -28,6 +26,7 @@ from google.cloud.storage.batch import Batch
 from google.cloud.storage.bucket import Bucket
 from google.cloud.storage.blob import Blob
 from google.cloud.storage.retry import DEFAULT_RETRY
+from google.cloud.storage._helpers import _call_api
 
 
 _marker = object()
@@ -349,7 +348,9 @@ class Client(ClientWithProject):
         bucket.create(client=self, project=project, retry=retry)
         return bucket
 
-    def download_blob_to_file(self, blob_or_uri, file_obj, start=None, end=None, retry=DEFAULT_RETRY):
+    def download_blob_to_file(
+        self, blob_or_uri, file_obj, start=None, end=None, retry=DEFAULT_RETRY
+    ):
         """Download the contents of a blob object or blob URI into a file-like object.
 
         Args:
@@ -392,7 +393,9 @@ class Client(ClientWithProject):
 
         """
         try:
-            blob_or_uri.download_to_file(file_obj, retry, client=self, start=start, end=end)
+            blob_or_uri.download_to_file(
+                file_obj, client=self, start=start, end=end, retry=retry
+            )
 
         except AttributeError:
             scheme, netloc, path, query, frag = urlsplit(blob_or_uri)
@@ -401,7 +404,9 @@ class Client(ClientWithProject):
             bucket = Bucket(self, name=netloc)
             blob_or_uri = Blob(path, bucket)
 
-            blob_or_uri.download_to_file(file_obj, retry, client=self, start=start, end=end)
+            blob_or_uri.download_to_file(
+                file_obj, client=self, start=start, end=end, retry=retry
+            )
 
     def list_buckets(
         self,
@@ -480,7 +485,8 @@ class Client(ClientWithProject):
         if fields is not None:
             extra_params["fields"] = fields
 
-        api_response = self._call_api(
+        api_response = _call_api(
+            page_iterator.HTTPIterator,
             retry,
             client=self,
             api_request=self._connection.api_request,
@@ -491,12 +497,6 @@ class Client(ClientWithProject):
             extra_params=extra_params,
         )
         return api_response
-
-    def _call_api(self, retry, **kwargs):
-        call = functools.partial(page_iterator.HTTPIterator, **kwargs)
-        if retry:
-            call = retry(call)
-        return call()
 
 
 def _item_to_bucket(iterator, item):

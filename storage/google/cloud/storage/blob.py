@@ -33,7 +33,6 @@ import mimetypes
 import os
 import time
 import warnings
-import functools
 
 from six.moves.urllib.parse import parse_qsl
 from six.moves.urllib.parse import quote
@@ -55,6 +54,7 @@ from google.cloud.exceptions import NotFound
 from google.api_core.iam import Policy
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
+from google.cloud.storage._helpers import _call_api
 from google.cloud.storage._signing import generate_signed_url_v2
 from google.cloud.storage._signing import generate_signed_url_v4
 from google.cloud.storage.acl import ACL
@@ -639,7 +639,8 @@ class Blob(_PropertyMixin):
 
         transport = self._get_transport(client)
         try:
-            self._call_api(
+            _call_api(
+                self._do_download,
                 retry,
                 transport=transport,
                 file_obj=file_obj,
@@ -650,12 +651,6 @@ class Blob(_PropertyMixin):
             )
         except resumable_media.InvalidResponse as exc:
             _raise_from_invalid_response(exc)
-
-    def _call_api(self, retry, **kwargs):
-        call = functools.partial(self._do_download, **kwargs)
-        if retry:
-            call = retry(call)
-        return call()
 
     def download_to_filename(self, filename, client=None, start=None, end=None):
         """Download the contents of this blob into a named file.

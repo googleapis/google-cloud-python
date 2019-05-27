@@ -19,7 +19,6 @@ import copy
 import datetime
 import json
 import warnings
-import functools
 
 import six
 
@@ -34,6 +33,7 @@ from google.cloud.storage import _signing
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
 from google.cloud.storage._helpers import _validate_name
+from google.cloud.storage._helpers import _call_api
 from google.cloud.storage._signing import generate_signed_url_v2
 from google.cloud.storage._signing import generate_signed_url_v4
 from google.cloud.storage.acl import BucketACL
@@ -547,7 +547,7 @@ class Bucket(_PropertyMixin):
         except NotFound:
             return False
 
-    def create(self, retry=DEFAULT_RETRY, client=None, project=None, location=None):
+    def create(self, client=None, project=None, location=None, retry=DEFAULT_RETRY):
         """Creates current bucket.
 
         If the bucket already exists, will raise
@@ -596,8 +596,8 @@ class Bucket(_PropertyMixin):
         if location is not None:
             properties["location"] = location
 
-        api_response = self._call_api(
-            client,
+        api_response = _call_api(
+            client._connection.api_request,
             retry,
             method="POST",
             path="/b",
@@ -606,12 +606,6 @@ class Bucket(_PropertyMixin):
             _target_object=self,
         )
         self._set_properties(api_response)
-
-    def _call_api(self, client, retry, **kwargs):
-        call = functools.partial(client._connection.api_request, **kwargs)
-        if retry:
-            call = retry(call)
-        return call()
 
     def patch(self, client=None):
         """Sends all changed properties in a PATCH request.
