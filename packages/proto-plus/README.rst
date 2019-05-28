@@ -27,7 +27,7 @@ Disclaimer
 This is not an official Google product.
 
 
-.. |release level| image:: https://img.shields.io/badge/release%20level-alpha-red.svg?style&#x3D;flat
+.. |release level| image:: https://img.shields.io/badge/release%20level-beta-yellow.svg?style&#x3D;flat
   :target: https://cloud.google.com/terms/launch-stages
 .. |docs| image:: https://readthedocs.org/projects/proto-plus-python/badge/?version=latest
   :target: https://proto-plus-python.readthedocs.io/en/latest/
