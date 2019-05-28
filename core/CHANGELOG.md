@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+## 1.0.1
+
+05-28-2019 11:22 PDT
+
+### Dependencies
+- Pin `grpcio < 2.0dev`. ([#8182](https://github.com/googleapis/google-cloud-python/pull/8182))
+
 ## 1.0.0
 
 05-15-2019 13:09 PDT
