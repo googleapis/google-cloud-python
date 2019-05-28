@@ -1,12 +1,8 @@
 {% extends "_base.py.j2" %}
 
 {% block content -%}
-{% with e = proto.disambiguate('enum'), p = proto.disambiguate('proto') %}
-{% if proto.all_enums|length -%}
-import enum{% if e != 'enum' %} as {{ e }}{% endif %}
-
-{% endif -%}
-{% if proto.messages|length -%}
+{% with p = proto.disambiguate('proto') %}
+{% if proto.messages|length or proto.all_enums|length -%}
 import proto{% if p != 'proto' %} as {{ p }}{% endif -%}
 {% endif %}
 
