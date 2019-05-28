@@ -18,17 +18,23 @@ PLUGIN_OPTIONS=""
 # Parse out options.
 while [ -n "$1" ]; do
   case "$1" in
-    --python-gapic-templates )
-      PLUGIN_OPTIONS="$PLUGIN_OPTIONS,python-gapic-templates=$2"
-      shift 2
-      ;;
     -- )
       shift
       break
       ;;
     * )
-      # Ignore anything we do not recognize.
-      shift
+      # If this switch begins with "--python-gapic-" or "--gapic-", then it is
+      # meant for us.
+      if [[ $1 == --python-gapic-* ]]; then
+        PLUGIN_OPTIONS="$PLUGIN_OPTIONS,$1=$2"
+        shift 2
+      else if [[ $1 == --gapic-* ]]; then
+        PLUGIN_OPTIONS="$PLUGIN_OPTIONS,$1=$2"
+        shift 2
+      else
+        # Ignore anything we do not recognize.
+        shift
+      fi
       ;;
   esac
 done
