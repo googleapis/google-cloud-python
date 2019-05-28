@@ -47,7 +47,7 @@ _local_modules = [clusters_pb2, jobs_pb2, proto_operations_pb2, workflow_templat
 
 names = []
 
-for module in _shared_modules:
+for module in _shared_modules:  # pragma: NO COVER
     for name, message in get_messages(module).items():
         setattr(sys.modules[__name__], name, message)
         names.append(name)
