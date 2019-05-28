@@ -1,4 +1,4 @@
-// Copyright 2018 Google LLC.
+// Copyright 2019 Google LLC.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,12 +15,29 @@
 
 syntax = "proto3";
 
-package google.cloud.dataproc.v1beta2;
+package google.cloud.dataproc.v1;
 
 import "google/api/annotations.proto";
 
-option go_package = "google.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataproc";
+option go_package = "google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataproc";
 option java_multiple_files = true;
 option java_outer_classname = "SharedProto";
-option java_package = "com.google.cloud.dataproc.v1beta2";
+option java_package = "com.google.cloud.dataproc.v1";
 
+// Cluster components that can be activated.
+enum Component {
+  // Unspecified component.
+  COMPONENT_UNSPECIFIED = 0;
+
+  // The Anaconda python distribution.
+  ANACONDA = 5;
+
+  // The Hive Web HCatalog (the REST service for accessing HCatalog).
+  HIVE_WEBHCAT = 3;
+
+  // The Jupyter Notebook.
+  JUPYTER = 1;
+
+  // The Zeppelin notebook.
+  ZEPPELIN = 4;
+}
