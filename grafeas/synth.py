@@ -30,34 +30,55 @@ library = gapic.py_library(
     "grafeas", "v1", config_path="/grafeas/artman_grafeas_v1.yaml", include_protos=True
 )
 
-excludes = ["README.rst", "nox.py", "setup.py", "docs/index.rst", "grafeas/__init__.py"]
+excludes = ["README.rst", "nox.py", "setup.py", "docs/index.rst"]
 
-# This library is an atypical generation, so move over directories one by one.
-
-s.move(library / "grafeas", excludes=excludes)
-s.move(library / "docs", excludes=excludes)
+# Make 'grafeas' a namespace
+s.move(library / "grafeas", excludes=["__init__.py"])
+s.move(library / "docs", excludes=["conf.py", "index.rst"])
 s.move(
-    library / "google/cloud/grafeas_v1/proto", "grafeas/grafeas_v1", excludes=excludes
+    library / "google/cloud/grafeas_v1/proto",
+    "grafeas/grafeas_v1/proto",
+    excludes=excludes,
 )
 s.move(library / "tests")
+
 
 # Fix proto imports
 s.replace(
     ["grafeas/**/*.py", "tests/**/*.py"],
-    "from grafeas\.v1 (import \w*_pb2)",
-    "from grafeas.v1.proto \g<1>",
+    "from grafeas\.v1( import \w*_pb2)",
+    "from grafeas.grafeas_v1.proto\g<1>",
 )
 s.replace(
-    ["grafeas/**/*_pb2.py", "grafeas/**/*_grpc.py"],
+    "grafeas/**/*_pb2.py",
+    "from grafeas_v1\.proto( import \w*_pb2)",
+    "from grafeas.grafeas_v1.proto\g<1>",
+)
+s.replace(
+    "grafeas/**/grafeas_pb2_grpc.py",
     "from grafeas_v1\.proto",
-    "from grafeas.v1.proto",
+    "from grafeas.grafeas_v1.proto",
 )
 
+# Make package name 'grafeas'
+s.replace(
+    "grafeas/grafeas_v1/gapic/grafeas_client.py", "google-cloud-grafeas", "grafeas"
+)
 
+# Fix docstrings with no summary lines
+s.replace(
+    "grafeas/grafeas_v1/proto/vulnerability_pb2.py",
+    r"""(\s+)__doc__ = \"\"\"Attributes:""",
+    """\g<1>__doc__=\"\"\"
+    Attributes:""",
+)
+
+# Make sure we refer to 'Container Analysis'
+s.replace("docs/**/v*/*.rst", "Container Analysis", "Grafeas")
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(unit_cov_level=78, cov_level=78)
 s.move(templated_files, excludes=["noxfile.py"])
 
-s.shell.run(["nox", "-s", "blacken"], hide_output=False)
+#s.shell.run(["nox", "-s", "blacken"], hide_output=False)

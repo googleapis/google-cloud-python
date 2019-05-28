@@ -1,5 +1,5 @@
-Types for Container Analysis API Client
+Types for Grafeas API Client
 =======================================
 
-.. automodule:: grafeas.v1.types
+.. automodule:: grafeas.grafeas_v1.types
     :members:

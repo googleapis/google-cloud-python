@@ -19,7 +19,7 @@ import os
 
 import setuptools
 
-name = "google-cloud-grafeas"
+name = "grafeas"
 description = "Grafeas API client library"
 version = "0.11.0"
 release_status = "Development Status :: 3 - Alpha"
