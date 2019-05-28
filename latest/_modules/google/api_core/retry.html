@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.api_core.retry &#8212; google-cloud f3d014c documentation</title>
+    <title>google.api_core.retry &#8212; google-cloud 372153c documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -134,7 +134,9 @@
 <span class="c1"># Pylint sees this as a constant, but it is also an alias that should be</span>
 <span class="c1"># considered a function.</span>
 <span class="n">if_transient_error</span> <span class="o">=</span> <span class="n">if_exception_type</span><span class="p">(</span>
-    <span class="p">(</span><span class="n">exceptions</span><span class="o">.</span><span class="n">InternalServerError</span><span class="p">,</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">TooManyRequests</span><span class="p">)</span>
+    <span class="n">exceptions</span><span class="o">.</span><span class="n">InternalServerError</span><span class="p">,</span>
+    <span class="n">exceptions</span><span class="o">.</span><span class="n">TooManyRequests</span><span class="p">,</span>
+    <span class="n">exceptions</span><span class="o">.</span><span class="n">ServiceUnavailable</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="sd">&quot;&quot;&quot;A predicate that checks if an exception is a transient API error.</span>
 
@@ -143,6 +145,7 @@
 <span class="sd">- :class:`google.api_core.exceptions.InternalServerError` - HTTP 500, gRPC</span>
 <span class="sd">    ``INTERNAL(13)`` and its subclasses.</span>
 <span class="sd">- :class:`google.api_core.exceptions.TooManyRequests` - HTTP 429</span>
+<span class="sd">- :class:`google.api_core.exceptions.ServiceUnavailable` - HTTP 503</span>
 <span class="sd">- :class:`google.api_core.exceptions.ResourceExhausted` - gRPC</span>
 <span class="sd">    ``RESOURCE_EXHAUSTED(8)``</span>
 <span class="sd">&quot;&quot;&quot;</span>
