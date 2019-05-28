@@ -16,15 +16,14 @@ import collections
 import collections.abc
 import copy
 import re
-import sys
 from typing import List, Type
 
 from google.protobuf import descriptor_pb2
 from google.protobuf import message
 from google.protobuf import symbol_database
 
-from proto import _descriptor_info
 from proto import _file_info
+from proto import _package_info
 from proto.fields import Field
 from proto.fields import MapField
 from proto.fields import RepeatedField
@@ -42,7 +41,16 @@ class MessageMeta(type):
 
         # Get the essential information about the proto package, and where
         # this component belongs within the file.
-        local_path, package, marshal = _descriptor_info.compile(name, attrs)
+        package, marshal = _package_info.compile(name, attrs)
+
+        # Determine the local path of this proto component within the file.
+        local_path = tuple(attrs.get('__qualname__', name).split('.'))
+
+        # Sanity check: We get the wrong full name if a class is declared
+        # inside a function local scope; correct this.
+        if '<locals>' in local_path:
+            ix = local_path.index('<locals>')
+            local_path = local_path[:ix - 1] + local_path[ix + 1:]
 
         # Determine the full name in protocol buffers.
         full_name = '.'.join((package,) + local_path).lstrip('.')
@@ -153,8 +161,7 @@ class MessageMeta(type):
 
         # Determine the filename.
         # We determine an appropriate proto filename based on the
-        # Python module. If the filename has already been used (which would
-        # cause collisions in the descriptor pool), we salt it.
+        # Python module.
         filename = '{0}.proto'.format(
             attrs.get('__module__', name.lower()).replace('.', '/')
         )
@@ -169,6 +176,7 @@ class MessageMeta(type):
                     package=package,
                     syntax='proto3',
                 ),
+                enums=collections.OrderedDict(),
                 messages=collections.OrderedDict(),
                 name=filename,
                 nested={},

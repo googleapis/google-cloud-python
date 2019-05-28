@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from .enums import Enum
 from .fields import Field
 from .fields import MapField
 from .fields import RepeatedField
@@ -41,6 +42,7 @@ SINT64 = ProtoType.SINT64
 
 
 __all__ = (
+    'Enum',
     'Field',
     'MapField',
     'RepeatedField',

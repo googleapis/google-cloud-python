@@ -25,7 +25,7 @@ from proto.marshal.rules.message import MessageRule
 
 
 class _FileInfo(collections.namedtuple(
-        '_FileInfo', ['descriptor', 'messages', 'name', 'nested'])):
+        '_FileInfo', ['descriptor', 'messages', 'enums', 'name', 'nested'])):
     registry = {}  # Mapping[str, '_FileInfo']
 
     def generate_file_pb(self):
@@ -67,6 +67,10 @@ class _FileInfo(collections.namedtuple(
 
             # Register the message with the marshal so it is wrapped
             # appropriately.
+            #
+            # We do this here (rather than at class creation) because it
+            # is not until this point that we have an actual protobuf
+            # message subclass, which is what we need to use.
             proto_plus_message._meta._pb = pb_message
             proto_plus_message._meta.marshal.register(
                 pb_message,

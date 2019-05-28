@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from enum import EnumMeta
+
 from google.protobuf import descriptor_pb2
 
 from proto.primitives import ProtoType
@@ -31,8 +33,14 @@ class Field:
         # If the proto type sent is an object or a string, it is really
         # a message or enum.
         if not isinstance(proto_type, int):
-            message = proto_type
-            proto_type = ProtoType.MESSAGE
+            # Note: We only support the "shortcut syntax" for enums
+            # when receiving the actual class.
+            if isinstance(proto_type, EnumMeta):
+                enum = proto_type
+                proto_type = ProtoType.ENUM
+            else:
+                message = proto_type
+                proto_type = ProtoType.MESSAGE
 
         # Save the direct arguments.
         self.number = number
@@ -55,6 +63,7 @@ class Field:
     @property
     def descriptor(self):
         """Return the descriptor for the field."""
+        proto_type = self.proto_type
         if not self._descriptor:
             # Resolve the message type, if any, to a string.
             type_name = None
@@ -71,17 +80,26 @@ class Field:
                 else:
                     type_name = self.message.meta.full_name
             elif self.enum:
-                # FIXME: This is obviously wrong (however, it does *work*).
-                # We need to set the enum type name and add the enum to
-                # the descriptor (like with messages above).
-                self.proto_type = ProtoType.INT32
+                # Nos decipiat.
+                #
+                # As far as the wire format is concerned, enums are int32s.
+                # Protocol buffers itself also only sends ints; the enum
+                # objects are simply helper classes for translating names
+                # and values and it is the user's job to resolve to an int.
+                #
+                # Therefore, the non-trivial effort of adding the actual
+                # enum descriptors seems to add little or no actual value.
+                #
+                # FIXME: Eventually, come back and put in the actual enum
+                # descriptors.
+                proto_type = ProtoType.INT32
 
             # Set the descriptor.
             self._descriptor = descriptor_pb2.FieldDescriptorProto(
                 name=self.name,
                 number=self.number,
                 label=3 if self.repeated else 1,
-                type=self.proto_type,
+                type=proto_type,
                 type_name=type_name,
                 json_name=self.json_name,
             )
@@ -102,7 +120,11 @@ class Field:
     @property
     def pb_type(self):
         """Return the composite type of the field, or None for primitives."""
-        # For primitives, return None.
+        # For enums, return the Python enum.
+        if self.enum:
+            return self.enum
+
+        # For non-enum primitives, return None.
         if not self.message:
             return None
 

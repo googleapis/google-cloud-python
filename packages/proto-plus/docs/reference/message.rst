@@ -11,3 +11,7 @@ Message and Field
 
 .. automodule:: proto.fields
   :members:
+
+
+.. automodule:: proto.enums
+  :members:

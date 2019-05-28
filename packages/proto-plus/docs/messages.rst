@@ -78,6 +78,62 @@ Instantiate messages using either keyword arguments or a :class:`dict`
     >>> song.title
     'Canon in D'
 
+Enums
+-----
+
+Enums are also supported:
+
+.. code-block:: python
+
+    import proto
+
+    class Genre(proto.Enum):
+        GENRE_UNSPECIFIED = 0
+        CLASSICAL = 1
+        JAZZ = 2
+        ROCK = 3
+
+    class Composer(proto.Message):
+        given_name = proto.Field(proto.STRING, number=1)
+        family_name = proto.Field(proto.STRING, number=2)
+
+    class Song(proto.Message):
+        composer = proto.Field(Composer, number=1)
+        title = proto.Field(proto.STRING, number=2)
+        lyrics = proto.Field(proto.STRING, number=3)
+        year = proto.Field(proto.INT32, number=4)
+        genre = proto.Field(Genre, number=5)
+
+All enums **must** begin with a ``0`` value, which is always the default in
+proto3 (and, as above, indistuiguishable from unset).
+
+Enums utilize Python :class:`enum.IntEnum` under the hood:
+
+.. code-block:: python
+
+    >>> song = Song(
+    ...     composer={'given_name': 'Johann', 'family_name': 'Pachelbel'},
+    ...     title='Canon in D',
+    ...     year=1680,
+    ...     genre=Genre.CLASSICAL,
+    ... )
+    >>> song.genre
+    <Genre.CLASSICAL: 1>
+    >>> song.genre.name
+    'CLASSICAL'
+    >>> song.genre.value
+    1
+
+Additionally, it is possible to provide strings or plain integers:
+
+.. code-block:: python
+
+    >>> song.genre = 2
+    >>> song.genre
+    <Genre.JAZZ: 2>
+    >>> song.genre = 'CLASSICAL'
+    <Genre.CLASSICAL: 1>
+
 Serialization
 -------------
 

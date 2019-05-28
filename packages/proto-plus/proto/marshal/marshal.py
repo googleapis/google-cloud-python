@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import abc
+import enum
 
 from google.protobuf import message
 from google.protobuf import duration_pb2
@@ -85,9 +86,9 @@ class BaseMarshal:
         """
         # Sanity check: Do not register anything to a class that is not
         # a protocol buffer message.
-        if not issubclass(proto_type, message.Message):
-            raise TypeError('Only protocol buffer messages may be registered '
-                            'to the marshal.')
+        if not issubclass(proto_type, (message.Message, enum.IntEnum)):
+            raise TypeError('Only enums and protocol buffer messages may be '
+                            'registered to the marshal.')
 
         # If a rule was provided, register it and be done.
         if rule:
