@@ -98,7 +98,9 @@ def if_exception_type(*exception_types):
 # Pylint sees this as a constant, but it is also an alias that should be
 # considered a function.
 if_transient_error = if_exception_type(
-    (exceptions.InternalServerError, exceptions.TooManyRequests)
+    exceptions.InternalServerError,
+    exceptions.TooManyRequests,
+    exceptions.ServiceUnavailable,
 )
 """A predicate that checks if an exception is a transient API error.
 
@@ -107,6 +109,7 @@ The following server errors are considered transient:
 - :class:`google.api_core.exceptions.InternalServerError` - HTTP 500, gRPC
     ``INTERNAL(13)`` and its subclasses.
 - :class:`google.api_core.exceptions.TooManyRequests` - HTTP 429
+- :class:`google.api_core.exceptions.ServiceUnavailable` - HTTP 503
 - :class:`google.api_core.exceptions.ResourceExhausted` - gRPC
     ``RESOURCE_EXHAUSTED(8)``
 """
