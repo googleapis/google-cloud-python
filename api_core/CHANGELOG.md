@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 1.11.1
+
+05-28-2019 11:19 PDT
+
+
+### Implementation Changes
+- Classify 503 Service Unavailable errors as transient. ([#8182](https://github.com/googleapis/google-cloud-python/pull/8182))
+
+### Dependencies
+- Pin `grpcio < 2.0dev`. ([#8182](https://github.com/googleapis/google-cloud-python/pull/8182))
+
+### Internal / Testing Changes
+- Add parameterized test for `from_rfc3339` with nanos ([#7675](https://github.com/googleapis/google-cloud-python/pull/7675))
+- Unbreak pytype by silencing a false positive. ([#8106](https://github.com/googleapis/google-cloud-python/pull/8106))
+
 ## 1.11.0
 
 05-15-2019 10:29 PDT
