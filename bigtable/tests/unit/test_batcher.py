@@ -117,8 +117,6 @@ class TestMutationsBatcher(unittest.TestCase):
 
     @mock.patch("google.cloud.bigtable.batcher.MAX_MUTATIONS", new=3)
     def test_mutate_row_with_max_mutations_failure(self):
-        from google.cloud.bigtable.batcher import MaxMutationsError
-
         table = _Table(self.TABLE_NAME)
         mutation_batcher = MutationsBatcher(table=table)
 
@@ -128,8 +126,8 @@ class TestMutationsBatcher(unittest.TestCase):
         row.set_cell("cf1", b"c3", 3)
         row.set_cell("cf1", b"c4", 4)
 
-        with self.assertRaises(MaxMutationsError):
-            mutation_batcher.mutate(row)
+        mutation_batcher.mutate(row)
+        self.assertEqual(table.mutation_calls, 0)
 
     @mock.patch("google.cloud.bigtable.batcher.MAX_MUTATIONS", new=3)
     def test_mutate_row_with_max_mutations(self):

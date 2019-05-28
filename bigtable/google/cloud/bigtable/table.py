@@ -14,9 +14,9 @@
 
 """User-friendly container for Google Cloud Bigtable Table."""
 import threading
+import warnings
 
 from grpc import StatusCode
-
 from google.api_core import timeout
 from google.api_core.exceptions import RetryError
 from google.api_core.exceptions import NotFound
@@ -41,8 +41,6 @@ from google.cloud.bigtable_admin_v2.proto import table_pb2 as admin_messages_v2_
 from google.cloud.bigtable_admin_v2.proto import (
     bigtable_table_admin_pb2 as table_admin_messages_v2_pb2,
 )
-
-import warnings
 
 
 # Maximum number of mutations in bulk (MutateRowsRequest message):
@@ -512,7 +510,6 @@ class Table(object):
                   corresponding to success or failure of each row mutation
                   sent. These will be in the same order as the `rows`.
         """
-
         mutate_batcher = self.mutations_batcher()
         mutate_batcher.mutate_rows(rows)
         retryable_mutate_rows = _RetryableMutateRowsWorker(
@@ -662,9 +659,25 @@ class Table(object):
 class _RetryableMutateRowsWorker(object):
     """A callable worker that can retry to mutate rows with transient errors.
 
-    This class is a callable that can retry mutating rows that result in
-    transient errors. After all rows are successful or none of the rows
+    This class is a callable that can retry mutating batch/batches of rows that result in
+    transient errors. After all batch/batches are successful or none of the rows of batch
     are retryable, any subsequent call on this callable will be a no-op.
+
+    :type client: :class:`~google.cloud.bigtable.client.Client`
+    :param client: The client that owns the table.
+
+    :type table_name: str
+    :param table_name: The name of the table.
+
+    :type batches: list
+    :param batches: list of rows in batch for asynchronous mutation
+
+    :type app_profile_id: str
+    :param app_profile_id: (Optional) The unique name of the AppProfile.
+
+    :type timeout: float
+    :param timeout: (Optional) The amount of time, in seconds, to wait
+                        for the request to complete.
     """
 
     # pylint: disable=unsubscriptable-object
@@ -684,38 +697,45 @@ class _RetryableMutateRowsWorker(object):
         self.timeout = timeout
         self.latest_executing_batch_index = 0
         self.no_of_batches = len(batches)
-        self.is_operation_completed = False
         self._lock = threading.Lock()
 
     def __call__(self, retry=DEFAULT_RETRY):
-        """Attempt to mutate all rows and retry rows with transient errors.
+        """Attempt to mutate all batches and retry rows with transient errors.
 
         Will retry the rows with transient errors until all rows succeed or
         ``deadline`` specified in the `retry` is reached.
 
         :rtype: list
-        :returns: A list of response statuses (`google.rpc.status_pb2.Status`)
+        :returns: Batches of list of response statuses (`google.rpc.status_pb2.Status`)
                   corresponding to success or failure of each row mutation
-                  sent. These will be in the same order as the ``rows``.
+                  sent. These will be in the same order as the ``rows`` in batch.
         """
         max_thread_to_start = min(self.no_of_batches, _MAX_THREAD_LIMIT)
 
         thread_list = []
         for _ in range(max_thread_to_start):
-            thread = threading.Thread(target=self.thread_func, args=(retry,))
+            thread = threading.Thread(target=self.async_batch_execution, args=(retry,))
             thread.start()
             thread_list.append(thread)
         for thread in thread_list:
             thread.join()
         return self.responses_statuses
 
-    def thread_func(self, retry=DEFAULT_RETRY):
-        while not self.is_operation_completed:
+    def async_batch_execution(self, retry=DEFAULT_RETRY):
+        """send asynchronous batch for mutate row
+
+        :type retry: :class:`~google.api_core.retry.Retry`
+        :param retry:
+            (Optional) Retry delay and deadline arguments. To override, the
+            default value :attr:`DEFAULT_RETRY_READ_ROWS` can be used and
+            modified with the :meth:`~google.api_core.retry.Retry.with_delay`
+            method or the :meth:`~google.api_core.retry.Retry.with_deadline`
+            method.
+        """
+        while not self.latest_executing_batch_index >= self.no_of_batches:
             self._lock.acquire()
             current_batch_index = self.latest_executing_batch_index
             self.latest_executing_batch_index += 1
-            if self.latest_executing_batch_index >= self.no_of_batches:
-                self.is_operation_completed = False
             self._lock.release()
             mutate_rows = self._do_mutate_retryable_rows
             if retry:

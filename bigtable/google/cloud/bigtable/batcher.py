@@ -20,10 +20,6 @@ MAX_MUTATIONS = 100000
 MAX_ROW_BYTES = 5242880  # 5MB
 
 
-class MaxMutationsError(ValueError):
-    """The number of mutations for bulk request is too big."""
-
-
 class MutationsBatcher(object):
     """ A MutationsBatcher is used in batch cases where the number of mutations
     is large or unknown. It will store DirectRows in memory until one of the
@@ -37,9 +33,6 @@ class MutationsBatcher(object):
     in-memory change. In a case of a system crash, any DirectRows remaining in
     memory will not necessarily be sent to the service, even after the
     completion of the mutate() method.
-
-    TODO: Performance would dramatically improve if this class had the
-    capability of asynchronous, parallel RPCs.
 
     :type table: class
     :param table: class:`~google.cloud.bigtable.table.Table`.
