@@ -1,0 +1,31 @@
+{
+  "updateTime": "2019-05-28T21:31:19.893763Z",
+  "sources": [
+    {
+      "generator": {
+        "name": "artman",
+        "version": "0.21.0",
+        "dockerImage": "googleapis/artman@sha256:28d4271586772b275cd3bc95cb46bd227a24d3c9048de45dccdb7f3afb0bfba9"
+      }
+    },
+    {
+      "template": {
+        "name": "python_library",
+        "origin": "synthtool.gcp",
+        "version": "2019.5.2"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "grafeas",
+        "apiVersion": "v1",
+        "language": "python",
+        "generator": "gapic",
+        "config": "grafeas/artman_grafeas_v1.yaml"
+      }
+    }
+  ]
+}
