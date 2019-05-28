@@ -17,7 +17,7 @@ from unittest import mock
 
 import pytest
 
-from google import showcase_v1alpha3
+from google import showcase_v1beta1
 from google.api_core import exceptions
 from google.rpc import code_pb2
 
@@ -25,7 +25,7 @@ from google.rpc import code_pb2
 def test_retry_nonidempotent(echo):
     # Define our error and OK responses.
     err = exceptions.ServiceUnavailable(message='whups')
-    ok = showcase_v1alpha3.EchoResponse(content='foo')
+    ok = showcase_v1beta1.EchoResponse(content='foo')
     server = mock.Mock(side_effect=(err, err, ok))
 
     # Mock the transport to send back the error responses followed by a
@@ -44,7 +44,7 @@ def test_retry_idempotent(identity):
     err409 = exceptions.Aborted(message='derp de derp')
     err503 = exceptions.ServiceUnavailable(message='whups')
     errwtf = exceptions.Unknown(message='huh?')
-    ok = showcase_v1alpha3.User(name='users/0', display_name='Guido')
+    ok = showcase_v1beta1.User(name='users/0', display_name='Guido')
     server = mock.Mock(side_effect=(err409, err503, errwtf, ok))
 
     # Mock the transport to send back the error responses followed by a

@@ -14,7 +14,7 @@
 
 from datetime import datetime, timedelta, timezone
 
-from google import showcase_v1alpha3
+from google import showcase_v1beta1
 
 
 def test_lro(echo):
@@ -25,5 +25,5 @@ def test_lro(echo):
     }
     future = echo.wait(wait_request)
     response = future.result()
-    assert isinstance(response, showcase_v1alpha3.WaitResponse)
+    assert isinstance(response, showcase_v1beta1.WaitResponse)
     assert response.content.endswith('the snails...eventually.')

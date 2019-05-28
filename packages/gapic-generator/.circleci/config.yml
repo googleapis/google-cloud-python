@@ -123,7 +123,7 @@ jobs:
   showcase:
     docker:
       - image: python:3.7-slim
-      - image: gcr.io/gapic-images/gapic-showcase:0.0.16
+      - image: gcr.io/gapic-images/gapic-showcase:0.2.0
     steps:
       - checkout
       - run:

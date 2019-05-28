@@ -19,7 +19,7 @@ import tempfile
 import nox
 
 
-showcase_version = '0.0.16'
+showcase_version = '0.2.0'
 
 
 @nox.session(python=['3.6', '3.7'])
@@ -73,8 +73,8 @@ def showcase(session):
         session.run('protoc',
             f'--descriptor_set_in={tmp_dir}{os.path.sep}showcase.desc',
             f'--python_gapic_out={tmp_dir}',
-            'google/showcase/v1alpha3/echo.proto',
-            'google/showcase/v1alpha3/identity.proto',
+            'google/showcase/v1beta1/echo.proto',
+            'google/showcase/v1beta1/identity.proto',
             external=True,
         )
 
@@ -109,10 +109,10 @@ def showcase_unit(session):
         session.run('protoc',
             f'--descriptor_set_in={tmp_dir}{os.path.sep}showcase.desc',
             f'--python_gapic_out={tmp_dir}',
-            'google/showcase/v1alpha3/echo.proto',
-            'google/showcase/v1alpha3/identity.proto',
-            'google/showcase/v1alpha3/messaging.proto',
-            'google/showcase/v1alpha3/testing.proto',
+            'google/showcase/v1beta1/echo.proto',
+            'google/showcase/v1beta1/identity.proto',
+            'google/showcase/v1beta1/messaging.proto',
+            'google/showcase/v1beta1/testing.proto',
             external=True,
         )
 
