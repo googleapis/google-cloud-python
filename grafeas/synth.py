@@ -24,7 +24,7 @@ gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
-# Generate dlp GAPIC layer
+# Generate Grafeas GAPIC layer
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
     "grafeas", "v1", config_path="/grafeas/artman_grafeas_v1.yaml", include_protos=True
@@ -73,12 +73,13 @@ s.replace(
     Attributes:""",
 )
 
-# Make sure we refer to 'Container Analysis'
+# Replace mentions of 'Container Analysis' with 'Grafeas' in the docs
 s.replace("docs/**/v*/*.rst", "Container Analysis", "Grafeas")
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(unit_cov_level=78, cov_level=78)
 s.move(templated_files, excludes=["noxfile.py"])
 
-#s.shell.run(["nox", "-s", "blacken"], hide_output=False)
+s.shell.run(["nox", "-s", "blacken"], hide_output=False)

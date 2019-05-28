@@ -27,8 +27,4 @@ class GrafeasClient(grafeas_client.GrafeasClient):
     enums = enums
 
 
-__all__ = (
-    'enums',
-    'types',
-    'GrafeasClient',
-)
+__all__ = ("enums", "types", "GrafeasClient")

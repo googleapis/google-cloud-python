@@ -2,11 +2,13 @@
 # source: grafeas_v1/proto/grafeas.proto
 
 import sys
-_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
+
+_b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode("latin1"))
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
+
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -16,1172 +18,2004 @@ from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import field_mask_pb2 as google_dot_protobuf_dot_field__mask__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
-from grafeas.grafeas_v1.proto import attestation_pb2 as grafeas__v1_dot_proto_dot_attestation__pb2
+from grafeas.grafeas_v1.proto import (
+    attestation_pb2 as grafeas__v1_dot_proto_dot_attestation__pb2,
+)
 from grafeas.grafeas_v1.proto import build_pb2 as grafeas__v1_dot_proto_dot_build__pb2
 from grafeas.grafeas_v1.proto import common_pb2 as grafeas__v1_dot_proto_dot_common__pb2
-from grafeas.grafeas_v1.proto import deployment_pb2 as grafeas__v1_dot_proto_dot_deployment__pb2
-from grafeas.grafeas_v1.proto import discovery_pb2 as grafeas__v1_dot_proto_dot_discovery__pb2
+from grafeas.grafeas_v1.proto import (
+    deployment_pb2 as grafeas__v1_dot_proto_dot_deployment__pb2,
+)
+from grafeas.grafeas_v1.proto import (
+    discovery_pb2 as grafeas__v1_dot_proto_dot_discovery__pb2,
+)
 from grafeas.grafeas_v1.proto import image_pb2 as grafeas__v1_dot_proto_dot_image__pb2
-from grafeas.grafeas_v1.proto import package_pb2 as grafeas__v1_dot_proto_dot_package__pb2
-from grafeas.grafeas_v1.proto import provenance_pb2 as grafeas__v1_dot_proto_dot_provenance__pb2
-from grafeas.grafeas_v1.proto import vulnerability_pb2 as grafeas__v1_dot_proto_dot_vulnerability__pb2
+from grafeas.grafeas_v1.proto import (
+    package_pb2 as grafeas__v1_dot_proto_dot_package__pb2,
+)
+from grafeas.grafeas_v1.proto import (
+    provenance_pb2 as grafeas__v1_dot_proto_dot_provenance__pb2,
+)
+from grafeas.grafeas_v1.proto import (
+    vulnerability_pb2 as grafeas__v1_dot_proto_dot_vulnerability__pb2,
+)
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
-  name='grafeas_v1/proto/grafeas.proto',
-  package='grafeas.v1',
-  syntax='proto3',
-  serialized_options=_b('\n\rio.grafeas.v1P\001Z8google.golang.org/genproto/googleapis/grafeas/v1;grafeas\242\002\003GRA'),
-  serialized_pb=_b('\n\x1egrafeas_v1/proto/grafeas.proto\x12\ngrafeas.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\"grafeas_v1/proto/attestation.proto\x1a\x1cgrafeas_v1/proto/build.proto\x1a\x1dgrafeas_v1/proto/common.proto\x1a!grafeas_v1/proto/deployment.proto\x1a grafeas_v1/proto/discovery.proto\x1a\x1cgrafeas_v1/proto/image.proto\x1a\x1egrafeas_v1/proto/package.proto\x1a!grafeas_v1/proto/provenance.proto\x1a$grafeas_v1/proto/vulnerability.proto\"\xdd\x04\n\nOccurrence\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0cresource_uri\x18\x02 \x01(\t\x12\x11\n\tnote_name\x18\x03 \x01(\t\x12\"\n\x04kind\x18\x04 \x01(\x0e\x32\x14.grafeas.v1.NoteKind\x12\x13\n\x0bremediation\x18\x05 \x01(\t\x12/\n\x0b\x63reate_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12<\n\rvulnerability\x18\x08 \x01(\x0b\x32#.grafeas.v1.VulnerabilityOccurrenceH\x00\x12,\n\x05\x62uild\x18\t \x01(\x0b\x32\x1b.grafeas.v1.BuildOccurrenceH\x00\x12,\n\x05image\x18\n \x01(\x0b\x32\x1b.grafeas.v1.ImageOccurrenceH\x00\x12\x30\n\x07package\x18\x0b \x01(\x0b\x32\x1d.grafeas.v1.PackageOccurrenceH\x00\x12\x36\n\ndeployment\x18\x0c \x01(\x0b\x32 .grafeas.v1.DeploymentOccurrenceH\x00\x12\x34\n\tdiscovery\x18\r \x01(\x0b\x32\x1f.grafeas.v1.DiscoveryOccurrenceH\x00\x12\x38\n\x0b\x61ttestation\x18\x0e \x01(\x0b\x32!.grafeas.v1.AttestationOccurrenceH\x00\x42\t\n\x07\x64\x65tails\"\x9f\x05\n\x04Note\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x19\n\x11short_description\x18\x02 \x01(\t\x12\x18\n\x10long_description\x18\x03 \x01(\t\x12\"\n\x04kind\x18\x04 \x01(\x0e\x32\x14.grafeas.v1.NoteKind\x12+\n\x0brelated_url\x18\x05 \x03(\x0b\x32\x16.grafeas.v1.RelatedUrl\x12\x33\n\x0f\x65xpiration_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x63reate_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1a\n\x12related_note_names\x18\t \x03(\t\x12\x36\n\rvulnerability\x18\n \x01(\x0b\x32\x1d.grafeas.v1.VulnerabilityNoteH\x00\x12&\n\x05\x62uild\x18\x0b \x01(\x0b\x32\x15.grafeas.v1.BuildNoteH\x00\x12&\n\x05image\x18\x0c \x01(\x0b\x32\x15.grafeas.v1.ImageNoteH\x00\x12*\n\x07package\x18\r \x01(\x0b\x32\x17.grafeas.v1.PackageNoteH\x00\x12\x30\n\ndeployment\x18\x0e \x01(\x0b\x32\x1a.grafeas.v1.DeploymentNoteH\x00\x12.\n\tdiscovery\x18\x0f \x01(\x0b\x32\x19.grafeas.v1.DiscoveryNoteH\x00\x12\x32\n\x0b\x61ttestation\x18\x10 \x01(\x0b\x32\x1b.grafeas.v1.AttestationNoteH\x00\x42\x06\n\x04type\"$\n\x14GetOccurrenceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"_\n\x16ListOccurrencesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\"_\n\x17ListOccurrencesResponse\x12+\n\x0boccurrences\x18\x01 \x03(\x0b\x32\x16.grafeas.v1.Occurrence\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"\'\n\x17\x44\x65leteOccurrenceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"U\n\x17\x43reateOccurrenceRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12*\n\noccurrence\x18\x02 \x01(\x0b\x32\x16.grafeas.v1.Occurrence\"\x84\x01\n\x17UpdateOccurrenceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12*\n\noccurrence\x18\x02 \x01(\x0b\x32\x16.grafeas.v1.Occurrence\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"\x1e\n\x0eGetNoteRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"(\n\x18GetOccurrenceNoteRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"Y\n\x10ListNotesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\"M\n\x11ListNotesResponse\x12\x1f\n\x05notes\x18\x01 \x03(\x0b\x32\x10.grafeas.v1.Note\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"!\n\x11\x44\x65leteNoteRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"T\n\x11\x43reateNoteRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0f\n\x07note_id\x18\x02 \x01(\t\x12\x1e\n\x04note\x18\x03 \x01(\x0b\x32\x10.grafeas.v1.Note\"r\n\x11UpdateNoteRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1e\n\x04note\x18\x02 \x01(\x0b\x32\x10.grafeas.v1.Note\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"a\n\x1aListNoteOccurrencesRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\"c\n\x1bListNoteOccurrencesResponse\x12+\n\x0boccurrences\x18\x01 \x03(\x0b\x32\x16.grafeas.v1.Occurrence\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"\xa8\x01\n\x17\x42\x61tchCreateNotesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12=\n\x05notes\x18\x02 \x03(\x0b\x32..grafeas.v1.BatchCreateNotesRequest.NotesEntry\x1a>\n\nNotesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x1f\n\x05value\x18\x02 \x01(\x0b\x32\x10.grafeas.v1.Note:\x02\x38\x01\";\n\x18\x42\x61tchCreateNotesResponse\x12\x1f\n\x05notes\x18\x01 \x03(\x0b\x32\x10.grafeas.v1.Note\"\\\n\x1d\x42\x61tchCreateOccurrencesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12+\n\x0boccurrences\x18\x02 \x03(\x0b\x32\x16.grafeas.v1.Occurrence\"M\n\x1e\x42\x61tchCreateOccurrencesResponse\x12+\n\x0boccurrences\x18\x01 \x03(\x0b\x32\x16.grafeas.v1.Occurrence2\x94\x0e\n\x07Grafeas\x12v\n\rGetOccurrence\x12 .grafeas.v1.GetOccurrenceRequest\x1a\x16.grafeas.v1.Occurrence\"+\x82\xd3\xe4\x93\x02%\x12#/v1/{name=projects/*/occurrences/*}\x12\x87\x01\n\x0fListOccurrences\x12\".grafeas.v1.ListOccurrencesRequest\x1a#.grafeas.v1.ListOccurrencesResponse\"+\x82\xd3\xe4\x93\x02%\x12#/v1/{parent=projects/*}/occurrences\x12|\n\x10\x44\x65leteOccurrence\x12#.grafeas.v1.DeleteOccurrenceRequest\x1a\x16.google.protobuf.Empty\"+\x82\xd3\xe4\x93\x02%*#/v1/{name=projects/*/occurrences/*}\x12\x88\x01\n\x10\x43reateOccurrence\x12#.grafeas.v1.CreateOccurrenceRequest\x1a\x16.grafeas.v1.Occurrence\"7\x82\xd3\xe4\x93\x02\x31\"#/v1/{parent=projects/*}/occurrences:\noccurrence\x12\xab\x01\n\x16\x42\x61tchCreateOccurrences\x12).grafeas.v1.BatchCreateOccurrencesRequest\x1a*.grafeas.v1.BatchCreateOccurrencesResponse\":\x82\xd3\xe4\x93\x02\x34\"//v1/{parent=projects/*}/occurrences:batchCreate:\x01*\x12\x88\x01\n\x10UpdateOccurrence\x12#.grafeas.v1.UpdateOccurrenceRequest\x1a\x16.grafeas.v1.Occurrence\"7\x82\xd3\xe4\x93\x02\x31\x32#/v1/{name=projects/*/occurrences/*}:\noccurrence\x12~\n\x11GetOccurrenceNote\x12$.grafeas.v1.GetOccurrenceNoteRequest\x1a\x10.grafeas.v1.Note\"1\x82\xd3\xe4\x93\x02+\x12)/v1/{name=projects/*/occurrences/*}/notes\x12^\n\x07GetNote\x12\x1a.grafeas.v1.GetNoteRequest\x1a\x10.grafeas.v1.Note\"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/v1/{name=projects/*/notes/*}\x12o\n\tListNotes\x12\x1c.grafeas.v1.ListNotesRequest\x1a\x1d.grafeas.v1.ListNotesResponse\"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/v1/{parent=projects/*}/notes\x12j\n\nDeleteNote\x12\x1d.grafeas.v1.DeleteNoteRequest\x1a\x16.google.protobuf.Empty\"%\x82\xd3\xe4\x93\x02\x1f*\x1d/v1/{name=projects/*/notes/*}\x12j\n\nCreateNote\x12\x1d.grafeas.v1.CreateNoteRequest\x1a\x10.grafeas.v1.Note\"+\x82\xd3\xe4\x93\x02%\"\x1d/v1/{parent=projects/*}/notes:\x04note\x12\x93\x01\n\x10\x42\x61tchCreateNotes\x12#.grafeas.v1.BatchCreateNotesRequest\x1a$.grafeas.v1.BatchCreateNotesResponse\"4\x82\xd3\xe4\x93\x02.\")/v1/{parent=projects/*}/notes:batchCreate:\x01*\x12j\n\nUpdateNote\x12\x1d.grafeas.v1.UpdateNoteRequest\x1a\x10.grafeas.v1.Note\"+\x82\xd3\xe4\x93\x02%2\x1d/v1/{name=projects/*/notes/*}:\x04note\x12\x99\x01\n\x13ListNoteOccurrences\x12&.grafeas.v1.ListNoteOccurrencesRequest\x1a\'.grafeas.v1.ListNoteOccurrencesResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/{name=projects/*/notes/*}/occurrencesBQ\n\rio.grafeas.v1P\x01Z8google.golang.org/genproto/googleapis/grafeas/v1;grafeas\xa2\x02\x03GRAb\x06proto3')
-  ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,grafeas__v1_dot_proto_dot_attestation__pb2.DESCRIPTOR,grafeas__v1_dot_proto_dot_build__pb2.DESCRIPTOR,grafeas__v1_dot_proto_dot_common__pb2.DESCRIPTOR,grafeas__v1_dot_proto_dot_deployment__pb2.DESCRIPTOR,grafeas__v1_dot_proto_dot_discovery__pb2.DESCRIPTOR,grafeas__v1_dot_proto_dot_image__pb2.DESCRIPTOR,grafeas__v1_dot_proto_dot_package__pb2.DESCRIPTOR,grafeas__v1_dot_proto_dot_provenance__pb2.DESCRIPTOR,grafeas__v1_dot_proto_dot_vulnerability__pb2.DESCRIPTOR,])
-
-
+    name="grafeas_v1/proto/grafeas.proto",
+    package="grafeas.v1",
+    syntax="proto3",
+    serialized_options=_b(
+        "\n\rio.grafeas.v1P\001Z8google.golang.org/genproto/googleapis/grafeas/v1;grafeas\242\002\003GRA"
+    ),
+    serialized_pb=_b(
+        '\n\x1egrafeas_v1/proto/grafeas.proto\x12\ngrafeas.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a"grafeas_v1/proto/attestation.proto\x1a\x1cgrafeas_v1/proto/build.proto\x1a\x1dgrafeas_v1/proto/common.proto\x1a!grafeas_v1/proto/deployment.proto\x1a grafeas_v1/proto/discovery.proto\x1a\x1cgrafeas_v1/proto/image.proto\x1a\x1egrafeas_v1/proto/package.proto\x1a!grafeas_v1/proto/provenance.proto\x1a$grafeas_v1/proto/vulnerability.proto"\xdd\x04\n\nOccurrence\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0cresource_uri\x18\x02 \x01(\t\x12\x11\n\tnote_name\x18\x03 \x01(\t\x12"\n\x04kind\x18\x04 \x01(\x0e\x32\x14.grafeas.v1.NoteKind\x12\x13\n\x0bremediation\x18\x05 \x01(\t\x12/\n\x0b\x63reate_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12<\n\rvulnerability\x18\x08 \x01(\x0b\x32#.grafeas.v1.VulnerabilityOccurrenceH\x00\x12,\n\x05\x62uild\x18\t \x01(\x0b\x32\x1b.grafeas.v1.BuildOccurrenceH\x00\x12,\n\x05image\x18\n \x01(\x0b\x32\x1b.grafeas.v1.ImageOccurrenceH\x00\x12\x30\n\x07package\x18\x0b \x01(\x0b\x32\x1d.grafeas.v1.PackageOccurrenceH\x00\x12\x36\n\ndeployment\x18\x0c \x01(\x0b\x32 .grafeas.v1.DeploymentOccurrenceH\x00\x12\x34\n\tdiscovery\x18\r \x01(\x0b\x32\x1f.grafeas.v1.DiscoveryOccurrenceH\x00\x12\x38\n\x0b\x61ttestation\x18\x0e \x01(\x0b\x32!.grafeas.v1.AttestationOccurrenceH\x00\x42\t\n\x07\x64\x65tails"\x9f\x05\n\x04Note\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x19\n\x11short_description\x18\x02 \x01(\t\x12\x18\n\x10long_description\x18\x03 \x01(\t\x12"\n\x04kind\x18\x04 \x01(\x0e\x32\x14.grafeas.v1.NoteKind\x12+\n\x0brelated_url\x18\x05 \x03(\x0b\x32\x16.grafeas.v1.RelatedUrl\x12\x33\n\x0f\x65xpiration_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x63reate_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1a\n\x12related_note_names\x18\t \x03(\t\x12\x36\n\rvulnerability\x18\n \x01(\x0b\x32\x1d.grafeas.v1.VulnerabilityNoteH\x00\x12&\n\x05\x62uild\x18\x0b \x01(\x0b\x32\x15.grafeas.v1.BuildNoteH\x00\x12&\n\x05image\x18\x0c \x01(\x0b\x32\x15.grafeas.v1.ImageNoteH\x00\x12*\n\x07package\x18\r \x01(\x0b\x32\x17.grafeas.v1.PackageNoteH\x00\x12\x30\n\ndeployment\x18\x0e \x01(\x0b\x32\x1a.grafeas.v1.DeploymentNoteH\x00\x12.\n\tdiscovery\x18\x0f \x01(\x0b\x32\x19.grafeas.v1.DiscoveryNoteH\x00\x12\x32\n\x0b\x61ttestation\x18\x10 \x01(\x0b\x32\x1b.grafeas.v1.AttestationNoteH\x00\x42\x06\n\x04type"$\n\x14GetOccurrenceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"_\n\x16ListOccurrencesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"_\n\x17ListOccurrencesResponse\x12+\n\x0boccurrences\x18\x01 \x03(\x0b\x32\x16.grafeas.v1.Occurrence\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\'\n\x17\x44\x65leteOccurrenceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"U\n\x17\x43reateOccurrenceRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12*\n\noccurrence\x18\x02 \x01(\x0b\x32\x16.grafeas.v1.Occurrence"\x84\x01\n\x17UpdateOccurrenceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12*\n\noccurrence\x18\x02 \x01(\x0b\x32\x16.grafeas.v1.Occurrence\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"\x1e\n\x0eGetNoteRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"(\n\x18GetOccurrenceNoteRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"Y\n\x10ListNotesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"M\n\x11ListNotesResponse\x12\x1f\n\x05notes\x18\x01 \x03(\x0b\x32\x10.grafeas.v1.Note\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"!\n\x11\x44\x65leteNoteRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"T\n\x11\x43reateNoteRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0f\n\x07note_id\x18\x02 \x01(\t\x12\x1e\n\x04note\x18\x03 \x01(\x0b\x32\x10.grafeas.v1.Note"r\n\x11UpdateNoteRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1e\n\x04note\x18\x02 \x01(\x0b\x32\x10.grafeas.v1.Note\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"a\n\x1aListNoteOccurrencesRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"c\n\x1bListNoteOccurrencesResponse\x12+\n\x0boccurrences\x18\x01 \x03(\x0b\x32\x16.grafeas.v1.Occurrence\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\xa8\x01\n\x17\x42\x61tchCreateNotesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12=\n\x05notes\x18\x02 \x03(\x0b\x32..grafeas.v1.BatchCreateNotesRequest.NotesEntry\x1a>\n\nNotesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x1f\n\x05value\x18\x02 \x01(\x0b\x32\x10.grafeas.v1.Note:\x02\x38\x01";\n\x18\x42\x61tchCreateNotesResponse\x12\x1f\n\x05notes\x18\x01 \x03(\x0b\x32\x10.grafeas.v1.Note"\\\n\x1d\x42\x61tchCreateOccurrencesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12+\n\x0boccurrences\x18\x02 \x03(\x0b\x32\x16.grafeas.v1.Occurrence"M\n\x1e\x42\x61tchCreateOccurrencesResponse\x12+\n\x0boccurrences\x18\x01 \x03(\x0b\x32\x16.grafeas.v1.Occurrence2\x94\x0e\n\x07Grafeas\x12v\n\rGetOccurrence\x12 .grafeas.v1.GetOccurrenceRequest\x1a\x16.grafeas.v1.Occurrence"+\x82\xd3\xe4\x93\x02%\x12#/v1/{name=projects/*/occurrences/*}\x12\x87\x01\n\x0fListOccurrences\x12".grafeas.v1.ListOccurrencesRequest\x1a#.grafeas.v1.ListOccurrencesResponse"+\x82\xd3\xe4\x93\x02%\x12#/v1/{parent=projects/*}/occurrences\x12|\n\x10\x44\x65leteOccurrence\x12#.grafeas.v1.DeleteOccurrenceRequest\x1a\x16.google.protobuf.Empty"+\x82\xd3\xe4\x93\x02%*#/v1/{name=projects/*/occurrences/*}\x12\x88\x01\n\x10\x43reateOccurrence\x12#.grafeas.v1.CreateOccurrenceRequest\x1a\x16.grafeas.v1.Occurrence"7\x82\xd3\xe4\x93\x02\x31"#/v1/{parent=projects/*}/occurrences:\noccurrence\x12\xab\x01\n\x16\x42\x61tchCreateOccurrences\x12).grafeas.v1.BatchCreateOccurrencesRequest\x1a*.grafeas.v1.BatchCreateOccurrencesResponse":\x82\xd3\xe4\x93\x02\x34"//v1/{parent=projects/*}/occurrences:batchCreate:\x01*\x12\x88\x01\n\x10UpdateOccurrence\x12#.grafeas.v1.UpdateOccurrenceRequest\x1a\x16.grafeas.v1.Occurrence"7\x82\xd3\xe4\x93\x02\x31\x32#/v1/{name=projects/*/occurrences/*}:\noccurrence\x12~\n\x11GetOccurrenceNote\x12$.grafeas.v1.GetOccurrenceNoteRequest\x1a\x10.grafeas.v1.Note"1\x82\xd3\xe4\x93\x02+\x12)/v1/{name=projects/*/occurrences/*}/notes\x12^\n\x07GetNote\x12\x1a.grafeas.v1.GetNoteRequest\x1a\x10.grafeas.v1.Note"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/v1/{name=projects/*/notes/*}\x12o\n\tListNotes\x12\x1c.grafeas.v1.ListNotesRequest\x1a\x1d.grafeas.v1.ListNotesResponse"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/v1/{parent=projects/*}/notes\x12j\n\nDeleteNote\x12\x1d.grafeas.v1.DeleteNoteRequest\x1a\x16.google.protobuf.Empty"%\x82\xd3\xe4\x93\x02\x1f*\x1d/v1/{name=projects/*/notes/*}\x12j\n\nCreateNote\x12\x1d.grafeas.v1.CreateNoteRequest\x1a\x10.grafeas.v1.Note"+\x82\xd3\xe4\x93\x02%"\x1d/v1/{parent=projects/*}/notes:\x04note\x12\x93\x01\n\x10\x42\x61tchCreateNotes\x12#.grafeas.v1.BatchCreateNotesRequest\x1a$.grafeas.v1.BatchCreateNotesResponse"4\x82\xd3\xe4\x93\x02.")/v1/{parent=projects/*}/notes:batchCreate:\x01*\x12j\n\nUpdateNote\x12\x1d.grafeas.v1.UpdateNoteRequest\x1a\x10.grafeas.v1.Note"+\x82\xd3\xe4\x93\x02%2\x1d/v1/{name=projects/*/notes/*}:\x04note\x12\x99\x01\n\x13ListNoteOccurrences\x12&.grafeas.v1.ListNoteOccurrencesRequest\x1a\'.grafeas.v1.ListNoteOccurrencesResponse"1\x82\xd3\xe4\x93\x02+\x12)/v1/{name=projects/*/notes/*}/occurrencesBQ\n\rio.grafeas.v1P\x01Z8google.golang.org/genproto/googleapis/grafeas/v1;grafeas\xa2\x02\x03GRAb\x06proto3'
+    ),
+    dependencies=[
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
+        grafeas__v1_dot_proto_dot_attestation__pb2.DESCRIPTOR,
+        grafeas__v1_dot_proto_dot_build__pb2.DESCRIPTOR,
+        grafeas__v1_dot_proto_dot_common__pb2.DESCRIPTOR,
+        grafeas__v1_dot_proto_dot_deployment__pb2.DESCRIPTOR,
+        grafeas__v1_dot_proto_dot_discovery__pb2.DESCRIPTOR,
+        grafeas__v1_dot_proto_dot_image__pb2.DESCRIPTOR,
+        grafeas__v1_dot_proto_dot_package__pb2.DESCRIPTOR,
+        grafeas__v1_dot_proto_dot_provenance__pb2.DESCRIPTOR,
+        grafeas__v1_dot_proto_dot_vulnerability__pb2.DESCRIPTOR,
+    ],
+)
 
 
 _OCCURRENCE = _descriptor.Descriptor(
-  name='Occurrence',
-  full_name='grafeas.v1.Occurrence',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='grafeas.v1.Occurrence.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='resource_uri', full_name='grafeas.v1.Occurrence.resource_uri', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='note_name', full_name='grafeas.v1.Occurrence.note_name', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='kind', full_name='grafeas.v1.Occurrence.kind', index=3,
-      number=4, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='remediation', full_name='grafeas.v1.Occurrence.remediation', index=4,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='create_time', full_name='grafeas.v1.Occurrence.create_time', index=5,
-      number=6, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='update_time', full_name='grafeas.v1.Occurrence.update_time', index=6,
-      number=7, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='vulnerability', full_name='grafeas.v1.Occurrence.vulnerability', index=7,
-      number=8, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='build', full_name='grafeas.v1.Occurrence.build', index=8,
-      number=9, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='image', full_name='grafeas.v1.Occurrence.image', index=9,
-      number=10, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='package', full_name='grafeas.v1.Occurrence.package', index=10,
-      number=11, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='deployment', full_name='grafeas.v1.Occurrence.deployment', index=11,
-      number=12, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='discovery', full_name='grafeas.v1.Occurrence.discovery', index=12,
-      number=13, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='attestation', full_name='grafeas.v1.Occurrence.attestation', index=13,
-      number=14, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='details', full_name='grafeas.v1.Occurrence.details',
-      index=0, containing_type=None, fields=[]),
-  ],
-  serialized_start=474,
-  serialized_end=1079,
+    name="Occurrence",
+    full_name="grafeas.v1.Occurrence",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="grafeas.v1.Occurrence.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="resource_uri",
+            full_name="grafeas.v1.Occurrence.resource_uri",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="note_name",
+            full_name="grafeas.v1.Occurrence.note_name",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="kind",
+            full_name="grafeas.v1.Occurrence.kind",
+            index=3,
+            number=4,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="remediation",
+            full_name="grafeas.v1.Occurrence.remediation",
+            index=4,
+            number=5,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="create_time",
+            full_name="grafeas.v1.Occurrence.create_time",
+            index=5,
+            number=6,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="update_time",
+            full_name="grafeas.v1.Occurrence.update_time",
+            index=6,
+            number=7,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="vulnerability",
+            full_name="grafeas.v1.Occurrence.vulnerability",
+            index=7,
+            number=8,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="build",
+            full_name="grafeas.v1.Occurrence.build",
+            index=8,
+            number=9,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="image",
+            full_name="grafeas.v1.Occurrence.image",
+            index=9,
+            number=10,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="package",
+            full_name="grafeas.v1.Occurrence.package",
+            index=10,
+            number=11,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="deployment",
+            full_name="grafeas.v1.Occurrence.deployment",
+            index=11,
+            number=12,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="discovery",
+            full_name="grafeas.v1.Occurrence.discovery",
+            index=12,
+            number=13,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="attestation",
+            full_name="grafeas.v1.Occurrence.attestation",
+            index=13,
+            number=14,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="details",
+            full_name="grafeas.v1.Occurrence.details",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=474,
+    serialized_end=1079,
 )
 
 
 _NOTE = _descriptor.Descriptor(
-  name='Note',
-  full_name='grafeas.v1.Note',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='grafeas.v1.Note.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='short_description', full_name='grafeas.v1.Note.short_description', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='long_description', full_name='grafeas.v1.Note.long_description', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='kind', full_name='grafeas.v1.Note.kind', index=3,
-      number=4, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='related_url', full_name='grafeas.v1.Note.related_url', index=4,
-      number=5, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='expiration_time', full_name='grafeas.v1.Note.expiration_time', index=5,
-      number=6, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='create_time', full_name='grafeas.v1.Note.create_time', index=6,
-      number=7, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='update_time', full_name='grafeas.v1.Note.update_time', index=7,
-      number=8, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='related_note_names', full_name='grafeas.v1.Note.related_note_names', index=8,
-      number=9, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='vulnerability', full_name='grafeas.v1.Note.vulnerability', index=9,
-      number=10, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='build', full_name='grafeas.v1.Note.build', index=10,
-      number=11, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='image', full_name='grafeas.v1.Note.image', index=11,
-      number=12, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='package', full_name='grafeas.v1.Note.package', index=12,
-      number=13, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='deployment', full_name='grafeas.v1.Note.deployment', index=13,
-      number=14, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='discovery', full_name='grafeas.v1.Note.discovery', index=14,
-      number=15, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='attestation', full_name='grafeas.v1.Note.attestation', index=15,
-      number=16, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='type', full_name='grafeas.v1.Note.type',
-      index=0, containing_type=None, fields=[]),
-  ],
-  serialized_start=1082,
-  serialized_end=1753,
+    name="Note",
+    full_name="grafeas.v1.Note",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="grafeas.v1.Note.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="short_description",
+            full_name="grafeas.v1.Note.short_description",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="long_description",
+            full_name="grafeas.v1.Note.long_description",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="kind",
+            full_name="grafeas.v1.Note.kind",
+            index=3,
+            number=4,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="related_url",
+            full_name="grafeas.v1.Note.related_url",
+            index=4,
+            number=5,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="expiration_time",
+            full_name="grafeas.v1.Note.expiration_time",
+            index=5,
+            number=6,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="create_time",
+            full_name="grafeas.v1.Note.create_time",
+            index=6,
+            number=7,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="update_time",
+            full_name="grafeas.v1.Note.update_time",
+            index=7,
+            number=8,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="related_note_names",
+            full_name="grafeas.v1.Note.related_note_names",
+            index=8,
+            number=9,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="vulnerability",
+            full_name="grafeas.v1.Note.vulnerability",
+            index=9,
+            number=10,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="build",
+            full_name="grafeas.v1.Note.build",
+            index=10,
+            number=11,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="image",
+            full_name="grafeas.v1.Note.image",
+            index=11,
+            number=12,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="package",
+            full_name="grafeas.v1.Note.package",
+            index=12,
+            number=13,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="deployment",
+            full_name="grafeas.v1.Note.deployment",
+            index=13,
+            number=14,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="discovery",
+            full_name="grafeas.v1.Note.discovery",
+            index=14,
+            number=15,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="attestation",
+            full_name="grafeas.v1.Note.attestation",
+            index=15,
+            number=16,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="type",
+            full_name="grafeas.v1.Note.type",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=1082,
+    serialized_end=1753,
 )
 
 
 _GETOCCURRENCEREQUEST = _descriptor.Descriptor(
-  name='GetOccurrenceRequest',
-  full_name='grafeas.v1.GetOccurrenceRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='grafeas.v1.GetOccurrenceRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1755,
-  serialized_end=1791,
+    name="GetOccurrenceRequest",
+    full_name="grafeas.v1.GetOccurrenceRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="grafeas.v1.GetOccurrenceRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1755,
+    serialized_end=1791,
 )
 
 
 _LISTOCCURRENCESREQUEST = _descriptor.Descriptor(
-  name='ListOccurrencesRequest',
-  full_name='grafeas.v1.ListOccurrencesRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='grafeas.v1.ListOccurrencesRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='filter', full_name='grafeas.v1.ListOccurrencesRequest.filter', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_size', full_name='grafeas.v1.ListOccurrencesRequest.page_size', index=2,
-      number=3, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_token', full_name='grafeas.v1.ListOccurrencesRequest.page_token', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1793,
-  serialized_end=1888,
+    name="ListOccurrencesRequest",
+    full_name="grafeas.v1.ListOccurrencesRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="grafeas.v1.ListOccurrencesRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="filter",
+            full_name="grafeas.v1.ListOccurrencesRequest.filter",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_size",
+            full_name="grafeas.v1.ListOccurrencesRequest.page_size",
+            index=2,
+            number=3,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_token",
+            full_name="grafeas.v1.ListOccurrencesRequest.page_token",
+            index=3,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1793,
+    serialized_end=1888,
 )
 
 
 _LISTOCCURRENCESRESPONSE = _descriptor.Descriptor(
-  name='ListOccurrencesResponse',
-  full_name='grafeas.v1.ListOccurrencesResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='occurrences', full_name='grafeas.v1.ListOccurrencesResponse.occurrences', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='next_page_token', full_name='grafeas.v1.ListOccurrencesResponse.next_page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1890,
-  serialized_end=1985,
+    name="ListOccurrencesResponse",
+    full_name="grafeas.v1.ListOccurrencesResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="occurrences",
+            full_name="grafeas.v1.ListOccurrencesResponse.occurrences",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="next_page_token",
+            full_name="grafeas.v1.ListOccurrencesResponse.next_page_token",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1890,
+    serialized_end=1985,
 )
 
 
 _DELETEOCCURRENCEREQUEST = _descriptor.Descriptor(
-  name='DeleteOccurrenceRequest',
-  full_name='grafeas.v1.DeleteOccurrenceRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='grafeas.v1.DeleteOccurrenceRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1987,
-  serialized_end=2026,
+    name="DeleteOccurrenceRequest",
+    full_name="grafeas.v1.DeleteOccurrenceRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="grafeas.v1.DeleteOccurrenceRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1987,
+    serialized_end=2026,
 )
 
 
 _CREATEOCCURRENCEREQUEST = _descriptor.Descriptor(
-  name='CreateOccurrenceRequest',
-  full_name='grafeas.v1.CreateOccurrenceRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='grafeas.v1.CreateOccurrenceRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='occurrence', full_name='grafeas.v1.CreateOccurrenceRequest.occurrence', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2028,
-  serialized_end=2113,
+    name="CreateOccurrenceRequest",
+    full_name="grafeas.v1.CreateOccurrenceRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="grafeas.v1.CreateOccurrenceRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="occurrence",
+            full_name="grafeas.v1.CreateOccurrenceRequest.occurrence",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2028,
+    serialized_end=2113,
 )
 
 
 _UPDATEOCCURRENCEREQUEST = _descriptor.Descriptor(
-  name='UpdateOccurrenceRequest',
-  full_name='grafeas.v1.UpdateOccurrenceRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='grafeas.v1.UpdateOccurrenceRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='occurrence', full_name='grafeas.v1.UpdateOccurrenceRequest.occurrence', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='update_mask', full_name='grafeas.v1.UpdateOccurrenceRequest.update_mask', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2116,
-  serialized_end=2248,
+    name="UpdateOccurrenceRequest",
+    full_name="grafeas.v1.UpdateOccurrenceRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="grafeas.v1.UpdateOccurrenceRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="occurrence",
+            full_name="grafeas.v1.UpdateOccurrenceRequest.occurrence",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="update_mask",
+            full_name="grafeas.v1.UpdateOccurrenceRequest.update_mask",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2116,
+    serialized_end=2248,
 )
 
 
 _GETNOTEREQUEST = _descriptor.Descriptor(
-  name='GetNoteRequest',
-  full_name='grafeas.v1.GetNoteRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='grafeas.v1.GetNoteRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2250,
-  serialized_end=2280,
+    name="GetNoteRequest",
+    full_name="grafeas.v1.GetNoteRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="grafeas.v1.GetNoteRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2250,
+    serialized_end=2280,
 )
 
 
 _GETOCCURRENCENOTEREQUEST = _descriptor.Descriptor(
-  name='GetOccurrenceNoteRequest',
-  full_name='grafeas.v1.GetOccurrenceNoteRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='grafeas.v1.GetOccurrenceNoteRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2282,
-  serialized_end=2322,
+    name="GetOccurrenceNoteRequest",
+    full_name="grafeas.v1.GetOccurrenceNoteRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="grafeas.v1.GetOccurrenceNoteRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2282,
+    serialized_end=2322,
 )
 
 
 _LISTNOTESREQUEST = _descriptor.Descriptor(
-  name='ListNotesRequest',
-  full_name='grafeas.v1.ListNotesRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='grafeas.v1.ListNotesRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='filter', full_name='grafeas.v1.ListNotesRequest.filter', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_size', full_name='grafeas.v1.ListNotesRequest.page_size', index=2,
-      number=3, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_token', full_name='grafeas.v1.ListNotesRequest.page_token', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2324,
-  serialized_end=2413,
+    name="ListNotesRequest",
+    full_name="grafeas.v1.ListNotesRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="grafeas.v1.ListNotesRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="filter",
+            full_name="grafeas.v1.ListNotesRequest.filter",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_size",
+            full_name="grafeas.v1.ListNotesRequest.page_size",
+            index=2,
+            number=3,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_token",
+            full_name="grafeas.v1.ListNotesRequest.page_token",
+            index=3,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2324,
+    serialized_end=2413,
 )
 
 
 _LISTNOTESRESPONSE = _descriptor.Descriptor(
-  name='ListNotesResponse',
-  full_name='grafeas.v1.ListNotesResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='notes', full_name='grafeas.v1.ListNotesResponse.notes', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='next_page_token', full_name='grafeas.v1.ListNotesResponse.next_page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2415,
-  serialized_end=2492,
+    name="ListNotesResponse",
+    full_name="grafeas.v1.ListNotesResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="notes",
+            full_name="grafeas.v1.ListNotesResponse.notes",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="next_page_token",
+            full_name="grafeas.v1.ListNotesResponse.next_page_token",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2415,
+    serialized_end=2492,
 )
 
 
 _DELETENOTEREQUEST = _descriptor.Descriptor(
-  name='DeleteNoteRequest',
-  full_name='grafeas.v1.DeleteNoteRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='grafeas.v1.DeleteNoteRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2494,
-  serialized_end=2527,
+    name="DeleteNoteRequest",
+    full_name="grafeas.v1.DeleteNoteRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="grafeas.v1.DeleteNoteRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2494,
+    serialized_end=2527,
 )
 
 
 _CREATENOTEREQUEST = _descriptor.Descriptor(
-  name='CreateNoteRequest',
-  full_name='grafeas.v1.CreateNoteRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='grafeas.v1.CreateNoteRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='note_id', full_name='grafeas.v1.CreateNoteRequest.note_id', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='note', full_name='grafeas.v1.CreateNoteRequest.note', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2529,
-  serialized_end=2613,
+    name="CreateNoteRequest",
+    full_name="grafeas.v1.CreateNoteRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="grafeas.v1.CreateNoteRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="note_id",
+            full_name="grafeas.v1.CreateNoteRequest.note_id",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="note",
+            full_name="grafeas.v1.CreateNoteRequest.note",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2529,
+    serialized_end=2613,
 )
 
 
 _UPDATENOTEREQUEST = _descriptor.Descriptor(
-  name='UpdateNoteRequest',
-  full_name='grafeas.v1.UpdateNoteRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='grafeas.v1.UpdateNoteRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='note', full_name='grafeas.v1.UpdateNoteRequest.note', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='update_mask', full_name='grafeas.v1.UpdateNoteRequest.update_mask', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2615,
-  serialized_end=2729,
+    name="UpdateNoteRequest",
+    full_name="grafeas.v1.UpdateNoteRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="grafeas.v1.UpdateNoteRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="note",
+            full_name="grafeas.v1.UpdateNoteRequest.note",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="update_mask",
+            full_name="grafeas.v1.UpdateNoteRequest.update_mask",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2615,
+    serialized_end=2729,
 )
 
 
 _LISTNOTEOCCURRENCESREQUEST = _descriptor.Descriptor(
-  name='ListNoteOccurrencesRequest',
-  full_name='grafeas.v1.ListNoteOccurrencesRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='grafeas.v1.ListNoteOccurrencesRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='filter', full_name='grafeas.v1.ListNoteOccurrencesRequest.filter', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_size', full_name='grafeas.v1.ListNoteOccurrencesRequest.page_size', index=2,
-      number=3, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_token', full_name='grafeas.v1.ListNoteOccurrencesRequest.page_token', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2731,
-  serialized_end=2828,
+    name="ListNoteOccurrencesRequest",
+    full_name="grafeas.v1.ListNoteOccurrencesRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="grafeas.v1.ListNoteOccurrencesRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="filter",
+            full_name="grafeas.v1.ListNoteOccurrencesRequest.filter",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_size",
+            full_name="grafeas.v1.ListNoteOccurrencesRequest.page_size",
+            index=2,
+            number=3,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_token",
+            full_name="grafeas.v1.ListNoteOccurrencesRequest.page_token",
+            index=3,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2731,
+    serialized_end=2828,
 )
 
 
 _LISTNOTEOCCURRENCESRESPONSE = _descriptor.Descriptor(
-  name='ListNoteOccurrencesResponse',
-  full_name='grafeas.v1.ListNoteOccurrencesResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='occurrences', full_name='grafeas.v1.ListNoteOccurrencesResponse.occurrences', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='next_page_token', full_name='grafeas.v1.ListNoteOccurrencesResponse.next_page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2830,
-  serialized_end=2929,
+    name="ListNoteOccurrencesResponse",
+    full_name="grafeas.v1.ListNoteOccurrencesResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="occurrences",
+            full_name="grafeas.v1.ListNoteOccurrencesResponse.occurrences",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="next_page_token",
+            full_name="grafeas.v1.ListNoteOccurrencesResponse.next_page_token",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2830,
+    serialized_end=2929,
 )
 
 
 _BATCHCREATENOTESREQUEST_NOTESENTRY = _descriptor.Descriptor(
-  name='NotesEntry',
-  full_name='grafeas.v1.BatchCreateNotesRequest.NotesEntry',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='key', full_name='grafeas.v1.BatchCreateNotesRequest.NotesEntry.key', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='value', full_name='grafeas.v1.BatchCreateNotesRequest.NotesEntry.value', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=_b('8\001'),
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3038,
-  serialized_end=3100,
+    name="NotesEntry",
+    full_name="grafeas.v1.BatchCreateNotesRequest.NotesEntry",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="key",
+            full_name="grafeas.v1.BatchCreateNotesRequest.NotesEntry.key",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value",
+            full_name="grafeas.v1.BatchCreateNotesRequest.NotesEntry.value",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=_b("8\001"),
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3038,
+    serialized_end=3100,
 )
 
 _BATCHCREATENOTESREQUEST = _descriptor.Descriptor(
-  name='BatchCreateNotesRequest',
-  full_name='grafeas.v1.BatchCreateNotesRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='grafeas.v1.BatchCreateNotesRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='notes', full_name='grafeas.v1.BatchCreateNotesRequest.notes', index=1,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_BATCHCREATENOTESREQUEST_NOTESENTRY, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2932,
-  serialized_end=3100,
+    name="BatchCreateNotesRequest",
+    full_name="grafeas.v1.BatchCreateNotesRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="grafeas.v1.BatchCreateNotesRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="notes",
+            full_name="grafeas.v1.BatchCreateNotesRequest.notes",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_BATCHCREATENOTESREQUEST_NOTESENTRY],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2932,
+    serialized_end=3100,
 )
 
 
 _BATCHCREATENOTESRESPONSE = _descriptor.Descriptor(
-  name='BatchCreateNotesResponse',
-  full_name='grafeas.v1.BatchCreateNotesResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='notes', full_name='grafeas.v1.BatchCreateNotesResponse.notes', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3102,
-  serialized_end=3161,
+    name="BatchCreateNotesResponse",
+    full_name="grafeas.v1.BatchCreateNotesResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="notes",
+            full_name="grafeas.v1.BatchCreateNotesResponse.notes",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3102,
+    serialized_end=3161,
 )
 
 
 _BATCHCREATEOCCURRENCESREQUEST = _descriptor.Descriptor(
-  name='BatchCreateOccurrencesRequest',
-  full_name='grafeas.v1.BatchCreateOccurrencesRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='grafeas.v1.BatchCreateOccurrencesRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='occurrences', full_name='grafeas.v1.BatchCreateOccurrencesRequest.occurrences', index=1,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3163,
-  serialized_end=3255,
+    name="BatchCreateOccurrencesRequest",
+    full_name="grafeas.v1.BatchCreateOccurrencesRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="grafeas.v1.BatchCreateOccurrencesRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="occurrences",
+            full_name="grafeas.v1.BatchCreateOccurrencesRequest.occurrences",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3163,
+    serialized_end=3255,
 )
 
 
 _BATCHCREATEOCCURRENCESRESPONSE = _descriptor.Descriptor(
-  name='BatchCreateOccurrencesResponse',
-  full_name='grafeas.v1.BatchCreateOccurrencesResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='occurrences', full_name='grafeas.v1.BatchCreateOccurrencesResponse.occurrences', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3257,
-  serialized_end=3334,
+    name="BatchCreateOccurrencesResponse",
+    full_name="grafeas.v1.BatchCreateOccurrencesResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="occurrences",
+            full_name="grafeas.v1.BatchCreateOccurrencesResponse.occurrences",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3257,
+    serialized_end=3334,
 )
 
-_OCCURRENCE.fields_by_name['kind'].enum_type = grafeas__v1_dot_proto_dot_common__pb2._NOTEKIND
-_OCCURRENCE.fields_by_name['create_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_OCCURRENCE.fields_by_name['update_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_OCCURRENCE.fields_by_name['vulnerability'].message_type = grafeas__v1_dot_proto_dot_vulnerability__pb2._VULNERABILITYOCCURRENCE
-_OCCURRENCE.fields_by_name['build'].message_type = grafeas__v1_dot_proto_dot_build__pb2._BUILDOCCURRENCE
-_OCCURRENCE.fields_by_name['image'].message_type = grafeas__v1_dot_proto_dot_image__pb2._IMAGEOCCURRENCE
-_OCCURRENCE.fields_by_name['package'].message_type = grafeas__v1_dot_proto_dot_package__pb2._PACKAGEOCCURRENCE
-_OCCURRENCE.fields_by_name['deployment'].message_type = grafeas__v1_dot_proto_dot_deployment__pb2._DEPLOYMENTOCCURRENCE
-_OCCURRENCE.fields_by_name['discovery'].message_type = grafeas__v1_dot_proto_dot_discovery__pb2._DISCOVERYOCCURRENCE
-_OCCURRENCE.fields_by_name['attestation'].message_type = grafeas__v1_dot_proto_dot_attestation__pb2._ATTESTATIONOCCURRENCE
-_OCCURRENCE.oneofs_by_name['details'].fields.append(
-  _OCCURRENCE.fields_by_name['vulnerability'])
-_OCCURRENCE.fields_by_name['vulnerability'].containing_oneof = _OCCURRENCE.oneofs_by_name['details']
-_OCCURRENCE.oneofs_by_name['details'].fields.append(
-  _OCCURRENCE.fields_by_name['build'])
-_OCCURRENCE.fields_by_name['build'].containing_oneof = _OCCURRENCE.oneofs_by_name['details']
-_OCCURRENCE.oneofs_by_name['details'].fields.append(
-  _OCCURRENCE.fields_by_name['image'])
-_OCCURRENCE.fields_by_name['image'].containing_oneof = _OCCURRENCE.oneofs_by_name['details']
-_OCCURRENCE.oneofs_by_name['details'].fields.append(
-  _OCCURRENCE.fields_by_name['package'])
-_OCCURRENCE.fields_by_name['package'].containing_oneof = _OCCURRENCE.oneofs_by_name['details']
-_OCCURRENCE.oneofs_by_name['details'].fields.append(
-  _OCCURRENCE.fields_by_name['deployment'])
-_OCCURRENCE.fields_by_name['deployment'].containing_oneof = _OCCURRENCE.oneofs_by_name['details']
-_OCCURRENCE.oneofs_by_name['details'].fields.append(
-  _OCCURRENCE.fields_by_name['discovery'])
-_OCCURRENCE.fields_by_name['discovery'].containing_oneof = _OCCURRENCE.oneofs_by_name['details']
-_OCCURRENCE.oneofs_by_name['details'].fields.append(
-  _OCCURRENCE.fields_by_name['attestation'])
-_OCCURRENCE.fields_by_name['attestation'].containing_oneof = _OCCURRENCE.oneofs_by_name['details']
-_NOTE.fields_by_name['kind'].enum_type = grafeas__v1_dot_proto_dot_common__pb2._NOTEKIND
-_NOTE.fields_by_name['related_url'].message_type = grafeas__v1_dot_proto_dot_common__pb2._RELATEDURL
-_NOTE.fields_by_name['expiration_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_NOTE.fields_by_name['create_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_NOTE.fields_by_name['update_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_NOTE.fields_by_name['vulnerability'].message_type = grafeas__v1_dot_proto_dot_vulnerability__pb2._VULNERABILITYNOTE
-_NOTE.fields_by_name['build'].message_type = grafeas__v1_dot_proto_dot_build__pb2._BUILDNOTE
-_NOTE.fields_by_name['image'].message_type = grafeas__v1_dot_proto_dot_image__pb2._IMAGENOTE
-_NOTE.fields_by_name['package'].message_type = grafeas__v1_dot_proto_dot_package__pb2._PACKAGENOTE
-_NOTE.fields_by_name['deployment'].message_type = grafeas__v1_dot_proto_dot_deployment__pb2._DEPLOYMENTNOTE
-_NOTE.fields_by_name['discovery'].message_type = grafeas__v1_dot_proto_dot_discovery__pb2._DISCOVERYNOTE
-_NOTE.fields_by_name['attestation'].message_type = grafeas__v1_dot_proto_dot_attestation__pb2._ATTESTATIONNOTE
-_NOTE.oneofs_by_name['type'].fields.append(
-  _NOTE.fields_by_name['vulnerability'])
-_NOTE.fields_by_name['vulnerability'].containing_oneof = _NOTE.oneofs_by_name['type']
-_NOTE.oneofs_by_name['type'].fields.append(
-  _NOTE.fields_by_name['build'])
-_NOTE.fields_by_name['build'].containing_oneof = _NOTE.oneofs_by_name['type']
-_NOTE.oneofs_by_name['type'].fields.append(
-  _NOTE.fields_by_name['image'])
-_NOTE.fields_by_name['image'].containing_oneof = _NOTE.oneofs_by_name['type']
-_NOTE.oneofs_by_name['type'].fields.append(
-  _NOTE.fields_by_name['package'])
-_NOTE.fields_by_name['package'].containing_oneof = _NOTE.oneofs_by_name['type']
-_NOTE.oneofs_by_name['type'].fields.append(
-  _NOTE.fields_by_name['deployment'])
-_NOTE.fields_by_name['deployment'].containing_oneof = _NOTE.oneofs_by_name['type']
-_NOTE.oneofs_by_name['type'].fields.append(
-  _NOTE.fields_by_name['discovery'])
-_NOTE.fields_by_name['discovery'].containing_oneof = _NOTE.oneofs_by_name['type']
-_NOTE.oneofs_by_name['type'].fields.append(
-  _NOTE.fields_by_name['attestation'])
-_NOTE.fields_by_name['attestation'].containing_oneof = _NOTE.oneofs_by_name['type']
-_LISTOCCURRENCESRESPONSE.fields_by_name['occurrences'].message_type = _OCCURRENCE
-_CREATEOCCURRENCEREQUEST.fields_by_name['occurrence'].message_type = _OCCURRENCE
-_UPDATEOCCURRENCEREQUEST.fields_by_name['occurrence'].message_type = _OCCURRENCE
-_UPDATEOCCURRENCEREQUEST.fields_by_name['update_mask'].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
-_LISTNOTESRESPONSE.fields_by_name['notes'].message_type = _NOTE
-_CREATENOTEREQUEST.fields_by_name['note'].message_type = _NOTE
-_UPDATENOTEREQUEST.fields_by_name['note'].message_type = _NOTE
-_UPDATENOTEREQUEST.fields_by_name['update_mask'].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
-_LISTNOTEOCCURRENCESRESPONSE.fields_by_name['occurrences'].message_type = _OCCURRENCE
-_BATCHCREATENOTESREQUEST_NOTESENTRY.fields_by_name['value'].message_type = _NOTE
+_OCCURRENCE.fields_by_name[
+    "kind"
+].enum_type = grafeas__v1_dot_proto_dot_common__pb2._NOTEKIND
+_OCCURRENCE.fields_by_name[
+    "create_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_OCCURRENCE.fields_by_name[
+    "update_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_OCCURRENCE.fields_by_name[
+    "vulnerability"
+].message_type = grafeas__v1_dot_proto_dot_vulnerability__pb2._VULNERABILITYOCCURRENCE
+_OCCURRENCE.fields_by_name[
+    "build"
+].message_type = grafeas__v1_dot_proto_dot_build__pb2._BUILDOCCURRENCE
+_OCCURRENCE.fields_by_name[
+    "image"
+].message_type = grafeas__v1_dot_proto_dot_image__pb2._IMAGEOCCURRENCE
+_OCCURRENCE.fields_by_name[
+    "package"
+].message_type = grafeas__v1_dot_proto_dot_package__pb2._PACKAGEOCCURRENCE
+_OCCURRENCE.fields_by_name[
+    "deployment"
+].message_type = grafeas__v1_dot_proto_dot_deployment__pb2._DEPLOYMENTOCCURRENCE
+_OCCURRENCE.fields_by_name[
+    "discovery"
+].message_type = grafeas__v1_dot_proto_dot_discovery__pb2._DISCOVERYOCCURRENCE
+_OCCURRENCE.fields_by_name[
+    "attestation"
+].message_type = grafeas__v1_dot_proto_dot_attestation__pb2._ATTESTATIONOCCURRENCE
+_OCCURRENCE.oneofs_by_name["details"].fields.append(
+    _OCCURRENCE.fields_by_name["vulnerability"]
+)
+_OCCURRENCE.fields_by_name[
+    "vulnerability"
+].containing_oneof = _OCCURRENCE.oneofs_by_name["details"]
+_OCCURRENCE.oneofs_by_name["details"].fields.append(_OCCURRENCE.fields_by_name["build"])
+_OCCURRENCE.fields_by_name["build"].containing_oneof = _OCCURRENCE.oneofs_by_name[
+    "details"
+]
+_OCCURRENCE.oneofs_by_name["details"].fields.append(_OCCURRENCE.fields_by_name["image"])
+_OCCURRENCE.fields_by_name["image"].containing_oneof = _OCCURRENCE.oneofs_by_name[
+    "details"
+]
+_OCCURRENCE.oneofs_by_name["details"].fields.append(
+    _OCCURRENCE.fields_by_name["package"]
+)
+_OCCURRENCE.fields_by_name["package"].containing_oneof = _OCCURRENCE.oneofs_by_name[
+    "details"
+]
+_OCCURRENCE.oneofs_by_name["details"].fields.append(
+    _OCCURRENCE.fields_by_name["deployment"]
+)
+_OCCURRENCE.fields_by_name["deployment"].containing_oneof = _OCCURRENCE.oneofs_by_name[
+    "details"
+]
+_OCCURRENCE.oneofs_by_name["details"].fields.append(
+    _OCCURRENCE.fields_by_name["discovery"]
+)
+_OCCURRENCE.fields_by_name["discovery"].containing_oneof = _OCCURRENCE.oneofs_by_name[
+    "details"
+]
+_OCCURRENCE.oneofs_by_name["details"].fields.append(
+    _OCCURRENCE.fields_by_name["attestation"]
+)
+_OCCURRENCE.fields_by_name["attestation"].containing_oneof = _OCCURRENCE.oneofs_by_name[
+    "details"
+]
+_NOTE.fields_by_name["kind"].enum_type = grafeas__v1_dot_proto_dot_common__pb2._NOTEKIND
+_NOTE.fields_by_name[
+    "related_url"
+].message_type = grafeas__v1_dot_proto_dot_common__pb2._RELATEDURL
+_NOTE.fields_by_name[
+    "expiration_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_NOTE.fields_by_name[
+    "create_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_NOTE.fields_by_name[
+    "update_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_NOTE.fields_by_name[
+    "vulnerability"
+].message_type = grafeas__v1_dot_proto_dot_vulnerability__pb2._VULNERABILITYNOTE
+_NOTE.fields_by_name[
+    "build"
+].message_type = grafeas__v1_dot_proto_dot_build__pb2._BUILDNOTE
+_NOTE.fields_by_name[
+    "image"
+].message_type = grafeas__v1_dot_proto_dot_image__pb2._IMAGENOTE
+_NOTE.fields_by_name[
+    "package"
+].message_type = grafeas__v1_dot_proto_dot_package__pb2._PACKAGENOTE
+_NOTE.fields_by_name[
+    "deployment"
+].message_type = grafeas__v1_dot_proto_dot_deployment__pb2._DEPLOYMENTNOTE
+_NOTE.fields_by_name[
+    "discovery"
+].message_type = grafeas__v1_dot_proto_dot_discovery__pb2._DISCOVERYNOTE
+_NOTE.fields_by_name[
+    "attestation"
+].message_type = grafeas__v1_dot_proto_dot_attestation__pb2._ATTESTATIONNOTE
+_NOTE.oneofs_by_name["type"].fields.append(_NOTE.fields_by_name["vulnerability"])
+_NOTE.fields_by_name["vulnerability"].containing_oneof = _NOTE.oneofs_by_name["type"]
+_NOTE.oneofs_by_name["type"].fields.append(_NOTE.fields_by_name["build"])
+_NOTE.fields_by_name["build"].containing_oneof = _NOTE.oneofs_by_name["type"]
+_NOTE.oneofs_by_name["type"].fields.append(_NOTE.fields_by_name["image"])
+_NOTE.fields_by_name["image"].containing_oneof = _NOTE.oneofs_by_name["type"]
+_NOTE.oneofs_by_name["type"].fields.append(_NOTE.fields_by_name["package"])
+_NOTE.fields_by_name["package"].containing_oneof = _NOTE.oneofs_by_name["type"]
+_NOTE.oneofs_by_name["type"].fields.append(_NOTE.fields_by_name["deployment"])
+_NOTE.fields_by_name["deployment"].containing_oneof = _NOTE.oneofs_by_name["type"]
+_NOTE.oneofs_by_name["type"].fields.append(_NOTE.fields_by_name["discovery"])
+_NOTE.fields_by_name["discovery"].containing_oneof = _NOTE.oneofs_by_name["type"]
+_NOTE.oneofs_by_name["type"].fields.append(_NOTE.fields_by_name["attestation"])
+_NOTE.fields_by_name["attestation"].containing_oneof = _NOTE.oneofs_by_name["type"]
+_LISTOCCURRENCESRESPONSE.fields_by_name["occurrences"].message_type = _OCCURRENCE
+_CREATEOCCURRENCEREQUEST.fields_by_name["occurrence"].message_type = _OCCURRENCE
+_UPDATEOCCURRENCEREQUEST.fields_by_name["occurrence"].message_type = _OCCURRENCE
+_UPDATEOCCURRENCEREQUEST.fields_by_name[
+    "update_mask"
+].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
+_LISTNOTESRESPONSE.fields_by_name["notes"].message_type = _NOTE
+_CREATENOTEREQUEST.fields_by_name["note"].message_type = _NOTE
+_UPDATENOTEREQUEST.fields_by_name["note"].message_type = _NOTE
+_UPDATENOTEREQUEST.fields_by_name[
+    "update_mask"
+].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
+_LISTNOTEOCCURRENCESRESPONSE.fields_by_name["occurrences"].message_type = _OCCURRENCE
+_BATCHCREATENOTESREQUEST_NOTESENTRY.fields_by_name["value"].message_type = _NOTE
 _BATCHCREATENOTESREQUEST_NOTESENTRY.containing_type = _BATCHCREATENOTESREQUEST
-_BATCHCREATENOTESREQUEST.fields_by_name['notes'].message_type = _BATCHCREATENOTESREQUEST_NOTESENTRY
-_BATCHCREATENOTESRESPONSE.fields_by_name['notes'].message_type = _NOTE
-_BATCHCREATEOCCURRENCESREQUEST.fields_by_name['occurrences'].message_type = _OCCURRENCE
-_BATCHCREATEOCCURRENCESRESPONSE.fields_by_name['occurrences'].message_type = _OCCURRENCE
-DESCRIPTOR.message_types_by_name['Occurrence'] = _OCCURRENCE
-DESCRIPTOR.message_types_by_name['Note'] = _NOTE
-DESCRIPTOR.message_types_by_name['GetOccurrenceRequest'] = _GETOCCURRENCEREQUEST
-DESCRIPTOR.message_types_by_name['ListOccurrencesRequest'] = _LISTOCCURRENCESREQUEST
-DESCRIPTOR.message_types_by_name['ListOccurrencesResponse'] = _LISTOCCURRENCESRESPONSE
-DESCRIPTOR.message_types_by_name['DeleteOccurrenceRequest'] = _DELETEOCCURRENCEREQUEST
-DESCRIPTOR.message_types_by_name['CreateOccurrenceRequest'] = _CREATEOCCURRENCEREQUEST
-DESCRIPTOR.message_types_by_name['UpdateOccurrenceRequest'] = _UPDATEOCCURRENCEREQUEST
-DESCRIPTOR.message_types_by_name['GetNoteRequest'] = _GETNOTEREQUEST
-DESCRIPTOR.message_types_by_name['GetOccurrenceNoteRequest'] = _GETOCCURRENCENOTEREQUEST
-DESCRIPTOR.message_types_by_name['ListNotesRequest'] = _LISTNOTESREQUEST
-DESCRIPTOR.message_types_by_name['ListNotesResponse'] = _LISTNOTESRESPONSE
-DESCRIPTOR.message_types_by_name['DeleteNoteRequest'] = _DELETENOTEREQUEST
-DESCRIPTOR.message_types_by_name['CreateNoteRequest'] = _CREATENOTEREQUEST
-DESCRIPTOR.message_types_by_name['UpdateNoteRequest'] = _UPDATENOTEREQUEST
-DESCRIPTOR.message_types_by_name['ListNoteOccurrencesRequest'] = _LISTNOTEOCCURRENCESREQUEST
-DESCRIPTOR.message_types_by_name['ListNoteOccurrencesResponse'] = _LISTNOTEOCCURRENCESRESPONSE
-DESCRIPTOR.message_types_by_name['BatchCreateNotesRequest'] = _BATCHCREATENOTESREQUEST
-DESCRIPTOR.message_types_by_name['BatchCreateNotesResponse'] = _BATCHCREATENOTESRESPONSE
-DESCRIPTOR.message_types_by_name['BatchCreateOccurrencesRequest'] = _BATCHCREATEOCCURRENCESREQUEST
-DESCRIPTOR.message_types_by_name['BatchCreateOccurrencesResponse'] = _BATCHCREATEOCCURRENCESRESPONSE
+_BATCHCREATENOTESREQUEST.fields_by_name[
+    "notes"
+].message_type = _BATCHCREATENOTESREQUEST_NOTESENTRY
+_BATCHCREATENOTESRESPONSE.fields_by_name["notes"].message_type = _NOTE
+_BATCHCREATEOCCURRENCESREQUEST.fields_by_name["occurrences"].message_type = _OCCURRENCE
+_BATCHCREATEOCCURRENCESRESPONSE.fields_by_name["occurrences"].message_type = _OCCURRENCE
+DESCRIPTOR.message_types_by_name["Occurrence"] = _OCCURRENCE
+DESCRIPTOR.message_types_by_name["Note"] = _NOTE
+DESCRIPTOR.message_types_by_name["GetOccurrenceRequest"] = _GETOCCURRENCEREQUEST
+DESCRIPTOR.message_types_by_name["ListOccurrencesRequest"] = _LISTOCCURRENCESREQUEST
+DESCRIPTOR.message_types_by_name["ListOccurrencesResponse"] = _LISTOCCURRENCESRESPONSE
+DESCRIPTOR.message_types_by_name["DeleteOccurrenceRequest"] = _DELETEOCCURRENCEREQUEST
+DESCRIPTOR.message_types_by_name["CreateOccurrenceRequest"] = _CREATEOCCURRENCEREQUEST
+DESCRIPTOR.message_types_by_name["UpdateOccurrenceRequest"] = _UPDATEOCCURRENCEREQUEST
+DESCRIPTOR.message_types_by_name["GetNoteRequest"] = _GETNOTEREQUEST
+DESCRIPTOR.message_types_by_name["GetOccurrenceNoteRequest"] = _GETOCCURRENCENOTEREQUEST
+DESCRIPTOR.message_types_by_name["ListNotesRequest"] = _LISTNOTESREQUEST
+DESCRIPTOR.message_types_by_name["ListNotesResponse"] = _LISTNOTESRESPONSE
+DESCRIPTOR.message_types_by_name["DeleteNoteRequest"] = _DELETENOTEREQUEST
+DESCRIPTOR.message_types_by_name["CreateNoteRequest"] = _CREATENOTEREQUEST
+DESCRIPTOR.message_types_by_name["UpdateNoteRequest"] = _UPDATENOTEREQUEST
+DESCRIPTOR.message_types_by_name[
+    "ListNoteOccurrencesRequest"
+] = _LISTNOTEOCCURRENCESREQUEST
+DESCRIPTOR.message_types_by_name[
+    "ListNoteOccurrencesResponse"
+] = _LISTNOTEOCCURRENCESRESPONSE
+DESCRIPTOR.message_types_by_name["BatchCreateNotesRequest"] = _BATCHCREATENOTESREQUEST
+DESCRIPTOR.message_types_by_name["BatchCreateNotesResponse"] = _BATCHCREATENOTESRESPONSE
+DESCRIPTOR.message_types_by_name[
+    "BatchCreateOccurrencesRequest"
+] = _BATCHCREATEOCCURRENCESREQUEST
+DESCRIPTOR.message_types_by_name[
+    "BatchCreateOccurrencesResponse"
+] = _BATCHCREATEOCCURRENCESRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-Occurrence = _reflection.GeneratedProtocolMessageType('Occurrence', (_message.Message,), dict(
-  DESCRIPTOR = _OCCURRENCE,
-  __module__ = 'grafeas_v1.proto.grafeas_pb2'
-  ,
-  __doc__ = """An instance of an analysis type that has been found on a resource.
+Occurrence = _reflection.GeneratedProtocolMessageType(
+    "Occurrence",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_OCCURRENCE,
+        __module__="grafeas_v1.proto.grafeas_pb2",
+        __doc__="""An instance of an analysis type that has been found on a resource.
   
   
   Attributes:
@@ -1228,15 +2062,18 @@ Occurrence = _reflection.GeneratedProtocolMessageType('Occurrence', (_message.Me
       attestation:
           Describes an attestation of an artifact.
   """,
-  # @@protoc_insertion_point(class_scope:grafeas.v1.Occurrence)
-  ))
+        # @@protoc_insertion_point(class_scope:grafeas.v1.Occurrence)
+    ),
+)
 _sym_db.RegisterMessage(Occurrence)
 
-Note = _reflection.GeneratedProtocolMessageType('Note', (_message.Message,), dict(
-  DESCRIPTOR = _NOTE,
-  __module__ = 'grafeas_v1.proto.grafeas_pb2'
-  ,
-  __doc__ = """A type of analysis that can be done for a resource.
+Note = _reflection.GeneratedProtocolMessageType(
+    "Note",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_NOTE,
+        __module__="grafeas_v1.proto.grafeas_pb2",
+        __doc__="""A type of analysis that can be done for a resource.
   
   
   Attributes:
@@ -1282,15 +2119,18 @@ Note = _reflection.GeneratedProtocolMessageType('Note', (_message.Message,), dic
       attestation:
           A note describing an attestation role.
   """,
-  # @@protoc_insertion_point(class_scope:grafeas.v1.Note)
-  ))
+        # @@protoc_insertion_point(class_scope:grafeas.v1.Note)
+    ),
+)
 _sym_db.RegisterMessage(Note)
 
-GetOccurrenceRequest = _reflection.GeneratedProtocolMessageType('GetOccurrenceRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETOCCURRENCEREQUEST,
-  __module__ = 'grafeas_v1.proto.grafeas_pb2'
-  ,
-  __doc__ = """Request to get an occurrence.
+GetOccurrenceRequest = _reflection.GeneratedProtocolMessageType(
+    "GetOccurrenceRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GETOCCURRENCEREQUEST,
+        __module__="grafeas_v1.proto.grafeas_pb2",
+        __doc__="""Request to get an occurrence.
   
   
   Attributes:
@@ -1298,15 +2138,18 @@ GetOccurrenceRequest = _reflection.GeneratedProtocolMessageType('GetOccurrenceRe
           The name of the occurrence in the form of
           ``projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]``.
   """,
-  # @@protoc_insertion_point(class_scope:grafeas.v1.GetOccurrenceRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:grafeas.v1.GetOccurrenceRequest)
+    ),
+)
 _sym_db.RegisterMessage(GetOccurrenceRequest)
 
-ListOccurrencesRequest = _reflection.GeneratedProtocolMessageType('ListOccurrencesRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTOCCURRENCESREQUEST,
-  __module__ = 'grafeas_v1.proto.grafeas_pb2'
-  ,
-  __doc__ = """Request to list occurrences.
+ListOccurrencesRequest = _reflection.GeneratedProtocolMessageType(
+    "ListOccurrencesRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTOCCURRENCESREQUEST,
+        __module__="grafeas_v1.proto.grafeas_pb2",
+        __doc__="""Request to list occurrences.
   
   
   Attributes:
@@ -1322,15 +2165,18 @@ ListOccurrencesRequest = _reflection.GeneratedProtocolMessageType('ListOccurrenc
       page_token:
           Token to provide to skip to a particular spot in the list.
   """,
-  # @@protoc_insertion_point(class_scope:grafeas.v1.ListOccurrencesRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:grafeas.v1.ListOccurrencesRequest)
+    ),
+)
 _sym_db.RegisterMessage(ListOccurrencesRequest)
 
-ListOccurrencesResponse = _reflection.GeneratedProtocolMessageType('ListOccurrencesResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTOCCURRENCESRESPONSE,
-  __module__ = 'grafeas_v1.proto.grafeas_pb2'
-  ,
-  __doc__ = """Response for listing occurrences.
+ListOccurrencesResponse = _reflection.GeneratedProtocolMessageType(
+    "ListOccurrencesResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTOCCURRENCESRESPONSE,
+        __module__="grafeas_v1.proto.grafeas_pb2",
+        __doc__="""Response for listing occurrences.
   
   
   Attributes:
@@ -1341,15 +2187,18 @@ ListOccurrencesResponse = _reflection.GeneratedProtocolMessageType('ListOccurren
           used as ``page_token`` for the following request. An empty
           value means no more results.
   """,
-  # @@protoc_insertion_point(class_scope:grafeas.v1.ListOccurrencesResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:grafeas.v1.ListOccurrencesResponse)
+    ),
+)
 _sym_db.RegisterMessage(ListOccurrencesResponse)
 
-DeleteOccurrenceRequest = _reflection.GeneratedProtocolMessageType('DeleteOccurrenceRequest', (_message.Message,), dict(
-  DESCRIPTOR = _DELETEOCCURRENCEREQUEST,
-  __module__ = 'grafeas_v1.proto.grafeas_pb2'
-  ,
-  __doc__ = """Request to delete a occurrence.
+DeleteOccurrenceRequest = _reflection.GeneratedProtocolMessageType(
+    "DeleteOccurrenceRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_DELETEOCCURRENCEREQUEST,
+        __module__="grafeas_v1.proto.grafeas_pb2",
+        __doc__="""Request to delete a occurrence.
   
   
   Attributes:
@@ -1357,15 +2206,18 @@ DeleteOccurrenceRequest = _reflection.GeneratedProtocolMessageType('DeleteOccurr
           The name of the occurrence in the form of
           ``projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]``.
   """,
-  # @@protoc_insertion_point(class_scope:grafeas.v1.DeleteOccurrenceRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:grafeas.v1.DeleteOccurrenceRequest)
+    ),
+)
 _sym_db.RegisterMessage(DeleteOccurrenceRequest)
 
-CreateOccurrenceRequest = _reflection.GeneratedProtocolMessageType('CreateOccurrenceRequest', (_message.Message,), dict(
-  DESCRIPTOR = _CREATEOCCURRENCEREQUEST,
-  __module__ = 'grafeas_v1.proto.grafeas_pb2'
-  ,
-  __doc__ = """Request to create a new occurrence.
+CreateOccurrenceRequest = _reflection.GeneratedProtocolMessageType(
+    "CreateOccurrenceRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_CREATEOCCURRENCEREQUEST,
+        __module__="grafeas_v1.proto.grafeas_pb2",
+        __doc__="""Request to create a new occurrence.
   
   
   Attributes:
@@ -1376,15 +2228,18 @@ CreateOccurrenceRequest = _reflection.GeneratedProtocolMessageType('CreateOccurr
       occurrence:
           The occurrence to create.
   """,
-  # @@protoc_insertion_point(class_scope:grafeas.v1.CreateOccurrenceRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:grafeas.v1.CreateOccurrenceRequest)
+    ),
+)
 _sym_db.RegisterMessage(CreateOccurrenceRequest)
 
-UpdateOccurrenceRequest = _reflection.GeneratedProtocolMessageType('UpdateOccurrenceRequest', (_message.Message,), dict(
-  DESCRIPTOR = _UPDATEOCCURRENCEREQUEST,
-  __module__ = 'grafeas_v1.proto.grafeas_pb2'
-  ,
-  __doc__ = """Request to update an occurrence.
+UpdateOccurrenceRequest = _reflection.GeneratedProtocolMessageType(
+    "UpdateOccurrenceRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_UPDATEOCCURRENCEREQUEST,
+        __module__="grafeas_v1.proto.grafeas_pb2",
+        __doc__="""Request to update an occurrence.
   
   
   Attributes:
@@ -1396,15 +2251,18 @@ UpdateOccurrenceRequest = _reflection.GeneratedProtocolMessageType('UpdateOccurr
       update_mask:
           The fields to update.
   """,
-  # @@protoc_insertion_point(class_scope:grafeas.v1.UpdateOccurrenceRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:grafeas.v1.UpdateOccurrenceRequest)
+    ),
+)
 _sym_db.RegisterMessage(UpdateOccurrenceRequest)
 
-GetNoteRequest = _reflection.GeneratedProtocolMessageType('GetNoteRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETNOTEREQUEST,
-  __module__ = 'grafeas_v1.proto.grafeas_pb2'
-  ,
-  __doc__ = """Request to get a note.
+GetNoteRequest = _reflection.GeneratedProtocolMessageType(
+    "GetNoteRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GETNOTEREQUEST,
+        __module__="grafeas_v1.proto.grafeas_pb2",
+        __doc__="""Request to get a note.
   
   
   Attributes:
@@ -1412,15 +2270,18 @@ GetNoteRequest = _reflection.GeneratedProtocolMessageType('GetNoteRequest', (_me
           The name of the note in the form of
           ``projects/[PROVIDER_ID]/notes/[NOTE_ID]``.
   """,
-  # @@protoc_insertion_point(class_scope:grafeas.v1.GetNoteRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:grafeas.v1.GetNoteRequest)
+    ),
+)
 _sym_db.RegisterMessage(GetNoteRequest)
 
-GetOccurrenceNoteRequest = _reflection.GeneratedProtocolMessageType('GetOccurrenceNoteRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETOCCURRENCENOTEREQUEST,
-  __module__ = 'grafeas_v1.proto.grafeas_pb2'
-  ,
-  __doc__ = """Request to get the note to which the specified occurrence is attached.
+GetOccurrenceNoteRequest = _reflection.GeneratedProtocolMessageType(
+    "GetOccurrenceNoteRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GETOCCURRENCENOTEREQUEST,
+        __module__="grafeas_v1.proto.grafeas_pb2",
+        __doc__="""Request to get the note to which the specified occurrence is attached.
   
   
   Attributes:
@@ -1428,15 +2289,18 @@ GetOccurrenceNoteRequest = _reflection.GeneratedProtocolMessageType('GetOccurren
           The name of the occurrence in the form of
           ``projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]``.
   """,
-  # @@protoc_insertion_point(class_scope:grafeas.v1.GetOccurrenceNoteRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:grafeas.v1.GetOccurrenceNoteRequest)
+    ),
+)
 _sym_db.RegisterMessage(GetOccurrenceNoteRequest)
 
-ListNotesRequest = _reflection.GeneratedProtocolMessageType('ListNotesRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTNOTESREQUEST,
-  __module__ = 'grafeas_v1.proto.grafeas_pb2'
-  ,
-  __doc__ = """Request to list notes.
+ListNotesRequest = _reflection.GeneratedProtocolMessageType(
+    "ListNotesRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTNOTESREQUEST,
+        __module__="grafeas_v1.proto.grafeas_pb2",
+        __doc__="""Request to list notes.
   
   
   Attributes:
@@ -1452,15 +2316,18 @@ ListNotesRequest = _reflection.GeneratedProtocolMessageType('ListNotesRequest', 
       page_token:
           Token to provide to skip to a particular spot in the list.
   """,
-  # @@protoc_insertion_point(class_scope:grafeas.v1.ListNotesRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:grafeas.v1.ListNotesRequest)
+    ),
+)
 _sym_db.RegisterMessage(ListNotesRequest)
 
-ListNotesResponse = _reflection.GeneratedProtocolMessageType('ListNotesResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTNOTESRESPONSE,
-  __module__ = 'grafeas_v1.proto.grafeas_pb2'
-  ,
-  __doc__ = """Response for listing notes.
+ListNotesResponse = _reflection.GeneratedProtocolMessageType(
+    "ListNotesResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTNOTESRESPONSE,
+        __module__="grafeas_v1.proto.grafeas_pb2",
+        __doc__="""Response for listing notes.
   
   
   Attributes:
@@ -1471,15 +2338,18 @@ ListNotesResponse = _reflection.GeneratedProtocolMessageType('ListNotesResponse'
           used as ``page_token`` for the following request. An empty
           value means no more results.
   """,
-  # @@protoc_insertion_point(class_scope:grafeas.v1.ListNotesResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:grafeas.v1.ListNotesResponse)
+    ),
+)
 _sym_db.RegisterMessage(ListNotesResponse)
 
-DeleteNoteRequest = _reflection.GeneratedProtocolMessageType('DeleteNoteRequest', (_message.Message,), dict(
-  DESCRIPTOR = _DELETENOTEREQUEST,
-  __module__ = 'grafeas_v1.proto.grafeas_pb2'
-  ,
-  __doc__ = """Request to delete a note.
+DeleteNoteRequest = _reflection.GeneratedProtocolMessageType(
+    "DeleteNoteRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_DELETENOTEREQUEST,
+        __module__="grafeas_v1.proto.grafeas_pb2",
+        __doc__="""Request to delete a note.
   
   
   Attributes:
@@ -1487,15 +2357,18 @@ DeleteNoteRequest = _reflection.GeneratedProtocolMessageType('DeleteNoteRequest'
           The name of the note in the form of
           ``projects/[PROVIDER_ID]/notes/[NOTE_ID]``.
   """,
-  # @@protoc_insertion_point(class_scope:grafeas.v1.DeleteNoteRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:grafeas.v1.DeleteNoteRequest)
+    ),
+)
 _sym_db.RegisterMessage(DeleteNoteRequest)
 
-CreateNoteRequest = _reflection.GeneratedProtocolMessageType('CreateNoteRequest', (_message.Message,), dict(
-  DESCRIPTOR = _CREATENOTEREQUEST,
-  __module__ = 'grafeas_v1.proto.grafeas_pb2'
-  ,
-  __doc__ = """Request to create a new note.
+CreateNoteRequest = _reflection.GeneratedProtocolMessageType(
+    "CreateNoteRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_CREATENOTEREQUEST,
+        __module__="grafeas_v1.proto.grafeas_pb2",
+        __doc__="""Request to create a new note.
   
   
   Attributes:
@@ -1508,15 +2381,18 @@ CreateNoteRequest = _reflection.GeneratedProtocolMessageType('CreateNoteRequest'
       note:
           The note to create.
   """,
-  # @@protoc_insertion_point(class_scope:grafeas.v1.CreateNoteRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:grafeas.v1.CreateNoteRequest)
+    ),
+)
 _sym_db.RegisterMessage(CreateNoteRequest)
 
-UpdateNoteRequest = _reflection.GeneratedProtocolMessageType('UpdateNoteRequest', (_message.Message,), dict(
-  DESCRIPTOR = _UPDATENOTEREQUEST,
-  __module__ = 'grafeas_v1.proto.grafeas_pb2'
-  ,
-  __doc__ = """Request to update a note.
+UpdateNoteRequest = _reflection.GeneratedProtocolMessageType(
+    "UpdateNoteRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_UPDATENOTEREQUEST,
+        __module__="grafeas_v1.proto.grafeas_pb2",
+        __doc__="""Request to update a note.
   
   
   Attributes:
@@ -1528,15 +2404,18 @@ UpdateNoteRequest = _reflection.GeneratedProtocolMessageType('UpdateNoteRequest'
       update_mask:
           The fields to update.
   """,
-  # @@protoc_insertion_point(class_scope:grafeas.v1.UpdateNoteRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:grafeas.v1.UpdateNoteRequest)
+    ),
+)
 _sym_db.RegisterMessage(UpdateNoteRequest)
 
-ListNoteOccurrencesRequest = _reflection.GeneratedProtocolMessageType('ListNoteOccurrencesRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTNOTEOCCURRENCESREQUEST,
-  __module__ = 'grafeas_v1.proto.grafeas_pb2'
-  ,
-  __doc__ = """Request to list occurrences for a note.
+ListNoteOccurrencesRequest = _reflection.GeneratedProtocolMessageType(
+    "ListNoteOccurrencesRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTNOTEOCCURRENCESREQUEST,
+        __module__="grafeas_v1.proto.grafeas_pb2",
+        __doc__="""Request to list occurrences for a note.
   
   
   Attributes:
@@ -1550,15 +2429,18 @@ ListNoteOccurrencesRequest = _reflection.GeneratedProtocolMessageType('ListNoteO
       page_token:
           Token to provide to skip to a particular spot in the list.
   """,
-  # @@protoc_insertion_point(class_scope:grafeas.v1.ListNoteOccurrencesRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:grafeas.v1.ListNoteOccurrencesRequest)
+    ),
+)
 _sym_db.RegisterMessage(ListNoteOccurrencesRequest)
 
-ListNoteOccurrencesResponse = _reflection.GeneratedProtocolMessageType('ListNoteOccurrencesResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTNOTEOCCURRENCESRESPONSE,
-  __module__ = 'grafeas_v1.proto.grafeas_pb2'
-  ,
-  __doc__ = """Response for listing occurrences for a note.
+ListNoteOccurrencesResponse = _reflection.GeneratedProtocolMessageType(
+    "ListNoteOccurrencesResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTNOTEOCCURRENCESRESPONSE,
+        __module__="grafeas_v1.proto.grafeas_pb2",
+        __doc__="""Response for listing occurrences for a note.
   
   
   Attributes:
@@ -1567,22 +2449,27 @@ ListNoteOccurrencesResponse = _reflection.GeneratedProtocolMessageType('ListNote
       next_page_token:
           Token to provide to skip to a particular spot in the list.
   """,
-  # @@protoc_insertion_point(class_scope:grafeas.v1.ListNoteOccurrencesResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:grafeas.v1.ListNoteOccurrencesResponse)
+    ),
+)
 _sym_db.RegisterMessage(ListNoteOccurrencesResponse)
 
-BatchCreateNotesRequest = _reflection.GeneratedProtocolMessageType('BatchCreateNotesRequest', (_message.Message,), dict(
-
-  NotesEntry = _reflection.GeneratedProtocolMessageType('NotesEntry', (_message.Message,), dict(
-    DESCRIPTOR = _BATCHCREATENOTESREQUEST_NOTESENTRY,
-    __module__ = 'grafeas_v1.proto.grafeas_pb2'
-    # @@protoc_insertion_point(class_scope:grafeas.v1.BatchCreateNotesRequest.NotesEntry)
-    ))
-  ,
-  DESCRIPTOR = _BATCHCREATENOTESREQUEST,
-  __module__ = 'grafeas_v1.proto.grafeas_pb2'
-  ,
-  __doc__ = """Request to create notes in batch.
+BatchCreateNotesRequest = _reflection.GeneratedProtocolMessageType(
+    "BatchCreateNotesRequest",
+    (_message.Message,),
+    dict(
+        NotesEntry=_reflection.GeneratedProtocolMessageType(
+            "NotesEntry",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_BATCHCREATENOTESREQUEST_NOTESENTRY,
+                __module__="grafeas_v1.proto.grafeas_pb2"
+                # @@protoc_insertion_point(class_scope:grafeas.v1.BatchCreateNotesRequest.NotesEntry)
+            ),
+        ),
+        DESCRIPTOR=_BATCHCREATENOTESREQUEST,
+        __module__="grafeas_v1.proto.grafeas_pb2",
+        __doc__="""Request to create notes in batch.
   
   
   Attributes:
@@ -1593,31 +2480,37 @@ BatchCreateNotesRequest = _reflection.GeneratedProtocolMessageType('BatchCreateN
       notes:
           The notes to create. Max allowed length is 1000.
   """,
-  # @@protoc_insertion_point(class_scope:grafeas.v1.BatchCreateNotesRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:grafeas.v1.BatchCreateNotesRequest)
+    ),
+)
 _sym_db.RegisterMessage(BatchCreateNotesRequest)
 _sym_db.RegisterMessage(BatchCreateNotesRequest.NotesEntry)
 
-BatchCreateNotesResponse = _reflection.GeneratedProtocolMessageType('BatchCreateNotesResponse', (_message.Message,), dict(
-  DESCRIPTOR = _BATCHCREATENOTESRESPONSE,
-  __module__ = 'grafeas_v1.proto.grafeas_pb2'
-  ,
-  __doc__ = """Response for creating notes in batch.
+BatchCreateNotesResponse = _reflection.GeneratedProtocolMessageType(
+    "BatchCreateNotesResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_BATCHCREATENOTESRESPONSE,
+        __module__="grafeas_v1.proto.grafeas_pb2",
+        __doc__="""Response for creating notes in batch.
   
   
   Attributes:
       notes:
           The notes that were created.
   """,
-  # @@protoc_insertion_point(class_scope:grafeas.v1.BatchCreateNotesResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:grafeas.v1.BatchCreateNotesResponse)
+    ),
+)
 _sym_db.RegisterMessage(BatchCreateNotesResponse)
 
-BatchCreateOccurrencesRequest = _reflection.GeneratedProtocolMessageType('BatchCreateOccurrencesRequest', (_message.Message,), dict(
-  DESCRIPTOR = _BATCHCREATEOCCURRENCESREQUEST,
-  __module__ = 'grafeas_v1.proto.grafeas_pb2'
-  ,
-  __doc__ = """Request to create occurrences in batch.
+BatchCreateOccurrencesRequest = _reflection.GeneratedProtocolMessageType(
+    "BatchCreateOccurrencesRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_BATCHCREATEOCCURRENCESREQUEST,
+        __module__="grafeas_v1.proto.grafeas_pb2",
+        __doc__="""Request to create occurrences in batch.
   
   
   Attributes:
@@ -1628,23 +2521,27 @@ BatchCreateOccurrencesRequest = _reflection.GeneratedProtocolMessageType('BatchC
       occurrences:
           The occurrences to create. Max allowed length is 1000.
   """,
-  # @@protoc_insertion_point(class_scope:grafeas.v1.BatchCreateOccurrencesRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:grafeas.v1.BatchCreateOccurrencesRequest)
+    ),
+)
 _sym_db.RegisterMessage(BatchCreateOccurrencesRequest)
 
-BatchCreateOccurrencesResponse = _reflection.GeneratedProtocolMessageType('BatchCreateOccurrencesResponse', (_message.Message,), dict(
-  DESCRIPTOR = _BATCHCREATEOCCURRENCESRESPONSE,
-  __module__ = 'grafeas_v1.proto.grafeas_pb2'
-  ,
-  __doc__ = """Response for creating occurrences in batch.
+BatchCreateOccurrencesResponse = _reflection.GeneratedProtocolMessageType(
+    "BatchCreateOccurrencesResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_BATCHCREATEOCCURRENCESRESPONSE,
+        __module__="grafeas_v1.proto.grafeas_pb2",
+        __doc__="""Response for creating occurrences in batch.
   
   
   Attributes:
       occurrences:
           The occurrences that were created.
   """,
-  # @@protoc_insertion_point(class_scope:grafeas.v1.BatchCreateOccurrencesResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:grafeas.v1.BatchCreateOccurrencesResponse)
+    ),
+)
 _sym_db.RegisterMessage(BatchCreateOccurrencesResponse)
 
 
@@ -1652,143 +2549,172 @@ DESCRIPTOR._options = None
 _BATCHCREATENOTESREQUEST_NOTESENTRY._options = None
 
 _GRAFEAS = _descriptor.ServiceDescriptor(
-  name='Grafeas',
-  full_name='grafeas.v1.Grafeas',
-  file=DESCRIPTOR,
-  index=0,
-  serialized_options=None,
-  serialized_start=3337,
-  serialized_end=5149,
-  methods=[
-  _descriptor.MethodDescriptor(
-    name='GetOccurrence',
-    full_name='grafeas.v1.Grafeas.GetOccurrence',
+    name="Grafeas",
+    full_name="grafeas.v1.Grafeas",
+    file=DESCRIPTOR,
     index=0,
-    containing_service=None,
-    input_type=_GETOCCURRENCEREQUEST,
-    output_type=_OCCURRENCE,
-    serialized_options=_b('\202\323\344\223\002%\022#/v1/{name=projects/*/occurrences/*}'),
-  ),
-  _descriptor.MethodDescriptor(
-    name='ListOccurrences',
-    full_name='grafeas.v1.Grafeas.ListOccurrences',
-    index=1,
-    containing_service=None,
-    input_type=_LISTOCCURRENCESREQUEST,
-    output_type=_LISTOCCURRENCESRESPONSE,
-    serialized_options=_b('\202\323\344\223\002%\022#/v1/{parent=projects/*}/occurrences'),
-  ),
-  _descriptor.MethodDescriptor(
-    name='DeleteOccurrence',
-    full_name='grafeas.v1.Grafeas.DeleteOccurrence',
-    index=2,
-    containing_service=None,
-    input_type=_DELETEOCCURRENCEREQUEST,
-    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-    serialized_options=_b('\202\323\344\223\002%*#/v1/{name=projects/*/occurrences/*}'),
-  ),
-  _descriptor.MethodDescriptor(
-    name='CreateOccurrence',
-    full_name='grafeas.v1.Grafeas.CreateOccurrence',
-    index=3,
-    containing_service=None,
-    input_type=_CREATEOCCURRENCEREQUEST,
-    output_type=_OCCURRENCE,
-    serialized_options=_b('\202\323\344\223\0021\"#/v1/{parent=projects/*}/occurrences:\noccurrence'),
-  ),
-  _descriptor.MethodDescriptor(
-    name='BatchCreateOccurrences',
-    full_name='grafeas.v1.Grafeas.BatchCreateOccurrences',
-    index=4,
-    containing_service=None,
-    input_type=_BATCHCREATEOCCURRENCESREQUEST,
-    output_type=_BATCHCREATEOCCURRENCESRESPONSE,
-    serialized_options=_b('\202\323\344\223\0024\"//v1/{parent=projects/*}/occurrences:batchCreate:\001*'),
-  ),
-  _descriptor.MethodDescriptor(
-    name='UpdateOccurrence',
-    full_name='grafeas.v1.Grafeas.UpdateOccurrence',
-    index=5,
-    containing_service=None,
-    input_type=_UPDATEOCCURRENCEREQUEST,
-    output_type=_OCCURRENCE,
-    serialized_options=_b('\202\323\344\223\00212#/v1/{name=projects/*/occurrences/*}:\noccurrence'),
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetOccurrenceNote',
-    full_name='grafeas.v1.Grafeas.GetOccurrenceNote',
-    index=6,
-    containing_service=None,
-    input_type=_GETOCCURRENCENOTEREQUEST,
-    output_type=_NOTE,
-    serialized_options=_b('\202\323\344\223\002+\022)/v1/{name=projects/*/occurrences/*}/notes'),
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetNote',
-    full_name='grafeas.v1.Grafeas.GetNote',
-    index=7,
-    containing_service=None,
-    input_type=_GETNOTEREQUEST,
-    output_type=_NOTE,
-    serialized_options=_b('\202\323\344\223\002\037\022\035/v1/{name=projects/*/notes/*}'),
-  ),
-  _descriptor.MethodDescriptor(
-    name='ListNotes',
-    full_name='grafeas.v1.Grafeas.ListNotes',
-    index=8,
-    containing_service=None,
-    input_type=_LISTNOTESREQUEST,
-    output_type=_LISTNOTESRESPONSE,
-    serialized_options=_b('\202\323\344\223\002\037\022\035/v1/{parent=projects/*}/notes'),
-  ),
-  _descriptor.MethodDescriptor(
-    name='DeleteNote',
-    full_name='grafeas.v1.Grafeas.DeleteNote',
-    index=9,
-    containing_service=None,
-    input_type=_DELETENOTEREQUEST,
-    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-    serialized_options=_b('\202\323\344\223\002\037*\035/v1/{name=projects/*/notes/*}'),
-  ),
-  _descriptor.MethodDescriptor(
-    name='CreateNote',
-    full_name='grafeas.v1.Grafeas.CreateNote',
-    index=10,
-    containing_service=None,
-    input_type=_CREATENOTEREQUEST,
-    output_type=_NOTE,
-    serialized_options=_b('\202\323\344\223\002%\"\035/v1/{parent=projects/*}/notes:\004note'),
-  ),
-  _descriptor.MethodDescriptor(
-    name='BatchCreateNotes',
-    full_name='grafeas.v1.Grafeas.BatchCreateNotes',
-    index=11,
-    containing_service=None,
-    input_type=_BATCHCREATENOTESREQUEST,
-    output_type=_BATCHCREATENOTESRESPONSE,
-    serialized_options=_b('\202\323\344\223\002.\")/v1/{parent=projects/*}/notes:batchCreate:\001*'),
-  ),
-  _descriptor.MethodDescriptor(
-    name='UpdateNote',
-    full_name='grafeas.v1.Grafeas.UpdateNote',
-    index=12,
-    containing_service=None,
-    input_type=_UPDATENOTEREQUEST,
-    output_type=_NOTE,
-    serialized_options=_b('\202\323\344\223\002%2\035/v1/{name=projects/*/notes/*}:\004note'),
-  ),
-  _descriptor.MethodDescriptor(
-    name='ListNoteOccurrences',
-    full_name='grafeas.v1.Grafeas.ListNoteOccurrences',
-    index=13,
-    containing_service=None,
-    input_type=_LISTNOTEOCCURRENCESREQUEST,
-    output_type=_LISTNOTEOCCURRENCESRESPONSE,
-    serialized_options=_b('\202\323\344\223\002+\022)/v1/{name=projects/*/notes/*}/occurrences'),
-  ),
-])
+    serialized_options=None,
+    serialized_start=3337,
+    serialized_end=5149,
+    methods=[
+        _descriptor.MethodDescriptor(
+            name="GetOccurrence",
+            full_name="grafeas.v1.Grafeas.GetOccurrence",
+            index=0,
+            containing_service=None,
+            input_type=_GETOCCURRENCEREQUEST,
+            output_type=_OCCURRENCE,
+            serialized_options=_b(
+                "\202\323\344\223\002%\022#/v1/{name=projects/*/occurrences/*}"
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="ListOccurrences",
+            full_name="grafeas.v1.Grafeas.ListOccurrences",
+            index=1,
+            containing_service=None,
+            input_type=_LISTOCCURRENCESREQUEST,
+            output_type=_LISTOCCURRENCESRESPONSE,
+            serialized_options=_b(
+                "\202\323\344\223\002%\022#/v1/{parent=projects/*}/occurrences"
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="DeleteOccurrence",
+            full_name="grafeas.v1.Grafeas.DeleteOccurrence",
+            index=2,
+            containing_service=None,
+            input_type=_DELETEOCCURRENCEREQUEST,
+            output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+            serialized_options=_b(
+                "\202\323\344\223\002%*#/v1/{name=projects/*/occurrences/*}"
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="CreateOccurrence",
+            full_name="grafeas.v1.Grafeas.CreateOccurrence",
+            index=3,
+            containing_service=None,
+            input_type=_CREATEOCCURRENCEREQUEST,
+            output_type=_OCCURRENCE,
+            serialized_options=_b(
+                '\202\323\344\223\0021"#/v1/{parent=projects/*}/occurrences:\noccurrence'
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="BatchCreateOccurrences",
+            full_name="grafeas.v1.Grafeas.BatchCreateOccurrences",
+            index=4,
+            containing_service=None,
+            input_type=_BATCHCREATEOCCURRENCESREQUEST,
+            output_type=_BATCHCREATEOCCURRENCESRESPONSE,
+            serialized_options=_b(
+                '\202\323\344\223\0024"//v1/{parent=projects/*}/occurrences:batchCreate:\001*'
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="UpdateOccurrence",
+            full_name="grafeas.v1.Grafeas.UpdateOccurrence",
+            index=5,
+            containing_service=None,
+            input_type=_UPDATEOCCURRENCEREQUEST,
+            output_type=_OCCURRENCE,
+            serialized_options=_b(
+                "\202\323\344\223\00212#/v1/{name=projects/*/occurrences/*}:\noccurrence"
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="GetOccurrenceNote",
+            full_name="grafeas.v1.Grafeas.GetOccurrenceNote",
+            index=6,
+            containing_service=None,
+            input_type=_GETOCCURRENCENOTEREQUEST,
+            output_type=_NOTE,
+            serialized_options=_b(
+                "\202\323\344\223\002+\022)/v1/{name=projects/*/occurrences/*}/notes"
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="GetNote",
+            full_name="grafeas.v1.Grafeas.GetNote",
+            index=7,
+            containing_service=None,
+            input_type=_GETNOTEREQUEST,
+            output_type=_NOTE,
+            serialized_options=_b(
+                "\202\323\344\223\002\037\022\035/v1/{name=projects/*/notes/*}"
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="ListNotes",
+            full_name="grafeas.v1.Grafeas.ListNotes",
+            index=8,
+            containing_service=None,
+            input_type=_LISTNOTESREQUEST,
+            output_type=_LISTNOTESRESPONSE,
+            serialized_options=_b(
+                "\202\323\344\223\002\037\022\035/v1/{parent=projects/*}/notes"
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="DeleteNote",
+            full_name="grafeas.v1.Grafeas.DeleteNote",
+            index=9,
+            containing_service=None,
+            input_type=_DELETENOTEREQUEST,
+            output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+            serialized_options=_b(
+                "\202\323\344\223\002\037*\035/v1/{name=projects/*/notes/*}"
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="CreateNote",
+            full_name="grafeas.v1.Grafeas.CreateNote",
+            index=10,
+            containing_service=None,
+            input_type=_CREATENOTEREQUEST,
+            output_type=_NOTE,
+            serialized_options=_b(
+                '\202\323\344\223\002%"\035/v1/{parent=projects/*}/notes:\004note'
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="BatchCreateNotes",
+            full_name="grafeas.v1.Grafeas.BatchCreateNotes",
+            index=11,
+            containing_service=None,
+            input_type=_BATCHCREATENOTESREQUEST,
+            output_type=_BATCHCREATENOTESRESPONSE,
+            serialized_options=_b(
+                '\202\323\344\223\002.")/v1/{parent=projects/*}/notes:batchCreate:\001*'
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="UpdateNote",
+            full_name="grafeas.v1.Grafeas.UpdateNote",
+            index=12,
+            containing_service=None,
+            input_type=_UPDATENOTEREQUEST,
+            output_type=_NOTE,
+            serialized_options=_b(
+                "\202\323\344\223\002%2\035/v1/{name=projects/*/notes/*}:\004note"
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="ListNoteOccurrences",
+            full_name="grafeas.v1.Grafeas.ListNoteOccurrences",
+            index=13,
+            containing_service=None,
+            input_type=_LISTNOTEOCCURRENCESREQUEST,
+            output_type=_LISTNOTEOCCURRENCESRESPONSE,
+            serialized_options=_b(
+                "\202\323\344\223\002+\022)/v1/{name=projects/*/notes/*}/occurrences"
+            ),
+        ),
+    ],
+)
 _sym_db.RegisterServiceDescriptor(_GRAFEAS)
 
-DESCRIPTOR.services_by_name['Grafeas'] = _GRAFEAS
+DESCRIPTOR.services_by_name["Grafeas"] = _GRAFEAS
 
 # @@protoc_insertion_point(module_scope)
