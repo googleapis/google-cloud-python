@@ -366,7 +366,9 @@ class Table(object):
         """
         row_set = RowSet()
         row_set.add_row_key(row_key)
-        result_iter = iter(self.read_rows(filter_=filter_, row_set=row_set, retry=retry))
+        result_iter = iter(
+            self.read_rows(filter_=filter_, row_set=row_set, retry=retry)
+        )
         row = next(result_iter, None)
         if next(result_iter, None) is not None:
             raise ValueError("More than one row was returned.")
