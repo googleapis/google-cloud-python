@@ -569,9 +569,7 @@ class TestTable(unittest.TestCase):
         from google.cloud.bigtable.table import _BigtableRetryableError
 
         credentials = _make_credentials()
-        client = self._make_client(
-            project="project-id", credentials=credentials, admin=True
-        )
+        client = self._make_client(project="project-id", credentials=credentials)
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
         custom_retry = retry.Retry(
