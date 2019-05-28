@@ -13,6 +13,8 @@
 # limitations under the License.
 
 import logging
+import threading
+import time
 import types as stdlib_types
 
 import mock
@@ -509,6 +511,50 @@ def test_close_idempotent():
     manager.close()
 
     assert scheduler.shutdown.call_count == 1
+
+
+class FakeDispatcher(object):
+    def __init__(self, manager, error_callback):
+        self._manager = manager
+        self._error_callback = error_callback
+        self._thread = None
+        self._stop = False
+
+    def start(self):
+        self._thread = threading.Thread(target=self._do_work)
+        self._thread.daemon = True
+        self._thread.start()
+
+    def stop(self):
+        self._stop = True
+        self._thread.join()
+        self._thread = None
+
+    def _do_work(self):
+        while not self._stop:
+            try:
+                self._manager.leaser.add([mock.Mock()])
+            except Exception as exc:
+                self._error_callback(exc)
+            time.sleep(0.1)
+
+        # also try to interact with the leaser after the stop flag has been set
+        try:
+            self._manager.leaser.remove([mock.Mock()])
+        except Exception as exc:
+            self._error_callback(exc)
+
+
+def test_close_no_dispatcher_error():
+    manager, _, _, _, _, _ = make_running_manager()
+    error_callback = mock.Mock(name="error_callback")
+    dispatcher = FakeDispatcher(manager=manager, error_callback=error_callback)
+    manager._dispatcher = dispatcher
+    dispatcher.start()
+
+    manager.close()
+
+    error_callback.assert_not_called()
 
 
 def test_close_callbacks():
