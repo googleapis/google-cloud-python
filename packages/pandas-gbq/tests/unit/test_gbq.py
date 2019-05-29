@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import copy
+import datetime
 from unittest import mock
 
 import numpy
@@ -477,3 +479,45 @@ def test_generate_bq_schema_deprecated():
     with pytest.warns(FutureWarning):
         df = DataFrame([[1, "two"], [3, "four"]])
         gbq.generate_bq_schema(df)
+
+
+def test_load_does_not_modify_schema_arg():
+    # Test of Issue # 277
+    df = DataFrame(
+        {
+            "field1": ["a", "b"],
+            "field2": [1, 2],
+            "field3": [datetime.date(2019, 1, 1), datetime.date(2019, 5, 1)],
+        }
+    )
+    original_schema = [
+        {"name": "field1", "type": "STRING", "mode": "REQUIRED"},
+        {"name": "field2", "type": "INTEGER"},
+        {"name": "field3", "type": "DATE"},
+    ]
+    original_schema_cp = copy.deepcopy(original_schema)
+    gbq.to_gbq(
+        df,
+        "dataset.schematest",
+        project_id="my-project",
+        table_schema=original_schema,
+        if_exists="fail",
+    )
+    assert original_schema == original_schema_cp
+
+    # Test again now that table exists - behavior will differ internally
+    # branch at if table.exists(table_id)
+    original_schema = [
+        {"name": "field1", "type": "STRING", "mode": "REQUIRED"},
+        {"name": "field2", "type": "INTEGER"},
+        {"name": "field3", "type": "DATE"},
+    ]
+    original_schema_cp = copy.deepcopy(original_schema)
+    gbq.to_gbq(
+        df,
+        "dataset.schematest",
+        project_id="my-project",
+        table_schema=original_schema,
+        if_exists="append",
+    )
+    assert original_schema == original_schema_cp

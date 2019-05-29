@@ -1,5 +1,7 @@
 """Helper methods for BigQuery schemas"""
 
+import copy
+
 
 def generate_bq_schema(dataframe, default_type="STRING"):
     """Given a passed dataframe, generate the associated Google BigQuery schema.
@@ -62,3 +64,16 @@ def update_schema(schema_old, schema_new):
             output_fields.append(field)
 
     return {"fields": output_fields}
+
+
+def add_default_nullable_mode(schema):
+    """Manually create the schema objects, adding NULLABLE mode."""
+    # Workaround for:
+    # https://github.com/GoogleCloudPlatform/google-cloud-python/issues/4456
+    #
+    # Returns a copy rather than modifying the mutable arg,
+    # per Issue #277
+    result = copy.deepcopy(schema)
+    for field in result["fields"]:
+        field.setdefault("mode", "NULLABLE")
+    return result

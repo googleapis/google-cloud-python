@@ -66,12 +66,7 @@ def load_chunks(
     if schema is None:
         schema = pandas_gbq.schema.generate_bq_schema(dataframe)
 
-    # Manually create the schema objects, adding NULLABLE mode
-    # as a workaround for
-    # https://github.com/GoogleCloudPlatform/google-cloud-python/issues/4456
-    for field in schema["fields"]:
-        if "mode" not in field:
-            field["mode"] = "NULLABLE"
+    schema = pandas_gbq.schema.add_default_nullable_mode(schema)
 
     job_config.schema = [
         bigquery.SchemaField.from_api_repr(field) for field in schema["fields"]

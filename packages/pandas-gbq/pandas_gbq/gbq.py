@@ -13,6 +13,7 @@ except ImportError:  # pragma: NO COVER
     bigquery_storage_v1beta1 = None
 
 from pandas_gbq.exceptions import AccessDenied
+import pandas_gbq.schema
 
 logger = logging.getLogger(__name__)
 
@@ -1269,12 +1270,7 @@ class _Table(GbqConnector):
         table_ref = self.client.dataset(self.dataset_id).table(table_id)
         table = Table(table_ref)
 
-        # Manually create the schema objects, adding NULLABLE mode
-        # as a workaround for
-        # https://github.com/GoogleCloudPlatform/google-cloud-python/issues/4456
-        for field in schema["fields"]:
-            if "mode" not in field:
-                field["mode"] = "NULLABLE"
+        schema = pandas_gbq.schema.add_default_nullable_mode(schema)
 
         table.schema = [
             SchemaField.from_api_repr(field) for field in schema["fields"]
