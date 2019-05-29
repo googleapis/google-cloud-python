@@ -51,9 +51,15 @@ This particular flow can be handled entirely by using
 .. _OAuth 2.0 Authorization Flow:
     https://tools.ietf.org/html/rfc6749#section-1.2
 """
-
+from base64 import urlsafe_b64encode
+import hashlib
 import json
 import logging
+try:
+    from secrets import SystemRandom
+except ImportError:  # pragma: NO COVER
+    from random import SystemRandom
+from string import ascii_letters, digits
 import webbrowser
 import wsgiref.simple_server
 import wsgiref.util
@@ -89,7 +95,7 @@ class Flow(object):
 
     def __init__(
             self, oauth2session, client_type, client_config,
-            redirect_uri=None):
+            redirect_uri=None, code_verifier=None):
         """
         Args:
             oauth2session (requests_oauthlib.OAuth2Session):
@@ -101,6 +107,8 @@ class Flow(object):
             redirect_uri (str): The OAuth 2.0 redirect URI if known at flow
                 creation time. Otherwise, it will need to be set using
                 :attr:`redirect_uri`.
+            code_verifier (str): random string of 43-128 chars used to verify
+                the key exchange.using PKCE. Auto-generated if not provided.
 
         .. _client secrets:
             https://developers.google.com/api-client-library/python/guide
@@ -113,6 +121,7 @@ class Flow(object):
         self.oauth2session = oauth2session
         """requests_oauthlib.OAuth2Session: The OAuth 2.0 session."""
         self.redirect_uri = redirect_uri
+        self.code_verifier = code_verifier
 
     @classmethod
     def from_client_config(cls, client_config, scopes, **kwargs):
@@ -208,6 +217,18 @@ class Flow(object):
                 specify the ``state`` when constructing the :class:`Flow`.
         """
         kwargs.setdefault('access_type', 'offline')
+        if not self.code_verifier:
+            chars = ascii_letters+digits+'-._~'
+            rnd = SystemRandom()
+            random_verifier = [rnd.choice(chars) for _ in range(0, 128)]
+            self.code_verifier = ''.join(random_verifier)
+        code_hash = hashlib.sha256()
+        code_hash.update(str.encode(self.code_verifier))
+        unencoded_challenge = code_hash.digest()
+        b64_challenge = urlsafe_b64encode(unencoded_challenge)
+        code_challenge = b64_challenge.decode().split('=')[0]
+        kwargs.setdefault('code_challenge', code_challenge)
+        kwargs.setdefault('code_challenge_method', 'S256')
         url, state = self.oauth2session.authorization_url(
             self.client_config['auth_uri'], **kwargs)
 
@@ -237,6 +258,7 @@ class Flow(object):
                 :class:`~google.auth.credentials.Credentials` instance.
         """
         kwargs.setdefault('client_secret', self.client_config['client_secret'])
+        kwargs.setdefault('code_verifier', self.code_verifier)
         return self.oauth2session.fetch_token(
             self.client_config['token_uri'], **kwargs)
 
