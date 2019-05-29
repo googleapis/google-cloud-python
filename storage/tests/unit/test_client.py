@@ -874,7 +874,7 @@ class TestClient(unittest.TestCase):
         uri_parts = urlparse(requested_url)
         self.assertEqual(parse_qs(uri_parts.query), expected_query)
 
-    def test_page_empty_response(self):
+    def test_list_buckets_page_empty_response(self):
         from google.api_core import page_iterator
 
         project = "PROJECT"
@@ -885,7 +885,7 @@ class TestClient(unittest.TestCase):
         iterator._page = page
         self.assertEqual(list(page), [])
 
-    def test_page_non_empty_response(self):
+    def test_list_buckets_page_non_empty_response(self):
         import six
         from google.cloud.storage.bucket import Bucket
 
@@ -908,3 +908,138 @@ class TestClient(unittest.TestCase):
         self.assertEqual(page.remaining, 0)
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, blob_name)
+
+    def test_create_hmac_key(self):
+        import datetime
+        from pytz import UTC
+        from six.moves.urllib.parse import urlencode
+        from google.cloud.storage.hmac_key import HMACKeyMetadata
+
+        PROJECT = "PROJECT"
+        ACCESS_ID = "ACCESS-ID"
+        CREDENTIALS = _make_credentials()
+        EMAIL = "storage-user-123@example.com"
+        SECRET = "a" * 40
+        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now_stamp = "{}Z".format(now.isoformat())
+        RESOURCE = {
+            "kind": "storage#hmacKey",
+            "metadata": {
+                "accessId": ACCESS_ID,
+                "etag": "ETAG",
+                "id": "projects/{}/hmacKeys/{}".format(PROJECT, ACCESS_ID),
+                "project": PROJECT,
+                "state": "ACTIVE",
+                "serviceAccountEmail": EMAIL,
+                "timeCreated": now_stamp,
+                "updated": now_stamp,
+            },
+            "secret": SECRET,
+        }
+
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
+        http = _make_requests_session([_make_json_response(RESOURCE)])
+        client._http_internal = http
+
+        metadata, secret = client.create_hmac_key(service_account_email=EMAIL)
+
+        self.assertIsInstance(metadata, HMACKeyMetadata)
+        self.assertIs(metadata._client, client)
+        self.assertEqual(metadata._properties, RESOURCE["metadata"])
+        self.assertEqual(secret, RESOURCE["secret"])
+
+        URI = "/".join(
+            [
+                client._connection.API_BASE_URL,
+                "storage",
+                client._connection.API_VERSION,
+                "projects/%s/hmacKeys",
+            ]
+        )
+        QS_PARAMS = {"serviceAccountEmail": EMAIL}
+        FULL_URI = "{}?{}".format(URI, urlencode(QS_PARAMS))
+        http.request.assert_called_once_with(
+            method="POST", url=FULL_URI, data=None, headers=mock.ANY
+        )
+
+    def test_list_hmac_keys_defaults_empty(self):
+        PROJECT = "PROJECT"
+        CREDENTIALS = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
+
+        http = _make_requests_session([_make_json_response({})])
+        client._http_internal = http
+
+        metadatas = list(client.list_hmac_keys())
+
+        self.assertEqual(len(metadatas), 0)
+
+        URI = "/".join(
+            [
+                client._connection.API_BASE_URL,
+                "storage",
+                client._connection.API_VERSION,
+                "projects/%s/hmacKeys",
+            ]
+        )
+        http.request.assert_called_once_with(
+            method="GET", url=URI, data=None, headers=mock.ANY
+        )
+
+    def test_list_hmac_keys_explicit_non_empty(self):
+        from six.moves.urllib.parse import urlencode
+        from google.cloud.storage.hmac_key import HMACKeyMetadata
+
+        PROJECT = "PROJECT"
+        MAX_RESULTS = 3
+        EMAIL = "storage-user-123@example.com"
+        ACCESS_ID = "ACCESS-ID"
+        CREDENTIALS = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
+
+        response = {
+            "kind": "storage#hmacKeysMetadata",
+            "items": [
+                {
+                    "kind": "storage#hmacKeyMetadata",
+                    "accessId": ACCESS_ID,
+                    "serviceAccountEmail": EMAIL,
+                }
+            ],
+        }
+
+        http = _make_requests_session([_make_json_response(response)])
+        client._http_internal = http
+
+        metadatas = list(
+            client.list_hmac_keys(
+                max_results=MAX_RESULTS,
+                service_account_email=EMAIL,
+                show_deleted_keys=True,
+            )
+        )
+
+        self.assertEqual(len(metadatas), len(response["items"]))
+
+        for metadata, resource in zip(metadatas, response["items"]):
+            self.assertIsInstance(metadata, HMACKeyMetadata)
+            self.assertIs(metadata._client, client)
+            self.assertEqual(metadata._properties, resource)
+
+        URI = "/".join(
+            [
+                client._connection.API_BASE_URL,
+                "storage",
+                client._connection.API_VERSION,
+                "projects/%s/hmacKeys",
+            ]
+        )
+        QS_PARAMS = {
+            "maxResults": MAX_RESULTS,
+            "serviceAccountEmail": EMAIL,
+            "showDeletedKeys": True,
+        }
+        FULL_URI = "{}?{}".format(URI, urlencode(QS_PARAMS))
+        http.request.assert_called_once_with(
+            method="GET", url=FULL_URI, data=None, headers=mock.ANY
+        )
