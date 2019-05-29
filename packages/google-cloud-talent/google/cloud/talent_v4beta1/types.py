@@ -22,6 +22,7 @@ from google.api_core.protobuf_helpers import get_messages
 
 from google.cloud.talent_v4beta1.proto import application_pb2
 from google.cloud.talent_v4beta1.proto import application_service_pb2
+from google.cloud.talent_v4beta1.proto import batch_pb2
 from google.cloud.talent_v4beta1.proto import common_pb2
 from google.cloud.talent_v4beta1.proto import company_pb2
 from google.cloud.talent_v4beta1.proto import company_service_pb2
@@ -36,11 +37,14 @@ from google.cloud.talent_v4beta1.proto import profile_pb2
 from google.cloud.talent_v4beta1.proto import profile_service_pb2
 from google.cloud.talent_v4beta1.proto import tenant_pb2
 from google.cloud.talent_v4beta1.proto import tenant_service_pb2
+from google.longrunning import operations_pb2
+from google.protobuf import any_pb2
 from google.protobuf import duration_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 from google.protobuf import timestamp_pb2
 from google.protobuf import wrappers_pb2
+from google.rpc import status_pb2
 from google.type import date_pb2
 from google.type import latlng_pb2
 from google.type import money_pb2
@@ -49,11 +53,14 @@ from google.type import timeofday_pb2
 
 
 _shared_modules = [
+    operations_pb2,
+    any_pb2,
     duration_pb2,
     empty_pb2,
     field_mask_pb2,
     timestamp_pb2,
     wrappers_pb2,
+    status_pb2,
     date_pb2,
     latlng_pb2,
     money_pb2,
@@ -64,6 +71,7 @@ _shared_modules = [
 _local_modules = [
     application_pb2,
     application_service_pb2,
+    batch_pb2,
     common_pb2,
     company_pb2,
     company_service_pb2,

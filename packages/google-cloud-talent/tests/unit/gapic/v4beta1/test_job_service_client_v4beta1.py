@@ -19,10 +19,14 @@
 import mock
 import pytest
 
+from google.rpc import status_pb2
+
 from google.cloud import talent_v4beta1
+from google.cloud.talent_v4beta1.proto import batch_pb2
 from google.cloud.talent_v4beta1.proto import common_pb2
 from google.cloud.talent_v4beta1.proto import job_pb2
 from google.cloud.talent_v4beta1.proto import job_service_pb2
+from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 
 
@@ -475,3 +479,111 @@ class TestJobServiceClient(object):
         paged_list_response = client.search_jobs_for_alert(parent, request_metadata)
         with pytest.raises(CustomException):
             list(paged_list_response)
+
+    def test_batch_create_jobs(self):
+        # Setup Expected Response
+        expected_response = {}
+        expected_response = batch_pb2.JobOperationResult(**expected_response)
+        operation = operations_pb2.Operation(
+            name="operations/test_batch_create_jobs", done=True
+        )
+        operation.response.Pack(expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = talent_v4beta1.JobServiceClient()
+
+        # Setup Request
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
+        jobs = []
+
+        response = client.batch_create_jobs(parent, jobs)
+        result = response.result()
+        assert expected_response == result
+
+        assert len(channel.requests) == 1
+        expected_request = job_service_pb2.BatchCreateJobsRequest(
+            parent=parent, jobs=jobs
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_batch_create_jobs_exception(self):
+        # Setup Response
+        error = status_pb2.Status()
+        operation = operations_pb2.Operation(
+            name="operations/test_batch_create_jobs_exception", done=True
+        )
+        operation.error.CopyFrom(error)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = talent_v4beta1.JobServiceClient()
+
+        # Setup Request
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
+        jobs = []
+
+        response = client.batch_create_jobs(parent, jobs)
+        exception = response.exception()
+        assert exception.errors[0] == error
+
+    def test_batch_update_jobs(self):
+        # Setup Expected Response
+        expected_response = {}
+        expected_response = batch_pb2.JobOperationResult(**expected_response)
+        operation = operations_pb2.Operation(
+            name="operations/test_batch_update_jobs", done=True
+        )
+        operation.response.Pack(expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = talent_v4beta1.JobServiceClient()
+
+        # Setup Request
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
+        jobs = []
+
+        response = client.batch_update_jobs(parent, jobs)
+        result = response.result()
+        assert expected_response == result
+
+        assert len(channel.requests) == 1
+        expected_request = job_service_pb2.BatchUpdateJobsRequest(
+            parent=parent, jobs=jobs
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_batch_update_jobs_exception(self):
+        # Setup Response
+        error = status_pb2.Status()
+        operation = operations_pb2.Operation(
+            name="operations/test_batch_update_jobs_exception", done=True
+        )
+        operation.error.CopyFrom(error)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = talent_v4beta1.JobServiceClient()
+
+        # Setup Request
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
+        jobs = []
+
+        response = client.batch_update_jobs(parent, jobs)
+        exception = response.exception()
+        assert exception.errors[0] == error

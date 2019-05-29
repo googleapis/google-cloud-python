@@ -486,8 +486,9 @@ CompleteQueryResponse = _reflection.GeneratedProtocolMessageType(
         type:
             The completion topic.
         image_uri:
-            The URI of the company image for
-            [CompletionType.COMPANY\_NAME][].
+            The URI of the company image for [COMPANY\_NAME][google.cloud.
+            talent.v4beta1.CompleteQueryRequest.CompletionType.COMPANY\_NA
+            ME].
     """,
                 # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.CompleteQueryResponse.CompletionResult)
             ),

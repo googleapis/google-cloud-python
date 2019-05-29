@@ -336,18 +336,17 @@ class JobLevel(enum.IntEnum):
 class JobView(enum.IntEnum):
     """
     An enum that specifies the job attributes that are returned in the
-    ``MatchingJob.Job`` in ``SearchJobsResponse`` or ``Job`` objects in
-    ``ListJobsResponse``.
+    ``MatchingJob.job`` or ``ListJobsResponse.jobs`` fields.
 
     Attributes:
       JOB_VIEW_UNSPECIFIED (int): Default value.
       JOB_VIEW_ID_ONLY (int): A ID only view of job, with following attributes: ``Job.name``,
       ``Job.requisition_id``, ``Job.language_code``.
       JOB_VIEW_MINIMAL (int): A minimal view of the job, with the following attributes: ``Job.name``,
-      ``Job.requisition_id``, ``Job.job_title``, ``Job.company``,
+      ``Job.requisition_id``, ``Job.title``, ``Job.company``,
       ``Job.DerivedInfo.locations``, ``Job.language_code``.
       JOB_VIEW_SMALL (int): A small view of the job, with the following attributes in the search
-      results: ``Job.name``, ``Job.requisition_id``, ``Job.job_title``,
+      results: ``Job.name``, ``Job.requisition_id``, ``Job.title``,
       ``Job.company``, ``Job.DerivedInfo.locations``, ``Job.visibility``,
       ``Job.language_code``, ``Job.description``.
       JOB_VIEW_FULL (int): All available attributes are included in the search results.
@@ -406,9 +405,9 @@ class PostingRegion(enum.IntEnum):
       ``LocationFilter`` in search query is in the same country as this job.
       For example, if a ``NATION_WIDE`` job is posted in "USA", it's returned
       if ``LocationFilter`` has 'Mountain View'.
-      TELECOMMUTE (int): Job allows employees to work remotely (telecommute). If ``locations``
-      are provided with this value, the job is considered as having a
-      location, but telecommuting is allowed.
+      TELECOMMUTE (int): Job allows employees to work remotely (telecommute).
+      If locations are provided with this value, the job is
+      considered as having a location, but telecommuting is allowed.
     """
 
     POSTING_REGION_UNSPECIFIED = 0
@@ -423,6 +422,7 @@ class SkillProficiencyLevel(enum.IntEnum):
 
     Attributes:
       SKILL_PROFICIENCY_LEVEL_UNSPECIFIED (int): Default value.
+      UNSKILLED (int): Lacks any proficiency in this skill.
       FUNDAMENTAL_AWARENESS (int): Have a common knowledge or an understanding of basic techniques and
       concepts.
       NOVICE (int): Have the level of experience gained in a classroom and/or experimental
@@ -435,6 +435,7 @@ class SkillProficiencyLevel(enum.IntEnum):
     """
 
     SKILL_PROFICIENCY_LEVEL_UNSPECIFIED = 0
+    UNSKILLED = 6
     FUNDAMENTAL_AWARENESS = 1
     NOVICE = 2
     INTERMEDIATE = 3
@@ -515,6 +516,32 @@ class Application(object):
         CLOSED = 5
 
 
+class BatchOperationMetadata(object):
+    class State(enum.IntEnum):
+        """
+        Attributes:
+          STATE_UNSPECIFIED (int): Default value.
+          INITIALIZING (int): The batch operation is being prepared for processing.
+          PROCESSING (int): The batch operation is actively being processed.
+          SUCCEEDED (int): The batch operation is processed, and at least one item has been
+          successfully processed.
+          FAILED (int): The batch operation is done and no item has been successfully processed.
+          CANCELLING (int): The batch operation is in the process of cancelling after
+          [google.longrunning.Operation.CancelOperation] is called.
+          CANCELLED (int): The batch operation is done after
+          [google.longrunning.Operation.CancelOperation] is called. Any items
+          processed before cancelling are returned in the response.
+        """
+
+        STATE_UNSPECIFIED = 0
+        INITIALIZING = 1
+        PROCESSING = 2
+        SUCCEEDED = 3
+        FAILED = 4
+        CANCELLING = 5
+        CANCELLED = 6
+
+
 class CommuteFilter(object):
     class RoadTraffic(enum.IntEnum):
         """
@@ -547,8 +574,8 @@ class CompensationFilter(object):
           compensation entry.
           UNIT_AND_AMOUNT (int): Filter by ``base compensation entry's`` unit and amount / range. A job
           is a match if and only if the job contains a base CompensationEntry, and
-          the base entry's unit matches provided ``compensation_units`` and amount
-          or range overlaps with provided ``compensation_range``.
+          the base entry's unit matches provided ``CompensationUnit`` and amount
+          or range overlaps with provided ``CompensationRange``.
 
           See ``CompensationInfo.CompensationEntry`` for definition of base
           compensation entry.
@@ -783,8 +810,6 @@ class JobEvent(object):
           event should only be sent if the job seeker was granted an interview as
           part of an application that was initiated by a search conducted through /
           recommendation provided by the Cloud Talent Solution service.
-          NOT_INTERESTED (int): The job seeker or other entity interacting with the service showed
-          no interest in the job.
         """
 
         JOB_EVENT_TYPE_UNSPECIFIED = 0
@@ -803,7 +828,6 @@ class JobEvent(object):
         HIRED = 13
         SENT_CV = 14
         INTERVIEW_GRANTED = 15
-        NOT_INTERESTED = 16
 
 
 class Location(object):
@@ -874,9 +898,9 @@ class Phone(object):
           VIRTUAL (int): A virtual telephone number is a number that can be routed to another
           number and managed by the user via Web, SMS, IVR, and so on. It is
           associated with a particular person, and may be routed to either a
-          MOBILE or LANDLINE number. The phone usage (see ContactInfoUsage above)
-          should be set to PERSONAL for these phone types. Some more information
-          can be found here: http://en.wikipedia.org/wiki/Personal\_Numbers
+          MOBILE or LANDLINE number. The ``phone usage`` should be set to PERSONAL
+          for these phone types. Some more information can be found here:
+          http://en.wikipedia.org/wiki/Personal\_Numbers
           VOIP (int): Voice over IP numbers. This includes TSoIP (Telephony Service over IP).
           MOBILE_OR_LANDLINE (int): In some regions (e.g. the USA), it is impossible to distinguish between
           fixed-line and mobile numbers by looking at the phone number itself.
