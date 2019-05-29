@@ -36,6 +36,7 @@ from google.cloud.talent_v4beta1.gapic.transports import profile_service_grpc_tr
 from google.cloud.talent_v4beta1.proto import application_pb2
 from google.cloud.talent_v4beta1.proto import application_service_pb2
 from google.cloud.talent_v4beta1.proto import application_service_pb2_grpc
+from google.cloud.talent_v4beta1.proto import batch_pb2
 from google.cloud.talent_v4beta1.proto import common_pb2
 from google.cloud.talent_v4beta1.proto import company_pb2
 from google.cloud.talent_v4beta1.proto import company_service_pb2
@@ -53,6 +54,7 @@ from google.cloud.talent_v4beta1.proto import job_service_pb2_grpc
 from google.cloud.talent_v4beta1.proto import profile_pb2
 from google.cloud.talent_v4beta1.proto import profile_service_pb2
 from google.cloud.talent_v4beta1.proto import profile_service_pb2_grpc
+from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
@@ -777,18 +779,18 @@ class ProfileServiceClient(object):
 
                 -  "relevance desc": By descending relevance, as determined by the API
                    algorithms.
-                -  "update\_date desc": Sort by ``Profile.update_date`` in descending
+                -  "update\_time desc": Sort by ``Profile.update_time`` in descending
                    order (recently updated profiles first).
-                -  "create\_date desc": Sort by ``Profile.create_date`` in descending
+                -  "create\_time desc": Sort by ``Profile.create_time`` in descending
                    order (recently created profiles first).
-                -  "first\_name": Sort by ``PersonStrcuturedName.given_name`` in
-                   ascending order.
-                -  "first\_name desc": Sort by ``PersonStrcuturedName.given_name`` in
-                   descending order.
-                -  "last\_name": Sort by ``PersonStrcuturedName.family_name`` in
-                   ascending order.
-                -  "last\_name desc": Sort by ``PersonStrcuturedName.family_name`` in
-                   ascending order.
+                -  "first\_name": Sort by ``PersonName.PersonStructuredName.given_name``
+                   in ascending order.
+                -  "first\_name desc": Sort by
+                   ``PersonName.PersonStructuredName.given_name`` in descending order.
+                -  "last\_name": Sort by ``PersonName.PersonStructuredName.family_name``
+                   in ascending order.
+                -  "last\_name desc": Sort by
+                   ``PersonName.PersonStructuredName.family_name`` in ascending order.
             case_sensitive_sort (bool): Optional.
 
                 When sort by field is based on alphabetical order, sort values case

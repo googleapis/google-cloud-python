@@ -14,13 +14,13 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.cloud.talent_v4beta1.proto import (
     common_pb2 as google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2,
 )
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 from google.type import postal_address_pb2 as google_dot_type_dot_postal__address__pb2
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -31,14 +31,14 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\020JobResourceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        "\n+google/cloud/talent_v4beta1/proto/job.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a google/type/postal_address.proto\x1a\x1cgoogle/api/annotations.proto\"\xa7\x0e\n\x03Job\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07\x63ompany\x18\x02 \x01(\t\x12\x16\n\x0erequisition_id\x18\x03 \x01(\t\x12\r\n\x05title\x18\x04 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x05 \x01(\t\x12\x11\n\taddresses\x18\x06 \x03(\t\x12J\n\x10\x61pplication_info\x18\x07 \x01(\x0b\x32\x30.google.cloud.talent.v4beta1.Job.ApplicationInfo\x12=\n\x0cjob_benefits\x18\x08 \x03(\x0e\x32'.google.cloud.talent.v4beta1.JobBenefit\x12H\n\x11\x63ompensation_info\x18\t \x01(\x0b\x32-.google.cloud.talent.v4beta1.CompensationInfo\x12Q\n\x11\x63ustom_attributes\x18\n \x03(\x0b\x32\x36.google.cloud.talent.v4beta1.Job.CustomAttributesEntry\x12=\n\x0c\x64\x65gree_types\x18\x0b \x03(\x0e\x32'.google.cloud.talent.v4beta1.DegreeType\x12\x12\n\ndepartment\x18\x0c \x01(\t\x12\x45\n\x10\x65mployment_types\x18\r \x03(\x0e\x32+.google.cloud.talent.v4beta1.EmploymentType\x12\x12\n\nincentives\x18\x0e \x01(\t\x12\x15\n\rlanguage_code\x18\x0f \x01(\t\x12\x38\n\tjob_level\x18\x10 \x01(\x0e\x32%.google.cloud.talent.v4beta1.JobLevel\x12\x17\n\x0fpromotion_value\x18\x11 \x01(\x05\x12\x16\n\x0equalifications\x18\x12 \x01(\t\x12\x18\n\x10responsibilities\x18\x13 \x01(\t\x12\x42\n\x0eposting_region\x18\x14 \x01(\x0e\x32*.google.cloud.talent.v4beta1.PostingRegion\x12;\n\nvisibility\x18\x15 \x01(\x0e\x32'.google.cloud.talent.v4beta1.Visibility\x12\x32\n\x0ejob_start_time\x18\x16 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x30\n\x0cjob_end_time\x18\x17 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x38\n\x14posting_publish_time\x18\x18 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x37\n\x13posting_expire_time\x18\x19 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x37\n\x13posting_create_time\x18\x1a \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x37\n\x13posting_update_time\x18\x1b \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1c\n\x14\x63ompany_display_name\x18\x1c \x01(\t\x12\x42\n\x0c\x64\x65rived_info\x18\x1d \x01(\x0b\x32,.google.cloud.talent.v4beta1.Job.DerivedInfo\x12N\n\x12processing_options\x18\x1e \x01(\x0b\x32\x32.google.cloud.talent.v4beta1.Job.ProcessingOptions\x1a\x44\n\x0f\x41pplicationInfo\x12\x0e\n\x06\x65mails\x18\x01 \x03(\t\x12\x13\n\x0binstruction\x18\x02 \x01(\t\x12\x0c\n\x04uris\x18\x03 \x03(\t\x1a\x89\x01\n\x0b\x44\x65rivedInfo\x12\x38\n\tlocations\x18\x01 \x03(\x0b\x32%.google.cloud.talent.v4beta1.Location\x12@\n\x0ejob_categories\x18\x03 \x03(\x0e\x32(.google.cloud.talent.v4beta1.JobCategory\x1a\x88\x01\n\x11ProcessingOptions\x12)\n!disable_street_address_resolution\x18\x01 \x01(\x08\x12H\n\x11html_sanitization\x18\x02 \x01(\x0e\x32-.google.cloud.talent.v4beta1.HtmlSanitization\x1a\x65\n\x15\x43ustomAttributesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12;\n\x05value\x18\x02 \x01(\x0b\x32,.google.cloud.talent.v4beta1.CustomAttribute:\x02\x38\x01\x42~\n\x1f\x63om.google.cloud.talent.v4beta1B\x10JobResourceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3"
+        "\n+google/cloud/talent_v4beta1/proto/job.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a google/type/postal_address.proto\"\xa7\x0e\n\x03Job\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07\x63ompany\x18\x02 \x01(\t\x12\x16\n\x0erequisition_id\x18\x03 \x01(\t\x12\r\n\x05title\x18\x04 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x05 \x01(\t\x12\x11\n\taddresses\x18\x06 \x03(\t\x12J\n\x10\x61pplication_info\x18\x07 \x01(\x0b\x32\x30.google.cloud.talent.v4beta1.Job.ApplicationInfo\x12=\n\x0cjob_benefits\x18\x08 \x03(\x0e\x32'.google.cloud.talent.v4beta1.JobBenefit\x12H\n\x11\x63ompensation_info\x18\t \x01(\x0b\x32-.google.cloud.talent.v4beta1.CompensationInfo\x12Q\n\x11\x63ustom_attributes\x18\n \x03(\x0b\x32\x36.google.cloud.talent.v4beta1.Job.CustomAttributesEntry\x12=\n\x0c\x64\x65gree_types\x18\x0b \x03(\x0e\x32'.google.cloud.talent.v4beta1.DegreeType\x12\x12\n\ndepartment\x18\x0c \x01(\t\x12\x45\n\x10\x65mployment_types\x18\r \x03(\x0e\x32+.google.cloud.talent.v4beta1.EmploymentType\x12\x12\n\nincentives\x18\x0e \x01(\t\x12\x15\n\rlanguage_code\x18\x0f \x01(\t\x12\x38\n\tjob_level\x18\x10 \x01(\x0e\x32%.google.cloud.talent.v4beta1.JobLevel\x12\x17\n\x0fpromotion_value\x18\x11 \x01(\x05\x12\x16\n\x0equalifications\x18\x12 \x01(\t\x12\x18\n\x10responsibilities\x18\x13 \x01(\t\x12\x42\n\x0eposting_region\x18\x14 \x01(\x0e\x32*.google.cloud.talent.v4beta1.PostingRegion\x12;\n\nvisibility\x18\x15 \x01(\x0e\x32'.google.cloud.talent.v4beta1.Visibility\x12\x32\n\x0ejob_start_time\x18\x16 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x30\n\x0cjob_end_time\x18\x17 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x38\n\x14posting_publish_time\x18\x18 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x37\n\x13posting_expire_time\x18\x19 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x37\n\x13posting_create_time\x18\x1a \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x37\n\x13posting_update_time\x18\x1b \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1c\n\x14\x63ompany_display_name\x18\x1c \x01(\t\x12\x42\n\x0c\x64\x65rived_info\x18\x1d \x01(\x0b\x32,.google.cloud.talent.v4beta1.Job.DerivedInfo\x12N\n\x12processing_options\x18\x1e \x01(\x0b\x32\x32.google.cloud.talent.v4beta1.Job.ProcessingOptions\x1a\x44\n\x0f\x41pplicationInfo\x12\x0e\n\x06\x65mails\x18\x01 \x03(\t\x12\x13\n\x0binstruction\x18\x02 \x01(\t\x12\x0c\n\x04uris\x18\x03 \x03(\t\x1a\x89\x01\n\x0b\x44\x65rivedInfo\x12\x38\n\tlocations\x18\x01 \x03(\x0b\x32%.google.cloud.talent.v4beta1.Location\x12@\n\x0ejob_categories\x18\x03 \x03(\x0e\x32(.google.cloud.talent.v4beta1.JobCategory\x1a\x88\x01\n\x11ProcessingOptions\x12)\n!disable_street_address_resolution\x18\x01 \x01(\x08\x12H\n\x11html_sanitization\x18\x02 \x01(\x0e\x32-.google.cloud.talent.v4beta1.HtmlSanitization\x1a\x65\n\x15\x43ustomAttributesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12;\n\x05value\x18\x02 \x01(\x0b\x32,.google.cloud.talent.v4beta1.CustomAttribute:\x02\x38\x01\x42~\n\x1f\x63om.google.cloud.talent.v4beta1B\x10JobResourceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3"
     ),
     dependencies=[
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,
         google_dot_type_dot_postal__address__pb2.DESCRIPTOR,
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
     ],
 )
 
@@ -1086,14 +1086,15 @@ Job = _reflection.GeneratedProtocolMessageType(
           unique [requisition\_id][google.cloud.talent.v4beta1.Job.requi
           sition\_id]s (e.g. 'ReqA' becomes 'ReqA-1', 'ReqA-2', and so
           on.) as multiple jobs with the same
-          [company][google.cloud.talent.v4beta1.Job.name][],
-          [language\_code][] and [requisition\_id][google.cloud.talent.v
-          4beta1.Job.requisition\_id] are not allowed. If the original [
-          requisition\_id][google.cloud.talent.v4beta1.Job.requisition\_
-          id] must be preserved, a custom field should be used for
-          storage. It is also suggested to group the locations that
-          close to each other in the same job for better search
-          experience.  The maximum number of allowed characters is 500.
+          [company][google.cloud.talent.v4beta1.Job.company], [language\
+          _code][google.cloud.talent.v4beta1.Job.language\_code] and [re
+          quisition\_id][google.cloud.talent.v4beta1.Job.requisition\_id
+          ] are not allowed. If the original [requisition\_id][google.cl
+          oud.talent.v4beta1.Job.requisition\_id] must be preserved, a
+          custom field should be used for storage. It is also suggested
+          to group the locations that close to each other in the same
+          job for better search experience.  The maximum number of
+          allowed characters is 500.
       application_info:
           Optional.  Job application information.
       job_benefits:
@@ -1205,33 +1206,41 @@ Job = _reflection.GeneratedProtocolMessageType(
           experience.  The expiration timestamp of the job. After this
           timestamp, the job is marked as expired, and it no longer
           appears in search results. The expired job can't be deleted or
-          listed by the [DeleteJob][] and [ListJobs][] APIs, but it can
-          be retrieved with the [GetJob][] API or updated with the
-          [UpdateJob][] API. An expired job can be updated and opened
-          again by using a future expiration timestamp. Updating an
-          expired job fails if there is another existing open job with
-          same [company][google.cloud.talent.v4beta1.Job.name][],
-          [language\_code][] and [requisition\_id][google.cloud.talent.v
-          4beta1.Job.requisition\_id].  The expired jobs are retained in
-          our system for 90 days. However, the overall expired job count
-          cannot exceed 3 times the maximum of open jobs count over the
-          past week, otherwise jobs with earlier expire time are cleaned
-          first. Expired jobs are no longer accessible after they are
-          cleaned out.  Invalid timestamps are ignored, and treated as
-          expire time not provided.  Timestamp before the instant
-          request is made is considered valid, the job will be treated
-          as expired immediately.  If this value isn't provided at the
-          time of job creation or is invalid, the job posting expires
-          after 30 days from the job's creation time. For example, if
-          the job was created on 2017/01/01 13:00AM UTC with an
-          unspecified expiration date, the job expires after 2017/01/31
-          13:00AM UTC.  If this value isn't provided on job update, it
-          depends on the field masks set by [UpdateJobRequest.update\_ma
-          sk][google.cloud.talent.v4beta1.UpdateJobRequest.update\_mask]
-          . If the field masks include [expiry\_time][], or the masks
-          are empty meaning that every field is updated, the job posting
-          expires after 30 days from the job's last update time.
-          Otherwise the expiration date isn't updated.
+          listed by the
+          [DeleteJob][google.cloud.talent.v4beta1.JobService.DeleteJob]
+          and
+          [ListJobs][google.cloud.talent.v4beta1.JobService.ListJobs]
+          APIs, but it can be retrieved with the
+          [GetJob][google.cloud.talent.v4beta1.JobService.GetJob] API or
+          updated with the
+          [UpdateJob][google.cloud.talent.v4beta1.JobService.UpdateJob]
+          API. An expired job can be updated and opened again by using a
+          future expiration timestamp. Updating an expired job fails if
+          there is another existing open job with same
+          [company][google.cloud.talent.v4beta1.Job.company], [language\
+          _code][google.cloud.talent.v4beta1.Job.language\_code] and [re
+          quisition\_id][google.cloud.talent.v4beta1.Job.requisition\_id
+          ].  The expired jobs are retained in our system for 90 days.
+          However, the overall expired job count cannot exceed 3 times
+          the maximum of open jobs count over the past week, otherwise
+          jobs with earlier expire time are cleaned first. Expired jobs
+          are no longer accessible after they are cleaned out.  Invalid
+          timestamps are ignored, and treated as expire time not
+          provided.  Timestamp before the instant request is made is
+          considered valid, the job will be treated as expired
+          immediately.  If this value isn't provided at the time of job
+          creation or is invalid, the job posting expires after 30 days
+          from the job's creation time. For example, if the job was
+          created on 2017/01/01 13:00AM UTC with an unspecified
+          expiration date, the job expires after 2017/01/31 13:00AM UTC.
+          If this value isn't provided on job update, it depends on the
+          field masks set by [UpdateJobRequest.update\_mask][google.clou
+          d.talent.v4beta1.UpdateJobRequest.update\_mask]. If the field
+          masks include [job\_end\_time][google.cloud.talent.v4beta1.Job
+          .job\_end\_time], or the masks are empty meaning that every
+          field is updated, the job posting expires after 30 days from
+          the job's last update time. Otherwise the expiration date
+          isn't updated.
       posting_create_time:
           Output only. The timestamp when this job posting was created.
       posting_update_time:
