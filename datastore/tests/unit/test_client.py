@@ -864,22 +864,22 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
-        COMPLETE_KEY = _Key(self.PROJECT)
-        self.assertRaises(ValueError, client.allocate_ids, COMPLETE_KEY, 2)
+        complete_key = _Key(self.PROJECT)
+        self.assertRaises(ValueError, client.allocate_ids, complete_key, 2)
 
     def test_reserve_ids_w_completed_key(self):
         num_ids = 2
         creds = _make_credentials()
-        client = self._make_one(credentials=creds,_use_grpc=False)
-        COMPLETE_KEY = _Key(self.PROJECT)
-        alloc_ids = mock.Mock(return_value=None, spec=[])
-        ds_api = mock.Mock(reserve_ids=alloc_ids, spec=["reserve_ids"])
+        client = self._make_one(credentials=creds, _use_grpc=False)
+        complete_key = _Key(self.PROJECT)
+        reserve_ids = mock.Mock(spec=[])
+        ds_api = mock.Mock(reserve_ids=reserve_ids, spec=["reserve_ids"])
         client._datastore_api_internal = ds_api
-        self.assertTrue(not COMPLETE_KEY.is_partial)
-        self.assertIsInstance(num_ids, int)
-        result = client.reserve_ids(COMPLETE_KEY, num_ids)
-
-        self.assertIsNone(result)
+        self.assertTrue(not complete_key.is_partial)
+        client.reserve_ids(complete_key, num_ids)
+        expected_keys = [complete_key.to_protobuf()] * num_ids
+        expected_keys = [complete_key.to_protobuf()] * num_ids
+        reserve_ids.assert_called_once_with(self.PROJECT, expected_keys)
 
     def test_reserve_ids_w_partial_key(self):
         num_ids = 2
@@ -887,15 +887,16 @@ class TestClient(unittest.TestCase):
         incomplete_key._id = None
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
-        self.assertIsInstance(num_ids, int)
-        self.assertRaises(ValueError, client.reserve_ids, incomplete_key, num_ids)
+        with self.assertRaises(ValueError):
+            client.reserve_ids(incomplete_key, num_ids)
 
     def test_reserve_ids_w_wrong_num_ids(self):
         num_ids = "2"
         complete_key = _Key(self.PROJECT)
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
-        self.assertRaises(ValueError, client.reserve_ids, complete_key, num_ids)
+        with self.assertRaises(ValueError):
+            client.reserve_ids(complete_key, num_ids)
 
     def test_key_w_project(self):
         KIND = "KIND"

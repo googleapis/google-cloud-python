@@ -650,8 +650,7 @@ class Client(ClientWithProject):
         return Query(self, **kwargs)
 
     def reserve_ids(self, complete_key, num_ids):
-        """Prevents the supplied keys' IDs from being auto-allocated by Cloud
-            Datastore.
+        """Reserve a list of IDs from a complete key.
 
         :type complete_key: :class:`google.cloud.datastore.key.Key`
         :param complete_key: Partial key to use as base for reserved IDs.
@@ -659,8 +658,8 @@ class Client(ClientWithProject):
         :type num_ids: int
         :param num_ids: The number of IDs to reserve.
 
-        :rtype: list of :class:`google.cloud.datastore.key.Key`
-        :returns: []
+        :rtype: class:`NoneType`
+        :returns: None
         :raises: :class:`ValueError` if `complete_key`` is not a
                  Complete key.
         """
@@ -673,8 +672,6 @@ class Client(ClientWithProject):
         complete_key_pb = complete_key.to_protobuf()
         complete_key_pbs = [complete_key_pb] * num_ids
 
-        response_pb = self._datastore_api.reserve_ids(
-            complete_key.project, complete_key_pbs
-        )
+        self._datastore_api.reserve_ids(complete_key.project, complete_key_pbs)
 
-        return response_pb
+        return None
