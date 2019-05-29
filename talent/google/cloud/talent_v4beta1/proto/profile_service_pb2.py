@@ -1060,16 +1060,23 @@ SearchProfilesRequest = _reflection.GeneratedProtocolMessageType(
           sorted. Defaults is "relevance desc" if no value is specified.
           Supported options are:  -  "relevance desc": By descending
           relevance, as determined by the API    algorithms. -
-          "update\_date desc": Sort by [Profile.update\_date][] in
-          descending    order (recently updated profiles first). -
-          "create\_date desc": Sort by [Profile.create\_date][] in
-          descending    order (recently created profiles first). -
-          "first\_name": Sort by [PersonStrcuturedName.given\_name][] in
-          ascending order. -  "first\_name desc": Sort by
-          [PersonStrcuturedName.given\_name][] in    descending order. -
-          "last\_name": Sort by [PersonStrcuturedName.family\_name][] in
-          ascending order. -  "last\_name desc": Sort by
-          [PersonStrcuturedName.family\_name][] in    ascending order.
+          "update\_time desc": Sort by    [Profile.update\_time][google.
+          cloud.talent.v4beta1.Profile.update\_time]    in descending
+          order (recently updated profiles first). -  "create\_time
+          desc": Sort by    [Profile.create\_time][google.cloud.talent.v
+          4beta1.Profile.create\_time]    in descending order (recently
+          created profiles first). -  "first\_name": Sort by    [PersonN
+          ame.PersonStructuredName.given\_name][google.cloud.talent.v4be
+          ta1.PersonName.PersonStructuredName.given\_name]    in
+          ascending order. -  "first\_name desc": Sort by    [PersonName
+          .PersonStructuredName.given\_name][google.cloud.talent.v4beta1
+          .PersonName.PersonStructuredName.given\_name]    in descending
+          order. -  "last\_name": Sort by    [PersonName.PersonStructure
+          dName.family\_name][google.cloud.talent.v4beta1.PersonName.Per
+          sonStructuredName.family\_name]    in ascending order. -
+          "last\_name desc": Sort by    [PersonName.PersonStructuredName
+          .family\_name][google.cloud.talent.v4beta1.PersonName.PersonSt
+          ructuredName.family\_name]    in ascending order.
       case_sensitive_sort:
           Optional.  When sort by field is based on alphabetical order,
           sort values case sensitively (based on ASCII) when the value
@@ -1197,21 +1204,22 @@ SummarizedProfile = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       profiles:
-          A list of profiles that are linked by [Profile.cluster\_id][].
+          A list of profiles that are linked by [Profile.group\_id][goog
+          le.cloud.talent.v4beta1.Profile.group\_id].
       summary:
           A profile summary shows the profile summary and how the
           profile matches the search query.  In profile summary, the
-          profiles with the same [Profile.cluster\_id][] are merged
-          together. Among profiles, same education/employment records
-          may be slightly different but they are merged into one with
-          best efforts.  For example, in one profile the school name is
-          "UC Berkeley" and the field study is "Computer Science" and in
-          another one the school name is "University of California at
-          Berkeley" and the field study is "CS". The API merges these
-          two inputs into one and selects one value for each field. For
-          example, the school name in summary is set to "University of
-          California at Berkeley" and the field of study is set to
-          "Computer Science".
+          profiles with the same [Profile.group\_id][google.cloud.talent
+          .v4beta1.Profile.group\_id] are merged together. Among
+          profiles, same education/employment records may be slightly
+          different but they are merged into one with best efforts.  For
+          example, in one profile the school name is "UC Berkeley" and
+          the field study is "Computer Science" and in another one the
+          school name is "University of California at Berkeley" and the
+          field study is "CS". The API merges these two inputs into one
+          and selects one value for each field. For example, the school
+          name in summary is set to "University of California at
+          Berkeley" and the field of study is set to "Computer Science".
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.SummarizedProfile)
     ),

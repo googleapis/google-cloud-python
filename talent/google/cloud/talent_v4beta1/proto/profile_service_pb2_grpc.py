@@ -101,7 +101,9 @@ class ProfileServiceServicer(object):
     For example, search by raw queries "software engineer in Mountain View" or
     search by structured filters (location filter, education filter, etc.).
 
-    See [SearchProfilesRequest][google.cloud.talent.v4beta1.SearchProfilesRequest] for more information.
+    See
+    [SearchProfilesRequest][google.cloud.talent.v4beta1.SearchProfilesRequest]
+    for more information.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")

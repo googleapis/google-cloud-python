@@ -26,6 +26,8 @@ import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
 import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
+import google.api_core.operation
+import google.api_core.operations_v1
 import google.api_core.page_iterator
 import google.api_core.path_template
 import grpc
@@ -36,6 +38,7 @@ from google.cloud.talent_v4beta1.gapic.transports import job_service_grpc_transp
 from google.cloud.talent_v4beta1.proto import application_pb2
 from google.cloud.talent_v4beta1.proto import application_service_pb2
 from google.cloud.talent_v4beta1.proto import application_service_pb2_grpc
+from google.cloud.talent_v4beta1.proto import batch_pb2
 from google.cloud.talent_v4beta1.proto import common_pb2
 from google.cloud.talent_v4beta1.proto import company_pb2
 from google.cloud.talent_v4beta1.proto import company_service_pb2
@@ -50,6 +53,7 @@ from google.cloud.talent_v4beta1.proto import histogram_pb2
 from google.cloud.talent_v4beta1.proto import job_pb2
 from google.cloud.talent_v4beta1.proto import job_service_pb2
 from google.cloud.talent_v4beta1.proto import job_service_pb2_grpc
+from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
@@ -913,17 +917,18 @@ class JobServiceClient(object):
 
                 Job histogram facets:
 
-                -  company\_id: histogram by [Job.distributor\_company\_id\`.
-                -  company\_display\_name: histogram by ``Job.company_display_name``.
+                -  company\_display\_name: histogram by [Job.company\_display\_name\`.
                 -  employment\_type: histogram by ``Job.employment_types``, for example,
                    "FULL\_TIME", "PART\_TIME".
                 -  company\_size: histogram by ``CompanySize``, for example, "SMALL",
                    "MEDIUM", "BIG".
-                -  publish\_time\_in\_month: histogram by the ``Job.publish_time`` in
-                   months. Must specify list of numeric buckets in spec.
-                -  publish\_time\_in\_year: histogram by the ``Job.publish_time`` in
-                   years. Must specify list of numeric buckets in spec.
-                -  degree\_type: histogram by the ``Job.degree_type``, for example,
+                -  publish\_time\_in\_month: histogram by the
+                   ``Job.posting_publish_time`` in months. Must specify list of numeric
+                   buckets in spec.
+                -  publish\_time\_in\_year: histogram by the
+                   ``Job.posting_publish_time`` in years. Must specify list of numeric
+                   buckets in spec.
+                -  degree\_types: histogram by the ``Job.degree_types``, for example,
                    "Bachelors", "Masters".
                 -  job\_level: histogram by the ``Job.job_level``, for example, "Entry
                    Level".
@@ -947,8 +952,9 @@ class JobServiceClient(object):
                    ``Job.language_code``, for example, "en", "fr".
                 -  category: histogram by the ``JobCategory``, for example,
                    "COMPUTER\_AND\_IT", "HEALTHCARE".
-                -  base\_compensation\_unit: histogram by the ``CompensationUnit`` of
-                   base salary, for example, "WEEKLY", "MONTHLY".
+                -  base\_compensation\_unit: histogram by the
+                   ``CompensationInfo.CompensationUnit`` of base salary, for example,
+                   "WEEKLY", "MONTHLY".
                 -  base\_compensation: histogram by the base salary. Must specify list
                    of numeric buckets to group results by.
                 -  annualized\_base\_compensation: histogram by the base annualized
@@ -965,19 +971,17 @@ class JobServiceClient(object):
 
                 Example expressions:
 
-                -  count(admin1)
-                -  count(base\_compensation, [bucket(1000, 10000), bucket(10000,
-                   100000), bucket(100000, MAX)])
-                -  count(string\_custom\_attribute["some-string-custom-attribute"])
-                -  count(numeric\_custom\_attribute["some-numeric-custom-attribute"],
-                   [bucket(MIN, 0, "negative"), bucket(0, MAX, "non-negative"])
+                -  ``count(admin1)``
+                -  ``count(base_compensation, [bucket(1000, 10000), bucket(10000, 100000), bucket(100000, MAX)])``
+                -  ``count(string_custom_attribute["some-string-custom-attribute"])``
+                -  ``count(numeric_custom_attribute["some-numeric-custom-attribute"], [bucket(MIN, 0, "negative"), bucket(0, MAX, "non-negative"])``
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.HistogramQuery`
             job_view (~google.cloud.talent_v4beta1.types.JobView): Optional.
 
                 The desired job attributes returned for jobs in the search response.
-                Defaults to ``JobView.SMALL`` if no value is specified.
+                Defaults to ``JobView.JOB_VIEW_SMALL`` if no value is specified.
             offset (int): Optional.
 
                 An integer that specifies the current offset (that is, starting result
@@ -1026,14 +1030,13 @@ class JobServiceClient(object):
                    Jobs whose annualized base compensation is unspecified are put at the
                    end of search results.
                 -  "custom``_``\ ranking desc": By the relevance score adjusted to the
-                   ``SearchJobsRequest.custom_ranking_info.ranking_expression`` with
+                   ``SearchJobsRequest.CustomRankingInfo.ranking_expression`` with
                    weight factor assigned by
-                   ``SearchJobsRequest.custom_ranking_info.importance_level`` in
+                   ``SearchJobsRequest.CustomRankingInfo.importance_level`` in
                    descending order.
                 -  "location``_``\ distance": By the distance between the location on
-                   jobs and locations specified in the
-                   ``SearchJobsRequest.job_query.location_filters``. When this order is
-                   selected, the ``SearchJobsRequest.job_query.location_filters`` must
+                   jobs and locations specified in the ``JobQuery.location_filters``.
+                   When this order is selected, the ``JobQuery.location_filters`` must
                    not be empty. When a job has multiple locations, the location closest
                    to one of the locations specified in the location filter will be used
                    to calculate location distance. Distance is calculated by the
@@ -1061,8 +1064,8 @@ class JobServiceClient(object):
                 message :class:`~google.cloud.talent_v4beta1.types.CustomRankingInfo`
             disable_keyword_match (bool): Optional.
 
-                Controls whether to disable exact keyword match on ``Job.job_title``,
-                ``Job.description``, ``Job.company_display_name``, [Job.locations][0],
+                Controls whether to disable exact keyword match on ``Job.title``,
+                ``Job.description``, ``Job.company_display_name``, ``Job.addresses``,
                 ``Job.qualifications``. When disable keyword match is turned off, a
                 keyword match returns jobs that do not match given category filters when
                 there are matching keywords. For example, for the query "program
@@ -1074,10 +1077,10 @@ class JobServiceClient(object):
                 ontology, jobs with "cloud" keyword matches are returned regardless of
                 this flag's value.
 
-                Please use ``Company.keyword_searchable_custom_fields`` or
-                ``Company.keyword_searchable_custom_attributes`` if company specific
-                globally matched custom field/attribute string values is needed.
-                Enabling keyword match improves recall of subsequent search requests.
+                Use ``Company.keyword_searchable_job_custom_attributes`` if
+                company-specific globally matched custom field/attribute string values
+                are needed. Enabling keyword match improves recall of subsequent search
+                requests.
 
                 Defaults to false.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1294,17 +1297,18 @@ class JobServiceClient(object):
 
                 Job histogram facets:
 
-                -  company\_id: histogram by [Job.distributor\_company\_id\`.
-                -  company\_display\_name: histogram by ``Job.company_display_name``.
+                -  company\_display\_name: histogram by [Job.company\_display\_name\`.
                 -  employment\_type: histogram by ``Job.employment_types``, for example,
                    "FULL\_TIME", "PART\_TIME".
                 -  company\_size: histogram by ``CompanySize``, for example, "SMALL",
                    "MEDIUM", "BIG".
-                -  publish\_time\_in\_month: histogram by the ``Job.publish_time`` in
-                   months. Must specify list of numeric buckets in spec.
-                -  publish\_time\_in\_year: histogram by the ``Job.publish_time`` in
-                   years. Must specify list of numeric buckets in spec.
-                -  degree\_type: histogram by the ``Job.degree_type``, for example,
+                -  publish\_time\_in\_month: histogram by the
+                   ``Job.posting_publish_time`` in months. Must specify list of numeric
+                   buckets in spec.
+                -  publish\_time\_in\_year: histogram by the
+                   ``Job.posting_publish_time`` in years. Must specify list of numeric
+                   buckets in spec.
+                -  degree\_types: histogram by the ``Job.degree_types``, for example,
                    "Bachelors", "Masters".
                 -  job\_level: histogram by the ``Job.job_level``, for example, "Entry
                    Level".
@@ -1328,8 +1332,9 @@ class JobServiceClient(object):
                    ``Job.language_code``, for example, "en", "fr".
                 -  category: histogram by the ``JobCategory``, for example,
                    "COMPUTER\_AND\_IT", "HEALTHCARE".
-                -  base\_compensation\_unit: histogram by the ``CompensationUnit`` of
-                   base salary, for example, "WEEKLY", "MONTHLY".
+                -  base\_compensation\_unit: histogram by the
+                   ``CompensationInfo.CompensationUnit`` of base salary, for example,
+                   "WEEKLY", "MONTHLY".
                 -  base\_compensation: histogram by the base salary. Must specify list
                    of numeric buckets to group results by.
                 -  annualized\_base\_compensation: histogram by the base annualized
@@ -1346,19 +1351,17 @@ class JobServiceClient(object):
 
                 Example expressions:
 
-                -  count(admin1)
-                -  count(base\_compensation, [bucket(1000, 10000), bucket(10000,
-                   100000), bucket(100000, MAX)])
-                -  count(string\_custom\_attribute["some-string-custom-attribute"])
-                -  count(numeric\_custom\_attribute["some-numeric-custom-attribute"],
-                   [bucket(MIN, 0, "negative"), bucket(0, MAX, "non-negative"])
+                -  ``count(admin1)``
+                -  ``count(base_compensation, [bucket(1000, 10000), bucket(10000, 100000), bucket(100000, MAX)])``
+                -  ``count(string_custom_attribute["some-string-custom-attribute"])``
+                -  ``count(numeric_custom_attribute["some-numeric-custom-attribute"], [bucket(MIN, 0, "negative"), bucket(0, MAX, "non-negative"])``
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.HistogramQuery`
             job_view (~google.cloud.talent_v4beta1.types.JobView): Optional.
 
                 The desired job attributes returned for jobs in the search response.
-                Defaults to ``JobView.SMALL`` if no value is specified.
+                Defaults to ``JobView.JOB_VIEW_SMALL`` if no value is specified.
             offset (int): Optional.
 
                 An integer that specifies the current offset (that is, starting result
@@ -1407,14 +1410,13 @@ class JobServiceClient(object):
                    Jobs whose annualized base compensation is unspecified are put at the
                    end of search results.
                 -  "custom``_``\ ranking desc": By the relevance score adjusted to the
-                   ``SearchJobsRequest.custom_ranking_info.ranking_expression`` with
+                   ``SearchJobsRequest.CustomRankingInfo.ranking_expression`` with
                    weight factor assigned by
-                   ``SearchJobsRequest.custom_ranking_info.importance_level`` in
+                   ``SearchJobsRequest.CustomRankingInfo.importance_level`` in
                    descending order.
                 -  "location``_``\ distance": By the distance between the location on
-                   jobs and locations specified in the
-                   ``SearchJobsRequest.job_query.location_filters``. When this order is
-                   selected, the ``SearchJobsRequest.job_query.location_filters`` must
+                   jobs and locations specified in the ``JobQuery.location_filters``.
+                   When this order is selected, the ``JobQuery.location_filters`` must
                    not be empty. When a job has multiple locations, the location closest
                    to one of the locations specified in the location filter will be used
                    to calculate location distance. Distance is calculated by the
@@ -1442,8 +1444,8 @@ class JobServiceClient(object):
                 message :class:`~google.cloud.talent_v4beta1.types.CustomRankingInfo`
             disable_keyword_match (bool): Optional.
 
-                Controls whether to disable exact keyword match on ``Job.job_title``,
-                ``Job.description``, ``Job.company_display_name``, [Job.locations][0],
+                Controls whether to disable exact keyword match on ``Job.title``,
+                ``Job.description``, ``Job.company_display_name``, ``Job.addresses``,
                 ``Job.qualifications``. When disable keyword match is turned off, a
                 keyword match returns jobs that do not match given category filters when
                 there are matching keywords. For example, for the query "program
@@ -1455,10 +1457,10 @@ class JobServiceClient(object):
                 ontology, jobs with "cloud" keyword matches are returned regardless of
                 this flag's value.
 
-                Please use ``Company.keyword_searchable_custom_fields`` or
-                ``Company.keyword_searchable_custom_attributes`` if company specific
-                globally matched custom field/attribute string values is needed.
-                Enabling keyword match improves recall of subsequent search requests.
+                Use ``Company.keyword_searchable_job_custom_attributes`` if
+                company-specific globally matched custom field/attribute string values
+                are needed. Enabling keyword match improves recall of subsequent search
+                requests.
 
                 Defaults to false.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1537,3 +1539,226 @@ class JobServiceClient(object):
             response_token_field="next_page_token",
         )
         return iterator
+
+    def batch_create_jobs(
+        self,
+        parent,
+        jobs,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Begins executing a batch create jobs operation.
+
+        Example:
+            >>> from google.cloud import talent_v4beta1
+            >>>
+            >>> client = talent_v4beta1.JobServiceClient()
+            >>>
+            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
+            >>>
+            >>> # TODO: Initialize `jobs`:
+            >>> jobs = []
+            >>>
+            >>> response = client.batch_create_jobs(parent, jobs)
+            >>>
+            >>> def callback(operation_future):
+            ...     # Handle result.
+            ...     result = operation_future.result()
+            >>>
+            >>> response.add_done_callback(callback)
+            >>>
+            >>> # Handle metadata.
+            >>> metadata = response.metadata()
+
+        Args:
+            parent (str): Required.
+
+                The resource name of the tenant under which the job is created.
+
+                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
+                example, "projects/api-test-project/tenant/foo".
+
+                Tenant id is optional and a default tenant is created if unspecified,
+                for example, "projects/api-test-project".
+            jobs (list[Union[dict, ~google.cloud.talent_v4beta1.types.Job]]): Required.
+
+                The jobs to be created.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.talent_v4beta1.types.Job`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.talent_v4beta1.types._OperationFuture` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "batch_create_jobs" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "batch_create_jobs"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.batch_create_jobs,
+                default_retry=self._method_configs["BatchCreateJobs"].retry,
+                default_timeout=self._method_configs["BatchCreateJobs"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = job_service_pb2.BatchCreateJobsRequest(parent=parent, jobs=jobs)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        operation = self._inner_api_calls["batch_create_jobs"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+        return google.api_core.operation.from_gapic(
+            operation,
+            self.transport._operations_client,
+            batch_pb2.JobOperationResult,
+            metadata_type=batch_pb2.BatchOperationMetadata,
+        )
+
+    def batch_update_jobs(
+        self,
+        parent,
+        jobs,
+        update_mask=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Begins executing a batch update jobs operation.
+
+        Example:
+            >>> from google.cloud import talent_v4beta1
+            >>>
+            >>> client = talent_v4beta1.JobServiceClient()
+            >>>
+            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
+            >>>
+            >>> # TODO: Initialize `jobs`:
+            >>> jobs = []
+            >>>
+            >>> response = client.batch_update_jobs(parent, jobs)
+            >>>
+            >>> def callback(operation_future):
+            ...     # Handle result.
+            ...     result = operation_future.result()
+            >>>
+            >>> response.add_done_callback(callback)
+            >>>
+            >>> # Handle metadata.
+            >>> metadata = response.metadata()
+
+        Args:
+            parent (str): Required.
+
+                The resource name of the tenant under which the job is created.
+
+                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
+                example, "projects/api-test-project/tenant/foo".
+
+                Tenant id is optional and the default tenant is used if unspecified, for
+                example, "projects/api-test-project".
+            jobs (list[Union[dict, ~google.cloud.talent_v4beta1.types.Job]]): Required.
+
+                The jobs to be updated.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.talent_v4beta1.types.Job`
+            update_mask (Union[dict, ~google.cloud.talent_v4beta1.types.FieldMask]): Optional but strongly recommended to be provided for the best service
+                experience, also increase latency when checking status of batch
+                operation.
+
+                If ``update_mask`` is provided, only the specified fields in ``Job`` are
+                updated. Otherwise all the fields are updated.
+
+                A field mask to restrict the fields that are updated. Only top level
+                fields of ``Job`` are supported.
+
+                If ``update_mask`` is provided, The ``Job`` inside ``JobResult`` will
+                only contains fields that is updated, plus the Id of the Job. Otherwise,
+                ``Job`` will include all fields, which can yield a very large response.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.talent_v4beta1.types.FieldMask`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.talent_v4beta1.types._OperationFuture` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "batch_update_jobs" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "batch_update_jobs"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.batch_update_jobs,
+                default_retry=self._method_configs["BatchUpdateJobs"].retry,
+                default_timeout=self._method_configs["BatchUpdateJobs"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = job_service_pb2.BatchUpdateJobsRequest(
+            parent=parent, jobs=jobs, update_mask=update_mask
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        operation = self._inner_api_calls["batch_update_jobs"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+        return google.api_core.operation.from_gapic(
+            operation,
+            self.transport._operations_client,
+            batch_pb2.JobOperationResult,
+            metadata_type=batch_pb2.BatchOperationMetadata,
+        )

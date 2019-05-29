@@ -2806,15 +2806,16 @@ Resume = _reflection.GeneratedProtocolMessageType(
       structured_resume:
           Optional.  Users can create a profile with only this field
           field, if [resume\_type][google.cloud.talent.v4beta1.Resume.re
-          sume\_type] is [HRXML][]. For example, the API parses this
-          field and creates a profile with all structured fields
-          populated, for example. [EmploymentRecord][google.cloud.talent
-          .v4beta1.EmploymentRecord], [EducationRecord][google.cloud.tal
-          ent.v4beta1.EducationRecord], and so on. An error is thrown if
-          this field cannot be parsed.  If this field is provided during
-          profile creation or update, any other structured data provided
-          in the profile is ignored. The API populates these fields by
-          parsing this field.
+          sume\_type] is
+          [HRXML][google.cloud.talent.v4beta1.Resume.ResumeType.HRXML].
+          For example, the API parses this field and creates a profile
+          with all structured fields populated, for example. [Employment
+          Record][google.cloud.talent.v4beta1.EmploymentRecord], [Educat
+          ionRecord][google.cloud.talent.v4beta1.EducationRecord], and
+          so on. An error is thrown if this field cannot be parsed.  If
+          this field is provided during profile creation or update, any
+          other structured data provided in the profile is ignored. The
+          API populates these fields by parsing this field.
       resume_type:
           Optional.  The format of [structured\_resume][google.cloud.tal
           ent.v4beta1.Resume.structured\_resume].
@@ -2868,8 +2869,10 @@ PersonName = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       person_name:
-          The name of a person. It can be one of [formatted\_name][] or
-          [structured\_name][].
+          The name of a person. It can be one of [formatted\_name][googl
+          e.cloud.talent.v4beta1.PersonName.formatted\_name] or [structu
+          red\_name][google.cloud.talent.v4beta1.PersonName.structured\_
+          name].
       formatted_name:
           Optional.  A string represents a person's full name. For
           example, "Dr. John Smith".  Number of characters allowed is
@@ -2903,8 +2906,10 @@ Address = _reflection.GeneratedProtocolMessageType(
           Optional.  The usage of the address. For example, SCHOOL,
           WORK, PERSONAL.
       address:
-          The address of a person. It can be one of
-          [unstructured\_address][] or [structured\_address][].
+          The address of a person. It can be one of [unstructured\_addre
+          ss][google.cloud.talent.v4beta1.Address.unstructured\_address]
+          or [structured\_address][google.cloud.talent.v4beta1.Address.s
+          tructured\_address].
       unstructured_address:
           Optional.  Unstructured address.  For example, "1600
           Amphitheatre Pkwy, Mountain View, CA 94043", "Sunnyvale,
@@ -3102,8 +3107,10 @@ EducationRecord = _reflection.GeneratedProtocolMessageType(
       address:
           Optional.  The physical address of the education institution.
       degree:
-          The degree information. It can be one of
-          [degree\_description][] or [structured\_degree][].
+          The degree information. It can be one of [degree\_description]
+          [google.cloud.talent.v4beta1.EducationRecord.degree\_descripti
+          on] or [structured\_degree][google.cloud.talent.v4beta1.Educat
+          ionRecord.structured\_degree].
       degree_description:
           Optional.  The full description of the degree.  For example,
           "Master of Science in Computer Science", "B.S in Math".
@@ -3123,9 +3130,9 @@ EducationRecord = _reflection.GeneratedProtocolMessageType(
           .school\_name] isn't related to the search query.
       degree_snippet:
           Output only. The job description snippet shows how the
-          [degree][google.cloud.talent.v4beta1.degree] is related to a
+          [Degree][google.cloud.talent.v4beta1.Degree] is related to a
           search query in search result. It's empty if the
-          [degree][google.cloud.talent.v4beta1.degree] isn't related to
+          [Degree][google.cloud.talent.v4beta1.Degree] isn't related to
           the search query.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.EducationRecord)
