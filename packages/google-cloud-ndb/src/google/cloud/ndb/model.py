@@ -3363,6 +3363,7 @@ class StructuredProperty(Property):
     """
 
     _modelclass = None
+    _kwargs = None
 
     def __init__(self, modelclass, name=None, **kwargs):
         super(StructuredProperty, self).__init__(name=name, **kwargs)
@@ -3661,6 +3662,7 @@ class GenericProperty(Property):
     """
 
     _compressed = False
+    _kwargs = None
 
     def __init__(self, name=None, compressed=False, **kwargs):
         if compressed:  # Compressed implies unindexed.
@@ -3733,6 +3735,8 @@ class ComputedProperty(GenericProperty):
     ...     return hashlib.sha1(self.data).hexdigest()
     ...   hash = ndb.model.ComputedProperty(_compute_hash, name='sha1')
     """
+
+    _kwargs = None
 
     def __init__(
         self, func, name=None, indexed=None, repeated=None, verbose_name=None
@@ -5210,10 +5214,91 @@ class Model(metaclass=MetaModel):
 
 
 class Expando(Model):
-    __slots__ = ()
+    """Model subclass to support dynamic Property names and types.
 
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    Sometimes the set of properties is not known ahead of time.  In such
+    cases you can use the Expando class.  This is a Model subclass that
+    creates properties on the fly, both upon assignment and when loading
+    an entity from Cloud Datastore.  For example::
+
+        >>> class SuperPerson(Expando):
+                name = StringProperty()
+                superpower = StringProperty()
+
+        >>> razorgirl = SuperPerson(name='Molly Millions',
+                                    superpower='bionic eyes, razorblade hands',
+                                    rasta_name='Steppin\' Razor',
+                                    alt_name='Sally Shears')
+        >>> elastigirl = SuperPerson(name='Helen Parr',
+                                     superpower='stretchable body')
+        >>> elastigirl.max_stretch = 30  # Meters
+
+        >>> print(razorgirl._properties.keys())
+            ['rasta_name', 'name', 'superpower', 'alt_name']
+        >>> print(elastigirl._properties)
+            {'max_stretch': GenericProperty('max_stretch'),
+             'name': StringProperty('name'),
+             'superpower': StringProperty('superpower')}
+
+    Note: You can inspect the properties of an expando instance using the
+    _properties attribute, as shown above. This property exists for plain Model instances
+    too; it is just not as interesting for those.
+    """
+
+    # Set this to False (in an Expando subclass or entity) to make
+    # properties default to unindexed.
+    _default_indexed = True
+
+    # Set this to True to write [] to Cloud Datastore instead of no property
+    _write_empty_list_for_dynamic_properties = None
+
+    def _set_attributes(self, kwds):
+        for name, value in kwds.items():
+            setattr(self, name, value)
+
+    def __getattr__(self, name):
+        prop = self._properties.get(name)
+        if prop is None:
+            return super(Expando, self).__getattribute__(name)
+        return prop._get_value(self)
+
+    def __setattr__(self, name, value):
+        if name.startswith("_") or isinstance(
+            getattr(self.__class__, name, None), (Property, property)
+        ):
+            return super(Expando, self).__setattr__(name, value)
+        if isinstance(value, Model):
+            prop = StructuredProperty(Model, name)
+        elif isinstance(value, dict):
+            prop = StructuredProperty(Expando, name)
+        else:
+            prop = GenericProperty(
+                name,
+                repeated=isinstance(value, (list, tuple)),
+                indexed=self._default_indexed,
+                write_empty_list=self._write_empty_list_for_dynamic_properties,
+            )
+        prop._code_name = name
+        self._properties[name] = prop
+        prop._set_value(self, value)
+
+    def __delattr__(self, name):
+        if name.startswith("_") or isinstance(
+            getattr(self.__class__, name, None), (Property, property)
+        ):
+            return super(Expando, self).__delattr__(name)
+        prop = self._properties.get(name)
+        if not isinstance(prop, Property):
+            raise TypeError(
+                "Model properties must be Property instances; not %r" % prop
+            )
+        prop._delete_value(self)
+        if name in super(Expando, self)._properties:
+            raise RuntimeError(
+                "Property %s still in the list of properties for the "
+                "base class." % name
+            )
+        del self._properties[name]
 
 
 def transactional(*args, **kwargs):

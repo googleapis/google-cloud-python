@@ -4310,8 +4310,94 @@ class Test_entity_to_protobuf:
 class TestExpando:
     @staticmethod
     def test_constructor():
-        with pytest.raises(NotImplementedError):
-            model.Expando()
+        class Expansive(model.Expando):
+            foo = model.StringProperty()
+
+        expansive = Expansive(foo="x", bar="y", baz="z")
+        assert expansive._properties == {"foo": "x", "bar": "y", "baz": "z"}
+
+    @staticmethod
+    def test___getattr__():
+        class Expansive(model.Expando):
+            foo = model.StringProperty()
+
+        expansive = Expansive(foo="x", bar="y", baz="z")
+        assert expansive.bar == "y"
+
+    @staticmethod
+    def test___getattr__from_model():
+        class Expansive(model.Expando):
+            foo = model.StringProperty()
+
+        expansive = Expansive(foo="x", bar="y", baz="z")
+        assert expansive._default_filters() == ()
+
+    @staticmethod
+    def test___getattr__from_model_error():
+        class Expansive(model.Expando):
+            foo = model.StringProperty()
+
+        expansive = Expansive(foo="x", bar="y", baz="z")
+        with pytest.raises(AttributeError):
+            expansive.notaproperty
+
+    @staticmethod
+    def test___setattr__with_model():
+        class Expansive(model.Expando):
+            foo = model.StringProperty()
+
+        expansive = Expansive(foo="x", bar=model.Model())
+        assert isinstance(expansive.bar, model.Model)
+
+    @staticmethod
+    def test___setattr__with_dict():
+        class Expansive(model.Expando):
+            foo = model.StringProperty()
+
+        expansive = Expansive(foo="x", bar={"bar": "y", "baz": "z"})
+        assert expansive.bar.baz == "z"
+
+    @staticmethod
+    def test___delattr__():
+        class Expansive(model.Expando):
+            foo = model.StringProperty()
+
+        expansive = Expansive(foo="x")
+        expansive.baz = "y"
+        assert expansive._properties == {"foo": "x", "baz": "y"}
+        del expansive.baz
+        assert expansive._properties == {"foo": "x"}
+
+    @staticmethod
+    def test___delattr__from_model():
+        class Expansive(model.Expando):
+            foo = model.StringProperty()
+
+        expansive = Expansive(foo="x")
+        with pytest.raises(AttributeError):
+            del expansive._nnexistent
+
+    @staticmethod
+    def test___delattr__non_property():
+        class Expansive(model.Expando):
+            foo = model.StringProperty()
+
+        expansive = Expansive(foo="x")
+        expansive.baz = "y"
+        expansive._properties["baz"] = "Not a Property"
+        with pytest.raises(TypeError):
+            del expansive.baz
+
+    @staticmethod
+    def test___delattr__runtime_error():
+        class Expansive(model.Expando):
+            foo = model.StringProperty()
+
+        expansive = Expansive(foo="x")
+        expansive.baz = "y"
+        model.Model._properties["baz"] = "baz"
+        with pytest.raises(RuntimeError):
+            del expansive.baz
 
 
 def test_transactional():
