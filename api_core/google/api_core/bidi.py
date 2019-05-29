@@ -14,8 +14,11 @@
 
 """Bi-directional streaming RPC helpers."""
 
+import collections
+import datetime
 import logging
 import threading
+import time
 
 from six.moves import queue
 
@@ -132,6 +135,69 @@ class _RequestQueueGenerator(object):
                 return
 
             yield item
+
+
+class _Throttle(object):
+    """A context manager limiting the total entries in a sliding time window.
+
+    If more than ``entry_cap`` attempts are made to enter the context manager
+    instance in the last ``time window`` seconds, the exceeding requests block
+    until enough time elapses.
+
+    The context manager instances are thread-safe and can be shared between
+    multiple threads. If multiple requests are blocked and waiting to enter,
+    the exact order in which they are allowed to proceed is not determined.
+
+    Example::
+
+        max_three_per_second = Throttle(time_window=1, entry_cap=3)
+
+        for i in range(5):
+            with max_three_per_second as time_waited:
+                print("{}: Waited {} seconds to enter".format(i, time_waited))
+
+    Args:
+        time_window (float): the width of the sliding time window in seconds
+        entry_cap (int): the maximum number of entries allowed in the time window
+    """
+
+    def __init__(self, time_window, entry_cap):
+        if time_window <= 0.0:
+            raise ValueError("time_window argument must be positive")
+
+        if entry_cap < 1:
+            raise ValueError("entry_cap argument must be positive")
+
+        self._time_window = datetime.timedelta(seconds=time_window)
+        self._entry_cap = entry_cap
+        self._past_entries = collections.deque(maxlen=entry_cap)  # least recent first
+        self._entry_lock = threading.Lock()
+
+    def __enter__(self):
+        with self._entry_lock:
+            cutoff_time = datetime.datetime.now() - self._time_window
+
+            # drop the entries that are too old, as they are no longer relevant
+            while self._past_entries and self._past_entries[0] < cutoff_time:
+                self._past_entries.popleft()
+
+            if len(self._past_entries) < self._entry_cap:
+                self._past_entries.append(datetime.datetime.now())
+                return 0.0  # no waiting was needed
+
+            to_wait = (self._past_entries[0] - cutoff_time).total_seconds()
+            time.sleep(to_wait)
+
+            self._past_entries.append(datetime.datetime.now())
+            return to_wait
+
+    def __exit__(self, *_):
+        pass
+
+    def __repr__(self):
+        return "{}(time_window={}, entry_cap={})".format(
+            self.__class__.__name__, self._time_window.total_seconds(), self._entry_cap
+        )
 
 
 class BidiRpc(object):

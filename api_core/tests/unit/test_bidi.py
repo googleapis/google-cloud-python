@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import logging
 import threading
 
@@ -114,6 +115,77 @@ class Test_RequestQueueGenerator(object):
         items = list(generator)
 
         assert items == []
+
+
+class Test_Throttle(object):
+    def test_repr(self):
+        instance = bidi._Throttle(time_window=4.5, entry_cap=42)
+        assert repr(instance) == "_Throttle(time_window=4.5, entry_cap=42)"
+
+    def test_raises_error_on_invalid_init_arguments(self):
+        with pytest.raises(ValueError) as exc_info:
+            bidi._Throttle(time_window=0.0, entry_cap=10)
+        assert "time_window" in str(exc_info.value)
+        assert "must be positive" in str(exc_info.value)
+
+        with pytest.raises(ValueError) as exc_info:
+            bidi._Throttle(time_window=10, entry_cap=0)
+        assert "entry_cap" in str(exc_info.value)
+        assert "must be positive" in str(exc_info.value)
+
+    def test_does_not_delay_entry_attempts_under_threshold(self):
+        throttle = bidi._Throttle(time_window=1, entry_cap=3)
+        entries = []
+
+        for _ in range(3):
+            with throttle as time_waited:
+                entry_info = {
+                    "entered_at": datetime.datetime.now(),
+                    "reported_wait": time_waited,
+                }
+                entries.append(entry_info)
+
+        # check the reported wait times ...
+        assert all(entry["reported_wait"] == 0.0 for entry in entries)
+
+        # .. and the actual wait times
+        delta = entries[1]["entered_at"] - entries[0]["entered_at"]
+        assert delta.total_seconds() < 0.1
+        delta = entries[2]["entered_at"] - entries[1]["entered_at"]
+        assert delta.total_seconds() < 0.1
+
+    def test_delays_entry_attempts_above_threshold(self):
+        throttle = bidi._Throttle(time_window=1, entry_cap=3)
+        entries = []
+
+        for _ in range(6):
+            with throttle as time_waited:
+                entry_info = {
+                    "entered_at": datetime.datetime.now(),
+                    "reported_wait": time_waited,
+                }
+                entries.append(entry_info)
+
+        # For each group of 4 consecutive entries the time difference between
+        # the first and the last entry must have been greater than time_window,
+        # because a maximum of 3 are allowed in each time_window.
+        for i, entry in enumerate(entries[3:], start=3):
+            first_entry = entries[i - 3]
+            delta = entry["entered_at"] - first_entry["entered_at"]
+            assert delta.total_seconds() > 1.0
+
+        # check the reported wait times
+        # (NOTE: not using assert all(...), b/c the coverage check would complain)
+        for i, entry in enumerate(entries):
+            if i != 3:
+                assert entry["reported_wait"] == 0.0
+
+        # The delayed entry is expected to have been delayed for a significant
+        # chunk of the full second, and the actual and reported delay times
+        # should reflect that.
+        assert entries[3]["reported_wait"] > 0.7
+        delta = entries[3]["entered_at"] - entries[2]["entered_at"]
+        assert delta.total_seconds() > 0.7
 
 
 class _CallAndFuture(grpc.Call, grpc.Future):
