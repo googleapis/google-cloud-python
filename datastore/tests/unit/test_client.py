@@ -872,12 +872,11 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(credentials=creds, _use_grpc=False)
         complete_key = _Key(self.PROJECT)
-        reserve_ids = mock.Mock(spec=[])
+        reserve_ids = mock.Mock()
         ds_api = mock.Mock(reserve_ids=reserve_ids, spec=["reserve_ids"])
         client._datastore_api_internal = ds_api
         self.assertTrue(not complete_key.is_partial)
         client.reserve_ids(complete_key, num_ids)
-        expected_keys = [complete_key.to_protobuf()] * num_ids
         expected_keys = [complete_key.to_protobuf()] * num_ids
         reserve_ids.assert_called_once_with(self.PROJECT, expected_keys)
 
