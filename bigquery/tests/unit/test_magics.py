@@ -102,6 +102,7 @@ def test_context_credentials_and_project_can_be_set_explicitly():
     # default should not be called if credentials & project are explicitly set
     assert default_mock.call_count == 0
 
+
 @pytest.mark.usefixtures("ipython_interactive")
 def test_context_connection_can_be_overriden():
     ip = IPython.get_ipython()
@@ -122,23 +123,26 @@ def test_context_connection_can_be_overriden():
     table = {"projectId": project, "datasetId": "ds", "tableId": "persons"}
     resource = {
         "jobReference": job_reference,
-        "configuration": {"query": {"destinationTable": table, "query": query, "queryParameters": [], "useLegacySql": False}},
-        "status": {"state": "DONE"}
+        "configuration": {
+            "query": {
+                "destinationTable": table,
+                "query": query,
+                "queryParameters": [],
+                "useLegacySql": False,
+            }
+        },
+        "status": {"state": "DONE"},
     }
-    data = {
-        "jobReference": job_reference,
-        "totalRows": 0,
-        "rows": []
-    }
+    data = {"jobReference": job_reference, "totalRows": 0, "rows": []}
 
     conn = magics.context._connection = _make_connection(resource, data)
     list_rows_patch = mock.patch(
-        "google.cloud.bigquery.client.Client.list_rows", return_value=google.cloud.bigquery.table._EmptyRowIterator()
+        "google.cloud.bigquery.client.Client.list_rows",
+        return_value=google.cloud.bigquery.table._EmptyRowIterator(),
     )
     with list_rows_patch as list_rows, default_patch:
         ip.run_cell_magic("bigquery", "", query)
 
-    
     # Check that query actually starts the job.
     list_rows.assert_called()
     assert len(conn.api_request.call_args_list) == 2
