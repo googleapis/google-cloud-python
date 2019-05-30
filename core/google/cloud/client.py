@@ -45,8 +45,28 @@ class _ClientFactoryMixin(object):
     _SET_PROJECT = False
 
     @classmethod
+    def from_json_str(cls, json_credentials_str, *args, **kwargs):
+        """Factory to create client with credentials passed in str arg.
+
+        :type json_credentials_str: str
+        :param json_credentials_str: Text representation of JSON object
+                                     with credentials.
+
+        :type args: tuple
+        :param args: Remaining positional arguments to pass to constructor.
+
+        :type kwargs: dict
+        :param kwargs: Remaining keyword arguments to pass to constructor.
+
+        :rtype: :class:`_ClientFactoryMixin`
+        :returns: The client created with the retrieved JSON credentials.
+        """
+        credentials_info = json.loads(json_credentials_str)
+        return cls.from_json(cls, credentials_info, *args, **kwargs)
+
+    @classmethod
     def from_service_account_json(cls, json_credentials_path, *args, **kwargs):
-        """Factory to retrieve JSON credentials while creating client.
+        """Factory to create client with credentials retrieved from file.
 
         :type json_credentials_path: str
         :param json_credentials_path: The path to a private key file (this file
@@ -71,6 +91,25 @@ class _ClientFactoryMixin(object):
             raise TypeError("credentials must not be in keyword arguments")
         with io.open(json_credentials_path, "r", encoding="utf-8") as json_fi:
             credentials_info = json.load(json_fi)
+
+        return cls.from_json(cls, credentials_info, *args, **kwargs)
+
+    @staticmethod
+    def from_json(cls, credentials_info, *args, **kwargs):
+        """Factory to create client with given credentials.
+
+        :type credentials_info: dict
+        :param credentials_info: JSON object with credential info.
+
+        :type args: tuple
+        :param args: Remaining positional arguments to pass to constructor.
+
+        :type kwargs: dict
+        :param kwargs: Remaining keyword arguments to pass to constructor.
+
+        :rtype: :class:`_ClientFactoryMixin`
+        :returns: The client created with the given JSON credentials.
+        """
         credentials = service_account.Credentials.from_service_account_info(
             credentials_info
         )

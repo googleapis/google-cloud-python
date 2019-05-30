@@ -106,6 +106,25 @@ class TestClient(unittest.TestCase):
         file_open.assert_called_once_with(mock.sentinel.filename, "r", encoding="utf-8")
         constructor.assert_called_once_with(info)
 
+    def test_from_json_str(self):
+        klass = self._get_target_class()
+
+        info = {"dummy": "value", "valid": "json"}
+        json_str = json.dumps(info)
+
+        constructor_patch = mock.patch(
+            "google.oauth2.service_account.Credentials." "from_service_account_info",
+            return_value=_make_credentials(),
+        )
+
+        with constructor_patch as constructor:
+            client_obj = klass.from_json_str(json_str)
+
+        self.assertIs(client_obj._credentials, constructor.return_value)
+        self.assertIsNone(client_obj._http_internal)
+        # Check that mocks were called as expected.
+        constructor.assert_called_once_with(info)
+
     def test_from_service_account_json_bad_args(self):
         KLASS = self._get_target_class()
 
@@ -218,6 +237,7 @@ class TestClientWithProject(unittest.TestCase):
     def _from_service_account_json_helper(self, project=None):
         from google.cloud import _helpers
 
+        kwargs = {}
         klass = self._get_target_class()
 
         info = {"dummy": "value", "valid": "json"}
@@ -225,6 +245,7 @@ class TestClientWithProject(unittest.TestCase):
             expected_project = "eye-d-of-project"
         else:
             expected_project = project
+            kwargs["project"] = project
 
         info["project_id"] = expected_project
         # Mock both the file opening and the credentials constructor.
@@ -237,9 +258,6 @@ class TestClientWithProject(unittest.TestCase):
 
         with file_open_patch as file_open:
             with constructor_patch as constructor:
-                kwargs = {}
-                if project is not None:
-                    kwargs["project"] = project
                 client_obj = klass.from_service_account_json(
                     mock.sentinel.filename, **kwargs
                 )
@@ -251,8 +269,44 @@ class TestClientWithProject(unittest.TestCase):
         file_open.assert_called_once_with(mock.sentinel.filename, "r", encoding="utf-8")
         constructor.assert_called_once_with(info)
 
+    def _from_json_arg_helper(self, project=None):
+        kwargs = {}
+        klass = self._get_target_class()
+
+        info = {"dummy": "value", "valid": "json"}
+        if project is None:
+            expected_project = "eye-d-of-project"
+        else:
+            kwargs["project"] = project
+            expected_project = project
+
+        info["project_id"] = expected_project
+
+        json_arg = json.dumps(info)
+        constructor_patch = mock.patch(
+            "google.oauth2.service_account.Credentials." "from_service_account_info",
+            return_value=_make_credentials(),
+        )
+
+        with constructor_patch as constructor:
+            client_obj = klass.from_json_str(
+                json_arg, **kwargs
+            )
+
+        self.assertIs(client_obj._credentials, constructor.return_value)
+        self.assertIsNone(client_obj._http_internal)
+        self.assertEqual(client_obj.project, expected_project)
+        # Check that mocks were called as expected.
+        constructor.assert_called_once_with(info)
+
     def test_from_service_account_json(self):
         self._from_service_account_json_helper()
 
+    def test_from_json_str(self):
+        self._from_json_arg_helper()
+
     def test_from_service_account_json_project_set(self):
         self._from_service_account_json_helper(project="prah-jekt")
+
+    def test_from_json_str_project_set(self):
+        self._from_json_arg_helper(project="prah-jekt")
