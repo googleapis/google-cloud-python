@@ -389,14 +389,28 @@ class ResumableBidiRpc(BidiRpc):
             whenever an error is encountered on the stream.
         metadata Sequence[Tuple(str, str)]: RPC metadata to include in
             the request.
+        throttle_reopen (bool): If ``True``, throttling will be applied to
+            stream reopen calls. Defaults to ``False``.
     """
 
-    def __init__(self, start_rpc, should_recover, initial_request=None, metadata=None):
+    def __init__(
+        self,
+        start_rpc,
+        should_recover,
+        initial_request=None,
+        metadata=None,
+        throttle_reopen=False,
+    ):
         super(ResumableBidiRpc, self).__init__(start_rpc, initial_request, metadata)
         self._should_recover = should_recover
         self._operational_lock = threading.RLock()
         self._finalized = False
         self._finalize_lock = threading.Lock()
+
+        if throttle_reopen:
+            self._reopen_throttle = _Throttle(entry_cap=5, time_window=10)
+        else:
+            self._reopen_throttle = None
 
     def _finalize(self, result):
         with self._finalize_lock:
@@ -440,7 +454,11 @@ class ResumableBidiRpc(BidiRpc):
             # retryable error.
 
             try:
-                self.open()
+                if self._reopen_throttle:
+                    with self._reopen_throttle:
+                        self.open()
+                else:
+                    self.open()
             # If re-opening or re-calling the method fails for any reason,
             # consider it a terminal error and finalize the stream.
             except Exception as exc:
@@ -639,7 +657,7 @@ class BackgroundConsumer(object):
             thread = threading.Thread(
                 name=_BIDIRECTIONAL_CONSUMER_NAME,
                 target=self._thread_main,
-                args=(ready,)
+                args=(ready,),
             )
             thread.daemon = True
             thread.start()

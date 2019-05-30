@@ -514,6 +514,22 @@ class TestResumableBidiRpc(object):
         assert bidi_rpc.is_active is False
         callback.assert_called_once_with(error2)
 
+    def test_using_throttle_on_reopen_requests(self):
+        call = CallStub([])
+        start_rpc = mock.create_autospec(
+            grpc.StreamStreamMultiCallable, instance=True, return_value=call
+        )
+        should_recover = mock.Mock(spec=["__call__"], return_value=True)
+        bidi_rpc = bidi.ResumableBidiRpc(
+            start_rpc, should_recover, throttle_reopen=True
+        )
+
+        patcher = mock.patch.object(bidi_rpc._reopen_throttle.__class__, "__enter__")
+        with patcher as mock_enter:
+            bidi_rpc._reopen()
+
+        mock_enter.assert_called_once()
+
     def test_send_not_open(self):
         bidi_rpc = bidi.ResumableBidiRpc(None, lambda _: False)
 
