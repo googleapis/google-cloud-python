@@ -3,7 +3,7 @@
 
 # Chris Wilcox is the default owner for anything not explicitly
 # taken by someone else.
-*                         @crwilcox
+*                         @busunkim96
 
 # BigQuery suite of APIs
 bigquery/                   @googleapis/api-bigquery
