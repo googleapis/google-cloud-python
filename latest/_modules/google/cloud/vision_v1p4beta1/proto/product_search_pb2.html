@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.vision_v1p4beta1.proto.product_search_pb2 &#8212; google-cloud 2a13b18 documentation</title>
+    <title>google.cloud.vision_v1p4beta1.proto.product_search_pb2 &#8212; google-cloud 4763bcf documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -430,8 +430,14 @@
 <span class="s2">          /locations/LOC_ID/productSets/PRODUCT_SET_ID``.</span>
 <span class="s2">      product_categories:</span>
 <span class="s2">          The list of product categories to search in. Currently, we</span>
-<span class="s2">          only consider the first category, and either &quot;homegoods&quot;,</span>
-<span class="s2">          &quot;apparel&quot;, or &quot;toys&quot; should be specified.</span>
+<span class="s2">          only consider the first category, and either &quot;homegoods-v2&quot;,</span>
+<span class="s2">          &quot;apparel-v2&quot;, &quot;toys-v2&quot;, or &quot;packagedgoods-v1&quot; should be</span>
+<span class="s2">          specified. The legacy categories &quot;homegoods&quot;, &quot;apparel&quot;, and</span>
+<span class="s2">          &quot;toys&quot; are still supported but will be deprecated. For new</span>
+<span class="s2">          products, please use &quot;homegoods-v2&quot;, &quot;apparel-v2&quot;, or</span>
+<span class="s2">          &quot;toys-v2&quot; for better product search accuracy. It is</span>
+<span class="s2">          recommended to migrate existing products to these categories</span>
+<span class="s2">          as well.</span>
 <span class="s2">      filter:</span>
 <span class="s2">          The filtering expression. This can be used to restrict search</span>
 <span class="s2">          results based on Product labels. We currently support an AND</span>

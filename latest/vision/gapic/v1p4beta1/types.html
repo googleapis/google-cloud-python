@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Vision API Client &#8212; google-cloud 2a13b18 documentation</title>
+    <title>Types for Cloud Vision API Client &#8212; google-cloud 4763bcf documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -3106,8 +3106,14 @@ at most 4096 characters long.</p>
 <dt id="google.cloud.vision_v1p4beta1.types.Product.product_category">
 <code class="descname">product_category</code><a class="headerlink" href="#google.cloud.vision_v1p4beta1.types.Product.product_category" title="Permalink to this definition">#</a></dt>
 <dd><p>The category for the product identified by the reference
-image. This should be either “homegoods”, “apparel”, or
-“toys”.  This field is immutable.</p>
+image. This should be either “homegoods-v2”, “apparel-v2”,
+“toys-v2”, or “packagedgoods-v1”. The legacy categories
+“homegoods”, “apparel”, and “toys” are still supported but
+will be deprecated. For new products, please use
+“homegoods-v2”, “apparel-v2”, or “toys-v2” for better product
+search accuracy. It is recommended to migrate existing
+products to these categories as well.  This field is
+immutable.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3211,8 +3217,14 @@ searched for similar images.  Format is: <code class="docutils literal notransla
 <dt id="google.cloud.vision_v1p4beta1.types.ProductSearchParams.product_categories">
 <code class="descname">product_categories</code><a class="headerlink" href="#google.cloud.vision_v1p4beta1.types.ProductSearchParams.product_categories" title="Permalink to this definition">#</a></dt>
 <dd><p>The list of product categories to search in. Currently, we
-only consider the first category, and either “homegoods”,
-“apparel”, or “toys” should be specified.</p>
+only consider the first category, and either “homegoods-v2”,
+“apparel-v2”, “toys-v2”, or “packagedgoods-v1” should be
+specified. The legacy categories “homegoods”, “apparel”, and
+“toys” are still supported but will be deprecated. For new
+products, please use “homegoods-v2”, “apparel-v2”, or
+“toys-v2” for better product search accuracy. It is
+recommended to migrate existing products to these categories
+as well.</p>
 </dd></dl>
 
 <dl class="attribute">
