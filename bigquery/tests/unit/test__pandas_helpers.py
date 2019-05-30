@@ -114,34 +114,181 @@ def test_all_():
         ("DATETIME", "NULLABLE", is_datetime),
         ("GEOGRAPHY", "NULLABLE", pyarrow.types.is_string),
         ("UNKNOWN_TYPE", "NULLABLE", is_none),
-        # TODO: Use pyarrow.struct(fields) for record (struct) fields.
-        ("RECORD", "NULLABLE", is_none),
-        ("STRUCT", "NULLABLE", is_none),
-        # TODO: Use pyarrow.list_(item_type) for repeated (array) fields.
-        ("STRING", "REPEATED", is_none),
-        ("STRING", "repeated", is_none),
-        ("STRING", "RePeAtEd", is_none),
-        ("BYTES", "REPEATED", is_none),
-        ("INTEGER", "REPEATED", is_none),
-        ("INT64", "REPEATED", is_none),
-        ("FLOAT", "REPEATED", is_none),
-        ("FLOAT64", "REPEATED", is_none),
-        ("NUMERIC", "REPEATED", is_none),
-        ("BOOLEAN", "REPEATED", is_none),
-        ("BOOL", "REPEATED", is_none),
-        ("TIMESTAMP", "REPEATED", is_none),
-        ("DATE", "REPEATED", is_none),
-        ("TIME", "REPEATED", is_none),
-        ("DATETIME", "REPEATED", is_none),
-        ("GEOGRAPHY", "REPEATED", is_none),
+        # Use pyarrow.list_(item_type) for repeated (array) fields.
+        (
+            "STRING",
+            "REPEATED",
+            all_(
+                pyarrow.types.is_list,
+                lambda type_: pyarrow.types.is_string(type_.value_type),
+            ),
+        ),
+        (
+            "STRING",
+            "repeated",
+            all_(
+                pyarrow.types.is_list,
+                lambda type_: pyarrow.types.is_string(type_.value_type),
+            ),
+        ),
+        (
+            "STRING",
+            "RePeAtEd",
+            all_(
+                pyarrow.types.is_list,
+                lambda type_: pyarrow.types.is_string(type_.value_type),
+            ),
+        ),
+        (
+            "BYTES",
+            "REPEATED",
+            all_(
+                pyarrow.types.is_list,
+                lambda type_: pyarrow.types.is_binary(type_.value_type),
+            ),
+        ),
+        (
+            "INTEGER",
+            "REPEATED",
+            all_(
+                pyarrow.types.is_list,
+                lambda type_: pyarrow.types.is_int64(type_.value_type),
+            ),
+        ),
+        (
+            "INT64",
+            "REPEATED",
+            all_(
+                pyarrow.types.is_list,
+                lambda type_: pyarrow.types.is_int64(type_.value_type),
+            ),
+        ),
+        (
+            "FLOAT",
+            "REPEATED",
+            all_(
+                pyarrow.types.is_list,
+                lambda type_: pyarrow.types.is_float64(type_.value_type),
+            ),
+        ),
+        (
+            "FLOAT64",
+            "REPEATED",
+            all_(
+                pyarrow.types.is_list,
+                lambda type_: pyarrow.types.is_float64(type_.value_type),
+            ),
+        ),
+        (
+            "NUMERIC",
+            "REPEATED",
+            all_(pyarrow.types.is_list, lambda type_: is_numeric(type_.value_type)),
+        ),
+        (
+            "BOOLEAN",
+            "REPEATED",
+            all_(
+                pyarrow.types.is_list,
+                lambda type_: pyarrow.types.is_boolean(type_.value_type),
+            ),
+        ),
+        (
+            "BOOL",
+            "REPEATED",
+            all_(
+                pyarrow.types.is_list,
+                lambda type_: pyarrow.types.is_boolean(type_.value_type),
+            ),
+        ),
+        (
+            "TIMESTAMP",
+            "REPEATED",
+            all_(pyarrow.types.is_list, lambda type_: is_timestamp(type_.value_type)),
+        ),
+        (
+            "DATE",
+            "REPEATED",
+            all_(
+                pyarrow.types.is_list,
+                lambda type_: pyarrow.types.is_date32(type_.value_type),
+            ),
+        ),
+        (
+            "TIME",
+            "REPEATED",
+            all_(
+                pyarrow.types.is_list,
+                lambda type_: pyarrow.types.is_time64(type_.value_type),
+            ),
+        ),
+        (
+            "DATETIME",
+            "REPEATED",
+            all_(pyarrow.types.is_list, lambda type_: is_datetime(type_.value_type)),
+        ),
+        (
+            "GEOGRAPHY",
+            "REPEATED",
+            all_(
+                pyarrow.types.is_list,
+                lambda type_: pyarrow.types.is_string(type_.value_type),
+            ),
+        ),
         ("RECORD", "REPEATED", is_none),
+        ("UNKNOWN_TYPE", "REPEATED", is_none),
     ],
 )
 @pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
 def test_bq_to_arrow_data_type(module_under_test, bq_type, bq_mode, is_correct_type):
     field = schema.SchemaField("ignored_name", bq_type, mode=bq_mode)
-    got = module_under_test.bq_to_arrow_data_type(field)
-    assert is_correct_type(got)
+    actual = module_under_test.bq_to_arrow_data_type(field)
+    assert is_correct_type(actual)
+
+
+@pytest.mark.parametrize(
+    "bq_type", [("RECORD",), ("record",), ("STRUCT",), ("struct",)]
+)
+@pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
+def test_bq_to_arrow_data_type_w_struct(module_under_test, bq_type):
+    fields = (
+        schema.SchemaField("field01", "STRING"),
+        schema.SchemaField("field02", "BYTES"),
+        schema.SchemaField("field03", "INTEGER"),
+        schema.SchemaField("field04", "INT64"),
+        schema.SchemaField("field05", "FLOAT"),
+        schema.SchemaField("field06", "FLOAT64"),
+        schema.SchemaField("field07", "NUMERIC"),
+        schema.SchemaField("field08", "BOOLEAN"),
+        schema.SchemaField("field09", "BOOL"),
+        schema.SchemaField("field10", "TIMESTAMP"),
+        schema.SchemaField("field11", "DATE"),
+        schema.SchemaField("field12", "TIME"),
+        schema.SchemaField("field13", "DATETIME"),
+        schema.SchemaField("field14", "GEOGRAPHY"),
+    )
+    field = schema.SchemaField("ignored_name", "RECORD", mode="NULLABLE", fields=fields)
+    actual = module_under_test.bq_to_arrow_data_type(field)
+    expected = pyarrow.struct(
+        (
+            pyarrow.field("field01", pyarrow.string()),
+            pyarrow.field("field02", pyarrow.binary()),
+            pyarrow.field("field03", pyarrow.int64()),
+            pyarrow.field("field04", pyarrow.int64()),
+            pyarrow.field("field05", pyarrow.float64()),
+            pyarrow.field("field06", pyarrow.float64()),
+            pyarrow.field("field07", module_under_test.pyarrow_numeric()),
+            pyarrow.field("field08", pyarrow.bool_()),
+            pyarrow.field("field09", pyarrow.bool_()),
+            pyarrow.field("field10", module_under_test.pyarrow_timestamp()),
+            pyarrow.field("field11", pyarrow.date32()),
+            pyarrow.field("field12", module_under_test.pyarrow_time()),
+            pyarrow.field("field13", module_under_test.pyarrow_datetime()),
+            pyarrow.field("field14", pyarrow.string()),
+        )
+    )
+    assert pyarrow.types.is_struct(actual)
+    assert actual.num_children == len(fields)
+    assert actual.equals(expected)
 
 
 @pytest.mark.skipIf(pandas is None, "Requires `pandas`")

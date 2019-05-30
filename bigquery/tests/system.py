@@ -635,7 +635,7 @@ class TestBigQuery(unittest.TestCase):
         See: https://github.com/googleapis/google-cloud-python/issues/7370
         """
         # Schema with all scalar types.
-        table_schema = (
+        scalars_schema = (
             bigquery.SchemaField("bool_col", "BOOLEAN"),
             bigquery.SchemaField("bytes_col", "BYTES"),
             bigquery.SchemaField("date_col", "DATE"),
@@ -647,6 +647,15 @@ class TestBigQuery(unittest.TestCase):
             bigquery.SchemaField("str_col", "STRING"),
             bigquery.SchemaField("time_col", "TIME"),
             bigquery.SchemaField("ts_col", "TIMESTAMP"),
+        )
+        table_schema = scalars_schema + (
+            # TODO: Array columns can't be read due to NULLABLE versus REPEATED
+            #       mode mismatch. See:
+            #       https://issuetracker.google.com/133415569#comment3
+            # bigquery.SchemaField("array_col", "INTEGER", mode="REPEATED"),
+            # TODO: Support writing StructArrays to Parquet. See:
+            #       https://jira.apache.org/jira/browse/ARROW-2587
+            # bigquery.SchemaField("struct_col", "RECORD", fields=scalars_schema),
         )
         num_rows = 100
         nulls = [None] * num_rows

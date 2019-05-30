@@ -20,6 +20,11 @@ try:
 except ImportError:  # pragma: NO COVER
     pyarrow = None
 
+from google.cloud.bigquery import schema
+
+
+STRUCT_TYPES = ("RECORD", "STRUCT")
+
 
 def pyarrow_datetime():
     return pyarrow.timestamp("us", tz=None)
@@ -37,8 +42,7 @@ def pyarrow_timestamp():
     return pyarrow.timestamp("us", tz="UTC")
 
 
-BQ_TO_ARROW_SCALARS = {}
-if pyarrow is not None:  # pragma: NO COVER
+if pyarrow:  # pragma: NO COVER
     BQ_TO_ARROW_SCALARS = {
         "BOOL": pyarrow.bool_,
         "BOOLEAN": pyarrow.bool_,
@@ -55,6 +59,8 @@ if pyarrow is not None:  # pragma: NO COVER
         "TIME": pyarrow_time,
         "TIMESTAMP": pyarrow_timestamp,
     }
+else:
+    BQ_TO_ARROW_SCALARS = {}
 
 
 def bq_to_arrow_data_type(field):
@@ -62,17 +68,43 @@ def bq_to_arrow_data_type(field):
 
     Returns None if default Arrow type inspection should be used.
     """
-    # TODO: Use pyarrow.list_(item_type) for repeated (array) fields.
     if field.mode is not None and field.mode.upper() == "REPEATED":
+        inner_type = bq_to_arrow_data_type(
+            schema.SchemaField(field.name, field.field_type)
+        )
+        if inner_type:
+            return pyarrow.list_(inner_type)
         return None
-    # TODO: Use pyarrow.struct(fields) for record (struct) fields.
-    if field.field_type.upper() in ("RECORD", "STRUCT"):
-        return None
+
+    if field.field_type.upper() in STRUCT_TYPES:
+        arrow_fields = [bq_to_arrow_field(subfield) for subfield in field.fields]
+        return pyarrow.struct(arrow_fields)
 
     data_type_constructor = BQ_TO_ARROW_SCALARS.get(field.field_type.upper())
     if data_type_constructor is None:
         return None
     return data_type_constructor()
+
+
+def bq_to_arrow_field(bq_field):
+    """Return the Arrow field, corresponding to a given BigQuery column.
+
+    Returns None if the Arrow type cannot be determined.
+    """
+    arrow_type = bq_to_arrow_data_type(bq_field)
+    if arrow_type:
+        is_nullable = bq_field.mode.upper() == "NULLABLE"
+        return pyarrow.field(bq_field.name, arrow_type, nullable=is_nullable)
+    return None
+
+
+def bq_to_arrow_array(series, bq_field):
+    arrow_type = bq_to_arrow_data_type(bq_field)
+    if bq_field.mode.upper() == "REPEATED":
+        return pyarrow.ListArray.from_pandas(series, type=arrow_type)
+    if bq_field.field_type.upper() in STRUCT_TYPES:
+        return pyarrow.StructArray.from_pandas(series, type=arrow_type)
+    return pyarrow.array(series, type=arrow_type)
 
 
 def to_parquet(dataframe, bq_schema, filepath):
@@ -91,22 +123,18 @@ def to_parquet(dataframe, bq_schema, filepath):
             Path to write Parquet file to.
     """
     if pyarrow is None:
-        raise ValueError("pyarrow is required for BigQuery schema conversion")
+        raise ValueError("pyarrow is required for BigQuery schema conversion.")
 
     if len(bq_schema) != len(dataframe.columns):
         raise ValueError(
-            "Number of columns in schema must match number of columns in dataframe"
+            "Number of columns in schema must match number of columns in dataframe."
         )
 
     arrow_arrays = []
-    column_names = []
+    arrow_names = []
     for bq_field in bq_schema:
-        column_names.append(bq_field.name)
-        arrow_arrays.append(
-            pyarrow.array(
-                dataframe[bq_field.name], type=bq_to_arrow_data_type(bq_field)
-            )
-        )
+        arrow_names.append(bq_field.name)
+        arrow_arrays.append(bq_to_arrow_array(dataframe[bq_field.name], bq_field))
 
-    arrow_table = pyarrow.Table.from_arrays(arrow_arrays, names=column_names)
+    arrow_table = pyarrow.Table.from_arrays(arrow_arrays, names=arrow_names)
     pyarrow.parquet.write_table(arrow_table, filepath)
