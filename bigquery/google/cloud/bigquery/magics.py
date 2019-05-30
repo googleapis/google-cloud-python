@@ -271,7 +271,6 @@ def _run_query(client, query, job_config=None):
     while True:
         print("\rQuery executing: {:0.2f}s".format(time.time() - start_time), end="")
         try:
-            print(query_job)
             query_job.result(timeout=0.5)
             break
         except futures.TimeoutError:
