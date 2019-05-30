@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+import decimal
 import functools
 
 try:
@@ -245,9 +247,7 @@ def test_bq_to_arrow_data_type(module_under_test, bq_type, bq_mode, is_correct_t
     assert is_correct_type(actual)
 
 
-@pytest.mark.parametrize(
-    "bq_type", [("RECORD",), ("record",), ("STRUCT",), ("struct",)]
-)
+@pytest.mark.parametrize("bq_type", ["RECORD", "record", "STRUCT", "struct"])
 @pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
 def test_bq_to_arrow_data_type_w_struct(module_under_test, bq_type):
     fields = (
@@ -266,7 +266,7 @@ def test_bq_to_arrow_data_type_w_struct(module_under_test, bq_type):
         schema.SchemaField("field13", "DATETIME"),
         schema.SchemaField("field14", "GEOGRAPHY"),
     )
-    field = schema.SchemaField("ignored_name", "RECORD", mode="NULLABLE", fields=fields)
+    field = schema.SchemaField("ignored_name", bq_type, mode="NULLABLE", fields=fields)
     actual = module_under_test.bq_to_arrow_data_type(field)
     expected = pyarrow.struct(
         (
@@ -289,6 +289,155 @@ def test_bq_to_arrow_data_type_w_struct(module_under_test, bq_type):
     assert pyarrow.types.is_struct(actual)
     assert actual.num_children == len(fields)
     assert actual.equals(expected)
+
+
+@pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
+def test_bq_to_arrow_data_type_w_struct_unknown_subfield(module_under_test):
+    fields = (
+        schema.SchemaField("field1", "STRING"),
+        schema.SchemaField("field2", "INTEGER"),
+        # Don't know what to convert UNKNOWN_TYPE to, let type inference work,
+        # instead.
+        schema.SchemaField("field3", "UNKNOWN_TYPE"),
+    )
+    field = schema.SchemaField("ignored_name", "RECORD", mode="NULLABLE", fields=fields)
+    actual = module_under_test.bq_to_arrow_data_type(field)
+    assert actual is None
+
+
+@pytest.mark.parametrize(
+    "bq_type,rows",
+    [
+        ("STRING", ["abc", None, "def", None]),
+        ("BYTES", [b"abc", None, b"def", None]),
+        ("INTEGER", [123, None, 456, None]),
+        ("INT64", [-9223372036854775808, None, 9223372036854775807, 123]),
+        ("FLOAT", [1.25, None, 3.5, None]),
+        (
+            "NUMERIC",
+            [
+                decimal.Decimal("-99999999999999999999999999999.999999999"),
+                None,
+                decimal.Decimal("99999999999999999999999999999.999999999"),
+                decimal.Decimal("999.123456789"),
+            ],
+        ),
+        ("BOOLEAN", [True, None, False, None]),
+        ("BOOL", [False, None, True, None]),
+        # TODO: Once https://issues.apache.org/jira/browse/ARROW-5450 is
+        # resolved, test with TIMESTAMP column. Conversion from pyarrow
+        # TimestampArray to list of Python objects fails with OverflowError:
+        # Python int too large to convert to C long.
+        #
+        # (
+        #     "TIMESTAMP",
+        #     [
+        #         datetime.datetime(1, 1, 1, 0, 0, 0, tzinfo=pytz.utc),
+        #         None,
+        #         datetime.datetime(9999, 12, 31, 23, 59, 59, 999999, tzinfo=pytz.utc),
+        #         datetime.datetime(1970, 1, 1, 0, 0, 0, tzinfo=pytz.utc),
+        #     ],
+        # ),
+        (
+            "DATE",
+            [
+                datetime.date(1, 1, 1),
+                None,
+                datetime.date(9999, 12, 31),
+                datetime.date(1970, 1, 1),
+            ],
+        ),
+        (
+            "TIME",
+            [
+                datetime.time(0, 0, 0),
+                None,
+                datetime.time(23, 59, 59, 999999),
+                datetime.time(12, 0, 0),
+            ],
+        ),
+        # TODO: Once https://issues.apache.org/jira/browse/ARROW-5450 is
+        # resolved, test with DATETIME column. Conversion from pyarrow
+        # TimestampArray to list of Python objects fails with OverflowError:
+        # Python int too large to convert to C long.
+        #
+        # (
+        #     "DATETIME",
+        #     [
+        #         datetime.datetime(1, 1, 1, 0, 0, 0),
+        #         None,
+        #         datetime.datetime(9999, 12, 31, 23, 59, 59, 999999),
+        #         datetime.datetime(1970, 1, 1, 0, 0, 0),
+        #     ],
+        # ),
+        (
+            "GEOGRAPHY",
+            [
+                "POINT(30, 10)",
+                None,
+                "LINESTRING (30 10, 10 30, 40 40)",
+                "POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))",
+            ],
+        ),
+    ],
+)
+@pytest.mark.skipIf(pandas is None, "Requires `pandas`")
+@pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
+def test_bq_to_arrow_array_w_nullable_scalars(module_under_test, bq_type, rows):
+    series = pandas.Series(rows, dtype="object")
+    bq_field = schema.SchemaField("field_name", bq_type)
+    arrow_array = module_under_test.bq_to_arrow_array(series, bq_field)
+    roundtrip = arrow_array.to_pylist()
+    assert rows == roundtrip
+
+
+@pytest.mark.skipIf(pandas is None, "Requires `pandas`")
+@pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
+def test_bq_to_arrow_array_w_arrays(module_under_test):
+    rows = [[1, 2, 3], [], [4, 5, 6]]
+    series = pandas.Series(rows, dtype="object")
+    bq_field = schema.SchemaField("field_name", "INTEGER", mode="REPEATED")
+    arrow_array = module_under_test.bq_to_arrow_array(series, bq_field)
+    roundtrip = arrow_array.to_pylist()
+    assert rows == roundtrip
+
+
+@pytest.mark.parametrize("bq_type", ["RECORD", "record", "STRUCT", "struct"])
+@pytest.mark.skipIf(pandas is None, "Requires `pandas`")
+@pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
+def test_bq_to_arrow_array_w_structs(module_under_test, bq_type):
+    rows = [
+        {"int_col": 123, "string_col": "abc"},
+        None,
+        {"int_col": 456, "string_col": "def"},
+    ]
+    series = pandas.Series(rows, dtype="object")
+    bq_field = schema.SchemaField(
+        "field_name",
+        bq_type,
+        fields=(
+            schema.SchemaField("int_col", "INTEGER"),
+            schema.SchemaField("string_col", "STRING"),
+        ),
+    )
+    arrow_array = module_under_test.bq_to_arrow_array(series, bq_field)
+    roundtrip = arrow_array.to_pylist()
+    assert rows == roundtrip
+
+
+@pytest.mark.skipIf(pandas is None, "Requires `pandas`")
+@pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
+def test_bq_to_arrow_array_w_special_floats(module_under_test):
+    bq_field = schema.SchemaField("field_name", "FLOAT64")
+    rows = [float("-inf"), float("nan"), float("inf"), None]
+    series = pandas.Series(rows, dtype="object")
+    arrow_array = module_under_test.bq_to_arrow_array(series, bq_field)
+    roundtrip = arrow_array.to_pylist()
+    assert len(rows) == len(roundtrip)
+    assert roundtrip[0] == float("-inf")
+    assert roundtrip[1] != roundtrip[1]  # NaN doesn't equal itself.
+    assert roundtrip[2] == float("inf")
+    assert roundtrip[3] is None
 
 
 @pytest.mark.skipIf(pandas is None, "Requires `pandas`")

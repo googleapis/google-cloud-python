@@ -42,7 +42,7 @@ def pyarrow_timestamp():
     return pyarrow.timestamp("us", tz="UTC")
 
 
-if pyarrow:  # pragma: NO COVER
+if pyarrow:
     BQ_TO_ARROW_SCALARS = {
         "BOOL": pyarrow.bool_,
         "BOOLEAN": pyarrow.bool_,
@@ -59,8 +59,21 @@ if pyarrow:  # pragma: NO COVER
         "TIME": pyarrow_time,
         "TIMESTAMP": pyarrow_timestamp,
     }
-else:
-    BQ_TO_ARROW_SCALARS = {}
+else:  # pragma: NO COVER
+    BQ_TO_ARROW_SCALARS = {}  # pragma: NO COVER
+
+
+def bq_to_arrow_struct_data_type(field):
+    arrow_fields = []
+    for subfield in field.fields:
+        arrow_subfield = bq_to_arrow_field(subfield)
+        if arrow_subfield:
+            arrow_fields.append(arrow_subfield)
+        else:
+            # Could not determine a subfield type. Fallback to type
+            # inference.
+            return None
+    return pyarrow.struct(arrow_fields)
 
 
 def bq_to_arrow_data_type(field):
@@ -77,8 +90,7 @@ def bq_to_arrow_data_type(field):
         return None
 
     if field.field_type.upper() in STRUCT_TYPES:
-        arrow_fields = [bq_to_arrow_field(subfield) for subfield in field.fields]
-        return pyarrow.struct(arrow_fields)
+        return bq_to_arrow_struct_data_type(field)
 
     data_type_constructor = BQ_TO_ARROW_SCALARS.get(field.field_type.upper())
     if data_type_constructor is None:
