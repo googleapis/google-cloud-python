@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Cloud Talent Solution API &#8212; google-cloud c81ef6f documentation</title>
+    <title>Client for Cloud Talent Solution API &#8212; google-cloud 2a13b18 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -1286,6 +1286,76 @@ your own client library.</li>
 </tbody>
 </table>
 <dl class="method">
+<dt id="google.cloud.talent_v4beta1.JobServiceClient.batch_create_jobs">
+<code class="descname">batch_create_jobs</code><span class="sig-paren">(</span><em>parent</em>, <em>jobs</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/talent_v4beta1/gapic/job_service_client.html#JobServiceClient.batch_create_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.talent_v4beta1.JobServiceClient.batch_create_jobs" title="Permalink to this definition">#</a></dt>
+<dd><p>Begins executing a batch create jobs operation.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">talent_v4beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">talent_v4beta1</span><span class="o">.</span><span class="n">JobServiceClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">tenant_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[TENANT]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `jobs`:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jobs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">batch_create_jobs</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">jobs</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">operation_future</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># Handle result.</span>
+<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="n">operation_future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Handle metadata.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">metadata</span><span class="p">()</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
+<p>The resource name of the tenant under which the job is created.</p>
+<p>The format is “projects/{project_id}/tenants/{tenant_id}”, for
+example, “projects/api-test-project/tenant/foo”.</p>
+<p>Tenant id is optional and a default tenant is created if unspecified,
+for example, “projects/api-test-project”.</p>
+</li>
+<li><strong>jobs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Job" title="google.cloud.talent_v4beta1.types.Job"><em>Job</em></a><em>]</em><em>]</em>) – <p>Required.</p>
+<p>The jobs to be created.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Job" title="google.cloud.talent_v4beta1.types.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">Job</span></code></a></p>
+</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="xref py py-class docutils literal notranslate"><span class="pre">_OperationFuture</span></code> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="google.cloud.talent_v4beta1.JobServiceClient.batch_delete_jobs">
 <code class="descname">batch_delete_jobs</code><span class="sig-paren">(</span><em>parent</em>, <em>filter_</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/talent_v4beta1/gapic/job_service_client.html#JobServiceClient.batch_delete_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.talent_v4beta1.JobServiceClient.batch_delete_jobs" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes a list of <code class="docutils literal notranslate"><span class="pre">Job</span></code>s by filter.</p>
@@ -1337,6 +1407,89 @@ that is provided to the method.</li>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.talent_v4beta1.JobServiceClient.batch_update_jobs">
+<code class="descname">batch_update_jobs</code><span class="sig-paren">(</span><em>parent</em>, <em>jobs</em>, <em>update_mask=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/talent_v4beta1/gapic/job_service_client.html#JobServiceClient.batch_update_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.talent_v4beta1.JobServiceClient.batch_update_jobs" title="Permalink to this definition">#</a></dt>
+<dd><p>Begins executing a batch update jobs operation.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">talent_v4beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">talent_v4beta1</span><span class="o">.</span><span class="n">JobServiceClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">tenant_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[TENANT]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `jobs`:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jobs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">batch_update_jobs</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">jobs</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">operation_future</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># Handle result.</span>
+<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="n">operation_future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Handle metadata.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">metadata</span><span class="p">()</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
+<p>The resource name of the tenant under which the job is created.</p>
+<p>The format is “projects/{project_id}/tenants/{tenant_id}”, for
+example, “projects/api-test-project/tenant/foo”.</p>
+<p>Tenant id is optional and the default tenant is used if unspecified, for
+example, “projects/api-test-project”.</p>
+</li>
+<li><strong>jobs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Job" title="google.cloud.talent_v4beta1.types.Job"><em>Job</em></a><em>]</em><em>]</em>) – <p>Required.</p>
+<p>The jobs to be updated.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Job" title="google.cloud.talent_v4beta1.types.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">Job</span></code></a></p>
+</li>
+<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.FieldMask" title="google.cloud.talent_v4beta1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>Optional but strongly recommended to be provided for the best service
+experience, also increase latency when checking status of batch
+operation.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">update_mask</span></code> is provided, only the specified fields in <code class="docutils literal notranslate"><span class="pre">Job</span></code> are
+updated. Otherwise all the fields are updated.</p>
+<p>A field mask to restrict the fields that are updated. Only top level
+fields of <code class="docutils literal notranslate"><span class="pre">Job</span></code> are supported.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">update_mask</span></code> is provided, The <code class="docutils literal notranslate"><span class="pre">Job</span></code> inside <code class="docutils literal notranslate"><span class="pre">JobResult</span></code> will
+only contains fields that is updated, plus the Id of the Job. Otherwise,
+<code class="docutils literal notranslate"><span class="pre">Job</span></code> will include all fields, which can yield a very large response.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.FieldMask" title="google.cloud.talent_v4beta1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
+</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="xref py py-class docutils literal notranslate"><span class="pre">_OperationFuture</span></code> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
 <li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
 failed for any reason.</li>
 <li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
@@ -1796,17 +1949,18 @@ for example, bucket(1, MAX, “positive number”) or bucket(1, 10).</li>
 </ul>
 <p>Job histogram facets:</p>
 <ul>
-<li>company_id: histogram by [Job.distributor_company_id`.</li>
-<li>company_display_name: histogram by <code class="docutils literal notranslate"><span class="pre">Job.company_display_name</span></code>.</li>
+<li>company_display_name: histogram by [Job.company_display_name`.</li>
 <li>employment_type: histogram by <code class="docutils literal notranslate"><span class="pre">Job.employment_types</span></code>, for example,
 “FULL_TIME”, “PART_TIME”.</li>
 <li>company_size: histogram by <code class="docutils literal notranslate"><span class="pre">CompanySize</span></code>, for example, “SMALL”,
 “MEDIUM”, “BIG”.</li>
-<li>publish_time_in_month: histogram by the <code class="docutils literal notranslate"><span class="pre">Job.publish_time</span></code> in
-months. Must specify list of numeric buckets in spec.</li>
-<li>publish_time_in_year: histogram by the <code class="docutils literal notranslate"><span class="pre">Job.publish_time</span></code> in
-years. Must specify list of numeric buckets in spec.</li>
-<li>degree_type: histogram by the <code class="docutils literal notranslate"><span class="pre">Job.degree_type</span></code>, for example,
+<li>publish_time_in_month: histogram by the
+<code class="docutils literal notranslate"><span class="pre">Job.posting_publish_time</span></code> in months. Must specify list of numeric
+buckets in spec.</li>
+<li>publish_time_in_year: histogram by the
+<code class="docutils literal notranslate"><span class="pre">Job.posting_publish_time</span></code> in years. Must specify list of numeric
+buckets in spec.</li>
+<li>degree_types: histogram by the <code class="docutils literal notranslate"><span class="pre">Job.degree_types</span></code>, for example,
 “Bachelors”, “Masters”.</li>
 <li>job_level: histogram by the <code class="docutils literal notranslate"><span class="pre">Job.job_level</span></code>, for example, “Entry
 Level”.</li>
@@ -1830,8 +1984,9 @@ refresh them periodically.</li>
 <code class="docutils literal notranslate"><span class="pre">Job.language_code</span></code>, for example, “en”, “fr”.</li>
 <li>category: histogram by the <code class="docutils literal notranslate"><span class="pre">JobCategory</span></code>, for example,
 “COMPUTER_AND_IT”, “HEALTHCARE”.</li>
-<li>base_compensation_unit: histogram by the <code class="docutils literal notranslate"><span class="pre">CompensationUnit</span></code> of
-base salary, for example, “WEEKLY”, “MONTHLY”.</li>
+<li>base_compensation_unit: histogram by the
+<code class="docutils literal notranslate"><span class="pre">CompensationInfo.CompensationUnit</span></code> of base salary, for example,
+“WEEKLY”, “MONTHLY”.</li>
 <li>base_compensation: histogram by the base salary. Must specify list
 of numeric buckets to group results by.</li>
 <li>annualized_base_compensation: histogram by the base annualized
@@ -1848,19 +2003,17 @@ of numeric buckets to group results by.</li>
 </ul>
 <p>Example expressions:</p>
 <ul>
-<li>count(admin1)</li>
-<li>count(base_compensation, [bucket(1000, 10000), bucket(10000,
-100000), bucket(100000, MAX)])</li>
-<li>count(string_custom_attribute[“some-string-custom-attribute”])</li>
-<li>count(numeric_custom_attribute[“some-numeric-custom-attribute”],
-[bucket(MIN, 0, “negative”), bucket(0, MAX, “non-negative”])</li>
+<li><code class="docutils literal notranslate"><span class="pre">count(admin1)</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">count(base_compensation,</span> <span class="pre">[bucket(1000,</span> <span class="pre">10000),</span> <span class="pre">bucket(10000,</span> <span class="pre">100000),</span> <span class="pre">bucket(100000,</span> <span class="pre">MAX)])</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">count(string_custom_attribute[&quot;some-string-custom-attribute&quot;])</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">count(numeric_custom_attribute[&quot;some-numeric-custom-attribute&quot;],</span> <span class="pre">[bucket(MIN,</span> <span class="pre">0,</span> <span class="pre">&quot;negative&quot;),</span> <span class="pre">bucket(0,</span> <span class="pre">MAX,</span> <span class="pre">&quot;non-negative&quot;])</span></code></li>
 </ul>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.HistogramQuery" title="google.cloud.talent_v4beta1.types.HistogramQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistogramQuery</span></code></a></p>
 </li>
 <li><strong>job_view</strong> (<em>JobView</em>) – <p>Optional.</p>
 <p>The desired job attributes returned for jobs in the search response.
-Defaults to <code class="docutils literal notranslate"><span class="pre">JobView.SMALL</span></code> if no value is specified.</p>
+Defaults to <code class="docutils literal notranslate"><span class="pre">JobView.JOB_VIEW_SMALL</span></code> if no value is specified.</p>
 </li>
 <li><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – <p>Optional.</p>
 <p>An integer that specifies the current offset (that is, starting result
@@ -1907,14 +2060,13 @@ end of search results.</li>
 Jobs whose annualized base compensation is unspecified are put at the
 end of search results.</li>
 <li>”custom``_``ranking desc”: By the relevance score adjusted to the
-<code class="docutils literal notranslate"><span class="pre">SearchJobsRequest.custom_ranking_info.ranking_expression</span></code> with
+<code class="docutils literal notranslate"><span class="pre">SearchJobsRequest.CustomRankingInfo.ranking_expression</span></code> with
 weight factor assigned by
-<code class="docutils literal notranslate"><span class="pre">SearchJobsRequest.custom_ranking_info.importance_level</span></code> in
+<code class="docutils literal notranslate"><span class="pre">SearchJobsRequest.CustomRankingInfo.importance_level</span></code> in
 descending order.</li>
 <li>”location``_``distance”: By the distance between the location on
-jobs and locations specified in the
-<code class="docutils literal notranslate"><span class="pre">SearchJobsRequest.job_query.location_filters</span></code>. When this order is
-selected, the <code class="docutils literal notranslate"><span class="pre">SearchJobsRequest.job_query.location_filters</span></code> must
+jobs and locations specified in the <code class="docutils literal notranslate"><span class="pre">JobQuery.location_filters</span></code>.
+When this order is selected, the <code class="docutils literal notranslate"><span class="pre">JobQuery.location_filters</span></code> must
 not be empty. When a job has multiple locations, the location closest
 to one of the locations specified in the location filter will be used
 to calculate location distance. Distance is calculated by the
@@ -1941,8 +2093,8 @@ score (determined by API algorithm).</p>
 message <code class="xref py py-class docutils literal notranslate"><span class="pre">CustomRankingInfo</span></code></p>
 </li>
 <li><strong>disable_keyword_match</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – <p>Optional.</p>
-<p>Controls whether to disable exact keyword match on <code class="docutils literal notranslate"><span class="pre">Job.job_title</span></code>,
-<code class="docutils literal notranslate"><span class="pre">Job.description</span></code>, <code class="docutils literal notranslate"><span class="pre">Job.company_display_name</span></code>, [Job.locations][0],
+<p>Controls whether to disable exact keyword match on <code class="docutils literal notranslate"><span class="pre">Job.title</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Job.description</span></code>, <code class="docutils literal notranslate"><span class="pre">Job.company_display_name</span></code>, <code class="docutils literal notranslate"><span class="pre">Job.addresses</span></code>,
 <code class="docutils literal notranslate"><span class="pre">Job.qualifications</span></code>. When disable keyword match is turned off, a
 keyword match returns jobs that do not match given category filters when
 there are matching keywords. For example, for the query “program
@@ -1952,10 +2104,10 @@ ontology, but does have “program manager” appearing in its description.</p>
 <p>For queries like “cloud” that don’t contain title or location specific
 ontology, jobs with “cloud” keyword matches are returned regardless of
 this flag’s value.</p>
-<p>Please use <code class="docutils literal notranslate"><span class="pre">Company.keyword_searchable_custom_fields</span></code> or
-<code class="docutils literal notranslate"><span class="pre">Company.keyword_searchable_custom_attributes</span></code> if company specific
-globally matched custom field/attribute string values is needed.
-Enabling keyword match improves recall of subsequent search requests.</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">Company.keyword_searchable_job_custom_attributes</span></code> if
+company-specific globally matched custom field/attribute string values
+are needed. Enabling keyword match improves recall of subsequent search
+requests.</p>
 <p>Defaults to false.</p>
 </li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
@@ -2098,17 +2250,18 @@ for example, bucket(1, MAX, “positive number”) or bucket(1, 10).</li>
 </ul>
 <p>Job histogram facets:</p>
 <ul>
-<li>company_id: histogram by [Job.distributor_company_id`.</li>
-<li>company_display_name: histogram by <code class="docutils literal notranslate"><span class="pre">Job.company_display_name</span></code>.</li>
+<li>company_display_name: histogram by [Job.company_display_name`.</li>
 <li>employment_type: histogram by <code class="docutils literal notranslate"><span class="pre">Job.employment_types</span></code>, for example,
 “FULL_TIME”, “PART_TIME”.</li>
 <li>company_size: histogram by <code class="docutils literal notranslate"><span class="pre">CompanySize</span></code>, for example, “SMALL”,
 “MEDIUM”, “BIG”.</li>
-<li>publish_time_in_month: histogram by the <code class="docutils literal notranslate"><span class="pre">Job.publish_time</span></code> in
-months. Must specify list of numeric buckets in spec.</li>
-<li>publish_time_in_year: histogram by the <code class="docutils literal notranslate"><span class="pre">Job.publish_time</span></code> in
-years. Must specify list of numeric buckets in spec.</li>
-<li>degree_type: histogram by the <code class="docutils literal notranslate"><span class="pre">Job.degree_type</span></code>, for example,
+<li>publish_time_in_month: histogram by the
+<code class="docutils literal notranslate"><span class="pre">Job.posting_publish_time</span></code> in months. Must specify list of numeric
+buckets in spec.</li>
+<li>publish_time_in_year: histogram by the
+<code class="docutils literal notranslate"><span class="pre">Job.posting_publish_time</span></code> in years. Must specify list of numeric
+buckets in spec.</li>
+<li>degree_types: histogram by the <code class="docutils literal notranslate"><span class="pre">Job.degree_types</span></code>, for example,
 “Bachelors”, “Masters”.</li>
 <li>job_level: histogram by the <code class="docutils literal notranslate"><span class="pre">Job.job_level</span></code>, for example, “Entry
 Level”.</li>
@@ -2132,8 +2285,9 @@ refresh them periodically.</li>
 <code class="docutils literal notranslate"><span class="pre">Job.language_code</span></code>, for example, “en”, “fr”.</li>
 <li>category: histogram by the <code class="docutils literal notranslate"><span class="pre">JobCategory</span></code>, for example,
 “COMPUTER_AND_IT”, “HEALTHCARE”.</li>
-<li>base_compensation_unit: histogram by the <code class="docutils literal notranslate"><span class="pre">CompensationUnit</span></code> of
-base salary, for example, “WEEKLY”, “MONTHLY”.</li>
+<li>base_compensation_unit: histogram by the
+<code class="docutils literal notranslate"><span class="pre">CompensationInfo.CompensationUnit</span></code> of base salary, for example,
+“WEEKLY”, “MONTHLY”.</li>
 <li>base_compensation: histogram by the base salary. Must specify list
 of numeric buckets to group results by.</li>
 <li>annualized_base_compensation: histogram by the base annualized
@@ -2150,19 +2304,17 @@ of numeric buckets to group results by.</li>
 </ul>
 <p>Example expressions:</p>
 <ul>
-<li>count(admin1)</li>
-<li>count(base_compensation, [bucket(1000, 10000), bucket(10000,
-100000), bucket(100000, MAX)])</li>
-<li>count(string_custom_attribute[“some-string-custom-attribute”])</li>
-<li>count(numeric_custom_attribute[“some-numeric-custom-attribute”],
-[bucket(MIN, 0, “negative”), bucket(0, MAX, “non-negative”])</li>
+<li><code class="docutils literal notranslate"><span class="pre">count(admin1)</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">count(base_compensation,</span> <span class="pre">[bucket(1000,</span> <span class="pre">10000),</span> <span class="pre">bucket(10000,</span> <span class="pre">100000),</span> <span class="pre">bucket(100000,</span> <span class="pre">MAX)])</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">count(string_custom_attribute[&quot;some-string-custom-attribute&quot;])</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">count(numeric_custom_attribute[&quot;some-numeric-custom-attribute&quot;],</span> <span class="pre">[bucket(MIN,</span> <span class="pre">0,</span> <span class="pre">&quot;negative&quot;),</span> <span class="pre">bucket(0,</span> <span class="pre">MAX,</span> <span class="pre">&quot;non-negative&quot;])</span></code></li>
 </ul>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.HistogramQuery" title="google.cloud.talent_v4beta1.types.HistogramQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistogramQuery</span></code></a></p>
 </li>
 <li><strong>job_view</strong> (<em>JobView</em>) – <p>Optional.</p>
 <p>The desired job attributes returned for jobs in the search response.
-Defaults to <code class="docutils literal notranslate"><span class="pre">JobView.SMALL</span></code> if no value is specified.</p>
+Defaults to <code class="docutils literal notranslate"><span class="pre">JobView.JOB_VIEW_SMALL</span></code> if no value is specified.</p>
 </li>
 <li><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – <p>Optional.</p>
 <p>An integer that specifies the current offset (that is, starting result
@@ -2209,14 +2361,13 @@ end of search results.</li>
 Jobs whose annualized base compensation is unspecified are put at the
 end of search results.</li>
 <li>”custom``_``ranking desc”: By the relevance score adjusted to the
-<code class="docutils literal notranslate"><span class="pre">SearchJobsRequest.custom_ranking_info.ranking_expression</span></code> with
+<code class="docutils literal notranslate"><span class="pre">SearchJobsRequest.CustomRankingInfo.ranking_expression</span></code> with
 weight factor assigned by
-<code class="docutils literal notranslate"><span class="pre">SearchJobsRequest.custom_ranking_info.importance_level</span></code> in
+<code class="docutils literal notranslate"><span class="pre">SearchJobsRequest.CustomRankingInfo.importance_level</span></code> in
 descending order.</li>
 <li>”location``_``distance”: By the distance between the location on
-jobs and locations specified in the
-<code class="docutils literal notranslate"><span class="pre">SearchJobsRequest.job_query.location_filters</span></code>. When this order is
-selected, the <code class="docutils literal notranslate"><span class="pre">SearchJobsRequest.job_query.location_filters</span></code> must
+jobs and locations specified in the <code class="docutils literal notranslate"><span class="pre">JobQuery.location_filters</span></code>.
+When this order is selected, the <code class="docutils literal notranslate"><span class="pre">JobQuery.location_filters</span></code> must
 not be empty. When a job has multiple locations, the location closest
 to one of the locations specified in the location filter will be used
 to calculate location distance. Distance is calculated by the
@@ -2243,8 +2394,8 @@ score (determined by API algorithm).</p>
 message <code class="xref py py-class docutils literal notranslate"><span class="pre">CustomRankingInfo</span></code></p>
 </li>
 <li><strong>disable_keyword_match</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – <p>Optional.</p>
-<p>Controls whether to disable exact keyword match on <code class="docutils literal notranslate"><span class="pre">Job.job_title</span></code>,
-<code class="docutils literal notranslate"><span class="pre">Job.description</span></code>, <code class="docutils literal notranslate"><span class="pre">Job.company_display_name</span></code>, [Job.locations][0],
+<p>Controls whether to disable exact keyword match on <code class="docutils literal notranslate"><span class="pre">Job.title</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Job.description</span></code>, <code class="docutils literal notranslate"><span class="pre">Job.company_display_name</span></code>, <code class="docutils literal notranslate"><span class="pre">Job.addresses</span></code>,
 <code class="docutils literal notranslate"><span class="pre">Job.qualifications</span></code>. When disable keyword match is turned off, a
 keyword match returns jobs that do not match given category filters when
 there are matching keywords. For example, for the query “program
@@ -2254,10 +2405,10 @@ ontology, but does have “program manager” appearing in its description.</p>
 <p>For queries like “cloud” that don’t contain title or location specific
 ontology, jobs with “cloud” keyword matches are returned regardless of
 this flag’s value.</p>
-<p>Please use <code class="docutils literal notranslate"><span class="pre">Company.keyword_searchable_custom_fields</span></code> or
-<code class="docutils literal notranslate"><span class="pre">Company.keyword_searchable_custom_attributes</span></code> if company specific
-globally matched custom field/attribute string values is needed.
-Enabling keyword match improves recall of subsequent search requests.</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">Company.keyword_searchable_job_custom_attributes</span></code> if
+company-specific globally matched custom field/attribute string values
+are needed. Enabling keyword match improves recall of subsequent search
+requests.</p>
 <p>Defaults to false.</p>
 </li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
@@ -2791,18 +2942,18 @@ attempts to correct a misspelled query.</p>
 <ul>
 <li>”relevance desc”: By descending relevance, as determined by the API
 algorithms.</li>
-<li>”update_date desc”: Sort by <code class="docutils literal notranslate"><span class="pre">Profile.update_date</span></code> in descending
+<li>”update_time desc”: Sort by <code class="docutils literal notranslate"><span class="pre">Profile.update_time</span></code> in descending
 order (recently updated profiles first).</li>
-<li>”create_date desc”: Sort by <code class="docutils literal notranslate"><span class="pre">Profile.create_date</span></code> in descending
+<li>”create_time desc”: Sort by <code class="docutils literal notranslate"><span class="pre">Profile.create_time</span></code> in descending
 order (recently created profiles first).</li>
-<li>”first_name”: Sort by <code class="docutils literal notranslate"><span class="pre">PersonStrcuturedName.given_name</span></code> in
-ascending order.</li>
-<li>”first_name desc”: Sort by <code class="docutils literal notranslate"><span class="pre">PersonStrcuturedName.given_name</span></code> in
-descending order.</li>
-<li>”last_name”: Sort by <code class="docutils literal notranslate"><span class="pre">PersonStrcuturedName.family_name</span></code> in
-ascending order.</li>
-<li>”last_name desc”: Sort by <code class="docutils literal notranslate"><span class="pre">PersonStrcuturedName.family_name</span></code> in
-ascending order.</li>
+<li>”first_name”: Sort by <code class="docutils literal notranslate"><span class="pre">PersonName.PersonStructuredName.given_name</span></code>
+in ascending order.</li>
+<li>”first_name desc”: Sort by
+<code class="docutils literal notranslate"><span class="pre">PersonName.PersonStructuredName.given_name</span></code> in descending order.</li>
+<li>”last_name”: Sort by <code class="docutils literal notranslate"><span class="pre">PersonName.PersonStructuredName.family_name</span></code>
+in ascending order.</li>
+<li>”last_name desc”: Sort by
+<code class="docutils literal notranslate"><span class="pre">PersonName.PersonStructuredName.family_name</span></code> in ascending order.</li>
 </ul>
 </li>
 <li><strong>case_sensitive_sort</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – <p>Optional.</p>

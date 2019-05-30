@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Talent Solution API Client &#8212; google-cloud c81ef6f documentation</title>
+    <title>Types for Cloud Talent Solution API Client &#8212; google-cloud 2a13b18 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -241,8 +241,10 @@ WORK, PERSONAL.</p>
 <dl class="attribute">
 <dt id="google.cloud.talent_v4beta1.types.Address.address">
 <code class="descname">address</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.Address.address" title="Permalink to this definition">#</a></dt>
-<dd><p>The address of a person. It can be one of
-[unstructured_address][] or [structured_address][].</p>
+<dd><p>The address of a person. It can be one of [unstructured_addre
+ss][google.cloud.talent.v4beta1.Address.unstructured_address]
+or [structured_address][google.cloud.talent.v4beta1.Address.s
+tructured_address].</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -288,6 +290,23 @@ city, state, country, and so on.</p>
 <dt>
 <code class="descname">usage</code></dt>
 <dd><p>Field google.cloud.talent.v4beta1.Address.usage</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.talent_v4beta1.types.Any">
+<em class="property">class </em><code class="descclassname">google.cloud.talent_v4beta1.types.</code><code class="descname">Any</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.Any" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.Any.type_url">
+<code class="descname">type_url</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.Any.type_url" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Any.type_url</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.Any.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.Any.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.Any.value</p>
 </dd></dl>
 
 </dd></dl>
@@ -571,7 +590,8 @@ with application date not before the start date.</p>
 <dt id="google.cloud.talent_v4beta1.types.ApplicationJobFilter.job_requisition_id">
 <code class="descname">job_requisition_id</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.ApplicationJobFilter.job_requisition_id" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional.  The job requisition id in the application. The API
-does an exact match on the [Job.requisistion_id][] of
+does an exact match on the [Job.requisition_id][google.cloud.
+talent.v4beta1.Job.requisition_id] of
 [Application.job][google.cloud.talent.v4beta1.Application.job]
 in profiles.</p>
 </dd></dl>
@@ -651,6 +671,41 @@ the filter.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.talent_v4beta1.types.BatchCreateJobsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.talent_v4beta1.types.</code><code class="descname">BatchCreateJobsRequest</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.BatchCreateJobsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request to create a batch of jobs.</p>
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.BatchCreateJobsRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.BatchCreateJobsRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Required.  The resource name of the tenant under which the job
+is created.  The format is
+“projects/{project_id}/tenants/{tenant_id}”, for example,
+“projects/api-test-project/tenant/foo”.  Tenant id is optional
+and a default tenant is created if unspecified, for example,
+“projects/api-test-project”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.BatchCreateJobsRequest.jobs">
+<code class="descname">jobs</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.BatchCreateJobsRequest.jobs" title="Permalink to this definition">#</a></dt>
+<dd><p>Required.  The jobs to be created.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">jobs</code></dt>
+<dd><p>Field google.cloud.talent.v4beta1.BatchCreateJobsRequest.jobs</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.talent.v4beta1.BatchCreateJobsRequest.parent</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.talent_v4beta1.types.BatchDeleteJobsRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.talent_v4beta1.types.</code><code class="descname">BatchDeleteJobsRequest</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.BatchDeleteJobsRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Input only.</p>
@@ -691,6 +746,176 @@ project/companies/123” AND requisitionId = “req-1”</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.talent_v4beta1.types.BatchOperationMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.talent_v4beta1.types.</code><code class="descname">BatchOperationMetadata</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.BatchOperationMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only.</p>
+<p>Metadata used for long running operations returned by CTS batch APIs.
+It’s used to replace
+[google.longrunning.Operation.metadata][google.longrunning.Operation.metadata].</p>
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.BatchOperationMetadata.state">
+<code class="descname">state</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.BatchOperationMetadata.state" title="Permalink to this definition">#</a></dt>
+<dd><p>The state of a long running operation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.BatchOperationMetadata.state_description">
+<code class="descname">state_description</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.BatchOperationMetadata.state_description" title="Permalink to this definition">#</a></dt>
+<dd><p>More detailed information about operation state.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.BatchOperationMetadata.success_count">
+<code class="descname">success_count</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.BatchOperationMetadata.success_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Count of successful item(s) inside an operation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.BatchOperationMetadata.failure_count">
+<code class="descname">failure_count</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.BatchOperationMetadata.failure_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Count of failed item(s) inside an operation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.BatchOperationMetadata.total_count">
+<code class="descname">total_count</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.BatchOperationMetadata.total_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Count of total item(s) inside an operation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.BatchOperationMetadata.create_time">
+<code class="descname">create_time</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.BatchOperationMetadata.create_time" title="Permalink to this definition">#</a></dt>
+<dd><p>The time when the batch operation is created.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.BatchOperationMetadata.update_time">
+<code class="descname">update_time</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.BatchOperationMetadata.update_time" title="Permalink to this definition">#</a></dt>
+<dd><p>The time when the batch operation status is updated. The
+metadata and the [update_time][google.cloud.talent.v4beta1.Ba
+tchOperationMetadata.update_time] is refreshed every minute
+otherwise cached data is returned.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.BatchOperationMetadata.end_time">
+<code class="descname">end_time</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.BatchOperationMetadata.end_time" title="Permalink to this definition">#</a></dt>
+<dd><p>The time when the batch operation is finished and [google.long
+running.Operation.done][google.longrunning.Operation.done] is
+set to <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.cloud.talent.v4beta1.BatchOperationMetadata.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">end_time</code></dt>
+<dd><p>Field google.cloud.talent.v4beta1.BatchOperationMetadata.end_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">failure_count</code></dt>
+<dd><p>Field google.cloud.talent.v4beta1.BatchOperationMetadata.failure_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">state</code></dt>
+<dd><p>Field google.cloud.talent.v4beta1.BatchOperationMetadata.state</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">state_description</code></dt>
+<dd><p>Field google.cloud.talent.v4beta1.BatchOperationMetadata.state_description</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">success_count</code></dt>
+<dd><p>Field google.cloud.talent.v4beta1.BatchOperationMetadata.success_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">total_count</code></dt>
+<dd><p>Field google.cloud.talent.v4beta1.BatchOperationMetadata.total_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_time</code></dt>
+<dd><p>Field google.cloud.talent.v4beta1.BatchOperationMetadata.update_time</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.talent_v4beta1.types.BatchUpdateJobsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.talent_v4beta1.types.</code><code class="descname">BatchUpdateJobsRequest</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.BatchUpdateJobsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request to update a batch of jobs.</p>
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.BatchUpdateJobsRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.BatchUpdateJobsRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Required.  The resource name of the tenant under which the job
+is created.  The format is
+“projects/{project_id}/tenants/{tenant_id}”, for example,
+“projects/api-test-project/tenant/foo”.  Tenant id is optional
+and the default tenant is used if unspecified, for example,
+“projects/api-test-project”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.BatchUpdateJobsRequest.jobs">
+<code class="descname">jobs</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.BatchUpdateJobsRequest.jobs" title="Permalink to this definition">#</a></dt>
+<dd><p>Required.  The jobs to be updated.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.BatchUpdateJobsRequest.update_mask">
+<code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.BatchUpdateJobsRequest.update_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional but strongly recommended to be provided for the best
+service experience, also increase latency when checking status
+of batch operation.  If [update_mask][google.cloud.talent.v4b
+eta1.BatchUpdateJobsRequest.update_mask] is provided, only
+the specified fields in [Job][google.cloud.talent.v4beta1.Job]
+are updated. Otherwise all the fields are updated.  A field
+mask to restrict the fields that are updated. Only top level
+fields of [Job][google.cloud.talent.v4beta1.Job] are
+supported.  If [update_mask][google.cloud.talent.v4beta1.Batc
+hUpdateJobsRequest.update_mask] is provided, The
+[Job][google.cloud.talent.v4beta1.Job] inside [JobResult][]
+will only contains fields that is updated, plus the Id of the
+Job. Otherwise, [Job][google.cloud.talent.v4beta1.Job] will
+include all fields, which can yield a very large response.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">jobs</code></dt>
+<dd><p>Field google.cloud.talent.v4beta1.BatchUpdateJobsRequest.jobs</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.talent.v4beta1.BatchUpdateJobsRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_mask</code></dt>
+<dd><p>Field google.cloud.talent.v4beta1.BatchUpdateJobsRequest.update_mask</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.talent_v4beta1.types.BoolValue">
 <em class="property">class </em><code class="descclassname">google.cloud.talent_v4beta1.types.</code><code class="descname">BoolValue</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.BoolValue" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
@@ -708,6 +933,17 @@ project/companies/123” AND requisitionId = “req-1”</p>
 <dt id="google.cloud.talent_v4beta1.types.BytesValue.value">
 <code class="descname">value</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.BytesValue.value" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.BytesValue.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.talent_v4beta1.types.CancelOperationRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.talent_v4beta1.types.</code><code class="descname">CancelOperationRequest</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.CancelOperationRequest" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.CancelOperationRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.CancelOperationRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.CancelOperationRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -794,9 +1030,9 @@ by the client.</p>
 <dl class="attribute">
 <dt id="google.cloud.talent_v4beta1.types.ClientEvent.request_id">
 <code class="descname">request_id</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.ClientEvent.request_id" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  A unique ID generated in the API responses. It can
-be found in [ResponseMetadata.request_id][google.cloud.talent
-.v4beta1.ResponseMetadata.request_id].</p>
+<dd><p>Optional but highly recommended.  A unique ID generated in the
+API responses. It can be found in [ResponseMetadata.request_i
+d][google.cloud.talent.v4beta1.ResponseMetadata.request_id].</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1100,7 +1336,8 @@ content appears suspicious, abusive, or spammy.</p>
 <dt id="google.cloud.talent_v4beta1.types.Company.DerivedInfo.headquarters_location">
 <code class="descname">headquarters_location</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.Company.DerivedInfo.headquarters_location" title="Permalink to this definition">#</a></dt>
 <dd><p>A structured headquarters location of the company, resolved
-from [Company.hq_location][] if provided.</p>
+from [Company.headquarters_address][google.cloud.talent.v4bet
+a1.Company.headquarters_address] if provided.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1219,8 +1456,8 @@ pensationInfo.CompensationUnit].</p>
 <dl class="attribute">
 <dt id="google.cloud.talent_v4beta1.types.CompensationFilter.include_jobs_with_unspecified_compensation_range">
 <code class="descname">include_jobs_with_unspecified_compensation_range</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.CompensationFilter.include_jobs_with_unspecified_compensation_range" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional.  Whether to include jobs whose compensation range is
-unspecified.</p>
+<dd><p>Optional.  If set to true, jobs with unspecified compensation
+range fields are included.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1259,15 +1496,15 @@ unspecified.</p>
 <dd><p>Optional.  Job compensation information.  At most one entry
 can be of type [CompensationInfo.CompensationType.BASE][google
 .cloud.talent.v4beta1.CompensationInfo.CompensationType.BASE],
-which is referred as ** base compensation entry ** for the
-job.</p>
+which is referred as <strong>base compensation entry</strong> for the job.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.talent_v4beta1.types.CompensationInfo.annualized_base_compensation_range">
 <code class="descname">annualized_base_compensation_range</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.CompensationInfo.annualized_base_compensation_range" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. Annualized base compensation range. Computed as
-base compensation entry’s [CompensationEntry.compensation][]
+base compensation entry’s [CompensationEntry.amount][google.cl
+oud.talent.v4beta1.CompensationInfo.CompensationEntry.amount]
 times [CompensationEntry.expected_units_per_year][google.cl
 oud.talent.v4beta1.CompensationInfo.CompensationEntry.expected
 _units_per_year].  See [CompensationEntry][google.cloud.tal
@@ -1279,7 +1516,8 @@ explanation on compensation annualization.</p>
 <dt id="google.cloud.talent_v4beta1.types.CompensationInfo.annualized_total_compensation_range">
 <code class="descname">annualized_total_compensation_range</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.CompensationInfo.annualized_total_compensation_range" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. Annualized total compensation range. Computed as
-all compensation entries’ [CompensationEntry.compensation][]
+all compensation entries’ [CompensationEntry.amount][google.cl
+oud.talent.v4beta1.CompensationInfo.CompensationEntry.amount]
 times [CompensationEntry.expected_units_per_year][google.cl
 oud.talent.v4beta1.CompensationInfo.CompensationEntry.expected
 _units_per_year].  See [CompensationEntry][google.cloud.tal
@@ -1308,17 +1546,19 @@ times
 <dl class="attribute">
 <dt id="google.cloud.talent_v4beta1.types.CompensationInfo.CompensationEntry.type">
 <code class="descname">type</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.CompensationInfo.CompensationEntry.type" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional.  Compensation type.  Default is
-[CompensationUnit.OTHER_COMPENSATION_TYPE][].</p>
+<dd><p>Optional.  Compensation type.  Default is [CompensationType.CO
+MPENSATION_TYPE_UNSPECIFIED][google.cloud.talent.v4beta1.Com
+pensationInfo.CompensationType.COMPENSATION_TYPE_UNSPECIFIED
+].</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.talent_v4beta1.types.CompensationInfo.CompensationEntry.unit">
 <code class="descname">unit</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.CompensationInfo.CompensationEntry.unit" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional.  Frequency of the specified amount.  Default is [Com
-pensationUnit.OTHER_COMPENSATION_UNIT][google.cloud.talent.v
-4beta1.CompensationInfo.CompensationUnit.OTHER_COMPENSATION_
-UNIT].</p>
+pensationUnit.COMPENSATION_UNIT_UNSPECIFIED][google.cloud.ta
+lent.v4beta1.CompensationInfo.CompensationUnit.COMPENSATION_U
+NIT_UNSPECIFIED].</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1615,8 +1855,9 @@ request tracking id.</p>
 <dl class="attribute">
 <dt id="google.cloud.talent_v4beta1.types.CompleteQueryResponse.CompletionResult.image_uri">
 <code class="descname">image_uri</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.CompleteQueryResponse.CompletionResult.image_uri" title="Permalink to this definition">#</a></dt>
-<dd><p>The URI of the company image for
-[CompletionType.COMPANY_NAME][].</p>
+<dd><p>The URI of the company image for [COMPANY_NAME][google.cloud.
+talent.v4beta1.CompleteQueryRequest.CompletionType.COMPANY_NA
+ME].</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2057,6 +2298,17 @@ default tenant is used if unspecified, for example,
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.talent_v4beta1.types.DeleteOperationRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.talent_v4beta1.types.</code><code class="descname">DeleteOperationRequest</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.DeleteOperationRequest" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.DeleteOperationRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.DeleteOperationRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.DeleteOperationRequest.name</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.talent_v4beta1.types.DeleteProfileRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.talent_v4beta1.types.</code><code class="descname">DeleteProfileRequest</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.DeleteProfileRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Delete profile request.</p>
@@ -2260,8 +2512,10 @@ Number of characters allowed is 100.</p>
 <dl class="attribute">
 <dt id="google.cloud.talent_v4beta1.types.EducationRecord.degree">
 <code class="descname">degree</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.EducationRecord.degree" title="Permalink to this definition">#</a></dt>
-<dd><p>The degree information. It can be one of
-[degree_description][] or [structured_degree][].</p>
+<dd><p>The degree information. It can be one of [degree_description]
+[google.cloud.talent.v4beta1.EducationRecord.degree_descripti
+on] or [structured_degree][google.cloud.talent.v4beta1.Educat
+ionRecord.structured_degree].</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2305,9 +2559,9 @@ the [school_name][google.cloud.talent.v4beta1.EducationRecord
 <dt id="google.cloud.talent_v4beta1.types.EducationRecord.degree_snippet">
 <code class="descname">degree_snippet</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.EducationRecord.degree_snippet" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The job description snippet shows how the
-[degree][google.cloud.talent.v4beta1.degree] is related to a
+[Degree][google.cloud.talent.v4beta1.Degree] is related to a
 search query in search result. It’s empty if the
-[degree][google.cloud.talent.v4beta1.degree] isn’t related to
+[Degree][google.cloud.talent.v4beta1.Degree] isn’t related to
 the search query.</p>
 </dd></dl>
 
@@ -2738,6 +2992,17 @@ default tenant is used if unspecified, for example,
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.talent_v4beta1.types.GetOperationRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.talent_v4beta1.types.</code><code class="descname">GetOperationRequest</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.GetOperationRequest" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.GetOperationRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.GetOperationRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.GetOperationRequest.name</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.talent_v4beta1.types.GetProfileRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.talent_v4beta1.types.</code><code class="descname">GetProfileRequest</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.GetProfileRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Get profile request.</p>
@@ -2806,7 +3071,9 @@ filesRequest.histogram_queries] for details about syntax.</p>
 <dt id="google.cloud.talent_v4beta1.types.HistogramQueryResult">
 <em class="property">class </em><code class="descclassname">google.cloud.talent_v4beta1.types.</code><code class="descname">HistogramQueryResult</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.HistogramQueryResult" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only.</p>
-<p>Histogram result that matches [HistogramSpec][] specified in searches.</p>
+<p>Histogram result that matches
+[HistogramQuery][google.cloud.talent.v4beta1.HistogramQuery] specified
+in searches.</p>
 <dl class="attribute">
 <dt id="google.cloud.talent_v4beta1.types.HistogramQueryResult.histogram_query">
 <code class="descname">histogram_query</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.HistogramQueryResult.histogram_query" title="Permalink to this definition">#</a></dt>
@@ -2818,12 +3085,13 @@ filesRequest.histogram_queries] for details about syntax.</p>
 <code class="descname">histogram</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.HistogramQueryResult.histogram" title="Permalink to this definition">#</a></dt>
 <dd><p>A map from the values of the facet associated with distinct
 values to the number of matching entries with corresponding
-value.  The key format is: * (for string histogram) string
-values stored in the field. * (for named numeric bucket) name
-specified in <code class="docutils literal notranslate"><span class="pre">bucket()</span></code> function, like for <code class="docutils literal notranslate"><span class="pre">bucket(0,</span> <span class="pre">MAX,</span>
-<span class="pre">&quot;non-negative&quot;)</span></code>, the key will be <code class="docutils literal notranslate"><span class="pre">non-negative</span></code>. * (for
-anonymous numeric bucket) range formatted as <code class="docutils literal notranslate"><span class="pre">&lt;low&gt;-&lt;high&gt;</span></code>,
-for example, <code class="docutils literal notranslate"><span class="pre">0-1000</span></code>, <code class="docutils literal notranslate"><span class="pre">MIN-0</span></code>, and <code class="docutils literal notranslate"><span class="pre">0-MAX</span></code>.</p>
+value.  The key format is:  -  (for string histogram) string
+values stored in the field. -  (for named numeric bucket) name
+specified in <code class="docutils literal notranslate"><span class="pre">bucket()</span></code> function,    like for <code class="docutils literal notranslate"><span class="pre">bucket(0,</span>
+<span class="pre">MAX,</span> <span class="pre">&quot;non-negative&quot;)</span></code>, the key will be    <code class="docutils literal notranslate"><span class="pre">non-negative</span></code>. -
+(for anonymous numeric bucket) range formatted as
+<code class="docutils literal notranslate"><span class="pre">&lt;low&gt;-&lt;high&gt;</span></code>,    for example, <code class="docutils literal notranslate"><span class="pre">0-1000</span></code>, <code class="docutils literal notranslate"><span class="pre">MIN-0</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">0-MAX</span></code>.</p>
 </dd></dl>
 
 <dl class="class">
@@ -2993,14 +3261,14 @@ locations, it is suggested to split it into multiple jobs with
 unique [requisition_id][google.cloud.talent.v4beta1.Job.requi
 sition_id]s (e.g. ‘ReqA’ becomes ‘ReqA-1’, ‘ReqA-2’, and so
 on.) as multiple jobs with the same
-[company][google.cloud.talent.v4beta1.Job.name][],
-[language_code][] and [requisition_id][google.cloud.talent.v
-4beta1.Job.requisition_id] are not allowed. If the original [
-requisition_id][google.cloud.talent.v4beta1.Job.requisition_
-id] must be preserved, a custom field should be used for
-storage. It is also suggested to group the locations that
-close to each other in the same job for better search
-experience.  The maximum number of allowed characters is 500.</p>
+[company][google.cloud.talent.v4beta1.Job.company], [language          _code][google.cloud.talent.v4beta1.Job.language_code] and [re
+quisition_id][google.cloud.talent.v4beta1.Job.requisition_id
+] are not allowed. If the original [requisition_id][google.cl
+oud.talent.v4beta1.Job.requisition_id] must be preserved, a
+custom field should be used for storage. It is also suggested
+to group the locations that close to each other in the same
+job for better search experience.  The maximum number of
+allowed characters is 500.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3188,33 +3456,40 @@ at the server. Invalid timestamps are ignored.</p>
 experience.  The expiration timestamp of the job. After this
 timestamp, the job is marked as expired, and it no longer
 appears in search results. The expired job can’t be deleted or
-listed by the [DeleteJob][] and [ListJobs][] APIs, but it can
-be retrieved with the [GetJob][] API or updated with the
-[UpdateJob][] API. An expired job can be updated and opened
-again by using a future expiration timestamp. Updating an
-expired job fails if there is another existing open job with
-same [company][google.cloud.talent.v4beta1.Job.name][],
-[language_code][] and [requisition_id][google.cloud.talent.v
-4beta1.Job.requisition_id].  The expired jobs are retained in
-our system for 90 days. However, the overall expired job count
-cannot exceed 3 times the maximum of open jobs count over the
-past week, otherwise jobs with earlier expire time are cleaned
-first. Expired jobs are no longer accessible after they are
-cleaned out.  Invalid timestamps are ignored, and treated as
-expire time not provided.  Timestamp before the instant
-request is made is considered valid, the job will be treated
-as expired immediately.  If this value isn’t provided at the
-time of job creation or is invalid, the job posting expires
-after 30 days from the job’s creation time. For example, if
-the job was created on 2017/01/01 13:00AM UTC with an
-unspecified expiration date, the job expires after 2017/01/31
-13:00AM UTC.  If this value isn’t provided on job update, it
-depends on the field masks set by [UpdateJobRequest.update_ma
-sk][google.cloud.talent.v4beta1.UpdateJobRequest.update_mask]
-. If the field masks include [expiry_time][], or the masks
-are empty meaning that every field is updated, the job posting
-expires after 30 days from the job’s last update time.
-Otherwise the expiration date isn’t updated.</p>
+listed by the
+[DeleteJob][google.cloud.talent.v4beta1.JobService.DeleteJob]
+and
+[ListJobs][google.cloud.talent.v4beta1.JobService.ListJobs]
+APIs, but it can be retrieved with the
+[GetJob][google.cloud.talent.v4beta1.JobService.GetJob] API or
+updated with the
+[UpdateJob][google.cloud.talent.v4beta1.JobService.UpdateJob]
+API. An expired job can be updated and opened again by using a
+future expiration timestamp. Updating an expired job fails if
+there is another existing open job with same
+[company][google.cloud.talent.v4beta1.Job.company], [language          _code][google.cloud.talent.v4beta1.Job.language_code] and [re
+quisition_id][google.cloud.talent.v4beta1.Job.requisition_id
+].  The expired jobs are retained in our system for 90 days.
+However, the overall expired job count cannot exceed 3 times
+the maximum of open jobs count over the past week, otherwise
+jobs with earlier expire time are cleaned first. Expired jobs
+are no longer accessible after they are cleaned out.  Invalid
+timestamps are ignored, and treated as expire time not
+provided.  Timestamp before the instant request is made is
+considered valid, the job will be treated as expired
+immediately.  If this value isn’t provided at the time of job
+creation or is invalid, the job posting expires after 30 days
+from the job’s creation time. For example, if the job was
+created on 2017/01/01 13:00AM UTC with an unspecified
+expiration date, the job expires after 2017/01/31 13:00AM UTC.
+If this value isn’t provided on job update, it depends on the
+field masks set by [UpdateJobRequest.update_mask][google.clou
+d.talent.v4beta1.UpdateJobRequest.update_mask]. If the field
+masks include [job_end_time][google.cloud.talent.v4beta1.Job
+.job_end_time], or the masks are empty meaning that every
+field is updated, the job posting expires after 30 days from
+the job’s last update time. Otherwise the expiration date
+isn’t updated.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3597,7 +3872,21 @@ ud.talent.v4beta1.JobEvent.JobEventType.IMPRESSION] event,
 this field contains the identifiers of all jobs shown to the
 job seeker. If this was a
 [view][google.cloud.talent.v4beta1.JobEvent.JobEventType.VIEW]
-event, this field contains the identifier of the viewed job.</p>
+event, this field contains the identifier of the viewed job.
+The format is
+“projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}”,
+for example, “projects/api-test-
+project/tenants/foo/jobs/1234”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.JobEvent.profile">
+<code class="descname">profile</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.JobEvent.profile" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional.  The [profile
+name][google.cloud.talent.v4beta1.Profile.name] associated
+with this client event.  The format is “projects/{project_id}
+/tenants/{tenant_id}/profiles/{profile_id}”, for example,
+“projects/api-test-project/tenants/foo/profiles/bar”.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3608,8 +3897,76 @@ event, this field contains the identifier of the viewed job.</p>
 
 <dl class="attribute">
 <dt>
+<code class="descname">profile</code></dt>
+<dd><p>Field google.cloud.talent.v4beta1.JobEvent.profile</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
 <code class="descname">type</code></dt>
 <dd><p>Field google.cloud.talent.v4beta1.JobEvent.type</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.talent_v4beta1.types.JobOperationResult">
+<em class="property">class </em><code class="descclassname">google.cloud.talent_v4beta1.types.</code><code class="descname">JobOperationResult</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.JobOperationResult" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only.</p>
+<p>The result of [BatchCreateJobs][] or [BatchUpdateJobs][] APIs. It’s used
+to replace
+[google.longrunning.Operation.response][google.longrunning.Operation.response]
+in case of success.</p>
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.JobOperationResult.job_results">
+<code class="descname">job_results</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.JobOperationResult.job_results" title="Permalink to this definition">#</a></dt>
+<dd><p>List of job mutation results from a batch mutate operation. It
+can change until operation status is FINISHED, FAILED or
+CANCELLED.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.talent_v4beta1.types.JobOperationResult.JobResult">
+<em class="property">class </em><code class="descname">JobResult</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.JobOperationResult.JobResult" title="Permalink to this definition">#</a></dt>
+<dd><p>Mutation result of a job.</p>
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.JobOperationResult.JobResult.job">
+<code class="descname">job</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.JobOperationResult.JobResult.job" title="Permalink to this definition">#</a></dt>
+<dd><p>Here [Job][google.cloud.talent.v4beta1.Job] only contains
+basic information including
+[name][google.cloud.talent.v4beta1.Job.name],
+[company][google.cloud.talent.v4beta1.Job.company], [language            _code][google.cloud.talent.v4beta1.Job.language_code] and [re
+quisition_id][google.cloud.talent.v4beta1.Job.requisition_id
+], use getJob method to retrieve detailed information of the
+created/updated job.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.JobOperationResult.JobResult.status">
+<code class="descname">status</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.JobOperationResult.JobResult.status" title="Permalink to this definition">#</a></dt>
+<dd><p>The status of the job processed. This field is populated if
+the processing of the [job][google.cloud.talent.v4beta1.JobOpe
+rationResult.JobResult.job] fails.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">job</code></dt>
+<dd><p>Field google.cloud.talent.v4beta1.JobOperationResult.JobResult.job</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">status</code></dt>
+<dd><p>Field google.cloud.talent.v4beta1.JobOperationResult.JobResult.status</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">job_results</code></dt>
+<dd><p>Field google.cloud.talent.v4beta1.JobOperationResult.job_results</p>
 </dd></dl>
 
 </dd></dl>
@@ -3663,10 +4020,12 @@ filters are allowed.</p>
 <dt id="google.cloud.talent_v4beta1.types.JobQuery.job_categories">
 <code class="descname">job_categories</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.JobQuery.job_categories" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional.  The category filter specifies the categories of
-jobs to search against. See [Category][] for more information.
-If a value isn’t specified, jobs from any category are
-searched against.  If multiple values are specified, jobs from
-any of the specified categories are searched against.</p>
+jobs to search against. See
+[JobCategory][google.cloud.talent.v4beta1.JobCategory] for
+more information.  If a value isn’t specified, jobs from any
+category are searched against.  If multiple values are
+specified, jobs from any of the specified categories are
+searched against.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3674,22 +4033,24 @@ any of the specified categories are searched against.</p>
 <code class="descname">commute_filter</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.JobQuery.commute_filter" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional.  Allows filtering jobs by commute time with
 different travel methods (for example, driving or public
-transit). Note: This only works with [COMMUTE
-MODE][Mode#COMMUTE]. When specified,
-[JobQuery.location_filters] is ignored.  Currently we don’t
+transit).  Note: This only works when you specify a
+[CommuteMethod][google.cloud.talent.v4beta1.CommuteMethod]. In
+this case, [location_filters][google.cloud.talent.v4beta1.Job
+Query.location_filters] is ignored.  Currently we don’t
 support sorting by commute time.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.talent_v4beta1.types.JobQuery.company_display_names">
 <code class="descname">company_display_names</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.JobQuery.company_display_names" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional.  This filter specifies the exact [company display
-name][Company.display_name] of the jobs to search against.
-If a value isn’t specified, jobs within the search results are
-associated with any company.  If multiple values are
-specified, jobs within the search results may be associated
-with any of the specified companies.  At most 20 company
-display name filters are allowed.</p>
+<dd><p>Optional.  This filter specifies the exact company [Company.di
+splay_name][google.cloud.talent.v4beta1.Company.display_name
+] of the jobs to search against.  If a value isn’t specified,
+jobs within the search results are associated with any
+company.  If multiple values are specified, jobs within the
+search results may be associated with any of the specified
+companies.  At most 20 company display name filters are
+allowed.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -4242,6 +4603,52 @@ request tracking id.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.talent_v4beta1.types.ListOperationsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.talent_v4beta1.types.</code><code class="descname">ListOperationsRequest</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.ListOperationsRequest" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.ListOperationsRequest.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.ListOperationsRequest.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.ListOperationsRequest.filter</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.ListOperationsRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.ListOperationsRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.ListOperationsRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.ListOperationsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.ListOperationsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.ListOperationsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.ListOperationsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.ListOperationsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.ListOperationsRequest.page_token</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.talent_v4beta1.types.ListOperationsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.talent_v4beta1.types.</code><code class="descname">ListOperationsResponse</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.ListOperationsResponse" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.ListOperationsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.ListOperationsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.ListOperationsResponse.next_page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.ListOperationsResponse.operations">
+<code class="descname">operations</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.ListOperationsResponse.operations" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.ListOperationsResponse.operations</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.talent_v4beta1.types.ListProfilesRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.talent_v4beta1.types.</code><code class="descname">ListProfilesRequest</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.ListProfilesRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>List profiles request.</p>
@@ -4435,10 +4842,13 @@ information.</p>
 <dt id="google.cloud.talent_v4beta1.types.Location.location_type">
 <code class="descname">location_type</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.Location.location_type" title="Permalink to this definition">#</a></dt>
 <dd><p>The type of a location, which corresponds to the address lines
-field of [PostalAddress][]. For example, “Downtown, Atlanta,
-GA, USA” has a type of [LocationType#NEIGHBORHOOD][], and
-“Kansas City, KS, USA” has a type of
-[LocationType#LOCALITY][].</p>
+field of
+[google.type.PostalAddress][google.type.PostalAddress]. For
+example, “Downtown, Atlanta, GA, USA” has a type of [LocationT
+ype.NEIGHBORHOOD][google.cloud.talent.v4beta1.Location.Locatio
+nType.NEIGHBORHOOD], and “Kansas City, KS, USA” has a type of
+[LocationType.LOCALITY][google.cloud.talent.v4beta1.Location.L
+ocationType.LOCALITY].</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -4461,7 +4871,8 @@ a premises, P.O. Box, or other delivery location.</p>
 <code class="descname">radius_miles</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.Location.radius_miles" title="Permalink to this definition">#</a></dt>
 <dd><p>Radius in miles of the job location. This value is derived
 from the location bounding box in which a circle with the
-specified radius centered from [LatLng][] covers the area
+specified radius centered from
+[google.type.LatLng][google.type.LatLng] covers the area
 associated with the job location. For example, currently,
 “Mountain View, CA, USA” has a radius of 6.17 miles.</p>
 </dd></dl>
@@ -4628,6 +5039,64 @@ profile search.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.talent_v4beta1.types.Operation">
+<em class="property">class </em><code class="descclassname">google.cloud.talent_v4beta1.types.</code><code class="descname">Operation</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.Operation" title="Permalink to this definition">#</a></dt>
+<dd><dl class="method">
+<dt id="google.cloud.talent_v4beta1.types.Operation.deserialize">
+<code class="descname">deserialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.talent_v4beta1.types.Operation.deserialize" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates new method instance from given serialized data.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.Operation.done">
+<code class="descname">done</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.Operation.done" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.Operation.done</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.Operation.error">
+<code class="descname">error</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.Operation.error" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.Operation.error</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.Operation.metadata">
+<code class="descname">metadata</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.Operation.metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.Operation.metadata</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.Operation.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.Operation.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.Operation.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.Operation.response">
+<code class="descname">response</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.Operation.response" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.Operation.response</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.talent_v4beta1.types.OperationInfo">
+<em class="property">class </em><code class="descclassname">google.cloud.talent_v4beta1.types.</code><code class="descname">OperationInfo</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.OperationInfo" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.OperationInfo.metadata_type">
+<code class="descname">metadata_type</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.OperationInfo.metadata_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.OperationInfo.metadata_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.OperationInfo.response_type">
+<code class="descname">response_type</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.OperationInfo.response_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.longrunning.OperationInfo.response_type</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.talent_v4beta1.types.Patent">
 <em class="property">class </em><code class="descclassname">google.cloud.talent_v4beta1.types.</code><code class="descname">Patent</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.Patent" title="Permalink to this definition">#</a></dt>
 <dd><p>Resource that represents the patent acquired by a candidate.</p>
@@ -4755,8 +5224,10 @@ characters allowed is 100,000.</p>
 <dl class="attribute">
 <dt id="google.cloud.talent_v4beta1.types.PersonName.person_name">
 <code class="descname">person_name</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.PersonName.person_name" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of a person. It can be one of [formatted_name][] or
-[structured_name][].</p>
+<dd><p>The name of a person. It can be one of [formatted_name][googl
+e.cloud.talent.v4beta1.PersonName.formatted_name] or [structu
+red_name][google.cloud.talent.v4beta1.PersonName.structured_
+name].</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -5479,16 +5950,21 @@ that implements Cloud Talent Solution.</p>
 <code class="descname">profiles</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.ProfileEvent.profiles" title="Permalink to this definition">#</a></dt>
 <dd><p>Required.  The [profile
 name(s)][google.cloud.talent.v4beta1.Profile.name] associated
-with this client event.</p>
+with this client event.  The format is “projects/{project_id}
+/tenants/{tenant_id}/profiles/{profile_id}”, for example,
+“projects/api-test-project/tenants/foo/profiles/bar”.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.talent_v4beta1.types.ProfileEvent.jobs">
 <code class="descname">jobs</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.ProfileEvent.jobs" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional.  The job ID associated with this client event if
-there is one. Leave it empty if the event isn’t associated
-with a job.  The job ID should be consistent with the
-[JobApplication.job.requisition_id][] in the profile.</p>
+<dd><p>Optional.  The [job
+name(s)][google.cloud.talent.v4beta1.Job.name] associated with
+this client event. Leave it empty if the event isn’t
+associated with a job.  The format is
+“projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}”,
+for example, “projects/api-test-
+project/tenants/foo/jobs/1234”.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -6051,15 +6527,16 @@ tracking purposes.</p>
 <code class="descname">structured_resume</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.Resume.structured_resume" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional.  Users can create a profile with only this field
 field, if [resume_type][google.cloud.talent.v4beta1.Resume.re
-sume_type] is [HRXML][]. For example, the API parses this
-field and creates a profile with all structured fields
-populated, for example. [EmploymentRecord][google.cloud.talent
-.v4beta1.EmploymentRecord], [EducationRecord][google.cloud.tal
-ent.v4beta1.EducationRecord], and so on. An error is thrown if
-this field cannot be parsed.  If this field is provided during
-profile creation or update, any other structured data provided
-in the profile is ignored. The API populates these fields by
-parsing this field.</p>
+sume_type] is
+[HRXML][google.cloud.talent.v4beta1.Resume.ResumeType.HRXML].
+For example, the API parses this field and creates a profile
+with all structured fields populated, for example. [Employment
+Record][google.cloud.talent.v4beta1.EmploymentRecord], [Educat
+ionRecord][google.cloud.talent.v4beta1.EducationRecord], and
+so on. An error is thrown if this field cannot be parsed.  If
+this field is provided during profile creation or update, any
+other structured data provided in the profile is ignored. The
+API populates these fields by parsing this field.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -6165,8 +6642,7 @@ Double.MAX_VALUE)  Built-in functions:  -  bucket(start,
 end[, label]): bucket built-in function creates a    bucket
 with range of [start, end). Note that the end is exclusive,
 for example, bucket(1, MAX, “positive number”) or bucket(1,
-10).  Job histogram facets:  -  company_id: histogram by
-[Job.distributor_company_id][]. -  company_display_name:
+10).  Job histogram facets:  -  company_display_name:
 histogram by    [Job.company_display_name][google.cloud.tale
 nt.v4beta1.Job.company_display_name]. -  employment_type:
 histogram by    [Job.employment_types][google.cloud.talent.v4
@@ -6174,13 +6650,15 @@ beta1.Job.employment_types],    for example, “FULL_TIME”,
 “PART_TIME”. -  company_size: histogram by
 [CompanySize][google.cloud.talent.v4beta1.CompanySize], for
 example,    “SMALL”, “MEDIUM”, “BIG”. -
-publish_time_in_month: histogram by the
-[Job.publish_time][] in    months. Must specify list of
-numeric buckets in spec. -  publish_time_in_year: histogram
-by the [Job.publish_time][] in    years. Must specify list of
-numeric buckets in spec. -  degree_type: histogram by the
-[Job.degree_type][], for example,    “Bachelors”, “Masters”.
--  job_level: histogram by the
+publish_time_in_month: histogram by the    [Job.posting_pu
+blish_time][google.cloud.talent.v4beta1.Job.posting_publish          _time]    in months. Must specify list of numeric buckets in
+spec. -  publish_time_in_year: histogram by the    [Job.pos
+ting_publish_time][google.cloud.talent.v4beta1.Job.posting_
+publish_time]    in years. Must specify list of numeric
+buckets in spec. -  degree_types: histogram by the    [Job.de
+gree_types][google.cloud.talent.v4beta1.Job.degree_types],
+for example, “Bachelors”, “Masters”. -  job_level: histogram
+by the
 [Job.job_level][google.cloud.talent.v4beta1.Job.job_level],
 for    example, “Entry Level”. -  country: histogram by the
 country code of jobs, for example, “US”,    “FR”. -  admin1:
@@ -6204,8 +6682,9 @@ lent.v4beta1.Job.language_code],    for example, “en”, “fr”.
 -  category: histogram by the
 [JobCategory][google.cloud.talent.v4beta1.JobCategory], for
 example,    “COMPUTER_AND_IT”, “HEALTHCARE”. -
-base_compensation_unit: histogram by the
-[CompensationUnit][] of    base salary, for example, “WEEKLY”,
+base_compensation_unit: histogram by the    [CompensationInf
+o.CompensationUnit][google.cloud.talent.v4beta1.CompensationIn
+fo.CompensationUnit]    of base salary, for example, “WEEKLY”,
 “MONTHLY”. -  base_compensation: histogram by the base
 salary. Must specify list    of numeric buckets to group
 results by. -  annualized_base_compensation: histogram by
@@ -6222,19 +6701,21 @@ m_attributes][google.cloud.talent.v4beta1.Job.custom_attribu
 tes].    Values can be accessed via square bracket notations
 like    numeric_custom_attribute[“key1”]. Must specify list
 of numeric    buckets to group results by.  Example
-expressions: * count(admin1) * count(base_compensation,
-[bucket(1000, 10000), bucket(10000, 100000), bucket(100000,
-MAX)]) * count(string_custom_attribute[“some-string-custom-
-attribute”]) * count(numeric_custom_attribute[“some-
-numeric-custom-attribute”], [bucket(MIN, 0, “negative”),
-bucket(0, MAX, “non-negative”])</p>
+expressions:  -  <code class="docutils literal notranslate"><span class="pre">count(admin1)</span></code> -
+<code class="docutils literal notranslate"><span class="pre">count(base_compensation,</span> <span class="pre">[bucket(1000,</span> <span class="pre">10000),</span> <span class="pre">bucket(10000,</span>
+<span class="pre">100000),</span> <span class="pre">bucket(100000,</span> <span class="pre">MAX)])</span></code> -
+<code class="docutils literal notranslate"><span class="pre">count(string_custom_attribute[&quot;some-string-custom-</span>
+<span class="pre">attribute&quot;])</span></code> -  <code class="docutils literal notranslate"><span class="pre">count(numeric_custom_attribute[&quot;some-</span>
+<span class="pre">numeric-custom-attribute&quot;],</span>&#160;&#160; <span class="pre">[bucket(MIN,</span> <span class="pre">0,</span> <span class="pre">&quot;negative&quot;),</span>
+<span class="pre">bucket(0,</span> <span class="pre">MAX,</span> <span class="pre">&quot;non-negative&quot;])</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.talent_v4beta1.types.SearchJobsRequest.job_view">
 <code class="descname">job_view</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.SearchJobsRequest.job_view" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional.  The desired job attributes returned for jobs in the
-search response. Defaults to [JobView.SMALL][] if no value is
+search response. Defaults to [JobView.JOB_VIEW_SMALL][google
+.cloud.talent.v4beta1.JobView.JOB_VIEW_SMALL] if no value is
 specified.</p>
 </dd></dl>
 
@@ -6307,17 +6788,19 @@ sation_range][google.cloud.talent.v4beta1.CompensationInfo.an
 nualized_total_compensation_range]    descending. Jobs
 whose annualized base compensation is unspecified    are put
 at the end of search results. -  “custom``_``ranking desc”:
-By the relevance score adjusted to the    [SearchJobsRequest.c
-ustom_ranking_info.ranking_expression][] with    weight
-factor assigned by
-[SearchJobsRequest.custom_ranking_info.importance_level][]
-in    descending order. -  “location``_``distance”: By the
+By the relevance score adjusted to the    [SearchJobsRequest.C
+ustomRankingInfo.ranking_expression][google.cloud.talent.v4be
+ta1.SearchJobsRequest.CustomRankingInfo.ranking_expression]
+with weight factor assigned by    [SearchJobsRequest.CustomRan
+kingInfo.importance_level][google.cloud.talent.v4beta1.Search
+JobsRequest.CustomRankingInfo.importance_level]    in
+descending order. -  “location``_``distance”: By the
 distance between the location on    jobs and locations
-specified in the
-[SearchJobsRequest.job_query.location_filters][]. When this
-order    is selected, the
-[SearchJobsRequest.job_query.location_filters][]    must not
-be empty. When a job has multiple locations, the location
+specified in the    [JobQuery.location_filters][google.cloud.
+talent.v4beta1.JobQuery.location_filters].    When this order
+is selected, the    [JobQuery.location_filters][google.cloud.
+talent.v4beta1.JobQuery.location_filters]    must not be
+empty. When a job has multiple locations, the location
 closest to one of the locations specified in the location
 filter will    be used to calculate location distance.
 Distance is calculated by the    distance between two lat/long
@@ -6354,24 +6837,26 @@ of existing relevance score (determined by API algorithm).</p>
 <dt id="google.cloud.talent_v4beta1.types.SearchJobsRequest.disable_keyword_match">
 <code class="descname">disable_keyword_match</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.SearchJobsRequest.disable_keyword_match" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional.  Controls whether to disable exact keyword match on
-[Job.job_title][], [Job.description][google.cloud.talent.v4be
-ta1.Job.description], [Job.company_display_name][google.clou
-d.talent.v4beta1.Job.company_display_name],
-[Job.locations][0], [Job.qualifications][google.cloud.talent.v
-4beta1.Job.qualifications]. When disable keyword match is
-turned off, a keyword match returns jobs that do not match
-given category filters when there are matching keywords. For
-example, for the query “program manager,” a result is returned
-even if the job posting has the title “software developer,”
-which doesn’t fall into “program manager” ontology, but does
-have “program manager” appearing in its description.  For
-queries like “cloud” that don’t contain title or location
-specific ontology, jobs with “cloud” keyword matches are
-returned regardless of this flag’s value.  Please use
-[Company.keyword_searchable_custom_fields][] or
-[Company.keyword_searchable_custom_attributes][] if company
+[Job.title][google.cloud.talent.v4beta1.Job.title], [Job.descr
+iption][google.cloud.talent.v4beta1.Job.description], [Job.com
+pany_display_name][google.cloud.talent.v4beta1.Job.company_
+display_name],
+[Job.addresses][google.cloud.talent.v4beta1.Job.addresses], [J
+ob.qualifications][google.cloud.talent.v4beta1.Job.qualificati
+ons]. When disable keyword match is turned off, a keyword
+match returns jobs that do not match given category filters
+when there are matching keywords. For example, for the query
+“program manager,” a result is returned even if the job
+posting has the title “software developer,” which doesn’t fall
+into “program manager” ontology, but does have “program
+manager” appearing in its description.  For queries like
+“cloud” that don’t contain title or location specific
+ontology, jobs with “cloud” keyword matches are returned
+regardless of this flag’s value.  Use [Company.keyword_search
+able_job_custom_attributes][google.cloud.talent.v4beta1.Com
+pany.keyword_searchable_job_custom_attributes] if company-
 specific globally matched custom field/attribute string values
-is needed. Enabling keyword match improves recall of
+are needed. Enabling keyword match improves recall of
 subsequent search requests.  Defaults to false.</p>
 </dd></dl>
 
@@ -6547,9 +7032,11 @@ results.</p>
 <dt id="google.cloud.talent_v4beta1.types.SearchJobsResponse.location_filters">
 <code class="descname">location_filters</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.SearchJobsResponse.location_filters" title="Permalink to this definition">#</a></dt>
 <dd><p>The location filters that the service applied to the specified
-query. If any filters are lat-lng based, the
-[JobLocation.location_type][] is
-[JobLocation.LocationType#LOCATION_TYPE_UNSPECIFIED][].</p>
+query. If any filters are lat-lng based, the [Location.locatio
+n_type][google.cloud.talent.v4beta1.Location.location_type]
+is [Location.LocationType.LOCATION_TYPE_UNSPECIFIED][google.
+cloud.talent.v4beta1.Location.LocationType.LOCATION_TYPE_UNS
+PECIFIED].</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -6557,16 +7044,19 @@ query. If any filters are lat-lng based, the
 <code class="descname">estimated_total_size</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.SearchJobsResponse.estimated_total_size" title="Permalink to this definition">#</a></dt>
 <dd><p>An estimation of the number of jobs that match the specified
 query.  This number isn’t guaranteed to be accurate. For
-accurate results, see [enable_precise_result_size][].</p>
+accurate results, see [SearchJobsRequest.require_precise_res
+ult_size][google.cloud.talent.v4beta1.SearchJobsRequest.requi
+re_precise_result_size].</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.talent_v4beta1.types.SearchJobsResponse.total_size">
 <code class="descname">total_size</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.SearchJobsResponse.total_size" title="Permalink to this definition">#</a></dt>
 <dd><p>The precise result count, which is available only if the
-client set [enable_precise_result_size][] to <code class="docutils literal notranslate"><span class="pre">true</span></code>, or
-if the response is the last page of results. Otherwise, the
-value is <code class="docutils literal notranslate"><span class="pre">-1</span></code>.</p>
+client set [SearchJobsRequest.require_precise_result_size][
+google.cloud.talent.v4beta1.SearchJobsRequest.require_precise
+_result_size] to <code class="docutils literal notranslate"><span class="pre">true</span></code>, or if the response is the last
+page of results. Otherwise, the value is <code class="docutils literal notranslate"><span class="pre">-1</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -6653,9 +7143,10 @@ the search results listing page.</p>
 <dl class="attribute">
 <dt id="google.cloud.talent_v4beta1.types.SearchJobsResponse.MatchingJob.job_title_snippet">
 <code class="descname">job_title_snippet</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.SearchJobsResponse.MatchingJob.job_title_snippet" title="Permalink to this definition">#</a></dt>
-<dd><p>Contains snippets of text from the [Job.job_title][] field
-most closely matching a search query’s keywords, if available.
-The matching query keywords are enclosed in HTML bold tags.</p>
+<dd><p>Contains snippets of text from the
+[Job.title][google.cloud.talent.v4beta1.Job.title] field most
+closely matching a search query’s keywords, if available. The
+matching query keywords are enclosed in HTML bold tags.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -6845,16 +7336,23 @@ For example, “enginee” is corrected to “engineer”.</p>
 sorted. Defaults is “relevance desc” if no value is specified.
 Supported options are:  -  “relevance desc”: By descending
 relevance, as determined by the API    algorithms. -
-“update_date desc”: Sort by [Profile.update_date][] in
-descending    order (recently updated profiles first). -
-“create_date desc”: Sort by [Profile.create_date][] in
-descending    order (recently created profiles first). -
-“first_name”: Sort by [PersonStrcuturedName.given_name][] in
-ascending order. -  “first_name desc”: Sort by
-[PersonStrcuturedName.given_name][] in    descending order. -
-“last_name”: Sort by [PersonStrcuturedName.family_name][] in
-ascending order. -  “last_name desc”: Sort by
-[PersonStrcuturedName.family_name][] in    ascending order.</p>
+“update_time desc”: Sort by    [Profile.update_time][google.
+cloud.talent.v4beta1.Profile.update_time]    in descending
+order (recently updated profiles first). -  “create_time
+desc”: Sort by    [Profile.create_time][google.cloud.talent.v
+4beta1.Profile.create_time]    in descending order (recently
+created profiles first). -  “first_name”: Sort by    [PersonN
+ame.PersonStructuredName.given_name][google.cloud.talent.v4be
+ta1.PersonName.PersonStructuredName.given_name]    in
+ascending order. -  “first_name desc”: Sort by    [PersonName
+.PersonStructuredName.given_name][google.cloud.talent.v4beta1
+.PersonName.PersonStructuredName.given_name]    in descending
+order. -  “last_name”: Sort by    [PersonName.PersonStructure
+dName.family_name][google.cloud.talent.v4beta1.PersonName.Per
+sonStructuredName.family_name]    in ascending order. -
+“last_name desc”: Sort by    [PersonName.PersonStructuredName
+.family_name][google.cloud.talent.v4beta1.PersonName.PersonSt
+ructuredName.family_name]    in ascending order.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -7238,6 +7736,29 @@ this value is “software engineer”.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.talent_v4beta1.types.Status">
+<em class="property">class </em><code class="descclassname">google.cloud.talent_v4beta1.types.</code><code class="descname">Status</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.Status" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.Status.code">
+<code class="descname">code</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.Status.code" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.rpc.Status.code</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.Status.details">
+<code class="descname">details</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.Status.details" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.rpc.Status.details</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.Status.message">
+<code class="descname">message</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.Status.message" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.rpc.Status.message</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.talent_v4beta1.types.StringValue">
 <em class="property">class </em><code class="descclassname">google.cloud.talent_v4beta1.types.</code><code class="descname">StringValue</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.StringValue" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
@@ -7257,7 +7778,8 @@ this value is “software engineer”.</p>
 <dl class="attribute">
 <dt id="google.cloud.talent_v4beta1.types.SummarizedProfile.profiles">
 <code class="descname">profiles</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.SummarizedProfile.profiles" title="Permalink to this definition">#</a></dt>
-<dd><p>A list of profiles that are linked by [Profile.cluster_id][].</p>
+<dd><p>A list of profiles that are linked by [Profile.group_id][goog
+le.cloud.talent.v4beta1.Profile.group_id].</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -7265,17 +7787,17 @@ this value is “software engineer”.</p>
 <code class="descname">summary</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.SummarizedProfile.summary" title="Permalink to this definition">#</a></dt>
 <dd><p>A profile summary shows the profile summary and how the
 profile matches the search query.  In profile summary, the
-profiles with the same [Profile.cluster_id][] are merged
-together. Among profiles, same education/employment records
-may be slightly different but they are merged into one with
-best efforts.  For example, in one profile the school name is
-“UC Berkeley” and the field study is “Computer Science” and in
-another one the school name is “University of California at
-Berkeley” and the field study is “CS”. The API merges these
-two inputs into one and selects one value for each field. For
-example, the school name in summary is set to “University of
-California at Berkeley” and the field of study is set to
-“Computer Science”.</p>
+profiles with the same [Profile.group_id][google.cloud.talent
+.v4beta1.Profile.group_id] are merged together. Among
+profiles, same education/employment records may be slightly
+different but they are merged into one with best efforts.  For
+example, in one profile the school name is “UC Berkeley” and
+the field study is “Computer Science” and in another one the
+school name is “University of California at Berkeley” and the
+field study is “CS”. The API merges these two inputs into one
+and selects one value for each field. For example, the school
+name in summary is set to “University of California at
+Berkeley” and the field of study is set to “Computer Science”.</p>
 </dd></dl>
 
 <dl class="attribute">
