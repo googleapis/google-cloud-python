@@ -15,7 +15,9 @@
 """System tests for Vision API."""
 
 import io
+import json
 import os
+import time
 import unittest
 
 from google.cloud import exceptions
@@ -119,6 +121,62 @@ class TestVisionClientLogo(VisionSystemTestBase):
         # Check the response.
         assert len(response.logo_annotations) == 1
         assert response.logo_annotations[0].description == "google"
+
+    def test_detect_logos_async(self):
+        # Upload the image to Google Cloud Storage.
+        blob_name = "logo_async.png"
+        blob = self.test_bucket.blob(blob_name)
+        self.to_delete_by_case.append(blob)
+        with io.open(LOGO_FILE, "rb") as image_file:
+            blob.upload_from_file(image_file)
+
+        # Make the request.
+        request = {
+            "image": {
+                "source": {
+                    "image_uri": "gs://{bucket}/{blob}".format(
+                        bucket=self.test_bucket.name, blob=blob_name
+                    )
+                }
+            },
+            "features": [{"type": vision.enums.Feature.Type.LOGO_DETECTION}],
+        }
+        method_name = "test_detect_logos_async"
+        output_gcs_uri_prefix = "gs://{bucket}/{method_name}".format(
+            bucket=self.test_bucket.name, method_name=method_name
+        )
+        output_config = {"gcs_destination": {"uri": output_gcs_uri_prefix}}
+        response = self.client.async_batch_annotate_images([request], output_config)
+
+        # Wait for the operation to complete.
+        lro_waiting_seconds = 60
+        start_time = time.time()
+        while not response.done() and (time.time() - start_time) < lro_waiting_seconds:
+            time.sleep(1)
+
+        if not response.done():
+            self.fail(
+                "{method_name} timed out after {lro_waiting_seconds} seconds".format(
+                    method_name=method_name, lro_waiting_seconds=lro_waiting_seconds
+                )
+            )
+
+        # Make sure getting the result is not an error.
+        response.result()
+
+        # There should be exactly 1 output file in gcs at the prefix output_gcs_uri_prefix.
+        blobs = list(self.test_bucket.list_blobs(prefix=method_name))
+        assert len(blobs) == 1
+        blob = blobs[0]
+
+        # Download the output file and verify the result
+        result_str = blob.download_as_string().decode("utf8")
+        result = json.loads(result_str)
+        responses = result["responses"]
+        assert len(responses) == 1
+        logo_annotations = responses[0]["logoAnnotations"]
+        assert len(logo_annotations) == 1
+        assert logo_annotations[0]["description"] == "google"
 
 
 @unittest.skipUnless(PROJECT_ID, "PROJECT_ID not set in environment.")
