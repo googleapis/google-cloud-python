@@ -27,7 +27,7 @@ with the things they describe for easy access in templates.
 """
 
 import dataclasses
-from typing import Tuple, Set
+from typing import FrozenSet, Tuple
 
 from google.protobuf import descriptor_pb2
 
@@ -40,13 +40,13 @@ from gapic.utils import cached_property
 class Address:
     name: str = ''
     module: str = ''
-    module_path: Tuple[int] = dataclasses.field(default_factory=tuple)
-    package: Tuple[str] = dataclasses.field(default_factory=tuple)
-    parent: Tuple[str] = dataclasses.field(default_factory=tuple)
+    module_path: Tuple[int, ...] = dataclasses.field(default_factory=tuple)
+    package: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
+    parent: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
     api_naming: naming.Naming = dataclasses.field(
         default_factory=naming.Naming,
     )
-    collisions: Set[str] = dataclasses.field(default_factory=frozenset)
+    collisions: FrozenSet[str] = dataclasses.field(default_factory=frozenset)
 
     def __eq__(self, other) -> bool:
         return all([getattr(self, i) == getattr(other, i) for i
@@ -145,13 +145,13 @@ class Address:
         return self.name
 
     @property
-    def subpackage(self) -> Tuple[str]:
+    def subpackage(self) -> Tuple[str, ...]:
         """Return the subpackage below the versioned module name, if any."""
         return tuple(
             self.package[len(self.api_naming.proto_package.split('.')):]
         )
 
-    def child(self, child_name: str, path: Tuple[int]) -> 'Address':
+    def child(self, child_name: str, path: Tuple[int, ...]) -> 'Address':
         """Return a new child of the current Address.
 
         Args:
@@ -236,7 +236,7 @@ class Address:
             return f'{".".join(self.package)}.{selector}'
         return selector
 
-    def with_context(self, *, collisions: Set[str]) -> 'Address':
+    def with_context(self, *, collisions: FrozenSet[str]) -> 'Address':
         """Return a derivative of this address with the provided context.
 
         This method is used to address naming collisions. The returned
@@ -271,7 +271,7 @@ class Metadata:
             return '\n\n'.join(self.documentation.leading_detached_comments)
         return ''
 
-    def with_context(self, *, collisions: Set[str]) -> 'Metadata':
+    def with_context(self, *, collisions: FrozenSet[str]) -> 'Metadata':
         """Return a derivative of this metadata with the provided context.
 
         This method is used to address naming collisions. The returned

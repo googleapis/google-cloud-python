@@ -15,7 +15,7 @@
 import dataclasses
 import os
 import re
-from typing import Iterable, Sequence, Tuple
+from typing import cast, List, Match, Sequence, Tuple
 
 from google.protobuf import descriptor_pb2
 
@@ -34,7 +34,7 @@ class Naming:
     (as ``api.naming``).
     """
     name: str = ''
-    namespace: Tuple[str] = dataclasses.field(default_factory=tuple)
+    namespace: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
     version: str = ''
     product_name: str = ''
     proto_package: str = ''
@@ -45,7 +45,7 @@ class Naming:
 
     @classmethod
     def build(cls,
-            *file_descriptors: Iterable[descriptor_pb2.FileDescriptorProto],
+            *file_descriptors: descriptor_pb2.FileDescriptorProto,
             opts: options.Options = options.Options(),
             ) -> 'Naming':
         """Return a full Naming instance based on these file descriptors.
@@ -100,7 +100,8 @@ class Naming:
             pattern += version
 
         # Okay, do the match
-        match = re.search(pattern=pattern, string=root_package).groupdict()
+        match = cast(Match,
+            re.search(pattern=pattern, string=root_package)).groupdict()
         match['namespace'] = match['namespace'] or ''
         package_info = cls(
             name=match['name'].capitalize(),
@@ -155,14 +156,14 @@ class Naming:
         return utils.to_valid_module_name(self.name)
 
     @property
-    def module_namespace(self) -> Sequence[str]:
+    def module_namespace(self) -> Tuple[str, ...]:
         """Return the appropriate Python module namespace as a tuple."""
         return tuple(utils.to_valid_module_name(i) for i in self.namespace)
 
     @property
-    def namespace_packages(self) -> Tuple[str]:
+    def namespace_packages(self) -> Tuple[str, ...]:
         """Return the appropriate Python namespace packages."""
-        answer = []
+        answer: List[str] = []
         for cursor in [i.lower() for i in self.namespace]:
             answer.append(f'{answer[-1]}.{cursor}' if answer else cursor)
         return tuple(answer)

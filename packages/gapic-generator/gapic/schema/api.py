@@ -21,9 +21,9 @@ import collections
 import dataclasses
 import sys
 from itertools import chain
-from typing import Callable, List, Mapping, Sequence, Set, Tuple
+from typing import Callable, Dict, FrozenSet, Mapping, Sequence, Set, Tuple
 
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import descriptor_pb2
 
 from gapic.generator import options
@@ -100,21 +100,21 @@ class Proto:
         return to_snake_case(self.name.split('/')[-1][:-len('.proto')])
 
     @cached_property
-    def names(self) -> Set[str]:
+    def names(self) -> FrozenSet[str]:
         """Return a set of names used by this proto.
 
         This is used for detecting naming collisions in the module names
         used for imports.
         """
         # Add names of all enums, messages, and fields.
-        answer = {e.name for e in self.all_enums.values()}
+        answer: Set[str] = {e.name for e in self.all_enums.values()}
         for message in self.all_messages.values():
             answer = answer.union({f.name for f in message.fields.values()})
             answer.add(message.name)
 
         # Identify any import module names where the same module name is used
         # from distinct packages.
-        modules = {}
+        modules: Dict[str, Set[str]] = {}
         for t in chain(*[m.field_types for m in self.all_messages.values()]):
             modules.setdefault(t.ident.module, set())
             modules[t.ident.module].add(t.ident.package)
@@ -175,7 +175,7 @@ class API:
     """
     naming: api_naming.Naming
     all_protos: Mapping[str, Proto]
-    subpackage_view: Tuple[str] = dataclasses.field(default_factory=tuple)
+    subpackage_view: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
 
     @classmethod
     def build(cls,
@@ -202,7 +202,7 @@ class API:
 
         # Iterate over each FileDescriptorProto and fill out a Proto
         # object describing it, and save these to the instance.
-        protos = {}
+        protos: Dict[str, Proto] = {}
         for fd in file_descriptors:
             protos[fd.name] = _ProtoBuilder(
                 file_descriptor=fd,
@@ -256,7 +256,7 @@ class API:
         Each value in the mapping is another API object, but the ``protos``
         property only shows protos belonging to the subpackage.
         """
-        answer = collections.OrderedDict()
+        answer: Dict[str, API] = collections.OrderedDict()
 
         # Get the actual subpackages we have.
         #
@@ -294,9 +294,9 @@ class _ProtoBuilder:
                  file_to_generate: bool,
                  naming: api_naming.Naming,
                  prior_protos: Mapping[str, Proto] = None):
-        self.proto_messages = {}
-        self.proto_enums = {}
-        self.proto_services = {}
+        self.proto_messages: Dict[str, wrappers.MessageType] = {}
+        self.proto_enums: Dict[str, wrappers.EnumType] = {}
+        self.proto_services: Dict[str, wrappers.Service] = {}
         self.file_descriptor = file_descriptor
         self.file_to_generate = file_to_generate
         self.prior_protos = prior_protos or {}
@@ -307,7 +307,8 @@ class _ProtoBuilder:
         # the "path", which is a sequence of integers described in more
         # detail below; this code simply shifts from a list to a dict,
         # with tuples of paths as the dictionary keys.
-        self.docs = {}
+        self.docs: Dict[Tuple[int, ...],
+                descriptor_pb2.SourceCodeInfo.Location] = {}
         for location in file_descriptor.source_code_info.location:
             self.docs[tuple(location.path)] = location
 
@@ -414,8 +415,9 @@ class _ProtoBuilder:
             *[p.all_messages for p in self.prior_protos.values()],
         )
 
-    def _load_children(self, children: Sequence, loader: Callable, *,
-                       address: metadata.Address, path: Tuple[int]) -> Mapping:
+    def _load_children(self,
+                children: Sequence, loader: Callable, *,
+                address: metadata.Address, path: Tuple[int, ...]) -> Mapping:
         """Return wrapped versions of arbitrary children from a Descriptor.
 
         Args:
@@ -445,9 +447,10 @@ class _ProtoBuilder:
             answer[wrapped.name] = wrapped
         return answer
 
-    def _get_fields(self, field_pbs: List[descriptor_pb2.FieldDescriptorProto],
-                    address: metadata.Address, path: Tuple[int],
-                    ) -> Mapping[str, wrappers.Field]:
+    def _get_fields(self,
+                field_pbs: Sequence[descriptor_pb2.FieldDescriptorProto],
+                address: metadata.Address, path: Tuple[int, ...],
+                ) -> Dict[str, wrappers.Field]:
         """Return a dictionary of wrapped fields for the given message.
 
         Args:
@@ -472,7 +475,7 @@ class _ProtoBuilder:
         # message wrapper is not yet created, because it needs this object
         # first) and this will be None. This case is addressed in the
         # `_load_message` method.
-        answer = collections.OrderedDict()
+        answer: Dict[str, wrappers.Field] = collections.OrderedDict()
         for field_pb, i in zip(field_pbs, range(0, sys.maxsize)):
             answer[field_pb.name] = wrappers.Field(
                 field_pb=field_pb,
@@ -487,9 +490,10 @@ class _ProtoBuilder:
         # Done; return the answer.
         return answer
 
-    def _get_methods(self, methods: List[descriptor_pb2.MethodDescriptorProto],
-                     address: metadata.Address, path: Tuple[int],
-                     ) -> Mapping[str, wrappers.Method]:
+    def _get_methods(self,
+            methods: Sequence[descriptor_pb2.MethodDescriptorProto],
+            address: metadata.Address, path: Tuple[int, ...],
+            ) -> Mapping[str, wrappers.Method]:
         """Return a dictionary of wrapped methods for the given service.
 
         Args:
@@ -505,7 +509,7 @@ class _ProtoBuilder:
                 :class:`~.wrappers.Method` objects.
         """
         # Iterate over the methods and collect them into a dictionary.
-        answer = collections.OrderedDict()
+        answer: Dict[str, wrappers.Method] = collections.OrderedDict()
         for meth_pb, i in zip(methods, range(0, sys.maxsize)):
             lro = None
 

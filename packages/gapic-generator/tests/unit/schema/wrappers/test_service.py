@@ -36,7 +36,7 @@ def test_service_host():
 
 def test_service_no_host():
     service = make_service()
-    assert service.host is None
+    assert not service.host
 
 
 def test_service_scopes():

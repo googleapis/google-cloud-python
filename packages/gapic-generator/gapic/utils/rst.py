@@ -14,7 +14,7 @@
 
 import re
 
-import pypandoc
+import pypandoc  # type: ignore
 
 from gapic.utils.lines import wrap
 

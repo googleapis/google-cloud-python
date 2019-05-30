@@ -18,8 +18,6 @@ import typing
 
 import click
 
-from google.protobuf.compiler import plugin_pb2
-
 
 @click.command()
 @click.option('--request', type=click.File('rb'), default=sys.stdin.buffer,
@@ -41,6 +39,6 @@ def dump(request: typing.BinaryIO) -> None:
     click.secho(
         'Request dumped to `request.desc`. '
         'This script will now exit 1 to satisfy protoc.',
-        file=sys.stderr, color='green',
+        file=sys.stderr, fg='green',
     )
     sys.exit(1)

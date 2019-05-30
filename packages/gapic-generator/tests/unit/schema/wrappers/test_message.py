@@ -94,6 +94,20 @@ def test_get_field_recursive():
     assert outer.get_field('inner', 'one') == inner_fields[1]
 
 
+def test_get_field_nested_not_found_error():
+    # Create the inner message.
+    inner_field = make_field('zero')
+    inner = make_message('Inner', fields=(inner_field,), package='foo.v1')
+
+    # Create the outer message, which contains an Inner as a field.
+    outer_field = make_field('inner', message=inner)
+    outer = make_message('Outer', fields=(outer_field,))
+
+    # Assert that a recusive retrieval fails.
+    with pytest.raises(KeyError):
+        assert outer.get_field('inner', 'zero', 'beyond')
+
+
 def test_get_field_nonterminal_repeated_error():
     # Create the inner message.
     inner_fields = (make_field('zero'), make_field('one'))

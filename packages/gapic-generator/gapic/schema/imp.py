@@ -18,7 +18,7 @@ from typing import Tuple
 
 @dataclasses.dataclass(frozen=True, order=True)
 class Import:
-    package: Tuple[str]
+    package: Tuple[str, ...]
     module: str
     alias: str = ''
 

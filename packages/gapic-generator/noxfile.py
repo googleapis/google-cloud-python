@@ -16,7 +16,7 @@ from __future__ import absolute_import
 import os
 import tempfile
 
-import nox
+import nox  # type: ignore
 
 
 showcase_version = '0.2.0'
@@ -141,3 +141,12 @@ def docs(session):
     session.run('rm', '-rf', 'docs/_build/')
     session.run('sphinx-build', '-W', '-b', 'html', '-d',
                 'docs/_build/doctrees', 'docs/', 'docs/_build/html/')
+
+
+@nox.session(python='3.7')
+def mypy(session):
+    """Perform typecheck analysis."""
+
+    session.install('mypy')
+    session.install('.')
+    session.run('mypy', 'gapic')

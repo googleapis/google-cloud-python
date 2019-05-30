@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import collections
+from collections import OrderedDict
+from typing import Dict, Mapping
 import os
 import re
-from typing import Mapping, Sequence
 
 import jinja2
 
@@ -66,7 +66,7 @@ class Generator:
             ~.CodeGeneratorResponse: A response describing appropriate
             files and contents. See ``plugin.proto``.
         """
-        output_files = collections.OrderedDict()
+        output_files: Dict[str, CodeGeneratorResponse.File] = OrderedDict()
 
         # Iterate over each template and add the appropriate output files
         # based on that template.
@@ -88,7 +88,7 @@ class Generator:
             self,
             template_name: str, *,
             api_schema: api.API,
-            ) -> Sequence[CodeGeneratorResponse.File]:
+            ) -> Dict[str, CodeGeneratorResponse.File]:
         """Render the requested templates.
 
         Args:
@@ -103,7 +103,7 @@ class Generator:
             Sequence[~.CodeGeneratorResponse.File]: A sequence of File
                 objects for inclusion in the final response.
         """
-        answer = collections.OrderedDict()
+        answer: Dict[str, CodeGeneratorResponse.File] = OrderedDict()
         skip_subpackages = False
 
         # Sanity check: Rendering per service and per proto would be a

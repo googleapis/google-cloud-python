@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Tuple
+from typing import Dict, List, Tuple
 import dataclasses
 import os
 import warnings
@@ -26,8 +26,8 @@ class Options:
     on unrecognized arguments (essentially, we throw them away, but we do
     warn if it looks like it was meant for us).
     """
-    templates: Tuple[str] = dataclasses.field(default=('DEFAULT',))
-    namespace: Tuple[str] = dataclasses.field(default=())
+    templates: Tuple[str, ...] = dataclasses.field(default=('DEFAULT',))
+    namespace: Tuple[str, ...] = dataclasses.field(default=())
     name: str = ''
 
     @classmethod
@@ -45,10 +45,10 @@ class Options:
             ~.Options: The Options instance.
         """
         # Parse out every option beginning with `python-gapic`
-        opts = {}
+        opts: Dict[str, List[str]] = {}
         for opt in opt_string.split(','):
             # Parse out the key and value.
-            value = True
+            value = 'true'
             if '=' in opt:
                 opt, value = opt.split('=')
 

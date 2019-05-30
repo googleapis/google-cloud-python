@@ -28,6 +28,8 @@ workflows:
               only: /^\d+\.\d+\.\d+$/
       - showcase:
           requires:
+            - docs
+            - mypy
             - showcase-unit-3.6
             - showcase-unit-3.7
           filters:
@@ -37,10 +39,13 @@ workflows:
           filters:
             tags:
               only: /^\d+\.\d+\.\d+$/
+      - mypy:
+          filters:
+            tags:
+              only: /^\d+\.\d+\.\d+$/
       - publish_package:
           requires:
             - showcase
-            - docs
           filters:
             branches:
               ignore: /.*/
@@ -49,7 +54,6 @@ workflows:
       - publish_image:
           requires:
             - showcase
-            - docs
           filters:
             branches:
               ignore: /.*/
@@ -67,6 +71,17 @@ jobs:
       - run:
           name: Build the documentation.
           command: nox -s docs
+  mypy:
+    docker:
+      - image: python:3.7-slim
+    steps:
+      - checkout
+      - run:
+          name: Install nox.
+          command: pip install nox
+      - run:
+          name: Check type annotations.
+          command: nox -s mypy
   publish_image:
     docker:
       - image: docker

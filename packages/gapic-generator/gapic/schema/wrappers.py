@@ -31,9 +31,10 @@ import collections
 import dataclasses
 import re
 from itertools import chain
-from typing import List, Mapping, Optional, Sequence, Set, Union
+from typing import (cast, Dict, FrozenSet, List, Mapping, Optional,
+        Sequence, Set, Union)
 
-from google.api import annotations_pb2
+from google.api import annotations_pb2  # type: ignore
 from google.api import client_pb2
 from google.api import field_behavior_pb2
 from google.protobuf import descriptor_pb2
@@ -46,8 +47,8 @@ from gapic.schema import metadata
 class Field:
     """Description of a field."""
     field_pb: descriptor_pb2.FieldDescriptorProto
-    message: 'MessageType' = None
-    enum: 'EnumType' = None
+    message: Optional['MessageType'] = None
+    enum: Optional['EnumType'] = None
     meta: metadata.Metadata = dataclasses.field(
         default_factory=metadata.Metadata,
     )
@@ -113,9 +114,9 @@ class Field:
     @property
     def proto_type(self) -> str:
         """Return the proto type constant to be used in templates."""
-        return descriptor_pb2.FieldDescriptorProto.Type.Name(
+        return cast(str, descriptor_pb2.FieldDescriptorProto.Type.Name(
             self.field_pb.type,
-        )[len('TYPE_'):]
+        ))[len('TYPE_'):]
 
     @property
     def repeated(self) -> bool:
@@ -125,7 +126,7 @@ class Field:
             bool: Whether this field is repeated.
         """
         return self.label == \
-            descriptor_pb2.FieldDescriptorProto.Label.Value('LABEL_REPEATED')
+            descriptor_pb2.FieldDescriptorProto.Label.Value(b'LABEL_REPEATED')
 
     @property
     def required(self) -> bool:
@@ -171,7 +172,7 @@ class Field:
         raise TypeError('Unrecognized protobuf type. This code should '
                         'not be reachable; please file a bug.')
 
-    def with_context(self, *, collisions: Set[str]) -> 'Field':
+    def with_context(self, *, collisions: FrozenSet[str]) -> 'Field':
         """Return a derivative of this field with the provided context.
 
         This method is used to address naming collisions. The returned
@@ -217,8 +218,8 @@ class MessageType:
         """Return the identifier data to be used in templates."""
         return self.meta.address
 
-    def get_field(self, *field_path: Sequence[str],
-            collisions: Set[str] = frozenset()) -> Field:
+    def get_field(self, *field_path: str,
+            collisions: FrozenSet[str] = frozenset()) -> Field:
         """Return a field arbitrarily deep in this message's structure.
 
         This method recursively traverses the message tree to return the
@@ -264,12 +265,19 @@ class MessageType:
                 'in the fields list in a position other than the end.',
             )
 
+        # Sanity check: If this cursor has no message, there is a problem.
+        if not cursor.message:
+            raise KeyError(
+                f'Field {".".join(field_path)} could not be resolved from '
+                f'{cursor.name}.',
+            )
+
         # Recursion case: Pass the remainder of the path to the sub-field's
         # message.
         return cursor.message.get_field(*field_path[1:], collisions=collisions)
 
     def with_context(self, *,
-            collisions: Set[str],
+            collisions: FrozenSet[str],
             skip_fields: bool = False,
             ) -> 'MessageType':
         """Return a derivative of this message with the provided context.
@@ -328,7 +336,7 @@ class EnumType:
         """Return the identifier data to be used in templates."""
         return self.meta.address
 
-    def with_context(self, *, collisions: Set[str]) -> 'EnumType':
+    def with_context(self, *, collisions: FrozenSet[str]) -> 'EnumType':
         """Return a derivative of this enum with the provided context.
 
         This method is used to address naming collisions. The returned
@@ -369,10 +377,10 @@ class PythonType:
 @dataclasses.dataclass(frozen=True)
 class PrimitiveType(PythonType):
     """A representation of a Python primitive type."""
-    python_type: type
+    python_type: Optional[type]
 
     @classmethod
-    def build(cls, primitive_type: type):
+    def build(cls, primitive_type: Optional[type]):
         """Return a PrimitiveType object for the given Python primitive type.
 
         Args:
@@ -410,7 +418,7 @@ class Method:
     method_pb: descriptor_pb2.MethodDescriptorProto
     input: MessageType
     output: MessageType
-    lro: OperationInfo = dataclasses.field(default=None)
+    lro: Optional[OperationInfo] = dataclasses.field(default=None)
     meta: metadata.Metadata = dataclasses.field(
         default_factory=metadata.Metadata,
     )
@@ -487,7 +495,7 @@ class Method:
     @utils.cached_property
     def flattened_fields(self) -> Mapping[str, Field]:
         """Return the signature defined for this method."""
-        answer = collections.OrderedDict()
+        answer: Dict[str, Field] = collections.OrderedDict()
         signatures = self.options.Extensions[client_pb2.method_signature]
 
         # Iterate over each signature and add the appropriate fields.
@@ -583,7 +591,7 @@ class Method:
         """Return True if this method has no return value, False otherwise."""
         return self.output.ident.proto == 'google.protobuf.Empty'
 
-    def with_context(self, *, collisions: Set[str]) -> 'Method':
+    def with_context(self, *, collisions: FrozenSet[str]) -> 'Method':
         """Return a derivative of this method with the provided context.
 
         This method is used to address naming collisions. The returned
@@ -623,7 +631,7 @@ class Service:
         """
         if self.options.Extensions[client_pb2.default_host]:
             return self.options.Extensions[client_pb2.default_host]
-        return None
+        return ''
 
     @property
     def oauth_scopes(self) -> Sequence[str]:
@@ -647,7 +655,7 @@ class Service:
         return utils.to_snake_case(self.name)
 
     @utils.cached_property
-    def names(self) -> Set[str]:
+    def names(self) -> FrozenSet[str]:
         """Return a set of names used in this service.
 
         This is used for detecting naming collisions in the module names
@@ -660,7 +668,7 @@ class Service:
 
         # Identify any import module names where the same module name is used
         # from distinct packages.
-        modules = {}
+        modules: Dict[str, Set[str]] = {}
         for t in chain(*[m.ref_types for m in self.methods.values()]):
             modules.setdefault(t.ident.module, set())
             modules[t.ident.module].add(t.ident.package)
@@ -671,7 +679,7 @@ class Service:
         # Done; return the answer.
         return frozenset(answer)
 
-    def with_context(self, *, collisions: Set[str]) -> 'Service':
+    def with_context(self, *, collisions: FrozenSet[str]) -> 'Service':
         """Return a derivative of this service with the provided context.
 
         This method is used to address naming collisions. The returned
