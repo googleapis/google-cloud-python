@@ -782,6 +782,17 @@ def _make_field(field_type, mode="NULLABLE", name="testing", fields=()):
     return SchemaField(name=name, field_type=field_type, mode=mode, fields=fields)
 
 
+def _make_connection(*responses):
+    import google.cloud.bigquery._http
+    import mock
+    from google.cloud.exceptions import NotFound
+
+    mock_conn = mock.create_autospec(google.cloud.bigquery._http.Connection)
+    mock_conn.user_agent = "testing 1.2.3"
+    mock_conn.api_request.side_effect = list(responses) + [NotFound("miss")]
+    return mock_conn
+
+
 class Test_scalar_field_to_json(unittest.TestCase):
     def _call_fut(self, field, value):
         from google.cloud.bigquery._helpers import _scalar_field_to_json

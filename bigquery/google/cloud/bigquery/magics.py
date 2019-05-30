@@ -159,6 +159,7 @@ class Context(object):
     def __init__(self):
         self._credentials = None
         self._project = None
+        self._connection = None
         self._use_bqstorage_api = None
 
     @property
@@ -270,6 +271,7 @@ def _run_query(client, query, job_config=None):
     while True:
         print("\rQuery executing: {:0.2f}s".format(time.time() - start_time), end="")
         try:
+            print(query_job)
             query_job.result(timeout=0.5)
             break
         except futures.TimeoutError:
@@ -363,6 +365,8 @@ def _cell_magic(line, query):
 
     project = args.project or context.project
     client = bigquery.Client(project=project, credentials=context.credentials)
+    if context._connection:
+        client._connection = context._connection
     bqstorage_client = _make_bqstorage_client(
         args.use_bqstorage_api or context.use_bqstorage_api, context.credentials
     )

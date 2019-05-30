@@ -40,6 +40,7 @@ except (ImportError, AttributeError):  # pragma: NO COVER
 import google.api_core.exceptions
 from google.api_core.gapic_v1 import client_info
 import google.cloud._helpers
+from tests.unit.test__helpers import _make_connection
 from google.cloud.bigquery.dataset import DatasetReference
 
 
@@ -47,16 +48,6 @@ def _make_credentials():
     import google.auth.credentials
 
     return mock.Mock(spec=google.auth.credentials.Credentials)
-
-
-def _make_connection(*responses):
-    import google.cloud.bigquery._http
-    from google.cloud.exceptions import NotFound
-
-    mock_conn = mock.create_autospec(google.cloud.bigquery._http.Connection)
-    mock_conn.user_agent = "testing 1.2.3"
-    mock_conn.api_request.side_effect = list(responses) + [NotFound("miss")]
-    return mock_conn
 
 
 def _make_list_partitons_meta_info(project, dataset_id, table_id, num_rows=0):
