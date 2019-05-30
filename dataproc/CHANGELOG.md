@@ -15,8 +15,6 @@
 - Add new service features for v1, including autoscaling (via synth). ([#8152](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8152))
 - Add new service features for v1beta2, including autoscaling (via synth). ([#8119](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8119))
 
-### Dependencies
-
 ### Documentation
 - Add nox session `docs` ([#7429](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7429))
 - Add clarifying comment to blacken nox target. ([#7388](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7388))
