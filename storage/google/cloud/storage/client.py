@@ -369,7 +369,7 @@ class Client(ClientWithProject):
             >>> blob = storage.Blob('path/to/blob', bucket)
 
             >>> with open('file-to-download-to') as file_obj:
-            >>>     client.download_blob_to_file(blob, file)  # API request.
+            >>>     client.download_blob_to_file(blob, file_obj)  # API request.
 
 
             Download a blob using a URI.
