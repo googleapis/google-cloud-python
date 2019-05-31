@@ -28,7 +28,12 @@ import json
 import os
 import tempfile
 import uuid
+import warnings
 
+try:
+    import pyarrow
+except ImportError:  # pragma: NO COVER
+    pyarrow = None
 import six
 
 from google import resumable_media
@@ -1304,9 +1309,17 @@ class Client(ClientWithProject):
         os.close(tmpfd)
 
         try:
-            if job_config.schema:
+            if pyarrow and job_config.schema:
                 _pandas_helpers.to_parquet(dataframe, job_config.schema, tmppath)
             else:
+                if job_config.schema:
+                    warnings.warn(
+                        "job_config.schema is set, but not used to assist in "
+                        "identifying correct types for data serialization. "
+                        "Please install the pyarrow package.",
+                        PendingDeprecationWarning,
+                        stacklevel=2,
+                    )
                 dataframe.to_parquet(tmppath)
 
             with open(tmppath, "rb") as parquet_file:
