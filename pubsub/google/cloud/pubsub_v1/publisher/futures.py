@@ -40,14 +40,14 @@ class Future(futures.Future):
         """Return the message ID or raise an exception.
 
         This blocks until the message has been published successfully and
-        returns the message ID unless an exception is raised. 
+        returns the message ID unless an exception is raised.
 
         Args:
             timeout (Union[int, float]): The number of seconds before this call
                 times out and raises TimeoutError.
 
-        Returns: 
-            str: The message ID. 
+        Returns:
+            str: The message ID.
 
         Raises:
             ~.pubsub_v1.TimeoutError: If the request times out.

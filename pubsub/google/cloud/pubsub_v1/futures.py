@@ -137,7 +137,7 @@ class Future(google.api_core.future.Future):
         when the future finishes running.
 
         Args:
-            callback (Callable): The function to call.  
+            callback (Callable): The function to call.
 
         Returns:
             None
