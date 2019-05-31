@@ -39,7 +39,7 @@ except ImportError:  # pragma: NO COVER
     bigquery_storage_v1beta1 = None
 from google.cloud.bigquery import table
 from google.cloud.bigquery import magics
-from tests.unit.test__helpers import _make_connection
+from tests.unit.helpers import make_connection
 
 
 pytestmark = pytest.mark.skipif(IPython is None, reason="Requires `ipython`")
@@ -135,7 +135,7 @@ def test_context_connection_can_be_overriden():
     }
     data = {"jobReference": job_reference, "totalRows": 0, "rows": []}
 
-    conn = magics.context._connection = _make_connection(resource, data)
+    conn = magics.context._connection = make_connection(resource, data)
     list_rows_patch = mock.patch(
         "google.cloud.bigquery.client.Client.list_rows",
         return_value=google.cloud.bigquery.table._EmptyRowIterator(),
@@ -147,6 +147,61 @@ def test_context_connection_can_be_overriden():
     list_rows.assert_called()
     assert len(conn.api_request.call_args_list) == 2
     _, req = conn.api_request.call_args_list[0]
+    assert req["method"] == "POST"
+    assert req["path"] == "/projects/{}/jobs".format(project)
+    sent = req["data"]
+    assert isinstance(sent["jobReference"]["jobId"], six.string_types)
+    sent_config = sent["configuration"]["query"]
+    assert sent_config["query"] == query
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+def test_context_no_connection():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context._project = None
+    magics.context._credentials = None
+    magics.context._connection = None
+
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    project = "project-123"
+    default_patch = mock.patch(
+        "google.auth.default", return_value=(credentials_mock, project)
+    )
+
+    query = "select * from persons"
+    job_reference = {"projectId": project, "jobId": "some-random-id"}
+    table = {"projectId": project, "datasetId": "ds", "tableId": "persons"}
+    resource = {
+        "jobReference": job_reference,
+        "configuration": {
+            "query": {
+                "destinationTable": table,
+                "query": query,
+                "queryParameters": [],
+                "useLegacySql": False,
+            }
+        },
+        "status": {"state": "DONE"},
+    }
+    data = {"jobReference": job_reference, "totalRows": 0, "rows": []}
+
+    conn_mock = make_connection(resource, data, data, data)
+    conn_patch = mock.patch("google.cloud.bigquery.client.Connection", autospec=True)
+    list_rows_patch = mock.patch(
+        "google.cloud.bigquery.client.Client.list_rows",
+        return_value=google.cloud.bigquery.table._EmptyRowIterator(),
+    )
+    with conn_patch as conn, list_rows_patch as list_rows, default_patch:
+        conn.return_value = conn_mock
+        ip.run_cell_magic("bigquery", "", query)
+
+    # Check that query actually starts the job.
+    list_rows.assert_called()
+    assert len(conn_mock.api_request.call_args_list) == 2
+    _, req = conn_mock.api_request.call_args_list[0]
     assert req["method"] == "POST"
     assert req["path"] == "/projects/{}/jobs".format(project)
     sent = req["data"]
