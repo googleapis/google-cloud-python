@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client &#8212; google-cloud 4763bcf documentation</title>
+    <title>google.cloud.bigquery.client &#8212; google-cloud c37afe5 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -80,6 +80,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_record_field_to_json</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_str_or_none</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._http</span> <span class="k">import</span> <span class="n">Connection</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery</span> <span class="k">import</span> <span class="n">_pandas_helpers</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.dataset</span> <span class="k">import</span> <span class="n">Dataset</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.dataset</span> <span class="k">import</span> <span class="n">DatasetListItem</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.dataset</span> <span class="k">import</span> <span class="n">DatasetReference</span>
@@ -1307,8 +1308,15 @@
 <span class="sd">            project (str, optional):</span>
 <span class="sd">                Project ID of the project of where to run the job. Defaults</span>
 <span class="sd">                to the client&#39;s project.</span>
-<span class="sd">            job_config (google.cloud.bigquery.job.LoadJobConfig, optional):</span>
+<span class="sd">            job_config (~google.cloud.bigquery.job.LoadJobConfig, optional):</span>
 <span class="sd">                Extra configuration options for the job.</span>
+
+<span class="sd">                To override the default pandas data type conversions, supply</span>
+<span class="sd">                a value for</span>
+<span class="sd">                :attr:`~google.cloud.bigquery.job.LoadJobConfig.schema` with</span>
+<span class="sd">                column names matching those of the dataframe. The BigQuery</span>
+<span class="sd">                schema is used to determine the correct data type conversion.</span>
+<span class="sd">                Indexes are not loaded. Requires the :mod:`pyarrow` library.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            google.cloud.bigquery.job.LoadJob: A new load job.</span>
@@ -1332,7 +1340,10 @@
         <span class="n">os</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">tmpfd</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">dataframe</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="n">tmppath</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">job_config</span><span class="o">.</span><span class="n">schema</span><span class="p">:</span>
+                <span class="n">_pandas_helpers</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">job_config</span><span class="o">.</span><span class="n">schema</span><span class="p">,</span> <span class="n">tmppath</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">dataframe</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="n">tmppath</span><span class="p">)</span>
 
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmppath</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">parquet_file</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_table_from_file</span><span class="p">(</span>

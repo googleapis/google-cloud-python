@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client.Client &#8212; google-cloud 4763bcf documentation</title>
+    <title>google.cloud.bigquery.client.Client &#8212; google-cloud c37afe5 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -1094,7 +1094,14 @@ also given.</li>
 destination table.</li>
 <li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Project ID of the project of where to run the job. Defaults
 to the client’s project.</li>
-<li><strong>job_config</strong> (<a class="reference internal" href="google.cloud.bigquery.job.LoadJobConfig.html#google.cloud.bigquery.job.LoadJobConfig" title="google.cloud.bigquery.job.LoadJobConfig"><em>google.cloud.bigquery.job.LoadJobConfig</em></a><em>, </em><em>optional</em>) – Extra configuration options for the job.</li>
+<li><strong>job_config</strong> (<a class="reference internal" href="google.cloud.bigquery.job.LoadJobConfig.html#google.cloud.bigquery.job.LoadJobConfig" title="google.cloud.bigquery.job.LoadJobConfig"><em>LoadJobConfig</em></a><em>, </em><em>optional</em>) – <p>Extra configuration options for the job.</p>
+<p>To override the default pandas data type conversions, supply
+a value for
+<a class="reference internal" href="google.cloud.bigquery.job.LoadJobConfig.html#google.cloud.bigquery.job.LoadJobConfig.schema" title="google.cloud.bigquery.job.LoadJobConfig.schema"><code class="xref py py-attr docutils literal notranslate"><span class="pre">schema</span></code></a> with
+column names matching those of the dataframe. The BigQuery
+schema is used to determine the correct data type conversion.
+Indexes are not loaded. Requires the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pyarrow</span></code> library.</p>
+</li>
 </ul>
 </td>
 </tr>
