@@ -159,6 +159,7 @@ class Context(object):
     def __init__(self):
         self._credentials = None
         self._project = None
+        self._connection = None
         self._use_bqstorage_api = None
 
     @property
@@ -363,6 +364,8 @@ def _cell_magic(line, query):
 
     project = args.project or context.project
     client = bigquery.Client(project=project, credentials=context.credentials)
+    if context._connection:
+        client._connection = context._connection
     bqstorage_client = _make_bqstorage_client(
         args.use_bqstorage_api or context.use_bqstorage_api, context.credentials
     )
