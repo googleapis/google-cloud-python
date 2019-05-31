@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.13.0
+
+05-31-2019 10:22 PDT
+
+### New Features
+
+- Use `job_config.schema` for data type conversion if specified in `load_table_from_dataframe`. ([#8105](https://github.com/googleapis/google-cloud-python/pull/8105))
+
+### Internal / Testing Changes
+
+- Adds private `_connection` object to magics context. ([#8192](https://github.com/googleapis/google-cloud-python/pull/8192))
+- Fix coverage in 'types.py' (via synth). ([#8146](https://github.com/googleapis/google-cloud-python/pull/8146))
+
 ## 1.12.1
 
 05-21-2019 11:16 PDT
