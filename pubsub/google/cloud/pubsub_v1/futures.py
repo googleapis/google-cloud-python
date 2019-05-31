@@ -87,17 +87,11 @@ class Future(google.api_core.future.Future):
         return self._exception != self._SENTINEL or self._result != self._SENTINEL
 
     def result(self, timeout=None):
-        """Return the message ID, or raise an exception.
-
-        This blocks until the message has successfully been published, and
-        returns the message ID.
+        """Resolve the future and return a value where appropriate.
 
         Args:
             timeout (Union[int, float]): The number of seconds before this call
                 times out and raises TimeoutError.
-
-        Returns:
-            str: The message ID.
 
         Raises:
             ~.pubsub_v1.TimeoutError: If the request times out.
@@ -114,9 +108,6 @@ class Future(google.api_core.future.Future):
 
     def exception(self, timeout=None):
         """Return the exception raised by the call, if any.
-
-        This blocks until the message has successfully been published, and
-        returns the exception. If the call succeeded, return None.
 
         Args:
             timeout (Union[int, float]): The number of seconds before this call
@@ -139,15 +130,21 @@ class Future(google.api_core.future.Future):
         # Okay, this batch had an error; this should return it.
         return self._exception
 
-    def add_done_callback(self, fn):
+    def add_done_callback(self, callback):
         """Attach the provided callable to the future.
 
         The provided function is called, with this future as its only argument,
         when the future finishes running.
+
+        Args:
+            callback (Callable): The function to call.  
+
+        Returns:
+            None
         """
         if self.done():
-            return fn(self)
-        self._callbacks.append(fn)
+            return callback(self)
+        self._callbacks.append(callback)
 
     def set_result(self, result):
         """Set the result of the future to the provided result.
