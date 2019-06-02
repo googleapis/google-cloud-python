@@ -2832,13 +2832,18 @@ class QueryJob(_AsyncJob):
         self._done_timeout = timeout
         super(QueryJob, self)._blocking_poll(timeout=timeout)
 
-    def result(self, timeout=None, retry=DEFAULT_RETRY):
+    def result(self, timeout=None, page_size=None, retry=DEFAULT_RETRY):
         """Start the job and wait for it to complete and get the result.
 
         :type timeout: float
         :param timeout:
             How long (in seconds) to wait for job to complete before raising
             a :class:`concurrent.futures.TimeoutError`.
+
+        :type page_size: int
+        :param page_size:
+            (Optional) The maximum number of rows in each page of results
+                from this request. Non-positive values are ignored.
 
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the call that retrieves rows.
@@ -2874,7 +2879,7 @@ class QueryJob(_AsyncJob):
         dest_table_ref = self.destination
         dest_table = Table(dest_table_ref, schema=schema)
         dest_table._properties["numRows"] = self._query_results.total_rows
-        rows = self._client.list_rows(dest_table, retry=retry)
+        rows = self._client.list_rows(dest_table, page_size=page_size, retry=retry)
         rows._preserve_order = _contains_order_by(self.query)
         return rows
 

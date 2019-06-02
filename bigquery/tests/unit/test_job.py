@@ -4168,6 +4168,22 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(query_request[1]["query_params"]["timeoutMs"], 900)
         self.assertEqual(reload_request[1]["method"], "GET")
 
+    def test_result_w_page_size(self):
+        query_resource = {
+            "jobComplete": True,
+            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
+            "schema": {"fields": [{"name": "col1", "type": "STRING"}]},
+            "totalRows": "4",
+        }
+        connection = _make_connection(query_resource)
+        client = _make_client(self.PROJECT, connection=connection)
+        resource = self._make_resource(ended=True)
+        job = self._get_target_class().from_api_repr(resource, client)
+
+        result = job.result(page_size=3)
+
+        self.assertEqual(result.total_rows, 4)
+
     def test_result_error(self):
         from google.cloud import exceptions
 
