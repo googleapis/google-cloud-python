@@ -529,6 +529,7 @@ class TestPartialRowsData(unittest.TestCase):
         self.assertEqual(response_iterator.cancel_calls, 0)
         yield_rows_data.cancel()
         self.assertEqual(response_iterator.cancel_calls, 1)
+        self.assertRaises(StopIteration, iter(yield_rows_data).next())
 
     # 'consume_next' tested via 'TestPartialRowsData_JSON_acceptance_tests'
 
