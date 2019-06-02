@@ -377,7 +377,7 @@ class PartialRowsData(object):
         self._state = self.STATE_NEW_ROW
 
         # Flag to stop iteration, for any reason not related to self.retry()
-        self.stop = False
+        self._stop = False
 
     @property
     def state(self):
@@ -391,6 +391,7 @@ class PartialRowsData(object):
 
     def cancel(self):
         """Cancels the iterator, closing the stream."""
+        self._stop = True
         self.response_iterator.cancel()
 
     def consume_all(self, max_loops=None):
@@ -442,8 +443,14 @@ class PartialRowsData(object):
         while True:
             try:
                 response = self._read_next_response()
+            except StopIteration:
+                if self.state != self.NEW_ROW:
+                    raise ValueError("The row remains partial / is not committed.")
+                break
+
+            try:
                 for chunk in response.chunks:
-                    if self.stop:
+                    if self._stop:
                         raise StopIteration
                     self._process_chunk(chunk)
                     if chunk.commit_row:
@@ -451,8 +458,6 @@ class PartialRowsData(object):
                         self._counter += 1
                         yield self._previous_row
             except StopIteration:
-                if self.state != self.NEW_ROW:
-                    raise ValueError("The row remains partial / is not committed.")
                 break
 
             resp_last_key = response.last_scanned_row_key
