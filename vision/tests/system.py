@@ -138,6 +138,7 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
             self.ps_client.delete_product_set(name=product_set)
 
     def test_create_product_set(self):
+        # Create a ProductSet.
         product_set = vision.types.ProductSet(display_name="display name")
         product_set_id = "set" + unique_resource_id()
         product_set_path = self.ps_client.product_set_path(
@@ -149,9 +150,11 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
             product_set_id=product_set_id,
         )
         self.product_sets_to_delete.append(response.name)
+        # Verify the ProductSet was successfully created.
         self.assertEqual(response.name, product_set_path)
 
     def test_get_product_set(self):
+        # Create a ProductSet.
         product_set = vision.types.ProductSet(display_name="display name")
         product_set_id = "set" + unique_resource_id()
         product_set_path = self.ps_client.product_set_path(
@@ -164,10 +167,12 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         )
         self.product_sets_to_delete.append(response.name)
         self.assertEqual(response.name, product_set_path)
+        # Get the ProductSet.
         get_response = self.ps_client.get_product_set(name=product_set_path)
         self.assertEqual(get_response.name, product_set_path)
 
     def test_list_product_sets(self):
+        # Create a ProductSet.
         product_set = vision.types.ProductSet(display_name="display name")
         product_set_id = "set" + unique_resource_id()
         product_set_path = self.ps_client.product_set_path(
@@ -180,10 +185,18 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         )
         self.product_sets_to_delete.append(response.name)
         self.assertEqual(response.name, product_set_path)
-        product_sets = self.ps_client.list_product_sets(parent=self.location_path)
-        self.assertGreater(len(list(product_sets)), 0)
+        # Verify ProductSets can be listed.
+        product_sets_iterator = self.ps_client.list_product_sets(
+            parent=self.location_path
+        )
+        product_sets_exist = False
+        for product_set in product_sets_iterator:
+            product_sets_exist = True
+            break
+        self.assertTrue(product_sets_exist)
 
     def test_update_product_set(self):
+        # Create a ProductSet.
         product_set = vision.types.ProductSet(display_name="display name")
         product_set_id = "set" + unique_resource_id()
         product_set_path = self.ps_client.product_set_path(
@@ -196,6 +209,7 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         )
         self.product_sets_to_delete.append(response.name)
         self.assertEqual(response.name, product_set_path)
+        # Update the ProductSet.
         new_display_name = "updated name"
         updated_product_set_request = vision.types.ProductSet(
             name=product_set_path, display_name=new_display_name
@@ -207,6 +221,7 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         self.assertEqual(updated_product_set.display_name, new_display_name)
 
     def test_create_product(self):
+        # Create a Product.
         product = vision.types.Product(
             display_name="product display name", product_category="apparel"
         )
@@ -218,9 +233,11 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
             parent=self.location_path, product=product, product_id=product_id
         )
         self.products_to_delete.append(response.name)
+        # Verify the Product was successfully created.
         self.assertEqual(response.name, product_path)
 
     def test_get_product(self):
+        # Create a Product.
         product = vision.types.Product(
             display_name="product display name", product_category="apparel"
         )
@@ -233,10 +250,12 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         )
         self.products_to_delete.append(response.name)
         self.assertEqual(response.name, product_path)
+        # Get the Product.
         get_response = self.ps_client.get_product(name=product_path)
         self.assertEqual(get_response.name, product_path)
 
     def test_update_product(self):
+        # Create a Product.
         product = vision.types.Product(
             display_name="product display name", product_category="apparel"
         )
@@ -249,6 +268,7 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         )
         self.products_to_delete.append(response.name)
         self.assertEqual(response.name, product_path)
+        # Update the Product.
         new_display_name = "updated product name"
         updated_product_request = vision.types.Product(
             name=product_path, display_name=new_display_name
@@ -259,8 +279,30 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         )
         self.assertEqual(updated_product.display_name, new_display_name)
 
+    def test_list_products(self):
+        # Create a Product.
+        product = vision.types.Product(
+            display_name="product display name", product_category="apparel"
+        )
+        product_id = "product" + unique_resource_id()
+        product_path = self.ps_client.product_path(
+            project=PROJECT_ID, location=self.location, product=product_id
+        )
+        response = self.ps_client.create_product(
+            parent=self.location_path, product=product, product_id=product_id
+        )
+        self.products_to_delete.append(response.name)
+        self.assertEqual(response.name, product_path)
+        # Verify Products can be listed.
+        products_iterator = self.ps_client.list_products(parent=self.location_path)
+        products_exist = False
+        for product in products_iterator:
+            products_exist = True
+            break
+        self.assertTrue(products_exist)
+
     def test_list_products_in_product_set(self):
-        # Create the ProductSet
+        # Create a ProductSet.
         product_set = vision.types.ProductSet(display_name="display name")
         product_set_id = "set" + unique_resource_id()
         product_set_path = self.ps_client.product_set_path(
@@ -273,7 +315,7 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         )
         self.product_sets_to_delete.append(response.name)
         self.assertEqual(response.name, product_set_path)
-        # Create the Product
+        # Create a Product.
         product = vision.types.Product(
             display_name="product display name", product_category="apparel"
         )
@@ -286,17 +328,17 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         )
         self.products_to_delete.append(response.name)
         self.assertEqual(response.name, product_path)
-        # Add the Product to the ProductSet
+        # Add the Product to the ProductSet.
         self.ps_client.add_product_to_product_set(
             name=product_set_path, product=product_path
         )
-        # List the Products in the ProductSet
+        # List the Products in the ProductSet.
         listed_products = list(
             self.ps_client.list_products_in_product_set(name=product_set_path)
         )
         self.assertEqual(len(listed_products), 1)
         self.assertEqual(listed_products[0].name, product_path)
-        # Remove the Product from the ProductSet
+        # Remove the Product from the ProductSet.
         self.ps_client.remove_product_from_product_set(
             name=product_set_path, product=product_path
         )
