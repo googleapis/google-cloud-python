@@ -161,6 +161,7 @@ class Context(object):
         self._project = None
         self._connection = None
         self._use_bqstorage_api = None
+        self._default_query_job_config = bigquery.QueryJobConfig()
 
     @property
     def credentials(self):
@@ -237,6 +238,28 @@ class Context(object):
     def use_bqstorage_api(self, value):
         self._use_bqstorage_api = value
 
+    @property
+    def default_query_job_config(self):
+        """google.cloud.bigquery.job.QueryJobConfig: Default job
+        configuration for queries.
+
+        The context's :class:`~google.cloud.bigquery.job.QueryJobConfig` is
+        used for queries. Some properties can be overridden with arguments to
+        the magics.
+
+        Example:
+            Manually setting the default value for ``maximum_bytes_billed``
+            to 100 MB:
+
+            >>> from google.cloud.bigquery import magics
+            >>> magics.context.default_query_job_config.maximum_bytes_billed = 100000000
+        """
+        return self._default_query_job_config
+
+    @default_query_job_config.setter
+    def default_query_job_config(self, value):
+        self._default_query_job_config = value
+
 
 context = Context()
 
@@ -290,6 +313,14 @@ def _run_query(client, query, job_config=None):
     type=str,
     default=None,
     help=("Project to use for executing this query. Defaults to the context project."),
+)
+@magic_arguments.argument(
+    "--maximum_bytes_billed",
+    default=None,
+    help=(
+        "maximum_bytes_billed to use for executing this query. Defaults to "
+        "the context default_query_job_config.maximum_bytes_billed."
+    ),
 )
 @magic_arguments.argument(
     "--use_legacy_sql",
@@ -363,7 +394,11 @@ def _cell_magic(line, query):
             )
 
     project = args.project or context.project
-    client = bigquery.Client(project=project, credentials=context.credentials)
+    client = bigquery.Client(
+        project=project,
+        credentials=context.credentials,
+        default_query_job_config=context.default_query_job_config,
+    )
     if context._connection:
         client._connection = context._connection
     bqstorage_client = _make_bqstorage_client(
@@ -372,6 +407,12 @@ def _cell_magic(line, query):
     job_config = bigquery.job.QueryJobConfig()
     job_config.query_parameters = params
     job_config.use_legacy_sql = args.use_legacy_sql
+
+    if args.maximum_bytes_billed == "None":
+        job_config.maximum_bytes_billed = 0
+    elif args.maximum_bytes_billed is not None:
+        value = int(args.maximum_bytes_billed)
+        job_config.maximum_bytes_billed = value
     query_job = _run_query(client, query, job_config)
 
     if not args.verbose:
