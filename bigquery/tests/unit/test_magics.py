@@ -243,7 +243,8 @@ def test__run_query():
     assert updates[0] == expected_first_line
     execution_updates = updates[1:-1]
     assert len(execution_updates) == 3  # one update per API response
-    assert all(re.match("Query executing: .*s", line) for line in execution_updates)
+    for line in execution_updates:
+        assert re.match("Query executing: .*s", line)
     assert re.match("Query complete after .*s", updates[-1])
 
 
