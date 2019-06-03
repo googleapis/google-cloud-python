@@ -133,7 +133,7 @@ class TestClient(unittest.TestCase):
         with authorized_session_patch as AuthorizedSession:
             self.assertIs(client._http, mock.sentinel.http)
             # Check the mock.
-            AuthorizedSession.assert_called_once_with(credentials)
+            AuthorizedSession.assert_called_once_with(credentials, 300)
             # Make sure the cached value is used on subsequent access.
             self.assertIs(client._http_internal, mock.sentinel.http)
             self.assertIs(client._http, mock.sentinel.http)
