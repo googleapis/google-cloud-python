@@ -124,6 +124,8 @@ class TestVisionClientLogo(VisionSystemTestBase):
 @unittest.skipUnless(PROJECT_ID, "PROJECT_ID not set in environment.")
 class TestVisionClientProductSearch(VisionSystemTestBase):
     def setUp(self):
+        VisionSystemTestBase.setUp(self)
+        self.reference_images_to_delete = []
         self.products_to_delete = []
         self.product_sets_to_delete = []
         self.location = "us-west1"
@@ -132,6 +134,9 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         )
 
     def tearDown(self):
+        VisionSystemTestBase.tearDown(self)
+        for reference_image in self.reference_images_to_delete:
+            self.ps_client.delete_reference_image(name=reference_image)
         for product in self.products_to_delete:
             self.ps_client.delete_product(name=product)
         for product_set in self.product_sets_to_delete:
@@ -342,3 +347,52 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         self.ps_client.remove_product_from_product_set(
             name=product_set_path, product=product_path
         )
+
+    def test_reference_image(self):
+        # Create a Product.
+        product = vision.types.Product(
+            display_name="product display name", product_category="apparel"
+        )
+        product_id = "product" + unique_resource_id()
+        product_path = self.ps_client.product_path(
+            project=PROJECT_ID, location=self.location, product=product_id
+        )
+        response = self.ps_client.create_product(
+            parent=self.location_path, product=product, product_id=product_id
+        )
+        self.products_to_delete.append(response.name)
+        self.assertEqual(response.name, product_path)
+        # Upload image to gcs.
+        blob_name = "faces.jpg"
+        blob = self.test_bucket.blob(blob_name)
+        self.to_delete_by_case.append(blob)
+        with io.open(FACE_FILE, "rb") as image_file:
+            blob.upload_from_file(image_file)
+        gcs_uri = "gs://{bucket}/{blob}".format(
+            bucket=self.test_bucket.name, blob=blob_name
+        )
+        # Create a ReferenceImage.
+        reference_image_id = "reference_image" + unique_resource_id()
+        reference_image_path = self.ps_client.reference_image_path(
+            project=PROJECT_ID,
+            location=self.location,
+            product=product_id,
+            reference_image=reference_image_id,
+        )
+        reference_image = vision.types.ReferenceImage(uri=gcs_uri)
+        response = self.ps_client.create_reference_image(
+            parent=product_path,
+            reference_image=reference_image,
+            reference_image_id=reference_image_id,
+        )
+        self.reference_images_to_delete.append(response.name)
+        self.assertEqual(response.name, reference_image_path)
+        # Get the ReferenceImage.
+        get_response = self.ps_client.get_reference_image(name=reference_image_path)
+        self.assertEqual(get_response.name, reference_image_path)
+        # List the ReferenceImages in the Product.
+        listed_reference_images = list(
+            self.ps_client.list_reference_images(parent=product_path)
+        )
+        self.assertEqual(len(listed_reference_images), 1)
+        self.assertEqual(listed_reference_images[0].name, reference_image_path)
