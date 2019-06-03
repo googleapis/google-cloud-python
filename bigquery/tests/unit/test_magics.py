@@ -553,43 +553,6 @@ def test_bigquery_magic_without_bqstorage(monkeypatch):
 
 
 @pytest.mark.usefixtures("ipython_interactive")
-def test_bigquery_magic_w_maximum_bytes_billed():
-    ip = IPython.get_ipython()
-    ip.extension_manager.load_extension("google.cloud.bigquery")
-    magics.context._project = None
-
-    bqstorage_mock = mock.create_autospec(
-        bigquery_storage_v1beta1.BigQueryStorageClient
-    )
-
-    credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
-    )
-    default_patch = mock.patch(
-        "google.auth.default", return_value=(credentials_mock, "general-project")
-    )
-    run_query_patch = mock.patch(
-        "google.cloud.bigquery.magics._run_query", autospec=True
-    )
-
-    sql = "SELECT 17 AS num"
-    result = pandas.DataFrame([17], columns=["num"])
-    query_job_mock = mock.create_autospec(
-        google.cloud.bigquery.job.QueryJob, instance=True
-    )
-    query_job_mock.to_dataframe.return_value = result
-    with run_query_patch as run_query_mock, default_patch:
-        run_query_mock.return_value = query_job_mock
-        return_value = ip.run_cell_magic(
-            "bigquery", "--maximum_bytes_billed=123456789", sql
-        )
-
-        bqstorage_mock.assert_not_called()
-        query_job_mock.to_dataframe.assert_called_once_with(bqstorage_client=None)
-    assert isinstance(return_value, pandas.DataFrame)
-
-
-@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_w_maximum_bytes_billed_invalid():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")
