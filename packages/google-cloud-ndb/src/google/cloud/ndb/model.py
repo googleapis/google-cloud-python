@@ -340,17 +340,15 @@ def _entity_from_protobuf(protobuf):
     return _entity_from_ds_entity(ds_entity)
 
 
-def _entity_to_protobuf(entity, set_key=True):
-    """Serialize an entity to a protobuffer.
+def _entity_to_ds_entity(entity, set_key=True):
+    """Convert an NDB entity to Datastore entity.
 
     Args:
-        entity (Model): The entity to be serialized.
+        entity (Model): The entity to be converted.
 
     Returns:
-        google.cloud.datastore_v1.types.Entity: The protocol buffer
-            representation.
+        google.cloud.datastore.entity.Entity: The converted entity.
     """
-    # First, make a datastore entity
     data = {}
     for cls in type(entity).mro():
         for prop in cls.__dict__.values():
@@ -376,7 +374,20 @@ def _entity_to_protobuf(entity, set_key=True):
         ds_entity = entity_module.Entity()
     ds_entity.update(data)
 
-    # Then, use datatore to get the protocol buffer
+    return ds_entity
+
+
+def _entity_to_protobuf(entity, set_key=True):
+    """Serialize an entity to a protocol buffer.
+
+    Args:
+        entity (Model): The entity to be serialized.
+
+    Returns:
+        google.cloud.datastore_v1.types.Entity: The protocol buffer
+            representation.
+    """
+    ds_entity = _entity_to_ds_entity(entity, set_key=set_key)
     return helpers.entity_to_protobuf(ds_entity)
 
 
@@ -3362,29 +3373,29 @@ class StructuredProperty(Property):
     The values of the sub-entity are indexed and can be queried.
     """
 
-    _modelclass = None
+    _model_class = None
     _kwargs = None
 
-    def __init__(self, modelclass, name=None, **kwargs):
+    def __init__(self, model_class, name=None, **kwargs):
         super(StructuredProperty, self).__init__(name=name, **kwargs)
         if self._repeated:
-            if modelclass._has_repeated:
+            if model_class._has_repeated:
                 raise TypeError(
                     "This StructuredProperty cannot use repeated=True "
                     "because its model class (%s) contains repeated "
                     "properties (directly or indirectly)."
-                    % modelclass.__name__
+                    % model_class.__name__
                 )
-        self._modelclass = modelclass
+        self._model_class = model_class
 
     def _get_value(self, entity):
         """Override _get_value() to *not* raise UnprojectedPropertyError.
 
-        This is necessary because the projection must include both the sub-entity and
-        the property name that is projected (e.g. 'foo.bar' instead of only 'foo'). In
-        that case the original code would fail, because it only looks for the property
-        name ('foo'). Here we check for a value, and only call the original code if the
-        value is None.
+        This is necessary because the projection must include both the
+        sub-entity and the property name that is projected (e.g. 'foo.bar'
+        instead of only 'foo'). In that case the original code would fail,
+        because it only looks for the property name ('foo'). Here we check for
+        a value, and only call the original code if the value is None.
         """
         value = self._get_user_value(entity)
         if value is None and entity._projection:
@@ -3403,11 +3414,11 @@ class StructuredProperty(Property):
     def __getattr__(self, attrname):
         """Dynamically get a subproperty."""
         # Optimistically try to use the dict key.
-        prop = self._modelclass._properties.get(attrname)
+        prop = self._model_class._properties.get(attrname)
         if prop is None:
             raise AttributeError(
                 "Model subclass %s has no attribute %s"
-                % (self._modelclass.__name__, attrname)
+                % (self._model_class.__name__, attrname)
             )
         prop_copy = copy.copy(prop)
         prop_copy._name = self._name + "." + prop_copy._name
@@ -3436,37 +3447,41 @@ class StructuredProperty(Property):
             )  # Import late to avoid circular imports.
 
             return FilterNode(self._name, op, value)
+
         value = self._do_validate(value)
-        value = self._call_to_base_type(value)
         filters = []
         match_keys = []
-        for prop in self._modelclass._properties.values():
-            vals = prop._get_base_value_unwrapped_as_list(value)
+        for prop in self._model_class._properties.values():
+            subvalue = prop._get_value(value)
             if prop._repeated:
-                if vals:  # pragma: no branch
+                if subvalue:  # pragma: no branch
                     raise exceptions.BadFilterError(
                         "Cannot query for non-empty repeated property %s"
                         % prop._name
                     )
                 continue  # pragma: NO COVER
-            val = vals[0]
-            if val is not None:  # pragma: no branch
+
+            if subvalue is not None:  # pragma: no branch
                 altprop = getattr(self, prop._code_name)
-                filt = altprop._comparison(op, val)
+                filt = altprop._comparison(op, subvalue)
                 filters.append(filt)
                 match_keys.append(altprop._name)
+
         if not filters:
             raise exceptions.BadFilterError(
                 "StructuredProperty filter without any values"
             )
+
         if len(filters) == 1:
             return filters[0]
+
         if self._repeated:
             raise NotImplementedError("This depends on code not yet ported.")
             # pb = value._to_pb(allow_partial=True)
             # pred = RepeatedStructuredPropertyPredicate(match_keys, pb,
             #                                          self._name + '.')
             # filters.append(PostFilterNode(pred))
+
         return ConjunctionNode(*filters)
 
     def _IN(self, value):
@@ -3491,11 +3506,11 @@ class StructuredProperty(Property):
     def _validate(self, value):
         if isinstance(value, dict):
             # A dict is assumed to be the result of a _to_dict() call.
-            return self._modelclass(**value)
-        if not isinstance(value, self._modelclass):
+            return self._model_class(**value)
+        if not isinstance(value, self._model_class):
             raise exceptions.BadValueError(
                 "Expected %s instance, got %s"
-                % (self._modelclass.__name__, value.__class__)
+                % (self._model_class.__name__, value.__class__)
             )
 
     def _has_value(self, entity, rest=None):
@@ -3507,27 +3522,34 @@ class StructuredProperty(Property):
 
         Args:
             entity (ndb.Model): An instance of a model.
-            rest (list[str]): optional list of attribute names to check in addition.
+            rest (list[str]): optional list of attribute names to check in
+                addition.
 
         Returns:
             bool: True if the entity has a value for that property.
         """
         ok = super(StructuredProperty, self)._has_value(entity)
         if ok and rest:
-            lst = self._get_base_value_unwrapped_as_list(entity)
-            if len(lst) != 1:
-                raise RuntimeError(
-                    "Failed to retrieve sub-entity of StructuredProperty"
-                    " %s" % self._name
-                )
-            subent = lst[0]
+            value = self._get_value(entity)
+            if self._repeated:
+                if len(value) != 1:
+                    raise RuntimeError(
+                        "Failed to retrieve sub-entity of StructuredProperty"
+                        " %s" % self._name
+                    )
+                subent = value[0]
+            else:
+                subent = value
+
             if subent is None:
                 return True
+
             subprop = subent._properties.get(rest[0])
             if subprop is None:
                 ok = False
             else:
                 ok = subprop._has_value(subent, rest[1:])
+
         return ok
 
     def _check_property(self, rest=None, require_indexed=True):
@@ -3541,15 +3563,42 @@ class StructuredProperty(Property):
             raise InvalidPropertyError(
                 "Structured property %s requires a subproperty" % self._name
             )
-        self._modelclass._check_properties(
+        self._model_class._check_properties(
             [rest], require_indexed=require_indexed
         )
 
-    def _get_base_value_at_index(self, entity, index):
-        assert self._repeated
-        value = self._retrieve_value(entity, self._default)
-        value[index] = self._opt_call_to_base_type(value[index])
-        return value[index].b_val
+    def _to_base_type(self, value):
+        """Convert a value to the "base" value type for this property.
+
+        Args:
+            value: The given class value to be converted.
+
+        Returns:
+            bytes
+
+        Raises:
+            TypeError: If ``value`` is not the correct ``Model`` type.
+        """
+        if not isinstance(value, self._model_class):
+            raise TypeError(
+                "Cannot convert to protocol buffer. Expected {} value; "
+                "received {}".format(self._model_class.__name__, value)
+            )
+        return _entity_to_ds_entity(value)
+
+    def _from_base_type(self, value):
+        """Convert a value from the "base" value type for this property.
+        Args:
+            value(~google.cloud.datastore.Entity or bytes): The value to be
+            converted.
+        Returns:
+            The converted value with given class.
+        """
+        if isinstance(value, entity_module.Entity):
+            value = _entity_from_ds_entity(
+                value, model_class=self._model_class
+            )
+        return value
 
     def _get_value_size(self, entity):
         values = self._retrieve_value(entity, self._default)
@@ -3569,7 +3618,8 @@ class LocalStructuredProperty(BlobProperty):
     .. automethod:: _from_base_type
     .. automethod:: _validate
     Args:
-        kls (ndb.Model): The class of the property.
+        model_class (type): The class of the property. (Must be subclass of
+            ``ndb.Model``.)
         name (str): The name of the property.
         compressed (bool): Indicates if the value should be compressed (via
             ``zlib``).
@@ -3585,11 +3635,11 @@ class LocalStructuredProperty(BlobProperty):
             to the datastore.
     """
 
-    _kls = None
+    _model_class = None
     _keep_keys = False
     _kwargs = None
 
-    def __init__(self, kls, **kwargs):
+    def __init__(self, model_class, **kwargs):
         indexed = kwargs.pop("indexed", False)
         if indexed:
             raise NotImplementedError(
@@ -3597,7 +3647,7 @@ class LocalStructuredProperty(BlobProperty):
             )
         keep_keys = kwargs.pop("keep_keys", False)
         super(LocalStructuredProperty, self).__init__(**kwargs)
-        self._kls = kls
+        self._model_class = model_class
         self._keep_keys = keep_keys
 
     def _validate(self, value):
@@ -3609,11 +3659,13 @@ class LocalStructuredProperty(BlobProperty):
         """
         if isinstance(value, dict):
             # A dict is assumed to be the result of a _to_dict() call.
-            value = self._kls(**value)
+            value = self._model_class(**value)
 
-        if not isinstance(value, self._kls):
+        if not isinstance(value, self._model_class):
             raise exceptions.BadValueError(
-                "Expected {}, got {!r}".format(self._kls.__name__, value)
+                "Expected {}, got {!r}".format(
+                    self._model_class.__name__, value
+                )
             )
 
     def _to_base_type(self, value):
@@ -3623,12 +3675,12 @@ class LocalStructuredProperty(BlobProperty):
         Returns:
             bytes
         Raises:
-            TypeError: If ``value`` is not a given class.
+            TypeError: If ``value`` is not the correct ``Model`` type.
         """
-        if not isinstance(value, self._kls):
+        if not isinstance(value, self._model_class):
             raise TypeError(
                 "Cannot convert to bytes expected {} value; "
-                "received {}".format(self._kls.__name__, value)
+                "received {}".format(self._model_class.__name__, value)
             )
         pb = _entity_to_protobuf(value, set_key=self._keep_keys)
         return pb.SerializePartialToString()
@@ -3647,7 +3699,7 @@ class LocalStructuredProperty(BlobProperty):
             value = helpers.entity_from_protobuf(pb)
         if not self._keep_keys and value.key:
             value.key = None
-        return _entity_from_ds_entity(value, model_class=self._kls)
+        return _entity_from_ds_entity(value, model_class=self._model_class)
 
 
 class GenericProperty(Property):
@@ -4328,7 +4380,7 @@ class Model(metaclass=MetaModel):
                 if isinstance(attr, Property):
                     if attr._repeated or (
                         isinstance(attr, StructuredProperty)
-                        and attr._modelclass._has_repeated
+                        and attr._model_class._has_repeated
                     ):
                         cls._has_repeated = True
                     cls._properties[attr._name] = attr

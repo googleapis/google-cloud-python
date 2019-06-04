@@ -6,12 +6,13 @@ import pytest
 from google.cloud import datastore
 from google.cloud import ndb
 
-from . import KIND, OTHER_NAMESPACE
+from . import KIND, OTHER_KIND, OTHER_NAMESPACE
 
 
 def all_entities(client):
     return itertools.chain(
         client.query(kind=KIND).fetch(),
+        client.query(kind=OTHER_KIND).fetch(),
         client.query(namespace=OTHER_NAMESPACE).fetch(),
     )
 

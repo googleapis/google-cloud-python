@@ -329,3 +329,26 @@ def test_get_or_insert_get_in_transaction(ds_entity):
 
     entity = ndb.transaction(do_the_thing)
     assert entity.foo == 42
+
+
+@pytest.mark.usefixtures("client_context")
+def test_insert_entity_with_structured_property(dispose_of):
+    class OtherKind(ndb.Model):
+        one = ndb.StringProperty()
+        two = ndb.StringProperty()
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StructuredProperty(OtherKind)
+
+    entity = SomeKind(foo=42, bar=OtherKind(one="hi", two="mom"))
+    key = entity.put()
+
+    retrieved = key.get()
+    assert retrieved.foo == 42
+    assert retrieved.bar.one == "hi"
+    assert retrieved.bar.two == "mom"
+
+    assert isinstance(retrieved.bar, OtherKind)
+
+    dispose_of(key._key)

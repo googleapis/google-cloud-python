@@ -2541,7 +2541,7 @@ class TestStructuredProperty:
             foo = model.StringProperty()
 
         prop = model.StructuredProperty(Mine)
-        assert prop._modelclass == Mine
+        assert prop._model_class == Mine
 
     @staticmethod
     def test_constructor_with_repeated():
@@ -2549,7 +2549,7 @@ class TestStructuredProperty:
             foo = model.StringProperty()
 
         prop = model.StructuredProperty(Mine, repeated=True)
-        assert prop._modelclass == Mine
+        assert prop._model_class == Mine
 
     @staticmethod
     def test_constructor_with_repeated_prop():
@@ -2786,6 +2786,7 @@ class TestStructuredProperty:
             prop._comparison("=", mine)
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_IN():
         class Mine(model.Model):
             foo = model.StringProperty()
@@ -2854,7 +2855,19 @@ class TestStructuredProperty:
         assert MineToo.bar._has_value(minetoo, rest=["foo"]) is True
 
     @staticmethod
-    def test__has_value_with_rest_repeated_none():
+    def test__has_value_with_rest_repeated_one():
+        class Mine(model.Model):
+            foo = model.StringProperty()
+
+        class MineToo(model.Model):
+            bar = model.StructuredProperty(Mine, repeated=True)
+
+        mine = Mine(foo="x")
+        minetoo = MineToo(bar=[mine])
+        assert MineToo.bar._has_value(minetoo, rest=["foo"]) is True
+
+    @staticmethod
+    def test__has_value_with_rest_repeated_two():
         class Mine(model.Model):
             foo = model.StringProperty()
 
@@ -2868,6 +2881,7 @@ class TestStructuredProperty:
             MineToo.bar._has_value(minetoo, rest=["foo"])
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test__has_value_with_rest_subprop_none():
         class Mine(model.Model):
             foo = model.StringProperty()
@@ -2925,19 +2939,6 @@ class TestStructuredProperty:
             MineToo.bar._check_property()
 
     @staticmethod
-    def test__get_base_value_at_index():
-        class Mine(model.Model):
-            foo = model.StringProperty()
-
-        class MineToo(model.Model):
-            bar = model.StructuredProperty(Mine, repeated=True)
-
-        mine = Mine(foo="Foo")
-        mine2 = Mine(foo="Fa")
-        minetoo = MineToo(bar=[mine, mine2])
-        assert MineToo.bar._get_base_value_at_index(minetoo, 1) == mine2
-
-    @staticmethod
     def test__get_value_size():
         class Mine(model.Model):
             foo = model.StringProperty()
@@ -2971,6 +2972,50 @@ class TestStructuredProperty:
 
         minetoo = MineToo(bar=None)
         assert MineToo.bar._get_value_size(minetoo) == 0
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test__to_base_type():
+        class Mine(model.Model):
+            foo = model.StringProperty()
+
+        class MineToo(model.Model):
+            bar = model.StructuredProperty(Mine)
+
+        minetoo = MineToo(bar=Mine(foo="bar"))
+        ds_bar = MineToo.bar._to_base_type(minetoo.bar)
+        assert isinstance(ds_bar, entity_module.Entity)
+        assert ds_bar["foo"] == "bar"
+        assert ds_bar.kind == "Mine"
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test__to_base_type_bad_value():
+        class Mine(model.Model):
+            foo = model.StringProperty()
+
+        class MineToo(model.Model):
+            bar = model.StructuredProperty(Mine)
+
+        with pytest.raises(TypeError):
+            MineToo.bar._to_base_type("badvalue")
+
+    def test__from_base_type(self):
+        class Simple(model.Model):
+            pass
+
+        prop = model.StructuredProperty(Simple, name="ent")
+        entity = entity_module.Entity()
+        expected = Simple()
+        assert prop._from_base_type(entity) == expected
+
+    def test__from_base_type_noop(self):
+        class Simple(model.Model):
+            pass
+
+        prop = model.StructuredProperty(Simple, name="ent")
+        value = object()
+        assert prop._from_base_type(value) is value
 
 
 class TestLocalStructuredProperty:

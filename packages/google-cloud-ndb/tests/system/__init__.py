@@ -15,6 +15,7 @@
 import time
 
 KIND = "SomeKind"
+OTHER_KIND = "OtherKind"
 OTHER_NAMESPACE = "other-namespace"
 
 
