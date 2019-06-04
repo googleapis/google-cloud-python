@@ -1,15 +1,15 @@
 {% extends '_base.py.j2' %}
 
 {% block content %}
-from typing import Callable, Sequence, Tuple
+from typing import Callable, Dict, Sequence, Tuple
 
-from google.api_core import grpc_helpers
+from google.api_core import grpc_helpers   # type: ignore
 {%- if service.has_lro %}
-from google.api_core import operations_v1
+from google.api_core import operations_v1  # type: ignore
 {%- endif %}
-from google.auth import credentials
+from google.auth import credentials        # type: ignore
 
-import grpc
+import grpc  # type: ignore
 
 {% filter sort_lines -%}
 {% for method in service.methods.values() -%}
@@ -57,7 +57,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
 
         # Run the base constructor.
         super().__init__(host=host, credentials=credentials)
-        self._stubs = {}
+        self._stubs = {}  # type: Dict[str, Callable]
 
         # If a channel was explicitly provided, set it.
         if channel:

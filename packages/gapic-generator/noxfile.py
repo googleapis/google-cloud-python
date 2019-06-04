@@ -130,6 +130,45 @@ def showcase_unit(session):
         )
 
 
+@nox.session(python='3.7')
+def showcase_mypy(session):
+    """Perform typecheck analysis on the generated Showcase library."""
+
+    # Install pytest and gapic-generator-python
+    session.install('mypy')
+    session.install('.')
+
+    # Install a client library for Showcase.
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        # Download the Showcase descriptor.
+        session.run(
+            'curl', 'https://github.com/googleapis/gapic-showcase/releases/'
+                    f'download/v{showcase_version}/'
+                    f'gapic-showcase-{showcase_version}.desc',
+            '-L', '--output', os.path.join(tmp_dir, 'showcase.desc'),
+            external=True,
+            silent=True,
+        )
+
+        # Write out a client library for Showcase.
+        session.run('protoc',
+            f'--descriptor_set_in={tmp_dir}{os.path.sep}showcase.desc',
+            f'--python_gapic_out={tmp_dir}',
+            'google/showcase/v1beta1/echo.proto',
+            'google/showcase/v1beta1/identity.proto',
+            'google/showcase/v1beta1/messaging.proto',
+            'google/showcase/v1beta1/testing.proto',
+            external=True,
+        )
+
+        # Install the library.
+        session.chdir(tmp_dir)
+        session.install('-e', tmp_dir)
+
+        # Run the tests.
+        session.run('mypy', 'google')
+
+
 @nox.session(python='3.6')
 def docs(session):
     """Build the docs."""

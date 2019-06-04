@@ -3,13 +3,15 @@
 {% block content %}
 {#  Import subpackages. -#}
 {% for subpackage in api.subpackages.keys() -%}
-from ..{{ api.naming.versioned_module_name }} import {{ subpackage }}
+from {% if api.naming.module_namespace %}{{ api.naming.module_namespace|join('.') }}.{% endif -%}
+    {{ api.naming.versioned_module_name }} import {{ subpackage }}
 {% endfor -%}
 
 {#  Import services for this package. -#}
 {% for service in api.services.values()|sort(attribute='name')
         if service.meta.address.subpackage == api.subpackage_view -%}
-from ..{{ api.naming.versioned_module_name }}.services.{{ service.name|snake_case }} import {{ service.name }}
+from {% if api.naming.module_namespace %}{{ api.naming.module_namespace|join('.') }}.{% endif -%}
+    {{ api.naming.versioned_module_name }}.services.{{ service.name|snake_case }}.client import {{ service.name }}
 {% endfor -%}
 
 {#  Import messages from each proto.
@@ -20,7 +22,8 @@ from ..{{ api.naming.versioned_module_name }}.services.{{ service.name|snake_cas
 {% for proto in api.protos.values()|sort(attribute='module_name')
         if proto.meta.address.subpackage == api.subpackage_view -%}
 {% for message in proto.messages.values()|sort(attribute='name') -%}
-from ..{{ api.naming.versioned_module_name }}.types.{{ proto.module_name }} import {{ message.name }}
+from {% if api.naming.module_namespace %}{{ api.naming.module_namespace|join('.') }}.{% endif -%}
+    {{ api.naming.versioned_module_name }}.types.{{ proto.module_name }} import {{ message.name }}
 {% endfor %}{% endfor %}
 
 {#  Define __all__.

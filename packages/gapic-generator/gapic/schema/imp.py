@@ -31,4 +31,6 @@ class Import:
             answer = f"from {'.'.join(self.package)} {answer}"
         if self.alias:
             answer += f' as {self.alias}'
+        if self.module.endswith('_pb2'):
+            answer += '  # type: ignore'
         return answer

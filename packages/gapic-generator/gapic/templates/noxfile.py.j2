@@ -3,7 +3,7 @@
 {% block content %}
 import os
 
-import nox
+import nox  # type: ignore
 
 
 @nox.session(python=['3.6', '3.7'])
@@ -21,5 +21,20 @@ def unit(session):
         '--cov-report=term',
         '--cov-report=html',
         os.path.join('tests', 'unit', '{{ api.naming.versioned_module_name }}'),
+    )
+
+
+@nox.session(python=['3.6', '3.7'])
+def mypy(session):
+    """Run the type checker."""
+    session.install('mypy')
+    session.install('.')
+    session.run(
+        'mypy',
+        {%- if api.naming.module_namespace %}
+        '{{ api.naming.module_namespace[0] }}',
+        {%- else %}
+        '{{ api.naming.versioned_module_name }}',
+        {%- endif %}
     )
 {% endblock %}

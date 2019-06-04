@@ -6,9 +6,9 @@ import typing
 
 from google import auth
 {%- if service.has_lro %}
-from google.api_core import operations_v1
+from google.api_core import operations_v1  # type: ignore
 {%- endif %}
-from google.auth import credentials
+from google.auth import credentials  # type: ignore
 
 {% filter sort_lines -%}
 {% for method in service.methods.values() -%}
@@ -20,7 +20,7 @@ from google.auth import credentials
 class {{ service.name }}Transport(metaclass=abc.ABCMeta):
     """Abstract transport class for {{ service.name }}."""
 
-    AUTH_SCOPES: typing.Tuple[str] = (
+    AUTH_SCOPES = (
         {%- for scope in service.oauth_scopes %}
         '{{ scope }}',
         {%- endfor %}
@@ -63,10 +63,10 @@ class {{ service.name }}Transport(metaclass=abc.ABCMeta):
     {%- endif %}
     {%- for method in service.methods.values() %}
 
-    def {{ method.name|snake_case }}(
-            self,
-            request: {{ method.input.ident }},
-            ) -> {{ method.output.ident }}:
+    @property
+    def {{ method.name|snake_case }}(self) -> typing.Callable[
+            [{{ method.input.ident }}],
+            {{ method.output.ident }}]:
         raise NotImplementedError
     {%- endfor %}
 

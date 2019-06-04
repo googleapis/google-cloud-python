@@ -176,7 +176,8 @@ class Generator:
         )
 
         # Sanity check: Do not render empty files.
-        if utils.empty(cgr_file.content) and not fn.endswith('__init__.py'):
+        if (utils.empty(cgr_file.content) and
+                not fn.endswith(('py.typed', '__init__.py'))):
             return {}
 
         # Return the filename and content in a length-1 dictionary

@@ -1,13 +1,14 @@
 {% extends '_base.py.j2' %}
 
 {% block content %}
+from collections import OrderedDict
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
-from typing import Mapping, Optional, Sequence, Tuple, Type, Union
 
-from google.api_core import exceptions
-from google.api_core import gapic_v1
-from google.api_core import retry as retries
-from google.auth import credentials
+from google.api_core import exceptions        # type: ignore
+from google.api_core import gapic_v1          # type: ignore
+from google.api_core import retry as retries  # type: ignore
+from google.auth import credentials           # type: ignore
 
 {% filter sort_lines -%}
 {% for method in service.methods.values() -%}
@@ -16,11 +17,42 @@ from google.auth import credentials
 {% endfor -%}
 {% endfor -%}
 {% endfilter %}
-from .transports import _transport_registry
-from .transports import {{ service.name }}Transport
+from .transports.base import {{ service.name }}Transport
+from .transports.grpc import {{ service.name }}GrpcTransport
 
 
-class {{ service.name }}:
+class {{ service.name }}Meta(type):
+    """Metaclass for the {{ service.name }} client.
+
+    This provides class-level methods for building and retrieving
+    support objects (e.g. transport) without polluting the client instance
+    objects.
+    """
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[{{ service.name }}Transport]]
+    _transport_registry['grpc'] = {{ service.name }}GrpcTransport
+
+    def get_transport_class(cls,
+            label: str = None,
+            ) -> Type[{{ service.name }}Transport]:
+        """Return an appropriate transport class.
+
+        Args:
+            label: The name of the desired transport. If none is
+                provided, then the first transport in the registry is used.
+
+        Returns:
+            The transport class to use.
+        """
+        # If a specific transport is requested, return that one.
+        if label:
+            return cls._transport_registry[label]
+
+        # No transport is requested; return the default (that is, the first one
+        # in the dictionary).
+        return next(iter(cls._transport_registry.values()))
+
+
+class {{ service.name }}(metaclass={{ service.name }}Meta):
     """{{ service.meta.doc|rst(width=72, indent=4) }}"""
     def __init__(self, *,
             host: str{% if service.host %} = '{{ service.host }}'{% endif %},
@@ -50,7 +82,7 @@ class {{ service.name }}:
                                  'provide its credentials directly.')
             self._transport = transport
         else:
-            Transport = self.get_transport_class(transport)
+            Transport = type(self).get_transport_class(transport)
             self._transport = Transport(credentials=credentials, host=host)
 
     {% for method in service.methods.values() -%}
@@ -168,28 +200,7 @@ class {{ service.name }}:
         return response
         {%- endif %}
         {{ '\n' }}
-    {% endfor -%}
-
-    @classmethod
-    def get_transport_class(cls,
-            label: str = None,
-            ) -> Type[{{ service.name }}Transport]:
-        """Return an appropriate transport class.
-
-        Args:
-            label: The name of the desired transport. If none is
-                provided, then the first transport in the registry is used.
-
-        Returns:
-            The transport class to use.
-        """
-        # If a specific transport is requested, return that one.
-        if label:
-            return _transport_registry[label]
-
-        # No transport is requested; return the default (that is, the first one
-        # in the dictionary).
-        return next(iter(_transport_registry.values()))
+    {% endfor %}
 
 
 try:

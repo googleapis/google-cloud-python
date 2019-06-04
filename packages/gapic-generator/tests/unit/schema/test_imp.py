@@ -30,6 +30,11 @@ def test_str_alias():
     assert str(i) == 'from foo.bar import baz as bacon'
 
 
+def test_str_untyped_pb2():
+    i = imp.Import(package=('foo', 'bar'), module='baz_pb2', alias='bacon')
+    assert str(i) == 'from foo.bar import baz_pb2 as bacon  # type: ignore'
+
+
 def test_str_eq():
     i1 = imp.Import(package=('foo', 'bar'), module='baz')
     i2 = imp.Import(package=('foo', 'bar'), module='baz')

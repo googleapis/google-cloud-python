@@ -3,7 +3,7 @@
 {% block content -%}
 {% with p = proto.disambiguate('proto') %}
 {% if proto.messages|length or proto.all_enums|length -%}
-import proto{% if p != 'proto' %} as {{ p }}{% endif -%}
+import proto{% if p != 'proto' %} as {{ p }}{% endif %}  # type: ignore
 {% endif %}
 
 {% for import_ in proto.python_modules -%}
