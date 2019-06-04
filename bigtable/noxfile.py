@@ -22,6 +22,7 @@ import nox
 
 LOCAL_DEPS = (os.path.join("..", "api_core"), os.path.join("..", "core"))
 
+
 @nox.session(python="3.7")
 def lint(session):
     """Run linters.
@@ -78,7 +79,6 @@ def default(session):
         "--cov-append",
         "--cov-config=.coveragerc",
         "--cov-report=",
-        "--cov-fail-under=97",
         os.path.join("tests", "unit"),
         *session.posargs,
     )
