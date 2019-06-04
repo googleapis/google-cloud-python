@@ -34,7 +34,7 @@ _GOOGLE_AUTH_CREDENTIALS_HELP = (
 )
 
 # Default timeout for auth requests.
-_REFRESH_TIMEOUT = 300
+_CREDENTIALS_REFRESH_TIMEOUT = 300
 
 
 class _ClientFactoryMixin(object):
@@ -157,7 +157,7 @@ class Client(_ClientFactoryMixin):
         if self._http_internal is None:
             self._http_internal = google.auth.transport.requests.AuthorizedSession(
                 self._credentials,
-                _REFRESH_TIMEOUT,
+                _CREDENTIALS_REFRESH_TIMEOUT,
             )
         return self._http_internal
 
