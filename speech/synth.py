@@ -28,7 +28,11 @@ versions = ["v1p1beta1", "v1"]
 # Generate speech GAPIC layer
 # ----------------------------------------------------------------------------
 for version in versions:
-    library = gapic.py_library("speech", version, include_protos=True,)
+    library = gapic.py_library(
+        "speech",
+        version,
+        include_protos=True,
+        generator_args=['--dev_samples'])
 
     # Don't move over __init__.py, as we modify it to make the generated client
     # use helpers.py.
@@ -36,6 +40,7 @@ for version in versions:
     s.move(library / f"google/cloud/speech_{version}/gapic")
     s.move(library / f"google/cloud/speech_{version}/proto")
     s.move(library / f"tests/unit/gapic/{version}")
+    s.move(library / f"samples/{version}")
     s.move(library / f"docs/gapic/{version}")
 
 
