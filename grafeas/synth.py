@@ -76,6 +76,15 @@ s.replace(
 # Replace mentions of 'Container Analysis' with 'Grafeas' in the docs
 s.replace("docs/**/v*/*.rst", "Container Analysis", "Grafeas")
 
+
+# ----------------------------------------------------------------------------
+# TODO: Remove google-specific portions of library
+# ----------------------------------------------------------------------------
+
+# Remove default service address, default scopes, default credentials
+# Update tests
+# Update code snippets in docstrings showing client instantiation.
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------

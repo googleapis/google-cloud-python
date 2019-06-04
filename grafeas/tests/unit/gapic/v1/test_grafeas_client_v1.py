@@ -22,6 +22,7 @@ import pytest
 from google.protobuf import empty_pb2
 from grafeas import grafeas_v1
 from grafeas.grafeas_v1.proto import grafeas_pb2
+from grafeas.grafeas_v1.gapic.transports import grafeas_grpc_transport
 
 
 class MultiCallableStub(object):
@@ -80,7 +81,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup Request
         name = client.occurrence_path("[PROJECT]", "[OCCURRENCE]")
@@ -99,7 +104,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup request
         name = client.occurrence_path("[PROJECT]", "[OCCURRENCE]")
@@ -123,7 +132,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup Request
         parent = client.project_path("[PROJECT]")
@@ -144,7 +157,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup request
         parent = client.project_path("[PROJECT]")
@@ -158,7 +175,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup Request
         name = client.occurrence_path("[PROJECT]", "[OCCURRENCE]")
@@ -176,7 +197,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup request
         name = client.occurrence_path("[PROJECT]", "[OCCURRENCE]")
@@ -203,7 +228,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup Request
         parent = client.project_path("[PROJECT]")
@@ -225,7 +254,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup request
         parent = client.project_path("[PROJECT]")
@@ -246,7 +279,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup Request
         parent = client.project_path("[PROJECT]")
@@ -268,7 +305,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup request
         parent = client.project_path("[PROJECT]")
@@ -296,7 +337,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup Request
         name = client.occurrence_path("[PROJECT]", "[OCCURRENCE]")
@@ -318,7 +363,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup request
         name = client.occurrence_path("[PROJECT]", "[OCCURRENCE]")
@@ -344,7 +393,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup Request
         name = client.occurrence_path("[PROJECT]", "[OCCURRENCE]")
@@ -363,7 +416,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup request
         name = client.occurrence_path("[PROJECT]", "[OCCURRENCE]")
@@ -388,7 +445,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup Request
         name = client.note_path("[PROJECT]", "[NOTE]")
@@ -407,7 +468,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup request
         name = client.note_path("[PROJECT]", "[NOTE]")
@@ -428,7 +493,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup Request
         parent = client.project_path("[PROJECT]")
@@ -449,7 +518,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup request
         parent = client.project_path("[PROJECT]")
@@ -463,7 +536,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup Request
         name = client.note_path("[PROJECT]", "[NOTE]")
@@ -481,7 +558,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup request
         name = client.note_path("[PROJECT]", "[NOTE]")
@@ -506,7 +587,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup Request
         parent = client.project_path("[PROJECT]")
@@ -529,7 +614,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup request
         parent = client.project_path("[PROJECT]")
@@ -549,7 +638,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup Request
         parent = client.project_path("[PROJECT]")
@@ -571,7 +664,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup request
         parent = client.project_path("[PROJECT]")
@@ -597,7 +694,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup Request
         name = client.note_path("[PROJECT]", "[NOTE]")
@@ -617,7 +718,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup request
         name = client.note_path("[PROJECT]", "[NOTE]")
@@ -642,7 +747,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup Request
         name = client.note_path("[PROJECT]", "[NOTE]")
@@ -663,7 +772,11 @@ class TestGrafeasClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = grafeas_v1.GrafeasClient()
+            address = "[SERVICE_ADDRESS]"
+            scopes = ("SCOPE")
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
 
         # Setup request
         name = client.note_path("[PROJECT]", "[NOTE]")
