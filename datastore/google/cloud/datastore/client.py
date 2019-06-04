@@ -648,3 +648,30 @@ class Client(ClientWithProject):
         if "namespace" not in kwargs:
             kwargs["namespace"] = self.namespace
         return Query(self, **kwargs)
+
+    def reserve_ids(self, complete_key, num_ids):
+        """Reserve a list of IDs from a complete key.
+
+        :type complete_key: :class:`google.cloud.datastore.key.Key`
+        :param complete_key: Partial key to use as base for reserved IDs.
+
+        :type num_ids: int
+        :param num_ids: The number of IDs to reserve.
+
+        :rtype: class:`NoneType`
+        :returns: None
+        :raises: :class:`ValueError` if `complete_key`` is not a
+                 Complete key.
+        """
+        if complete_key.is_partial:
+            raise ValueError(("Key is not Complete.", complete_key))
+
+        if not isinstance(num_ids, int):
+            raise ValueError(("num_ids is not a valid integer.", num_ids))
+
+        complete_key_pb = complete_key.to_protobuf()
+        complete_key_pbs = [complete_key_pb] * num_ids
+
+        self._datastore_api.reserve_ids(complete_key.project, complete_key_pbs)
+
+        return None
