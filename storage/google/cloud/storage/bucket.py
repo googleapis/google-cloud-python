@@ -570,7 +570,7 @@ class Bucket(_PropertyMixin):
         :raises ValueError: if ``project`` is None and client's
                             :attr:`project` is also None.
         :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
+        :param retry: (Optional) How to retry the API Call.
 
         :type location: str
         :param location: Optional. The location of the bucket. If not passed,

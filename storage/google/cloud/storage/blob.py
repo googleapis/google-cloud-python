@@ -629,7 +629,7 @@ class Blob(_PropertyMixin):
         :param end: Optional, The last byte in a range to be downloaded.
 
         :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
+        :param retry: (Optional) How to retry the API Call.
 
         :raises: :class:`google.cloud.exceptions.NotFound`
         """

@@ -305,7 +305,7 @@ class Client(ClientWithProject):
                 Optional. the project under which the  bucket is to be created.
                 If not passed, uses the project set on the client.
             retry (google.api_core.retry.Retry):
-                Optional. How to retry the RPC.
+                Optional. How to retry the API Call.
 
         Returns:
             google.cloud.storage.bucket.Bucket
@@ -366,7 +366,7 @@ class Client(ClientWithProject):
             end (int):
                 Optional. The last byte in a range to be downloaded.
             retry (:class:`google.api_core.retry.Retry`):
-                (Optional) How to retry the RPC.
+                (Optional) How to retry the API Call.
 
         Examples:
             Download a blob using using a blob resource.
@@ -461,7 +461,7 @@ class Client(ClientWithProject):
                         If not passed, uses the project set on the client.
 
         :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
+        :param retry: (Optional) How to retry the API Call.
 
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :raises ValueError: if both ``project`` is ``None`` and the client's
