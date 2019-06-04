@@ -157,7 +157,7 @@ class Client(_ClientFactoryMixin):
         if self._http_internal is None:
             self._http_internal = google.auth.transport.requests.AuthorizedSession(
                 self._credentials,
-                _CREDENTIALS_REFRESH_TIMEOUT,
+                refresh_timeout=_CREDENTIALS_REFRESH_TIMEOUT,
             )
         return self._http_internal
 
