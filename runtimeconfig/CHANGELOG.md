@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-runtimeconfig/#history
 
+## 0.29.1
+
+06-04-2019 11:15 PDT
+
+
+### Dependencies
+- Don't pin `google-api-core` in libs using `google-cloud-core`. ([#8213](https://github.com/googleapis/google-cloud-python/pull/8213))
+
 ## 0.29.0
 
 05-16-2019 12:32 PDT
