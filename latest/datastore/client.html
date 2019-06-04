@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Datastore Client &#8212; google-cloud 0975724 documentation</title>
+    <title>Datastore Client &#8212; google-cloud 79b1024 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -360,6 +360,34 @@ entity or multiple entities in a commit request.</p>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="queries.html#google.cloud.datastore.query.Query" title="google.cloud.datastore.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">Query</span></code></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A query object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.datastore.client.Client.reserve_ids">
+<code class="descname">reserve_ids</code><span class="sig-paren">(</span><em>complete_key</em>, <em>num_ids</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/client.html#Client.reserve_ids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.client.Client.reserve_ids" title="Permalink to this definition">#</a></dt>
+<dd><p>Reserve a list of IDs from a complete key.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>complete_key</strong> (<a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – Partial key to use as base for reserved IDs.</li>
+<li><strong>num_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The number of IDs to reserve.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">class:<cite>NoneType</cite></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></a> if <cite>complete_key`</cite> is not a
+Complete key.</p>
+</td>
 </tr>
 </tbody>
 </table>
