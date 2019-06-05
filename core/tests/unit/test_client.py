@@ -122,6 +122,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(client._http, http)
 
     def test__http_property_new(self):
+        from google.cloud.client import _CREDENTIALS_REFRESH_TIMEOUT
         credentials = _make_credentials()
         client = self._make_one(credentials=credentials)
         self.assertIsNone(client._http_internal)
@@ -133,7 +134,7 @@ class TestClient(unittest.TestCase):
         with authorized_session_patch as AuthorizedSession:
             self.assertIs(client._http, mock.sentinel.http)
             # Check the mock.
-            AuthorizedSession.assert_called_once_with(credentials)
+            AuthorizedSession.assert_called_once_with(credentials, refresh_timeout=_CREDENTIALS_REFRESH_TIMEOUT)
             # Make sure the cached value is used on subsequent access.
             self.assertIs(client._http_internal, mock.sentinel.http)
             self.assertIs(client._http, mock.sentinel.http)
