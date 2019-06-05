@@ -152,7 +152,6 @@ class _Worker(object):
             for _ in items:
                 self._queue.task_done()
 
-
         _LOGGER.debug("Background thread exited gracefully.")
 
     def start(self):
