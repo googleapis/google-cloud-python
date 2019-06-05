@@ -16,6 +16,7 @@
 
 from __future__ import absolute_import
 import os
+import shutil
 
 import nox
 
@@ -45,6 +46,10 @@ def blacken(session):
     """Run black.
 
     Format code to uniform standard.
+    
+    This currently uses Python 3.6 due to the automated Kokoro run of synthtool.
+    That run uses an image that doesn't have 3.6 installed. Before updating this
+    check the state of the `gcp_ubuntu_config` we use for that Kokoro run.
     """
     session.install("black")
     session.run(
@@ -78,7 +83,7 @@ def default(session):
         "--cov-append",
         "--cov-config=.coveragerc",
         "--cov-report=",
-        "--cov-fail-under=76",
+        "--cov-fail-under=75",
         os.path.join("tests", "unit"),
         *session.posargs,
     )
@@ -131,6 +136,25 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
-    session.run("coverage", "report", "--show-missing", "--fail-under=77")
+    session.run("coverage", "report", "--show-missing", "--fail-under=75")
 
     session.run("coverage", "erase")
+
+@nox.session(python="3.7")
+def docs(session):
+    """Build the docs for this library."""
+
+    session.install('-e', '.')
+    session.install('sphinx', 'alabaster', 'recommonmark')
+
+    shutil.rmtree(os.path.join('docs', '_build'), ignore_errors=True)
+    session.run(
+        'sphinx-build',
+        '-W',  # warnings as errors
+        '-T',  # show full traceback on exception
+        '-N',  # no colors
+        '-b', 'html',
+        '-d', os.path.join('docs', '_build', 'doctrees', ''),
+        os.path.join('docs', ''),
+        os.path.join('docs', '_build', 'html', ''),
+    )

@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 import google.api_core.grpc_helpers
 
 from google.cloud.tasks_v2.proto import cloudtasks_pb2_grpc
@@ -354,7 +355,7 @@ class CloudTasksGrpcTransport(object):
 
         Tasks cannot be updated after creation; there is no UpdateTask command.
 
-        -  For ``App Engine queues``, the maximum task size is 100KB.
+        -  The maximum task size is 100KB.
 
         Returns:
             Callable: A callable which accepts the appropriate

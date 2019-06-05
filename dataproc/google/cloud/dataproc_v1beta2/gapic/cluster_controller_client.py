@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.dataproc.v1beta2 ClusterController API."""
 
 import functools
@@ -34,6 +35,8 @@ from google.cloud.dataproc_v1beta2.gapic import enums
 from google.cloud.dataproc_v1beta2.gapic.transports import (
     cluster_controller_grpc_transport,
 )
+from google.cloud.dataproc_v1beta2.proto import autoscaling_policies_pb2
+from google.cloud.dataproc_v1beta2.proto import autoscaling_policies_pb2_grpc
 from google.cloud.dataproc_v1beta2.proto import clusters_pb2
 from google.cloud.dataproc_v1beta2.proto import clusters_pb2_grpc
 from google.cloud.dataproc_v1beta2.proto import operations_pb2 as proto_operations_pb2
@@ -41,6 +44,7 @@ from google.longrunning import operations_pb2 as longrunning_operations_pb2
 from google.protobuf import duration_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-dataproc").version
 
@@ -368,207 +372,38 @@ class ClusterControllerClient(object):
 
                 .. raw:: html
 
-                   <table>
-
-                .. raw:: html
-
-                   <tr>
-
-                .. raw:: html
-
-                   <td>
-
-                Mask
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   <td>
-
-                Purpose
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   </tr>
-
-                .. raw:: html
-
-                   <tr>
-
-                .. raw:: html
-
-                   <td>
-
-                labels
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   <td>
-
-                Updates labels
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   </tr>
-
-                .. raw:: html
-
-                   <tr>
-
-                .. raw:: html
-
-                   <td>
-
-                config.worker\_config.num\_instances
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   <td>
-
-                Resize primary worker group
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   </tr>
-
-                .. raw:: html
-
-                   <tr>
-
-                .. raw:: html
-
-                   <td>
-
-                config.secondary\_worker\_config.num\_instances
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   <td>
-
-                Resize secondary worker group
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   </tr>
-
-                .. raw:: html
-
-                   <tr>
-
-                .. raw:: html
-
-                   <td>
-
-                config.lifecycle\_config.auto\_delete\_ttl
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   <td>
-
-                Reset MAX TTL duration
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   </tr>
-
-                .. raw:: html
-
-                   <tr>
-
-                .. raw:: html
-
-                   <td>
-
-                config.lifecycle\_config.auto\_delete\_time
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   <td>
-
-                Update MAX TTL deletion timestamp
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   </tr>
-
-                .. raw:: html
-
-                   <tr>
-
-                .. raw:: html
-
-                   <td>
-
-                config.lifecycle\_config.idle\_delete\_ttl
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   <td>
-
-                Update Idle TTL duration
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   </tr>
-
-                .. raw:: html
-
-                   </table>
+                    <table>
+                    <tr>
+                    <td><strong>Mask</strong></td><td><strong>Purpose</strong></td>
+                    </tr>
+                    <tr>
+                    <td>labels</td><td>Updates labels</td>
+                    </tr>
+                    <tr>
+                    <td>config.worker_config.num_instances</td><td>Resize primary worker
+                    group</td>
+                    </tr>
+                    <tr>
+                    <td>config.secondary_worker_config.num_instances</td><td>Resize secondary
+                    worker group</td>
+                    </tr>
+                    <tr>
+                    <td>config.lifecycle_config.auto_delete_ttl</td><td>Reset MAX TTL
+                    duration</td>
+                    </tr>
+                    <tr>
+                    <td>config.lifecycle_config.auto_delete_time</td><td>Update MAX TTL
+                    deletion timestamp</td>
+                    </tr>
+                    <tr>
+                    <td>config.lifecycle_config.idle_delete_ttl</td><td>Update Idle TTL
+                    duration</td>
+                    </tr>
+                    <tr>
+                    <td>config.autoscaling_config.policy_uri</td><td>Use, stop using, or change
+                    autoscaling policies</td>
+                    </tr>
+                    </table>
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dataproc_v1beta2.types.FieldMask`

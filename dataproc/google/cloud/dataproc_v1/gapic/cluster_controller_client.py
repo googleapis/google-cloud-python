@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.dataproc.v1 ClusterController API."""
 
 import functools
@@ -39,6 +40,7 @@ from google.longrunning import operations_pb2 as longrunning_operations_pb2
 from google.protobuf import duration_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-dataproc").version
 
@@ -366,131 +368,26 @@ class ClusterControllerClient(object):
 
                 .. raw:: html
 
-                   <table>
-
-                .. raw:: html
-
-                   <tbody>
-
-                .. raw:: html
-
-                   <tr>
-
-                .. raw:: html
-
-                   <td>
-
-                Mask
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   <td>
-
-                Purpose
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   </tr>
-
-                .. raw:: html
-
-                   <tr>
-
-                .. raw:: html
-
-                   <td>
-
-                labels
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   <td>
-
-                Update labels
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   </tr>
-
-                .. raw:: html
-
-                   <tr>
-
-                .. raw:: html
-
-                   <td>
-
-                config.worker\_config.num\_instances
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   <td>
-
-                Resize primary worker group
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   </tr>
-
-                .. raw:: html
-
-                   <tr>
-
-                .. raw:: html
-
-                   <td>
-
-                config.secondary\_worker\_config.num\_instances
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   <td>
-
-                Resize secondary worker group
-
-                .. raw:: html
-
-                   </td>
-
-                .. raw:: html
-
-                   </tr>
-
-                .. raw:: html
-
-                   </tbody>
-
-                .. raw:: html
-
-                   </table>
+                     <table>
+                     <tbody>
+                     <tr>
+                     <td><strong>Mask</strong></td>
+                     <td><strong>Purpose</strong></td>
+                     </tr>
+                     <tr>
+                     <td><strong><em>labels</em></strong></td>
+                     <td>Update labels</td>
+                     </tr>
+                     <tr>
+                     <td><strong><em>config.worker_config.num_instances</em></strong></td>
+                     <td>Resize primary worker group</td>
+                     </tr>
+                     <tr>
+                     <td><strong><em>config.secondary_worker_config.num_instances</em></strong></td>
+                     <td>Resize secondary worker group</td>
+                     </tr>
+                     </tbody>
+                     </table>
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dataproc_v1.types.FieldMask`

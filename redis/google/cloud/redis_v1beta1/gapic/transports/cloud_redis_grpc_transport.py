@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 import google.api_core.grpc_helpers
 import google.api_core.operations_v1
 
@@ -108,8 +109,9 @@ class CloudRedisGrpcTransport(object):
         Lists all Redis instances owned by a project in either the specified
         location (region) or all locations.
 
-        The location should have the following format: \*
-        ``projects/{project_id}/locations/{location_id}``
+        The location should have the following format:
+
+        -  ``projects/{project_id}/locations/{location_id}``
 
         If ``location_id`` is specified as ``-`` (wildcard), then all regions
         available to the project are queried, and the results are aggregated.
@@ -140,7 +142,7 @@ class CloudRedisGrpcTransport(object):
 
         Creates a Redis instance based on the specified tier and memory size.
 
-        By default, the instance is peered to the project's `default
+        By default, the instance is accessible from the project's `default
         network <https://cloud.google.com/compute/docs/networks-and-firewalls#networks>`__.
 
         The creation is executed asynchronously and callers may check the
@@ -189,3 +191,17 @@ class CloudRedisGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["cloud_redis_stub"].DeleteInstance
+
+    @property
+    def failover_instance(self):
+        """Return the gRPC stub for :meth:`CloudRedisClient.failover_instance`.
+
+        Failover the master role to current replica node against a specific
+        STANDARD tier redis instance.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["cloud_redis_stub"].FailoverInstance

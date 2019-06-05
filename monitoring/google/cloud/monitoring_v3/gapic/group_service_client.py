@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.monitoring.v3 GroupService API."""
 
 import functools
@@ -42,6 +43,7 @@ from google.cloud.monitoring_v3.proto import group_service_pb2
 from google.cloud.monitoring_v3.proto import group_service_pb2_grpc
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     "google-cloud-monitoring"
@@ -91,17 +93,17 @@ class GroupServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}", project=project
-        )
-
-    @classmethod
     def group_path(cls, project, group):
         """Return a fully-qualified group string."""
         return google.api_core.path_template.expand(
             "projects/{project}/groups/{group}", project=project, group=group
+        )
+
+    @classmethod
+    def project_path(cls, project):
+        """Return a fully-qualified project string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}", project=project
         )
 
     def __init__(

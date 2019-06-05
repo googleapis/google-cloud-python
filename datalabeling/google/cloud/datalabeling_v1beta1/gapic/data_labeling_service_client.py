@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.datalabeling.v1beta1 DataLabelingService API."""
 
 import functools
@@ -49,6 +50,7 @@ from google.cloud.datalabeling_v1beta1.proto import (
 from google.longrunning import operations_pb2 as longrunning_operations_pb2
 from google.protobuf import empty_pb2
 
+
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     "google-cloud-datalabeling"
 ).version
@@ -83,10 +85,13 @@ class DataLabelingServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
+    def annotated_dataset_path(cls, project, dataset, annotated_dataset):
+        """Return a fully-qualified annotated_dataset string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            "projects/{project}/datasets/{dataset}/annotatedDatasets/{annotated_dataset}",
+            project=project,
+            dataset=dataset,
+            annotated_dataset=annotated_dataset,
         )
 
     @classmethod
@@ -99,20 +104,20 @@ class DataLabelingServiceClient(object):
         )
 
     @classmethod
+    def data_item_path(cls, project, dataset, data_item):
+        """Return a fully-qualified data_item string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/datasets/{dataset}/dataItems/{data_item}",
+            project=project,
+            dataset=dataset,
+            data_item=data_item,
+        )
+
+    @classmethod
     def dataset_path(cls, project, dataset):
         """Return a fully-qualified dataset string."""
         return google.api_core.path_template.expand(
             "projects/{project}/datasets/{dataset}", project=project, dataset=dataset
-        )
-
-    @classmethod
-    def annotated_dataset_path(cls, project, dataset, annotated_dataset):
-        """Return a fully-qualified annotated_dataset string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/datasets/{dataset}/annotatedDatasets/{annotated_dataset}",
-            project=project,
-            dataset=dataset,
-            annotated_dataset=annotated_dataset,
         )
 
     @classmethod
@@ -127,22 +132,19 @@ class DataLabelingServiceClient(object):
         )
 
     @classmethod
-    def data_item_path(cls, project, dataset, data_item):
-        """Return a fully-qualified data_item string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/datasets/{dataset}/dataItems/{data_item}",
-            project=project,
-            dataset=dataset,
-            data_item=data_item,
-        )
-
-    @classmethod
     def instruction_path(cls, project, instruction):
         """Return a fully-qualified instruction string."""
         return google.api_core.path_template.expand(
             "projects/{project}/instructions/{instruction}",
             project=project,
             instruction=instruction,
+        )
+
+    @classmethod
+    def project_path(cls, project):
+        """Return a fully-qualified project string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}", project=project
         )
 
     def __init__(

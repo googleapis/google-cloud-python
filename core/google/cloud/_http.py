@@ -16,10 +16,12 @@
 
 import json
 import platform
+import warnings
 
 from pkg_resources import get_distribution
 from six.moves.urllib.parse import urlencode
 
+from google.api_core.client_info import ClientInfo
 from google.cloud import exceptions
 
 
@@ -34,23 +36,97 @@ DEFAULT_USER_AGENT = "gcloud-python/{0}".format(
 CLIENT_INFO_HEADER = "X-Goog-API-Client"
 CLIENT_INFO_TEMPLATE = "gl-python/" + platform.python_version() + " gccl/{}"
 
+_USER_AGENT_ALL_CAPS_DEPRECATED = """\
+The 'USER_AGENT' class-level attribute is deprecated.  Please use
+'user_agent' instead.
+"""
+
+_EXTRA_HEADERS_ALL_CAPS_DEPRECATED = """\
+The '_EXTRA_HEADERS' class-level attribute is deprecated.  Please use
+'extra_headers' instead.
+"""
+
 
 class Connection(object):
     """A generic connection to Google Cloud Platform.
 
     :type client: :class:`~google.cloud.client.Client`
     :param client: The client that owns the current connection.
+
+    :type client_info: :class:`~google.api_core.client_info.ClientInfo`
+    :param client_info: (Optional) instance used to generate user agent.
     """
 
-    USER_AGENT = DEFAULT_USER_AGENT
-    _EXTRA_HEADERS = {}
-    """Headers to be sent with every request.
+    _user_agent = DEFAULT_USER_AGENT
 
-    Intended to be over-ridden by subclasses.
-    """
-
-    def __init__(self, client):
+    def __init__(self, client, client_info=None):
         self._client = client
+
+        if client_info is None:
+            client_info = ClientInfo()
+
+        self._client_info = client_info
+        self._extra_headers = {}
+
+    @property
+    def USER_AGENT(self):
+        """Deprecated:  get / set user agent sent by connection.
+
+        :rtype: str
+        :returns: user agent
+        """
+        warnings.warn(
+            _USER_AGENT_ALL_CAPS_DEPRECATED, DeprecationWarning, stacklevel=2)
+        return self.user_agent
+
+    @USER_AGENT.setter
+    def USER_AGENT(self, value):
+        warnings.warn(
+            _USER_AGENT_ALL_CAPS_DEPRECATED, DeprecationWarning, stacklevel=2)
+        self.user_agent = value
+
+    @property
+    def user_agent(self):
+        """Get / set user agent sent by connection.
+
+        :rtype: str
+        :returns: user agent
+        """
+        return self._client_info.to_user_agent()
+
+    @user_agent.setter
+    def user_agent(self, value):
+        self._client_info.user_agent = value
+
+    @property
+    def _EXTRA_HEADERS(self):
+        """Deprecated:  get / set extra headers sent by connection.
+
+        :rtype: dict
+        :returns: header keys / values
+        """
+        warnings.warn(
+            _EXTRA_HEADERS_ALL_CAPS_DEPRECATED, DeprecationWarning, stacklevel=2)
+        return self.extra_headers
+
+    @_EXTRA_HEADERS.setter
+    def _EXTRA_HEADERS(self, value):
+        warnings.warn(
+            _EXTRA_HEADERS_ALL_CAPS_DEPRECATED, DeprecationWarning, stacklevel=2)
+        self.extra_headers = value
+
+    @property
+    def extra_headers(self):
+        """Get / set extra headers sent by connection.
+
+        :rtype: dict
+        :returns: header keys / values
+        """
+        return self._extra_headers
+
+    @extra_headers.setter
+    def extra_headers(self, value):
+        self._extra_headers = value
 
     @property
     def credentials(self):
@@ -181,13 +257,14 @@ class JSONConnection(Connection):
         :returns: The HTTP response.
         """
         headers = headers or {}
-        headers.update(self._EXTRA_HEADERS)
+        headers.update(self.extra_headers)
         headers["Accept-Encoding"] = "gzip"
 
         if content_type:
             headers["Content-Type"] = content_type
 
-        headers["User-Agent"] = self.USER_AGENT
+        headers[CLIENT_INFO_HEADER] = self.user_agent
+        headers["User-Agent"] = self.user_agent
 
         return self._do_request(method, url, headers, data, target_object)
 

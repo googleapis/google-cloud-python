@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.dataproc.v1beta2 JobController API."""
 
 import functools
@@ -30,6 +31,8 @@ import grpc
 from google.cloud.dataproc_v1beta2.gapic import enums
 from google.cloud.dataproc_v1beta2.gapic import job_controller_client_config
 from google.cloud.dataproc_v1beta2.gapic.transports import job_controller_grpc_transport
+from google.cloud.dataproc_v1beta2.proto import autoscaling_policies_pb2
+from google.cloud.dataproc_v1beta2.proto import autoscaling_policies_pb2_grpc
 from google.cloud.dataproc_v1beta2.proto import clusters_pb2
 from google.cloud.dataproc_v1beta2.proto import clusters_pb2_grpc
 from google.cloud.dataproc_v1beta2.proto import jobs_pb2
@@ -39,6 +42,7 @@ from google.longrunning import operations_pb2 as longrunning_operations_pb2
 from google.protobuf import duration_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-dataproc").version
 

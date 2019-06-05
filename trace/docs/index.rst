@@ -1,4 +1,4 @@
-.. include:: /../trace/README.rst
+.. include:: README.rst
 
 
 API Reference

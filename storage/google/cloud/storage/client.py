@@ -14,6 +14,7 @@
 
 """Client for interacting with the Google Cloud Storage API."""
 
+from six.moves.urllib.parse import urlsplit
 
 from google.auth.credentials import AnonymousCredentials
 
@@ -24,6 +25,7 @@ from google.cloud.exceptions import NotFound
 from google.cloud.storage._http import Connection
 from google.cloud.storage.batch import Batch
 from google.cloud.storage.bucket import Bucket
+from google.cloud.storage.blob import Blob
 
 
 _marker = object()
@@ -51,6 +53,13 @@ class Client(ClientWithProject):
                   ``credentials`` for the current object.
                   This parameter should be considered private, and could
                   change in the future.
+
+    :type client_info: :class:`~google.api_core.client_info.ClientInfo`
+    :param client_info:
+        The client info used to send a user-agent string along with API
+        requests. If ``None``, then default info will be used. Generally,
+        you only need to set this if you're developing your own library
+        or partner tool.
     """
 
     SCOPE = (
@@ -60,7 +69,7 @@ class Client(ClientWithProject):
     )
     """The scopes required for authenticating as a Cloud Storage consumer."""
 
-    def __init__(self, project=_marker, credentials=None, _http=None):
+    def __init__(self, project=_marker, credentials=None, _http=None, client_info=None):
         self._base_connection = None
         if project is None:
             no_project = True
@@ -74,7 +83,7 @@ class Client(ClientWithProject):
         )
         if no_project:
             self.project = None
-        self._connection = Connection(self)
+        self._connection = Connection(self, client_info=client_info)
         self._batch_stack = _LocalStack()
 
     @classmethod
@@ -202,28 +211,54 @@ class Client(ClientWithProject):
         """
         return Batch(client=self)
 
-    def get_bucket(self, bucket_name):
-        """Get a bucket by name.
+    def get_bucket(self, bucket_or_name):
+        """API call: retrieve a bucket via a GET request.
 
-        If the bucket isn't found, this will raise a
-        :class:`google.cloud.exceptions.NotFound`.
+        See
+        https://cloud.google.com/storage/docs/json_api/v1/buckets/get
 
-        For example:
+        Args:
+            bucket_or_name (Union[ \
+                :class:`~google.cloud.storage.bucket.Bucket`, \
+                 str, \
+            ]):
+                The bucket resource to pass or name to create.
 
-        .. literalinclude:: snippets.py
-            :start-after: [START get_bucket]
-            :end-before: [END get_bucket]
+        Returns:
+            google.cloud.storage.bucket.Bucket
+                The bucket matching the name provided.
 
-        This implements "storage.buckets.get".
+        Raises:
+            google.cloud.exceptions.NotFound
+                If the bucket is not found.
 
-        :type bucket_name: str
-        :param bucket_name: The name of the bucket to get.
+        Examples:
+            Retrieve a bucket using a string.
 
-        :rtype: :class:`google.cloud.storage.bucket.Bucket`
-        :returns: The bucket matching the name provided.
-        :raises: :class:`google.cloud.exceptions.NotFound`
+            .. literalinclude:: snippets.py
+                :start-after: [START get_bucket]
+                :end-before: [END get_bucket]
+
+            Get a bucket using a resource.
+
+            >>> from google.cloud import storage
+            >>> client = storage.Client()
+
+            >>> # Set properties on a plain resource object.
+            >>> bucket = client.get_bucket("my-bucket-name")
+
+            >>> # Time passes. Another program may have modified the bucket
+            ... # in the meantime, so you want to get the latest state.
+            >>> bucket = client.get_bucket(bucket)  # API request.
+
         """
-        bucket = Bucket(self, name=bucket_name)
+
+        bucket = None
+        if isinstance(bucket_or_name, Bucket):
+            bucket = bucket_or_name
+        else:
+            bucket = Bucket(self, name=bucket_or_name)
+
         bucket.reload(client=self)
         return bucket
 
@@ -248,44 +283,116 @@ class Client(ClientWithProject):
         except NotFound:
             return None
 
-    def create_bucket(self, bucket_name, requester_pays=None, project=None):
-        """Create a new bucket.
+    def create_bucket(self, bucket_or_name, requester_pays=None, project=None):
+        """API call: create a new bucket via a POST request.
 
-        For example:
+        See
+        https://cloud.google.com/storage/docs/json_api/v1/buckets/insert
 
-        .. literalinclude:: snippets.py
-            :start-after: [START create_bucket]
-            :end-before: [END create_bucket]
+        Args:
+            bucket_or_name (Union[ \
+                :class:`~google.cloud.storage.bucket.Bucket`, \
+                 str, \
+            ]):
+                The bucket resource to pass or name to create.
+            requester_pays (bool):
+                Optional. Whether requester pays for API requests for this
+                bucket and its blobs.
+            project (str):
+                Optional. the project under which the  bucket is to be created.
+                If not passed, uses the project set on the client.
 
-        This implements "storage.buckets.insert".
+        Returns:
+            google.cloud.storage.bucket.Bucket
+                The newly created bucket.
 
-        If the bucket already exists, will raise
-        :class:`google.cloud.exceptions.Conflict`.
+        Raises:
+            google.cloud.exceptions.Conflict
+                If the bucket already exists.
 
-        To set additional properties when creating a bucket, such as the
-        bucket location, use :meth:`~.Bucket.create`.
+        Examples:
+            Create a bucket using a string.
 
-        :type bucket_name: str
-        :param bucket_name: The bucket name to create.
+            .. literalinclude:: snippets.py
+                :start-after: [START create_bucket]
+                :end-before: [END create_bucket]
 
-        :type requester_pays: bool
-        :param requester_pays:
-            (Optional) Whether requester pays for API requests for this
-            bucket and its blobs.
+            Create a bucket using a resource.
 
-        :type project: str
-        :param project: (Optional) the project under which the  bucket is to
-                        be created.  If not passed, uses the project set on
-                        the client.
+            >>> from google.cloud import storage
+            >>> client = storage.Client()
 
-        :rtype: :class:`google.cloud.storage.bucket.Bucket`
-        :returns: The newly created bucket.
+            >>> # Set properties on a plain resource object.
+            >>> bucket = storage.Bucket("my-bucket-name")
+            >>> bucket.location = "europe-west6"
+            >>> bucket.storage_class = "COLDLINE"
+
+            >>> # Pass that resource object to the client.
+            >>> bucket = client.create_bucket(bucket)  # API request.
+
         """
-        bucket = Bucket(self, name=bucket_name)
+
+        bucket = None
+        if isinstance(bucket_or_name, Bucket):
+            bucket = bucket_or_name
+        else:
+            bucket = Bucket(self, name=bucket_or_name)
+
         if requester_pays is not None:
             bucket.requester_pays = requester_pays
         bucket.create(client=self, project=project)
         return bucket
+
+    def download_blob_to_file(self, blob_or_uri, file_obj, start=None, end=None):
+        """Download the contents of a blob object or blob URI into a file-like object.
+
+        Args:
+            blob_or_uri (Union[ \
+            :class:`~google.cloud.storage.blob.Blob`, \
+             str, \
+            ]):
+                The blob resource to pass or URI to download.
+            file_obj (file):
+                A file handle to which to write the blob's data.
+            start (int):
+                Optional. The first byte in a range to be downloaded.
+            end (int):
+                Optional. The last byte in a range to be downloaded.
+
+        Examples:
+            Download a blob using using a blob resource.
+
+            >>> from google.cloud import storage
+            >>> client = storage.Client()
+
+            >>> bucket = client.get_bucket('my-bucket-name')
+            >>> blob = storage.Blob('path/to/blob', bucket)
+
+            >>> with open('file-to-download-to') as file_obj:
+            >>>     client.download_blob_to_file(blob, file_obj)  # API request.
+
+
+            Download a blob using a URI.
+
+            >>> from google.cloud import storage
+            >>> client = storage.Client()
+
+            >>> with open('file-to-download-to') as file_obj:
+            >>>     client.download_blob_to_file(
+            >>>         'gs://bucket_name/path/to/blob', file)
+
+
+        """
+        try:
+            blob_or_uri.download_to_file(file_obj, client=self, start=start, end=end)
+        except AttributeError:
+            scheme, netloc, path, query, frag = urlsplit(blob_or_uri)
+            if scheme != "gs":
+                raise ValueError("URI scheme must be gs")
+            bucket = Bucket(self, name=netloc)
+            blob_or_uri = Blob(path, bucket)
+
+            blob_or_uri.download_to_file(file_obj, client=self, start=start, end=end)
 
     def list_buckets(
         self,

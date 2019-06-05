@@ -14,15 +14,12 @@
 
 """Helpers for making API requests via gapic / gRPC."""
 
-from google.api_core.gapic_v1 import client_info
-from google.cloud.datastore_v1.gapic import datastore_client
 from grpc import insecure_channel
 import six
 
 from google.cloud._helpers import make_secure_channel
 from google.cloud._http import DEFAULT_USER_AGENT
-
-from google.cloud.datastore import __version__
+from google.cloud.datastore_v1.gapic import datastore_client
 
 
 def make_datastore_api(client):
@@ -42,8 +39,5 @@ def make_datastore_api(client):
         channel = insecure_channel(host)
 
     return datastore_client.DatastoreClient(
-        channel=channel,
-        client_info=client_info.ClientInfo(
-            client_library_version=__version__, gapic_version=__version__
-        ),
+        channel=channel, client_info=client._client_info
     )

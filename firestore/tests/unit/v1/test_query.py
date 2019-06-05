@@ -45,8 +45,11 @@ class TestQuery(unittest.TestCase):
         self.assertIsNone(query._offset)
         self.assertIsNone(query._start_at)
         self.assertIsNone(query._end_at)
+        self.assertFalse(query._all_descendants)
 
-    def _make_one_all_fields(self, limit=9876, offset=12, skip_fields=(), parent=None):
+    def _make_one_all_fields(
+        self, limit=9876, offset=12, skip_fields=(), parent=None, all_descendants=True
+    ):
         kwargs = {
             "projection": mock.sentinel.projection,
             "field_filters": mock.sentinel.filters,
@@ -55,6 +58,7 @@ class TestQuery(unittest.TestCase):
             "offset": offset,
             "start_at": mock.sentinel.start_at,
             "end_at": mock.sentinel.end_at,
+            "all_descendants": all_descendants,
         }
         for field in skip_fields:
             kwargs.pop(field)
@@ -74,6 +78,7 @@ class TestQuery(unittest.TestCase):
         self.assertEqual(query._offset, offset)
         self.assertIs(query._start_at, mock.sentinel.start_at)
         self.assertIs(query._end_at, mock.sentinel.end_at)
+        self.assertTrue(query._all_descendants)
 
     def test__client_property(self):
         parent = mock.Mock(_client=mock.sentinel.client, spec=["_client"])
@@ -81,75 +86,79 @@ class TestQuery(unittest.TestCase):
         self.assertIs(query._client, mock.sentinel.client)
 
     def test___eq___other_type(self):
-        client = self._make_one_all_fields()
+        query = self._make_one_all_fields()
         other = object()
-        self.assertFalse(client == other)
+        self.assertFalse(query == other)
 
     def test___eq___different_parent(self):
         parent = mock.sentinel.parent
         other_parent = mock.sentinel.other_parent
-        client = self._make_one_all_fields(parent=parent)
+        query = self._make_one_all_fields(parent=parent)
         other = self._make_one_all_fields(parent=other_parent)
-        self.assertFalse(client == other)
+        self.assertFalse(query == other)
 
     def test___eq___different_projection(self):
         parent = mock.sentinel.parent
-        client = self._make_one_all_fields(parent=parent, skip_fields=("projection",))
-        client._projection = mock.sentinel.projection
+        query = self._make_one_all_fields(parent=parent, skip_fields=("projection",))
+        query._projection = mock.sentinel.projection
         other = self._make_one_all_fields(parent=parent, skip_fields=("projection",))
         other._projection = mock.sentinel.other_projection
-        self.assertFalse(client == other)
+        self.assertFalse(query == other)
 
     def test___eq___different_field_filters(self):
         parent = mock.sentinel.parent
-        client = self._make_one_all_fields(
-            parent=parent, skip_fields=("field_filters",)
-        )
-        client._field_filters = mock.sentinel.field_filters
+        query = self._make_one_all_fields(parent=parent, skip_fields=("field_filters",))
+        query._field_filters = mock.sentinel.field_filters
         other = self._make_one_all_fields(parent=parent, skip_fields=("field_filters",))
         other._field_filters = mock.sentinel.other_field_filters
-        self.assertFalse(client == other)
+        self.assertFalse(query == other)
 
     def test___eq___different_orders(self):
         parent = mock.sentinel.parent
-        client = self._make_one_all_fields(parent=parent, skip_fields=("orders",))
-        client._orders = mock.sentinel.orders
+        query = self._make_one_all_fields(parent=parent, skip_fields=("orders",))
+        query._orders = mock.sentinel.orders
         other = self._make_one_all_fields(parent=parent, skip_fields=("orders",))
         other._orders = mock.sentinel.other_orders
-        self.assertFalse(client == other)
+        self.assertFalse(query == other)
 
     def test___eq___different_limit(self):
         parent = mock.sentinel.parent
-        client = self._make_one_all_fields(parent=parent, limit=10)
+        query = self._make_one_all_fields(parent=parent, limit=10)
         other = self._make_one_all_fields(parent=parent, limit=20)
-        self.assertFalse(client == other)
+        self.assertFalse(query == other)
 
     def test___eq___different_offset(self):
         parent = mock.sentinel.parent
-        client = self._make_one_all_fields(parent=parent, offset=10)
+        query = self._make_one_all_fields(parent=parent, offset=10)
         other = self._make_one_all_fields(parent=parent, offset=20)
-        self.assertFalse(client == other)
+        self.assertFalse(query == other)
 
     def test___eq___different_start_at(self):
         parent = mock.sentinel.parent
-        client = self._make_one_all_fields(parent=parent, skip_fields=("start_at",))
-        client._start_at = mock.sentinel.start_at
+        query = self._make_one_all_fields(parent=parent, skip_fields=("start_at",))
+        query._start_at = mock.sentinel.start_at
         other = self._make_one_all_fields(parent=parent, skip_fields=("start_at",))
         other._start_at = mock.sentinel.other_start_at
-        self.assertFalse(client == other)
+        self.assertFalse(query == other)
 
     def test___eq___different_end_at(self):
         parent = mock.sentinel.parent
-        client = self._make_one_all_fields(parent=parent, skip_fields=("end_at",))
-        client._end_at = mock.sentinel.end_at
+        query = self._make_one_all_fields(parent=parent, skip_fields=("end_at",))
+        query._end_at = mock.sentinel.end_at
         other = self._make_one_all_fields(parent=parent, skip_fields=("end_at",))
         other._end_at = mock.sentinel.other_end_at
-        self.assertFalse(client == other)
+        self.assertFalse(query == other)
+
+    def test___eq___different_all_descendants(self):
+        parent = mock.sentinel.parent
+        query = self._make_one_all_fields(parent=parent, all_descendants=True)
+        other = self._make_one_all_fields(parent=parent, all_descendants=False)
+        self.assertFalse(query == other)
 
     def test___eq___hit(self):
-        client = self._make_one_all_fields()
+        query = self._make_one_all_fields()
         other = self._make_one_all_fields()
-        self.assertTrue(client == other)
+        self.assertTrue(query == other)
 
     def _compare_queries(self, query1, query2, attr_name):
         attrs1 = query1.__dict__.copy()
@@ -181,7 +190,7 @@ class TestQuery(unittest.TestCase):
             query.select(["*"])
 
     def test_select(self):
-        query1 = self._make_one_all_fields()
+        query1 = self._make_one_all_fields(all_descendants=True)
 
         field_paths2 = ["foo", "bar"]
         query2 = query1.select(field_paths2)
@@ -213,7 +222,9 @@ class TestQuery(unittest.TestCase):
         from google.cloud.firestore_v1.proto import document_pb2
         from google.cloud.firestore_v1.proto import query_pb2
 
-        query = self._make_one_all_fields(skip_fields=("field_filters",))
+        query = self._make_one_all_fields(
+            skip_fields=("field_filters",), all_descendants=True
+        )
         new_query = query.where("power.level", ">", 9000)
 
         self.assertIsNot(query, new_query)
@@ -302,7 +313,9 @@ class TestQuery(unittest.TestCase):
         from google.cloud.firestore_v1.gapic import enums
 
         klass = self._get_target_class()
-        query1 = self._make_one_all_fields(skip_fields=("orders",))
+        query1 = self._make_one_all_fields(
+            skip_fields=("orders",), all_descendants=True
+        )
 
         field_path2 = "a"
         query2 = query1.order_by(field_path2)
@@ -326,7 +339,7 @@ class TestQuery(unittest.TestCase):
         self._compare_queries(query2, query3, "_orders")
 
     def test_limit(self):
-        query1 = self._make_one_all_fields()
+        query1 = self._make_one_all_fields(all_descendants=True)
 
         limit2 = 100
         query2 = query1.limit(limit2)
@@ -344,7 +357,7 @@ class TestQuery(unittest.TestCase):
         self._compare_queries(query2, query3, "_limit")
 
     def test_offset(self):
-        query1 = self._make_one_all_fields()
+        query1 = self._make_one_all_fields(all_descendants=True)
 
         offset2 = 23
         query2 = query1.offset(offset2)
@@ -382,6 +395,7 @@ class TestQuery(unittest.TestCase):
     def test__cursor_helper_w_dict(self):
         values = {"a": 7, "b": "foo"}
         query1 = self._make_one(mock.sentinel.parent)
+        query1._all_descendants = True
         query2 = query1._cursor_helper(values, True, True)
 
         self.assertIs(query2._parent, mock.sentinel.parent)
@@ -391,6 +405,7 @@ class TestQuery(unittest.TestCase):
         self.assertIsNone(query2._limit)
         self.assertIsNone(query2._offset)
         self.assertIsNone(query2._end_at)
+        self.assertTrue(query2._all_descendants)
 
         cursor, before = query2._start_at
 
@@ -468,7 +483,9 @@ class TestQuery(unittest.TestCase):
 
     def test_start_at(self):
         collection = self._make_collection("here")
-        query1 = self._make_one_all_fields(parent=collection, skip_fields=("orders",))
+        query1 = self._make_one_all_fields(
+            parent=collection, skip_fields=("orders",), all_descendants=True
+        )
         query2 = query1.order_by("hi")
 
         document_fields3 = {"hi": "mom"}
@@ -1270,6 +1287,47 @@ class TestQuery(unittest.TestCase):
             metadata=client._rpc_metadata,
         )
 
+    def test_stream_w_collection_group(self):
+        # Create a minimal fake GAPIC.
+        firestore_api = mock.Mock(spec=["run_query"])
+
+        # Attach the fake GAPIC to a real client.
+        client = _make_client()
+        client._firestore_api_internal = firestore_api
+
+        # Make a **real** collection reference as parent.
+        parent = client.collection("charles")
+        other = client.collection("dora")
+
+        # Add two dummy responses to the minimal fake GAPIC.
+        _, other_prefix = other._parent_info()
+        name = "{}/bark".format(other_prefix)
+        data = {"lee": "hoop"}
+        response_pb1 = _make_query_response(name=name, data=data)
+        response_pb2 = _make_query_response()
+        firestore_api.run_query.return_value = iter([response_pb1, response_pb2])
+
+        # Execute the query and check the response.
+        query = self._make_one(parent)
+        query._all_descendants = True
+        get_response = query.stream()
+        self.assertIsInstance(get_response, types.GeneratorType)
+        returned = list(get_response)
+        self.assertEqual(len(returned), 1)
+        snapshot = returned[0]
+        to_match = other.document("bark")
+        self.assertEqual(snapshot.reference._document_path, to_match._document_path)
+        self.assertEqual(snapshot.to_dict(), data)
+
+        # Verify the mock call.
+        parent_path, _ = parent._parent_info()
+        firestore_api.run_query.assert_called_once_with(
+            parent_path,
+            query._to_protobuf(),
+            transaction=None,
+            metadata=client._rpc_metadata,
+        )
+
     @mock.patch("google.cloud.firestore_v1.query.Watch", autospec=True)
     def test_on_snapshot(self, watch):
         query = self._make_one(mock.sentinel.parent)
@@ -1530,6 +1588,46 @@ class Test__query_response_to_snapshot(unittest.TestCase):
         self.assertIsInstance(snapshot, DocumentSnapshot)
         expected_path = collection._path + (doc_id,)
         self.assertEqual(snapshot.reference._path, expected_path)
+        self.assertEqual(snapshot.to_dict(), data)
+        self.assertTrue(snapshot.exists)
+        self.assertEqual(snapshot.read_time, response_pb.read_time)
+        self.assertEqual(snapshot.create_time, response_pb.document.create_time)
+        self.assertEqual(snapshot.update_time, response_pb.document.update_time)
+
+
+class Test__collection_group_query_response_to_snapshot(unittest.TestCase):
+    @staticmethod
+    def _call_fut(response_pb, collection):
+        from google.cloud.firestore_v1.query import (
+            _collection_group_query_response_to_snapshot,
+        )
+
+        return _collection_group_query_response_to_snapshot(response_pb, collection)
+
+    def test_empty(self):
+        response_pb = _make_query_response()
+        snapshot = self._call_fut(response_pb, None)
+        self.assertIsNone(snapshot)
+
+    def test_after_offset(self):
+        skipped_results = 410
+        response_pb = _make_query_response(skipped_results=skipped_results)
+        snapshot = self._call_fut(response_pb, None)
+        self.assertIsNone(snapshot)
+
+    def test_response(self):
+        from google.cloud.firestore_v1.document import DocumentSnapshot
+
+        client = _make_client()
+        collection = client.collection("a", "b", "c")
+        other_collection = client.collection("a", "b", "d")
+        to_match = other_collection.document("gigantic")
+        data = {"a": 901, "b": True}
+        response_pb = _make_query_response(name=to_match._document_path, data=data)
+
+        snapshot = self._call_fut(response_pb, collection)
+        self.assertIsInstance(snapshot, DocumentSnapshot)
+        self.assertEqual(snapshot.reference._document_path, to_match._document_path)
         self.assertEqual(snapshot.to_dict(), data)
         self.assertTrue(snapshot.exists)
         self.assertEqual(snapshot.read_time, response_pb.read_time)

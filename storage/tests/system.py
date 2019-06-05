@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import os
-import tempfile
 import re
+import tempfile
 import time
 import unittest
 
@@ -44,6 +45,7 @@ def _bad_copy(bad_request):
 
 
 retry_429 = RetryErrors(exceptions.TooManyRequests, max_tries=6)
+retry_429_harder = RetryErrors(exceptions.TooManyRequests, max_tries=10)
 retry_429_503 = RetryErrors(
     [exceptions.TooManyRequests, exceptions.ServiceUnavailable], max_tries=6
 )
@@ -51,15 +53,11 @@ retry_bad_copy = RetryErrors(exceptions.BadRequest, error_predicate=_bad_copy)
 
 
 def _empty_bucket(bucket):
-    """Empty a bucket of all existing blobs.
-
-    This accounts (partially) for the eventual consistency of the
-    list blobs API call.
-    """
-    for blob in bucket.list_blobs():
+    """Empty a bucket of all existing blobs (including multiple versions)."""
+    for blob in list(bucket.list_blobs(versions=True)):
         try:
             blob.delete()
-        except exceptions.NotFound:  # eventual consistency
+        except exceptions.NotFound:
             pass
 
 
@@ -86,7 +84,8 @@ def setUpModule():
 
 def tearDownModule():
     errors = (exceptions.Conflict, exceptions.TooManyRequests)
-    retry = RetryErrors(errors, max_tries=9)
+    retry = RetryErrors(errors, max_tries=15)
+    retry(_empty_bucket)(Config.TEST_BUCKET)
     retry(Config.TEST_BUCKET.delete)(force=True)
 
 
@@ -111,7 +110,7 @@ class TestStorageBuckets(unittest.TestCase):
     def tearDown(self):
         for bucket_name in self.case_buckets_to_delete:
             bucket = Config.CLIENT.bucket(bucket_name)
-            retry_429(bucket.delete)()
+            retry_429_harder(bucket.delete)()
 
     def test_create_bucket(self):
         new_bucket_name = "a-new-bucket" + unique_resource_id("-")
@@ -300,7 +299,7 @@ class TestStorageBuckets(unittest.TestCase):
             self.assertEqual(base_contents, copied_contents)
         finally:
             for blob in to_delete:
-                retry_429(blob.delete)()
+                retry_429_harder(blob.delete)()
 
     @unittest.skipUnless(USER_PROJECT, "USER_PROJECT not set in environment.")
     def test_bucket_get_blob_with_user_project(self):
@@ -726,81 +725,204 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         self.assertEqual(iterator.prefixes, set())
 
 
-class TestStorageSignURLs(TestStorageFiles):
-    def setUp(self):
-        super(TestStorageSignURLs, self).setUp()
+class TestStorageSignURLs(unittest.TestCase):
+    BLOB_CONTENT = b"This time for sure, Rocky!"
 
+    @classmethod
+    def setUpClass(cls):
         if (
             type(Config.CLIENT._credentials)
-            is not google.oauth2.service_account.credentials
+            is not google.oauth2.service_account.Credentials
         ):
-            self.skipTest("Signing tests requires a service account credential")
+            cls.skipTest("Signing tests requires a service account credential")
 
-        logo_path = self.FILES["logo"]["path"]
-        with open(logo_path, "rb") as file_obj:
-            self.LOCAL_FILE = file_obj.read()
+        bucket_name = "gcp-signing" + unique_resource_id()
+        cls.bucket = Config.CLIENT.create_bucket(bucket_name)
+        cls.blob = cls.bucket.blob("README.txt")
+        cls.blob.upload_from_string(cls.BLOB_CONTENT)
 
-        blob = self.bucket.blob("LogoToSign.jpg")
-        blob.upload_from_string(self.LOCAL_FILE)
-        self.case_blobs_to_delete.append(blob)
-
-    def tearDown(self):
-        errors = (exceptions.TooManyRequests, exceptions.ServiceUnavailable)
+    @classmethod
+    def tearDownClass(cls):
+        _empty_bucket(cls.bucket)
+        errors = (exceptions.Conflict, exceptions.TooManyRequests)
         retry = RetryErrors(errors, max_tries=6)
-        for blob in self.case_blobs_to_delete:
-            if blob.exists():
-                retry(blob.delete)()
+        retry(cls.bucket.delete)(force=True)
 
-    def test_create_signed_read_url(self):
-        blob = self.bucket.blob("LogoToSign.jpg")
-        expiration = int(time.time() + 10)
-        signed_url = blob.generate_signed_url(
-            expiration, method="GET", client=Config.CLIENT
+    @staticmethod
+    def _morph_expiration(version, expiration):
+        if expiration is not None:
+            return expiration
+
+        if version == "v2":
+            return int(time.time()) + 10
+
+        return 10
+
+    def _create_signed_list_blobs_url_helper(
+        self, version, expiration=None, method="GET"
+    ):
+        expiration = self._morph_expiration(version, expiration)
+
+        signed_url = self.bucket.generate_signed_url(
+            expiration=expiration, method=method, client=Config.CLIENT, version=version
         )
 
         response = requests.get(signed_url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content, self.LOCAL_FILE)
 
-    def test_create_signed_read_url_lowercase_method(self):
-        blob = self.bucket.blob("LogoToSign.jpg")
-        expiration = int(time.time() + 10)
+    def test_create_signed_list_blobs_url_v2(self):
+        self._create_signed_list_blobs_url_helper(version="v2")
+
+    def test_create_signed_list_blobs_url_v2_w_expiration(self):
+        now = datetime.datetime.utcnow()
+        delta = datetime.timedelta(seconds=10)
+
+        self._create_signed_list_blobs_url_helper(expiration=now + delta, version="v2")
+
+    def test_create_signed_list_blobs_url_v4(self):
+        self._create_signed_list_blobs_url_helper(version="v4")
+
+    def test_create_signed_list_blobs_url_v4_w_expiration(self):
+        now = datetime.datetime.utcnow()
+        delta = datetime.timedelta(seconds=10)
+        self._create_signed_list_blobs_url_helper(expiration=now + delta, version="v4")
+
+    def _create_signed_read_url_helper(
+        self,
+        blob_name="LogoToSign.jpg",
+        method="GET",
+        version="v2",
+        payload=None,
+        expiration=None,
+    ):
+        expiration = self._morph_expiration(version, expiration)
+
+        if payload is not None:
+            blob = self.bucket.blob(blob_name)
+            blob.upload_from_string(payload)
+        else:
+            blob = self.blob
+
         signed_url = blob.generate_signed_url(
-            expiration, method="get", client=Config.CLIENT
+            expiration=expiration, method=method, client=Config.CLIENT, version=version
         )
 
         response = requests.get(signed_url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content, self.LOCAL_FILE)
+        if payload is not None:
+            self.assertEqual(response.content, payload)
+        else:
+            self.assertEqual(response.content, self.BLOB_CONTENT)
 
-    def test_create_signed_read_url_w_non_ascii_name(self):
-        blob = self.bucket.blob(u"Caf\xe9.txt")
-        payload = b"Test signed URL for blob w/ non-ASCII name"
-        blob.upload_from_string(payload)
-        self.case_blobs_to_delete.append(blob)
+    def test_create_signed_read_url_v2(self):
+        self._create_signed_read_url_helper()
 
-        expiration = int(time.time() + 10)
-        signed_url = blob.generate_signed_url(
-            expiration, method="GET", client=Config.CLIENT
+    def test_create_signed_read_url_v4(self):
+        self._create_signed_read_url_helper(version="v4")
+
+    def test_create_signed_read_url_v2_w_expiration(self):
+        now = datetime.datetime.utcnow()
+        delta = datetime.timedelta(seconds=10)
+
+        self._create_signed_read_url_helper(expiration=now + delta)
+
+    def test_create_signed_read_url_v4_w_expiration(self):
+        now = datetime.datetime.utcnow()
+        delta = datetime.timedelta(seconds=10)
+        self._create_signed_read_url_helper(expiration=now + delta, version="v4")
+
+    def test_create_signed_read_url_v2_lowercase_method(self):
+        self._create_signed_read_url_helper(method="get")
+
+    def test_create_signed_read_url_v4_lowercase_method(self):
+        self._create_signed_read_url_helper(method="get", version="v4")
+
+    def test_create_signed_read_url_v2_w_non_ascii_name(self):
+        self._create_signed_read_url_helper(
+            blob_name=u"Caf\xe9.txt",
+            payload=b"Test signed URL for blob w/ non-ASCII name",
         )
 
-        response = requests.get(signed_url)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content, payload)
+    def test_create_signed_read_url_v4_w_non_ascii_name(self):
+        self._create_signed_read_url_helper(
+            blob_name=u"Caf\xe9.txt",
+            payload=b"Test signed URL for blob w/ non-ASCII name",
+            version="v4",
+        )
 
-    def test_create_signed_delete_url(self):
-        blob = self.bucket.blob("LogoToSign.jpg")
-        expiration = int(time.time() + 283473274)
+    def _create_signed_delete_url_helper(self, version="v2", expiration=None):
+        expiration = self._morph_expiration(version, expiration)
+
+        blob = self.bucket.blob("DELETE_ME.txt")
+        blob.upload_from_string(b"DELETE ME!")
+
         signed_delete_url = blob.generate_signed_url(
-            expiration, method="DELETE", client=Config.CLIENT
+            expiration=expiration,
+            method="DELETE",
+            client=Config.CLIENT,
+            version=version,
         )
 
         response = requests.request("DELETE", signed_delete_url)
         self.assertEqual(response.status_code, 204)
         self.assertEqual(response.content, b"")
 
-        # Check that the blob has actually been deleted.
         self.assertFalse(blob.exists())
+
+    def test_create_signed_delete_url_v2(self):
+        self._create_signed_delete_url_helper()
+
+    def test_create_signed_delete_url_v4(self):
+        self._create_signed_delete_url_helper(version="v4")
+
+    def _signed_resumable_upload_url_helper(self, version="v2", expiration=None):
+        expiration = self._morph_expiration(version, expiration)
+        blob = self.bucket.blob("cruddy.txt")
+        payload = b"DEADBEEF"
+
+        # Initiate the upload using a signed URL.
+        signed_resumable_upload_url = blob.generate_signed_url(
+            expiration=expiration,
+            method="RESUMABLE",
+            client=Config.CLIENT,
+            version=version,
+        )
+
+        post_headers = {"x-goog-resumable": "start"}
+        post_response = requests.post(signed_resumable_upload_url, headers=post_headers)
+        self.assertEqual(post_response.status_code, 201)
+
+        # Finish uploading the body.
+        location = post_response.headers["Location"]
+        put_headers = {"content-length": str(len(payload))}
+        put_response = requests.put(location, headers=put_headers, data=payload)
+        self.assertEqual(put_response.status_code, 200)
+
+        # Download using a signed URL and verify.
+        signed_download_url = blob.generate_signed_url(
+            expiration=expiration, method="GET", client=Config.CLIENT, version=version
+        )
+
+        get_response = requests.get(signed_download_url)
+        self.assertEqual(get_response.status_code, 200)
+        self.assertEqual(get_response.content, payload)
+
+        # Finally, delete the blob using a signed URL.
+        signed_delete_url = blob.generate_signed_url(
+            expiration=expiration,
+            method="DELETE",
+            client=Config.CLIENT,
+            version=version,
+        )
+
+        delete_response = requests.delete(signed_delete_url)
+        self.assertEqual(delete_response.status_code, 204)
+
+    def test_signed_resumable_upload_url_v2(self):
+        self._signed_resumable_upload_url_helper(version="v2")
+
+    def test_signed_resumable_upload_url_v4(self):
+        self._signed_resumable_upload_url_helper(version="v4")
 
 
 class TestStorageCompose(TestStorageFiles):
@@ -889,7 +1011,7 @@ class TestStorageCompose(TestStorageFiles):
             composed = destination.download_as_string()
             self.assertEqual(composed, SOURCE_1 + SOURCE_2)
         finally:
-            retry_429(created.delete)(force=True)
+            retry_429_harder(created.delete)(force=True)
 
 
 class TestStorageRewrite(TestStorageFiles):
@@ -963,7 +1085,7 @@ class TestStorageRewrite(TestStorageFiles):
 
             self.assertEqual(source.download_as_string(), dest.download_as_string())
         finally:
-            retry_429(created.delete)(force=True)
+            retry_429_harder(created.delete)(force=True)
 
     @unittest.skipUnless(USER_PROJECT, "USER_PROJECT not set in environment.")
     def test_rewrite_rotate_with_user_project(self):
@@ -993,7 +1115,7 @@ class TestStorageRewrite(TestStorageFiles):
 
             self.assertEqual(dest.download_as_string(), source_data)
         finally:
-            retry_429(created.delete)(force=True)
+            retry_429_harder(created.delete)(force=True)
 
 
 class TestStorageUpdateStorageClass(TestStorageFiles):
@@ -1063,7 +1185,7 @@ class TestStorageNotificationCRUD(unittest.TestCase):
         with Config.CLIENT.batch():
             for bucket_name in self.case_buckets_to_delete:
                 bucket = Config.CLIENT.bucket(bucket_name)
-                retry_429(bucket.delete)()
+                retry_429_harder(bucket.delete)()
 
     @staticmethod
     def event_types():
@@ -1334,7 +1456,7 @@ class TestRetentionPolicy(unittest.TestCase):
     def tearDown(self):
         for bucket_name in self.case_buckets_to_delete:
             bucket = Config.CLIENT.bucket(bucket_name)
-            retry_429(bucket.delete)()
+            retry_429_harder(bucket.delete)()
 
     def test_bucket_w_retention_period(self):
         import datetime
@@ -1506,7 +1628,7 @@ class TestIAMConfiguration(unittest.TestCase):
     def tearDown(self):
         for bucket_name in self.case_buckets_to_delete:
             bucket = Config.CLIENT.bucket(bucket_name)
-            retry_429(bucket.delete)(force=True)
+            retry_429_harder(bucket.delete)(force=True)
 
     def test_new_bucket_w_bpo(self):
         new_bucket_name = "new-w-bpo" + unique_resource_id("-")

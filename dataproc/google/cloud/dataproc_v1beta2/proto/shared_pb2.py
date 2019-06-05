@@ -4,6 +4,7 @@
 import sys
 
 _b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode("latin1"))
+from google.protobuf.internal import enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
@@ -25,12 +26,69 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n!com.google.cloud.dataproc.v1beta2B\013SharedProtoP\001ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataproc"
     ),
     serialized_pb=_b(
-        "\n0google/cloud/dataproc_v1beta2/proto/shared.proto\x12\x1dgoogle.cloud.dataproc.v1beta2\x1a\x1cgoogle/api/annotations.protoBy\n!com.google.cloud.dataproc.v1beta2B\x0bSharedProtoP\x01ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataprocb\x06proto3"
+        "\n0google/cloud/dataproc_v1beta2/proto/shared.proto\x12\x1dgoogle.cloud.dataproc.v1beta2\x1a\x1cgoogle/api/annotations.proto*\x95\x01\n\tComponent\x12\x19\n\x15\x43OMPONENT_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x41NACONDA\x10\x05\x12\t\n\x05\x44RUID\x10\t\x12\x10\n\x0cHIVE_WEBHCAT\x10\x03\x12\x0b\n\x07JUPYTER\x10\x01\x12\x0c\n\x08KERBEROS\x10\x07\x12\n\n\x06PRESTO\x10\x06\x12\x0c\n\x08ZEPPELIN\x10\x04\x12\r\n\tZOOKEEPER\x10\x08\x42y\n!com.google.cloud.dataproc.v1beta2B\x0bSharedProtoP\x01ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataprocb\x06proto3"
     ),
     dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
 )
 
+_COMPONENT = _descriptor.EnumDescriptor(
+    name="Component",
+    full_name="google.cloud.dataproc.v1beta2.Component",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="COMPONENT_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ANACONDA", index=1, number=5, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="DRUID", index=2, number=9, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="HIVE_WEBHCAT", index=3, number=3, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="JUPYTER", index=4, number=1, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="KERBEROS", index=5, number=7, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PRESTO", index=6, number=6, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ZEPPELIN", index=7, number=4, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ZOOKEEPER", index=8, number=8, serialized_options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    serialized_options=None,
+    serialized_start=114,
+    serialized_end=263,
+)
+_sym_db.RegisterEnumDescriptor(_COMPONENT)
 
+Component = enum_type_wrapper.EnumTypeWrapper(_COMPONENT)
+COMPONENT_UNSPECIFIED = 0
+ANACONDA = 5
+DRUID = 9
+HIVE_WEBHCAT = 3
+JUPYTER = 1
+KERBEROS = 7
+PRESTO = 6
+ZEPPELIN = 4
+ZOOKEEPER = 8
+
+
+DESCRIPTOR.enum_types_by_name["Component"] = _COMPONENT
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 

@@ -1,4 +1,4 @@
-.. include:: /../language/README.rst
+.. include:: README.rst
 
 
 .. toctree::

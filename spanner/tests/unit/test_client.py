@@ -49,13 +49,24 @@ class TestClient(unittest.TestCase):
         return self._get_target_class()(*args, **kwargs)
 
     def _constructor_test_helper(
-        self, expected_scopes, creds, user_agent=None, expected_creds=None
+        self,
+        expected_scopes,
+        creds,
+        expected_creds=None,
+        client_info=None,
+        user_agent=None,
     ):
         from google.cloud.spanner_v1 import client as MUT
 
-        user_agent = user_agent or MUT.DEFAULT_USER_AGENT
+        kwargs = {}
+
+        if client_info is not None:
+            kwargs["client_info"] = expected_client_info = client_info
+        else:
+            expected_client_info = MUT._CLIENT_INFO
+
         client = self._make_one(
-            project=self.PROJECT, credentials=creds, user_agent=user_agent
+            project=self.PROJECT, credentials=creds, user_agent=user_agent, **kwargs
         )
 
         expected_creds = expected_creds or creds.with_scopes.return_value
@@ -66,6 +77,7 @@ class TestClient(unittest.TestCase):
             creds.with_scopes.assert_called_once_with(expected_scopes)
 
         self.assertEqual(client.project, self.PROJECT)
+        self.assertIs(client._client_info, expected_client_info)
         self.assertEqual(client.user_agent, user_agent)
 
     def test_constructor_default_scopes(self):
@@ -75,7 +87,8 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         self._constructor_test_helper(expected_scopes, creds)
 
-    def test_constructor_custom_user_agent_and_timeout(self):
+    @mock.patch("warnings.warn")
+    def test_constructor_custom_user_agent_and_timeout(self, mock_warn):
         from google.cloud.spanner_v1 import client as MUT
 
         CUSTOM_USER_AGENT = "custom-application"
@@ -84,6 +97,17 @@ class TestClient(unittest.TestCase):
         self._constructor_test_helper(
             expected_scopes, creds, user_agent=CUSTOM_USER_AGENT
         )
+        mock_warn.assert_called_once_with(
+            MUT._USER_AGENT_DEPRECATED, DeprecationWarning, stacklevel=2
+        )
+
+    def test_constructor_custom_client_info(self):
+        from google.cloud.spanner_v1 import client as MUT
+
+        client_info = mock.Mock()
+        expected_scopes = (MUT.SPANNER_ADMIN_SCOPE,)
+        creds = _make_credentials()
+        self._constructor_test_helper(expected_scopes, creds, client_info=client_info)
 
     def test_constructor_implicit_credentials(self):
         creds = _make_credentials()
@@ -102,10 +126,13 @@ class TestClient(unittest.TestCase):
         self._constructor_test_helper(expected_scopes, creds)
 
     def test_instance_admin_api(self):
-        from google.cloud.spanner_v1.client import _CLIENT_INFO, SPANNER_ADMIN_SCOPE
+        from google.cloud.spanner_v1.client import SPANNER_ADMIN_SCOPE
 
         credentials = _make_credentials()
-        client = self._make_one(project=self.PROJECT, credentials=credentials)
+        client_info = mock.Mock()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, client_info=client_info
+        )
         expected_scopes = (SPANNER_ADMIN_SCOPE,)
 
         inst_module = "google.cloud.spanner_v1.client.InstanceAdminClient"
@@ -119,16 +146,19 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
         instance_admin_client.assert_called_once_with(
-            credentials=credentials.with_scopes.return_value, client_info=_CLIENT_INFO
+            credentials=credentials.with_scopes.return_value, client_info=client_info
         )
 
         credentials.with_scopes.assert_called_once_with(expected_scopes)
 
     def test_database_admin_api(self):
-        from google.cloud.spanner_v1.client import _CLIENT_INFO, SPANNER_ADMIN_SCOPE
+        from google.cloud.spanner_v1.client import SPANNER_ADMIN_SCOPE
 
         credentials = _make_credentials()
-        client = self._make_one(project=self.PROJECT, credentials=credentials)
+        client_info = mock.Mock()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, client_info=client_info
+        )
         expected_scopes = (SPANNER_ADMIN_SCOPE,)
 
         db_module = "google.cloud.spanner_v1.client.DatabaseAdminClient"
@@ -142,7 +172,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
         database_admin_client.assert_called_once_with(
-            credentials=credentials.with_scopes.return_value, client_info=_CLIENT_INFO
+            credentials=credentials.with_scopes.return_value, client_info=client_info
         )
 
         credentials.with_scopes.assert_called_once_with(expected_scopes)
@@ -152,14 +182,11 @@ class TestClient(unittest.TestCase):
         # Make sure it "already" is scoped.
         credentials.requires_scopes = False
 
-        client = self._make_one(
-            project=self.PROJECT, credentials=credentials, user_agent=self.USER_AGENT
-        )
+        client = self._make_one(project=self.PROJECT, credentials=credentials)
 
         new_client = client.copy()
         self.assertIs(new_client._credentials, client._credentials)
         self.assertEqual(new_client.project, client.project)
-        self.assertEqual(new_client.user_agent, client.user_agent)
 
     def test_credentials_property(self):
         credentials = _make_credentials()
@@ -204,9 +231,13 @@ class TestClient(unittest.TestCase):
         self.assertEqual(instance_config.name, self.CONFIGURATION_NAME)
         self.assertEqual(instance_config.display_name, self.DISPLAY_NAME)
 
+        expected_metadata = [
+            ("google-cloud-resource-prefix", client.project_name),
+            ("x-goog-request-params", "parent={}".format(client.project_name)),
+        ]
         lic_api.assert_called_once_with(
             spanner_instance_admin_pb2.ListInstanceConfigsRequest(parent=self.PATH),
-            metadata=[("google-cloud-resource-prefix", client.project_name)],
+            metadata=expected_metadata,
             retry=mock.ANY,
             timeout=mock.ANY,
         )
@@ -238,11 +269,15 @@ class TestClient(unittest.TestCase):
         page_size = 42
         list(client.list_instance_configs(page_token=token, page_size=42))
 
+        expected_metadata = [
+            ("google-cloud-resource-prefix", client.project_name),
+            ("x-goog-request-params", "parent={}".format(client.project_name)),
+        ]
         lic_api.assert_called_once_with(
             spanner_instance_admin_pb2.ListInstanceConfigsRequest(
                 parent=self.PATH, page_size=page_size, page_token=token
             ),
-            metadata=[("google-cloud-resource-prefix", client.project_name)],
+            metadata=expected_metadata,
             retry=mock.ANY,
             timeout=mock.ANY,
         )
@@ -320,9 +355,13 @@ class TestClient(unittest.TestCase):
         self.assertEqual(instance.display_name, self.DISPLAY_NAME)
         self.assertEqual(instance.node_count, self.NODE_COUNT)
 
+        expected_metadata = [
+            ("google-cloud-resource-prefix", client.project_name),
+            ("x-goog-request-params", "parent={}".format(client.project_name)),
+        ]
         li_api.assert_called_once_with(
             spanner_instance_admin_pb2.ListInstancesRequest(parent=self.PATH),
-            metadata=[("google-cloud-resource-prefix", client.project_name)],
+            metadata=expected_metadata,
             retry=mock.ANY,
             timeout=mock.ANY,
         )
@@ -348,11 +387,15 @@ class TestClient(unittest.TestCase):
         page_size = 42
         list(client.list_instances(page_token=token, page_size=42))
 
+        expected_metadata = [
+            ("google-cloud-resource-prefix", client.project_name),
+            ("x-goog-request-params", "parent={}".format(client.project_name)),
+        ]
         li_api.assert_called_once_with(
             spanner_instance_admin_pb2.ListInstancesRequest(
                 parent=self.PATH, page_size=page_size, page_token=token
             ),
-            metadata=[("google-cloud-resource-prefix", client.project_name)],
+            metadata=expected_metadata,
             retry=mock.ANY,
             timeout=mock.ANY,
         )

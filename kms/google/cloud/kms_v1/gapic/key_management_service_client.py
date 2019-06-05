@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.kms.v1 KeyManagementService API."""
 
 import functools
@@ -38,6 +39,7 @@ from google.cloud.kms_v1.proto import service_pb2_grpc
 from google.iam.v1 import iam_policy_pb2
 from google.iam.v1 import policy_pb2
 from google.protobuf import field_mask_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-kms").version
 
@@ -85,13 +87,14 @@ class KeyManagementServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def key_ring_path(cls, project, location, key_ring):
-        """Return a fully-qualified key_ring string."""
+    def crypto_key_path(cls, project, location, key_ring, crypto_key):
+        """Return a fully-qualified crypto_key string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}/keyRings/{key_ring}",
+            "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}",
             project=project,
             location=location,
             key_ring=key_ring,
+            crypto_key=crypto_key,
         )
 
     @classmethod
@@ -106,26 +109,6 @@ class KeyManagementServiceClient(object):
         )
 
     @classmethod
-    def location_path(cls, project, location):
-        """Return a fully-qualified location string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}",
-            project=project,
-            location=location,
-        )
-
-    @classmethod
-    def crypto_key_path(cls, project, location, key_ring, crypto_key):
-        """Return a fully-qualified crypto_key string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}",
-            project=project,
-            location=location,
-            key_ring=key_ring,
-            crypto_key=crypto_key,
-        )
-
-    @classmethod
     def crypto_key_version_path(
         cls, project, location, key_ring, crypto_key, crypto_key_version
     ):
@@ -137,6 +120,25 @@ class KeyManagementServiceClient(object):
             key_ring=key_ring,
             crypto_key=crypto_key,
             crypto_key_version=crypto_key_version,
+        )
+
+    @classmethod
+    def key_ring_path(cls, project, location, key_ring):
+        """Return a fully-qualified key_ring string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}/keyRings/{key_ring}",
+            project=project,
+            location=location,
+            key_ring=key_ring,
+        )
+
+    @classmethod
+    def location_path(cls, project, location):
+        """Return a fully-qualified location string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}",
+            project=project,
+            location=location,
         )
 
     def __init__(
@@ -1858,8 +1860,7 @@ class KeyManagementServiceClient(object):
 
         Args:
             resource (str): REQUIRED: The resource for which the policy is being specified.
-                ``resource`` is usually specified as a path. For example, a Project
-                resource is specified as ``projects/{project}``.
+                See the operation documentation for the appropriate value for this field.
             policy (Union[dict, ~google.cloud.kms_v1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The
                 size of the policy is limited to a few 10s of KB. An empty policy is a
                 valid policy but certain Cloud Platform services (such as Projects)
@@ -1938,8 +1939,7 @@ class KeyManagementServiceClient(object):
 
         Args:
             resource (str): REQUIRED: The resource for which the policy is being requested.
-                ``resource`` is usually specified as a path. For example, a Project
-                resource is specified as ``projects/{project}``.
+                See the operation documentation for the appropriate value for this field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -2001,6 +2001,10 @@ class KeyManagementServiceClient(object):
         resource does not exist, this will return an empty set of permissions,
         not a NOT\_FOUND error.
 
+        Note: This operation is designed to be used for building
+        permission-aware UIs and command-line tools, not for authorization
+        checking. This operation may "fail open" without warning.
+
         Example:
             >>> from google.cloud import kms_v1
             >>>
@@ -2015,8 +2019,7 @@ class KeyManagementServiceClient(object):
 
         Args:
             resource (str): REQUIRED: The resource for which the policy detail is being requested.
-                ``resource`` is usually specified as a path. For example, a Project
-                resource is specified as ``projects/{project}``.
+                See the operation documentation for the appropriate value for this field.
             permissions (list[str]): The set of permissions to check for the ``resource``. Permissions with
                 wildcards (such as '*' or 'storage.*') are not allowed. For more
                 information see `IAM

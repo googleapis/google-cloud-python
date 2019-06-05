@@ -227,6 +227,8 @@ class TestWatch(unittest.TestCase):
         snapshot_callback = self._snapshot_callback
         snapshot_class_instance = DummyDocumentSnapshot
         document_reference_class_instance = DummyDocumentReference
+        client = DummyFirestore()
+        parent = DummyCollection(client)
         modulename = "google.cloud.firestore_v1.watch"
         pb2 = DummyPb2()
         with mock.patch("%s.firestore_pb2" % modulename, pb2):
@@ -234,7 +236,35 @@ class TestWatch(unittest.TestCase):
                 with mock.patch(
                     "%s.Watch.BackgroundConsumer" % modulename, DummyBackgroundConsumer
                 ):
-                    query = DummyQuery()
+                    query = DummyQuery(parent=parent)
+                    inst = Watch.for_query(
+                        query,
+                        snapshot_callback,
+                        snapshot_class_instance,
+                        document_reference_class_instance,
+                    )
+        self.assertTrue(inst._consumer.started)
+        self.assertTrue(inst._rpc.callbacks, [inst._on_rpc_done])
+        self.assertEqual(inst._targets["query"], "dummy query target")
+
+    def test_for_query_nested(self):
+        from google.cloud.firestore_v1.watch import Watch
+
+        snapshot_callback = self._snapshot_callback
+        snapshot_class_instance = DummyDocumentSnapshot
+        document_reference_class_instance = DummyDocumentReference
+        client = DummyFirestore()
+        root = DummyCollection(client)
+        grandparent = DummyDocument("document", parent=root)
+        parent = DummyCollection(client, parent=grandparent)
+        modulename = "google.cloud.firestore_v1.watch"
+        pb2 = DummyPb2()
+        with mock.patch("%s.firestore_pb2" % modulename, pb2):
+            with mock.patch("%s.Watch.ResumableBidiRpc" % modulename, DummyRpc):
+                with mock.patch(
+                    "%s.Watch.BackgroundConsumer" % modulename, DummyBackgroundConsumer
+                ):
+                    query = DummyQuery(parent=parent)
                     inst = Watch.for_query(
                         query,
                         snapshot_callback,
@@ -693,18 +723,41 @@ class DummyDocumentReference(object):
         self.__dict__.update(kw)
 
 
-class DummyQuery(object):  # pragma: NO COVER
-    def __init__(self, **kw):
-        if "client" not in kw:
-            self._client = DummyFirestore()
-        else:
-            self._client = kw["client"]
+class DummyDocument(object):
+    def __init__(self, name, parent):
+        self._name = name
+        self._parent = parent
 
-        if "comparator" not in kw:
-            # don't really do the comparison, just return 0 (equal) for all
-            self._comparator = lambda x, y: 1
-        else:
-            self._comparator = kw["comparator"]
+    @property
+    def _document_path(self):
+        return "{}/documents/{}".format(
+            self._parent._client._database_string, self._name
+        )
+
+
+class DummyCollection(object):
+    def __init__(self, client, parent=None):
+        self._client = client
+        self._parent = parent
+
+    def _parent_info(self):
+        if self._parent is None:
+            return "{}/documents".format(self._client._database_string), None
+        return self._parent._document_path, None
+
+
+def _compare(x, y):  # pragma: NO COVER
+    return 1
+
+
+class DummyQuery(object):
+    def __init__(self, parent):
+        self._comparator = _compare
+        self._parent = parent
+
+    @property
+    def _client(self):
+        return self._parent._client
 
     def _to_protobuf(self):
         return ""

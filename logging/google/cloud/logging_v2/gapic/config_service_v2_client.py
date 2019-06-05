@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.logging.v2 ConfigServiceV2 API."""
 
 import functools
@@ -40,6 +41,7 @@ from google.cloud.logging_v2.proto import logging_pb2
 from google.cloud.logging_v2.proto import logging_pb2_grpc
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-logging").version
 
@@ -78,6 +80,15 @@ class ConfigServiceV2Client(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
+    def exclusion_path(cls, project, exclusion):
+        """Return a fully-qualified exclusion string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/exclusions/{exclusion}",
+            project=project,
+            exclusion=exclusion,
+        )
+
+    @classmethod
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
@@ -89,15 +100,6 @@ class ConfigServiceV2Client(object):
         """Return a fully-qualified sink string."""
         return google.api_core.path_template.expand(
             "projects/{project}/sinks/{sink}", project=project, sink=sink
-        )
-
-    @classmethod
-    def exclusion_path(cls, project, exclusion):
-        """Return a fully-qualified exclusion string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/exclusions/{exclusion}",
-            project=project,
-            exclusion=exclusion,
         )
 
     def __init__(

@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.oslogin.v1 OsLoginService API."""
 
 import pkg_resources
@@ -22,6 +23,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.path_template
 import grpc
@@ -33,6 +35,7 @@ from google.cloud.oslogin_v1.proto import oslogin_pb2
 from google.cloud.oslogin_v1.proto import oslogin_pb2_grpc
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-os-login").version
 
@@ -73,9 +76,13 @@ class OsLoginServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def user_path(cls, user):
-        """Return a fully-qualified user string."""
-        return google.api_core.path_template.expand("users/{user}", user=user)
+    def fingerprint_path(cls, user, fingerprint):
+        """Return a fully-qualified fingerprint string."""
+        return google.api_core.path_template.expand(
+            "users/{user}/sshPublicKeys/{fingerprint}",
+            user=user,
+            fingerprint=fingerprint,
+        )
 
     @classmethod
     def project_path(cls, user, project):
@@ -85,13 +92,9 @@ class OsLoginServiceClient(object):
         )
 
     @classmethod
-    def fingerprint_path(cls, user, fingerprint):
-        """Return a fully-qualified fingerprint string."""
-        return google.api_core.path_template.expand(
-            "users/{user}/sshPublicKeys/{fingerprint}",
-            user=user,
-            fingerprint=fingerprint,
-        )
+    def user_path(cls, user):
+        """Return a fully-qualified user string."""
+        return google.api_core.path_template.expand("users/{user}", user=user)
 
     def __init__(
         self,
@@ -243,6 +246,19 @@ class OsLoginServiceClient(object):
             )
 
         request = oslogin_pb2.DeletePosixAccountRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_posix_account"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -298,6 +314,19 @@ class OsLoginServiceClient(object):
             )
 
         request = oslogin_pb2.DeleteSshPublicKeyRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_ssh_public_key"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -355,6 +384,19 @@ class OsLoginServiceClient(object):
             )
 
         request = oslogin_pb2.GetLoginProfileRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_login_profile"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -413,6 +455,19 @@ class OsLoginServiceClient(object):
             )
 
         request = oslogin_pb2.GetSshPublicKeyRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_ssh_public_key"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -483,6 +538,19 @@ class OsLoginServiceClient(object):
         request = oslogin_pb2.ImportSshPublicKeyRequest(
             parent=parent, ssh_public_key=ssh_public_key, project_id=project_id
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["import_ssh_public_key"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -557,6 +625,19 @@ class OsLoginServiceClient(object):
         request = oslogin_pb2.UpdateSshPublicKeyRequest(
             name=name, ssh_public_key=ssh_public_key, update_mask=update_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_ssh_public_key"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )

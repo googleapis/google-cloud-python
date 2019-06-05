@@ -23,7 +23,7 @@ class CloudRedisStub(object):
   * As such, Redis instances are resources of the form:
   `/projects/{project_id}/locations/{location_id}/instances/{instance_id}`
 
-  Note that location_id must be refering to a GCP `region`; for example:
+  Note that location_id must be referring to a GCP `region`; for example:
   * `projects/redpepper-1290/locations/us-central1/instances/my-redis`
   """
 
@@ -53,16 +53,6 @@ class CloudRedisStub(object):
             request_serializer=google_dot_cloud_dot_redis__v1_dot_proto_dot_cloud__redis__pb2.UpdateInstanceRequest.SerializeToString,
             response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
         )
-        self.ImportInstance = channel.unary_unary(
-            "/google.cloud.redis.v1.CloudRedis/ImportInstance",
-            request_serializer=google_dot_cloud_dot_redis__v1_dot_proto_dot_cloud__redis__pb2.ImportInstanceRequest.SerializeToString,
-            response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-        )
-        self.ExportInstance = channel.unary_unary(
-            "/google.cloud.redis.v1.CloudRedis/ExportInstance",
-            request_serializer=google_dot_cloud_dot_redis__v1_dot_proto_dot_cloud__redis__pb2.ExportInstanceRequest.SerializeToString,
-            response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-        )
         self.FailoverInstance = channel.unary_unary(
             "/google.cloud.redis.v1.CloudRedis/FailoverInstance",
             request_serializer=google_dot_cloud_dot_redis__v1_dot_proto_dot_cloud__redis__pb2.FailoverInstanceRequest.SerializeToString,
@@ -89,7 +79,7 @@ class CloudRedisServicer(object):
   * As such, Redis instances are resources of the form:
   `/projects/{project_id}/locations/{location_id}/instances/{instance_id}`
 
-  Note that location_id must be refering to a GCP `region`; for example:
+  Note that location_id must be referring to a GCP `region`; for example:
   * `projects/redpepper-1290/locations/us-central1/instances/my-redis`
   """
 
@@ -143,32 +133,6 @@ class CloudRedisServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
-    def ImportInstance(self, request, context):
-        """Import a Redis RDB snapshot file from GCS into a Redis instance.
-
-    Redis may stop serving during this operation. Instance state will be
-    IMPORTING for entire operation. When complete, the instance will contain
-    only data from the imported file.
-
-    The returned operation is automatically deleted after a few hours, so
-    there is no need to call DeleteOperation.
-    """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
-
-    def ExportInstance(self, request, context):
-        """Export Redis instance data into a Redis RDB format file in GCS.
-
-    Redis will continue serving during this operation.
-
-    The returned operation is automatically deleted after a few hours, so
-    there is no need to call DeleteOperation.
-    """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
-
     def FailoverInstance(self, request, context):
         """Failover the master role to current replica node against a specific
     STANDARD tier redis instance.
@@ -206,16 +170,6 @@ def add_CloudRedisServicer_to_server(servicer, server):
         "UpdateInstance": grpc.unary_unary_rpc_method_handler(
             servicer.UpdateInstance,
             request_deserializer=google_dot_cloud_dot_redis__v1_dot_proto_dot_cloud__redis__pb2.UpdateInstanceRequest.FromString,
-            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-        ),
-        "ImportInstance": grpc.unary_unary_rpc_method_handler(
-            servicer.ImportInstance,
-            request_deserializer=google_dot_cloud_dot_redis__v1_dot_proto_dot_cloud__redis__pb2.ImportInstanceRequest.FromString,
-            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-        ),
-        "ExportInstance": grpc.unary_unary_rpc_method_handler(
-            servicer.ExportInstance,
-            request_deserializer=google_dot_cloud_dot_redis__v1_dot_proto_dot_cloud__redis__pb2.ExportInstanceRequest.FromString,
             response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
         ),
         "FailoverInstance": grpc.unary_unary_rpc_method_handler(

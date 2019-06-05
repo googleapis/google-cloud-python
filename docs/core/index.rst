@@ -5,15 +5,16 @@ Core
     config
     auth
     client
+    client_info
     exceptions
     helpers
-    retry
-    timeout
-    page_iterator
     iam
     operation
     operations_client
+    page_iterator
     path_template
+    retry
+    timeout
 
 Changelog
 ~~~~~~~~~

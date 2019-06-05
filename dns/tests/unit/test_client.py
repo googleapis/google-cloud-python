@@ -38,6 +38,7 @@ class TestClient(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
+        from google.api_core.client_info import ClientInfo
         from google.cloud.dns._http import Connection
 
         creds = _make_credentials()
@@ -46,6 +47,23 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(client._connection, Connection)
         self.assertIs(client._connection.credentials, creds)
         self.assertIs(client._connection.http, http)
+        self.assertIsInstance(client._connection._client_info, ClientInfo)
+
+    def test_ctor_w_client_info(self):
+        from google.api_core.client_info import ClientInfo
+        from google.cloud.dns._http import Connection
+
+        client_info = ClientInfo()
+
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, _http=http, client_info=client_info
+        )
+        self.assertIsInstance(client._connection, Connection)
+        self.assertIs(client._connection.credentials, creds)
+        self.assertIs(client._connection.http, http)
+        self.assertIs(client._connection._client_info, client_info)
 
     def test_quotas_defaults(self):
         PATH = "projects/%s" % (self.PROJECT,)

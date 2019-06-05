@@ -1,4 +1,4 @@
-.. include:: /../oslogin/README.rst
+.. include:: README.rst
 
 Api Reference
 -------------
@@ -7,4 +7,14 @@ Api Reference
 
     gapic/v1/api
     gapic/v1/types
+    changelog
+
+Changelog
+---------
+
+For all ``google-cloud-oslogin`` releases.
+
+.. toctree::
+    :maxdepth: 2
+
     changelog

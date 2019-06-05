@@ -4,6 +4,31 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+## 1.1.0
+
+05-13-2019 13:15 PDT
+
+### New Features
+- Add authorization headers and deadline for job attempts (via synth). ([#7938](https://github.com/googleapis/google-cloud-python/pull/7938))
+
+### Internal / Testing Changes
+- Add nox session `docs`, reorder methods (via synth). ([#7779](https://github.com/googleapis/google-cloud-python/pull/7779))
+
+## 1.0.0
+
+05-03-2019 10:04 PDT
+
+### Internal / Testing Changes
+- Add smoke test for scheduler. ([#7854](https://github.com/googleapis/google-cloud-python/pull/7854))
+
+## 0.3.0
+
+04-15-2019 10:32 PDT
+
+
+### New Features
+- add auth and configurable timeouts to v1beta1 (via synth). ([#7665](https://github.com/googleapis/google-cloud-python/pull/7665))
+
 ## 0.2.0
 
 04-01-2019 15:39 PDT

@@ -470,7 +470,7 @@ class Table(object):
         :returns: A :class:`.PartialRowData` for each row returned
         """
         warnings.warn(
-            "`yield_rows()` is depricated; use `red_rows()` instead",
+            "`yield_rows()` is deprecated; use `read_rows()` instead",
             DeprecationWarning,
             stacklevel=2,
         )

@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.websecurityscanner.v1alpha WebSecurityScanner API."""
 
 import functools
@@ -43,6 +44,7 @@ from google.cloud.websecurityscanner_v1alpha.proto import web_security_scanner_p
 from google.cloud.websecurityscanner_v1alpha.proto import web_security_scanner_pb2_grpc
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     "google-cloud-websecurityscanner"
@@ -84,6 +86,17 @@ class WebSecurityScannerClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
+    def finding_path(cls, project, scan_config, scan_run, finding):
+        """Return a fully-qualified finding string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/scanConfigs/{scan_config}/scanRuns/{scan_run}/findings/{finding}",
+            project=project,
+            scan_config=scan_config,
+            scan_run=scan_run,
+            finding=finding,
+        )
+
+    @classmethod
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
@@ -107,17 +120,6 @@ class WebSecurityScannerClient(object):
             project=project,
             scan_config=scan_config,
             scan_run=scan_run,
-        )
-
-    @classmethod
-    def finding_path(cls, project, scan_config, scan_run, finding):
-        """Return a fully-qualified finding string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/scanConfigs/{scan_config}/scanRuns/{scan_run}/findings/{finding}",
-            project=project,
-            scan_config=scan_config,
-            scan_run=scan_run,
-            finding=finding,
         )
 
     def __init__(

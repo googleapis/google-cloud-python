@@ -4,6 +4,36 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## 0.5.0
+
+05-20-2019 09:23 PDT
+
+### Implementation Changes
+
+- Increase default deadline on ReadRows. ([#8030](https://github.com/googleapis/google-cloud-python/pull/8030))
+- Respect timeout on `client.read_rows`. Don't resume on `DEADLINE_EXCEEDED` errors. ([#8025](https://github.com/googleapis/google-cloud-python/pull/8025))
+
+### Documentation
+
+- Use alabaster theme everwhere. ([#8021](https://github.com/googleapis/google-cloud-python/pull/8021))
+
+## 0.4.0
+
+04-16-2019 13:46 PDT
+
+### Implementation Changes
+
+- Remove gRPC size limit in the transport options ([#7664](https://github.com/googleapis/google-cloud-python/pull/7664))
+- Add retry params for create_read_session (via synth). ([#7658](https://github.com/googleapis/google-cloud-python/pull/7658))
+
+### New Features
+
+- Add page iterator to ReadRowsStream ([#7680](https://github.com/googleapis/google-cloud-python/pull/7680))
+
+### Internal / Testing Changes
+
+- Remove system test for split rows ([#7673](https://github.com/googleapis/google-cloud-python/pull/7673))
+
 ## 0.3.0
 
 04-02-2019 15:22 PDT

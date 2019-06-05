@@ -19,12 +19,10 @@ import sys
 
 from google.api_core.protobuf_helpers import get_messages
 
-from google.api import http_pb2
 from google.cloud.container_v1.proto import cluster_service_pb2
-from google.protobuf import descriptor_pb2
 from google.protobuf import empty_pb2
 
-_shared_modules = [http_pb2, descriptor_pb2, empty_pb2]
+_shared_modules = [empty_pb2]
 
 _local_modules = [cluster_service_pb2]
 

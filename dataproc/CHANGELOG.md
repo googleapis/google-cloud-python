@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## 0.4.0
+
+05-30-2019 05:52 PDT
+
+### Implementation Changes
+- Update docs/conf.py, add routing header to method metadata, fix docstrings (via synth). ([#7924](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7924))
+
+### New Features
+- Add new service features for v1, including autoscaling (via synth). ([#8152](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8152))
+- Add new service features for v1beta2, including autoscaling (via synth). ([#8119](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8119))
+
+### Documentation
+- Add nox session `docs` ([#7429](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7429))
+- Add clarifying comment to blacken nox target. ([#7388](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7388))
+
+### Internal / Testing Changes
+- Re-add import of 'operations.proto' to V1 'clusters.proto' (via synth). ([#8188](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8188))
+- Add empty lines (via synth). ([#8054](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8054))
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7535))
+- Copy lintified proto files (via synth). ([#7465](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7465))
+
 ## 0.3.1
 
 02-15-2019 12:36 PST

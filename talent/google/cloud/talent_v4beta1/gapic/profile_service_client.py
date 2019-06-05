@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.talent.v4beta1 ProfileService API."""
 
 import functools
@@ -23,6 +24,7 @@ from google.oauth2 import service_account
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
@@ -31,6 +33,10 @@ import grpc
 from google.cloud.talent_v4beta1.gapic import enums
 from google.cloud.talent_v4beta1.gapic import profile_service_client_config
 from google.cloud.talent_v4beta1.gapic.transports import profile_service_grpc_transport
+from google.cloud.talent_v4beta1.proto import application_pb2
+from google.cloud.talent_v4beta1.proto import application_service_pb2
+from google.cloud.talent_v4beta1.proto import application_service_pb2_grpc
+from google.cloud.talent_v4beta1.proto import batch_pb2
 from google.cloud.talent_v4beta1.proto import common_pb2
 from google.cloud.talent_v4beta1.proto import company_pb2
 from google.cloud.talent_v4beta1.proto import company_service_pb2
@@ -48,8 +54,10 @@ from google.cloud.talent_v4beta1.proto import job_service_pb2_grpc
 from google.cloud.talent_v4beta1.proto import profile_pb2
 from google.cloud.talent_v4beta1.proto import profile_service_pb2
 from google.cloud.talent_v4beta1.proto import profile_service_pb2_grpc
+from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-talent").version
 
@@ -88,13 +96,6 @@ class ProfileServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def tenant_path(cls, project, tenant):
-        """Return a fully-qualified tenant string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/tenants/{tenant}", project=project, tenant=tenant
-        )
-
-    @classmethod
     def profile_path(cls, project, tenant, profile):
         """Return a fully-qualified profile string."""
         return google.api_core.path_template.expand(
@@ -102,6 +103,13 @@ class ProfileServiceClient(object):
             project=project,
             tenant=tenant,
             profile=profile,
+        )
+
+    @classmethod
+    def tenant_path(cls, project, tenant):
+        """Return a fully-qualified tenant string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/tenants/{tenant}", project=project, tenant=tenant
         )
 
     def __init__(
@@ -207,7 +215,7 @@ class ProfileServiceClient(object):
         self,
         parent,
         page_size=None,
-        field_mask=None,
+        read_mask=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -248,7 +256,7 @@ class ProfileServiceClient(object):
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
-            field_mask (Union[dict, ~google.cloud.talent_v4beta1.types.FieldMask]): Optional.
+            read_mask (Union[dict, ~google.cloud.talent_v4beta1.types.FieldMask]): Optional.
 
                 A field mask to specify the profile fields to be listed in response. All
                 fields are listed if it is unset.
@@ -293,8 +301,21 @@ class ProfileServiceClient(object):
             )
 
         request = profile_service_pb2.ListProfilesRequest(
-            parent=parent, page_size=page_size, field_mask=field_mask
+            parent=parent, page_size=page_size, read_mask=read_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -379,6 +400,19 @@ class ProfileServiceClient(object):
         request = profile_service_pb2.CreateProfileRequest(
             parent=parent, profile=profile
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_profile"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -441,6 +475,19 @@ class ProfileServiceClient(object):
             )
 
         request = profile_service_pb2.GetProfileRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_profile"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -501,9 +548,9 @@ class ProfileServiceClient(object):
                 -  publications
                 -  patents
                 -  certifications
-                -  jobApplications
                 -  recruitingNotes
                 -  customAttributes
+                -  groupId
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.FieldMask`
@@ -540,6 +587,19 @@ class ProfileServiceClient(object):
         request = profile_service_pb2.UpdateProfileRequest(
             profile=profile, update_mask=update_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("profile.name", profile.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_profile"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -553,6 +613,8 @@ class ProfileServiceClient(object):
     ):
         """
         Deletes the specified profile.
+        Prerequisite: The profile has no associated applications or assignments
+        associated.
 
         Example:
             >>> from google.cloud import talent_v4beta1
@@ -599,6 +661,19 @@ class ProfileServiceClient(object):
             )
 
         request = profile_service_pb2.DeleteProfileRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_profile"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -704,18 +779,18 @@ class ProfileServiceClient(object):
 
                 -  "relevance desc": By descending relevance, as determined by the API
                    algorithms.
-                -  "update\_date desc": Sort by ``Profile.update_date`` in descending
+                -  "update\_time desc": Sort by ``Profile.update_time`` in descending
                    order (recently updated profiles first).
-                -  "create\_date desc": Sort by ``Profile.create_date`` in descending
+                -  "create\_time desc": Sort by ``Profile.create_time`` in descending
                    order (recently created profiles first).
-                -  "first\_name": Sort by ``PersonStrcuturedName.given_name`` in
-                   ascending order.
-                -  "first\_name desc": Sort by ``PersonStrcuturedName.given_name`` in
-                   descending order.
-                -  "last\_name": Sort by ``PersonStrcuturedName.family_name`` in
-                   ascending order.
-                -  "last\_name desc": Sort by ``PersonStrcuturedName.family_name`` in
-                   ascending order.
+                -  "first\_name": Sort by ``PersonName.PersonStructuredName.given_name``
+                   in ascending order.
+                -  "first\_name desc": Sort by
+                   ``PersonName.PersonStructuredName.given_name`` in descending order.
+                -  "last\_name": Sort by ``PersonName.PersonStructuredName.family_name``
+                   in ascending order.
+                -  "last\_name desc": Sort by
+                   ``PersonName.PersonStructuredName.family_name`` in ascending order.
             case_sensitive_sort (bool): Optional.
 
                 When sort by field is based on alphabetical order, sort values case
@@ -771,23 +846,18 @@ class ProfileServiceClient(object):
                 -  institution: The school name. For example, "MIT", "University of
                    California, Berkeley"
                 -  degree: Highest education degree in ISCED code. Each value in degree
-                   covers specific level of education, without any expansion to upper
+                   covers a specific level of education, without any expansion to upper
                    nor lower levels of education degree.
                 -  experience\_in\_months: experience in months. 0 means 0 month to 1
                    month (exclusive).
                 -  application\_date: The application date specifies application start
                    dates. See [ApplicationDateFilter\` for more details.
-                -  application\_outcome\_reason: The application outcome reason
-                   specifies the outcome reasons of job application. See
-                   ``ApplicationOutcomeReasonFilter`` for more details.
-                -  application\_last\_stage: The application last stage specifies the
-                   last stage of job application. See ``ApplicationLastStageFilter`` for
-                   more details.
+                -  application\_outcome\_notes: The application outcome reason specifies
+                   the reasons behind the outcome of the job application. See
+                   ``ApplicationOutcomeNotesFilter`` for more details.
                 -  application\_job\_title: The application job title specifies the job
                    applied for in the application. See ``ApplicationJobFilter`` for more
                    details.
-                -  application\_status: The application status specifies the status of
-                   job application. See ``ApplicationStatusFilter`` for more details.
                 -  hirable\_status: Hirable status specifies the profile's hirable
                    status.
                 -  string\_custom\_attribute: String custom attributes. Values can be
@@ -819,7 +889,7 @@ class ProfileServiceClient(object):
 
         Returns:
             A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.talent_v4beta1.types.HistogramQueryResult` instances.
+            is an iterable of :class:`~google.cloud.talent_v4beta1.types.SummarizedProfile` instances.
             This object can also be configured to iterate over the pages
             of the response through the `options` parameter.
 
@@ -852,6 +922,19 @@ class ProfileServiceClient(object):
             case_sensitive_sort=case_sensitive_sort,
             histogram_queries=histogram_queries,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -861,7 +944,7 @@ class ProfileServiceClient(object):
                 metadata=metadata,
             ),
             request=request,
-            items_field="histogram_query_results",
+            items_field="summarized_profiles",
             request_token_field="page_token",
             response_token_field="next_page_token",
         )

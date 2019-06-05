@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.bigtable.admin.v2 BigtableTableAdmin API."""
 
 import functools
@@ -49,6 +50,7 @@ from google.longrunning import operations_pb2
 from google.protobuf import duration_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-bigtable").version
 
@@ -90,15 +92,6 @@ class BigtableTableAdminClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def instance_path(cls, project, instance):
-        """Return a fully-qualified instance string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/instances/{instance}",
-            project=project,
-            instance=instance,
-        )
-
-    @classmethod
     def cluster_path(cls, project, instance, cluster):
         """Return a fully-qualified cluster string."""
         return google.api_core.path_template.expand(
@@ -106,6 +99,15 @@ class BigtableTableAdminClient(object):
             project=project,
             instance=instance,
             cluster=cluster,
+        )
+
+    @classmethod
+    def instance_path(cls, project, instance):
+        """Return a fully-qualified instance string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/instances/{instance}",
+            project=project,
+            instance=instance,
         )
 
     @classmethod
@@ -280,11 +282,11 @@ class BigtableTableAdminClient(object):
                    ``["apple", "customer_1", "customer_2", "other"]``
                 -  Key assignment:
 
-                   -  Tablet 1 ``[, apple)                => {"a"}.``
-                   -  Tablet 2 ``[apple, customer_1)      => {"apple", "custom"}.``
+                   -  Tablet 1 ``[, apple) => {"a"}.``
+                   -  Tablet 2 ``[apple, customer_1) => {"apple", "custom"}.``
                    -  Tablet 3 ``[customer_1, customer_2) => {"customer_1"}.``
-                   -  Tablet 4 ``[customer_2, other)      => {"customer_2"}.``
-                   -  Tablet 5 ``[other, )                => {"other", "zz"}.``
+                   -  Tablet 4 ``[customer_2, other) => {"customer_2"}.``
+                   -  Tablet 5 ``[other, ) => {"other", "zz"}.``
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigtable_admin_v2.types.Split`

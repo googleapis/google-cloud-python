@@ -351,228 +351,201 @@ class Test_Blob(unittest.TestCase):
         expected_url = "https://storage.googleapis.com/name/winter%20%E2%98%83"
         self.assertEqual(blob.public_url, expected_url)
 
-    def _basic_generate_signed_url_helper(self, credentials=None):
+    def test_generate_signed_url_w_invalid_version(self):
         BLOB_NAME = "blob-name"
         EXPIRATION = "2014-10-16T20:34:37.000Z"
         connection = _Connection()
         client = _Client(connection)
         bucket = _Bucket(client)
         blob = self._make_one(BLOB_NAME, bucket=bucket)
-        URI = (
-            "http://example.com/abucket/a-blob-name?Signature=DEADBEEF"
-            "&Expiration=2014-10-16T20:34:37.000Z"
-        )
+        with self.assertRaises(ValueError):
+            blob.generate_signed_url(EXPIRATION, version="nonesuch")
 
-        SIGNER = _Signer()
-        with mock.patch("google.cloud.storage.blob.generate_signed_url", new=SIGNER):
-            signed_uri = blob.generate_signed_url(EXPIRATION, credentials=credentials)
-            self.assertEqual(signed_uri, URI)
+    def _generate_signed_url_helper(
+        self,
+        version=None,
+        blob_name="blob-name",
+        api_access_endpoint=None,
+        method="GET",
+        content_md5=None,
+        content_type=None,
+        response_type=None,
+        response_disposition=None,
+        generation=None,
+        headers=None,
+        query_parameters=None,
+        credentials=None,
+        expiration=None,
+    ):
+        from six.moves.urllib import parse
+        from google.cloud._helpers import UTC
+        from google.cloud.storage.blob import _API_ACCESS_ENDPOINT
 
-        PATH = "/name/%s" % (BLOB_NAME,)
-        if credentials is None:
-            EXPECTED_ARGS = (_Connection.credentials,)
+        api_access_endpoint = api_access_endpoint or _API_ACCESS_ENDPOINT
+
+        delta = datetime.timedelta(hours=1)
+
+        if expiration is None:
+            expiration = datetime.datetime.utcnow().replace(tzinfo=UTC) + delta
+
+        connection = _Connection()
+        client = _Client(connection)
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+
+        if version is None:
+            effective_version = "v2"
         else:
-            EXPECTED_ARGS = (credentials,)
-        EXPECTED_KWARGS = {
-            "api_access_endpoint": "https://storage.googleapis.com",
-            "expiration": EXPIRATION,
-            "method": "GET",
-            "resource": PATH,
-            "content_type": None,
-            "response_type": None,
-            "response_disposition": None,
-            "generation": None,
-        }
-        self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
+            effective_version = version
 
-    def test_generate_signed_url_w_default_method(self):
-        self._basic_generate_signed_url_helper()
-
-    def test_generate_signed_url_w_content_type(self):
-        BLOB_NAME = "blob-name"
-        EXPIRATION = "2014-10-16T20:34:37.000Z"
-        connection = _Connection()
-        client = _Client(connection)
-        bucket = _Bucket(client)
-        blob = self._make_one(BLOB_NAME, bucket=bucket)
-        URI = (
-            "http://example.com/abucket/a-blob-name?Signature=DEADBEEF"
-            "&Expiration=2014-10-16T20:34:37.000Z"
+        to_patch = "google.cloud.storage.blob.generate_signed_url_{}".format(
+            effective_version
         )
 
-        SIGNER = _Signer()
-        CONTENT_TYPE = "text/html"
-        with mock.patch("google.cloud.storage.blob.generate_signed_url", new=SIGNER):
-            signed_url = blob.generate_signed_url(EXPIRATION, content_type=CONTENT_TYPE)
-            self.assertEqual(signed_url, URI)
+        with mock.patch(to_patch) as signer:
+            signed_uri = blob.generate_signed_url(
+                expiration=expiration,
+                api_access_endpoint=api_access_endpoint,
+                method=method,
+                credentials=credentials,
+                content_md5=content_md5,
+                content_type=content_type,
+                response_type=response_type,
+                response_disposition=response_disposition,
+                generation=generation,
+                headers=headers,
+                query_parameters=query_parameters,
+                version=version,
+            )
 
-        PATH = "/name/%s" % (BLOB_NAME,)
-        EXPECTED_ARGS = (_Connection.credentials,)
-        EXPECTED_KWARGS = {
-            "api_access_endpoint": "https://storage.googleapis.com",
-            "expiration": EXPIRATION,
-            "method": "GET",
-            "resource": PATH,
-            "content_type": CONTENT_TYPE,
-            "response_type": None,
-            "response_disposition": None,
-            "generation": None,
+        self.assertEqual(signed_uri, signer.return_value)
+
+        if credentials is None:
+            expected_creds = _Connection.credentials
+        else:
+            expected_creds = credentials
+
+        encoded_name = blob_name.encode("utf-8")
+        expected_resource = "/name/{}".format(parse.quote(encoded_name))
+        expected_kwargs = {
+            "resource": expected_resource,
+            "expiration": expiration,
+            "api_access_endpoint": api_access_endpoint,
+            "method": method.upper(),
+            "content_md5": content_md5,
+            "content_type": content_type,
+            "response_type": response_type,
+            "response_disposition": response_disposition,
+            "generation": generation,
+            "headers": headers,
+            "query_parameters": query_parameters,
         }
-        self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
+        signer.assert_called_once_with(expected_creds, **expected_kwargs)
 
-    def test_generate_signed_url_w_credentials(self):
-        credentials = object()
-        self._basic_generate_signed_url_helper(credentials=credentials)
+    def test_generate_signed_url_no_version_passed_warning(self):
+        self._generate_signed_url_helper()
 
-    def test_generate_signed_url_lowercase_method(self):
-        BLOB_NAME = "blob-name"
-        EXPIRATION = "2014-10-16T20:34:37.000Z"
-        connection = _Connection()
-        client = _Client(connection)
-        bucket = _Bucket(client)
-        blob = self._make_one(BLOB_NAME, bucket=bucket)
-        URI = (
-            u"http://example.com/abucket/a-blob-name?Signature=DEADBEEF"
-            u"&Expiration=2014-10-16T20:34:37.000Z"
-        )
+    def _generate_signed_url_v2_helper(self, **kw):
+        version = "v2"
+        self._generate_signed_url_helper(version, **kw)
 
-        SIGNER = _Signer()
-        with mock.patch("google.cloud.storage.blob.generate_signed_url", new=SIGNER):
-            signed_url = blob.generate_signed_url(EXPIRATION, method="get")
-            self.assertEqual(signed_url, URI)
+    def test_generate_signed_url_v2_w_defaults(self):
+        self._generate_signed_url_v2_helper()
 
-        PATH = "/name/%s" % (BLOB_NAME,)
-        EXPECTED_ARGS = (_Connection.credentials,)
-        EXPECTED_KWARGS = {
-            "api_access_endpoint": "https://storage.googleapis.com",
-            "expiration": EXPIRATION,
-            "method": "GET",
-            "resource": PATH,
-            "content_type": None,
-            "response_type": None,
-            "response_disposition": None,
-            "generation": None,
-        }
-        self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
+    def test_generate_signed_url_v2_w_expiration(self):
+        from google.cloud._helpers import UTC
 
-    def test_generate_signed_url_non_ascii(self):
+        expiration = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        self._generate_signed_url_v2_helper(expiration=expiration)
+
+    def test_generate_signed_url_v2_w_non_ascii_name(self):
         BLOB_NAME = u"\u0410\u043a\u043a\u043e\u0440\u0434\u044b.txt"
-        EXPIRATION = "2014-10-16T20:34:37.000Z"
-        connection = _Connection()
-        client = _Client(connection)
-        bucket = _Bucket(client)
-        blob = self._make_one(BLOB_NAME, bucket=bucket)
-        URI = (
-            u"http://example.com/abucket/a-blob-name?Signature=DEADBEEF"
-            u"&Expiration=2014-10-16T20:34:37.000Z"
-        )
+        self._generate_signed_url_v2_helper(blob_name=BLOB_NAME)
 
-        SIGNER = _Signer()
-        with mock.patch("google.cloud.storage.blob.generate_signed_url", new=SIGNER):
-            signed_url = blob.generate_signed_url(EXPIRATION)
-            self.assertEqual(signed_url, URI)
-
-        EXPECTED_ARGS = (_Connection.credentials,)
-        EXPECTED_KWARGS = {
-            "api_access_endpoint": "https://storage.googleapis.com",
-            "expiration": EXPIRATION,
-            "method": "GET",
-            "resource": "/name/%D0%90%D0%BA%D0%BA%D0%BE%D1%80%D0%B4%D1%8B.txt",
-            "content_type": None,
-            "response_type": None,
-            "response_disposition": None,
-            "generation": None,
-        }
-        self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
-
-    def test_generate_signed_url_w_slash_in_name(self):
+    def test_generate_signed_url_v2_w_slash_in_name(self):
         BLOB_NAME = "parent/child"
-        EXPIRATION = "2014-10-16T20:34:37.000Z"
-        connection = _Connection()
-        client = _Client(connection)
-        bucket = _Bucket(client)
-        blob = self._make_one(BLOB_NAME, bucket=bucket)
-        URI = (
-            "http://example.com/abucket/a-blob-name?Signature=DEADBEEF"
-            "&Expiration=2014-10-16T20:34:37.000Z"
+        self._generate_signed_url_v2_helper(blob_name=BLOB_NAME)
+
+    def test_generate_signed_url_v2_w_endpoint(self):
+        self._generate_signed_url_v2_helper(
+            api_access_endpoint="https://api.example.com/v1"
         )
 
-        SIGNER = _Signer()
-        with mock.patch("google.cloud.storage.blob.generate_signed_url", new=SIGNER):
-            signed_url = blob.generate_signed_url(EXPIRATION)
-            self.assertEqual(signed_url, URI)
+    def test_generate_signed_url_v2_w_method(self):
+        self._generate_signed_url_v2_helper(method="POST")
 
-        EXPECTED_ARGS = (_Connection.credentials,)
-        EXPECTED_KWARGS = {
-            "api_access_endpoint": "https://storage.googleapis.com",
-            "expiration": EXPIRATION,
-            "method": "GET",
-            "resource": "/name/parent/child",
-            "content_type": None,
-            "response_type": None,
-            "response_disposition": None,
-            "generation": None,
-        }
-        self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
+    def test_generate_signed_url_v2_w_lowercase_method(self):
+        self._generate_signed_url_v2_helper(method="get")
 
-    def test_generate_signed_url_w_method_arg(self):
-        BLOB_NAME = "blob-name"
-        EXPIRATION = "2014-10-16T20:34:37.000Z"
-        connection = _Connection()
-        client = _Client(connection)
-        bucket = _Bucket(client)
-        blob = self._make_one(BLOB_NAME, bucket=bucket)
-        URI = (
-            "http://example.com/abucket/a-blob-name?Signature=DEADBEEF"
-            "&Expiration=2014-10-16T20:34:37.000Z"
+    def test_generate_signed_url_v2_w_content_md5(self):
+        self._generate_signed_url_v2_helper(content_md5="FACEDACE")
+
+    def test_generate_signed_url_v2_w_content_type(self):
+        self._generate_signed_url_v2_helper(content_type="text.html")
+
+    def test_generate_signed_url_v2_w_response_type(self):
+        self._generate_signed_url_v2_helper(response_type="text.html")
+
+    def test_generate_signed_url_v2_w_response_disposition(self):
+        self._generate_signed_url_v2_helper(response_disposition="inline")
+
+    def test_generate_signed_url_v2_w_generation(self):
+        self._generate_signed_url_v2_helper(generation=12345)
+
+    def test_generate_signed_url_v2_w_headers(self):
+        self._generate_signed_url_v2_helper(headers={"x-goog-foo": "bar"})
+
+    def test_generate_signed_url_v2_w_credentials(self):
+        credentials = object()
+        self._generate_signed_url_v2_helper(credentials=credentials)
+
+    def _generate_signed_url_v4_helper(self, **kw):
+        version = "v4"
+        self._generate_signed_url_helper(version, **kw)
+
+    def test_generate_signed_url_v4_w_defaults(self):
+        self._generate_signed_url_v4_helper()
+
+    def test_generate_signed_url_v4_w_non_ascii_name(self):
+        BLOB_NAME = u"\u0410\u043a\u043a\u043e\u0440\u0434\u044b.txt"
+        self._generate_signed_url_v4_helper(blob_name=BLOB_NAME)
+
+    def test_generate_signed_url_v4_w_slash_in_name(self):
+        BLOB_NAME = "parent/child"
+        self._generate_signed_url_v4_helper(blob_name=BLOB_NAME)
+
+    def test_generate_signed_url_v4_w_endpoint(self):
+        self._generate_signed_url_v4_helper(
+            api_access_endpoint="https://api.example.com/v1"
         )
 
-        SIGNER = _Signer()
-        with mock.patch("google.cloud.storage.blob.generate_signed_url", new=SIGNER):
-            signed_uri = blob.generate_signed_url(EXPIRATION, method="POST")
-            self.assertEqual(signed_uri, URI)
+    def test_generate_signed_url_v4_w_method(self):
+        self._generate_signed_url_v4_helper(method="POST")
 
-        PATH = "/name/%s" % (BLOB_NAME,)
-        EXPECTED_ARGS = (_Connection.credentials,)
-        EXPECTED_KWARGS = {
-            "api_access_endpoint": "https://storage.googleapis.com",
-            "expiration": EXPIRATION,
-            "method": "POST",
-            "resource": PATH,
-            "content_type": None,
-            "response_type": None,
-            "response_disposition": None,
-            "generation": None,
-        }
-        self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
+    def test_generate_signed_url_v4_w_lowercase_method(self):
+        self._generate_signed_url_v4_helper(method="get")
 
-    @mock.patch(
-        "google.cloud.storage._signing.get_signed_query_params",
-        return_value={
-            "GoogleAccessId": "service-account-name",
-            "Expires": 12345,
-            "Signature": "signed-data",
-        },
-    )
-    def test_generate_resumable_signed_url(self, mock_get_signed_query_params):
-        """
-        Verify correct behavior of resumable upload URL generation
-        """
-        from google.cloud.storage._signing import get_expiration_seconds
-        from google.cloud.storage._signing import generate_signed_url
+    def test_generate_signed_url_v4_w_content_md5(self):
+        self._generate_signed_url_v4_helper(content_md5="FACEDACE")
 
-        expiry = get_expiration_seconds(datetime.timedelta(hours=1))
+    def test_generate_signed_url_v4_w_content_type(self):
+        self._generate_signed_url_v4_helper(content_type="text.html")
 
-        signed_url = generate_signed_url(
-            _make_credentials(), "a-bucket", expiry, method="RESUMABLE"
-        )
+    def test_generate_signed_url_v4_w_response_type(self):
+        self._generate_signed_url_v4_helper(response_type="text.html")
 
-        self.assertTrue(mock_get_signed_query_params.called)
-        self.assertGreater(len(signed_url), 0)
-        self.assertIn("a-bucket", signed_url)
-        self.assertIn("GoogleAccessId", signed_url)
-        self.assertIn("Expires", signed_url)
-        self.assertIn("Signature", signed_url)
+    def test_generate_signed_url_v4_w_response_disposition(self):
+        self._generate_signed_url_v4_helper(response_disposition="inline")
+
+    def test_generate_signed_url_v4_w_generation(self):
+        self._generate_signed_url_v4_helper(generation=12345)
+
+    def test_generate_signed_url_v4_w_headers(self):
+        self._generate_signed_url_v4_helper(headers={"x-goog-foo": "bar"})
+
+    def test_generate_signed_url_v4_w_credentials(self):
+        credentials = object()
+        self._generate_signed_url_v4_helper(credentials=credentials)
 
     def test_exists_miss(self):
         NONESUCH = "nonesuch"
@@ -3302,18 +3275,6 @@ class _Bucket(object):
     def delete_blob(self, blob_name, client=None, generation=None):
         del self._blobs[blob_name]
         self._deleted.append((blob_name, client, generation))
-
-
-class _Signer(object):
-    def __init__(self):
-        self._signed = []
-
-    def __call__(self, *args, **kwargs):
-        self._signed.append((args, kwargs))
-        return (
-            "http://example.com/abucket/a-blob-name?Signature=DEADBEEF"
-            "&Expiration=%s" % kwargs.get("expiration")
-        )
 
 
 class _Client(object):

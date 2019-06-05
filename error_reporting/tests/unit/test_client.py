@@ -53,26 +53,72 @@ class TestClient(unittest.TestCase):
         return positional[0]
 
     @mock.patch("google.cloud.client._determine_default_project")
-    def test_ctor_default(self, default_mock):
+    def test_ctor_defaults(self, default_mock):
+        from google.api_core.client_info import ClientInfo
+
         credentials = _make_credentials()
         default_mock.return_value = "foo"
         client = self._make_one(credentials=credentials)
         self.assertEqual(client.service, client.DEFAULT_SERVICE)
         self.assertEqual(client.version, None)
+        self.assertIsInstance(client._client_info, ClientInfo)
         default_mock.assert_called_once_with(None)
 
-    def test_ctor_params(self):
+    def test_ctor_explicit(self):
         credentials = _make_credentials()
+        client_info = mock.Mock()
         client = self._make_one(
             project=self.PROJECT,
             credentials=credentials,
             service=self.SERVICE,
             version=self.VERSION,
+            client_info=client_info,
         )
         self.assertEqual(client.service, self.SERVICE)
         self.assertEqual(client.version, self.VERSION)
+        self.assertIs(client._client_info, client_info)
 
-    def test_report_exception_with_gax(self):
+    def test_report_errors_api_already(self):
+        credentials = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=credentials)
+        client._report_errors_api = already = mock.Mock()
+        self.assertIs(client.report_errors_api, already)
+
+    def test_report_errors_api_wo_grpc(self):
+        credentials = _make_credentials()
+        client_info = mock.Mock()
+        http = mock.Mock()
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=credentials,
+            client_info=client_info,
+            _http=http,
+            _use_grpc=False,
+        )
+        patch = mock.patch(
+            "google.cloud.error_reporting.client._ErrorReportingLoggingAPI"
+        )
+
+        with patch as patched:
+            api = client.report_errors_api
+
+        self.assertIs(api, patched.return_value)
+        patched.assert_called_once_with(self.PROJECT, credentials, http, client_info)
+
+    def test_report_errors_api_w_grpc(self):
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, _use_grpc=True
+        )
+        patch = mock.patch("google.cloud.error_reporting.client.make_report_error_api")
+
+        with patch as patched:
+            api = client.report_errors_api
+
+        self.assertIs(api, patched.return_value)
+        patched.assert_called_once_with(client)
+
+    def test_report_exception_with_grpc(self):
         credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
 
@@ -89,7 +135,7 @@ class TestClient(unittest.TestCase):
         self.assertIn("test_report", payload["message"])
         self.assertIn("test_client.py", payload["message"])
 
-    def test_report_exception_wo_gax(self):
+    def test_report_exception_wo_grpc(self):
         credentials = _make_credentials()
         client = self._make_one(
             project=self.PROJECT, credentials=credentials, _use_grpc=False

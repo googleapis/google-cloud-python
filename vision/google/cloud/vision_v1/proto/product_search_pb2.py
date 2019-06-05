@@ -394,15 +394,22 @@ ProductSearchParams = _reflection.GeneratedProtocolMessageType(
           s/LOC_ID/productSets/PRODUCT_SET_ID``.
       product_categories:
           The list of product categories to search in. Currently, we
-          only consider the first category, and either "homegoods",
-          "apparel", or "toys" should be specified.
+          only consider the first category, and either "homegoods-v2",
+          "apparel-v2", or "toys-v2" should be specified. The legacy
+          categories "homegoods", "apparel", and "toys" are still
+          supported but will be deprecated. For new products, please use
+          "homegoods-v2", "apparel-v2", or "toys-v2" for better product
+          search accuracy. It is recommended to migrate existing
+          products to these categories as well.
       filter:
           The filtering expression. This can be used to restrict search
           results based on Product labels. We currently support an AND
           of OR of key-value expressions, where each expression within
-          an OR must have the same key.  For example, "(color = red OR
-          color = blue) AND brand = Google" is acceptable, but not
-          "(color = red OR brand = Google)" or "color: red".
+          an OR must have the same key. An '=' should be used to connect
+          the key and value.  For example, "(color = red OR color =
+          blue) AND brand = Google" is acceptable, but "(color = red OR
+          brand = Google)" is not acceptable. "color: red" is not
+          acceptable because it uses a ':' instead of an '='.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.ProductSearchParams)
     ),
@@ -462,8 +469,9 @@ ProductSearchResults = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       index_time:
-          Timestamp of the index which provided these results. Changes
-          made after this time are not reflected in the current results.
+          Timestamp of the index which provided these results. Products
+          added to the product set and products removed from the product
+          set after this time are not reflected in the current results.
       results:
           List of results, one for each product match.
       product_grouped_results:

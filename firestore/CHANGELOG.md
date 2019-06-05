@@ -5,6 +5,37 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## 1.2.0
+
+05-16-2019 12:25 PDT
+
+
+### New Features
+- Add support for numeric transforms: `increment` / `maximum` / `minimum`. ([#7989](https://github.com/googleapis/google-cloud-python/pull/7989))
+- Add `client_info` support to V1 client. ([#7877](https://github.com/googleapis/google-cloud-python/pull/7877)) and ([#7898](https://github.com/googleapis/google-cloud-python/pull/7898))
+
+### Dependencies
+- Pin `google-cloud-core >= 1.0.0, < 2.0dev`. ([#7993](https://github.com/googleapis/google-cloud-python/pull/7993))
+
+### Internal / Testing Changes
+- Add nox session `docs`,  add routing header to method metadata, reorder methods (via synth).. ([#7771](https://github.com/googleapis/google-cloud-python/pull/7771))
+
+## 1.1.0
+
+04-30-2019 12:29 PDT
+
+
+### New Features
+- Add support for CollectionGroup queries. ([#7758](https://github.com/googleapis/google-cloud-python/pull/7758))
+
+## 1.0.0
+
+04-30-2019 10:00 PDT
+
+### Implementation Changes
+- Use parent path for watch on queries. ([#7752](https://github.com/googleapis/google-cloud-python/pull/7752))
+- Add routing header to method metadata (via synth). ([#7749](https://github.com/googleapis/google-cloud-python/pull/7749))
+
 ## 0.32.1
 
 04-05-2019 10:51 PDT

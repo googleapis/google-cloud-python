@@ -65,6 +65,9 @@ for version in versions:
         f"class ImageAnnotatorClient(VisionHelpers, iac.ImageAnnotatorClient):",
     )
 
+# Move docs configuration
+s.move(library / f"docs/conf.py")
+
 # Fix import of operations
 targets = ["google/cloud/vision_*/**/*.py", "tests/system/gapic/*/**/*.py"]
 s.replace(

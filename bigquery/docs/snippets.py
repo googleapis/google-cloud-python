@@ -1908,8 +1908,7 @@ def test_client_query_total_rows(client, capsys):
         location="US",
     )  # API request - starts the query
 
-    results = query_job.result()  # Waits for query to complete.
-    next(iter(results))  # Fetch the first page of results, which contains total_rows.
+    results = query_job.result()  # Wait for query to complete.
     print("Got {} rows.".format(results.total_rows))
     # [END bigquery_query_total_rows]
 

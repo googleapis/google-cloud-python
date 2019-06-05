@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.vision.v1p4beta1 ProductSearch API."""
 
 import functools
@@ -39,6 +40,7 @@ from google.cloud.vision_v1p4beta1.proto import product_search_service_pb2_grpc
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-vision").version
 
@@ -98,16 +100,6 @@ class ProductSearchClient(object):
         )
 
     @classmethod
-    def product_set_path(cls, project, location, product_set):
-        """Return a fully-qualified product_set string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}/productSets/{product_set}",
-            project=project,
-            location=location,
-            product_set=product_set,
-        )
-
-    @classmethod
     def product_path(cls, project, location, product):
         """Return a fully-qualified product string."""
         return google.api_core.path_template.expand(
@@ -115,6 +107,16 @@ class ProductSearchClient(object):
             project=project,
             location=location,
             product=product,
+        )
+
+    @classmethod
+    def product_set_path(cls, project, location, product_set):
+        """Return a fully-qualified product_set string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}/productSets/{product_set}",
+            project=project,
+            location=location,
+            product_set=product_set,
         )
 
     @classmethod

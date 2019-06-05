@@ -2,7 +2,7 @@ config = {
     "interfaces": {
         "google.spanner.v1.Spanner": {
             "retry_codes": {
-                "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
+                "idempotent": ["UNAVAILABLE"],
                 "non_idempotent": [],
                 "long_running": ["UNAVAILABLE"],
             },

@@ -23,7 +23,10 @@ name = "google-cloud-irm"
 description = "Stackdriver Incident Response & Managment API client library"
 version = "0.1.0"
 release_status = "Development Status :: 3 - Alpha"
-dependencies = ["google-api-core[grpc] >= 1.6.0, < 2.0.0dev", "google-cloud-monitoring >= 0.31.1, < 0.32dev"]
+dependencies = [
+    "google-api-core[grpc] >= 1.6.0, < 2.0.0dev",
+    "google-cloud-monitoring >= 0.31.1, < 0.32dev",
+]
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 

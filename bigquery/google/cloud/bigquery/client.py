@@ -23,10 +23,17 @@ except ImportError:  # Python 2.7
 
 import functools
 import gzip
+import io
+import json
 import os
 import tempfile
 import uuid
+import warnings
 
+try:
+    import pyarrow
+except ImportError:  # pragma: NO COVER
+    pyarrow = None
 import six
 
 from google import resumable_media
@@ -42,6 +49,7 @@ from google.cloud.client import ClientWithProject
 from google.cloud.bigquery._helpers import _record_field_to_json
 from google.cloud.bigquery._helpers import _str_or_none
 from google.cloud.bigquery._http import Connection
+from google.cloud.bigquery import _pandas_helpers
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetListItem
 from google.cloud.bigquery.dataset import DatasetReference
@@ -50,6 +58,7 @@ from google.cloud.bigquery.model import Model
 from google.cloud.bigquery.model import ModelReference
 from google.cloud.bigquery.query import _QueryResults
 from google.cloud.bigquery.retry import DEFAULT_RETRY
+from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import _table_arg_to_table
 from google.cloud.bigquery.table import _table_arg_to_table_ref
 from google.cloud.bigquery.table import Table
@@ -125,6 +134,11 @@ class Client(ClientWithProject):
         default_query_job_config (google.cloud.bigquery.job.QueryJobConfig):
             (Optional) Default ``QueryJobConfig``.
             Will be merged into job configs passed into the ``query`` method.
+        client_info (google.api_core.client_info.ClientInfo):
+            The client info used to send a user-agent string along with API
+            requests. If ``None``, then default info will be used. Generally,
+            you only need to set this if you're developing your own library
+            or partner tool.
 
     Raises:
         google.auth.exceptions.DefaultCredentialsError:
@@ -145,11 +159,12 @@ class Client(ClientWithProject):
         _http=None,
         location=None,
         default_query_job_config=None,
+        client_info=None,
     ):
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http
         )
-        self._connection = Connection(self)
+        self._connection = Connection(self, client_info=client_info)
         self._location = location
         self._default_query_job_config = default_query_job_config
 
@@ -1262,8 +1277,15 @@ class Client(ClientWithProject):
             project (str, optional):
                 Project ID of the project of where to run the job. Defaults
                 to the client's project.
-            job_config (google.cloud.bigquery.job.LoadJobConfig, optional):
+            job_config (~google.cloud.bigquery.job.LoadJobConfig, optional):
                 Extra configuration options for the job.
+
+                To override the default pandas data type conversions, supply
+                a value for
+                :attr:`~google.cloud.bigquery.job.LoadJobConfig.schema` with
+                column names matching those of the dataframe. The BigQuery
+                schema is used to determine the correct data type conversion.
+                Indexes are not loaded. Requires the :mod:`pyarrow` library.
 
         Returns:
             google.cloud.bigquery.job.LoadJob: A new load job.
@@ -1287,7 +1309,18 @@ class Client(ClientWithProject):
         os.close(tmpfd)
 
         try:
-            dataframe.to_parquet(tmppath)
+            if pyarrow and job_config.schema:
+                _pandas_helpers.to_parquet(dataframe, job_config.schema, tmppath)
+            else:
+                if job_config.schema:
+                    warnings.warn(
+                        "job_config.schema is set, but not used to assist in "
+                        "identifying correct types for data serialization. "
+                        "Please install the pyarrow package.",
+                        PendingDeprecationWarning,
+                        stacklevel=2,
+                    )
+                dataframe.to_parquet(tmppath)
 
             with open(tmppath, "rb") as parquet_file:
                 return self.load_table_from_file(
@@ -1354,7 +1387,7 @@ class Client(ClientWithProject):
         """
         chunk_size = _DEFAULT_CHUNKSIZE
         transport = self._http
-        headers = _get_upload_headers(self._connection.USER_AGENT)
+        headers = _get_upload_headers(self._connection.user_agent)
         upload_url = _RESUMABLE_URL_TEMPLATE.format(project=self.project)
         # TODO: modify ResumableUpload to take a retry.Retry object
         # that it can use for the initial RPC.
@@ -1400,7 +1433,7 @@ class Client(ClientWithProject):
             msg = _READ_LESS_THAN_SIZE.format(size, len(data))
             raise ValueError(msg)
 
-        headers = _get_upload_headers(self._connection.USER_AGENT)
+        headers = _get_upload_headers(self._connection.user_agent)
 
         upload_url = _MULTIPART_URL_TEMPLATE.format(project=self.project)
         upload = MultipartUpload(upload_url, headers=headers)
@@ -1928,6 +1961,50 @@ class Client(ClientWithProject):
             selected_fields=selected_fields,
         )
         return row_iterator
+
+    def _schema_from_json_file_object(self, file_obj):
+        """Helper function for schema_from_json that takes a
+       file object that describes a table schema.
+
+       Returns:
+            List of schema field objects.
+        """
+        json_data = json.load(file_obj)
+        return [SchemaField.from_api_repr(field) for field in json_data]
+
+    def _schema_to_json_file_object(self, schema_list, file_obj):
+        """Helper function for schema_to_json that takes a schema list and file
+        object and writes the schema list to the file object with json.dump
+        """
+        json.dump(schema_list, file_obj, indent=2, sort_keys=True)
+
+    def schema_from_json(self, file_or_path):
+        """Takes a file object or file path that contains json that describes
+        a table schema.
+
+        Returns:
+            List of schema field objects.
+        """
+        if isinstance(file_or_path, io.IOBase):
+            return self._schema_from_json_file_object(file_or_path)
+
+        with open(file_or_path) as file_obj:
+            return self._schema_from_json_file_object(file_obj)
+
+    def schema_to_json(self, schema_list, destination):
+        """Takes a list of schema field objects.
+
+        Serializes the list of schema field objects as json to a file.
+
+        Destination is a file path or a file object.
+        """
+        json_schema_list = [f.to_api_repr() for f in schema_list]
+
+        if isinstance(destination, io.IOBase):
+            return self._schema_to_json_file_object(json_schema_list, destination)
+
+        with open(destination, mode="w") as file_obj:
+            return self._schema_to_json_file_object(json_schema_list, file_obj)
 
 
 # pylint: disable=unused-argument

@@ -13,9 +13,29 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Wrappers for protocol buffer enum types."""
 
 import enum
+
+
+class Component(enum.IntEnum):
+    """
+    Cluster components that can be activated.
+
+    Attributes:
+      COMPONENT_UNSPECIFIED (int): Unspecified component.
+      ANACONDA (int): The Anaconda python distribution.
+      HIVE_WEBHCAT (int): The Hive Web HCatalog (the REST service for accessing HCatalog).
+      JUPYTER (int): The Jupyter Notebook.
+      ZEPPELIN (int): The Zeppelin notebook.
+    """
+
+    COMPONENT_UNSPECIFIED = 0
+    ANACONDA = 5
+    HIVE_WEBHCAT = 3
+    JUPYTER = 1
+    ZEPPELIN = 4
 
 
 class ClusterOperationStatus(object):

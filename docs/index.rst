@@ -10,6 +10,7 @@
   BigQuery Storage <bigquery_storage/index>
   Bigtable <bigtable/index>
   Container <container/index>
+  Data Catalog <datacatalog/index>
   Data Labeling <datalabeling/index>
   Data Loss Prevention <dlp/index>
   Dataproc <dataproc/index>
@@ -42,6 +43,7 @@
   Translate <translate/index>
   Video Intelligence <videointelligence/index>
   Vision <vision/index>
+  Web Risk <webrisk/index>
   Release History <releases>
 
 Google Cloud Client Library for Python

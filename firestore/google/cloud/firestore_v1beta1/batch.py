@@ -22,8 +22,9 @@ class WriteBatch(object):
     """Accumulate write operations to be sent in a batch.
 
     This has the same set of methods for write operations that
-    :class:`~.firestore_v1beta1.document.DocumentReference` does,
-    e.g. :meth:`~.firestore_v1beta1.document.DocumentReference.create`.
+    :class:`~google.cloud.firestore_v1beta1.document.DocumentReference`
+    does, e.g.
+    :meth:`~google.cloud.firestore_v1beta1.document.DocumentReference.create`.
 
     Args:
         client (~.firestore_v1beta1.client.Client): The client that
@@ -66,8 +67,8 @@ class WriteBatch(object):
         """Add a "change" to replace a document.
 
         See
-        :meth:`~.firestore_v1beta1.document.DocumentReference.set` for
-        more information on how ``option`` determines how the change is
+        :meth:`~google.cloud.firestore_v1beta1.document.DocumentReference.set`
+        for more information on how ``option`` determines how the change is
         applied.
 
         Args:
@@ -94,8 +95,8 @@ class WriteBatch(object):
         """Add a "change" to update a document.
 
         See
-        :meth:`~.firestore_v1beta1.document.DocumentReference.update` for
-        more information on ``field_updates`` and ``option``.
+        :meth:`~google.cloud.firestore_v1beta1.document.DocumentReference.update`
+        for more information on ``field_updates`` and ``option``.
 
         Args:
             reference (~.firestore_v1beta1.document.DocumentReference): A
@@ -117,8 +118,8 @@ class WriteBatch(object):
         """Add a "change" to delete a document.
 
         See
-        :meth:`~.firestore_v1beta1.document.DocumentReference.delete` for
-        more information on how ``option`` determines how the change is
+        :meth:`~google.cloud.firestore_v1beta1.document.DocumentReference.delete`
+        for more information on how ``option`` determines how the change is
         applied.
 
         Args:

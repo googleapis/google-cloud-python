@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 from __future__ import absolute_import
 import sys
 
@@ -29,6 +30,7 @@ from google.rpc import status_pb2
 from google.type import color_pb2
 from google.type import latlng_pb2
 
+
 _shared_modules = [any_pb2, wrappers_pb2, status_pb2, color_pb2, latlng_pb2]
 
 _local_modules = [
@@ -40,7 +42,7 @@ _local_modules = [
 
 names = []
 
-for module in _shared_modules:
+for module in _shared_modules:  # pragma: NO COVER
     for name, message in get_messages(module).items():
         setattr(sys.modules[__name__], name, message)
         names.append(name)
@@ -49,5 +51,6 @@ for module in _local_modules:
         message.__module__ = "google.cloud.vision_v1p1beta1.types"
         setattr(sys.modules[__name__], name, message)
         names.append(name)
+
 
 __all__ = tuple(sorted(names))

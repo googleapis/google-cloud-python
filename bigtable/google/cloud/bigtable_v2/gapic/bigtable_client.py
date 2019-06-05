@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.bigtable.v2 Bigtable API."""
 
 import pkg_resources
@@ -32,6 +33,7 @@ from google.cloud.bigtable_v2.gapic.transports import bigtable_grpc_transport
 from google.cloud.bigtable_v2.proto import bigtable_pb2
 from google.cloud.bigtable_v2.proto import bigtable_pb2_grpc
 from google.cloud.bigtable_v2.proto import data_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-bigtable").version
 

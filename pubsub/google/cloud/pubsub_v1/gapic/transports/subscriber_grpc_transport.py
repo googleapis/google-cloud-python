@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 import google.api_core.grpc_helpers
 
 from google.cloud.pubsub_v1.proto import pubsub_pb2_grpc
@@ -278,10 +279,7 @@ class SubscriberGrpcTransport(object):
         operations, which allow
         you to manage message acknowledgments in bulk. That is, you can set the
         acknowledgment state of messages in an existing subscription to the state
-        captured by a snapshot.<br><br>
-        <b>BETA:</b> This feature is part of a beta release. This API might be
-        changed in backward-incompatible ways and is not recommended for production
-        use. It is not subject to any SLA or deprecation policy.
+        captured by a snapshot.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -297,15 +295,12 @@ class SubscriberGrpcTransport(object):
         Creates a snapshot from the requested subscription. Snapshots are used
         in Seek operations, which allow you to manage message acknowledgments in
         bulk. That is, you can set the acknowledgment state of messages in an
-        existing subscription to the state captured by a snapshot. BETA: This
-        feature is part of a beta release. This API might be changed in
-        backward-incompatible ways and is not recommended for production use. It
-        is not subject to any SLA or deprecation policy. If the snapshot already
-        exists, returns ``ALREADY_EXISTS``. If the requested subscription
-        doesn't exist, returns ``NOT_FOUND``. If the backlog in the subscription
-        is too old -- and the resulting snapshot would expire in less than 1
-        hour -- then ``FAILED_PRECONDITION`` is returned. See also the
-        ``Snapshot.expire_time`` field. If the name is not provided in the
+        existing subscription to the state captured by a snapshot. If the
+        snapshot already exists, returns ``ALREADY_EXISTS``. If the requested
+        subscription doesn't exist, returns ``NOT_FOUND``. If the backlog in the
+        subscription is too old -- and the resulting snapshot would expire in
+        less than 1 hour -- then ``FAILED_PRECONDITION`` is returned. See also
+        the ``Snapshot.expire_time`` field. If the name is not provided in the
         request, the server will assign a random name for this snapshot on the
         same project as the subscription, conforming to the `resource name
         format <https://cloud.google.com/pubsub/docs/admin#resource_names>`__.
@@ -328,11 +323,7 @@ class SubscriberGrpcTransport(object):
         operations, which allow
         you to manage message acknowledgments in bulk. That is, you can set the
         acknowledgment state of messages in an existing subscription to the state
-        captured by a snapshot.<br><br>
-        <b>BETA:</b> This feature is part of a beta release. This API might be
-        changed in backward-incompatible ways and is not recommended for production
-        use. It is not subject to any SLA or deprecation policy.
-        Note that certain properties of a snapshot are not modifiable.
+        captured by a snapshot.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -351,9 +342,6 @@ class SubscriberGrpcTransport(object):
         you to manage message acknowledgments in bulk. That is, you can set the
         acknowledgment state of messages in an existing subscription to the state
         captured by a snapshot.<br><br>
-        <b>BETA:</b> This feature is part of a beta release. This API might be
-        changed in backward-incompatible ways and is not recommended for production
-        use. It is not subject to any SLA or deprecation policy.
         When the snapshot is deleted, all messages retained in the snapshot
         are immediately dropped. After a snapshot is deleted, a new one may be
         created with the same name, but the new one has no association with the old
@@ -377,10 +365,7 @@ class SubscriberGrpcTransport(object):
         you to manage message acknowledgments in bulk. That is, you can set the
         acknowledgment state of messages in an existing subscription to the state
         captured by a snapshot. Note that both the subscription and the snapshot
-        must be on the same topic.<br><br>
-        <b>BETA:</b> This feature is part of a beta release. This API might be
-        changed in backward-incompatible ways and is not recommended for production
-        use. It is not subject to any SLA or deprecation policy.
+        must be on the same topic.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -425,6 +410,10 @@ class SubscriberGrpcTransport(object):
         Returns permissions that a caller has on the specified resource. If the
         resource does not exist, this will return an empty set of permissions,
         not a NOT\_FOUND error.
+
+        Note: This operation is designed to be used for building
+        permission-aware UIs and command-line tools, not for authorization
+        checking. This operation may "fail open" without warning.
 
         Returns:
             Callable: A callable which accepts the appropriate

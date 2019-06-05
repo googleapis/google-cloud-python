@@ -30,6 +30,9 @@ from google.cloud.firestore_v1.collection import CollectionReference
 from google.cloud.firestore_v1.transforms import ArrayRemove
 from google.cloud.firestore_v1.transforms import ArrayUnion
 from google.cloud.firestore_v1.transforms import DELETE_FIELD
+from google.cloud.firestore_v1.transforms import Increment
+from google.cloud.firestore_v1.transforms import Maximum
+from google.cloud.firestore_v1.transforms import Minimum
 from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
 from google.cloud.firestore_v1.document import DocumentReference
 from google.cloud.firestore_v1.document import DocumentSnapshot
@@ -52,7 +55,10 @@ __all__ = [
     "enums",
     "ExistsOption",
     "GeoPoint",
+    "Increment",
     "LastUpdateOption",
+    "Maximum",
+    "Minimum",
     "Query",
     "ReadAfterWriteError",
     "SERVER_TIMESTAMP",

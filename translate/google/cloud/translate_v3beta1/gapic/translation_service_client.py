@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.translation.v3beta1 TranslationService API."""
 
 import functools
@@ -39,6 +40,7 @@ from google.cloud.translate_v3beta1.gapic.transports import (
 from google.cloud.translate_v3beta1.proto import translation_service_pb2
 from google.cloud.translate_v3beta1.proto import translation_service_pb2_grpc
 from google.longrunning import operations_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     "google-cloud-translate"
@@ -76,15 +78,6 @@ class TranslationServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def location_path(cls, project, location):
-        """Return a fully-qualified location string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}",
-            project=project,
-            location=location,
-        )
-
-    @classmethod
     def glossary_path(cls, project, location, glossary):
         """Return a fully-qualified glossary string."""
         return google.api_core.path_template.expand(
@@ -92,6 +85,15 @@ class TranslationServiceClient(object):
             project=project,
             location=location,
             glossary=glossary,
+        )
+
+    @classmethod
+    def location_path(cls, project, location):
+        """Return a fully-qualified location string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}",
+            project=project,
+            location=location,
         )
 
     def __init__(

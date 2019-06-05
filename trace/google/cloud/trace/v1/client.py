@@ -14,9 +14,14 @@
 
 """Client for interacting with the Stackdriver Trace API."""
 
-from google.cloud.trace.v1._gapic import make_trace_api
-from google.cloud.client import ClientWithProject
+from google.api_core.gapic_v1 import client_info
 from google.cloud._helpers import _datetime_to_pb_timestamp
+from google.cloud.client import ClientWithProject
+from google.cloud.trace import __version__
+from google.cloud.trace.v1._gapic import make_trace_api
+
+
+_CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
 
 
 class Client(ClientWithProject):
@@ -27,11 +32,15 @@ class Client(ClientWithProject):
         project (str): Required. The project which the client acts on behalf
             of. If not passed, falls back to the default inferred
             from the environment.
-
         credentials (Optional[~google.auth.credentials.Credentials]):
             The OAuth2 Credentials to use for this client. If not
             passed, falls back to the default inferred from the
             environment.
+        client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+            The client info used to send a user-agent string along with API
+            requests. If ``None``, then default info will be used. Generally,
+            you only need to set this if you're developing your own library
+            or partner tool.
     """
 
     SCOPE = (
@@ -42,8 +51,9 @@ class Client(ClientWithProject):
 
     _trace_api = None
 
-    def __init__(self, project=None, credentials=None):
+    def __init__(self, project=None, credentials=None, client_info=_CLIENT_INFO):
         super(Client, self).__init__(project=project, credentials=credentials)
+        self._client_info = client_info
 
     @property
     def trace_api(self):

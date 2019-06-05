@@ -67,8 +67,10 @@ def lint_setup_py(session):
 def default(session):
     """Default unit test session.
     """
-    # Install all test dependencies, then install this package in-place.
-    session.install('mock', 'pytest', 'pytest-cov', *LOCAL_DEPS)
+    # Install all test dependencies, then install local packages in-place.
+    session.install('mock', 'pytest', 'pytest-cov')
+    for local_dep in LOCAL_DEPS:
+        session.install('-e', local_dep)
     session.install('-e', '.')
 
     # Run py.test against the unit tests.

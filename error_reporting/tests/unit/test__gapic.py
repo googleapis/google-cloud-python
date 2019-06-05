@@ -18,37 +18,31 @@ import mock
 
 
 class Test_make_report_error_api(unittest.TestCase):
-    def test_make_report_error_api(self):
-        from google.cloud.errorreporting_v1beta1.gapic import (
-            report_errors_service_client,
-        )
-
+    @staticmethod
+    def _call_fut(client):
         from google.cloud.error_reporting._gapic import make_report_error_api
 
-        client = mock.Mock(
-            _credentials=mock.sentinel.credentials,
-            project="prahj-ekt",
-            spec=["project", "_credentials"],
+        return make_report_error_api(client)
+
+    def test_make_report_error_api(self):
+        client = mock.Mock(spec=["project", "_credentials", "_client_info"])
+
+        # Call the function being tested.
+        patch = mock.patch(
+            "google.cloud.errorreporting_v1beta1."
+            "gapic.report_errors_service_client.ReportErrorsServiceClient"
         )
 
-        # Mock out the constructor for the GAPIC client.
-        ServiceClient = report_errors_service_client.ReportErrorsServiceClient
-        with mock.patch.object(ServiceClient, "__init__") as resc:
-            resc.return_value = None
-
-            # Call the function being tested.
-            report_error_client = make_report_error_api(client)
-
-            # Assert that the arguments to the GAPIC constructor appear
-            # to be correct.
-            resc.assert_called_once()
-            _, _, kwargs = resc.mock_calls[0]
-            self.assertEqual(kwargs["credentials"], mock.sentinel.credentials)
-            self.assertIsNotNone(kwargs["client_info"])
+        with patch as patched:
+            report_error_client = self._call_fut(client)
 
         # Assert that the final error client has the project in
         # the expected location.
         self.assertIs(report_error_client._project, client.project)
+        self.assertIs(report_error_client._gapic_api, patched.return_value)
+        patched.assert_called_once_with(
+            credentials=client._credentials, client_info=client._client_info
+        )
 
 
 class Test_ErrorReportingGapicApi(unittest.TestCase):

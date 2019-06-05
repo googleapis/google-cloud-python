@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.devtools.cloudtrace.v1 TraceService API."""
 
 import functools
@@ -35,6 +36,7 @@ from google.cloud.trace_v1.proto import trace_pb2
 from google.cloud.trace_v1.proto import trace_pb2_grpc
 from google.protobuf import empty_pb2
 from google.protobuf import timestamp_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-trace").version
 
@@ -357,9 +359,11 @@ class TraceServiceClient(object):
             project_id (str): ID of the Cloud project where the trace data is stored.
             view (~google.cloud.trace_v1.types.ViewType): Type of data returned for traces in the list. Optional. Default is
                 ``MINIMAL``.
-            page_size (int): Maximum number of traces to return. If not specified or <= 0, the
-                implementation selects a reasonable value.  The implementation may
-                return fewer traces than the requested page size. Optional.
+            page_size (int): The maximum number of resources contained in the
+                underlying API response. If page streaming is performed per-
+                resource, this parameter does not affect the return value. If page
+                streaming is performed per-page, this determines the maximum number
+                of resources in a page.
             start_time (Union[dict, ~google.cloud.trace_v1.types.Timestamp]): Start of the time interval (inclusive) during which the trace data was
                 collected from the application.
 

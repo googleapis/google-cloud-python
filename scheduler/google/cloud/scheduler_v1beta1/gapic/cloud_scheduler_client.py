@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.scheduler.v1beta1 CloudScheduler API."""
 
 import functools
@@ -39,6 +40,7 @@ from google.cloud.scheduler_v1beta1.proto import cloudscheduler_pb2_grpc
 from google.cloud.scheduler_v1beta1.proto import job_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     "google-cloud-scheduler"
@@ -79,10 +81,13 @@ class CloudSchedulerClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
+    def job_path(cls, project, location, job):
+        """Return a fully-qualified job string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            "projects/{project}/locations/{location}/jobs/{job}",
+            project=project,
+            location=location,
+            job=job,
         )
 
     @classmethod
@@ -95,13 +100,10 @@ class CloudSchedulerClient(object):
         )
 
     @classmethod
-    def job_path(cls, project, location, job):
-        """Return a fully-qualified job string."""
+    def project_path(cls, project):
+        """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}/jobs/{job}",
-            project=project,
-            location=location,
-            job=job,
+            "projects/{project}", project=project
         )
 
     def __init__(

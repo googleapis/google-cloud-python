@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.bigquery.storage.v1beta1 BigQueryStorage API."""
 
 import pkg_resources
@@ -37,6 +38,7 @@ from google.cloud.bigquery_storage_v1beta1.proto import storage_pb2
 from google.cloud.bigquery_storage_v1beta1.proto import storage_pb2_grpc
 from google.cloud.bigquery_storage_v1beta1.proto import table_reference_pb2
 from google.protobuf import empty_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     "google-cloud-bigquery-storage"
@@ -288,7 +290,7 @@ class BigQueryStorageClient(object):
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(  # pragma: no cover
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
                 routing_header
             )
             metadata.append(routing_metadata)  # pragma: no cover
@@ -373,7 +375,7 @@ class BigQueryStorageClient(object):
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(  # pragma: no cover
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
                 routing_header
             )
             metadata.append(routing_metadata)  # pragma: no cover
@@ -462,7 +464,7 @@ class BigQueryStorageClient(object):
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(  # pragma: no cover
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
                 routing_header
             )
             metadata.append(routing_metadata)  # pragma: no cover
@@ -545,7 +547,7 @@ class BigQueryStorageClient(object):
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(  # pragma: no cover
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
                 routing_header
             )
             metadata.append(routing_metadata)  # pragma: no cover
@@ -630,7 +632,7 @@ class BigQueryStorageClient(object):
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(  # pragma: no cover
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
                 routing_header
             )
             metadata.append(routing_metadata)  # pragma: no cover

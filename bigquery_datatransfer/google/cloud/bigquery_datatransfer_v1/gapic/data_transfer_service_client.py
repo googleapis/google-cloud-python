@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.bigquery.datatransfer.v1 DataTransferService API."""
 
 import functools
@@ -43,6 +44,7 @@ from google.cloud.bigquery_datatransfer_v1.proto import transfer_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 from google.protobuf import timestamp_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     "google-cloud-bigquery-datatransfer"
@@ -85,15 +87,6 @@ class DataTransferServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def project_data_source_path(cls, project, data_source):
-        """Return a fully-qualified project_data_source string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/dataSources/{data_source}",
-            project=project,
-            data_source=data_source,
-        )
-
-    @classmethod
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
@@ -101,12 +94,12 @@ class DataTransferServiceClient(object):
         )
 
     @classmethod
-    def project_transfer_config_path(cls, project, transfer_config):
-        """Return a fully-qualified project_transfer_config string."""
+    def project_data_source_path(cls, project, data_source):
+        """Return a fully-qualified project_data_source string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/transferConfigs/{transfer_config}",
+            "projects/{project}/dataSources/{data_source}",
             project=project,
-            transfer_config=transfer_config,
+            data_source=data_source,
         )
 
     @classmethod
@@ -117,6 +110,15 @@ class DataTransferServiceClient(object):
             project=project,
             transfer_config=transfer_config,
             run=run,
+        )
+
+    @classmethod
+    def project_transfer_config_path(cls, project, transfer_config):
+        """Return a fully-qualified project_transfer_config string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/transferConfigs/{transfer_config}",
+            project=project,
+            transfer_config=transfer_config,
         )
 
     def __init__(

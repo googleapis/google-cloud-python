@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 import google.api_core.grpc_helpers
 
 from google.cloud.kms_v1.proto import service_pb2_grpc
@@ -414,6 +415,10 @@ class KeyManagementServiceGrpcTransport(object):
         Returns permissions that a caller has on the specified resource. If the
         resource does not exist, this will return an empty set of permissions,
         not a NOT\_FOUND error.
+
+        Note: This operation is designed to be used for building
+        permission-aware UIs and command-line tools, not for authorization
+        checking. This operation may "fail open" without warning.
 
         Returns:
             Callable: A callable which accepts the appropriate

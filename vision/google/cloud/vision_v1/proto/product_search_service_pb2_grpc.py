@@ -200,10 +200,6 @@ class ProductSearchServicer(object):
     ProductSet are not deleted.
 
     The actual image files are not deleted from Google Cloud Storage.
-
-    Possible errors:
-
-    * Returns NOT_FOUND if the ProductSet does not exist.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -272,10 +268,6 @@ class ProductSearchServicer(object):
     Metadata of the product and all its images will be deleted right away, but
     search queries against ProductSets containing the product may still work
     until all related caches are refreshed.
-
-    Possible errors:
-
-    * Returns NOT_FOUND if the product does not exist.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -314,10 +306,6 @@ class ProductSearchServicer(object):
     caches are refreshed.
 
     The actual image files are not deleted from Google Cloud Storage.
-
-    Possible errors:
-
-    * Returns NOT_FOUND if the reference image does not exist.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -363,10 +351,6 @@ class ProductSearchServicer(object):
 
     def RemoveProductFromProductSet(self, request, context):
         """Removes a Product from the specified ProductSet.
-
-    Possible errors:
-
-    * Returns NOT_FOUND If the Product is not found under the ProductSet.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")

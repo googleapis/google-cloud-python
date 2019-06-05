@@ -54,7 +54,8 @@ from google.cloud.exceptions import NotFound
 from google.api_core.iam import Policy
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
-from google.cloud.storage._signing import generate_signed_url
+from google.cloud.storage._signing import generate_signed_url_v2
+from google.cloud.storage._signing import generate_signed_url_v4
 from google.cloud.storage.acl import ACL
 from google.cloud.storage.acl import ObjectACL
 
@@ -302,14 +303,19 @@ class Blob(_PropertyMixin):
 
     def generate_signed_url(
         self,
-        expiration,
+        expiration=None,
+        api_access_endpoint=_API_ACCESS_ENDPOINT,
         method="GET",
+        content_md5=None,
         content_type=None,
-        generation=None,
         response_disposition=None,
         response_type=None,
+        generation=None,
+        headers=None,
+        query_parameters=None,
         client=None,
         credentials=None,
+        version=None,
     ):
         """Generates a signed URL for this blob.
 
@@ -332,19 +338,22 @@ class Blob(_PropertyMixin):
         accessible blobs, but don't want to require users to explicitly
         log in.
 
-        :type expiration: int, long, datetime.datetime, datetime.timedelta
-        :param expiration: When the signed URL should expire.
+        :type expiration: Union[Integer, datetime.datetime, datetime.timedelta]
+        :param expiration: Point in time when the signed URL should expire.
+
+        :type api_access_endpoint: str
+        :param api_access_endpoint: Optional URI base.
 
         :type method: str
         :param method: The HTTP verb that will be used when requesting the URL.
 
+        :type content_md5: str
+        :param content_md5: (Optional) The MD5 hash of the object referenced by
+                            ``resource``.
+
         :type content_type: str
         :param content_type: (Optional) The content type of the object
                              referenced by ``resource``.
-
-        :type generation: str
-        :param generation: (Optional) A value that indicates which generation
-                           of the resource to fetch.
 
         :type response_disposition: str
         :param response_disposition: (Optional) Content disposition of
@@ -359,6 +368,24 @@ class Blob(_PropertyMixin):
                               for the signed URL. Used to over-ride the content
                               type of the underlying blob/object.
 
+        :type generation: str
+        :param generation: (Optional) A value that indicates which generation
+                           of the resource to fetch.
+
+        :type headers: dict
+        :param headers:
+            (Optional) Additional HTTP headers to be included as part of the
+            signed URLs.  See:
+            https://cloud.google.com/storage/docs/xml-api/reference-headers
+            Requests using the signed URL *must* pass the specified header
+            (name and value) with each request for the URL.
+
+        :type query_parameters: dict
+        :param query_parameters:
+            (Optional) Additional query paramtersto be included as part of the
+            signed URLs.  See:
+            https://cloud.google.com/storage/docs/xml-api/reference-headers#query
+
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
         :param client: (Optional) The client to use.  If not passed, falls back
@@ -371,6 +398,11 @@ class Blob(_PropertyMixin):
                             the URL. Defaults to the credentials stored on the
                             client used.
 
+        :type version: str
+        :param version: (Optional) The version of signed credential to create.
+                        Must be one of 'v2' | 'v4'.
+
+        :raises: :exc:`ValueError` when version is invalid.
         :raises: :exc:`TypeError` when expiration is not a valid type.
         :raises: :exc:`AttributeError` if credentials is not an instance
                 of :class:`google.auth.credentials.Signing`.
@@ -379,6 +411,11 @@ class Blob(_PropertyMixin):
         :returns: A signed URL you can use to access the resource
                   until expiration.
         """
+        if version is None:
+            version = "v2"
+        elif version not in ("v2", "v4"):
+            raise ValueError("'version' must be either 'v2' or 'v4'")
+
         resource = "/{bucket_name}/{quoted_name}".format(
             bucket_name=self.bucket.name, quoted_name=quote(self.name.encode("utf-8"))
         )
@@ -387,16 +424,24 @@ class Blob(_PropertyMixin):
             client = self._require_client(client)
             credentials = client._credentials
 
-        return generate_signed_url(
+        if version == "v2":
+            helper = generate_signed_url_v2
+        else:
+            helper = generate_signed_url_v4
+
+        return helper(
             credentials,
             resource=resource,
-            api_access_endpoint=_API_ACCESS_ENDPOINT,
             expiration=expiration,
+            api_access_endpoint=api_access_endpoint,
             method=method.upper(),
+            content_md5=content_md5,
             content_type=content_type,
             response_type=response_type,
             response_disposition=response_disposition,
             generation=generation,
+            headers=headers,
+            query_parameters=query_parameters,
         )
 
     def exists(self, client=None):
