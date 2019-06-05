@@ -69,7 +69,9 @@ def to_delete(bqdts_client):
 
 
 def test_sample(project_id, dataset_id, capsys, to_delete):
-    config_name = create_scheduled_query.sample_create_transfer_config(project_id, dataset_id)
+    config_name = create_scheduled_query.sample_create_transfer_config(
+        project_id, dataset_id
+    )
     to_delete.append(config_name)
     out, err = capsys.readouterr()
     assert config_name in out
