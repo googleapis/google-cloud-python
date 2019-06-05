@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Futures &#8212; google-cloud 38df4a0 documentation</title>
+    <title>Futures &#8212; google-cloud 79a4313 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -47,10 +47,20 @@ if it encounters an unrecoverable error. Calling <cite>.result()</cite> will cau
 the calling thread to block indefinitely.</p>
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.add_done_callback">
-<code class="descname">add_done_callback</code><span class="sig-paren">(</span><em>fn</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.add_done_callback" title="Permalink to this definition">#</a></dt>
+<code class="descname">add_done_callback</code><span class="sig-paren">(</span><em>callback</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.add_done_callback" title="Permalink to this definition">#</a></dt>
 <dd><p>Attach the provided callable to the future.</p>
 <p>The provided function is called, with this future as its only argument,
 when the future finishes running.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>callback</strong> (<em>Callable</em>) – The function to call.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -63,7 +73,16 @@ messages.</p>
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.cancelled">
 <code class="descname">cancelled</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/futures.html#StreamingPullFuture.cancelled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.cancelled" title="Permalink to this definition">#</a></dt>
-<dd><p>bool: True if the subscription has been cancelled.</p>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">True</span></code> if the subscription has been cancelled.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -78,8 +97,6 @@ messages.</p>
 <dt id="google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.exception">
 <code class="descname">exception</code><span class="sig-paren">(</span><em>timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.exception" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the exception raised by the call, if any.</p>
-<p>This blocks until the message has successfully been published, and
-returns the exception. If the call succeeded, return None.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -100,21 +117,13 @@ times out and raises TimeoutError.</td>
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.result">
 <code class="descname">result</code><span class="sig-paren">(</span><em>timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.result" title="Permalink to this definition">#</a></dt>
-<dd><p>Return the message ID, or raise an exception.</p>
-<p>This blocks until the message has successfully been published, and
-returns the message ID.</p>
+<dd><p>Resolve the future and return a value where appropriate.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>timeout</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The number of seconds before this call
 times out and raises TimeoutError.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The message ID.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
