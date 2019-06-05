@@ -70,7 +70,7 @@ We use `nox <https://nox.readthedocs.io/en/latest/>`__ to instrument our tests.
 - To test your changes, run unit tests with ``nox``::
 
     $ nox -f datastore/noxfile.py -s unit-2.7
-    $ nox -f datastore/noxfile.py -s unit-3.6
+    $ nox -f datastore/noxfile.py -s unit-3.7
     $ ...
 
   .. note::
@@ -85,7 +85,7 @@ We use `nox <https://nox.readthedocs.io/en/latest/>`__ to instrument our tests.
 
     $ export GIT_ROOT=$(pwd)
     $ cd ${GIT_ROOT}/datastore/
-    $ nox -s "unit(py='3.6')"
+    $ nox -s "unit(py='3.7')"
 
 .. nox: https://pypi.org/project/nox-automation/
 
@@ -151,13 +151,13 @@ Running System Tests
 
 - To run system tests for a given package, you can execute::
 
-   $ nox -f datastore/noxfile.py -s system-3.6
+   $ nox -f datastore/noxfile.py -s system-3.7
    $ nox -f datastore/noxfile.py -s system-2.7
 
   .. note::
 
       System tests are only configured to run under Python 2.7 and
-      Python 3.6. For expediency, we do not run them in older versions
+      Python 3.7. For expediency, we do not run them in older versions
       of Python 3.
 
   This alone will not run the tests. You'll need to change some local
