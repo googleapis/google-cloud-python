@@ -73,9 +73,7 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--project_id", type=str, default="your-project-id")
-    parser.add_argument(
-        "--authorization_code", type=str, default=""
-    )
+    parser.add_argument("--authorization_code", type=str, default="")
     args = parser.parse_args()
 
     sample_create_transfer_config(args.project_id, args.authorization_code)
