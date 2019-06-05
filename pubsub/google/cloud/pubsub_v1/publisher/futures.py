@@ -36,13 +36,28 @@ class Future(futures.Future):
             :class:`threading.Event` will be created and used.
     """
 
-    # The publishing-side subclass does not need any special behavior
-    # at this time.
-    #
-    # However, there is still a subclass so that if someone attempts
-    # isinstance checks against a publisher-returned or subscriber-returned
-    # future, trying either one against the other returns False.
-    pass
+    def result(self, timeout=None):
+        """Return the message ID or raise an exception.
 
+        This blocks until the message has been published successfully and
+        returns the message ID unless an exception is raised.
 
-__all__ = ("Future",)
+        Args:
+            timeout (Union[int, float]): The number of seconds before this call
+                times out and raises TimeoutError.
+
+        Returns:
+            str: The message ID.
+
+        Raises:
+            ~.pubsub_v1.TimeoutError: If the request times out.
+            Exception: For undefined exceptions in the underlying
+                call execution.
+        """
+        # Attempt to get the exception if there is one.
+        # If there is not one, then we know everything worked, and we can
+        # return an appropriate value.
+        err = self.exception(timeout=timeout)
+        if err is None:
+            return self._result
+        raise err
