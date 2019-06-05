@@ -2832,29 +2832,33 @@ class QueryJob(_AsyncJob):
         self._done_timeout = timeout
         super(QueryJob, self)._blocking_poll(timeout=timeout)
 
-    def result(self, timeout=None, retry=DEFAULT_RETRY):
+    def result(self, timeout=None, page_size=None, retry=DEFAULT_RETRY):
         """Start the job and wait for it to complete and get the result.
 
-        :type timeout: float
-        :param timeout:
-            How long (in seconds) to wait for job to complete before raising
-            a :class:`concurrent.futures.TimeoutError`.
+        Args:
+            timeout (float):
+                How long (in seconds) to wait for job to complete before
+                raising a :class:`concurrent.futures.TimeoutError`.
+            page_size (int):
+                (Optional) The maximum number of rows in each page of results
+                from this request. Non-positive values are ignored.
+            retry (google.api_core.retry.Retry):
+                (Optional) How to retry the call that retrieves rows.
 
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the call that retrieves rows.
+        Returns:
+            google.cloud.bigquery.table.RowIterator:
+                Iterator of row data
+                :class:`~google.cloud.bigquery.table.Row`-s. During each
+                page, the iterator will have the ``total_rows`` attribute
+                set, which counts the total number of rows **in the result
+                set** (this is distinct from the total number of rows in the
+                current page: ``iterator.page.num_items``).
 
-        :rtype: :class:`~google.cloud.bigquery.table.RowIterator`
-        :returns:
-            Iterator of row data :class:`~google.cloud.bigquery.table.Row`-s.
-            During each page, the iterator will have the ``total_rows``
-            attribute set, which counts the total number of rows **in the
-            result set** (this is distinct from the total number of rows in
-            the current page: ``iterator.page.num_items``).
-
-        :raises:
-            :class:`~google.cloud.exceptions.GoogleCloudError` if the job
-            failed or :class:`concurrent.futures.TimeoutError` if the job did
-            not complete in the given timeout.
+        Raises:
+            google.cloud.exceptions.GoogleCloudError:
+                If the job failed.
+            concurrent.futures.TimeoutError:
+                If the job did not complete in the given timeout.
         """
         super(QueryJob, self).result(timeout=timeout)
         # Return an iterator instead of returning the job.
@@ -2874,7 +2878,7 @@ class QueryJob(_AsyncJob):
         dest_table_ref = self.destination
         dest_table = Table(dest_table_ref, schema=schema)
         dest_table._properties["numRows"] = self._query_results.total_rows
-        rows = self._client.list_rows(dest_table, retry=retry)
+        rows = self._client.list_rows(dest_table, page_size=page_size, retry=retry)
         rows._preserve_order = _contains_order_by(self.query)
         return rows
 

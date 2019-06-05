@@ -1202,6 +1202,15 @@ class TestBigQuery(unittest.TestCase):
             # 1 second is much too short for this query.
             query_job.result(timeout=1)
 
+    def test_query_w_page_size(self):
+        page_size = 45
+        query_job = Config.CLIENT.query(
+            "SELECT word FROM `bigquery-public-data.samples.shakespeare`;",
+            job_id_prefix="test_query_w_page_size_",
+        )
+        iterator = query_job.result(page_size=page_size)
+        self.assertEqual(next(iterator.pages).num_items, page_size)
+
     def test_query_statistics(self):
         """
         A system test to exercise some of the extended query statistics.
