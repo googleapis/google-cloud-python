@@ -12,10 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import threading
 import time
 
 import mock
+import pytest
 
 import google.api_core.exceptions
 from google.auth import credentials
@@ -39,7 +41,7 @@ def create_batch(autocommit=False, **batch_settings):
         autocommit (bool): Whether the batch should commit after
             ``max_latency`` seconds. By default, this is ``False``
             for unit testing.
-        kwargs (dict): Arguments passed on to the
+        batch_settings (dict): Arguments passed on to the
             :class:``~.pubsub_v1.types.BatchSettings`` constructor.
 
     Returns:
@@ -147,6 +149,35 @@ def test_blocking__commit():
     assert futures[0].result() == "a"
     assert futures[1].done()
     assert futures[1].result() == "b"
+
+
+def test_client_api_publish_not_blocking_additional_publish_calls():
+    batch = create_batch(max_messages=1)
+    api_publish_called = threading.Event()
+
+    def api_publish_delay(_, messages):
+        api_publish_called.set()
+        time.sleep(1.0)
+        message_ids = [str(i) for i in range(len(messages))]
+        return types.PublishResponse(message_ids=message_ids)
+
+    api_publish_patch = mock.patch.object(
+        type(batch.client.api), "publish", side_effect=api_publish_delay
+    )
+
+    with api_publish_patch:
+        batch.publish({"data": b"first message"})
+
+        start = datetime.datetime.now()
+        event_set = api_publish_called.wait(timeout=1.0)
+        if not event_set:
+            pytest.fail("API publish was not called in time")
+        batch.publish({"data": b"second message"})
+        end = datetime.datetime.now()
+
+    # While a batch commit in progress, waiting for the API publish call to
+    # complete should not unnecessariliy delay other calls to batch.publish().
+    assert (end - start).total_seconds() < 1.0
 
 
 @mock.patch.object(thread, "_LOGGER")
