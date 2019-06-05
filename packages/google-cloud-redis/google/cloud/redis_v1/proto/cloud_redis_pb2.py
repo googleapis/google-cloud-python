@@ -15,12 +15,12 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.longrunning import (
     operations_pb2 as google_dot_longrunning_dot_operations__pb2,
 )
 from google.protobuf import field_mask_pb2 as google_dot_protobuf_dot_field__mask__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -31,14 +31,14 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\031com.google.cloud.redis.v1B\030CloudRedisServiceV1ProtoP\001Z:google.golang.org/genproto/googleapis/cloud/redis/v1;redis"
     ),
     serialized_pb=_b(
-        '\n-google/cloud/redis_v1/proto/cloud_redis.proto\x12\x15google.cloud.redis.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a#google/longrunning/operations.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xe3\x06\n\x08Instance\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12;\n\x06labels\x18\x03 \x03(\x0b\x32+.google.cloud.redis.v1.Instance.LabelsEntry\x12\x13\n\x0blocation_id\x18\x04 \x01(\t\x12\x1f\n\x17\x61lternative_location_id\x18\x05 \x01(\t\x12\x15\n\rredis_version\x18\x07 \x01(\t\x12\x19\n\x11reserved_ip_range\x18\t \x01(\t\x12\x0c\n\x04host\x18\n \x01(\t\x12\x0c\n\x04port\x18\x0b \x01(\x05\x12\x1b\n\x13\x63urrent_location_id\x18\x0c \x01(\t\x12/\n\x0b\x63reate_time\x18\r \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x34\n\x05state\x18\x0e \x01(\x0e\x32%.google.cloud.redis.v1.Instance.State\x12\x16\n\x0estatus_message\x18\x0f \x01(\t\x12H\n\rredis_configs\x18\x10 \x03(\x0b\x32\x31.google.cloud.redis.v1.Instance.RedisConfigsEntry\x12\x32\n\x04tier\x18\x11 \x01(\x0e\x32$.google.cloud.redis.v1.Instance.Tier\x12\x16\n\x0ememory_size_gb\x18\x12 \x01(\x05\x12\x1a\n\x12\x61uthorized_network\x18\x14 \x01(\t\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a\x33\n\x11RedisConfigsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\x85\x01\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x43REATING\x10\x01\x12\t\n\x05READY\x10\x02\x12\x0c\n\x08UPDATING\x10\x03\x12\x0c\n\x08\x44\x45LETING\x10\x04\x12\r\n\tREPAIRING\x10\x05\x12\x0f\n\x0bMAINTENANCE\x10\x06\x12\x10\n\x0c\x46\x41ILING_OVER\x10\t"8\n\x04Tier\x12\x14\n\x10TIER_UNSPECIFIED\x10\x00\x12\t\n\x05\x42\x41SIC\x10\x01\x12\x0f\n\x0bSTANDARD_HA\x10\x03"M\n\x14ListInstancesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"y\n\x15ListInstancesResponse\x12\x32\n\tinstances\x18\x01 \x03(\x0b\x32\x1f.google.cloud.redis.v1.Instance\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x13\n\x0bunreachable\x18\x03 \x03(\t""\n\x12GetInstanceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"o\n\x15\x43reateInstanceRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x13\n\x0binstance_id\x18\x02 \x01(\t\x12\x31\n\x08instance\x18\x03 \x01(\x0b\x32\x1f.google.cloud.redis.v1.Instance"{\n\x15UpdateInstanceRequest\x12/\n\x0bupdate_mask\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12\x31\n\x08instance\x18\x02 \x01(\x0b\x32\x1f.google.cloud.redis.v1.Instance"%\n\x15\x44\x65leteInstanceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\xf0\x01\n\x17\x46\x61iloverInstanceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12_\n\x14\x64\x61ta_protection_mode\x18\x02 \x01(\x0e\x32\x41.google.cloud.redis.v1.FailoverInstanceRequest.DataProtectionMode"f\n\x12\x44\x61taProtectionMode\x12$\n DATA_PROTECTION_MODE_UNSPECIFIED\x10\x00\x12\x15\n\x11LIMITED_DATA_LOSS\x10\x01\x12\x13\n\x0f\x46ORCE_DATA_LOSS\x10\x02"\xd6\x01\n\x11OperationMetadata\x12/\n\x0b\x63reate_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0e\n\x06target\x18\x03 \x01(\t\x12\x0c\n\x04verb\x18\x04 \x01(\t\x12\x15\n\rstatus_detail\x18\x05 \x01(\t\x12\x18\n\x10\x63\x61ncel_requested\x18\x06 \x01(\x08\x12\x13\n\x0b\x61pi_version\x18\x07 \x01(\t"\xc4\x01\n\x10LocationMetadata\x12T\n\x0f\x61vailable_zones\x18\x01 \x03(\x0b\x32;.google.cloud.redis.v1.LocationMetadata.AvailableZonesEntry\x1aZ\n\x13\x41vailableZonesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x32\n\x05value\x18\x02 \x01(\x0b\x32#.google.cloud.redis.v1.ZoneMetadata:\x02\x38\x01"\x0e\n\x0cZoneMetadata2\xcc\x07\n\nCloudRedis\x12\xa1\x01\n\rListInstances\x12+.google.cloud.redis.v1.ListInstancesRequest\x1a,.google.cloud.redis.v1.ListInstancesResponse"5\x82\xd3\xe4\x93\x02/\x12-/v1/{parent=projects/*/locations/*}/instances\x12\x90\x01\n\x0bGetInstance\x12).google.cloud.redis.v1.GetInstanceRequest\x1a\x1f.google.cloud.redis.v1.Instance"5\x82\xd3\xe4\x93\x02/\x12-/v1/{name=projects/*/locations/*/instances/*}\x12\x9e\x01\n\x0e\x43reateInstance\x12,.google.cloud.redis.v1.CreateInstanceRequest\x1a\x1d.google.longrunning.Operation"?\x82\xd3\xe4\x93\x02\x39"-/v1/{parent=projects/*/locations/*}/instances:\x08instance\x12\xa7\x01\n\x0eUpdateInstance\x12,.google.cloud.redis.v1.UpdateInstanceRequest\x1a\x1d.google.longrunning.Operation"H\x82\xd3\xe4\x93\x02\x42\x32\x36/v1/{instance.name=projects/*/locations/*/instances/*}:\x08instance\x12\xa4\x01\n\x10\x46\x61iloverInstance\x12..google.cloud.redis.v1.FailoverInstanceRequest\x1a\x1d.google.longrunning.Operation"A\x82\xd3\xe4\x93\x02;"6/v1/{name=projects/*/locations/*/instances/*}:failover:\x01*\x12\x94\x01\n\x0e\x44\x65leteInstance\x12,.google.cloud.redis.v1.DeleteInstanceRequest\x1a\x1d.google.longrunning.Operation"5\x82\xd3\xe4\x93\x02/*-/v1/{name=projects/*/locations/*/instances/*}Bs\n\x19\x63om.google.cloud.redis.v1B\x18\x43loudRedisServiceV1ProtoP\x01Z:google.golang.org/genproto/googleapis/cloud/redis/v1;redisb\x06proto3'
+        '\n-google/cloud/redis_v1/proto/cloud_redis.proto\x12\x15google.cloud.redis.v1\x1a\x1cgoogle/api/annotations.proto\x1a#google/longrunning/operations.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/api/client.proto"\x94\x07\n\x08Instance\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12;\n\x06labels\x18\x03 \x03(\x0b\x32+.google.cloud.redis.v1.Instance.LabelsEntry\x12\x13\n\x0blocation_id\x18\x04 \x01(\t\x12\x1f\n\x17\x61lternative_location_id\x18\x05 \x01(\t\x12\x15\n\rredis_version\x18\x07 \x01(\t\x12\x19\n\x11reserved_ip_range\x18\t \x01(\t\x12\x0c\n\x04host\x18\n \x01(\t\x12\x0c\n\x04port\x18\x0b \x01(\x05\x12\x1b\n\x13\x63urrent_location_id\x18\x0c \x01(\t\x12/\n\x0b\x63reate_time\x18\r \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x34\n\x05state\x18\x0e \x01(\x0e\x32%.google.cloud.redis.v1.Instance.State\x12\x16\n\x0estatus_message\x18\x0f \x01(\t\x12H\n\rredis_configs\x18\x10 \x03(\x0b\x32\x31.google.cloud.redis.v1.Instance.RedisConfigsEntry\x12\x32\n\x04tier\x18\x11 \x01(\x0e\x32$.google.cloud.redis.v1.Instance.Tier\x12\x16\n\x0ememory_size_gb\x18\x12 \x01(\x05\x12\x1a\n\x12\x61uthorized_network\x18\x14 \x01(\t\x12 \n\x18persistence_iam_identity\x18\x15 \x01(\t\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a\x33\n\x11RedisConfigsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\x94\x01\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x43REATING\x10\x01\x12\t\n\x05READY\x10\x02\x12\x0c\n\x08UPDATING\x10\x03\x12\x0c\n\x08\x44\x45LETING\x10\x04\x12\r\n\tREPAIRING\x10\x05\x12\x0f\n\x0bMAINTENANCE\x10\x06\x12\r\n\tIMPORTING\x10\x08\x12\x10\n\x0c\x46\x41ILING_OVER\x10\t"8\n\x04Tier\x12\x14\n\x10TIER_UNSPECIFIED\x10\x00\x12\t\n\x05\x42\x41SIC\x10\x01\x12\x0f\n\x0bSTANDARD_HA\x10\x03"M\n\x14ListInstancesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"y\n\x15ListInstancesResponse\x12\x32\n\tinstances\x18\x01 \x03(\x0b\x32\x1f.google.cloud.redis.v1.Instance\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x13\n\x0bunreachable\x18\x03 \x03(\t""\n\x12GetInstanceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"o\n\x15\x43reateInstanceRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x13\n\x0binstance_id\x18\x02 \x01(\t\x12\x31\n\x08instance\x18\x03 \x01(\x0b\x32\x1f.google.cloud.redis.v1.Instance"{\n\x15UpdateInstanceRequest\x12/\n\x0bupdate_mask\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12\x31\n\x08instance\x18\x02 \x01(\x0b\x32\x1f.google.cloud.redis.v1.Instance"%\n\x15\x44\x65leteInstanceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x18\n\tGcsSource\x12\x0b\n\x03uri\x18\x01 \x01(\t"O\n\x0bInputConfig\x12\x36\n\ngcs_source\x18\x01 \x01(\x0b\x32 .google.cloud.redis.v1.GcsSourceH\x00\x42\x08\n\x06source"_\n\x15ImportInstanceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x38\n\x0cinput_config\x18\x03 \x01(\x0b\x32".google.cloud.redis.v1.InputConfig"\x1d\n\x0eGcsDestination\x12\x0b\n\x03uri\x18\x01 \x01(\t"_\n\x0cOutputConfig\x12@\n\x0fgcs_destination\x18\x01 \x01(\x0b\x32%.google.cloud.redis.v1.GcsDestinationH\x00\x42\r\n\x0b\x64\x65stination"a\n\x15\x45xportInstanceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12:\n\routput_config\x18\x03 \x01(\x0b\x32#.google.cloud.redis.v1.OutputConfig"\xf0\x01\n\x17\x46\x61iloverInstanceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12_\n\x14\x64\x61ta_protection_mode\x18\x02 \x01(\x0e\x32\x41.google.cloud.redis.v1.FailoverInstanceRequest.DataProtectionMode"f\n\x12\x44\x61taProtectionMode\x12$\n DATA_PROTECTION_MODE_UNSPECIFIED\x10\x00\x12\x15\n\x11LIMITED_DATA_LOSS\x10\x01\x12\x13\n\x0f\x46ORCE_DATA_LOSS\x10\x02"\xd6\x01\n\x11OperationMetadata\x12/\n\x0b\x63reate_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0e\n\x06target\x18\x03 \x01(\t\x12\x0c\n\x04verb\x18\x04 \x01(\t\x12\x15\n\rstatus_detail\x18\x05 \x01(\t\x12\x18\n\x10\x63\x61ncel_requested\x18\x06 \x01(\x08\x12\x13\n\x0b\x61pi_version\x18\x07 \x01(\t"\xc4\x01\n\x10LocationMetadata\x12T\n\x0f\x61vailable_zones\x18\x01 \x03(\x0b\x32;.google.cloud.redis.v1.LocationMetadata.AvailableZonesEntry\x1aZ\n\x13\x41vailableZonesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x32\n\x05value\x18\x02 \x01(\x0b\x32#.google.cloud.redis.v1.ZoneMetadata:\x02\x38\x01"\x0e\n\x0cZoneMetadata2\xa7\n\n\nCloudRedis\x12\xa1\x01\n\rListInstances\x12+.google.cloud.redis.v1.ListInstancesRequest\x1a,.google.cloud.redis.v1.ListInstancesResponse"5\x82\xd3\xe4\x93\x02/\x12-/v1/{parent=projects/*/locations/*}/instances\x12\x90\x01\n\x0bGetInstance\x12).google.cloud.redis.v1.GetInstanceRequest\x1a\x1f.google.cloud.redis.v1.Instance"5\x82\xd3\xe4\x93\x02/\x12-/v1/{name=projects/*/locations/*/instances/*}\x12\x9e\x01\n\x0e\x43reateInstance\x12,.google.cloud.redis.v1.CreateInstanceRequest\x1a\x1d.google.longrunning.Operation"?\x82\xd3\xe4\x93\x02\x39"-/v1/{parent=projects/*/locations/*}/instances:\x08instance\x12\xa7\x01\n\x0eUpdateInstance\x12,.google.cloud.redis.v1.UpdateInstanceRequest\x1a\x1d.google.longrunning.Operation"H\x82\xd3\xe4\x93\x02\x42\x32\x36/v1/{instance.name=projects/*/locations/*/instances/*}:\x08instance\x12\x9e\x01\n\x0eImportInstance\x12,.google.cloud.redis.v1.ImportInstanceRequest\x1a\x1d.google.longrunning.Operation"?\x82\xd3\xe4\x93\x02\x39"4/v1/{name=projects/*/locations/*/instances/*}:import:\x01*\x12\x9e\x01\n\x0e\x45xportInstance\x12,.google.cloud.redis.v1.ExportInstanceRequest\x1a\x1d.google.longrunning.Operation"?\x82\xd3\xe4\x93\x02\x39"4/v1/{name=projects/*/locations/*/instances/*}:export:\x01*\x12\xa4\x01\n\x10\x46\x61iloverInstance\x12..google.cloud.redis.v1.FailoverInstanceRequest\x1a\x1d.google.longrunning.Operation"A\x82\xd3\xe4\x93\x02;"6/v1/{name=projects/*/locations/*/instances/*}:failover:\x01*\x12\x94\x01\n\x0e\x44\x65leteInstance\x12,.google.cloud.redis.v1.DeleteInstanceRequest\x1a\x1d.google.longrunning.Operation"5\x82\xd3\xe4\x93\x02/*-/v1/{name=projects/*/locations/*/instances/*}\x1a\x17\xca\x41\x14redis.googleapis.comBs\n\x19\x63om.google.cloud.redis.v1B\x18\x43loudRedisServiceV1ProtoP\x01Z:google.golang.org/genproto/googleapis/cloud/redis/v1;redisb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
-        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
     ],
 )
 
@@ -75,13 +75,16 @@ _INSTANCE_STATE = _descriptor.EnumDescriptor(
             name="MAINTENANCE", index=6, number=6, serialized_options=None, type=None
         ),
         _descriptor.EnumValueDescriptor(
-            name="FAILING_OVER", index=7, number=9, serialized_options=None, type=None
+            name="IMPORTING", index=7, number=8, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="FAILING_OVER", index=8, number=9, serialized_options=None, type=None
         ),
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=910,
-    serialized_end=1043,
+    serialized_start=942,
+    serialized_end=1090,
 )
 _sym_db.RegisterEnumDescriptor(_INSTANCE_STATE)
 
@@ -107,8 +110,8 @@ _INSTANCE_TIER = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1045,
-    serialized_end=1101,
+    serialized_start=1092,
+    serialized_end=1148,
 )
 _sym_db.RegisterEnumDescriptor(_INSTANCE_TIER)
 
@@ -142,8 +145,8 @@ _FAILOVERINSTANCEREQUEST_DATAPROTECTIONMODE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1757,
-    serialized_end=1859,
+    serialized_start=2235,
+    serialized_end=2337,
 )
 _sym_db.RegisterEnumDescriptor(_FAILOVERINSTANCEREQUEST_DATAPROTECTIONMODE)
 
@@ -200,8 +203,8 @@ _INSTANCE_LABELSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=809,
-    serialized_end=854,
+    serialized_start=841,
+    serialized_end=886,
 )
 
 _INSTANCE_REDISCONFIGSENTRY = _descriptor.Descriptor(
@@ -256,8 +259,8 @@ _INSTANCE_REDISCONFIGSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=856,
-    serialized_end=907,
+    serialized_start=888,
+    serialized_end=939,
 )
 
 _INSTANCE = _descriptor.Descriptor(
@@ -573,6 +576,24 @@ _INSTANCE = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
         ),
+        _descriptor.FieldDescriptor(
+            name="persistence_iam_identity",
+            full_name="google.cloud.redis.v1.Instance.persistence_iam_identity",
+            index=17,
+            number=21,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
     ],
     extensions=[],
     nested_types=[_INSTANCE_LABELSENTRY, _INSTANCE_REDISCONFIGSENTRY],
@@ -582,8 +603,8 @@ _INSTANCE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=234,
-    serialized_end=1101,
+    serialized_start=232,
+    serialized_end=1148,
 )
 
 
@@ -657,8 +678,8 @@ _LISTINSTANCESREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1103,
-    serialized_end=1180,
+    serialized_start=1150,
+    serialized_end=1227,
 )
 
 
@@ -732,8 +753,8 @@ _LISTINSTANCESRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1182,
-    serialized_end=1303,
+    serialized_start=1229,
+    serialized_end=1350,
 )
 
 
@@ -771,8 +792,8 @@ _GETINSTANCEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1305,
-    serialized_end=1339,
+    serialized_start=1352,
+    serialized_end=1386,
 )
 
 
@@ -846,8 +867,8 @@ _CREATEINSTANCEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1341,
-    serialized_end=1452,
+    serialized_start=1388,
+    serialized_end=1499,
 )
 
 
@@ -903,8 +924,8 @@ _UPDATEINSTANCEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1454,
-    serialized_end=1577,
+    serialized_start=1501,
+    serialized_end=1624,
 )
 
 
@@ -942,8 +963,294 @@ _DELETEINSTANCEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1579,
-    serialized_end=1616,
+    serialized_start=1626,
+    serialized_end=1663,
+)
+
+
+_GCSSOURCE = _descriptor.Descriptor(
+    name="GcsSource",
+    full_name="google.cloud.redis.v1.GcsSource",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="uri",
+            full_name="google.cloud.redis.v1.GcsSource.uri",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1665,
+    serialized_end=1689,
+)
+
+
+_INPUTCONFIG = _descriptor.Descriptor(
+    name="InputConfig",
+    full_name="google.cloud.redis.v1.InputConfig",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="gcs_source",
+            full_name="google.cloud.redis.v1.InputConfig.gcs_source",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="source",
+            full_name="google.cloud.redis.v1.InputConfig.source",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=1691,
+    serialized_end=1770,
+)
+
+
+_IMPORTINSTANCEREQUEST = _descriptor.Descriptor(
+    name="ImportInstanceRequest",
+    full_name="google.cloud.redis.v1.ImportInstanceRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.redis.v1.ImportInstanceRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="input_config",
+            full_name="google.cloud.redis.v1.ImportInstanceRequest.input_config",
+            index=1,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1772,
+    serialized_end=1867,
+)
+
+
+_GCSDESTINATION = _descriptor.Descriptor(
+    name="GcsDestination",
+    full_name="google.cloud.redis.v1.GcsDestination",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="uri",
+            full_name="google.cloud.redis.v1.GcsDestination.uri",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1869,
+    serialized_end=1898,
+)
+
+
+_OUTPUTCONFIG = _descriptor.Descriptor(
+    name="OutputConfig",
+    full_name="google.cloud.redis.v1.OutputConfig",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="gcs_destination",
+            full_name="google.cloud.redis.v1.OutputConfig.gcs_destination",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="destination",
+            full_name="google.cloud.redis.v1.OutputConfig.destination",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=1900,
+    serialized_end=1995,
+)
+
+
+_EXPORTINSTANCEREQUEST = _descriptor.Descriptor(
+    name="ExportInstanceRequest",
+    full_name="google.cloud.redis.v1.ExportInstanceRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.redis.v1.ExportInstanceRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="output_config",
+            full_name="google.cloud.redis.v1.ExportInstanceRequest.output_config",
+            index=1,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1997,
+    serialized_end=2094,
 )
 
 
@@ -999,8 +1306,8 @@ _FAILOVERINSTANCEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1619,
-    serialized_end=1859,
+    serialized_start=2097,
+    serialized_end=2337,
 )
 
 
@@ -1146,8 +1453,8 @@ _OPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1862,
-    serialized_end=2076,
+    serialized_start=2340,
+    serialized_end=2554,
 )
 
 
@@ -1203,8 +1510,8 @@ _LOCATIONMETADATA_AVAILABLEZONESENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2185,
-    serialized_end=2275,
+    serialized_start=2663,
+    serialized_end=2753,
 )
 
 _LOCATIONMETADATA = _descriptor.Descriptor(
@@ -1241,8 +1548,8 @@ _LOCATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2079,
-    serialized_end=2275,
+    serialized_start=2557,
+    serialized_end=2753,
 )
 
 
@@ -1261,8 +1568,8 @@ _ZONEMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2277,
-    serialized_end=2291,
+    serialized_start=2755,
+    serialized_end=2769,
 )
 
 _INSTANCE_LABELSENTRY.containing_type = _INSTANCE
@@ -1282,6 +1589,22 @@ _UPDATEINSTANCEREQUEST.fields_by_name[
     "update_mask"
 ].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
 _UPDATEINSTANCEREQUEST.fields_by_name["instance"].message_type = _INSTANCE
+_INPUTCONFIG.fields_by_name["gcs_source"].message_type = _GCSSOURCE
+_INPUTCONFIG.oneofs_by_name["source"].fields.append(
+    _INPUTCONFIG.fields_by_name["gcs_source"]
+)
+_INPUTCONFIG.fields_by_name[
+    "gcs_source"
+].containing_oneof = _INPUTCONFIG.oneofs_by_name["source"]
+_IMPORTINSTANCEREQUEST.fields_by_name["input_config"].message_type = _INPUTCONFIG
+_OUTPUTCONFIG.fields_by_name["gcs_destination"].message_type = _GCSDESTINATION
+_OUTPUTCONFIG.oneofs_by_name["destination"].fields.append(
+    _OUTPUTCONFIG.fields_by_name["gcs_destination"]
+)
+_OUTPUTCONFIG.fields_by_name[
+    "gcs_destination"
+].containing_oneof = _OUTPUTCONFIG.oneofs_by_name["destination"]
+_EXPORTINSTANCEREQUEST.fields_by_name["output_config"].message_type = _OUTPUTCONFIG
 _FAILOVERINSTANCEREQUEST.fields_by_name[
     "data_protection_mode"
 ].enum_type = _FAILOVERINSTANCEREQUEST_DATAPROTECTIONMODE
@@ -1306,6 +1629,12 @@ DESCRIPTOR.message_types_by_name["GetInstanceRequest"] = _GETINSTANCEREQUEST
 DESCRIPTOR.message_types_by_name["CreateInstanceRequest"] = _CREATEINSTANCEREQUEST
 DESCRIPTOR.message_types_by_name["UpdateInstanceRequest"] = _UPDATEINSTANCEREQUEST
 DESCRIPTOR.message_types_by_name["DeleteInstanceRequest"] = _DELETEINSTANCEREQUEST
+DESCRIPTOR.message_types_by_name["GcsSource"] = _GCSSOURCE
+DESCRIPTOR.message_types_by_name["InputConfig"] = _INPUTCONFIG
+DESCRIPTOR.message_types_by_name["ImportInstanceRequest"] = _IMPORTINSTANCEREQUEST
+DESCRIPTOR.message_types_by_name["GcsDestination"] = _GCSDESTINATION
+DESCRIPTOR.message_types_by_name["OutputConfig"] = _OUTPUTCONFIG
+DESCRIPTOR.message_types_by_name["ExportInstanceRequest"] = _EXPORTINSTANCEREQUEST
 DESCRIPTOR.message_types_by_name["FailoverInstanceRequest"] = _FAILOVERINSTANCEREQUEST
 DESCRIPTOR.message_types_by_name["OperationMetadata"] = _OPERATIONMETADATA
 DESCRIPTOR.message_types_by_name["LocationMetadata"] = _LOCATIONMETADATA
@@ -1370,8 +1699,9 @@ Instance = _reflection.GeneratedProtocolMessageType(
           Optional. The version of Redis software. If not provided,
           latest supported version will be used. Updating the version
           will perform an upgrade/downgrade to the new version.
-          Currently, the supported values are ``REDIS_3_2`` for Redis
-          3.2.
+          Currently, the supported values are:  -  ``REDIS_4_0`` for
+          Redis 4.0 compatibility (default) -  ``REDIS_3_2`` for Redis
+          3.2 compatibility
       reserved_ip_range:
           Optional. The CIDR range of internal addresses that are
           reserved for this instance. If not provided, the service will
@@ -1400,7 +1730,9 @@ Instance = _reflection.GeneratedProtocolMessageType(
       redis_configs:
           Optional. Redis configuration parameters, according to
           http://redis.io/topics/config. Currently, the only supported
-          parameters are:  -  maxmemory-policy -  notify-keyspace-events
+          parameters are:  Redis 3.2 and above:  -  maxmemory-policy -
+          notify-keyspace-events  Redis 4.0 and above:  -  activedefrag
+          -  lfu-log-factor -  lfu-decay-time
       tier:
           Required. The service tier of the instance.
       memory_size_gb:
@@ -1410,6 +1742,12 @@ Instance = _reflection.GeneratedProtocolMessageType(
           </compute/docs/networks-and-firewalls#networks>`__ to which
           the instance is connected. If left unspecified, the
           ``default`` network will be used.
+      persistence_iam_identity:
+          Output only. Cloud IAM identity used by import / export
+          operations to transfer data to/from Cloud Storage. Format is
+          "serviceAccount:". The value may change over time for a given
+          instance so should be checked before each import/export
+          operation.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.redis.v1.Instance)
     ),
@@ -1432,7 +1770,7 @@ ListInstancesRequest = _reflection.GeneratedProtocolMessageType(
       parent:
           Required. The resource name of the instance location using the
           form: ``projects/{project_id}/locations/{location_id}`` where
-          ``location_id`` refers to a GCP region
+          ``location_id`` refers to a GCP region.
       page_size:
           The maximum number of items to return.  If not specified, a
           default value of 1000 will be used by the service. Regardless
@@ -1495,7 +1833,7 @@ GetInstanceRequest = _reflection.GeneratedProtocolMessageType(
       name:
           Required. Redis instance resource name using the form: ``proje
           cts/{project_id}/locations/{location_id}/instances/{instance_i
-          d}`` where ``location_id`` refers to a GCP region
+          d}`` where ``location_id`` refers to a GCP region.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.redis.v1.GetInstanceRequest)
     ),
@@ -1516,7 +1854,7 @@ CreateInstanceRequest = _reflection.GeneratedProtocolMessageType(
       parent:
           Required. The resource name of the instance location using the
           form: ``projects/{project_id}/locations/{location_id}`` where
-          ``location_id`` refers to a GCP region
+          ``location_id`` refers to a GCP region.
       instance_id:
           Required. The logical name of the Redis instance in the
           customer project with the following restrictions:  -  Must
@@ -1572,12 +1910,135 @@ DeleteInstanceRequest = _reflection.GeneratedProtocolMessageType(
       name:
           Required. Redis instance resource name using the form: ``proje
           cts/{project_id}/locations/{location_id}/instances/{instance_i
-          d}`` where ``location_id`` refers to a GCP region
+          d}`` where ``location_id`` refers to a GCP region.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.redis.v1.DeleteInstanceRequest)
     ),
 )
 _sym_db.RegisterMessage(DeleteInstanceRequest)
+
+GcsSource = _reflection.GeneratedProtocolMessageType(
+    "GcsSource",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GCSSOURCE,
+        __module__="google.cloud.redis_v1.proto.cloud_redis_pb2",
+        __doc__="""The Cloud Storage location for the input content
+  
+  
+  Attributes:
+      uri:
+          Required. Source data URI. (e.g.
+          'gs://my\_bucket/my\_object').
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.redis.v1.GcsSource)
+    ),
+)
+_sym_db.RegisterMessage(GcsSource)
+
+InputConfig = _reflection.GeneratedProtocolMessageType(
+    "InputConfig",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_INPUTCONFIG,
+        __module__="google.cloud.redis_v1.proto.cloud_redis_pb2",
+        __doc__="""The input content
+  
+  
+  Attributes:
+      source:
+          Required. Specify source location of input data
+      gcs_source:
+          Google Cloud Storage location where input content is located.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.redis.v1.InputConfig)
+    ),
+)
+_sym_db.RegisterMessage(InputConfig)
+
+ImportInstanceRequest = _reflection.GeneratedProtocolMessageType(
+    "ImportInstanceRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_IMPORTINSTANCEREQUEST,
+        __module__="google.cloud.redis_v1.proto.cloud_redis_pb2",
+        __doc__="""Request for [Import][google.cloud.redis.v1.CloudRedis.ImportInstance].
+  
+  
+  Attributes:
+      name:
+          Required. Redis instance resource name using the form: ``proje
+          cts/{project_id}/locations/{location_id}/instances/{instance_i
+          d}`` where ``location_id`` refers to a GCP region.
+      input_config:
+          Required. Specify data to be imported.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.redis.v1.ImportInstanceRequest)
+    ),
+)
+_sym_db.RegisterMessage(ImportInstanceRequest)
+
+GcsDestination = _reflection.GeneratedProtocolMessageType(
+    "GcsDestination",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GCSDESTINATION,
+        __module__="google.cloud.redis_v1.proto.cloud_redis_pb2",
+        __doc__="""The Cloud Storage location for the output content
+  
+  
+  Attributes:
+      uri:
+          Required. Data destination URI (e.g.
+          'gs://my\_bucket/my\_object'). Existing files will be
+          overwritten.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.redis.v1.GcsDestination)
+    ),
+)
+_sym_db.RegisterMessage(GcsDestination)
+
+OutputConfig = _reflection.GeneratedProtocolMessageType(
+    "OutputConfig",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_OUTPUTCONFIG,
+        __module__="google.cloud.redis_v1.proto.cloud_redis_pb2",
+        __doc__="""The output content
+  
+  
+  Attributes:
+      destination:
+          Required. Specify destination location of output data
+      gcs_destination:
+          Google Cloud Storage destination for output content.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.redis.v1.OutputConfig)
+    ),
+)
+_sym_db.RegisterMessage(OutputConfig)
+
+ExportInstanceRequest = _reflection.GeneratedProtocolMessageType(
+    "ExportInstanceRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_EXPORTINSTANCEREQUEST,
+        __module__="google.cloud.redis_v1.proto.cloud_redis_pb2",
+        __doc__="""Request for [Export][google.cloud.redis.v1.CloudRedis.ExportInstance].
+  
+  
+  Attributes:
+      name:
+          Required. Redis instance resource name using the form: ``proje
+          cts/{project_id}/locations/{location_id}/instances/{instance_i
+          d}`` where ``location_id`` refers to a GCP region.
+      output_config:
+          Required. Specify data to be exported.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.redis.v1.ExportInstanceRequest)
+    ),
+)
+_sym_db.RegisterMessage(ExportInstanceRequest)
 
 FailoverInstanceRequest = _reflection.GeneratedProtocolMessageType(
     "FailoverInstanceRequest",
@@ -1593,7 +2054,7 @@ FailoverInstanceRequest = _reflection.GeneratedProtocolMessageType(
       name:
           Required. Redis instance resource name using the form: ``proje
           cts/{project_id}/locations/{location_id}/instances/{instance_i
-          d}`` where ``location_id`` refers to a GCP region
+          d}`` where ``location_id`` refers to a GCP region.
       data_protection_mode:
           Optional. Available data protection modes that the user can
           choose. If it's unspecified, data protection mode will be
@@ -1694,9 +2155,9 @@ _CLOUDREDIS = _descriptor.ServiceDescriptor(
     full_name="google.cloud.redis.v1.CloudRedis",
     file=DESCRIPTOR,
     index=0,
-    serialized_options=None,
-    serialized_start=2294,
-    serialized_end=3266,
+    serialized_options=_b("\312A\024redis.googleapis.com"),
+    serialized_start=2772,
+    serialized_end=4091,
     methods=[
         _descriptor.MethodDescriptor(
             name="ListInstances",
@@ -1743,9 +2204,31 @@ _CLOUDREDIS = _descriptor.ServiceDescriptor(
             ),
         ),
         _descriptor.MethodDescriptor(
+            name="ImportInstance",
+            full_name="google.cloud.redis.v1.CloudRedis.ImportInstance",
+            index=4,
+            containing_service=None,
+            input_type=_IMPORTINSTANCEREQUEST,
+            output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
+            serialized_options=_b(
+                '\202\323\344\223\0029"4/v1/{name=projects/*/locations/*/instances/*}:import:\001*'
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="ExportInstance",
+            full_name="google.cloud.redis.v1.CloudRedis.ExportInstance",
+            index=5,
+            containing_service=None,
+            input_type=_EXPORTINSTANCEREQUEST,
+            output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
+            serialized_options=_b(
+                '\202\323\344\223\0029"4/v1/{name=projects/*/locations/*/instances/*}:export:\001*'
+            ),
+        ),
+        _descriptor.MethodDescriptor(
             name="FailoverInstance",
             full_name="google.cloud.redis.v1.CloudRedis.FailoverInstance",
-            index=4,
+            index=6,
             containing_service=None,
             input_type=_FAILOVERINSTANCEREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
@@ -1756,7 +2239,7 @@ _CLOUDREDIS = _descriptor.ServiceDescriptor(
         _descriptor.MethodDescriptor(
             name="DeleteInstance",
             full_name="google.cloud.redis.v1.CloudRedis.DeleteInstance",
-            index=5,
+            index=7,
             containing_service=None,
             input_type=_DELETEINSTANCEREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
