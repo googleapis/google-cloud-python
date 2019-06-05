@@ -34,3 +34,6 @@ tests/data/user-key.json
 # Generated files
 pylintrc
 pylintrc.test
+
+# Virtual environment
+env/
