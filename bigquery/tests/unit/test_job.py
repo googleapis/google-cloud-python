@@ -4168,6 +4168,62 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(query_request[1]["query_params"]["timeoutMs"], 900)
         self.assertEqual(reload_request[1]["method"], "GET")
 
+    def test_result_w_page_size(self):
+        # Arrange
+        query_results_resource = {
+            "jobComplete": True,
+            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
+            "schema": {"fields": [{"name": "col1", "type": "STRING"}]},
+            "totalRows": "4",
+        }
+        job_resource = self._make_resource(started=True, ended=True)
+        q_config = job_resource["configuration"]["query"]
+        q_config["destinationTable"] = {
+            "projectId": self.PROJECT,
+            "datasetId": self.DS_ID,
+            "tableId": self.TABLE_ID,
+        }
+        tabledata_resource = {
+            "totalRows": 4,
+            "pageToken": "some-page-token",
+            "rows": [
+                {"f": [{"v": "row1"}]},
+                {"f": [{"v": "row2"}]},
+                {"f": [{"v": "row3"}]},
+            ],
+        }
+        tabledata_resource_page_2 = {"totalRows": 4, "rows": [{"f": [{"v": "row4"}]}]}
+        conn = _make_connection(
+            query_results_resource, tabledata_resource, tabledata_resource_page_2
+        )
+        client = _make_client(self.PROJECT, connection=conn)
+        job = self._get_target_class().from_api_repr(job_resource, client)
+
+        # Act
+        result = job.result(page_size=3)
+
+        # Assert
+        actual_rows = list(result)
+        self.assertEqual(len(actual_rows), 4)
+
+        tabledata_path = "/projects/%s/datasets/%s/tables/%s/data" % (
+            self.PROJECT,
+            self.DS_ID,
+            self.TABLE_ID,
+        )
+        conn.api_request.assert_has_calls(
+            [
+                mock.call(
+                    method="GET", path=tabledata_path, query_params={"maxResults": 3}
+                ),
+                mock.call(
+                    method="GET",
+                    path=tabledata_path,
+                    query_params={"pageToken": "some-page-token", "maxResults": 3},
+                ),
+            ]
+        )
+
     def test_result_error(self):
         from google.cloud import exceptions
 
