@@ -267,6 +267,7 @@ class _Worker(object):
                 "labels": labels,
                 "trace": trace,
                 "span_id": span_id,
+                "timestamp": datetime.utcfromtimestamp(record.created),
             }
         )
 
