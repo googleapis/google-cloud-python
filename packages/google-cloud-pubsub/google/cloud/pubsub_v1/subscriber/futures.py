@@ -46,5 +46,8 @@ class StreamingPullFuture(futures.Future):
         return self._manager.close()
 
     def cancelled(self):
-        """bool: True if the subscription has been cancelled."""
+        """
+        returns:
+            bool: ``True`` if the subscription has been cancelled.
+        """
         return self._cancelled
