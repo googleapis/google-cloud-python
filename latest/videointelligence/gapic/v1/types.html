@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Video Intelligence API Client &#8212; google-cloud 21faa3c documentation</title>
+    <title>Types for Cloud Video Intelligence API Client &#8212; google-cloud b844190 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -567,6 +567,36 @@ accuracy for moving objects. Should be used with
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.LabelDetectionConfig.frame_confidence_threshold">
+<code class="descname">frame_confidence_threshold</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.LabelDetectionConfig.frame_confidence_threshold" title="Permalink to this definition">#</a></dt>
+<dd><p>The confidence threshold we perform filtering on the labels
+from frame-level detection. If not set, it is set to 0.4 by
+default. The valid range for this threshold is [0.1, 0.9]. Any
+value set outside of this range will be clipped. Note: for
+best results please follow the default threshold. We will
+update the default threshold everytime when we release a new
+model.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.LabelDetectionConfig.video_confidence_threshold">
+<code class="descname">video_confidence_threshold</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.LabelDetectionConfig.video_confidence_threshold" title="Permalink to this definition">#</a></dt>
+<dd><p>The confidence threshold we perform filtering on the labels
+from video-level and shot-level detections. If not set, it is
+set to 0.3 by default. The valid range for this threshold is
+[0.1, 0.9]. Any value set outside of this range will be
+clipped. Note: for best results please follow the default
+threshold. We will update the default threshold everytime when
+we release a new model.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">frame_confidence_threshold</code></dt>
+<dd><p>Field google.cloud.videointelligence.v1.LabelDetectionConfig.frame_confidence_threshold</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">label_detection_mode</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1.LabelDetectionConfig.label_detection_mode</p>
@@ -582,6 +612,12 @@ accuracy for moving objects. Should be used with
 <dt>
 <code class="descname">stationary_camera</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1.LabelDetectionConfig.stationary_camera</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">video_confidence_threshold</code></dt>
+<dd><p>Field google.cloud.videointelligence.v1.LabelDetectionConfig.video_confidence_threshold</p>
 </dd></dl>
 
 </dd></dl>
@@ -878,6 +914,25 @@ frames.</p>
 <dt>
 <code class="descname">track_id</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1.ObjectTrackingAnnotation.track_id</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1.types.ObjectTrackingConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1.types.</code><code class="descname">ObjectTrackingConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.ObjectTrackingConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Config for OBJECT_TRACKING.</p>
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.ObjectTrackingConfig.model">
+<code class="descname">model</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.ObjectTrackingConfig.model" title="Permalink to this definition">#</a></dt>
+<dd><p>Model to use for object tracking. Supported values:
+“builtin/stable” (the default if unset) and “builtin/latest”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">model</code></dt>
+<dd><p>Field google.cloud.videointelligence.v1.ObjectTrackingConfig.model</p>
 </dd></dl>
 
 </dd></dl>
@@ -1318,9 +1373,22 @@ is provided.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.TextDetectionConfig.model">
+<code class="descname">model</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.TextDetectionConfig.model" title="Permalink to this definition">#</a></dt>
+<dd><p>Model to use for text detection. Supported values:
+“builtin/stable” (the default if unset) and “builtin/latest”.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">language_hints</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1.TextDetectionConfig.language_hints</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">model</code></dt>
+<dd><p>Field google.cloud.videointelligence.v1.TextDetectionConfig.model</p>
 </dd></dl>
 
 </dd></dl>
@@ -1668,6 +1736,12 @@ unspecified, each video is treated as a single segment.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.VideoContext.object_tracking_config">
+<code class="descname">object_tracking_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.VideoContext.object_tracking_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Config for OBJECT_TRACKING.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">explicit_content_detection_config</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1.VideoContext.explicit_content_detection_config</p>
@@ -1683,6 +1757,12 @@ unspecified, each video is treated as a single segment.</p>
 <dt>
 <code class="descname">label_detection_config</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1.VideoContext.label_detection_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">object_tracking_config</code></dt>
+<dd><p>Field google.cloud.videointelligence.v1.VideoContext.object_tracking_config</p>
 </dd></dl>
 
 <dl class="attribute">

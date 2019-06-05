@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Speech API Client &#8212; google-cloud 21faa3c documentation</title>
+    <title>Types for Cloud Speech API Client &#8212; google-cloud b844190 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -876,7 +876,12 @@ recognize them. This can be used to improve the accuracy for
 specific words and phrases, for example, if specific commands
 are typically spoken by the user. This can also be used to add
 additional words to the vocabulary of the recognizer. See
-<a class="reference external" href="/speech-to-text/quotas#content">usage limits</a>.</p>
+<a class="reference external" href="/speech-to-text/quotas#content">usage limits</a>.  List items
+can also be set to classes for groups of words that represent
+common concepts that occur in natural language. For example,
+rather than providing phrase hints for every month of the
+year, using the $MONTH class improves the likelihood of
+correctly transcribing audio that includes months.</p>
 </dd></dl>
 
 <dl class="attribute">
