@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.redis_v1.gapic.cloud_redis_client &#8212; google-cloud 6db6b4e documentation</title>
+    <title>google.cloud.redis_v1.gapic.cloud_redis_client &#8212; google-cloud 21faa3c documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -294,7 +294,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): Required. The resource name of the instance location using the form:</span>
 <span class="sd">                ``projects/{project_id}/locations/{location_id}`` where ``location_id``</span>
-<span class="sd">                refers to a GCP region</span>
+<span class="sd">                refers to a GCP region.</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
@@ -386,7 +386,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): Required. Redis instance resource name using the form:</span>
 <span class="sd">                ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``</span>
-<span class="sd">                where ``location_id`` refers to a GCP region</span>
+<span class="sd">                where ``location_id`` refers to a GCP region.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -485,7 +485,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): Required. The resource name of the instance location using the form:</span>
 <span class="sd">                ``projects/{project_id}/locations/{location_id}`` where ``location_id``</span>
-<span class="sd">                refers to a GCP region</span>
+<span class="sd">                refers to a GCP region.</span>
 <span class="sd">            instance_id (str): Required. The logical name of the Redis instance in the customer project</span>
 <span class="sd">                with the following restrictions:</span>
 
@@ -578,9 +578,8 @@
 <span class="sd">            &gt;&gt;&gt; paths_element_2 = &#39;memory_size_gb&#39;</span>
 <span class="sd">            &gt;&gt;&gt; paths = [paths_element, paths_element_2]</span>
 <span class="sd">            &gt;&gt;&gt; update_mask = {&#39;paths&#39;: paths}</span>
-<span class="sd">            &gt;&gt;&gt; display_name = &#39;UpdatedDisplayName&#39;</span>
-<span class="sd">            &gt;&gt;&gt; memory_size_gb = 4</span>
-<span class="sd">            &gt;&gt;&gt; instance = {&#39;display_name&#39;: display_name, &#39;memory_size_gb&#39;: memory_size_gb}</span>
+<span class="sd">            &gt;&gt;&gt; display_name = &#39; instance.memory_size_gb=4&#39;</span>
+<span class="sd">            &gt;&gt;&gt; instance = {&#39;display_name&#39;: display_name}</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; response = client.update_instance(update_mask, instance)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
@@ -666,16 +665,23 @@
             <span class="n">metadata_type</span><span class="o">=</span><span class="n">cloud_redis_pb2</span><span class="o">.</span><span class="n">OperationMetadata</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="CloudRedisClient.delete_instance"><a class="viewcode-back" href="../../../../../redis/gapic/v1/api.html#google.cloud.redis_v1.CloudRedisClient.delete_instance">[docs]</a>    <span class="k">def</span> <span class="nf">delete_instance</span><span class="p">(</span>
+<div class="viewcode-block" id="CloudRedisClient.import_instance"><a class="viewcode-back" href="../../../../../redis/gapic/v1/api.html#google.cloud.redis_v1.CloudRedisClient.import_instance">[docs]</a>    <span class="k">def</span> <span class="nf">import_instance</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">,</span>
+        <span class="n">input_config</span><span class="p">,</span>
         <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
         <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
         <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Deletes a specific Redis instance.  Instance stops serving and data is</span>
-<span class="sd">        deleted.</span>
+<span class="sd">        Import a Redis RDB snapshot file from Cloud Storage into a Redis instance.</span>
+
+<span class="sd">        Redis may stop serving during this operation. Instance state will be</span>
+<span class="sd">        IMPORTING for entire operation. When complete, the instance will contain</span>
+<span class="sd">        only data from the imported file.</span>
+
+<span class="sd">        The returned operation is automatically deleted after a few hours, so</span>
+<span class="sd">        there is no need to call DeleteOperation.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import redis_v1</span>
@@ -684,7 +690,10 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; name = client.instance_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[INSTANCE]&#39;)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
-<span class="sd">            &gt;&gt;&gt; response = client.delete_instance(name)</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `input_config`:</span>
+<span class="sd">            &gt;&gt;&gt; input_config = {}</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.import_instance(name, input_config)</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; def callback(operation_future):</span>
 <span class="sd">            ...     # Handle result.</span>
@@ -698,7 +707,11 @@
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): Required. Redis instance resource name using the form:</span>
 <span class="sd">                ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``</span>
-<span class="sd">                where ``location_id`` refers to a GCP region</span>
+<span class="sd">                where ``location_id`` refers to a GCP region.</span>
+<span class="sd">            input_config (Union[dict, ~google.cloud.redis_v1.types.InputConfig]): Required. Specify data to be imported.</span>
+
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.redis_v1.types.InputConfig`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -719,17 +732,19 @@
 <span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
-        <span class="k">if</span> <span class="s2">&quot;delete_instance&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;import_instance&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
-                <span class="s2">&quot;delete_instance&quot;</span>
+                <span class="s2">&quot;import_instance&quot;</span>
             <span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">delete_instance</span><span class="p">,</span>
-                <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s2">&quot;DeleteInstance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
-                <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s2">&quot;DeleteInstance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">import_instance</span><span class="p">,</span>
+                <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s2">&quot;ImportInstance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s2">&quot;ImportInstance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
                 <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
             <span class="p">)</span>
 
-        <span class="n">request</span> <span class="o">=</span> <span class="n">cloud_redis_pb2</span><span class="o">.</span><span class="n">DeleteInstanceRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">cloud_redis_pb2</span><span class="o">.</span><span class="n">ImportInstanceRequest</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">input_config</span><span class="o">=</span><span class="n">input_config</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
@@ -743,13 +758,114 @@
             <span class="p">)</span>
             <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
 
-        <span class="n">operation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;delete_instance&quot;</span><span class="p">](</span>
+        <span class="n">operation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;import_instance&quot;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">from_gapic</span><span class="p">(</span>
             <span class="n">operation</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">_operations_client</span><span class="p">,</span>
-            <span class="n">empty_pb2</span><span class="o">.</span><span class="n">Empty</span><span class="p">,</span>
+            <span class="n">cloud_redis_pb2</span><span class="o">.</span><span class="n">Instance</span><span class="p">,</span>
+            <span class="n">metadata_type</span><span class="o">=</span><span class="n">cloud_redis_pb2</span><span class="o">.</span><span class="n">OperationMetadata</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="CloudRedisClient.export_instance"><a class="viewcode-back" href="../../../../../redis/gapic/v1/api.html#google.cloud.redis_v1.CloudRedisClient.export_instance">[docs]</a>    <span class="k">def</span> <span class="nf">export_instance</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">,</span>
+        <span class="n">output_config</span><span class="p">,</span>
+        <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+        <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Export Redis instance data into a Redis RDB format file in Cloud Storage.</span>
+
+<span class="sd">        Redis will continue serving during this operation.</span>
+
+<span class="sd">        The returned operation is automatically deleted after a few hours, so</span>
+<span class="sd">        there is no need to call DeleteOperation.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import redis_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = redis_v1.CloudRedisClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; name = client.instance_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[INSTANCE]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `output_config`:</span>
+<span class="sd">            &gt;&gt;&gt; output_config = {}</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.export_instance(name, output_config)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; def callback(operation_future):</span>
+<span class="sd">            ...     # Handle result.</span>
+<span class="sd">            ...     result = operation_future.result()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response.add_done_callback(callback)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Handle metadata.</span>
+<span class="sd">            &gt;&gt;&gt; metadata = response.metadata()</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): Required. Redis instance resource name using the form:</span>
+<span class="sd">                ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``</span>
+<span class="sd">                where ``location_id`` refers to a GCP region.</span>
+<span class="sd">            output_config (Union[dict, ~google.cloud.redis_v1.types.OutputConfig]): Required. Specify data to be exported.</span>
+
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.redis_v1.types.OutputConfig`</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.redis_v1.types._OperationFuture` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s2">&quot;export_instance&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s2">&quot;export_instance&quot;</span>
+            <span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">export_instance</span><span class="p">,</span>
+                <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s2">&quot;ExportInstance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s2">&quot;ExportInstance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">cloud_redis_pb2</span><span class="o">.</span><span class="n">ExportInstanceRequest</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">output_config</span><span class="o">=</span><span class="n">output_config</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
+        <span class="n">operation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;export_instance&quot;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">from_gapic</span><span class="p">(</span>
+            <span class="n">operation</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">_operations_client</span><span class="p">,</span>
+            <span class="n">cloud_redis_pb2</span><span class="o">.</span><span class="n">Instance</span><span class="p">,</span>
             <span class="n">metadata_type</span><span class="o">=</span><span class="n">cloud_redis_pb2</span><span class="o">.</span><span class="n">OperationMetadata</span><span class="p">,</span>
         <span class="p">)</span></div>
 
@@ -762,8 +878,8 @@
         <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Failover the master role to current replica node against a specific</span>
-<span class="sd">        STANDARD tier redis instance.</span>
+<span class="sd">        Initiates a failover of the master node to current replica node for a</span>
+<span class="sd">        specific STANDARD tier Cloud Memorystore for Redis instance.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import redis_v1</span>
@@ -790,7 +906,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): Required. Redis instance resource name using the form:</span>
 <span class="sd">                ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``</span>
-<span class="sd">                where ``location_id`` refers to a GCP region</span>
+<span class="sd">                where ``location_id`` refers to a GCP region.</span>
 <span class="sd">            data_protection_mode (~google.cloud.redis_v1.types.DataProtectionMode): Optional. Available data protection modes that the user can choose. If</span>
 <span class="sd">                it&#39;s unspecified, data protection mode will be LIMITED\_DATA\_LOSS by</span>
 <span class="sd">                default.</span>
@@ -847,6 +963,93 @@
             <span class="n">operation</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">_operations_client</span><span class="p">,</span>
             <span class="n">cloud_redis_pb2</span><span class="o">.</span><span class="n">Instance</span><span class="p">,</span>
+            <span class="n">metadata_type</span><span class="o">=</span><span class="n">cloud_redis_pb2</span><span class="o">.</span><span class="n">OperationMetadata</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="CloudRedisClient.delete_instance"><a class="viewcode-back" href="../../../../../redis/gapic/v1/api.html#google.cloud.redis_v1.CloudRedisClient.delete_instance">[docs]</a>    <span class="k">def</span> <span class="nf">delete_instance</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">,</span>
+        <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+        <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deletes a specific Redis instance.  Instance stops serving and data is</span>
+<span class="sd">        deleted.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import redis_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = redis_v1.CloudRedisClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; name = client.instance_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;, &#39;[INSTANCE]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.delete_instance(name)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; def callback(operation_future):</span>
+<span class="sd">            ...     # Handle result.</span>
+<span class="sd">            ...     result = operation_future.result()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response.add_done_callback(callback)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Handle metadata.</span>
+<span class="sd">            &gt;&gt;&gt; metadata = response.metadata()</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): Required. Redis instance resource name using the form:</span>
+<span class="sd">                ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``</span>
+<span class="sd">                where ``location_id`` refers to a GCP region.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.redis_v1.types._OperationFuture` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s2">&quot;delete_instance&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s2">&quot;delete_instance&quot;</span>
+            <span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">delete_instance</span><span class="p">,</span>
+                <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s2">&quot;DeleteInstance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s2">&quot;DeleteInstance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">cloud_redis_pb2</span><span class="o">.</span><span class="n">DeleteInstanceRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
+        <span class="n">operation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;delete_instance&quot;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">from_gapic</span><span class="p">(</span>
+            <span class="n">operation</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">_operations_client</span><span class="p">,</span>
+            <span class="n">empty_pb2</span><span class="o">.</span><span class="n">Empty</span><span class="p">,</span>
             <span class="n">metadata_type</span><span class="o">=</span><span class="n">cloud_redis_pb2</span><span class="o">.</span><span class="n">OperationMetadata</span><span class="p">,</span>
         <span class="p">)</span></div>
 </pre></div>
