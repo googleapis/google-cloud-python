@@ -18,7 +18,7 @@
 #   pip install google-cloud-bigquery-datatransfer
 
 
-def sample_create_transfer_config(project_id, authorization_code=""):
+def sample_create_transfer_config(project_id, dataset_id, authorization_code=""):
     # [START bigquerydatatransfer_create_scheduled_query]
     from google.cloud import bigquery_datatransfer_v1
     import google.protobuf.json_format
@@ -28,6 +28,10 @@ def sample_create_transfer_config(project_id, authorization_code=""):
     # TODO(developer): Set the project_id to the project that contains the
     #                  destination dataset.
     # project_id = "your-project-id"
+
+    # TODO(developer): Set the destination dataset. The authorized user must
+    #                  have owner permissions on the dataset.
+    # dataset_id = "your_dataset_id"
 
     # TODO(developer): The first time you run this sample, set the
     # authorization code to a value from the URL:
@@ -44,7 +48,7 @@ def sample_create_transfer_config(project_id, authorization_code=""):
 
     transfer_config = google.protobuf.json_format.ParseDict(
         {
-            "destination_dataset_id": "your_dataset_id",
+            "destination_dataset_id": dataset_id,
             "display_name": "Your Scheduled Query Name",
             "data_source_id": "scheduled_query",
             "params": {
@@ -73,6 +77,7 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--project_id", type=str, default="your-project-id")
+    parser.add_argument("--dataset_id", type=str, default="your_dataset_id")
     parser.add_argument("--authorization_code", type=str, default="")
     args = parser.parse_args()
 
