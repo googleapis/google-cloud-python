@@ -44,6 +44,15 @@ def sample_create_transfer_config(project_id, dataset_id, authorization_code="")
     #
     # authorization_code = ""
 
+    # Use standard SQL syntax for the query.
+    query_string = """
+SELECT
+  CURRENT_TIMESTAMP() as current_time,
+  @run_time as intended_run_time,
+  @run_date as intended_run_date,
+  17 as some_integer
+"""
+
     parent = client.project_path(project_id)
 
     transfer_config = google.protobuf.json_format.ParseDict(
@@ -52,7 +61,7 @@ def sample_create_transfer_config(project_id, dataset_id, authorization_code="")
             "display_name": "Your Scheduled Query Name",
             "data_source_id": "scheduled_query",
             "params": {
-                "query": "SELECT 1;  -- Use standard SQL syntax.",
+                "query": query_string,
                 "destination_table_name_template": "your_table_{run_date}",
                 "write_disposition": "WRITE_TRUNCATE",
                 "partitioning_field": "",

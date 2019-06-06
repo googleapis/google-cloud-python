@@ -32,6 +32,9 @@ def project_id():
 
 @pytest.fixture(scope="module")
 def credentials():
+    # If using a service account, the BQ DTS robot associated with your project
+    # requires the roles/iam.serviceAccountShortTermTokenMinter permission to
+    # act on behalf of the account.
     creds, _ = google.auth.default(["https://www.googleapis.com/auth/cloud-platform"])
     return creds
 
@@ -50,6 +53,8 @@ def bigquery_client(credentials):
 
 @pytest.fixture(scope="module")
 def dataset_id(bigquery_client):
+    # Ensure the test account has owner permissions on the dataset by creating
+    # one from scratch.
     temp_ds_id = "bqdts_{}".format(int(time.clock() * 1000000))
     bigquery_client.create_dataset(temp_ds_id)
     yield temp_ds_id
