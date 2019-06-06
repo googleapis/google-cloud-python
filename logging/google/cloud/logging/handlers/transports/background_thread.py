@@ -25,7 +25,6 @@ import sys
 import threading
 import time
 
-from six.moves import range
 from six.moves import queue
 
 from google.cloud.logging.handlers.transports.base import Transport
