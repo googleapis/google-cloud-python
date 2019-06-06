@@ -163,7 +163,7 @@ class ReadRowsStream(object):
 
         .. warning::
             DATETIME columns are not supported. They are currently parsed as
-            strings in the fastavro library.
+            strings.
 
         Args:
             read_session ( \
@@ -229,10 +229,10 @@ class ReadRowsIterable(object):
         """
         # Each page is an iterator of rows. But also has num_items, remaining,
         # and to_dataframe.
-        avro_schema, column_names = _avro_schema(self._read_session)
+        block_parser = _BlockParser(self._read_session)
         for block in self._reader:
             self._status = block.status
-            yield ReadRowsPage(avro_schema, column_names, block)
+            yield ReadRowsPage(block_parser, block)
 
     def __iter__(self):
         """Iterator for each row in all pages."""
@@ -276,10 +276,8 @@ class ReadRowsPage(object):
     """An iterator of rows from a read session block.
 
     Args:
-        avro_schema (fastavro.schema):
-            A parsed Avro schema, using :func:`fastavro.schema.parse_schema`
-        column_names (Tuple[str]]):
-            A read session's column names (in requested order).
+        block_parser (google.cloud.bigquery_storage_v1beta1.reader._BlockParser):
+            A helper for parsing blocks into rows.
         block (google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse):
             A block of data from a read rows stream.
     """
@@ -287,34 +285,29 @@ class ReadRowsPage(object):
     # This class is modeled after google.api_core.page_iterator.Page and aims
     # to provide API compatibility where possible.
 
-    def __init__(self, avro_schema, column_names, block):
-        self._avro_schema = avro_schema
-        self._column_names = column_names
+    def __init__(self, block_parser, block):
+        self._block_parser = block_parser
         self._block = block
         self._iter_rows = None
-        self._num_items = None
-        self._remaining = None
+        self._num_items = self._block.avro_rows.row_count
+        self._remaining = self._block.avro_rows.row_count
 
-    def _parse_block(self):
-        """Parse metadata and rows from the block only once."""
+    def _parse_rows(self):
+        """Parse rows from the block only once."""
         if self._iter_rows is not None:
             return
 
-        rows = _avro_rows(self._block, self._avro_schema)
-        self._num_items = self._block.avro_rows.row_count
-        self._remaining = self._block.avro_rows.row_count
+        rows = self._block_parser.to_rows(self._block)
         self._iter_rows = iter(rows)
 
     @property
     def num_items(self):
         """int: Total items in the page."""
-        self._parse_block()
         return self._num_items
 
     @property
     def remaining(self):
         """int: Remaining items in the page."""
-        self._parse_block()
         return self._remaining
 
     def __iter__(self):
@@ -323,7 +316,7 @@ class ReadRowsPage(object):
 
     def next(self):
         """Get the next row in the page."""
-        self._parse_block()
+        self._parse_rows()
         if self._remaining > 0:
             self._remaining -= 1
         return six.next(self._iter_rows)
@@ -356,66 +349,101 @@ class ReadRowsPage(object):
         """
         if pandas is None:
             raise ImportError(_PANDAS_REQUIRED)
+        return self._block_parser.to_dataframe(self._block, dtypes=dtypes)
+
+
+class _BlockParser(object):
+    """Helper to parse Avro blocks into useful representations."""
+
+    def __init__(self, read_session):
+        """Construct a _BlockParser.
+
+        Args:
+            read_session (google.cloud.bigquery_storage_v1beta1.types.ReadSession):
+                A read session. This is required because it contains the schema
+                used in the stream blocks.
+        """
+        # TODO: Save session. Create placeholder for cached objects like parsed fastavro schema.
+        self._read_session = read_session
+        self._avro_schema_json = None
+        self._fastavro_schema = None
+        self._column_names = None
+
+    def to_dataframe(self, block, dtypes=None):
+        """Create a :class:`pandas.DataFrame` of rows in the page.
+
+        This method requires the pandas libary to create a data frame and the
+        fastavro library to parse row blocks.
+
+        .. warning::
+            DATETIME columns are not supported. They are currently parsed as
+            strings in the fastavro library.
+
+        Args:
+            dtypes ( \
+                Map[str, Union[str, pandas.Series.dtype]] \
+            ):
+                Optional. A dictionary of column names pandas ``dtype``s. The
+                provided ``dtype`` is used when constructing the series for
+                the column specified. Otherwise, the default pandas behavior
+                is used.
+
+        Returns:
+            pandas.DataFrame:
+                A data frame of all rows in the stream.
+        """
+        self._parse_avro_schema()
 
         if dtypes is None:
             dtypes = {}
 
         columns = collections.defaultdict(list)
-        for row in self:
+        for row in self.to_rows(block):
             for column in row:
                 columns[column].append(row[column])
         for column in dtypes:
             columns[column] = pandas.Series(columns[column], dtype=dtypes[column])
         return pandas.DataFrame(columns, columns=self._column_names)
 
+    def _parse_avro_schema(self):
+        """Extract and parse Avro schema from a read session."""
+        if self._avro_schema_json:
+            return
 
-def _avro_schema(read_session):
-    """Extract and parse Avro schema from a read session.
+        self._avro_schema_json = json.loads(self._read_session.avro_schema.schema)
+        self._column_names = tuple(
+            (field["name"] for field in self._avro_schema_json["fields"])
+        )
 
-    Args:
-        read_session ( \
-            ~google.cloud.bigquery_storage_v1beta1.types.ReadSession \
-        ):
-            The read session associated with this read rows stream. This
-            contains the schema, which is required to parse the data
-            blocks.
+    def _parse_fastavro(self):
+        """Convert parsed Avro schema to fastavro format."""
+        self._parse_avro_schema()
+        self._fastavro_schema = fastavro.parse_schema(self._avro_schema_json)
 
-    Returns:
-        Tuple[fastavro.schema, Tuple[str]]:
-            A parsed Avro schema, using :func:`fastavro.schema.parse_schema`
-            and the column names for a read session.
-    """
-    json_schema = json.loads(read_session.avro_schema.schema)
-    column_names = tuple((field["name"] for field in json_schema["fields"]))
-    return fastavro.parse_schema(json_schema), column_names
+    def to_rows(self, block):
+        """Parse all rows in a stream block.
 
+        Args:
+            block ( \
+                ~google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse \
+            ):
+                A block containing Avro bytes to parse into rows.
 
-def _avro_rows(block, avro_schema):
-    """Parse all rows in a stream block.
-
-    Args:
-        block ( \
-            ~google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse \
-        ):
-            A block containing Avro bytes to parse into rows.
-        avro_schema (fastavro.schema):
-            A parsed Avro schema, used to deserialized the bytes in the
-            block.
-
-    Returns:
-        Iterable[Mapping]:
-            A sequence of rows, represented as dictionaries.
-    """
-    blockio = six.BytesIO(block.avro_rows.serialized_binary_rows)
-    while True:
-        # Loop in a while loop because schemaless_reader can only read
-        # a single record.
-        try:
-            # TODO: Parse DATETIME into datetime.datetime (no timezone),
-            #       instead of as a string.
-            yield fastavro.schemaless_reader(blockio, avro_schema)
-        except StopIteration:
-            break  # Finished with block
+        Returns:
+            Iterable[Mapping]:
+                A sequence of rows, represented as dictionaries.
+        """
+        self._parse_fastavro()
+        blockio = six.BytesIO(block.avro_rows.serialized_binary_rows)
+        while True:
+            # Loop in a while loop because schemaless_reader can only read
+            # a single record.
+            try:
+                # TODO: Parse DATETIME into datetime.datetime (no timezone),
+                #       instead of as a string.
+                yield fastavro.schemaless_reader(blockio, self._fastavro_schema)
+            except StopIteration:
+                break  # Finished with block
 
 
 def _copy_stream_position(position):
