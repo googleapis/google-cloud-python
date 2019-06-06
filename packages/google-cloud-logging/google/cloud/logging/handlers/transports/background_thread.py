@@ -25,7 +25,6 @@ import sys
 import threading
 import time
 
-from six.moves import range
 from six.moves import queue
 
 from google.cloud.logging.handlers.transports.base import Transport
@@ -56,8 +55,8 @@ def _get_many(queue_, max_items=None, max_latency=0):
         item from a queue. This number includes the time required to retrieve
         the first item.
 
-    :rtype: Sequence
-    :returns: A sequence of items retrieved from the queue.
+    :rtype: list
+    :returns: items retrieved from the queue.
     """
     start = time.time()
     # Always return at least one item.
@@ -132,8 +131,8 @@ class _Worker(object):
         """
         _LOGGER.debug("Background thread started.")
 
-        quit_ = False
-        while True:
+        done = False
+        while not done:
             batch = self._cloud_logger.batch()
             items = _get_many(
                 self._queue,
@@ -143,19 +142,14 @@ class _Worker(object):
 
             for item in items:
                 if item is _WORKER_TERMINATOR:
-                    quit_ = True
-                    # Continue processing items, don't break, try to process
-                    # all items we got back before quitting.
+                    done = True  # Continue processing items.
                 else:
                     batch.log_struct(**item)
 
             self._safely_commit_batch(batch)
 
-            for _ in range(len(items)):
+            for _ in items:
                 self._queue.task_done()
-
-            if quit_:
-                break
 
         _LOGGER.debug("Background thread exited gracefully.")
 
