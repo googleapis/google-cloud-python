@@ -151,14 +151,14 @@ def _merge_dict(d1, d2):
 s.replace(
     "google/cloud/pubsub_v1/gapic/publisher_client.py",
     "client_config \(dict\): DEPRECATED.",
-    "client_config \(dict\):"
+    "client_config (dict):"
 )
 
 s.replace(
     "google/cloud/pubsub_v1/gapic/publisher_client.py",
     "# Raise deprecation warnings .*\n.*\n.*\n.*\n.*\n.*\n",
     """default_client_config = deepcopy(publisher_client_config.config)
-    
+
         if client_config is None:
             client_config = default_client_config
         else:
