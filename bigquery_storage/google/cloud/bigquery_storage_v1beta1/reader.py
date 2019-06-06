@@ -363,7 +363,6 @@ class _BlockParser(object):
                 A read session. This is required because it contains the schema
                 used in the stream blocks.
         """
-        # TODO: Save session. Create placeholder for cached objects like parsed fastavro schema.
         self._read_session = read_session
         self._avro_schema_json = None
         self._fastavro_schema = None
