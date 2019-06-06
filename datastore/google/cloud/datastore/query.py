@@ -15,6 +15,7 @@
 """Create / interact with Google Cloud Datastore queries."""
 
 import base64
+import functools
 
 from google.api_core import page_iterator
 from google.cloud._helpers import _ensure_tuple_or_list
@@ -23,6 +24,7 @@ from google.cloud.datastore_v1.proto import entity_pb2
 from google.cloud.datastore_v1.proto import query_pb2
 from google.cloud.datastore import helpers
 from google.cloud.datastore.key import Key
+from google.cloud.datastore.retry import DEFAULT_RETRY
 
 
 _NOT_FINISHED = query_pb2.QueryResultBatch.NOT_FINISHED
@@ -512,8 +514,11 @@ class Iterator(page_iterator.Iterator):
 
         return [result.entity for result in response_pb.batch.entity_results]
 
-    def _next_page(self):
+    def _next_page(self, retry=DEFAULT_RETRY):
         """Get the next page in the iterator.
+
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
 
         :rtype: :class:`~google.cloud.iterator.Page`
         :returns: The next page in the iterator (or :data:`None` if
@@ -537,7 +542,14 @@ class Iterator(page_iterator.Iterator):
             self._query.project, partition_id, read_options, query=query_pb
         )
         entity_pbs = self._process_query_results(response_pb)
-        return page_iterator.Page(self, entity_pbs, self.item_to_value)
+        # return page_iterator.Page(self, entity_pbs, self.item_to_value)
+        return helpers._call_api(
+            page_iterator.Page,
+            retry,
+            parent=self,
+            items=entity_pbs,
+            item_to_value=self.item_to_value,
+        )
 
 
 def _pb_from_query(query):

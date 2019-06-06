@@ -18,6 +18,7 @@ The non-private functions are part of the API.
 """
 
 import datetime
+import functools
 import itertools
 
 from google.protobuf import struct_pb2
@@ -469,6 +470,14 @@ def _set_protobuf_value(value_pb, val):
         value_pb.geo_point_value.CopyFrom(val)
     else:  # scalar, just assign
         setattr(value_pb, attr, val)
+
+
+def _call_api(fnc_call, retry, *args, **kwargs):
+
+    call = functools.partial(fnc_call, *args, **kwargs)
+    if retry:
+        call = retry(call)
+    return call()
 
 
 class GeoPoint(object):

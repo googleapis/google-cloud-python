@@ -559,6 +559,20 @@ class TestIterator(unittest.TestCase):
         self.assertIsNone(page)
         ds_api.run_query.assert_not_called()
 
+    def test__next_page_w_error(self):
+        from google.cloud.datastore.query import Query
+        from google.cloud.datastore_v1.proto import query_pb2
+
+        project = "prujekt"
+        more_enum = query_pb2.QueryResultBatch.NOT_FINISHED
+        result = _make_query_response([], b"", more_enum, 0)
+        ds_api = _make_datastore_api(result)
+        client = _Client(project, datastore_api=ds_api)
+        query = Query(client)
+        iterator = self._make_one(query, client)
+        iterator._next_page(retry=None)
+        self.assertEqual(client._datastore_api.call_count, 0)
+
 
 class Test__item_to_entity(unittest.TestCase):
     def _call_fut(self, iterator, entity_pb):
