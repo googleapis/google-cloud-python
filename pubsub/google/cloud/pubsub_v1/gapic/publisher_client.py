@@ -16,8 +16,11 @@
 
 """Accesses the google.pubsub.v1 Publisher API."""
 
+import collections
+from copy import deepcopy
 import functools
 import pkg_resources
+import six
 import warnings
 
 from google.oauth2 import service_account
@@ -42,6 +45,28 @@ from google.protobuf import field_mask_pb2
 
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-pubsub").version
+
+
+# TODO: remove conditional import after Python 2 support is dropped
+if six.PY3:
+    from collections.abc import Mapping
+else:
+    from collections import Mapping
+
+
+def _merge_dict(d1, d2):
+    # Modifies d1 in-place to take values from d2
+    # if the nested keys from d2 are present in d1.
+    # https://stackoverflow.com/a/10704003/4488789
+    for k, v2 in d2.items():
+        v1 = d1.get(k)  # returns None if v1 has no such key
+        if v1 is None:
+            raise Exception("{} is not recognized by client_config".format(k))
+        if isinstance(v1, Mapping) and isinstance(v2, Mapping):
+            _merge_dict(v1, v2)
+        else:
+            d1[k] = v2
+    return d1
 
 
 class PublisherClient(object):
@@ -128,7 +153,7 @@ class PublisherClient(object):
                 This argument is mutually exclusive with providing a
                 transport instance to ``transport``; doing so will raise
                 an exception.
-            client_config (dict): DEPRECATED. A dictionary of call options for
+            client_config \(dict\): A dictionary of call options for
                 each method. If not specified, the default configuration is used.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
                 The client info used to send a user-agent string along with
@@ -136,15 +161,12 @@ class PublisherClient(object):
                 Generally, you only need to set this if you're developing
                 your own client library.
         """
-        # Raise deprecation warnings for things we want to go away.
-        if client_config is not None:
-            warnings.warn(
-                "The `client_config` argument is deprecated.",
-                PendingDeprecationWarning,
-                stacklevel=2,
-            )
+        default_client_config = deepcopy(publisher_client_config.config)
+
+        if client_config is None:
+            client_config = default_client_config
         else:
-            client_config = publisher_client_config.config
+            client_config = _merge_dict(default_client_config, client_config)
 
         if channel:
             warnings.warn(
