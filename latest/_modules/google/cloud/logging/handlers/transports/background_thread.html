@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.logging.handlers.transports.background_thread &#8212; google-cloud 0b23231 documentation</title>
+    <title>google.cloud.logging.handlers.transports.background_thread &#8212; google-cloud dfe4103 documentation</title>
     <link rel="stylesheet" href="../../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../../" src="../../../../../../_static/documentation_options.js"></script>
@@ -61,7 +61,6 @@
 <span class="kn">import</span> <span class="nn">threading</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
-<span class="kn">from</span> <span class="nn">six.moves</span> <span class="k">import</span> <span class="nb">range</span>
 <span class="kn">from</span> <span class="nn">six.moves</span> <span class="k">import</span> <span class="n">queue</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud.logging.handlers.transports.base</span> <span class="k">import</span> <span class="n">Transport</span>
@@ -92,8 +91,8 @@
 <span class="sd">        item from a queue. This number includes the time required to retrieve</span>
 <span class="sd">        the first item.</span>
 
-<span class="sd">    :rtype: Sequence</span>
-<span class="sd">    :returns: A sequence of items retrieved from the queue.</span>
+<span class="sd">    :rtype: list</span>
+<span class="sd">    :returns: items retrieved from the queue.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
     <span class="c1"># Always return at least one item.</span>
@@ -168,8 +167,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Background thread started.&quot;</span><span class="p">)</span>
 
-        <span class="n">quit_</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
             <span class="n">batch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cloud_logger</span><span class="o">.</span><span class="n">batch</span><span class="p">()</span>
             <span class="n">items</span> <span class="o">=</span> <span class="n">_get_many</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="p">,</span>
@@ -179,19 +178,14 @@
 
             <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="n">_WORKER_TERMINATOR</span><span class="p">:</span>
-                    <span class="n">quit_</span> <span class="o">=</span> <span class="kc">True</span>
-                    <span class="c1"># Continue processing items, don&#39;t break, try to process</span>
-                    <span class="c1"># all items we got back before quitting.</span>
+                    <span class="n">done</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Continue processing items.</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">batch</span><span class="o">.</span><span class="n">log_struct</span><span class="p">(</span><span class="o">**</span><span class="n">item</span><span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_safely_commit_batch</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
 
-            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="o">.</span><span class="n">task_done</span><span class="p">()</span>
-
-            <span class="k">if</span> <span class="n">quit_</span><span class="p">:</span>
-                <span class="k">break</span>
 
         <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Background thread exited gracefully.&quot;</span><span class="p">)</span>
 
