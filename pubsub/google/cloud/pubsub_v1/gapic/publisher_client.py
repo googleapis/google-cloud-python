@@ -153,7 +153,7 @@ class PublisherClient(object):
                 This argument is mutually exclusive with providing a
                 transport instance to ``transport``; doing so will raise
                 an exception.
-            client_config \(dict\): A dictionary of call options for
+            client_config (dict): A dictionary of call options for
                 each method. If not specified, the default configuration is used.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
                 The client info used to send a user-agent string along with
