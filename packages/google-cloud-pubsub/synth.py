@@ -109,6 +109,63 @@ s.replace(
                 Format is ``projects/{project}/subscriptions/{sub}``.""",
 )
 
+s.replace(
+    "google/cloud/pubsub_v1/gapic/publisher_client.py",
+    "import functools\n",
+    "import collections\n"
+    "from copy import deepcopy\n\g<0>"
+)
+
+s.replace(
+    "google/cloud/pubsub_v1/gapic/publisher_client.py",
+    "import pkg_resources\n",
+    "\g<0>import six\n"
+)
+
+s.replace(
+    "google/cloud/pubsub_v1/gapic/publisher_client.py",
+    "class PublisherClient",
+    """# TODO: remove conditional import after Python 2 support is dropped
+if six.PY3:
+    from collections.abc import Mapping
+else:
+    from collections import Mapping
+    
+
+def _merge_dict(d1, d2):
+    # Modifies d1 in-place to take values from d2
+    # if the nested keys from d2 are present in d1.
+    # https://stackoverflow.com/a/10704003/4488789
+    for k, v2 in d2.items():
+        v1 = d1.get(k) # returns None if v1 has no such key
+        if v1 is None:
+            raise Exception("{} is not recognized by client_config".format(k))
+        if isinstance(v1, Mapping) and isinstance(v2, Mapping):
+            _merge_dict(v1, v2)
+        else:
+            d1[k] = v2
+    return d1
+    \n\n\g<0>"""
+)
+
+s.replace(
+    "google/cloud/pubsub_v1/gapic/publisher_client.py",
+    "client_config \(dict\): DEPRECATED.",
+    "client_config (dict):"
+)
+
+s.replace(
+    "google/cloud/pubsub_v1/gapic/publisher_client.py",
+    "# Raise deprecation warnings .*\n.*\n.*\n.*\n.*\n.*\n",
+    """default_client_config = deepcopy(publisher_client_config.config)
+
+        if client_config is None:
+            client_config = default_client_config
+        else:
+            client_config = _merge_dict(default_client_config, client_config)
+    """
+)
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
