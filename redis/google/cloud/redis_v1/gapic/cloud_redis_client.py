@@ -258,7 +258,7 @@ class CloudRedisClient(object):
         Args:
             parent (str): Required. The resource name of the instance location using the form:
                 ``projects/{project_id}/locations/{location_id}`` where ``location_id``
-                refers to a GCP region
+                refers to a GCP region.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -350,7 +350,7 @@ class CloudRedisClient(object):
         Args:
             name (str): Required. Redis instance resource name using the form:
                 ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-                where ``location_id`` refers to a GCP region
+                where ``location_id`` refers to a GCP region.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -449,7 +449,7 @@ class CloudRedisClient(object):
         Args:
             parent (str): Required. The resource name of the instance location using the form:
                 ``projects/{project_id}/locations/{location_id}`` where ``location_id``
-                refers to a GCP region
+                refers to a GCP region.
             instance_id (str): Required. The logical name of the Redis instance in the customer project
                 with the following restrictions:
 
@@ -542,9 +542,8 @@ class CloudRedisClient(object):
             >>> paths_element_2 = 'memory_size_gb'
             >>> paths = [paths_element, paths_element_2]
             >>> update_mask = {'paths': paths}
-            >>> display_name = 'UpdatedDisplayName'
-            >>> memory_size_gb = 4
-            >>> instance = {'display_name': display_name, 'memory_size_gb': memory_size_gb}
+            >>> display_name = ' instance.memory_size_gb=4'
+            >>> instance = {'display_name': display_name}
             >>>
             >>> response = client.update_instance(update_mask, instance)
             >>>
@@ -630,16 +629,23 @@ class CloudRedisClient(object):
             metadata_type=cloud_redis_pb2.OperationMetadata,
         )
 
-    def delete_instance(
+    def import_instance(
         self,
         name,
+        input_config,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
     ):
         """
-        Deletes a specific Redis instance.  Instance stops serving and data is
-        deleted.
+        Import a Redis RDB snapshot file from Cloud Storage into a Redis instance.
+
+        Redis may stop serving during this operation. Instance state will be
+        IMPORTING for entire operation. When complete, the instance will contain
+        only data from the imported file.
+
+        The returned operation is automatically deleted after a few hours, so
+        there is no need to call DeleteOperation.
 
         Example:
             >>> from google.cloud import redis_v1
@@ -648,7 +654,10 @@ class CloudRedisClient(object):
             >>>
             >>> name = client.instance_path('[PROJECT]', '[LOCATION]', '[INSTANCE]')
             >>>
-            >>> response = client.delete_instance(name)
+            >>> # TODO: Initialize `input_config`:
+            >>> input_config = {}
+            >>>
+            >>> response = client.import_instance(name, input_config)
             >>>
             >>> def callback(operation_future):
             ...     # Handle result.
@@ -662,7 +671,11 @@ class CloudRedisClient(object):
         Args:
             name (str): Required. Redis instance resource name using the form:
                 ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-                where ``location_id`` refers to a GCP region
+                where ``location_id`` refers to a GCP region.
+            input_config (Union[dict, ~google.cloud.redis_v1.types.InputConfig]): Required. Specify data to be imported.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.redis_v1.types.InputConfig`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -683,17 +696,19 @@ class CloudRedisClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "delete_instance" not in self._inner_api_calls:
+        if "import_instance" not in self._inner_api_calls:
             self._inner_api_calls[
-                "delete_instance"
+                "import_instance"
             ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_instance,
-                default_retry=self._method_configs["DeleteInstance"].retry,
-                default_timeout=self._method_configs["DeleteInstance"].timeout,
+                self.transport.import_instance,
+                default_retry=self._method_configs["ImportInstance"].retry,
+                default_timeout=self._method_configs["ImportInstance"].timeout,
                 client_info=self._client_info,
             )
 
-        request = cloud_redis_pb2.DeleteInstanceRequest(name=name)
+        request = cloud_redis_pb2.ImportInstanceRequest(
+            name=name, input_config=input_config
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -707,13 +722,114 @@ class CloudRedisClient(object):
             )
             metadata.append(routing_metadata)
 
-        operation = self._inner_api_calls["delete_instance"](
+        operation = self._inner_api_calls["import_instance"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
         return google.api_core.operation.from_gapic(
             operation,
             self.transport._operations_client,
-            empty_pb2.Empty,
+            cloud_redis_pb2.Instance,
+            metadata_type=cloud_redis_pb2.OperationMetadata,
+        )
+
+    def export_instance(
+        self,
+        name,
+        output_config,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Export Redis instance data into a Redis RDB format file in Cloud Storage.
+
+        Redis will continue serving during this operation.
+
+        The returned operation is automatically deleted after a few hours, so
+        there is no need to call DeleteOperation.
+
+        Example:
+            >>> from google.cloud import redis_v1
+            >>>
+            >>> client = redis_v1.CloudRedisClient()
+            >>>
+            >>> name = client.instance_path('[PROJECT]', '[LOCATION]', '[INSTANCE]')
+            >>>
+            >>> # TODO: Initialize `output_config`:
+            >>> output_config = {}
+            >>>
+            >>> response = client.export_instance(name, output_config)
+            >>>
+            >>> def callback(operation_future):
+            ...     # Handle result.
+            ...     result = operation_future.result()
+            >>>
+            >>> response.add_done_callback(callback)
+            >>>
+            >>> # Handle metadata.
+            >>> metadata = response.metadata()
+
+        Args:
+            name (str): Required. Redis instance resource name using the form:
+                ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
+                where ``location_id`` refers to a GCP region.
+            output_config (Union[dict, ~google.cloud.redis_v1.types.OutputConfig]): Required. Specify data to be exported.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.redis_v1.types.OutputConfig`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.redis_v1.types._OperationFuture` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "export_instance" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "export_instance"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.export_instance,
+                default_retry=self._method_configs["ExportInstance"].retry,
+                default_timeout=self._method_configs["ExportInstance"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = cloud_redis_pb2.ExportInstanceRequest(
+            name=name, output_config=output_config
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        operation = self._inner_api_calls["export_instance"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+        return google.api_core.operation.from_gapic(
+            operation,
+            self.transport._operations_client,
+            cloud_redis_pb2.Instance,
             metadata_type=cloud_redis_pb2.OperationMetadata,
         )
 
@@ -726,8 +842,8 @@ class CloudRedisClient(object):
         metadata=None,
     ):
         """
-        Failover the master role to current replica node against a specific
-        STANDARD tier redis instance.
+        Initiates a failover of the master node to current replica node for a
+        specific STANDARD tier Cloud Memorystore for Redis instance.
 
         Example:
             >>> from google.cloud import redis_v1
@@ -754,7 +870,7 @@ class CloudRedisClient(object):
         Args:
             name (str): Required. Redis instance resource name using the form:
                 ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-                where ``location_id`` refers to a GCP region
+                where ``location_id`` refers to a GCP region.
             data_protection_mode (~google.cloud.redis_v1.types.DataProtectionMode): Optional. Available data protection modes that the user can choose. If
                 it's unspecified, data protection mode will be LIMITED\_DATA\_LOSS by
                 default.
@@ -811,5 +927,92 @@ class CloudRedisClient(object):
             operation,
             self.transport._operations_client,
             cloud_redis_pb2.Instance,
+            metadata_type=cloud_redis_pb2.OperationMetadata,
+        )
+
+    def delete_instance(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Deletes a specific Redis instance.  Instance stops serving and data is
+        deleted.
+
+        Example:
+            >>> from google.cloud import redis_v1
+            >>>
+            >>> client = redis_v1.CloudRedisClient()
+            >>>
+            >>> name = client.instance_path('[PROJECT]', '[LOCATION]', '[INSTANCE]')
+            >>>
+            >>> response = client.delete_instance(name)
+            >>>
+            >>> def callback(operation_future):
+            ...     # Handle result.
+            ...     result = operation_future.result()
+            >>>
+            >>> response.add_done_callback(callback)
+            >>>
+            >>> # Handle metadata.
+            >>> metadata = response.metadata()
+
+        Args:
+            name (str): Required. Redis instance resource name using the form:
+                ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
+                where ``location_id`` refers to a GCP region.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.redis_v1.types._OperationFuture` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "delete_instance" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "delete_instance"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_instance,
+                default_retry=self._method_configs["DeleteInstance"].retry,
+                default_timeout=self._method_configs["DeleteInstance"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = cloud_redis_pb2.DeleteInstanceRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        operation = self._inner_api_calls["delete_instance"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+        return google.api_core.operation.from_gapic(
+            operation,
+            self.transport._operations_client,
+            empty_pb2.Empty,
             metadata_type=cloud_redis_pb2.OperationMetadata,
         )
