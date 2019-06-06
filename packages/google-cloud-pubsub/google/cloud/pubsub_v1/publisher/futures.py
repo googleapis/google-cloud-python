@@ -1,4 +1,4 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2019, Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,22 +18,11 @@ from google.cloud.pubsub_v1 import futures
 
 
 class Future(futures.Future):
-    """Encapsulation of the asynchronous execution of an action.
+    """This future object is returned from asychronous Pub/Sub publishing
+    calls.
 
-    This object is returned from asychronous Pub/Sub publishing calls, and is
-    the interface to determine the status of those calls.
-
-    This object should not be created directly, but is returned by other
-    methods in this library.
-
-    Args:
-        completed (Optional[Any]): An event, with the same interface as
-            :class:`threading.Event`. This is provided so that callers
-            with different concurrency models (e.g. ``threading`` or
-            ``multiprocessing``) can supply an event that is compatible
-            with that model. The ``wait()`` and ``set()`` methods will be
-            used. If this argument is not provided, then a new
-            :class:`threading.Event` will be created and used.
+    Calling :meth:`result` will resolve the future by returning the message
+    ID, unless an error occurs.
     """
 
     def result(self, timeout=None):

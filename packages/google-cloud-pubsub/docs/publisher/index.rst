@@ -95,7 +95,7 @@ Futures
 -------
 
 Every call to :meth:`~.pubsub_v1.publisher.client.Client.publish` returns
-an instance of :class:`google.api_core.future.Future`.
+an instance of :class:`~.pubsub_v1.publisher.futures.Future`.
 
 .. note::
    
@@ -135,3 +135,4 @@ API Reference
   :maxdepth: 2
 
   api/client
+  api/futures
