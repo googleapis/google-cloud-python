@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery_storage_v1beta1.reader &#8212; google-cloud 1d053d7 documentation</title>
+    <title>google.cloud.bigquery_storage_v1beta1.reader &#8212; google-cloud 42ffb49 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -69,7 +69,9 @@
 
 
 <span class="n">_STREAM_RESUMPTION_EXCEPTIONS</span> <span class="o">=</span> <span class="p">(</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ServiceUnavailable</span><span class="p">,)</span>
-<span class="n">_FASTAVRO_REQUIRED</span> <span class="o">=</span> <span class="s2">&quot;fastavro is required to parse Avro blocks&quot;</span>
+<span class="n">_FASTAVRO_REQUIRED</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;fastavro is required to parse ReadRowResponse messages with Avro bytes.&quot;</span>
+<span class="p">)</span>
 <span class="n">_PANDAS_REQUIRED</span> <span class="o">=</span> <span class="s2">&quot;pandas is required to create a DataFrame&quot;</span>
 
 
@@ -78,15 +80,15 @@
 
 <span class="sd">    This stream is an iterable of</span>
 <span class="sd">    :class:`~google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse`.</span>
-<span class="sd">    Iterate over it to fetch all row blocks.</span>
+<span class="sd">    Iterate over it to fetch all row messages.</span>
 
 <span class="sd">    If the fastavro library is installed, use the</span>
 <span class="sd">    :func:`~google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream.rows()`</span>
-<span class="sd">    method to parse all blocks into a stream of row dictionaries.</span>
+<span class="sd">    method to parse all messages into a stream of row dictionaries.</span>
 
 <span class="sd">    If the pandas and fastavro libraries are installed, use the</span>
 <span class="sd">    :func:`~google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream.to_dataframe()`</span>
-<span class="sd">    method to parse all blocks into a :class:`pandas.DataFrame`.</span>
+<span class="sd">    method to parse all messages into a :class:`pandas.DataFrame`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wrapped</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">read_position</span><span class="p">,</span> <span class="n">read_rows_kwargs</span><span class="p">):</span>
@@ -122,7 +124,7 @@
 <span class="sd">            Iterable[ \</span>
 <span class="sd">                ~google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse \</span>
 <span class="sd">            ]:</span>
-<span class="sd">                A sequence of row blocks.</span>
+<span class="sd">                A sequence of row messages.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># Make a copy of the read position so that we can update it without</span>
@@ -133,23 +135,23 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_read_rows_kwargs</span> <span class="o">=</span> <span class="n">read_rows_kwargs</span>
 
     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;An iterable of blocks.</span>
+        <span class="sd">&quot;&quot;&quot;An iterable of messages.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Iterable[ \</span>
 <span class="sd">                ~google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse \</span>
 <span class="sd">            ]:</span>
-<span class="sd">                A sequence of row blocks.</span>
+<span class="sd">                A sequence of row messages.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># Infinite loop to reconnect on reconnectable errors while processing</span>
         <span class="c1"># the row stream.</span>
         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrapped</span><span class="p">:</span>
-                    <span class="n">rowcount</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">avro_rows</span><span class="o">.</span><span class="n">row_count</span>
+                <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrapped</span><span class="p">:</span>
+                    <span class="n">rowcount</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">avro_rows</span><span class="o">.</span><span class="n">row_count</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_position</span><span class="o">.</span><span class="n">offset</span> <span class="o">+=</span> <span class="n">rowcount</span>
-                    <span class="k">yield</span> <span class="n">block</span>
+                    <span class="k">yield</span> <span class="n">message</span>
 
                 <span class="k">return</span>  <span class="c1"># Made it through the whole stream.</span>
             <span class="k">except</span> <span class="n">_STREAM_RESUMPTION_EXCEPTIONS</span><span class="p">:</span>
@@ -168,7 +170,7 @@
         <span class="sd">&quot;&quot;&quot;Iterate over all rows in the stream.</span>
 
 <span class="sd">        This method requires the fastavro library in order to parse row</span>
-<span class="sd">        blocks.</span>
+<span class="sd">        messages.</span>
 
 <span class="sd">        .. warning::</span>
 <span class="sd">            DATETIME columns are not supported. They are currently parsed as</span>
@@ -180,7 +182,7 @@
 <span class="sd">            ):</span>
 <span class="sd">                The read session associated with this read rows stream. This</span>
 <span class="sd">                contains the schema, which is required to parse the data</span>
-<span class="sd">                blocks.</span>
+<span class="sd">                messages.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Iterable[Mapping]:</span>
@@ -195,11 +197,11 @@
         <span class="sd">&quot;&quot;&quot;Create a :class:`pandas.DataFrame` of all rows in the stream.</span>
 
 <span class="sd">        This method requires the pandas libary to create a data frame and the</span>
-<span class="sd">        fastavro library to parse row blocks.</span>
+<span class="sd">        fastavro library to parse row messages.</span>
 
 <span class="sd">        .. warning::</span>
 <span class="sd">            DATETIME columns are not supported. They are currently parsed as</span>
-<span class="sd">            strings in the fastavro library.</span>
+<span class="sd">            strings.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            read_session ( \</span>
@@ -207,7 +209,7 @@
 <span class="sd">            ):</span>
 <span class="sd">                The read session associated with this read rows stream. This</span>
 <span class="sd">                contains the schema, which is required to parse the data</span>
-<span class="sd">                blocks.</span>
+<span class="sd">                messages.</span>
 <span class="sd">            dtypes ( \</span>
 <span class="sd">                Map[str, Union[str, pandas.Series.dtype]] \</span>
 <span class="sd">            ):</span>
@@ -236,7 +238,7 @@
 <span class="sd">            A read rows stream.</span>
 <span class="sd">        read_session (google.cloud.bigquery_storage_v1beta1.types.ReadSession):</span>
 <span class="sd">            A read session. This is required because it contains the schema</span>
-<span class="sd">            used in the stream blocks.</span>
+<span class="sd">            used in the stream messages.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># This class is modelled after the google.cloud.bigquery.table.RowIterator</span>
@@ -265,10 +267,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Each page is an iterator of rows. But also has num_items, remaining,</span>
         <span class="c1"># and to_dataframe.</span>
-        <span class="n">avro_schema</span><span class="p">,</span> <span class="n">column_names</span> <span class="o">=</span> <span class="n">_avro_schema</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_session</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">status</span>
-            <span class="k">yield</span> <span class="n">ReadRowsPage</span><span class="p">(</span><span class="n">avro_schema</span><span class="p">,</span> <span class="n">column_names</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+        <span class="n">stream_parser</span> <span class="o">=</span> <span class="n">_StreamParser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_session</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">status</span>
+            <span class="k">yield</span> <span class="n">ReadRowsPage</span><span class="p">(</span><span class="n">stream_parser</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Iterator for each row in all pages.&quot;&quot;&quot;</span>
@@ -280,7 +282,7 @@
         <span class="sd">&quot;&quot;&quot;Create a :class:`pandas.DataFrame` of all rows in the stream.</span>
 
 <span class="sd">        This method requires the pandas libary to create a data frame and the</span>
-<span class="sd">        fastavro library to parse row blocks.</span>
+<span class="sd">        fastavro library to parse row messages.</span>
 
 <span class="sd">        .. warning::</span>
 <span class="sd">            DATETIME columns are not supported. They are currently parsed as</span>
@@ -309,48 +311,41 @@
 
 
 <div class="viewcode-block" id="ReadRowsPage"><a class="viewcode-back" href="../../../../bigquery_storage/gapic/v1beta1/reader.html#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsPage">[docs]</a><span class="k">class</span> <span class="nc">ReadRowsPage</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;An iterator of rows from a read session block.</span>
+    <span class="sd">&quot;&quot;&quot;An iterator of rows from a read session message.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        avro_schema (fastavro.schema):</span>
-<span class="sd">            A parsed Avro schema, using :func:`fastavro.schema.parse_schema`</span>
-<span class="sd">        column_names (Tuple[str]]):</span>
-<span class="sd">            A read session&#39;s column names (in requested order).</span>
-<span class="sd">        block (google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse):</span>
-<span class="sd">            A block of data from a read rows stream.</span>
+<span class="sd">        stream_parser (google.cloud.bigquery_storage_v1beta1.reader._StreamParser):</span>
+<span class="sd">            A helper for parsing messages into rows.</span>
+<span class="sd">        message (google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse):</span>
+<span class="sd">            A message of data from a read rows stream.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># This class is modeled after google.api_core.page_iterator.Page and aims</span>
     <span class="c1"># to provide API compatibility where possible.</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">avro_schema</span><span class="p">,</span> <span class="n">column_names</span><span class="p">,</span> <span class="n">block</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_avro_schema</span> <span class="o">=</span> <span class="n">avro_schema</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_column_names</span> <span class="o">=</span> <span class="n">column_names</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_block</span> <span class="o">=</span> <span class="n">block</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_parser</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stream_parser</span> <span class="o">=</span> <span class="n">stream_parser</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_message</span> <span class="o">=</span> <span class="n">message</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_iter_rows</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_num_items</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_remaining</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_message</span><span class="o">.</span><span class="n">avro_rows</span><span class="o">.</span><span class="n">row_count</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_remaining</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_message</span><span class="o">.</span><span class="n">avro_rows</span><span class="o">.</span><span class="n">row_count</span>
 
-    <span class="k">def</span> <span class="nf">_parse_block</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Parse metadata and rows from the block only once.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">_parse_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parse rows from the message only once.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iter_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
 
-        <span class="n">rows</span> <span class="o">=</span> <span class="n">_avro_rows</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_block</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_avro_schema</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_num_items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_block</span><span class="o">.</span><span class="n">avro_rows</span><span class="o">.</span><span class="n">row_count</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_remaining</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_block</span><span class="o">.</span><span class="n">avro_rows</span><span class="o">.</span><span class="n">row_count</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stream_parser</span><span class="o">.</span><span class="n">to_rows</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_message</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_iter_rows</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">num_items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;int: Total items in the page.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_parse_block</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_items</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">remaining</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;int: Remaining items in the page.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_parse_block</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_remaining</span>
 
     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -359,7 +354,7 @@
 
 <div class="viewcode-block" id="ReadRowsPage.next"><a class="viewcode-back" href="../../../../bigquery_storage/gapic/v1beta1/reader.html#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsPage.next">[docs]</a>    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the next row in the page.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_parse_block</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parse_rows</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_remaining</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_remaining</span> <span class="o">-=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">six</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_iter_rows</span><span class="p">)</span></div>
@@ -371,7 +366,7 @@
         <span class="sd">&quot;&quot;&quot;Create a :class:`pandas.DataFrame` of rows in the page.</span>
 
 <span class="sd">        This method requires the pandas libary to create a data frame and the</span>
-<span class="sd">        fastavro library to parse row blocks.</span>
+<span class="sd">        fastavro library to parse row messages.</span>
 
 <span class="sd">        .. warning::</span>
 <span class="sd">            DATETIME columns are not supported. They are currently parsed as</span>
@@ -392,66 +387,100 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">pandas</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="n">_PANDAS_REQUIRED</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stream_parser</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_message</span><span class="p">,</span> <span class="n">dtypes</span><span class="o">=</span><span class="n">dtypes</span><span class="p">)</span></div></div>
+
+
+<span class="k">class</span> <span class="nc">_StreamParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Helper to parse Avro messages into useful representations.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">read_session</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a _StreamParser.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            read_session (google.cloud.bigquery_storage_v1beta1.types.ReadSession):</span>
+<span class="sd">                A read session. This is required because it contains the schema</span>
+<span class="sd">                used in the stream messages.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_read_session</span> <span class="o">=</span> <span class="n">read_session</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_avro_schema_json</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fastavro_schema</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_column_names</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">dtypes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a :class:`pandas.DataFrame` of rows in the page.</span>
+
+<span class="sd">        This method requires the pandas libary to create a data frame and the</span>
+<span class="sd">        fastavro library to parse row messages.</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            DATETIME columns are not supported. They are currently parsed as</span>
+<span class="sd">            strings in the fastavro library.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dtypes ( \</span>
+<span class="sd">                Map[str, Union[str, pandas.Series.dtype]] \</span>
+<span class="sd">            ):</span>
+<span class="sd">                Optional. A dictionary of column names pandas ``dtype``s. The</span>
+<span class="sd">                provided ``dtype`` is used when constructing the series for</span>
+<span class="sd">                the column specified. Otherwise, the default pandas behavior</span>
+<span class="sd">                is used.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame:</span>
+<span class="sd">                A data frame of all rows in the stream.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parse_avro_schema</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">dtypes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">dtypes</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="n">columns</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_rows</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
                 <span class="n">columns</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">column</span><span class="p">])</span>
         <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">dtypes</span><span class="p">:</span>
             <span class="n">columns</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">columns</span><span class="p">[</span><span class="n">column</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtypes</span><span class="p">[</span><span class="n">column</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_column_names</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_column_names</span><span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">_parse_avro_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Extract and parse Avro schema from a read session.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_avro_schema_json</span><span class="p">:</span>
+            <span class="k">return</span>
 
-<span class="k">def</span> <span class="nf">_avro_schema</span><span class="p">(</span><span class="n">read_session</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Extract and parse Avro schema from a read session.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_avro_schema_json</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_session</span><span class="o">.</span><span class="n">avro_schema</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_column_names</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">field</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_avro_schema_json</span><span class="p">[</span><span class="s2">&quot;fields&quot;</span><span class="p">])</span>
+        <span class="p">)</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        read_session ( \</span>
-<span class="sd">            ~google.cloud.bigquery_storage_v1beta1.types.ReadSession \</span>
-<span class="sd">        ):</span>
-<span class="sd">            The read session associated with this read rows stream. This</span>
-<span class="sd">            contains the schema, which is required to parse the data</span>
-<span class="sd">            blocks.</span>
+    <span class="k">def</span> <span class="nf">_parse_fastavro</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert parsed Avro schema to fastavro format.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parse_avro_schema</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fastavro_schema</span> <span class="o">=</span> <span class="n">fastavro</span><span class="o">.</span><span class="n">parse_schema</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_avro_schema_json</span><span class="p">)</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        Tuple[fastavro.schema, Tuple[str]]:</span>
-<span class="sd">            A parsed Avro schema, using :func:`fastavro.schema.parse_schema`</span>
-<span class="sd">            and the column names for a read session.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">json_schema</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">read_session</span><span class="o">.</span><span class="n">avro_schema</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
-    <span class="n">column_names</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">((</span><span class="n">field</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">json_schema</span><span class="p">[</span><span class="s2">&quot;fields&quot;</span><span class="p">]))</span>
-    <span class="k">return</span> <span class="n">fastavro</span><span class="o">.</span><span class="n">parse_schema</span><span class="p">(</span><span class="n">json_schema</span><span class="p">),</span> <span class="n">column_names</span>
+    <span class="k">def</span> <span class="nf">to_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parse all rows in a stream message.</span>
 
+<span class="sd">        Args:</span>
+<span class="sd">            message ( \</span>
+<span class="sd">                ~google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse \</span>
+<span class="sd">            ):</span>
+<span class="sd">                A message containing Avro bytes to parse into rows.</span>
 
-<span class="k">def</span> <span class="nf">_avro_rows</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">avro_schema</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Parse all rows in a stream block.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        block ( \</span>
-<span class="sd">            ~google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse \</span>
-<span class="sd">        ):</span>
-<span class="sd">            A block containing Avro bytes to parse into rows.</span>
-<span class="sd">        avro_schema (fastavro.schema):</span>
-<span class="sd">            A parsed Avro schema, used to deserialized the bytes in the</span>
-<span class="sd">            block.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        Iterable[Mapping]:</span>
-<span class="sd">            A sequence of rows, represented as dictionaries.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">blockio</span> <span class="o">=</span> <span class="n">six</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">avro_rows</span><span class="o">.</span><span class="n">serialized_binary_rows</span><span class="p">)</span>
-    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="c1"># Loop in a while loop because schemaless_reader can only read</span>
-        <span class="c1"># a single record.</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="c1"># TODO: Parse DATETIME into datetime.datetime (no timezone),</span>
-            <span class="c1">#       instead of as a string.</span>
-            <span class="k">yield</span> <span class="n">fastavro</span><span class="o">.</span><span class="n">schemaless_reader</span><span class="p">(</span><span class="n">blockio</span><span class="p">,</span> <span class="n">avro_schema</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
-            <span class="k">break</span>  <span class="c1"># Finished with block</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Iterable[Mapping]:</span>
+<span class="sd">                A sequence of rows, represented as dictionaries.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parse_fastavro</span><span class="p">()</span>
+        <span class="n">messageio</span> <span class="o">=</span> <span class="n">six</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">avro_rows</span><span class="o">.</span><span class="n">serialized_binary_rows</span><span class="p">)</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="c1"># Loop in a while loop because schemaless_reader can only read</span>
+            <span class="c1"># a single record.</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># TODO: Parse DATETIME into datetime.datetime (no timezone),</span>
+                <span class="c1">#       instead of as a string.</span>
+                <span class="k">yield</span> <span class="n">fastavro</span><span class="o">.</span><span class="n">schemaless_reader</span><span class="p">(</span><span class="n">messageio</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fastavro_schema</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+                <span class="k">break</span>  <span class="c1"># Finished with message</span>
 
 
 <span class="k">def</span> <span class="nf">_copy_stream_position</span><span class="p">(</span><span class="n">position</span><span class="p">):</span>
