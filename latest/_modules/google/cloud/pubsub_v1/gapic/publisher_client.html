@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.gapic.publisher_client &#8212; google-cloud 3a7a5c4 documentation</title>
+    <title>google.cloud.pubsub_v1.gapic.publisher_client &#8212; google-cloud fc2cc86 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -52,8 +52,11 @@
 
 <span class="sd">&quot;&quot;&quot;Accesses the google.pubsub.v1 Publisher API.&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
 <span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">pkg_resources</span>
+<span class="kn">import</span> <span class="nn">six</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
@@ -78,6 +81,28 @@
 
 
 <span class="n">_GAPIC_LIBRARY_VERSION</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">get_distribution</span><span class="p">(</span><span class="s2">&quot;google-cloud-pubsub&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">version</span>
+
+
+<span class="c1"># TODO: remove conditional import after Python 2 support is dropped</span>
+<span class="k">if</span> <span class="n">six</span><span class="o">.</span><span class="n">PY3</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="k">import</span> <span class="n">Mapping</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Mapping</span>
+
+
+<span class="k">def</span> <span class="nf">_merge_dict</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">):</span>
+    <span class="c1"># Modifies d1 in-place to take values from d2</span>
+    <span class="c1"># if the nested keys from d2 are present in d1.</span>
+    <span class="c1"># https://stackoverflow.com/a/10704003/4488789</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v2</span> <span class="ow">in</span> <span class="n">d2</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">v1</span> <span class="o">=</span> <span class="n">d1</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>  <span class="c1"># returns None if v1 has no such key</span>
+        <span class="k">if</span> <span class="n">v1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> is not recognized by client_config&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v2</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+            <span class="n">_merge_dict</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">d1</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v2</span>
+    <span class="k">return</span> <span class="n">d1</span>
 
 
 <span class="k">class</span> <span class="nc">PublisherClient</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -164,7 +189,7 @@
 <span class="sd">                This argument is mutually exclusive with providing a</span>
 <span class="sd">                transport instance to ``transport``; doing so will raise</span>
 <span class="sd">                an exception.</span>
-<span class="sd">            client_config (dict): DEPRECATED. A dictionary of call options for</span>
+<span class="sd">            client_config (dict): A dictionary of call options for</span>
 <span class="sd">                each method. If not specified, the default configuration is used.</span>
 <span class="sd">            client_info (google.api_core.gapic_v1.client_info.ClientInfo):</span>
 <span class="sd">                The client info used to send a user-agent string along with</span>
@@ -172,15 +197,12 @@
 <span class="sd">                Generally, you only need to set this if you&#39;re developing</span>
 <span class="sd">                your own client library.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Raise deprecation warnings for things we want to go away.</span>
-        <span class="k">if</span> <span class="n">client_config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="s2">&quot;The `client_config` argument is deprecated.&quot;</span><span class="p">,</span>
-                <span class="ne">PendingDeprecationWarning</span><span class="p">,</span>
-                <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-            <span class="p">)</span>
+        <span class="n">default_client_config</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">publisher_client_config</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">client_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">client_config</span> <span class="o">=</span> <span class="n">default_client_config</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">client_config</span> <span class="o">=</span> <span class="n">publisher_client_config</span><span class="o">.</span><span class="n">config</span>
+            <span class="n">client_config</span> <span class="o">=</span> <span class="n">_merge_dict</span><span class="p">(</span><span class="n">default_client_config</span><span class="p">,</span> <span class="n">client_config</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">channel</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
