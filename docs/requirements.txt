@@ -14,7 +14,7 @@ grpcio-gcp >= 0.2.2
 -e bigquery_storage/
 -e bigtable/
 -e container/
--e containeranlysis/
+-e containeranalysis/
 -e datacatalog/
 -e datalabeling/
 -e dataproc/
