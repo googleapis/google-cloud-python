@@ -183,6 +183,54 @@ def test_subscribe_to_messages_async_callbacks(
     future.cancel()
 
 
+def test_listing_project_topics(publisher, project, cleanup):
+    topic_paths = [
+        publisher.topic_path(project, "topic-{}".format(i) + unique_resource_id("."))
+        for i in range(1, 4)
+    ]
+    for topic in topic_paths:
+        cleanup.append((publisher.delete_topic, topic))
+        publisher.create_topic(topic)
+
+    project_path = publisher.project_path(project)
+    project_topics = publisher.list_topics(project_path)
+    project_topics = set(t.name for t in project_topics)
+
+    # there might be other topics in the project, thus do a "is subset" check
+    assert set(topic_paths) <= project_topics
+
+
+def test_listing_project_subscriptions(publisher, subscriber, project, cleanup):
+    # create topics
+    topic_paths = [
+        publisher.topic_path(project, "topic-1" + unique_resource_id(".")),
+        publisher.topic_path(project, "topic-2" + unique_resource_id(".")),
+    ]
+    for topic in topic_paths:
+        cleanup.append((publisher.delete_topic, topic))
+        publisher.create_topic(topic)
+
+    # create subscriptions
+    subscription_paths = [
+        subscriber.subscription_path(
+            project, "sub-{}".format(i) + unique_resource_id(".")
+        )
+        for i in range(1, 4)
+    ]
+    for i, subscription in enumerate(subscription_paths):
+        topic = topic_paths[i % 2]
+        cleanup.append((subscriber.delete_subscription, subscription))
+        subscriber.create_subscription(subscription, topic)
+
+    # retrieve subscriptions and check that the list matches the expected
+    project_path = subscriber.project_path(project)
+    subscriptions = subscriber.list_subscriptions(project_path)
+    subscriptions = set(s.name for s in subscriptions)
+
+    # there might be other subscriptions in the project, thus do a "is subset" check
+    assert set(subscription_paths) <= subscriptions
+
+
 class TestStreamingPull(object):
     def test_streaming_pull_callback_error_propagation(
         self, publisher, topic_path, subscriber, subscription_path, cleanup
