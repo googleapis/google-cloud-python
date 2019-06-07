@@ -23,6 +23,7 @@ In the hierarchy of API concepts
 * a :class:`~google.cloud.firestore_v1.client.Client` owns a
   :class:`~google.cloud.firestore_v1.document.DocumentReference`
 """
+from google.api_core import grpc_helpers
 from google.api_core.gapic_v1 import client_info
 from google.cloud.client import ClientWithProject
 
@@ -36,6 +37,7 @@ from google.cloud.firestore_v1.document import DocumentReference
 from google.cloud.firestore_v1.document import DocumentSnapshot
 from google.cloud.firestore_v1.field_path import render_field_path
 from google.cloud.firestore_v1.gapic import firestore_client
+from google.cloud.firestore_v1.gapic.transports import firestore_grpc_transport
 from google.cloud.firestore_v1.transaction import Transaction
 
 
@@ -112,8 +114,25 @@ class Client(ClientWithProject):
             <The GAPIC client with the credentials of the current client.
         """
         if self._firestore_api_internal is None:
-            self._firestore_api_internal = firestore_client.FirestoreClient(
-                credentials=self._credentials, client_info=self._client_info
+            SERVICE_ADDRESS = "firestore.googleapis.com:443"
+
+            # Use a custom channel.
+            # We need this in order to set appropriate keepalive options.
+            channel = grpc_helpers.create_channel(
+                target=SERVICE_ADDRESS,
+                credentials=self._credentials,
+                scopes=firestore_grpc_transport.FirestoreGrpcTransport._OAUTH_SCOPES,
+                options={
+                    "grpc.keepalive_time_ms": 30000,
+                }.items(),
+            )
+
+            transport = firestore_grpc_transport.FirestoreGrpcTransport(
+                address=SERVICE_ADDRESS, channel=channel
+            )
+      
+            self._firestore_api_internal = firestore_client.FirestoreClient(    
+                transport=transport, client_info=self._client_info
             )
 
         return self._firestore_api_internal
