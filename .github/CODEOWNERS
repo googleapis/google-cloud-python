@@ -42,16 +42,6 @@ pubsub/                     @anguillanneuf @plamut
 docs/pubsub                 @anguillanneuf @plamut
 
 
-# Bill Prin is the primary maintainer of the Stackdriver libraries.
-error_reporting/            @waprin
-docs/error_reporting/       @waprin
-
-monitoring/                 @waprin @supriyagarg @rimey
-docs/monitoring/            @waprin @supriyagarg @rimey
-
-logging/                    @waprin @tseaver
-docs/logging/               @waprin @tseaver
-
 # Tim Swast is the primary author of Runtime Config.
 runtimeconfig/              @tswast
 docs/runtimeconfig/         @tswast
