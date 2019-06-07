@@ -63,6 +63,11 @@ class DataTransferServiceStub(object):
             request_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ScheduleTransferRunsRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ScheduleTransferRunsResponse.FromString,
         )
+        self.StartManualTransferRuns = channel.unary_unary(
+            "/google.cloud.bigquery.datatransfer.v1.DataTransferService/StartManualTransferRuns",
+            request_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.StartManualTransferRunsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.StartManualTransferRunsResponse.FromString,
+        )
         self.GetTransferRun = channel.unary_unary(
             "/google.cloud.bigquery.datatransfer.v1.DataTransferService/GetTransferRun",
             request_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.GetTransferRunRequest.SerializeToString,
@@ -87,6 +92,16 @@ class DataTransferServiceStub(object):
             "/google.cloud.bigquery.datatransfer.v1.DataTransferService/CheckValidCreds",
             request_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.CheckValidCredsRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.CheckValidCredsResponse.FromString,
+        )
+        self.EnableDataTransferService = channel.unary_unary(
+            "/google.cloud.bigquery.datatransfer.v1.DataTransferService/EnableDataTransferService",
+            request_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.EnableDataTransferServiceRequest.SerializeToString,
+            response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+        )
+        self.IsDataTransferServiceEnabled = channel.unary_unary(
+            "/google.cloud.bigquery.datatransfer.v1.DataTransferService/IsDataTransferServiceEnabled",
+            request_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.IsDataTransferServiceEnabledRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.IsDataTransferServiceEnabledResponse.FromString,
         )
 
 
@@ -155,6 +170,17 @@ class DataTransferServiceServicer(object):
     For each date - or whatever granularity the data source supports - in the
     range, one transfer run is created.
     Note that runs are created per UTC time in the time range.
+    DEPRECATED: use StartManualTransferRuns instead.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def StartManualTransferRuns(self, request, context):
+        """Start manual transfer runs to be executed now with schedule_time equal to
+    current time. The transfer runs can be created for a time range where the
+    run_time is between start_time (inclusive) and end_time (exclusive), or for
+    a specific run_time.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -195,6 +221,23 @@ class DataTransferServiceServicer(object):
     them on behalf of the end user. This API just checks whether we have OAuth
     token for the particular user, which is a pre-requisite before user can
     create a transfer config.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def EnableDataTransferService(self, request, context):
+        """Enables data transfer service for a given project. This
+    method requires the additional scope of
+    'https://www.googleapis.com/auth/cloudplatformprojects'
+    to manage the cloud project permissions.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def IsDataTransferServiceEnabled(self, request, context):
+        """Returns true if data transfer is enabled for a project.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -243,6 +286,11 @@ def add_DataTransferServiceServicer_to_server(servicer, server):
             request_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ScheduleTransferRunsRequest.FromString,
             response_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ScheduleTransferRunsResponse.SerializeToString,
         ),
+        "StartManualTransferRuns": grpc.unary_unary_rpc_method_handler(
+            servicer.StartManualTransferRuns,
+            request_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.StartManualTransferRunsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.StartManualTransferRunsResponse.SerializeToString,
+        ),
         "GetTransferRun": grpc.unary_unary_rpc_method_handler(
             servicer.GetTransferRun,
             request_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.GetTransferRunRequest.FromString,
@@ -267,6 +315,16 @@ def add_DataTransferServiceServicer_to_server(servicer, server):
             servicer.CheckValidCreds,
             request_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.CheckValidCredsRequest.FromString,
             response_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.CheckValidCredsResponse.SerializeToString,
+        ),
+        "EnableDataTransferService": grpc.unary_unary_rpc_method_handler(
+            servicer.EnableDataTransferService,
+            request_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.EnableDataTransferServiceRequest.FromString,
+            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+        ),
+        "IsDataTransferServiceEnabled": grpc.unary_unary_rpc_method_handler(
+            servicer.IsDataTransferServiceEnabled,
+            request_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.IsDataTransferServiceEnabledRequest.FromString,
+            response_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.IsDataTransferServiceEnabledResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(

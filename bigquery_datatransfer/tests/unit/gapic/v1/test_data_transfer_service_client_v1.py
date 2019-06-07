@@ -78,6 +78,8 @@ class TestDataTransferServiceClient(object):
         help_url = "helpUrl-789431439"
         default_data_refresh_window_days = 1804935157
         manual_runs_disabled = True
+        partner_legal_name = "partnerLegalName-1307326424"
+        redirect_url = "redirectUrl951230092"
         expected_response = {
             "name": name_2,
             "data_source_id": data_source_id,
@@ -91,6 +93,8 @@ class TestDataTransferServiceClient(object):
             "help_url": help_url,
             "default_data_refresh_window_days": default_data_refresh_window_days,
             "manual_runs_disabled": manual_runs_disabled,
+            "partner_legal_name": partner_legal_name,
+            "redirect_url": redirect_url,
         }
         expected_response = datatransfer_pb2.DataSource(**expected_response)
 
@@ -185,6 +189,7 @@ class TestDataTransferServiceClient(object):
         disabled = True
         user_id = 147132913
         dataset_region = "datasetRegion959248539"
+        partner_token = "partnerToken725173186"
         expected_response = {
             "name": name,
             "destination_dataset_id": destination_dataset_id,
@@ -195,6 +200,7 @@ class TestDataTransferServiceClient(object):
             "disabled": disabled,
             "user_id": user_id,
             "dataset_region": dataset_region,
+            "partner_token": partner_token,
         }
         expected_response = transfer_pb2.TransferConfig(**expected_response)
 
@@ -245,6 +251,7 @@ class TestDataTransferServiceClient(object):
         disabled = True
         user_id = 147132913
         dataset_region = "datasetRegion959248539"
+        partner_token = "partnerToken725173186"
         expected_response = {
             "name": name,
             "destination_dataset_id": destination_dataset_id,
@@ -255,6 +262,7 @@ class TestDataTransferServiceClient(object):
             "disabled": disabled,
             "user_id": user_id,
             "dataset_region": dataset_region,
+            "partner_token": partner_token,
         }
         expected_response = transfer_pb2.TransferConfig(**expected_response)
 
@@ -336,6 +344,7 @@ class TestDataTransferServiceClient(object):
         disabled = True
         user_id = 147132913
         dataset_region = "datasetRegion959248539"
+        partner_token = "partnerToken725173186"
         expected_response = {
             "name": name_2,
             "destination_dataset_id": destination_dataset_id,
@@ -346,6 +355,7 @@ class TestDataTransferServiceClient(object):
             "disabled": disabled,
             "user_id": user_id,
             "dataset_region": dataset_region,
+            "partner_token": partner_token,
         }
         expected_response = transfer_pb2.TransferConfig(**expected_response)
 
@@ -481,12 +491,14 @@ class TestDataTransferServiceClient(object):
         data_source_id = "dataSourceId-1015796374"
         user_id = 147132913
         schedule = "schedule-697920873"
+        partner_token = "partnerToken725173186"
         expected_response = {
             "name": name_2,
             "destination_dataset_id": destination_dataset_id,
             "data_source_id": data_source_id,
             "user_id": user_id,
             "schedule": schedule,
+            "partner_token": partner_token,
         }
         expected_response = transfer_pb2.TransferRun(**expected_response)
 
@@ -688,3 +700,96 @@ class TestDataTransferServiceClient(object):
 
         with pytest.raises(CustomException):
             client.check_valid_creds(name)
+
+    def test_start_manual_transfer_runs(self):
+        # Setup Expected Response
+        expected_response = {}
+        expected_response = datatransfer_pb2.StartManualTransferRunsResponse(
+            **expected_response
+        )
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+        response = client.start_manual_transfer_runs()
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = datatransfer_pb2.StartManualTransferRunsRequest()
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_start_manual_transfer_runs_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+        with pytest.raises(CustomException):
+            client.start_manual_transfer_runs()
+
+    def test_enable_data_transfer_service(self):
+        channel = ChannelStub()
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+        client.enable_data_transfer_service()
+
+        assert len(channel.requests) == 1
+        expected_request = datatransfer_pb2.EnableDataTransferServiceRequest()
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_enable_data_transfer_service_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+        with pytest.raises(CustomException):
+            client.enable_data_transfer_service()
+
+    def test_is_data_transfer_service_enabled(self):
+        # Setup Expected Response
+        enabled = False
+        reason = "reason-934964668"
+        expected_response = {"enabled": enabled, "reason": reason}
+        expected_response = datatransfer_pb2.IsDataTransferServiceEnabledResponse(
+            **expected_response
+        )
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+        response = client.is_data_transfer_service_enabled()
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = datatransfer_pb2.IsDataTransferServiceEnabledRequest()
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_is_data_transfer_service_enabled_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+        with pytest.raises(CustomException):
+            client.is_data_transfer_service_enabled()
