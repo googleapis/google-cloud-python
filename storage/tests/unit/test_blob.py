@@ -1852,6 +1852,51 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(stream.mode, "rb")
         self.assertEqual(stream.name, temp.name)
 
+    def _do_upload_parallel_mock_call_helper(self, blob, client, content_type, size):
+        self.assertEqual(blob._do_upload.call_count, 10)
+        mock_call = blob._do_upload.mock_calls[0]
+        call_name, pos_args, kwargs = mock_call
+        self.assertEqual(call_name, "")
+        self.assertEqual(len(pos_args), 6)
+        self.assertEqual(pos_args[0], client)
+        self.assertEqual(pos_args[2], content_type)
+        self.assertEqual(pos_args[3], size)
+        self.assertIsNone(pos_args[4])  # num_retries
+        self.assertIsNone(pos_args[5])  # predefined_acl
+        self.assertEqual(kwargs, {})
+        return pos_args[1]
+
+    def test_upload_parallel(self):
+        import tempfile
+        import shutil
+
+        google.cloud.storage.blob._MAX_THREAD_LIMIT = 5
+        blob = self._make_one("blob-name", bucket=None)
+        # Mock low-level upload helper on blob (it is tested elsewhere).
+        created_json = {"metadata": {"mint": "ice-cream"}}
+        blob._do_upload = mock.Mock(return_value=created_json, spec=[])
+
+        # Make sure `metadata` is empty before the request.
+        self.assertIsNone(blob.metadata)
+        data = b"soooo much data"
+        content_type = u"image/svg+xml"
+        client = mock.sentinel.client
+        temp_dir = tempfile.mkdtemp()
+        for _ in range(0, 10):
+            file_handle, name = tempfile.mkstemp(dir=temp_dir)
+            os.close(file_handle)
+            with open(name, "wb") as file_obj:
+                file_obj.write(data)
+
+        blob.upload_parallel(temp_dir, content_type, client)
+        self.assertEqual(blob.metadata, created_json["metadata"])
+        stream = self._do_upload_parallel_mock_call_helper(
+            blob, client, content_type, len(data)
+        )
+        self.assertTrue(stream.closed)
+        self.assertEqual(stream.mode, "rb")
+        shutil.rmtree(temp_dir)
+
     def _upload_from_string_helper(self, data, **kwargs):
         from google.cloud._helpers import _to_bytes
 

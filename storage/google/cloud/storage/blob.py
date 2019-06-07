@@ -33,6 +33,7 @@ import mimetypes
 import os
 import time
 import warnings
+import threading
 
 from six.moves.urllib.parse import parse_qsl
 from six.moves.urllib.parse import quote
@@ -100,6 +101,7 @@ _READ_LESS_THAN_SIZE = (
 
 _DEFAULT_CHUNKSIZE = 104857600  # 1024 * 1024 B * 100 = 100 MB
 _MAX_MULTIPART_SIZE = 8388608  # 8 MB
+_MAX_THREAD_LIMIT = 10
 
 
 class Blob(_PropertyMixin):
@@ -186,6 +188,9 @@ class Blob(_PropertyMixin):
 
         if generation is not None:
             self._properties["generation"] = generation
+
+        self._file_count = 0
+        self._lock = threading.Lock()
 
     @property
     def chunk_size(self):
@@ -1949,6 +1954,88 @@ class Blob(_PropertyMixin):
         value = self._properties.get("updated")
         if value is not None:
             return _rfc3339_to_datetime(value)
+
+    @staticmethod
+    def _get_files(path):
+        """Get the list of full path of all files in the directory.
+        :param path: str
+        :return: The path to the directory.
+
+        :rtype: list
+        :returns: The list of all file path in the directory.
+        """
+        filepath_list = []
+        for directory, _, filenames in os.walk(path):
+            for filename in filenames:
+                filepath_list.append(os.path.join(directory, filename))
+        return filepath_list
+
+    def upload_parallel(
+        self, path, content_type=None, client=None, predefined_acl=None
+    ):
+        """Upload this blob's contents parallel from the content of file in directory.
+
+        The content type of the upload will be determined in order
+        of precedence:
+
+        - The value passed in to this method (if not :data:`None`)
+        - The value stored on the current blob
+        - The value given by ``mimetypes.guess_type``
+        - The default value ('application/octet-stream')
+
+        .. note::
+           The effect of uploading to an existing blob depends on the
+           "versioning" and "lifecycle" policies defined on the blob's
+           bucket.  In the absence of those policies, upload will
+           overwrite any existing contents.
+
+           See the `object versioning
+           <https://cloud.google.com/storage/docs/object-versioning>`_ and
+           `lifecycle <https://cloud.google.com/storage/docs/lifecycle>`_
+           API documents for details.
+
+        If :attr:`user_project` is set on the bucket, bills the API request
+        to that project.
+
+        :type path: str
+        :param path: The path to the directory.
+
+        :type content_type: str
+        :param content_type: Optional type of content being uploaded.
+
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client: (Optional) The client to use.  If not passed, falls back
+                       to the ``client`` stored on the blob's bucket.
+
+        :type predefined_acl: str
+        :param predefined_acl: (Optional) predefined access control list
+        """
+        threads = []
+        files_list = self._get_files(path)
+        total_files = len(files_list)
+        max_thread_to_start = min(total_files, _MAX_THREAD_LIMIT)
+        for _ in range(max_thread_to_start):
+            thread = threading.Thread(
+                target=self._upload_from_list,
+                args=(files_list, total_files, content_type, client, predefined_acl),
+            )
+            thread.start()
+            threads.append(thread)
+
+        for thread in threads:
+            thread.join()
+
+    def _upload_from_list(
+        self, files_list, total_files, content_type, client, predefined_acl
+    ):
+        while total_files > self._file_count:
+            self.upload_from_filename(
+                files_list[self._file_count], content_type, client, predefined_acl
+            )
+            self._lock.acquire()
+            self._file_count += 1
+            self._lock.release()
+            time.sleep(0.3)
 
 
 def _get_encryption_headers(key, source=False):
