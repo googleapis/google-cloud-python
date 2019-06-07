@@ -122,16 +122,14 @@ class Client(ClientWithProject):
                 target=SERVICE_ADDRESS,
                 credentials=self._credentials,
                 scopes=firestore_grpc_transport.FirestoreGrpcTransport._OAUTH_SCOPES,
-                options={
-                    "grpc.keepalive_time_ms": 30000,
-                }.items(),
+                options={"grpc.keepalive_time_ms": 30000}.items(),
             )
 
             self._transport = firestore_grpc_transport.FirestoreGrpcTransport(
                 address=SERVICE_ADDRESS, channel=channel
             )
-      
-            self._firestore_api_internal = firestore_client.FirestoreClient(    
+
+            self._firestore_api_internal = firestore_client.FirestoreClient(
                 transport=self._transport, client_info=self._client_info
             )
 

@@ -98,8 +98,23 @@ class Client(ClientWithProject):
             GAPIC client with the credentials of the current client.
         """
         if self._firestore_api_internal is None:
+            SERVICE_ADDRESS = "firestore.googleapis.com:443"
+
+            # Use a custom channel.
+            # We need this in order to set appropriate keepalive options.
+            channel = grpc_helpers.create_channel(
+                target=SERVICE_ADDRESS,
+                credentials=self._credentials,
+                scopes=firestore_grpc_transport.FirestoreGrpcTransport._OAUTH_SCOPES,
+                options={"grpc.keepalive_time_ms": 30000}.items(),
+            )
+
+            self._transport = firestore_grpc_transport.FirestoreGrpcTransport(
+                address=SERVICE_ADDRESS, channel=channel
+            )
+
             self._firestore_api_internal = firestore_client.FirestoreClient(
-                credentials=self._credentials
+                transport=self._transport
             )
 
         return self._firestore_api_internal
