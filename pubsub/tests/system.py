@@ -231,6 +231,35 @@ def test_listing_project_subscriptions(publisher, subscriber, project, cleanup):
     assert set(subscription_paths) <= subscriptions
 
 
+def test_listing_topic_subscriptions(publisher, subscriber, project, cleanup):
+    # create topics
+    topic_paths = [
+        publisher.topic_path(project, "topic-1" + unique_resource_id(".")),
+        publisher.topic_path(project, "topic-2" + unique_resource_id(".")),
+    ]
+    for topic in topic_paths:
+        cleanup.append((publisher.delete_topic, topic))
+        publisher.create_topic(topic)
+
+    # create subscriptions
+    subscription_paths = [
+        subscriber.subscription_path(
+            project, "sub-{}".format(i) + unique_resource_id(".")
+        )
+        for i in range(1, 4)
+    ]
+    for i, subscription in enumerate(subscription_paths):
+        topic = topic_paths[i % 2]
+        cleanup.append((subscriber.delete_subscription, subscription))
+        subscriber.create_subscription(subscription, topic)
+
+    # retrieve subscriptions and check that the list matches the expected
+    subscriptions = publisher.list_topic_subscriptions(topic_paths[0])
+    subscriptions = set(subscriptions)
+
+    assert subscriptions == {subscription_paths[0], subscription_paths[2]}
+
+
 class TestStreamingPull(object):
     def test_streaming_pull_callback_error_propagation(
         self, publisher, topic_path, subscriber, subscription_path, cleanup
