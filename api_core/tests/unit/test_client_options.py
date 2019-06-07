@@ -24,14 +24,15 @@ def test_constructor_dict():
 
     assert options.api_endpoint == "foo.googleapis.com"
 
+
 def test_constructor_kwargs():
-    options = client_options.ClientOptions(
-        api_endpoint="foo.googleapis.com"
-    )
+    options = client_options.ClientOptions(api_endpoint="foo.googleapis.com")
 
     assert options.api_endpoint == "foo.googleapis.com"
+
 
 def test_constructor_exception():
     with pytest.raises(Exception):
         options = client_options.ClientOptions(
-            api_endpoint="a.googleapis.com", options={"b.googleapis.com"})
+            api_endpoint="a.googleapis.com", options={"b.googleapis.com"}
+        )

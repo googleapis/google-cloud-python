@@ -18,6 +18,7 @@ Client options provide an consistent interface for user options to be defined
 across clients.
 """
 
+
 class ClientOptions(object):
     """Client Options used to set options on clients. 
 
@@ -31,7 +32,9 @@ class ClientOptions(object):
     def __init__(self, options=None, **kw_args):
         if options is not None:
             if kw_args.items():
-                raise Exception("ClientOptions expects options in a dictionary or in kw_args, not both")
+                raise Exception(
+                    "ClientOptions expects options in a dictionary or in kw_args, not both"
+                )
             client_options = options
         else:
             client_options = kw_args
