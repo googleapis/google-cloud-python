@@ -33,6 +33,11 @@ def test_constructor_kwargs():
 
 def test_constructor_exception():
     with pytest.raises(Exception):
-        options = client_options.ClientOptions(
+        client_options.ClientOptions(
             api_endpoint="a.googleapis.com", options={"b.googleapis.com"}
         )
+
+
+def test_constructor_bad_option():
+    with pytest.raises(ValueError):
+        client_options.ClientOptions(options={"bad_option": "foo"})

@@ -20,7 +20,7 @@ across clients.
 
 
 class ClientOptions(object):
-    """Client Options used to set options on clients. 
+    """Client Options used to set options on clients.
 
     Args:
         options (dict): A dict of the options listed below.
