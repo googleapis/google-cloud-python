@@ -76,7 +76,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(firestore_api, mock_client.return_value)
         self.assertIs(firestore_api, client._firestore_api_internal)
         mock_client.assert_called_once_with(
-            credentials=client._credentials, client_info=client_info
+            transport=client._transport, client_info=client_info
         )
 
         # Call again to show that it is cached, but call count is still 1.

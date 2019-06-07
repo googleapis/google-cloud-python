@@ -127,12 +127,12 @@ class Client(ClientWithProject):
                 }.items(),
             )
 
-            transport = firestore_grpc_transport.FirestoreGrpcTransport(
+            self._transport = firestore_grpc_transport.FirestoreGrpcTransport(
                 address=SERVICE_ADDRESS, channel=channel
             )
       
             self._firestore_api_internal = firestore_client.FirestoreClient(    
-                transport=transport, client_info=self._client_info
+                transport=self._transport, client_info=self._client_info
             )
 
         return self._firestore_api_internal
