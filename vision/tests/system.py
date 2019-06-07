@@ -30,12 +30,9 @@ from test_utils.system import unique_resource_id
 
 
 _SYS_TESTS_DIR = os.path.realpath(os.path.dirname(__file__))
-LOGO_FILE = os.path.join(_SYS_TESTS_DIR, "data", "logo.png")
 FACE_FILE = os.path.join(_SYS_TESTS_DIR, "data", "faces.jpg")
-LABEL_FILE = os.path.join(_SYS_TESTS_DIR, "data", "car.jpg")
-LANDMARK_FILE = os.path.join(_SYS_TESTS_DIR, "data", "landmark.jpg")
-TEXT_FILE = os.path.join(_SYS_TESTS_DIR, "data", "text.jpg")
-FULL_TEXT_FILE = os.path.join(_SYS_TESTS_DIR, "data", "full-text.jpg")
+LOGO_FILE = os.path.join(_SYS_TESTS_DIR, "data", "logo.png")
+PDF_FILE = os.path.join(_SYS_TESTS_DIR, "data", "pdf_test.pdf")
 PROJECT_ID = os.environ.get("PROJECT_ID")
 
 
@@ -178,6 +175,70 @@ class TestVisionClientLogo(VisionSystemTestBase):
         logo_annotations = responses[0]["logoAnnotations"]
         assert len(logo_annotations) == 1
         assert logo_annotations[0]["description"] == "google"
+
+
+class TestVisionClientFiles(VisionSystemTestBase):
+    def test_async_batch_annotate_files(self):
+        # Upload the image to Google Cloud Storage.
+        blob_name = "async_batch_annotate_files.pdf"
+        blob = self.test_bucket.blob(blob_name)
+        self.to_delete_by_case.append(blob)
+        with io.open(PDF_FILE, "rb") as image_file:
+            blob.upload_from_file(image_file)
+
+        # Make the request.
+        method_name = "test_async_batch_annotate_files"
+        output_gcs_uri_prefix = "gs://{bucket}/{method_name}".format(
+            bucket=self.test_bucket.name, method_name=method_name
+        )
+        request = {
+            "input_config": {
+                "gcs_source": {
+                    "uri": "gs://{bucket}/{blob}".format(
+                        bucket=self.test_bucket.name, blob=blob_name
+                    )
+                },
+                "mime_type": "application/pdf",
+            },
+            "features": [{"type": vision.enums.Feature.Type.DOCUMENT_TEXT_DETECTION}],
+            "output_config": {"gcs_destination": {"uri": output_gcs_uri_prefix}},
+        }
+        response = self.client.async_batch_annotate_files([request])
+
+        # Wait for the operation to complete.
+        lro_waiting_seconds = 60
+        start_time = time.time()
+        while not response.done() and (time.time() - start_time) < lro_waiting_seconds:
+            time.sleep(1)
+
+        if not response.done():
+            self.fail(
+                "{method_name} timed out after {lro_waiting_seconds} seconds".format(
+                    method_name=method_name, lro_waiting_seconds=lro_waiting_seconds
+                )
+            )
+
+        # Make sure getting the result is not an error.
+        response.result()
+
+        # There should be exactly 1 output file in gcs at the prefix output_gcs_uri_prefix.
+        blobs = list(self.test_bucket.list_blobs(prefix=method_name))
+        assert len(blobs) == 1
+        blob = blobs[0]
+
+        # Download the output file and verify the result
+        result_str = blob.download_as_string().decode("utf8")
+        result = json.loads(result_str)
+        responses = result["responses"]
+        assert len(responses) == 1
+        text = responses[0]["fullTextAnnotation"]["text"]
+        expected_text = "test text"
+        self.assertTrue(
+            expected_text in text,
+            "'{expected_text}' not in '{text}'".format(
+                expected_text=expected_text, text=text
+            ),
+        )
 
 
 @unittest.skipUnless(PROJECT_ID, "PROJECT_ID not set in environment.")
@@ -541,7 +602,13 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         )
 
         # Verify the result.
+        image_prefix = "import_sets_image_"
         for ref_image in response.result().reference_images:
-            self.assertTrue("import_sets_image_" in ref_image.uri)
+            self.assertTrue(
+                image_prefix in ref_image.uri,
+                "'{image_prefix}' not in '{uri}'".format(
+                    image_prefix=image_prefix, uri=ref_image.uri
+                ),
+            )
         for status in response.result().statuses:
             self.assertEqual(status.code, grpc.StatusCode.OK.value[0])
