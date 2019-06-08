@@ -21,9 +21,9 @@ import enum
 
 class EntryType(enum.IntEnum):
     """
-    Entry resources in Cloud Data Catalog can be of different types e.g. BigQuery
+    Entry resources in Data Catalog can be of different types e.g. BigQuery
     Table entry is of type 'TABLE'. This enum describes all the possible types
-    Cloud Data Catalog contains.
+    Data Catalog contains.
 
     Attributes:
       ENTRY_TYPE_UNSPECIFIED (int): Default unknown type
@@ -34,6 +34,23 @@ class EntryType(enum.IntEnum):
     ENTRY_TYPE_UNSPECIFIED = 0
     TABLE = 2
     DATA_STREAM = 3
+
+
+class SearchResultType(enum.IntEnum):
+    """
+    The different types of resources that can be returned in search.
+
+    Attributes:
+      SEARCH_RESULT_TYPE_UNSPECIFIED (int): Default unknown type.
+      ENTRY (int): An ``Entry``.
+      TAG_TEMPLATE (int): A ``TagTemplate``.
+      ENTRY_GROUP (int): An ``EntryGroup``.
+    """
+
+    SEARCH_RESULT_TYPE_UNSPECIFIED = 0
+    ENTRY = 1
+    TAG_TEMPLATE = 2
+    ENTRY_GROUP = 3
 
 
 class TableSourceType(enum.IntEnum):
@@ -49,3 +66,21 @@ class TableSourceType(enum.IntEnum):
     TABLE_SOURCE_TYPE_UNSPECIFIED = 0
     BIGQUERY_VIEW = 2
     BIGQUERY_TABLE = 5
+
+
+class FieldType(object):
+    class PrimitiveType(enum.IntEnum):
+        """
+        Attributes:
+          PRIMITIVE_TYPE_UNSPECIFIED (int): This is the default invalid value for a type.
+          DOUBLE (int): A double precision number.
+          STRING (int): An UTF-8 string.
+          BOOL (int): A boolean value.
+          TIMESTAMP (int): A timestamp.
+        """
+
+        PRIMITIVE_TYPE_UNSPECIFIED = 0
+        DOUBLE = 1
+        STRING = 2
+        BOOL = 3
+        TIMESTAMP = 4

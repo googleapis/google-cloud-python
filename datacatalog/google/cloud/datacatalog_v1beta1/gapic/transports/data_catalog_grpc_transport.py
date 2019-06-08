@@ -97,12 +97,60 @@ class DataCatalogGrpcTransport(object):
         return self._channel
 
     @property
+    def search_catalog(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.search_catalog`.
+
+        Searches Data Catalog for multiple resources like entries, tags that
+        match a query.
+
+        This is a custom method
+        (https://cloud.google.com/apis/design/custom\_methods) and does not
+        return the complete resource, only the resource identifier and high
+        level fields. Clients can subsequentally call Get methods.
+
+        See `Data Catalog Search
+        Syntax <https://cloud.google.com/data-catalog/docs/how-to/search-reference>`__
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].SearchCatalog
+
+    @property
+    def update_entry(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.update_entry`.
+
+        Updates an existing entry.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].UpdateEntry
+
+    @property
+    def get_entry(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.get_entry`.
+
+        Gets an entry.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].GetEntry
+
+    @property
     def lookup_entry(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.lookup_entry`.
 
         Get an entry by target resource name. This method allows clients to use
         the resource name from the source Google Cloud Platform service to get the
-        Cloud Data Catalog Entry.
+        Data Catalog Entry.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -110,3 +158,233 @@ class DataCatalogGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["data_catalog_stub"].LookupEntry
+
+    @property
+    def create_tag_template(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.create_tag_template`.
+
+        Creates a tag template.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].CreateTagTemplate
+
+    @property
+    def get_tag_template(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.get_tag_template`.
+
+        Gets a tag template.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].GetTagTemplate
+
+    @property
+    def update_tag_template(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.update_tag_template`.
+
+        Updates a tag template. This method cannot be used to update the fields of
+        a template. The tag template fields are represented as separate resources
+        and should be updated using their own create/update/delete methods.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].UpdateTagTemplate
+
+    @property
+    def delete_tag_template(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.delete_tag_template`.
+
+        Deletes a tag template and all tags using the template.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].DeleteTagTemplate
+
+    @property
+    def create_tag_template_field(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.create_tag_template_field`.
+
+        Creates a field in a tag template.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].CreateTagTemplateField
+
+    @property
+    def update_tag_template_field(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.update_tag_template_field`.
+
+        Updates a field in a tag template. This method cannot be used to update the
+        field type.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].UpdateTagTemplateField
+
+    @property
+    def rename_tag_template_field(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.rename_tag_template_field`.
+
+        Renames a field in a tag template.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].RenameTagTemplateField
+
+    @property
+    def delete_tag_template_field(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.delete_tag_template_field`.
+
+        Deletes a field in a tag template and all uses of that field.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].DeleteTagTemplateField
+
+    @property
+    def create_tag(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.create_tag`.
+
+        Creates a tag on an ``Entry``.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].CreateTag
+
+    @property
+    def update_tag(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.update_tag`.
+
+        Updates an existing tag.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].UpdateTag
+
+    @property
+    def delete_tag(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.delete_tag`.
+
+        Deletes a tag.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].DeleteTag
+
+    @property
+    def list_tags(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.list_tags`.
+
+        Lists the tags on an ``Entry``.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].ListTags
+
+    @property
+    def set_iam_policy(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.set_iam_policy`.
+
+        Sets the access control policy for a resource. Replaces any existing
+        policy. Supported resources are:
+
+        -  Tag templates. Note, this method cannot be used to manage policies
+           for BigQuery, Cloud Pub/Sub and any external Google Cloud Platform
+           resources synced to Cloud Data Catalog.
+
+        Callers must have following Google IAM permission
+        ``datacatalog.tagTemplates.setIamPolicy`` to set policies on tag
+        templates.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].SetIamPolicy
+
+    @property
+    def get_iam_policy(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.get_iam_policy`.
+
+        Gets the access control policy for a resource. A ``NOT_FOUND`` error is
+        returned if the resource does not exist. An empty policy is returned if
+        the resource exists but does not have a policy set on it.
+
+        Supported resources are:
+
+        -  Tag templates. Note, this method cannot be used to manage policies
+           for BigQuery, Cloud Pub/Sub and any external Google Cloud Platform
+           resources synced to Cloud Data Catalog.
+
+        Callers must have following Google IAM permission
+        ``datacatalog.tagTemplates.getIamPolicy`` to get policies on tag
+        templates.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].GetIamPolicy
+
+    @property
+    def test_iam_permissions(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.test_iam_permissions`.
+
+        Returns the caller's permissions on a resource. If the resource does not
+        exist, an empty set of permissions is returned (We don't return a
+        ``NOT_FOUND`` error).
+
+        Supported resource are:
+
+        -  tag templates. Note, this method cannot be used to manage policies
+           for BigQuery, Cloud Pub/Sub and any external Google Cloud Platform
+           resources synced to Cloud Data Catalog.
+
+        A caller is not required to have Google IAM permission to make this
+        request.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].TestIamPermissions
