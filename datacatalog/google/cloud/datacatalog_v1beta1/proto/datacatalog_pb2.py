@@ -1600,7 +1600,8 @@ SearchCatalogRequest = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_SEARCHCATALOGREQUEST_SCOPE,
                 __module__="google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
-                __doc__="""Attributes:
+                __doc__="""
+    Attributes:
         include_org_ids:
             Data Catalog tries to automatically choose the right corpus of
             data to search through. You can ensure an organization is
