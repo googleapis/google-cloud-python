@@ -423,7 +423,7 @@ class BytesField(_Field):
         super(BytesField, self).__init__(bytes, default=default, required=required)
 
 
-class ListField(_Field):
+class ListField(_Field, list):
     """A List field"""
     def __init__(self, field_type):
         super(ListField, self).__init__(list, default=[])

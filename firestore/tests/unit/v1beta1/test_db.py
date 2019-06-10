@@ -4,7 +4,94 @@ import json
 from datetime import datetime, date
 
 
+"""
+A group meet ups organizing app that allow users add meetups and to RSVP to meetups
+"""
+
+
+class User(db.FirestoreModel):
+    """A user can register and can have an account in multiple groups"""
+    name = db.StringField(default="doe")
+    email = db.StringField(required=True)
+    password = db.StringField(required=True)
+    date_registered = db.DateTimeField(auto_add_now=True)
+
+
+class Group(db.FirestoreModel):
+    """A group is created by a user and can be invite only or public"""
+    name = db.StringField()
+    description = db.StringField(length=400)
+    creator = db.ReferenceField(model=User)
+    date_created = db.DateTimeField(auto_add_now=True)
+    last_update = db.DateTimeField(auto_now=True)
+    public_group = db.BooleanField(default=True)
+
+
+class Account(db.FirestoreModel):
+    """An account exists in a group, belongs to a user"""
+    __sub_collection__ = Group
+    user = db.ReferenceField(model=User)
+    roles = db.ListField(field_type=db.StringField(required=True))
+    date_joined = db.DateTimeField(auto_add_now=True)
+
+
+class Meetup(db.FirestoreModel):
+    """Meetups that are only open and accessible to members of a group"""
+    __sub_collection__ = Group
+    organizer = db.ReferenceField(Account, required=True)  # This Account must belong to the same group
+    title = db.StringField(length=200)
+    description = db.StringField()
+    date_created = db.DateTimeField(auto_add_now=True)
+    meetup_date = db.DateTimeField()
+
+
+class RSVP(db.FirestoreModel):
+    """RSVP to attend a private meetup"""
+    account = db.ReferenceField(Account, required=True)
+    meetup = db.ReferenceField(Meetup)
+    rsvp_date = db.DateTimeField(auto_add_now=True)
+
+
+class Conversation(db.FirestoreModel):
+    """Conversations between users"""
+    users = db.ListField(field_type=db.ReferenceField(model=User, required=True))
+    start_time = db.DateTimeField(auto_add_now=True)
+    last_update = db.DateTimeField(auto_now=True)
+
+    def send_message(self, user, text):
+        if user not in self.users:
+            raise Exception("User must be in a conversation to send a message")
+        message = MessageLog(__parent__=self, sender=user, message=text)
+        message.put()
+
+
+class MessageLog(db.FirestoreModel):
+    """Actual messages between users in a conversation"""
+    __sub_collection__ = Conversation
+    sender = db.ReferenceField(User, required=True)
+    message = db.StringField()
+    date_sent = db.DateTimeField(auto_add_now=True)
+
+
+class DoomedToFail(db.FirestoreModel):
+    """This model should never initialize. We're referencing a Model that we can't tell the parent"""
+    message = db.ReferenceField(MessageLog)
+
+
 class TestDB(TestCase):
+    def setUp(self):
+        class John:
+            name = "John Doe"
+            email = "john@doe.fam"
+            password = "stupidJane"
+
+        class Jane:
+            name = "Jane Doe"
+            email = "jane@doe.fam"
+            password = "StewPidJohn"
+        self.john = John
+        self.jane = Jane
+
     def test_fields(self):
         # String Field
         string_field = db.StringField(default="test", required=True, length=6)
@@ -88,4 +175,12 @@ class TestDB(TestCase):
         self.assertEqual(bytes_field.validate(other_bytes), other_bytes)
         self.assertRaises(db.InvalidValueError, bytes_field.validate, "some_string")
 
+    def test_reference_field(self):
+        jane = User(name=self.jane.name, email=self.jane.email, password=self.jane.password)
+        john = User(name=self.john.name, email=self.john.email, password=self.john.password)
 
+    def test_model_initialization(self):
+        jane = User(name="Jane Doe", email="jane@doe.fam", password="stupidJohn")
+        self.assertEqual(jane.name, "Jane Doe")
+        self.assertEqual(jane.email, "jane")
+        self.assertEqual(jane.password, "Jane Doe")
