@@ -144,7 +144,7 @@ class DeviceManagerClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
-            client_options (google.api_core.client_options.ClientOptions):
+            client_options (Union[dict, google.api_core.client_options.ClientOptions):
                 Client options used to set user options on the client. API Endpoint
                 should be set through client_options.
         """
@@ -167,6 +167,8 @@ class DeviceManagerClient(object):
 
         api_endpoint = self.SERVICE_ADDRESS
         if client_options:
+            if type(client_options) == dict:
+                client_options = google.api-core.client_options.from_dict(client_options)
             if client_options.api_endpoint:
                 api_endpoint = client_options.api_endpoint
 

@@ -17,27 +17,20 @@ import pytest
 from google.api_core import client_options
 
 
-def test_constructor_dict():
-    options = client_options.ClientOptions(
-        options={"api_endpoint": "foo.googleapis.com"}
-    )
-
-    assert options.api_endpoint == "foo.googleapis.com"
-
-
-def test_constructor_kwargs():
+def test_constructor():
     options = client_options.ClientOptions(api_endpoint="foo.googleapis.com")
 
     assert options.api_endpoint == "foo.googleapis.com"
 
 
-def test_constructor_exception():
-    with pytest.raises(Exception):
-        client_options.ClientOptions(
-            api_endpoint="a.googleapis.com", options={"b.googleapis.com"}
-        )
+def test_from_dict():
+    options = client_options.from_dict({"api_endpoint": "foo.googleapis.com"})
+
+    assert options.api_endpoint == "foo.googleapis.com"
 
 
-def test_constructor_bad_option():
+def test_from_dict_bad_argument():
     with pytest.raises(ValueError):
-        client_options.ClientOptions(options={"bad_option": "foo"})
+        client_options.from_dict(
+            {"api_endpoint": "foo.googleapis.com", "bad_arg": "1234"}
+        )

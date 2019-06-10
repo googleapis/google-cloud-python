@@ -14,7 +14,7 @@
 
 """Client options class.
 
-Client options provide an consistent interface for user options to be defined
+Client options provide a consistent interface for user options to be defined
 across clients.
 """
 
@@ -23,25 +23,26 @@ class ClientOptions(object):
     """Client Options used to set options on clients.
 
     Args:
-        options (dict): A dict of the options listed below.
         api_endpoint (str): The desired API endpoint, e.g., compute.googleapis.com
     """
 
-    api_endpoint = None
+    def __init__(self, api_endpoint=None):
+        self.api_endpoint = api_endpoint
 
-    def __init__(self, options=None, **kw_args):
-        if options is not None:
-            if kw_args.items():
-                raise Exception(
-                    "ClientOptions expects options in a dictionary or in kw_args, not both"
-                )
-            client_options = options
+
+def from_dict(options):
+    """Construct a client options object from a dictionary.
+
+    Args:
+        options (dict): A dictionary with client options.
+    """
+
+    client_options = ClientOptions()
+
+    for key, value in options.items():
+        if hasattr(client_options, key):
+            setattr(client_options, key, value)
         else:
-            client_options = kw_args
+            raise ValueError("ClientOptions does not accept an option '" + key + "'")
 
-        for key, value in client_options.items():
-            if not hasattr(self, key):
-                raise ValueError(
-                    "ClientOptions does not accept an argument named '" + key + "'"
-                )
-            setattr(self, key, value)
+    return client_options
