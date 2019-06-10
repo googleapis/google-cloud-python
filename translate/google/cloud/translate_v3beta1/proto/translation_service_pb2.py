@@ -2621,7 +2621,8 @@ TranslateTextResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TRANSLATETEXTRESPONSE,
         __module__="google.cloud.translation_v3beta1.proto.translation_service_pb2",
-        __doc__="""Attributes:
+        __doc__="""
+    Attributes:
       translations:
           Text translation responses with no glossary applied. This
           field has the same length as [``contents``][google.cloud.trans
@@ -2630,9 +2631,7 @@ TranslateTextResponse = _reflection.GeneratedProtocolMessageType(
           Text translation responses if a glossary is provided in the
           request. This can be the same as [``translations``][google.clo
           ud.translation.v3beta1.TranslateTextResponse.translations] if
-          no terms apply. This field has the same length as [``contents`
-          `][google.cloud.translation.v3beta1.TranslateTextRequest.conte
-          nts].
+          no terms apply. This field has the same length as [``contents``][google.cloud.translation.v3beta1.TranslateTextRequest.contents].
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.translation.v3beta1.TranslateTextResponse)
     ),
