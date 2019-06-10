@@ -742,6 +742,19 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["path"], "/b/%s/o" % NAME)
         self.assertEqual(kw["query_params"], {"projection": "noAcl"})
 
+    def test_list_blobs_objects_defaults(self):
+        NAME = "name"
+        connection = _Connection({"items": []})
+        client = _Client(connection)
+        bucket = self._make_one(client=client, name=NAME)
+        iterator = bucket.list_blob_objects()
+        blobs = list(iterator)
+        self.assertEqual(blobs, [])
+        kw, = connection._requested
+        self.assertEqual(kw["method"], "GET")
+        self.assertEqual(kw["path"], "/b/%s/o" % NAME)
+        self.assertEqual(kw["query_params"], {"projection": "noAcl"})
+
     def test_list_blobs_w_all_arguments_and_user_project(self):
         NAME = "name"
         USER_PROJECT = "user-project-123"
@@ -773,6 +786,37 @@ class Test_Bucket(unittest.TestCase):
             versions=VERSIONS,
             projection=PROJECTION,
             fields=FIELDS,
+            client=client,
+        )
+        blobs = list(iterator)
+        self.assertEqual(blobs, [])
+        kw, = connection._requested
+        self.assertEqual(kw["method"], "GET")
+        self.assertEqual(kw["path"], "/b/%s/o" % NAME)
+        self.assertEqual(kw["query_params"], EXPECTED)
+
+    def test_list_blob_objects_w_all_arguments_and_user_project(self):
+        NAME = "name"
+        USER_PROJECT = "user-project-123"
+        MAX_RESULTS = 10
+        PREFIX = "subfolder"
+        DELIMITER = "/"
+        PROJECTION = "full"
+        EXPECTED = {
+            "maxResults": 10,
+            "prefix": PREFIX,
+            "delimiter": DELIMITER,
+            "projection": PROJECTION,
+            "userProject": USER_PROJECT,
+        }
+        connection = _Connection({"items": []})
+        client = _Client(connection)
+        bucket = self._make_one(name=NAME, user_project=USER_PROJECT)
+        iterator = bucket.list_blob_objects(
+            max_results=MAX_RESULTS,
+            prefix=PREFIX,
+            delimiter=DELIMITER,
+            projection=PROJECTION,
             client=client,
         )
         blobs = list(iterator)

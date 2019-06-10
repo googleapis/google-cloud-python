@@ -802,6 +802,56 @@ class Bucket(_PropertyMixin):
         iterator.bucket = self
         iterator.prefixes = set()
         return iterator
+    
+    def list_blob_objects(
+        self,
+        max_results=None,
+        prefix=None,
+        delimiter=None,
+        projection="noAcl",
+        client=None,
+    ):
+        """Return an iterator used to find blobs in the bucket.
+
+        If :attr:`user_project` is set, bills the API request to that project.
+
+        :type max_results: int
+        :param max_results:
+            (Optional) The maximum number of blobs in each page of results
+            from this request. Non-positive values are ignored. Defaults to
+            a sensible value set by the API.
+
+        :type prefix: str
+        :param prefix: (Optional) prefix used to filter blobs.
+
+        :type delimiter: str
+        :param delimiter: (Optional) Delimiter, used with ``prefix`` to
+                          emulate hierarchy.
+
+        :type projection: str
+        :param projection: (Optional) If used, must be 'full' or 'noAcl'.
+                           Defaults to ``'noAcl'``. Specifies the set of
+                           properties to return.
+
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client: (Optional) The client to use.  If not passed, falls back
+                       to the ``client`` stored on the current bucket.
+
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
+        :returns: Iterator of all :class:`~google.cloud.storage.blob.Blob`
+                  in this bucket matching the arguments.
+        """
+        iterator = self.list_blobs(
+            max_results=max_results,
+            page_token=None,
+            prefix=prefix,
+            delimiter=delimiter,
+            versions=None,
+            projection=projection,
+            fields=None,
+            client=client,
+        )
+        return iterator
 
     def list_notifications(self, client=None):
         """List Pub / Sub notifications for this bucket.
