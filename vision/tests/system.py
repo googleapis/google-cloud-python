@@ -21,6 +21,7 @@ import os
 import time
 import unittest
 
+import google.api_core.exceptions
 from google.cloud import exceptions
 from google.cloud import storage
 from google.cloud import vision
@@ -34,6 +35,7 @@ FACE_FILE = os.path.join(_SYS_TESTS_DIR, "data", "faces.jpg")
 LOGO_FILE = os.path.join(_SYS_TESTS_DIR, "data", "logo.png")
 PDF_FILE = os.path.join(_SYS_TESTS_DIR, "data", "pdf_test.pdf")
 PROJECT_ID = os.environ.get("PROJECT_ID")
+PROJECT_OUTSIDE = os.environ.get("GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT")
 
 
 class VisionSystemTestBase(unittest.TestCase):
@@ -612,3 +614,193 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
             )
         for status in response.result().statuses:
             self.assertEqual(status.code, grpc.StatusCode.OK.value[0])
+
+
+@unittest.skipUnless(
+    PROJECT_OUTSIDE,
+    "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT not set in environment.",
+)
+class TestVisionClientProductSearchVpcsc(VisionSystemTestBase):
+    # Tests to verify ProductSearch is blocked by VPC SC when trying to access a resource outside of a secure perimeter.
+    def setUp(self):
+        VisionSystemTestBase.setUp(self)
+        self.location = "us-west1"
+        self.location_path = self.ps_client.location_path(
+            project=PROJECT_OUTSIDE, location=self.location
+        )
+
+    def _verify_vpc_sc_error(self, call):
+        # Verifies that a VPC SC 403 error is raised.
+        try:
+            # call() should raise a PermissionDenied exception.
+            results = call()
+            # Some of the tests get a GRPCIterator object, which won't raise an exception until iteration starts.
+            for result in results:
+                break
+        except google.api_core.exceptions.PermissionDenied as e:
+            # Verify the PermissionDenied exception was due to VPC SC.
+            self.assertEqual(
+                e.message, "Request is prohibited by organization's policy"
+            )
+            return
+        except Exception as e:
+            self.fail("Unexpected exception raised: {}".format(e))
+        self.fail("No exception raised.")
+
+    def test_create_product_set_blocked(self):
+        product_set_id = "set" + unique_resource_id()
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.create_product_set(
+                parent=self.location_path, product_set={}, product_set_id=product_set_id
+            )
+        )
+
+    def test_get_product_set_blocked(self):
+        product_set_id = "set" + unique_resource_id()
+        product_set_path = self.ps_client.product_set_path(
+            project=PROJECT_OUTSIDE, location=self.location, product_set=product_set_id
+        )
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.get_product_set(name=product_set_path)
+        )
+
+    def test_delete_product_set_blocked(self):
+        product_set_id = "set" + unique_resource_id()
+        product_set_path = self.ps_client.product_set_path(
+            project=PROJECT_OUTSIDE, location=self.location, product_set=product_set_id
+        )
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.delete_product_set(name=product_set_path)
+        )
+
+    def test_list_product_sets_blocked(self):
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.list_product_sets(parent=self.location_path)
+        )
+
+    def test_update_product_set_blocked(self):
+        product_set_id = "set" + unique_resource_id()
+        product_set_path = self.ps_client.product_set_path(
+            project=PROJECT_OUTSIDE, location=self.location, product_set=product_set_id
+        )
+        product_set = vision.types.ProductSet(name=product_set_path)
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.update_product_set(product_set=product_set)
+        )
+
+    def test_create_product_blocked(self):
+        product_id = "product" + unique_resource_id()
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.create_product(
+                parent=self.location_path, product={}, product_id=product_id
+            )
+        )
+
+    def test_get_product_blocked(self):
+        product_id = "product" + unique_resource_id()
+        product_path = self.ps_client.product_path(
+            project=PROJECT_OUTSIDE, location=self.location, product=product_id
+        )
+        self._verify_vpc_sc_error(lambda: self.ps_client.get_product(name=product_path))
+
+    def test_delete_product_blocked(self):
+        product_id = "product" + unique_resource_id()
+        product_path = self.ps_client.product_path(
+            project=PROJECT_OUTSIDE, location=self.location, product=product_id
+        )
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.delete_product(name=product_path)
+        )
+
+    def test_update_product_blocked(self):
+        product_id = "product" + unique_resource_id()
+        product_path = self.ps_client.product_path(
+            project=PROJECT_OUTSIDE, location=self.location, product=product_id
+        )
+        product = vision.types.Product(name=product_path)
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.update_product(product=product)
+        )
+
+    def test_list_products_blocked(self):
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.list_products(parent=self.location_path)
+        )
+
+    def test_list_products_in_product_set_blocked(self):
+        product_set_id = "set" + unique_resource_id()
+        product_set_path = self.ps_client.product_set_path(
+            project=PROJECT_OUTSIDE, location=self.location, product_set=product_set_id
+        )
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.list_products_in_product_set(name=product_set_path)
+        )
+
+    def test_add_remove_product_blocked(self):
+        product_set_id = "set" + unique_resource_id()
+        product_set_path = self.ps_client.product_set_path(
+            project=PROJECT_OUTSIDE, location=self.location, product_set=product_set_id
+        )
+        product_id = "product" + unique_resource_id()
+        product_path = self.ps_client.product_path(
+            project=PROJECT_OUTSIDE, location=self.location, product=product_id
+        )
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.add_product_to_product_set(
+                name=product_set_path, product=product_path
+            )
+        )
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.remove_product_from_product_set(
+                name=product_set_path, product=product_path
+            )
+        )
+
+    def test_create_reference_image_blocked(self):
+        product_id = "product" + unique_resource_id()
+        product_path = self.ps_client.product_path(
+            project=PROJECT_OUTSIDE, location=self.location, product=product_id
+        )
+        reference_image_id = "reference_image" + unique_resource_id()
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.create_reference_image(
+                parent=product_path,
+                reference_image={},
+                reference_image_id=reference_image_id,
+            )
+        )
+
+    def test_get_reference_image_blocked(self):
+        product_id = "product" + unique_resource_id()
+        reference_image_id = "reference_image" + unique_resource_id()
+        reference_image_path = self.ps_client.reference_image_path(
+            project=PROJECT_OUTSIDE,
+            location=self.location,
+            product=product_id,
+            reference_image=reference_image_id,
+        )
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.get_reference_image(name=reference_image_path)
+        )
+
+    def test_delete_reference_image_blocked(self):
+        product_id = "product" + unique_resource_id()
+        reference_image_id = "reference_image" + unique_resource_id()
+        reference_image_path = self.ps_client.reference_image_path(
+            project=PROJECT_OUTSIDE,
+            location=self.location,
+            product=product_id,
+            reference_image=reference_image_id,
+        )
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.delete_reference_image(name=reference_image_path)
+        )
+
+    def test_list_reference_images_blocked(self):
+        product_id = "product" + unique_resource_id()
+        product_path = self.ps_client.product_path(
+            project=PROJECT_OUTSIDE, location=self.location, product=product_id
+        )
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.list_reference_images(parent=product_path)
+        )
