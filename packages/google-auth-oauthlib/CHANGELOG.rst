@@ -1,3 +1,11 @@
+v0.4.0
+------
+* Add `get_user_credentials` function to get your user credentials (#40)
+* Add noxfile (#43)
+* Implement code verifier (PKCE) (#42)
+* Use actual server port in redirect_uri to allow automatic assignment (#33)
+* Fix links after repo move to googleapis (#41)
+
 v0.3.0
 ------
 * Use utc when parsing expiration timestamp (#26)
