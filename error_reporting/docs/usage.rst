@@ -97,7 +97,7 @@ line number of the location where the error was reported.
    from google.cloud import error_reporting
 
    client = error_reporting.Client()
-   error_reporting.report("Found an error!")
+   client.report("Found an error!")
 
 As with reporting an exception, the user and HTTP context can be provided:
 
@@ -111,5 +111,5 @@ As with reporting an exception, the user and HTTP context can be provided:
        method='GET', url='/', user_agent='test agent',
        referrer='example.com', response_status_code=500,
        remote_ip='1.2.3.4')
-   error_reporting.report(
+   client.report(
        "Found an error!", http_context=http_context, user=user))
