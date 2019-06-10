@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Translation API Client &#8212; google-cloud b80d431 documentation</title>
+    <title>Types for Cloud Translation API Client &#8212; google-cloud eff9ee3 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -83,7 +83,7 @@ codepoints).</p>
 <code class="descname">total_characters</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.BatchTranslateMetadata.total_characters" title="Permalink to this definition">#</a></dt>
 <dd><p>Total number of characters (Unicode codepoints). This is the
 total number of codepoints from input files times the number
-of target languages. It appears here shortly after the call is
+of target languages and appears here shortly after the call is
 submitted.</p>
 </dd></dl>
 
@@ -205,10 +205,12 @@ true.</p>
 <dl class="attribute">
 <dt id="google.cloud.translate_v3beta1.types.BatchTranslateTextRequest.parent">
 <code class="descname">parent</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.BatchTranslateTextRequest.parent" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional. Only used when making regionalized call. Format:
-projects/{project-id}/locations/{location-id}.  Only custom
-models/glossaries within the same location-id can be used.
-Otherwise 400 is returned.</p>
+<dd><p>Required. Location to make a regional call.  Format:
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}</span></code>.  The
+<code class="docutils literal notranslate"><span class="pre">global</span></code> location is not supported for batch translation.
+Only AutoML Translation models or glossaries within the same
+region (have the same location-id) can be used, otherwise an
+INVALID_ARGUMENT (400) error is returned.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -228,15 +230,15 @@ Otherwise 400 is returned.</p>
 <code class="descname">models</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.BatchTranslateTextRequest.models" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The models to use for translation. Map’s key is
 target language code. Map’s value is model name. Value can be
-a built-in general model, or a custom model built by AutoML.
-The value format depends on model type: 1. Custom models:
-projects/{project-id}/locations/{location-id}/models/{model-
-id}. 2. General (built-in) models: projects/{project-
-id}/locations/{location-id}/models/general/nmt
-projects/{project-id}/locations/{location-
-id}/models/general/base  If the map is empty or a specific
-model is not requested for a language pair, then default
-google model is used.</p>
+a built-in general model, or an AutoML Translation model.  The
+value format depends on model type:  -  AutoML Translation
+models:    <code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-</span>
+<span class="pre">id}/models/{model-id}</span></code>  -  General (built-in) models:
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-</span>
+<span class="pre">id}/models/general/nmt</span></code>,    <code class="docutils literal notranslate"><span class="pre">projects/{project-</span>
+<span class="pre">id}/locations/{location-id}/models/general/base</span></code>  If the map
+is empty or a specific model is not requested for a language
+pair, then default google model (nmt) is used.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -551,18 +553,23 @@ is set to true.</p>
 <dl class="attribute">
 <dt id="google.cloud.translate_v3beta1.types.DetectLanguageRequest.parent">
 <code class="descname">parent</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.DetectLanguageRequest.parent" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional. Only used when making regionalized call. Format:
-projects/{project-id}/locations/{location-id}.  Only custom
-model within the same location-id can be used. Otherwise 400
-is returned.</p>
+<dd><p>Required. Location to make a regional or global call.  Format:
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}</span></code>.  For global
+calls, use <code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/global</span></code>.  Only
+models within the same region (has same location-id) can be
+used. Otherwise an INVALID_ARGUMENT (400) error is returned.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.translate_v3beta1.types.DetectLanguageRequest.model">
 <code class="descname">model</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.DetectLanguageRequest.model" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional. The language detection model to be used.
-projects/{project-id}/locations/{location-id}/models/language-
-detection/{model-id} If not specified, default will be used.</p>
+<dd><p>Optional. The language detection model to be used.  Format:
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-</span>
+<span class="pre">id}/models/language-detection/{model-id}</span></code>  Only one language
+detection model is currently supported: <code class="docutils literal notranslate"><span class="pre">projects/{project-</span>
+<span class="pre">id}/locations/{location-id}/models/language-</span>
+<span class="pre">detection/default</span></code>.  If not specified, the default model is
+used.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -582,8 +589,8 @@ language.</p>
 <dt id="google.cloud.translate_v3beta1.types.DetectLanguageRequest.mime_type">
 <code class="descname">mime_type</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.DetectLanguageRequest.mime_type" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The format of the source text, for example,
-“text/html”, “text/plain”. If left blank, the MIME type is
-assumed to be “text/html”.</p>
+“text/html”, “text/plain”. If left blank, the MIME type
+defaults to “text/html”.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -665,13 +672,13 @@ detected automatically.</p>
 <dl class="class">
 <dt id="google.cloud.translate_v3beta1.types.GcsDestination">
 <em class="property">class </em><code class="descclassname">google.cloud.translate_v3beta1.types.</code><code class="descname">GcsDestination</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.GcsDestination" title="Permalink to this definition">#</a></dt>
-<dd><p>The GCS location for the output content</p>
+<dd><p>The Google Cloud Storage location for the output content</p>
 <dl class="attribute">
 <dt id="google.cloud.translate_v3beta1.types.GcsDestination.output_uri_prefix">
 <code class="descname">output_uri_prefix</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.GcsDestination.output_uri_prefix" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. There must be no files under ‘output_uri_prefix’.
-‘output_uri_prefix’ must end with “/”. Otherwise error 400
-is returned.</p>
+‘output_uri_prefix’ must end with “/”, otherwise an
+INVALID_ARGUMENT (400) error is returned..</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -685,7 +692,7 @@ is returned.</p>
 <dl class="class">
 <dt id="google.cloud.translate_v3beta1.types.GcsSource">
 <em class="property">class </em><code class="descclassname">google.cloud.translate_v3beta1.types.</code><code class="descname">GcsSource</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.GcsSource" title="Permalink to this definition">#</a></dt>
-<dd><p>The GCS location for the input content.</p>
+<dd><p>The Google Cloud Storage location for the input content.</p>
 <dl class="attribute">
 <dt id="google.cloud.translate_v3beta1.types.GcsSource.input_uri">
 <code class="descname">input_uri</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.GcsSource.input_uri" title="Permalink to this definition">#</a></dt>
@@ -737,33 +744,33 @@ is returned.</p>
 <dl class="attribute">
 <dt id="google.cloud.translate_v3beta1.types.GetSupportedLanguagesRequest.parent">
 <code class="descname">parent</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.GetSupportedLanguagesRequest.parent" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional. Used for making regionalized calls. Format:
-projects/{project-id}/locations/{location-id}. For global
-calls, use projects/{project-id}/locations/global. If missing,
-the call is treated as a global call.  Only custom model
-within the same location-id can be used. Otherwise 400 is
-returned.</p>
+<dd><p>Required. Location to make a regional or global call.  Format:
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}</span></code>.  For global
+calls, use <code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/global</span></code>.  Only
+models within the same region (have same location-id) can be
+used, otherwise an INVALID_ARGUMENT (400) error is returned.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.translate_v3beta1.types.GetSupportedLanguagesRequest.display_language_code">
 <code class="descname">display_language_code</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.GetSupportedLanguagesRequest.display_language_code" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The language to use to return localized, human
-readable names of supported languages. If missing, default
-language is ENGLISH.</p>
+readable names of supported languages. If missing, then
+display names are not returned in a response.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.translate_v3beta1.types.GetSupportedLanguagesRequest.model">
 <code class="descname">model</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.GetSupportedLanguagesRequest.model" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional. Get supported languages of this model. The format
-depends on model type: 1. Custom models: projects/{project-
-id}/locations/{location-id}/models/{model-id}. 2. General
-(built-in) models: projects/{project-id}/locations/{location-
-id}/models/general/nmt projects/{project-
-id}/locations/{location-id}/models/general/base Returns
-languages supported by the specified model. If missing, we get
-supported languages of Google general NMT model.</p>
+<dd><p>Optional. Get supported languages of this model.  The format
+depends on model type:  -  AutoML Translation models:
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}/models/{model-</span>
+<span class="pre">id}</span></code>  -  General (built-in) models:    <code class="docutils literal notranslate"><span class="pre">projects/{project-</span>
+<span class="pre">id}/locations/{location-id}/models/general/nmt</span></code>,
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-</span>
+<span class="pre">id}/models/general/base</span></code>  Returns languages supported by the
+specified model. If missing, we get supported languages of
+Google general base (PBMT) model.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -807,13 +814,13 @@ have the form <code class="docutils literal notranslate"><span class="pre">proje
 <dl class="attribute">
 <dt id="google.cloud.translate_v3beta1.types.Glossary.language_pair">
 <code class="descname">language_pair</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.Glossary.language_pair" title="Permalink to this definition">#</a></dt>
-<dd><p>Used with UNIDIRECTIONAL.</p>
+<dd><p>Used with unidirectional glossaries.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.translate_v3beta1.types.Glossary.language_codes_set">
 <code class="descname">language_codes_set</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.Glossary.language_codes_set" title="Permalink to this definition">#</a></dt>
-<dd><p>Used with EQUIVALENT_TERMS_SET.</p>
+<dd><p>Used with equivalent term set glossaries.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -844,7 +851,7 @@ glossary must not exceed 10M Unicode codepoints.</p>
 <dl class="class">
 <dt id="google.cloud.translate_v3beta1.types.Glossary.LanguageCodePair">
 <em class="property">class </em><code class="descname">LanguageCodePair</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.Glossary.LanguageCodePair" title="Permalink to this definition">#</a></dt>
-<dd><p>Used with UNIDIRECTIONAL.</p>
+<dd><p>Used with unidirectional glossaries.</p>
 <dl class="attribute">
 <dt id="google.cloud.translate_v3beta1.types.Glossary.LanguageCodePair.source_language_code">
 <code class="descname">source_language_code</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.Glossary.LanguageCodePair.source_language_code" title="Permalink to this definition">#</a></dt>
@@ -878,7 +885,7 @@ GlossaryTerm.language_code.</p>
 <dl class="class">
 <dt id="google.cloud.translate_v3beta1.types.Glossary.LanguageCodesSet">
 <em class="property">class </em><code class="descname">LanguageCodesSet</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.Glossary.LanguageCodesSet" title="Permalink to this definition">#</a></dt>
-<dd><p>Used with EQUIVALENT_TERMS_SET.</p>
+<dd><p>Used with equivalent term set glossaries.</p>
 <dl class="attribute">
 <dt id="google.cloud.translate_v3beta1.types.Glossary.LanguageCodesSet.language_codes">
 <code class="descname">language_codes</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.Glossary.LanguageCodesSet.language_codes" title="Permalink to this definition">#</a></dt>
@@ -954,21 +961,20 @@ GlossaryTerm.language_code.</p>
 <dt id="google.cloud.translate_v3beta1.types.GlossaryInputConfig.gcs_source">
 <code class="descname">gcs_source</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.GlossaryInputConfig.gcs_source" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. Google Cloud Storage location of glossary data. File
-format is determined based on file name extension. API returns
-[google.rpc.Code.INVALID_ARGUMENT] for unsupported URI-s and
-file formats. Wildcards are not allowed. This must be a single
-file in one of the following formats:  For <code class="docutils literal notranslate"><span class="pre">UNIDIRECTIONAL</span></code>
-glossaries:  -  TSV/CSV (<code class="docutils literal notranslate"><span class="pre">.tsv</span></code>/<code class="docutils literal notranslate"><span class="pre">.csv</span></code>): 2 column file,
-tab- or comma-separated.    The first column is source text.
-The second column is target text.    The file must not contain
-headers. That is, the first row is data,    not column names.
--  TMX (<code class="docutils literal notranslate"><span class="pre">.tmx</span></code>): TMX file with parallel data defining
-source/target    term pairs.  For <code class="docutils literal notranslate"><span class="pre">EQUIVALENT_TERMS_SET</span></code>
-glossaries:  -  CSV (<code class="docutils literal notranslate"><span class="pre">.csv</span></code>): Multi-column CSV file defining
-equivalent glossary    terms in multiple languages. The format
-is defined for Google    Translation Toolkit and documented
-here:    <code class="docutils literal notranslate"><span class="pre">https://support.google.com/translatortoolkit/answer</span>
-<span class="pre">/6306379?hl=en</span></code>.</p>
+format is determined based on the filename extension. API
+returns [google.rpc.Code.INVALID_ARGUMENT] for unsupported
+URI-s and file formats. Wildcards are not allowed. This must
+be a single file in one of the following formats:  For
+unidirectional glossaries:  -  TSV/CSV (<code class="docutils literal notranslate"><span class="pre">.tsv</span></code>/<code class="docutils literal notranslate"><span class="pre">.csv</span></code>): 2
+column file, tab- or comma-separated.    The first column is
+source text. The second column is target text.    The file
+must not contain headers. That is, the first row is data,
+not column names.  -  TMX (<code class="docutils literal notranslate"><span class="pre">.tmx</span></code>): TMX file with parallel
+data defining source/target    term pairs.  For equivalent
+term sets glossaries:  -  CSV (<code class="docutils literal notranslate"><span class="pre">.csv</span></code>): Multi-column CSV
+file defining equivalent glossary    terms in multiple
+languages. The format is defined for Google    Translation
+Toolkit and documented in <a class="reference external" href="https://support.google.com/translatortoolkit/answer/6306379?hl=en">Use a    glossary</a>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -982,7 +988,7 @@ here:    <code class="docutils literal notranslate"><span class="pre">https://su
 <dl class="class">
 <dt id="google.cloud.translate_v3beta1.types.InputConfig">
 <em class="property">class </em><code class="descclassname">google.cloud.translate_v3beta1.types.</code><code class="descname">InputConfig</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.InputConfig" title="Permalink to this definition">#</a></dt>
-<dd><p>Input configuration.</p>
+<dd><p>Input configuration for BatchTranslateText request.</p>
 <dl class="attribute">
 <dt id="google.cloud.translate_v3beta1.types.InputConfig.mime_type">
 <code class="descname">mime_type</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.InputConfig.mime_type" title="Permalink to this definition">#</a></dt>
@@ -1010,9 +1016,13 @@ it can contain either one or two columns. The first column
 is missing, we use the row number (0-based) from the input
 file as the ID in the output file. The second column is the
 actual text to be translated. We recommend each row be &lt;= 10K
-Unicode codepoints, otherwise an error might be returned.  The
-other supported file extensions are <code class="docutils literal notranslate"><span class="pre">.txt</span></code> or <code class="docutils literal notranslate"><span class="pre">.html</span></code>,
-which is treated as a single large chunk of text.</p>
+Unicode codepoints, otherwise an error might be returned. Note
+that the input tsv must be RFC 4180 compliant.  You could use
+<a class="reference external" href="https://github.com/Clever/csvlint">https://github.com/Clever/csvlint</a> to check potential
+formatting errors in your tsv file. csvlint –delimiter=’:raw-
+latex:`       <cite>‘ your_input_file.tsv  The other supported file
+extensions are `</cite>.txt`` or <code class="docutils literal notranslate"><span class="pre">.html</span></code>, which is treated as a
+single large chunk of text.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1062,8 +1072,8 @@ returned if <code class="docutils literal notranslate"><span class="pre">page_to
 <dt id="google.cloud.translate_v3beta1.types.ListGlossariesRequest.filter">
 <code class="descname">filter</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.ListGlossariesRequest.filter" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. Filter specifying constraints of a list operation.
-For example, <code class="docutils literal notranslate"><span class="pre">tags.glossary_name=&quot;products*&quot;</span></code>. If missing,
-no filtering is performed.</p>
+Filtering is not supported yet, and the parameter currently
+has no effect. If missing, no filtering is performed.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1232,7 +1242,7 @@ results.</p>
 <dl class="class">
 <dt id="google.cloud.translate_v3beta1.types.OutputConfig">
 <em class="property">class </em><code class="descclassname">google.cloud.translate_v3beta1.types.</code><code class="descname">OutputConfig</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.OutputConfig" title="Permalink to this definition">#</a></dt>
-<dd><p>Output configuration.</p>
+<dd><p>Output configuration for BatchTranslateText request.</p>
 <dl class="attribute">
 <dt id="google.cloud.translate_v3beta1.types.OutputConfig.destination">
 <code class="descname">destination</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.OutputConfig.destination" title="Permalink to this definition">#</a></dt>
@@ -1262,23 +1272,23 @@ the request. translations_file contains the translations.
 (details provided below) errors_file contains the errors
 during processing of the file. (details below). Both
 translations_file and errors_file could be empty strings if
-we have no content to output.
-glossary_translations_file,glossary_errors_file are always
-empty string if input_file is tsv. They could also be empty
-if we have no content to output.  Once a row is present in
-index.csv, the input/output matching never changes. Callers
-should also expect all the content in input_file are
-processed and ready to be consumed (that is, No partial output
-file is written).  The format of translations_file (for
-target language code ‘trg’) is: gs://translation_test/a_b_c
-_’trg’_translations.[extension]  If the input file extension
-is tsv, the output has the following columns: Column 1: ID of
-the request provided in the input, if it’s not provided in the
-input, then the input row number is used (0-based). Column 2:
-source sentence. Column 3: translation without applying a
-glossary. Empty string if there is an error. Column 4 (only
-present if a glossary is provided in the request): translation
-after applying the glossary. Empty string if there is an error
+we have no content to output. glossary_translations_file and
+glossary_errors_file are always empty strings if the
+input_file is tsv. They could also be empty if we have no
+content to output.  Once a row is present in index.csv, the
+input/output matching never changes. Callers should also
+expect all the content in input_file are processed and ready
+to be consumed (that is, no partial output file is written).
+The format of translations_file (for target language code
+‘trg’) is: gs://translation_test/a_b_c_’trg’_translations
+.[extension]  If the input file extension is tsv, the output
+has the following columns: Column 1: ID of the request
+provided in the input, if it’s not provided in the input, then
+the input row number is used (0-based). Column 2: source
+sentence. Column 3: translation without applying a glossary.
+Empty string if there is an error. Column 4 (only present if a
+glossary is provided in the request): translation after
+applying the glossary. Empty string if there is an error
 applying the glossary. Could be same string as column 3 if
 there is no glossary applied.  If input file extension is a
 txt or html, the translation is directly written to the output
@@ -1287,8 +1297,8 @@ glossary_translations_file has format of gs://translation_t
 est/a_b_c_’trg’_glossary_translations.[extension]  The
 format of errors file (for target language code ‘trg’) is:
 gs://translation_test/a_b_c_’trg’_errors.[extension]  If
-the input file extension is tsv, errors_file has the
-following Column 1: ID of the request provided in the input,
+the input file extension is tsv, errors_file contains the
+following: Column 1: ID of the request provided in the input,
 if it’s not provided in the input, then the input row number
 is used (0-based). Column 2: source sentence. Column 3: Error
 detail for the translation. Could be empty. Column 4 (only
@@ -1440,8 +1450,8 @@ Use this format: projects/<em>/locations/</em>/glossaries/*</p>
 <dl class="attribute">
 <dt id="google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig.ignore_case">
 <code class="descname">ignore_case</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig.ignore_case" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional. Indicates whether we should do a case-insensitive
-match. Default value is false if missing.</p>
+<dd><p>Optional. Indicates match is case-insensitive. Default value
+is false if missing.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1466,16 +1476,16 @@ match. Default value is false if missing.</p>
 <dt id="google.cloud.translate_v3beta1.types.TranslateTextRequest.contents">
 <code class="descname">contents</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.TranslateTextRequest.contents" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The content of the input in string format. We
-recommend the total contents to be less than 30k codepoints.
-Please use BatchTranslateText for larger text.</p>
+recommend the total content be less than 30k codepoints. Use
+BatchTranslateText for larger text.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.translate_v3beta1.types.TranslateTextRequest.mime_type">
 <code class="descname">mime_type</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.TranslateTextRequest.mime_type" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The format of the source text, for example,
-“text/html”, “text/plain”. If left blank, the MIME type is
-assumed to be “text/html”.</p>
+“text/html”, “text/plain”. If left blank, the MIME type
+defaults to “text/html”.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1485,7 +1495,7 @@ assumed to be “text/html”.</p>
 for example, “en-US” or “sr-Latn”. Supported language codes
 are listed in Language Support. If the source language isn’t
 specified, the API attempts to identify the source language
-automatically and returns the the source language within the
+automatically and returns the source language within the
 response.</p>
 </dd></dl>
 
@@ -1500,33 +1510,36 @@ Language Support.</p>
 <dl class="attribute">
 <dt id="google.cloud.translate_v3beta1.types.TranslateTextRequest.parent">
 <code class="descname">parent</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.TranslateTextRequest.parent" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional. Only used when making regionalized call. Format:
-projects/{project-id}/locations/{location-id}.  Only custom
-model/glossary within the same location-id can be used.
-Otherwise 400 is returned.</p>
+<dd><p>Required. Location to make a regional or global call.  Format:
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}</span></code>.  For global
+calls, use <code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/global</span></code>.  Models
+and glossaries must be within the same region (have same
+location-id), otherwise an INVALID_ARGUMENT (400) error is
+returned.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.translate_v3beta1.types.TranslateTextRequest.model">
 <code class="descname">model</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.TranslateTextRequest.model" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The <code class="docutils literal notranslate"><span class="pre">model</span></code> type requested for this translation.
-The format depends on model type: 1. Custom models:
-projects/{project-id}/locations/{location-id}/models/{model-
-id}. 2. General (built-in) models: projects/{project-
-id}/locations/{location-id}/models/general/nmt
-projects/{project-id}/locations/{location-
-id}/models/general/base  For global (non-regionalized)
-requests, use {location-id} ‘global’. For example,
-projects/{project-id}/locations/global/models/general/nmt  If
-missing, the system decides which google base model to use.</p>
+The format depends on model type:  -  AutoML Translation
+models:    <code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-</span>
+<span class="pre">id}/models/{model-id}</span></code>  -  General (built-in) models:
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-</span>
+<span class="pre">id}/models/general/nmt</span></code>,    <code class="docutils literal notranslate"><span class="pre">projects/{project-</span>
+<span class="pre">id}/locations/{location-id}/models/general/base</span></code>  For global
+(non-regionalized) requests, use <code class="docutils literal notranslate"><span class="pre">location-id</span></code> <code class="docutils literal notranslate"><span class="pre">global</span></code>.
+For example, <code class="docutils literal notranslate"><span class="pre">projects/{project-</span>
+<span class="pre">id}/locations/global/models/general/nmt</span></code>.  If missing, the
+system decides which google base model to use.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.translate_v3beta1.types.TranslateTextRequest.glossary_config">
 <code class="descname">glossary_config</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.TranslateTextRequest.glossary_config" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional. Glossary to be applied. The glossary needs to be in
-the same region as the model, otherwise an INVALID_ARGUMENT
-error is returned.</p>
+<dd><p>Optional. Glossary to be applied. The glossary must be within
+the same region (have the same location-id) as the model,
+otherwise an INVALID_ARGUMENT (400) error is returned.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1576,22 +1589,21 @@ error is returned.</p>
 <dl class="class">
 <dt id="google.cloud.translate_v3beta1.types.TranslateTextResponse">
 <em class="property">class </em><code class="descclassname">google.cloud.translate_v3beta1.types.</code><code class="descname">TranslateTextResponse</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.TranslateTextResponse" title="Permalink to this definition">#</a></dt>
-<dd><p>The main language translation response message.</p>
-<dl class="attribute">
+<dd><dl class="attribute">
 <dt id="google.cloud.translate_v3beta1.types.TranslateTextResponse.translations">
 <code class="descname">translations</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.TranslateTextResponse.translations" title="Permalink to this definition">#</a></dt>
 <dd><p>Text translation responses with no glossary applied. This
-field has the same length as <code class="docutils literal notranslate"><span class="pre">contents</span></code> in
-TranslateTextRequest.</p>
+field has the same length as [<code class="docutils literal notranslate"><span class="pre">contents</span></code>][google.cloud.trans
+lation.v3beta1.TranslateTextRequest.contents].</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.translate_v3beta1.types.TranslateTextResponse.glossary_translations">
 <code class="descname">glossary_translations</code><a class="headerlink" href="#google.cloud.translate_v3beta1.types.TranslateTextResponse.glossary_translations" title="Permalink to this definition">#</a></dt>
 <dd><p>Text translation responses if a glossary is provided in the
-request. This could be the same as ‘translation’ above if no
-terms apply. This field has the same length as <code class="docutils literal notranslate"><span class="pre">contents</span></code> in
-TranslateTextRequest.</p>
+request. This can be the same as [<code class="docutils literal notranslate"><span class="pre">translations</span></code>][google.clo
+ud.translation.v3beta1.TranslateTextResponse.translations] if
+no terms apply. This field has the same length as [<code class="docutils literal notranslate"><span class="pre">contents</span></code>][google.cloud.translation.v3beta1.TranslateTextRequest.contents].</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1632,7 +1644,7 @@ same as <code class="docutils literal notranslate"><span class="pre">model</span
 request, detected automatically, if no source language was
 passed within the initial request. If the source language was
 passed, auto-detection of the language does not occur and this
-field will be empty.</p>
+field is empty.</p>
 </dd></dl>
 
 <dl class="attribute">

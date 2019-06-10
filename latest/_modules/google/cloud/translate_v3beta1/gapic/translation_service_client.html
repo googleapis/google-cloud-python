@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.translate_v3beta1.gapic.translation_service_client &#8212; google-cloud b80d431 documentation</title>
+    <title>google.cloud.translate_v3beta1.gapic.translation_service_client &#8212; google-cloud eff9ee3 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -262,39 +262,44 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            contents (list[str]): Required. The content of the input in string format.</span>
-<span class="sd">                We recommend the total contents to be less than 30k codepoints.</span>
-<span class="sd">                Please use BatchTranslateText for larger text.</span>
+<span class="sd">                We recommend the total content be less than 30k codepoints.</span>
+<span class="sd">                Use BatchTranslateText for larger text.</span>
 <span class="sd">            target_language_code (str): Required. The BCP-47 language code to use for translation of the input</span>
 <span class="sd">                text, set to one of the language codes listed in Language Support.</span>
 <span class="sd">            mime_type (str): Optional. The format of the source text, for example, &quot;text/html&quot;,</span>
-<span class="sd">                 &quot;text/plain&quot;. If left blank, the MIME type is assumed to be &quot;text/html&quot;.</span>
+<span class="sd">                 &quot;text/plain&quot;. If left blank, the MIME type defaults to &quot;text/html&quot;.</span>
 <span class="sd">            source_language_code (str): Optional. The BCP-47 language code of the input text if</span>
 <span class="sd">                known, for example, &quot;en-US&quot; or &quot;sr-Latn&quot;. Supported language codes are</span>
 <span class="sd">                listed in Language Support. If the source language isn&#39;t specified, the API</span>
 <span class="sd">                attempts to identify the source language automatically and returns the</span>
-<span class="sd">                the source language within the response.</span>
-<span class="sd">            parent (str): Optional. Only used when making regionalized call.</span>
-<span class="sd">                Format:</span>
-<span class="sd">                projects/{project-id}/locations/{location-id}.</span>
+<span class="sd">                source language within the response.</span>
+<span class="sd">            parent (str): Required. Location to make a regional or global call.</span>
 
-<span class="sd">                Only custom model/glossary within the same location-id can be used.</span>
-<span class="sd">                Otherwise 400 is returned.</span>
+<span class="sd">                Format: ``projects/{project-id}/locations/{location-id}``.</span>
+
+<span class="sd">                For global calls, use ``projects/{project-id}/locations/global``.</span>
+
+<span class="sd">                Models and glossaries must be within the same region (have same</span>
+<span class="sd">                location-id), otherwise an INVALID\_ARGUMENT (400) error is returned.</span>
 <span class="sd">            model (str): Optional. The ``model`` type requested for this translation.</span>
 
 <span class="sd">                The format depends on model type:</span>
 
-<span class="sd">                1. Custom models:</span>
-<span class="sd">                   projects/{project-id}/locations/{location-id}/models/{model-id}.</span>
-<span class="sd">                2. General (built-in) models:</span>
-<span class="sd">                   projects/{project-id}/locations/{location-id}/models/general/nmt</span>
-<span class="sd">                   projects/{project-id}/locations/{location-id}/models/general/base</span>
+<span class="sd">                -  AutoML Translation models:</span>
+<span class="sd">                   ``projects/{project-id}/locations/{location-id}/models/{model-id}``</span>
 
-<span class="sd">                For global (non-regionalized) requests, use {location-id} &#39;global&#39;. For</span>
-<span class="sd">                example, projects/{project-id}/locations/global/models/general/nmt</span>
+<span class="sd">                -  General (built-in) models:</span>
+<span class="sd">                   ``projects/{project-id}/locations/{location-id}/models/general/nmt``,</span>
+<span class="sd">                   ``projects/{project-id}/locations/{location-id}/models/general/base``</span>
+
+<span class="sd">                For global (non-regionalized) requests, use ``location-id`` ``global``.</span>
+<span class="sd">                For example,</span>
+<span class="sd">                ``projects/{project-id}/locations/global/models/general/nmt``.</span>
 
 <span class="sd">                If missing, the system decides which google base model to use.</span>
-<span class="sd">            glossary_config (Union[dict, ~google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig]): Optional. Glossary to be applied. The glossary needs to be in the same</span>
-<span class="sd">                region as the model, otherwise an INVALID\_ARGUMENT error is returned.</span>
+<span class="sd">            glossary_config (Union[dict, ~google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig]): Optional. Glossary to be applied. The glossary must be within the same</span>
+<span class="sd">                region (have the same location-id) as the model, otherwise an</span>
+<span class="sd">                INVALID\_ARGUMENT (400) error is returned.</span>
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig`</span>
@@ -375,18 +380,26 @@
 <span class="sd">            &gt;&gt;&gt; response = client.detect_language()</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): Optional. Only used when making regionalized call.</span>
-<span class="sd">                Format:</span>
-<span class="sd">                projects/{project-id}/locations/{location-id}.</span>
+<span class="sd">            parent (str): Required. Location to make a regional or global call.</span>
 
-<span class="sd">                Only custom model within the same location-id can be used.</span>
-<span class="sd">                Otherwise 400 is returned.</span>
+<span class="sd">                Format: ``projects/{project-id}/locations/{location-id}``.</span>
+
+<span class="sd">                For global calls, use ``projects/{project-id}/locations/global``.</span>
+
+<span class="sd">                Only models within the same region (has same location-id) can be used.</span>
+<span class="sd">                Otherwise an INVALID\_ARGUMENT (400) error is returned.</span>
 <span class="sd">            model (str): Optional. The language detection model to be used.</span>
-<span class="sd">                projects/{project-id}/locations/{location-id}/models/language-detection/{model-id}</span>
-<span class="sd">                If not specified, default will be used.</span>
+
+<span class="sd">                Format:</span>
+<span class="sd">                ``projects/{project-id}/locations/{location-id}/models/language-detection/{model-id}``</span>
+
+<span class="sd">                Only one language detection model is currently supported:</span>
+<span class="sd">                ``projects/{project-id}/locations/{location-id}/models/language-detection/default``.</span>
+
+<span class="sd">                If not specified, the default model is used.</span>
 <span class="sd">            content (str): The content of the input stored as a string.</span>
 <span class="sd">            mime_type (str): Optional. The format of the source text, for example, &quot;text/html&quot;,</span>
-<span class="sd">                &quot;text/plain&quot;. If left blank, the MIME type is assumed to be &quot;text/html&quot;.</span>
+<span class="sd">                &quot;text/plain&quot;. If left blank, the MIME type defaults to &quot;text/html&quot;.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -461,24 +474,30 @@
 <span class="sd">            &gt;&gt;&gt; response = client.get_supported_languages()</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): Optional. Used for making regionalized calls.</span>
-<span class="sd">                Format: projects/{project-id}/locations/{location-id}.</span>
-<span class="sd">                For global calls, use projects/{project-id}/locations/global.</span>
-<span class="sd">                If missing, the call is treated as a global call.</span>
+<span class="sd">            parent (str): Required. Location to make a regional or global call.</span>
 
-<span class="sd">                Only custom model within the same location-id can be used.</span>
-<span class="sd">                Otherwise 400 is returned.</span>
+<span class="sd">                Format: ``projects/{project-id}/locations/{location-id}``.</span>
+
+<span class="sd">                For global calls, use ``projects/{project-id}/locations/global``.</span>
+
+<span class="sd">                Only models within the same region (have same location-id) can be used,</span>
+<span class="sd">                otherwise an INVALID\_ARGUMENT (400) error is returned.</span>
 <span class="sd">            display_language_code (str): Optional. The language to use to return localized, human readable names</span>
-<span class="sd">                of supported languages. If missing, default language is ENGLISH.</span>
+<span class="sd">                of supported languages. If missing, then display names are not returned</span>
+<span class="sd">                in a response.</span>
 <span class="sd">            model (str): Optional. Get supported languages of this model.</span>
+
 <span class="sd">                The format depends on model type:</span>
-<span class="sd">                1. Custom models:</span>
-<span class="sd">                projects/{project-id}/locations/{location-id}/models/{model-id}.</span>
-<span class="sd">                2. General (built-in) models:</span>
-<span class="sd">                projects/{project-id}/locations/{location-id}/models/general/nmt</span>
-<span class="sd">                projects/{project-id}/locations/{location-id}/models/general/base</span>
-<span class="sd">                Returns languages supported by the specified model.</span>
-<span class="sd">                If missing, we get supported languages of Google general NMT model.</span>
+
+<span class="sd">                -  AutoML Translation models:</span>
+<span class="sd">                   ``projects/{project-id}/locations/{location-id}/models/{model-id}``</span>
+
+<span class="sd">                -  General (built-in) models:</span>
+<span class="sd">                   ``projects/{project-id}/locations/{location-id}/models/general/nmt``,</span>
+<span class="sd">                   ``projects/{project-id}/locations/{location-id}/models/general/base``</span>
+
+<span class="sd">                Returns languages supported by the specified model. If missing, we get</span>
+<span class="sd">                supported languages of Google general base (PBMT) model.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -595,25 +614,30 @@
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.translate_v3beta1.types.OutputConfig`</span>
-<span class="sd">            parent (str): Optional. Only used when making regionalized call.</span>
-<span class="sd">                Format:</span>
-<span class="sd">                projects/{project-id}/locations/{location-id}.</span>
+<span class="sd">            parent (str): Required. Location to make a regional call.</span>
 
-<span class="sd">                Only custom models/glossaries within the same location-id can be used.</span>
-<span class="sd">                Otherwise 400 is returned.</span>
-<span class="sd">            models (dict[str -&gt; str]): Optional. The models to use for translation. Map&#39;s key is target language</span>
-<span class="sd">                code. Map&#39;s value is model name. Value can be a built-in general model,</span>
-<span class="sd">                or a custom model built by AutoML.</span>
+<span class="sd">                Format: ``projects/{project-id}/locations/{location-id}``.</span>
+
+<span class="sd">                The ``global`` location is not supported for batch translation.</span>
+
+<span class="sd">                Only AutoML Translation models or glossaries within the same region</span>
+<span class="sd">                (have the same location-id) can be used, otherwise an INVALID\_ARGUMENT</span>
+<span class="sd">                (400) error is returned.</span>
+<span class="sd">            models (dict[str -&gt; str]): Optional. The models to use for translation. Map&#39;s key is target</span>
+<span class="sd">                language code. Map&#39;s value is model name. Value can be a built-in</span>
+<span class="sd">                general model, or an AutoML Translation model.</span>
 
 <span class="sd">                The value format depends on model type:</span>
-<span class="sd">                1. Custom models:</span>
-<span class="sd">                projects/{project-id}/locations/{location-id}/models/{model-id}.</span>
-<span class="sd">                2. General (built-in) models:</span>
-<span class="sd">                projects/{project-id}/locations/{location-id}/models/general/nmt</span>
-<span class="sd">                projects/{project-id}/locations/{location-id}/models/general/base</span>
 
-<span class="sd">                If the map is empty or a specific model is</span>
-<span class="sd">                not requested for a language pair, then default google model is used.</span>
+<span class="sd">                -  AutoML Translation models:</span>
+<span class="sd">                   ``projects/{project-id}/locations/{location-id}/models/{model-id}``</span>
+
+<span class="sd">                -  General (built-in) models:</span>
+<span class="sd">                   ``projects/{project-id}/locations/{location-id}/models/general/nmt``,</span>
+<span class="sd">                   ``projects/{project-id}/locations/{location-id}/models/general/base``</span>
+
+<span class="sd">                If the map is empty or a specific model is not requested for a language</span>
+<span class="sd">                pair, then default google model (nmt) is used.</span>
 <span class="sd">            glossaries (dict[str -&gt; Union[dict, ~google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig]]): Optional. Glossaries to be applied for translation.</span>
 <span class="sd">                It&#39;s keyed by target language code.</span>
 
@@ -815,9 +839,9 @@
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
 <span class="sd">                streaming is performed per-page, this determines the maximum number</span>
 <span class="sd">                of resources in a page.</span>
-<span class="sd">            filter_ (str): Optional. Filter specifying constraints of a list operation. For</span>
-<span class="sd">                example, ``tags.glossary_name=&quot;products*&quot;``. If missing, no filtering is</span>
-<span class="sd">                performed.</span>
+<span class="sd">            filter_ (str): Optional. Filter specifying constraints of a list operation.</span>
+<span class="sd">                Filtering is not supported yet, and the parameter currently has no effect.</span>
+<span class="sd">                If missing, no filtering is performed.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>

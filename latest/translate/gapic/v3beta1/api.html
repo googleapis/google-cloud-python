@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Cloud Translation API &#8212; google-cloud b80d431 documentation</title>
+    <title>Client for Cloud Translation API &#8212; google-cloud eff9ee3 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -134,23 +134,26 @@ we don’t generate output for duplicate inputs.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.translate_v3beta1.types.OutputConfig" title="google.cloud.translate_v3beta1.types.OutputConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">OutputConfig</span></code></a></p>
 </li>
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional. Only used when making regionalized call.
-Format:
-projects/{project-id}/locations/{location-id}.</p>
-<p>Only custom models/glossaries within the same location-id can be used.
-Otherwise 400 is returned.</p>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. Location to make a regional call.</p>
+<p>Format: <code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">global</span></code> location is not supported for batch translation.</p>
+<p>Only AutoML Translation models or glossaries within the same region
+(have the same location-id) can be used, otherwise an INVALID_ARGUMENT
+(400) error is returned.</p>
 </li>
-<li><strong>models</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><em>str -&gt; str</em><em>]</em>) – <p>Optional. The models to use for translation. Map’s key is target language
-code. Map’s value is model name. Value can be a built-in general model,
-or a custom model built by AutoML.</p>
-<p>The value format depends on model type:
-1. Custom models:
-projects/{project-id}/locations/{location-id}/models/{model-id}.
-2. General (built-in) models:
-projects/{project-id}/locations/{location-id}/models/general/nmt
-projects/{project-id}/locations/{location-id}/models/general/base</p>
-<p>If the map is empty or a specific model is
-not requested for a language pair, then default google model is used.</p>
+<li><strong>models</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><em>str -&gt; str</em><em>]</em>) – <p>Optional. The models to use for translation. Map’s key is target
+language code. Map’s value is model name. Value can be a built-in
+general model, or an AutoML Translation model.</p>
+<p>The value format depends on model type:</p>
+<ul>
+<li>AutoML Translation models:
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}/models/{model-id}</span></code></li>
+<li>General (built-in) models:
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}/models/general/nmt</span></code>,
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}/models/general/base</span></code></li>
+</ul>
+<p>If the map is empty or a specific model is not requested for a language
+pair, then default google model (nmt) is used.</p>
 </li>
 <li><strong>glossaries</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><em>str -&gt; Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig" title="google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig"><em>TranslateTextGlossaryConfig</em></a><em>]</em><em>]</em>) – <p>Optional. Glossaries to be applied for translation.
 It’s keyed by target language code.</p>
@@ -322,18 +325,22 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional. Only used when making regionalized call.
-Format:
-projects/{project-id}/locations/{location-id}.</p>
-<p>Only custom model within the same location-id can be used.
-Otherwise 400 is returned.</p>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. Location to make a regional or global call.</p>
+<p>Format: <code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}</span></code>.</p>
+<p>For global calls, use <code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/global</span></code>.</p>
+<p>Only models within the same region (has same location-id) can be used.
+Otherwise an INVALID_ARGUMENT (400) error is returned.</p>
 </li>
-<li><strong>model</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional. The language detection model to be used.
-projects/{project-id}/locations/{location-id}/models/language-detection/{model-id}
-If not specified, default will be used.</li>
+<li><strong>model</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional. The language detection model to be used.</p>
+<p>Format:
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}/models/language-detection/{model-id}</span></code></p>
+<p>Only one language detection model is currently supported:
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}/models/language-detection/default</span></code>.</p>
+<p>If not specified, the default model is used.</p>
+</li>
 <li><strong>content</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The content of the input stored as a string.</li>
 <li><strong>mime_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional. The format of the source text, for example, “text/html”,
-“text/plain”. If left blank, the MIME type is assumed to be “text/html”.</li>
+“text/plain”. If left blank, the MIME type defaults to “text/html”.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -479,24 +486,27 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional. Used for making regionalized calls.
-Format: projects/{project-id}/locations/{location-id}.
-For global calls, use projects/{project-id}/locations/global.
-If missing, the call is treated as a global call.</p>
-<p>Only custom model within the same location-id can be used.
-Otherwise 400 is returned.</p>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. Location to make a regional or global call.</p>
+<p>Format: <code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}</span></code>.</p>
+<p>For global calls, use <code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/global</span></code>.</p>
+<p>Only models within the same region (have same location-id) can be used,
+otherwise an INVALID_ARGUMENT (400) error is returned.</p>
 </li>
 <li><strong>display_language_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional. The language to use to return localized, human readable names
-of supported languages. If missing, default language is ENGLISH.</li>
-<li><strong>model</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional. Get supported languages of this model.
-The format depends on model type:
-1. Custom models:
-projects/{project-id}/locations/{location-id}/models/{model-id}.
-2. General (built-in) models:
-projects/{project-id}/locations/{location-id}/models/general/nmt
-projects/{project-id}/locations/{location-id}/models/general/base
-Returns languages supported by the specified model.
-If missing, we get supported languages of Google general NMT model.</li>
+of supported languages. If missing, then display names are not returned
+in a response.</li>
+<li><strong>model</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional. Get supported languages of this model.</p>
+<p>The format depends on model type:</p>
+<ul>
+<li>AutoML Translation models:
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}/models/{model-id}</span></code></li>
+<li>General (built-in) models:
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}/models/general/nmt</span></code>,
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}/models/general/base</span></code></li>
+</ul>
+<p>Returns languages supported by the specified model. If missing, we get
+supported languages of Google general base (PBMT) model.</p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -566,9 +576,9 @@ underlying API response. If page streaming is performed per-
 resource, this parameter does not affect the return value. If page
 streaming is performed per-page, this determines the maximum number
 of resources in a page.</li>
-<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional. Filter specifying constraints of a list operation. For
-example, <code class="docutils literal notranslate"><span class="pre">tags.glossary_name=&quot;products*&quot;</span></code>. If missing, no filtering is
-performed.</li>
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional. Filter specifying constraints of a list operation.
+Filtering is not supported yet, and the parameter currently has no effect.
+If missing, no filtering is performed.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -629,38 +639,40 @@ to a retryable error and retry attempts failed.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>contents</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – Required. The content of the input in string format.
-We recommend the total contents to be less than 30k codepoints.
-Please use BatchTranslateText for larger text.</li>
+We recommend the total content be less than 30k codepoints.
+Use BatchTranslateText for larger text.</li>
 <li><strong>target_language_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The BCP-47 language code to use for translation of the input
 text, set to one of the language codes listed in Language Support.</li>
 <li><strong>mime_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional. The format of the source text, for example, “text/html”,
-“text/plain”. If left blank, the MIME type is assumed to be “text/html”.</li>
+“text/plain”. If left blank, the MIME type defaults to “text/html”.</li>
 <li><strong>source_language_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional. The BCP-47 language code of the input text if
 known, for example, “en-US” or “sr-Latn”. Supported language codes are
 listed in Language Support. If the source language isn’t specified, the API
 attempts to identify the source language automatically and returns the
-the source language within the response.</li>
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional. Only used when making regionalized call.
-Format:
-projects/{project-id}/locations/{location-id}.</p>
-<p>Only custom model/glossary within the same location-id can be used.
-Otherwise 400 is returned.</p>
+source language within the response.</li>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. Location to make a regional or global call.</p>
+<p>Format: <code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}</span></code>.</p>
+<p>For global calls, use <code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/global</span></code>.</p>
+<p>Models and glossaries must be within the same region (have same
+location-id), otherwise an INVALID_ARGUMENT (400) error is returned.</p>
 </li>
 <li><strong>model</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional. The <code class="docutils literal notranslate"><span class="pre">model</span></code> type requested for this translation.</p>
 <p>The format depends on model type:</p>
-<ol class="arabic">
-<li>Custom models:
-projects/{project-id}/locations/{location-id}/models/{model-id}.</li>
+<ul>
+<li>AutoML Translation models:
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}/models/{model-id}</span></code></li>
 <li>General (built-in) models:
-projects/{project-id}/locations/{location-id}/models/general/nmt
-projects/{project-id}/locations/{location-id}/models/general/base</li>
-</ol>
-<p>For global (non-regionalized) requests, use {location-id} ‘global’. For
-example, projects/{project-id}/locations/global/models/general/nmt</p>
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}/models/general/nmt</span></code>,
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}/models/general/base</span></code></li>
+</ul>
+<p>For global (non-regionalized) requests, use <code class="docutils literal notranslate"><span class="pre">location-id</span></code> <code class="docutils literal notranslate"><span class="pre">global</span></code>.
+For example,
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/global/models/general/nmt</span></code>.</p>
 <p>If missing, the system decides which google base model to use.</p>
 </li>
-<li><strong>glossary_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig" title="google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig"><em>TranslateTextGlossaryConfig</em></a><em>]</em>) – <p>Optional. Glossary to be applied. The glossary needs to be in the same
-region as the model, otherwise an INVALID_ARGUMENT error is returned.</p>
+<li><strong>glossary_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig" title="google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig"><em>TranslateTextGlossaryConfig</em></a><em>]</em>) – <p>Optional. Glossary to be applied. The glossary must be within the same
+region (have the same location-id) as the model, otherwise an
+INVALID_ARGUMENT (400) error is returned.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig" title="google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">TranslateTextGlossaryConfig</span></code></a></p>
 </li>
