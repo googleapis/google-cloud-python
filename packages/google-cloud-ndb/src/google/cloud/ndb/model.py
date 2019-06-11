@@ -3611,12 +3611,14 @@ class StructuredProperty(Property):
 
 class LocalStructuredProperty(BlobProperty):
     """A property that contains ndb.Model value.
+
     .. note::
         Unlike most property types, a :class:`LocalStructuredProperty`
         is **not** indexed.
     .. automethod:: _to_base_type
     .. automethod:: _from_base_type
     .. automethod:: _validate
+
     Args:
         model_class (type): The class of the property. (Must be subclass of
             ``ndb.Model``.)
@@ -4877,9 +4879,9 @@ class Model(metaclass=MetaModel):
     ):
         """Get an instance of Model class by ID.
 
-        This is the asynchronous version of :meth:`_get_by_id`.
+        This is the asynchronous version of :meth:`get_by_id`.
 
-        Arg:
+        Args:
             id (Union[int, str]): ID of the entity to load.
             parent (Optional[key.Key]): Key for the parent of the entity to
                 load.

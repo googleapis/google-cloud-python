@@ -237,8 +237,8 @@ def get_entity_group_version(*args, **kwargs):
     """Return the version of the entity group containing key.
 
     Raises:
-        google.cloud.ndb.excpetions.NoLongerImplementedError. Always. This
-            method is not supported anymore.
+        :class:google.cloud.ndb.exceptions.NoLongerImplementedError. Always.
+            This method is not supported anymore.
     """
     raise exceptions.NoLongerImplementedError()
 

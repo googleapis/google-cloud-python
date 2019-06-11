@@ -510,7 +510,7 @@ def synctasklet(wrapped):
     webapp.RequestHandler.get method).
 
     Args:
-        wrapped (callable): The wrapped function.
+        wrapped (Callable): The wrapped function.
     """
     taskletfunc = tasklet(wrapped)
 

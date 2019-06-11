@@ -28,7 +28,7 @@ function build_docs {
     # -T -> show full traceback on exception
     # -N -> no color
     sphinx-build \
-        -T -N \
+        -W -T -N \
         -b html \
         -d docs/_build/doctrees \
         docs/ \
