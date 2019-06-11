@@ -86,10 +86,49 @@ class PropertyOrder(object):
 
 
 class RepeatedStructuredPropertyPredicate:
-    __slots__ = ()
+    """A predicate for querying repeated structured properties.
 
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+    Called by ``model.StructuredProperty._compare``. This is used to handle
+    queries of the form::
+
+        Squad.query(Squad.members == Member(name="Joe", age=24, rank=5))
+
+    This query should find any squad with a member named "Joe" whose age is 24
+    and rank is 5.
+
+    Datastore, on its own, can find all squads with a team member named Joe, or
+    a team member whose age is 24, or whose rank is 5, but it can't be queried
+    for all 3 in a single subentity. This predicate must be applied client
+    side, therefore, to limit results to entities where all the keys match for
+    a single subentity.
+
+    Arguments:
+        name (str): Name of the repeated structured property being queried
+            (e.g. "members").
+        match_keys (list[str]): Property names to check on the subentities
+            being queried (e.g. ["name", "age", "rank"]).
+        entity_pb (entity_pb2.Entity): A partial entity protocol buffer
+            containing the values that must match in a subentity of the
+            repeated structured property. Should contain a value for each key
+            in ``match_keys``.
+    """
+
+    __slots__ = ["name", "match_keys", "match_values"]
+
+    def __init__(self, name, match_keys, entity_pb):
+        self.name = name
+        self.match_keys = match_keys
+        self.match_values = [entity_pb.properties[key] for key in match_keys]
+
+    def __call__(self, entity_pb):
+        subentities = entity_pb.properties.get(self.name).array_value.values
+        for subentity in subentities:
+            properties = subentity.entity_value.properties
+            values = [properties.get(key) for key in self.match_keys]
+            if values == self.match_values:
+                return True
+
+        return False
 
 
 class ParameterizedThing:
@@ -781,6 +820,13 @@ class ConjunctionNode(Node):
             return None
         if len(filters) == 1:
             return filters[0]
+
+        if post:
+
+            def composite_and_predicate(entity_pb):
+                return all((filter(entity_pb) for filter in filters))
+
+            return composite_and_predicate
 
         return _datastore_query.make_composite_and_filter(filters)
 

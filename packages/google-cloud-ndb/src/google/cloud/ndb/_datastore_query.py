@@ -117,8 +117,14 @@ def iterate(query, raw=False):
         QueryIterator: The iterator.
     """
     filters = query.filters
-    if filters and filters._multiquery:
-        return _MultiQueryIteratorImpl(query, raw=raw)
+    if filters:
+        if filters._multiquery:
+            return _MultiQueryIteratorImpl(query, raw=raw)
+
+        post_filters = filters._post_filters()
+        if post_filters:
+            predicate = post_filters._to_filter(post=True)
+            return _PostFilterQueryIteratorImpl(query, predicate, raw=raw)
 
     return _QueryIteratorImpl(query, raw=raw)
 
@@ -232,7 +238,7 @@ class _QueryIteratorImpl(QueryIterator):
 
     Args:
         query (query.QueryOptions): The query spec.
-        raw (bool): Whether or not marshall NDB entities or keys for query
+        raw (bool): Whether or not to marshall NDB entities or keys for query
             results or return internal representations (:class:`_Result`). For
             internal use only.
     """
@@ -362,6 +368,117 @@ class _QueryIteratorImpl(QueryIterator):
         return self._cursor_after
 
 
+class _PostFilterQueryIteratorImpl(QueryIterator):
+    """Iterator for query with post filters.
+
+    A post-filter is a filter that can't be executed server side in Datastore
+    and therefore must be handled in memory on the client side. This iterator
+    allows a predicate representing one or more post filters to be applied to
+    query results, returning only those results which satisfy the condition(s)
+    enforced by the predicate.
+
+    Args:
+        query (query.QueryOptions): The query spec.
+        predicate (Callable[[entity_pb2.Entity], bool]): Predicate from post
+            filter(s) to be applied. Only entity results for which this
+            predicate returns :data:`True` will be returned.
+        raw (bool): Whether or not to marshall NDB entities or keys for query
+            results or return internal representations (:class:`_Result`). For
+            internal use only.
+    """
+
+    def __init__(self, query, predicate, raw=False):
+        self._result_set = _QueryIteratorImpl(
+            query.copy(offset=None, limit=None), raw=True
+        )
+        self._predicate = predicate
+        self._next_result = None
+        self._offset = query.offset
+        self._limit = query.limit
+        self._cursor_before = None
+        self._cursor_after = None
+        self._raw = raw
+
+    def has_next(self):
+        """Implements :meth:`QueryIterator.has_next`."""
+        return self.has_next_async().result()
+
+    @tasklets.tasklet
+    def has_next_async(self):
+        """Implements :meth:`QueryIterator.has_next_async`."""
+        if self._next_result:
+            return True
+
+        if self._limit == 0:
+            return False
+
+        # Actually get the next result and load it into memory, or else we
+        # can't really know
+        while True:
+            has_next = yield self._result_set.has_next_async()
+            if not has_next:
+                return False
+
+            next_result = self._result_set.next()
+
+            if not self._predicate(next_result.result_pb.entity):
+                # Doesn't sastisfy predicate, skip
+                continue
+
+            # Satisfies predicate
+
+            # Offset?
+            if self._offset:
+                self._offset -= 1
+                continue
+
+            # Limit?
+            if self._limit:
+                self._limit -= 1
+
+            self._next_result = next_result
+
+            # Adjust cursors
+            self._cursor_before = self._cursor_after
+            self._cursor_after = next_result.cursor
+
+            return True
+
+    def probably_has_next(self):
+        """Implements :meth:`QueryIterator.probably_has_next`."""
+        return bool(self._next_result) or self._result_set.probably_has_next()
+
+    def next(self):
+        """Implements :meth:`QueryIterator.next`."""
+        # Might block
+        if not self.has_next():
+            raise StopIteration()
+
+        # Won't block
+        next_result = self._next_result
+        self._next_result = None
+        if self._raw:
+            return next_result
+        else:
+            return next_result.entity()
+
+    __next__ = next
+
+    def cursor_before(self):
+        """Implements :meth:`QueryIterator.cursor_before`."""
+        if self._cursor_before is None:
+            raise exceptions.BadArgumentError("There is no cursor currently")
+
+        return self._cursor_before
+
+    def cursor_after(self):
+        """Implements :meth:`QueryIterator.cursor_after."""
+        if self._cursor_after is None:
+            raise exceptions.BadArgumentError("There is no cursor currently")
+
+        return self._cursor_after
+
+
 class _MultiQueryIteratorImpl(QueryIterator):
     """Multiple Query Iterator
 
@@ -375,6 +492,9 @@ class _MultiQueryIteratorImpl(QueryIterator):
 
     Args:
         query (query.QueryOptions): The query spec.
+        raw (bool): Whether or not to marshall NDB entities or keys for query
+            results or return internal representations (:class:`_Result`). For
+            internal use only.
     """
 
     def __init__(self, query, raw=False):
@@ -382,9 +502,7 @@ class _MultiQueryIteratorImpl(QueryIterator):
             query.copy(filters=node, offset=None, limit=None)
             for node in query.filters._nodes
         ]
-        self._result_sets = [
-            _QueryIteratorImpl(query, raw=True) for query in queries
-        ]
+        self._result_sets = [iterate(query, raw=True) for query in queries]
         self._sortable = bool(query.order_by)
         self._seen_keys = set()
         self._next_result = None
@@ -465,7 +583,7 @@ class _MultiQueryIteratorImpl(QueryIterator):
 
     def probably_has_next(self):
         """Implements :meth:`QueryIterator.probably_has_next`."""
-        return self._next_result or any(
+        return bool(self._next_result) or any(
             [
                 result_set.probably_has_next()
                 for result_set in self._result_sets

@@ -2774,6 +2774,7 @@ class TestStructuredProperty:
         )
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test__comparison_repeated_structured():
         class Mine(model.Model):
             foo = model.StringProperty()
@@ -2782,8 +2783,18 @@ class TestStructuredProperty:
         prop = model.StructuredProperty(Mine, repeated=True)
         prop._name = "bar"
         mine = Mine(foo="x", bar="y")
-        with pytest.raises(NotImplementedError):
-            prop._comparison("=", mine)
+        conjunction = prop._comparison("=", mine)
+        assert conjunction._nodes[0] == query_module.FilterNode(
+            "bar.bar", "=", "y"
+        )
+        assert conjunction._nodes[1] == query_module.FilterNode(
+            "bar.foo", "=", "x"
+        )
+        assert conjunction._nodes[2].predicate.name == "bar"
+        assert conjunction._nodes[2].predicate.match_keys == ["bar", "foo"]
+        match_values = conjunction._nodes[2].predicate.match_values
+        assert match_values[0].string_value == "y"
+        assert match_values[1].string_value == "x"
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")

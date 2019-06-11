@@ -3465,7 +3465,7 @@ class StructuredProperty(Property):
                 altprop = getattr(self, prop._code_name)
                 filt = altprop._comparison(op, subvalue)
                 filters.append(filt)
-                match_keys.append(altprop._name)
+                match_keys.append(prop._name)
 
         if not filters:
             raise exceptions.BadFilterError(
@@ -3476,11 +3476,11 @@ class StructuredProperty(Property):
             return filters[0]
 
         if self._repeated:
-            raise NotImplementedError("This depends on code not yet ported.")
-            # pb = value._to_pb(allow_partial=True)
-            # pred = RepeatedStructuredPropertyPredicate(match_keys, pb,
-            #                                          self._name + '.')
-            # filters.append(PostFilterNode(pred))
+            entity_pb = _entity_to_protobuf(value)
+            predicate = RepeatedStructuredPropertyPredicate(
+                self._name, match_keys, entity_pb
+            )
+            filters.append(PostFilterNode(predicate))
 
         return ConjunctionNode(*filters)
 

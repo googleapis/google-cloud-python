@@ -523,3 +523,200 @@ def test_fetch_page(dispose_of):
     )
     assert [entity.foo for entity in results] == [5, 6, 7, 8, 9]
     assert not more
+
+
+@pytest.mark.skip("Requires an index")
+@pytest.mark.usefixtures("client_context")
+def test_query_repeated_property(ds_entity):
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(KIND, entity_id, foo=1, bar=["a", "b", "c"])
+
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(KIND, entity_id, foo=2, bar=["c", "d", "e"])
+
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(KIND, entity_id, foo=3, bar=["e", "f", "g"])
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StringProperty(repeated=True)
+
+    eventually(SomeKind.query().fetch, _length_equals(3))
+
+    query = SomeKind.query().filter(SomeKind.bar == "c").order(SomeKind.foo)
+    results = query.fetch()
+
+    assert len(results) == 2
+    assert results[0].foo == 1
+    assert results[1].foo == 2
+
+
+@pytest.mark.skip("Requires an index")
+@pytest.mark.usefixtures("client_context")
+def test_query_structured_property(dispose_of):
+    class OtherKind(ndb.Model):
+        one = ndb.StringProperty()
+        two = ndb.StringProperty()
+        three = ndb.StringProperty()
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StructuredProperty(OtherKind)
+
+    @ndb.synctasklet
+    def make_entities():
+        entity1 = SomeKind(
+            foo=1, bar=OtherKind(one="pish", two="posh", three="pash")
+        )
+        entity2 = SomeKind(
+            foo=2, bar=OtherKind(one="pish", two="posh", three="push")
+        )
+        entity3 = SomeKind(
+            foo=3,
+            bar=OtherKind(one="pish", two="moppish", three="pass the peas"),
+        )
+
+        keys = yield (
+            entity1.put_async(),
+            entity2.put_async(),
+            entity3.put_async(),
+        )
+        return keys
+
+    keys = make_entities()
+    eventually(SomeKind.query().fetch, _length_equals(3))
+    for key in keys:
+        dispose_of(key._key)
+
+    query = (
+        SomeKind.query()
+        .filter(SomeKind.bar.one == "pish", SomeKind.bar.two == "posh")
+        .order(SomeKind.foo)
+    )
+
+    results = query.fetch()
+    assert len(results) == 2
+    assert results[0].foo == 1
+    assert results[1].foo == 2
+
+
+@pytest.mark.skip("Requires an index")
+@pytest.mark.usefixtures("client_context")
+def test_query_repeated_structured_property_with_properties(dispose_of):
+    class OtherKind(ndb.Model):
+        one = ndb.StringProperty()
+        two = ndb.StringProperty()
+        three = ndb.StringProperty()
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StructuredProperty(OtherKind, repeated=True)
+
+    @ndb.synctasklet
+    def make_entities():
+        entity1 = SomeKind(
+            foo=1,
+            bar=[
+                OtherKind(one="pish", two="posh", three="pash"),
+                OtherKind(one="bish", two="bosh", three="bash"),
+            ],
+        )
+        entity2 = SomeKind(
+            foo=2,
+            bar=[
+                OtherKind(one="pish", two="bosh", three="bass"),
+                OtherKind(one="bish", two="posh", three="pass"),
+            ],
+        )
+        entity3 = SomeKind(
+            foo=3,
+            bar=[
+                OtherKind(one="fish", two="fosh", three="fash"),
+                OtherKind(one="bish", two="bosh", three="bash"),
+            ],
+        )
+
+        keys = yield (
+            entity1.put_async(),
+            entity2.put_async(),
+            entity3.put_async(),
+        )
+        return keys
+
+    keys = make_entities()
+    eventually(SomeKind.query().fetch, _length_equals(3))
+    for key in keys:
+        dispose_of(key._key)
+
+    query = (
+        SomeKind.query()
+        .filter(SomeKind.bar.one == "pish", SomeKind.bar.two == "posh")
+        .order(SomeKind.foo)
+    )
+
+    results = query.fetch()
+    assert len(results) == 2
+    assert results[0].foo == 1
+    assert results[1].foo == 2
+
+
+@pytest.mark.skip("Requires an index")
+@pytest.mark.usefixtures("client_context")
+def test_query_repeated_structured_property_with_entity_twice(dispose_of):
+    class OtherKind(ndb.Model):
+        one = ndb.StringProperty()
+        two = ndb.StringProperty()
+        three = ndb.StringProperty()
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StructuredProperty(OtherKind, repeated=True)
+
+    @ndb.synctasklet
+    def make_entities():
+        entity1 = SomeKind(
+            foo=1,
+            bar=[
+                OtherKind(one="pish", two="posh", three="pash"),
+                OtherKind(one="bish", two="bosh", three="bash"),
+            ],
+        )
+        entity2 = SomeKind(
+            foo=2,
+            bar=[
+                OtherKind(one="bish", two="bosh", three="bass"),
+                OtherKind(one="pish", two="posh", three="pass"),
+            ],
+        )
+        entity3 = SomeKind(
+            foo=3,
+            bar=[
+                OtherKind(one="pish", two="fosh", three="fash"),
+                OtherKind(one="bish", two="posh", three="bash"),
+            ],
+        )
+
+        keys = yield (
+            entity1.put_async(),
+            entity2.put_async(),
+            entity3.put_async(),
+        )
+        return keys
+
+    keys = make_entities()
+    eventually(SomeKind.query().fetch, _length_equals(3))
+    for key in keys:
+        dispose_of(key._key)
+
+    query = (
+        SomeKind.query()
+        .filter(
+            SomeKind.bar == OtherKind(one="pish", two="posh"),
+            SomeKind.bar == OtherKind(two="posh", three="pash"),
+        )
+        .order(SomeKind.foo)
+    )
+
+    results = query.fetch()
+    assert len(results) == 1
+    assert results[0].foo == 1

@@ -113,8 +113,58 @@ class TestPropertyOrder:
 class TestRepeatedStructuredPropertyPredicate:
     @staticmethod
     def test_constructor():
-        with pytest.raises(NotImplementedError):
-            query_module.RepeatedStructuredPropertyPredicate()
+        predicate = query_module.RepeatedStructuredPropertyPredicate(
+            "matilda",
+            ["foo", "bar", "baz"],
+            unittest.mock.Mock(
+                properties={"foo": "a", "bar": "b", "baz": "c"}
+            ),
+        )
+        assert predicate.name == "matilda"
+        assert predicate.match_keys == ["foo", "bar", "baz"]
+        assert predicate.match_values == ["a", "b", "c"]
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test___call__():
+        class SubKind(model.Model):
+            bar = model.IntegerProperty()
+            baz = model.StringProperty()
+
+        class SomeKind(model.Model):
+            foo = model.StructuredProperty(SubKind, repeated=True)
+
+        match_entity = SubKind(bar=1, baz="scoggs")
+        predicate = query_module.RepeatedStructuredPropertyPredicate(
+            "foo", ["bar", "baz"], model._entity_to_protobuf(match_entity)
+        )
+
+        entity = SomeKind(
+            foo=[SubKind(bar=2, baz="matic"), SubKind(bar=1, baz="scoggs")]
+        )
+
+        assert predicate(model._entity_to_protobuf(entity)) is True
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test___call__no_match():
+        class SubKind(model.Model):
+            bar = model.IntegerProperty()
+            baz = model.StringProperty()
+
+        class SomeKind(model.Model):
+            foo = model.StructuredProperty(SubKind, repeated=True)
+
+        match_entity = SubKind(bar=1, baz="scoggs")
+        predicate = query_module.RepeatedStructuredPropertyPredicate(
+            "foo", ["bar", "baz"], model._entity_to_protobuf(match_entity)
+        )
+
+        entity = SomeKind(
+            foo=[SubKind(bar=1, baz="matic"), SubKind(bar=2, baz="scoggs")]
+        )
+
+        assert predicate(model._entity_to_protobuf(entity)) is False
 
 
 class TestParameterizedThing:
@@ -804,15 +854,34 @@ class TestConjunctionNode:
     @staticmethod
     @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
     def test__to_filter_multiple(_datastore_query):
-        node1 = query_module.PostFilterNode("predicate1")
-        node2 = query_module.PostFilterNode("predicate2")
-        and_node = query_module.ConjunctionNode(node1, node2)
+        node1 = unittest.mock.Mock(spec=query_module.FilterNode)
+        node2 = query_module.PostFilterNode("predicate")
+        node3 = unittest.mock.Mock(spec=query_module.FilterNode)
+        and_node = query_module.ConjunctionNode(node1, node2, node3)
 
         as_filter = _datastore_query.make_composite_and_filter.return_value
-        assert and_node._to_filter(post=True) is as_filter
+        assert and_node._to_filter() is as_filter
+
         _datastore_query.make_composite_and_filter.assert_called_once_with(
-            ["predicate1", "predicate2"]
+            [node1._to_filter.return_value, node3._to_filter.return_value]
         )
+
+    @staticmethod
+    def test__to_filter_multiple_post():
+        def predicate_one(entity_pb):
+            return entity_pb["x"] == 1
+
+        def predicate_two(entity_pb):
+            return entity_pb["y"] == 2
+
+        node1 = query_module.PostFilterNode(predicate_one)
+        node2 = query_module.PostFilterNode(predicate_two)
+        and_node = query_module.ConjunctionNode(node1, node2)
+
+        predicate = and_node._to_filter(post=True)
+        assert predicate({"x": 1, "y": 1}) is False
+        assert predicate({"x": 1, "y": 2}) is True
+        assert predicate({"x": 2, "y": 2}) is False
 
     @staticmethod
     def test__post_filters_empty():

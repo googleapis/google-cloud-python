@@ -82,13 +82,43 @@ class Test_iterate:
     @staticmethod
     @mock.patch("google.cloud.ndb._datastore_query._QueryIteratorImpl")
     def test_iterate_single(QueryIterator):
+        query = mock.Mock(filters=None, spec=("filters"))
+        iterator = QueryIterator.return_value
+        assert _datastore_query.iterate(query) is iterator
+        QueryIterator.assert_called_once_with(query, raw=False)
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._datastore_query._QueryIteratorImpl")
+    def test_iterate_single_w_filters(QueryIterator):
         query = mock.Mock(
-            filters=mock.Mock(_multiquery=False, spec=("_multiquery",)),
-            spec=("filters",),
+            filters=mock.Mock(
+                _multiquery=False,
+                _post_filters=mock.Mock(return_value=None),
+                spec=("_multiquery", "_post_filters"),
+            ),
+            spec=("filters", "_post_filters"),
         )
         iterator = QueryIterator.return_value
         assert _datastore_query.iterate(query) is iterator
         QueryIterator.assert_called_once_with(query, raw=False)
+
+    @staticmethod
+    @mock.patch(
+        "google.cloud.ndb._datastore_query._PostFilterQueryIteratorImpl"
+    )
+    def test_iterate_single_with_post_filter(QueryIterator):
+        query = mock.Mock(
+            filters=mock.Mock(
+                _multiquery=False, spec=("_multiquery", "_post_filters")
+            ),
+            spec=("filters", "_post_filters"),
+        )
+        iterator = QueryIterator.return_value
+        post_filters = query.filters._post_filters.return_value
+        predicate = post_filters._to_filter.return_value
+        assert _datastore_query.iterate(query) is iterator
+        QueryIterator.assert_called_once_with(query, predicate, raw=False)
+        post_filters._to_filter.assert_called_once_with(post=True)
 
     @staticmethod
     @mock.patch("google.cloud.ndb._datastore_query._MultiQueryIteratorImpl")
@@ -405,6 +435,193 @@ class Test_QueryIteratorImpl:
             iterator.index_list()
 
 
+class Test_PostFilterQueryIteratorImpl:
+    @staticmethod
+    def test_constructor():
+        foo = model.StringProperty("foo")
+        query = query_module.QueryOptions(
+            offset=20, limit=10, filters=foo == "this"
+        )
+        predicate = object()
+        iterator = _datastore_query._PostFilterQueryIteratorImpl(
+            query, predicate
+        )
+        assert iterator._result_set._query == query_module.QueryOptions(
+            filters=foo == "this"
+        )
+        assert iterator._offset == 20
+        assert iterator._limit == 10
+        assert iterator._predicate is predicate
+
+    @staticmethod
+    def test_has_next():
+        query = query_module.QueryOptions()
+        iterator = _datastore_query._PostFilterQueryIteratorImpl(
+            query, "predicate"
+        )
+        iterator.has_next_async = mock.Mock(
+            return_value=utils.future_result("bar")
+        )
+        assert iterator.has_next() == "bar"
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_has_next_async_next_loaded():
+        query = query_module.QueryOptions()
+        iterator = _datastore_query._PostFilterQueryIteratorImpl(
+            query, "predicate"
+        )
+        iterator._next_result = "foo"
+        assert iterator.has_next_async().result()
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_iterate_async():
+        def predicate(result):
+            return result.result % 2 == 0
+
+        query = query_module.QueryOptions()
+        iterator = _datastore_query._PostFilterQueryIteratorImpl(
+            query, predicate
+        )
+        iterator._result_set = MockResultSet([1, 2, 3, 4, 5, 6, 7])
+
+        @tasklets.tasklet
+        def iterate():
+            results = []
+            while (yield iterator.has_next_async()):
+                results.append(iterator.next())
+            return results
+
+        assert iterate().result() == [2, 4, 6]
+
+        with pytest.raises(StopIteration):
+            iterator.next()
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_iterate_async_raw():
+        def predicate(result):
+            return result.result % 2 == 0
+
+        query = query_module.QueryOptions()
+        iterator = _datastore_query._PostFilterQueryIteratorImpl(
+            query, predicate, raw=True
+        )
+        iterator._result_set = MockResultSet([1, 2, 3, 4, 5, 6, 7])
+
+        @tasklets.tasklet
+        def iterate():
+            results = []
+            while (yield iterator.has_next_async()):
+                results.append(iterator.next())
+            return results
+
+        assert iterate().result() == [
+            MockResult(2),
+            MockResult(4),
+            MockResult(6),
+        ]
+
+        with pytest.raises(StopIteration):
+            iterator.next()
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_iterate_async_w_limit_and_offset():
+        def predicate(result):
+            return result.result % 2 == 0
+
+        query = query_module.QueryOptions(offset=1, limit=2)
+        iterator = _datastore_query._PostFilterQueryIteratorImpl(
+            query, predicate
+        )
+        iterator._result_set = MockResultSet([1, 2, 3, 4, 5, 6, 7, 8])
+
+        @tasklets.tasklet
+        def iterate():
+            results = []
+            while (yield iterator.has_next_async()):
+                results.append(iterator.next())
+            return results
+
+        assert iterate().result() == [4, 6]
+
+        with pytest.raises(StopIteration):
+            iterator.next()
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_probably_has_next_next_loaded():
+        query = query_module.QueryOptions()
+        iterator = _datastore_query._PostFilterQueryIteratorImpl(
+            query, "predicate"
+        )
+        iterator._next_result = "foo"
+        assert iterator.probably_has_next() is True
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_probably_has_next_delegate():
+        query = query_module.QueryOptions()
+        iterator = _datastore_query._PostFilterQueryIteratorImpl(
+            query, "predicate"
+        )
+        iterator._result_set._next_result = "foo"
+        assert iterator.probably_has_next() is True
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_probably_has_next_doesnt():
+        query = query_module.QueryOptions()
+        iterator = _datastore_query._PostFilterQueryIteratorImpl(
+            query, "predicate"
+        )
+        iterator._result_set._batch = []
+        iterator._result_set._index = 0
+        assert iterator.probably_has_next() is False
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_cursor_before():
+        query = query_module.QueryOptions()
+        iterator = _datastore_query._PostFilterQueryIteratorImpl(
+            query, "predicate"
+        )
+        iterator._cursor_before = "himom"
+        assert iterator.cursor_before() == "himom"
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_cursor_before_no_cursor():
+        query = query_module.QueryOptions()
+        iterator = _datastore_query._PostFilterQueryIteratorImpl(
+            query, "predicate"
+        )
+        with pytest.raises(exceptions.BadArgumentError):
+            iterator.cursor_before()
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_cursor_after():
+        query = query_module.QueryOptions()
+        iterator = _datastore_query._PostFilterQueryIteratorImpl(
+            query, "predicate"
+        )
+        iterator._cursor_after = "himom"
+        assert iterator.cursor_after() == "himom"
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_cursor_after_no_cursor():
+        query = query_module.QueryOptions()
+        iterator = _datastore_query._PostFilterQueryIteratorImpl(
+            query, "predicate"
+        )
+        with pytest.raises(exceptions.BadArgumentError):
+            iterator.cursor_after()
+
+
 class Test_MultiQueryIteratorImpl:
     @staticmethod
     def test_constructor():
@@ -679,6 +896,7 @@ class Test_MultiQueryIteratorImpl:
 class MockResult:
     def __init__(self, result):
         self.result = result
+        self.cursor = "cursor-" + str(result)
 
     def entity(self):
         return self.result
