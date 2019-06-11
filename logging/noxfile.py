@@ -96,7 +96,6 @@ def default(session, django_dep=('django',)):
         '--cov-append',
         '--cov-config=.coveragerc',
         '--cov-report=',
-        '--cov-fail-under=97',
         'tests/unit',
         *session.posargs
     )
