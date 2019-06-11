@@ -36,6 +36,7 @@ LOGO_FILE = os.path.join(_SYS_TESTS_DIR, "data", "logo.png")
 PDF_FILE = os.path.join(_SYS_TESTS_DIR, "data", "pdf_test.pdf")
 PROJECT_ID = os.environ.get("PROJECT_ID")
 PROJECT_OUTSIDE = os.environ.get("GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT")
+BUCKET_OUTSIDE = os.environ.get("GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_BUCKET")
 
 
 class VisionSystemTestBase(unittest.TestCase):
@@ -803,4 +804,239 @@ class TestVisionClientProductSearchVpcsc(VisionSystemTestBase):
         )
         self._verify_vpc_sc_error(
             lambda: self.ps_client.list_reference_images(parent=product_path)
+        )
+
+
+@unittest.skipUnless(
+    BUCKET_OUTSIDE,
+    "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_BUCKET not set in environment.",
+)
+class TestVisionClientVpcsc(VisionSystemTestBase):
+    # Tests to verify Vision API methods are blocked by VPC SC when trying to access a gcs resource outside of a secure perimeter.
+    def setUp(self):
+        VisionSystemTestBase.setUp(self)
+        self._verify_vpc_sc_blocks_gcs_bucket()
+        self.gcs_read_error_message = "Error opening file: gs://"
+        self.gcs_write_error_message = "Error writing final output to: gs://"
+
+    def _verify_vpc_sc_blocks_gcs_bucket(self):
+        # Verifies that a VPC SC 403 error is raised when trying to access a bucket in gcs that is outside the perimeter.
+        try:
+            outside_bucket = storage.Client()
+            outside_bucket.get_bucket(BUCKET_OUTSIDE)
+        except google.api_core.exceptions.Forbidden as e:
+            # Verify the Forbidden exception was due to VPC SC.
+            vpc_sc_error_message = "Request violates VPC Service Controls."
+            self.assertTrue(
+                vpc_sc_error_message in e.message,
+                "'{}' not in '{}'".format(vpc_sc_error_message, e.message),
+            )
+            return
+        except Exception as e:
+            self.fail(
+                "Unexpected exception raised while accessing gcs bucket: {}".format(e)
+            )
+        self.fail(
+            "No exception raised when accessing gcs bucket: {}".format(BUCKET_OUTSIDE)
+        )
+
+    @unittest.skipUnless(PROJECT_ID, "PROJECT_ID not set in environment.")
+    def test_import_product_sets_blocked(self):
+        # The csv file is outside the secure perimeter.
+        gcs_source = vision.types.ImportProductSetsGcsSource(
+            csv_file_uri="gs://{bucket}/some_file.csv".format(bucket=BUCKET_OUTSIDE)
+        )
+        input_config = vision.types.ImportProductSetsInputConfig(gcs_source=gcs_source)
+        # Use a valid Project ID.
+        location_path = self.ps_client.location_path(
+            project=PROJECT_ID, location="us-west1"
+        )
+        try:
+            # A 403 exception should be raised because the csv file is not accessible due to VPC SC.
+            self.ps_client.import_product_sets(
+                parent=location_path, input_config=input_config
+            )
+        except google.api_core.exceptions.Forbidden as e:
+            # Verify the 403 error was due to reading the file in gcs.
+            self.assertTrue(
+                self.gcs_read_error_message in e.message,
+                "'{}' not in '{}'".format(self.gcs_read_error_message, e.message),
+            )
+            return
+        except Exception as e:
+            self.fail("Unexpected exception raised: {}".format(e))
+        self.fail("No exception raised.")
+
+    def test_async_batch_annotate_files_read_blocked(self):
+        # Make the request.
+        method_name = "test_async_batch_annotate_files_read_blocked"
+        output_gcs_uri_prefix = "gs://{bucket}/{method_name}".format(
+            bucket=self.test_bucket.name, method_name=method_name
+        )
+        # The input file is in a gcs bucket that is outside of the secure perimeter.
+        request = {
+            "input_config": {
+                "gcs_source": {
+                    "uri": "gs://{bucket}/some_file.pdf".format(bucket=BUCKET_OUTSIDE)
+                },
+                "mime_type": "application/pdf",
+            },
+            "features": [{"type": vision.enums.Feature.Type.DOCUMENT_TEXT_DETECTION}],
+            "output_config": {"gcs_destination": {"uri": output_gcs_uri_prefix}},
+        }
+        try:
+            # A 403 exception should be raised.
+            self.client.async_batch_annotate_files([request])
+        except google.api_core.exceptions.Forbidden as e:
+            # Verify the 403 error was due to reading the file in gcs.
+            self.assertTrue(
+                self.gcs_read_error_message in e.message,
+                "'{}' not in '{}'".format(self.gcs_read_error_message, e.message),
+            )
+            return
+        except Exception as e:
+            self.fail("Unexpected exception raised: {}".format(e))
+        self.fail("No exception raised.")
+
+    def test_async_batch_annotate_files_write_blocked(self):
+        # Upload the image to Google Cloud Storage.
+        blob_name = "async_batch_annotate_files_write_blocked.pdf"
+        blob = self.test_bucket.blob(blob_name)
+        self.to_delete_by_case.append(blob)
+        with io.open(PDF_FILE, "rb") as image_file:
+            blob.upload_from_file(image_file)
+        method_name = "test_async_batch_annotate_files_write_blocked"
+        # Write the result to a bucket outside of the secure perimeter.
+        output_gcs_uri_prefix = "gs://{bucket}/{method_name}".format(
+            bucket=BUCKET_OUTSIDE, method_name=method_name
+        )
+        request = {
+            "input_config": {
+                "gcs_source": {
+                    "uri": "gs://{bucket}/{blob}".format(
+                        bucket=self.test_bucket.name, blob=blob_name
+                    )
+                },
+                "mime_type": "application/pdf",
+            },
+            "features": [{"type": vision.enums.Feature.Type.DOCUMENT_TEXT_DETECTION}],
+            "output_config": {"gcs_destination": {"uri": output_gcs_uri_prefix}},
+        }
+        response = self.client.async_batch_annotate_files([request])
+        # Wait for the operation to complete.
+        lro_waiting_seconds = 60
+        start_time = time.time()
+        while not response.done() and (time.time() - start_time) < lro_waiting_seconds:
+            time.sleep(1)
+        if not response.done():
+            self.fail(
+                "{method_name} timed out after {lro_waiting_seconds} seconds".format(
+                    method_name=method_name, lro_waiting_seconds=lro_waiting_seconds
+                )
+            )
+        # Verify there was an error writing to the output bucket.
+        error = response.operation.error
+        assert error.code == 7
+        assert self.gcs_write_error_message in error.message, "'{}' not in '{}'".format(
+            self.gcs_write_error_message, error.message
+        )
+
+    def test_async_batch_annotate_images_read_blocked(self):
+        # Make the request. The input file is in a gcs bucket that is outside of the secure perimeter.
+        request = {
+            "image": {
+                "source": {
+                    "image_uri": "gs://{bucket}/some_image.jpg".format(
+                        bucket=BUCKET_OUTSIDE
+                    )
+                }
+            },
+            "features": [{"type": vision.enums.Feature.Type.LOGO_DETECTION}],
+        }
+        method_name = "test_async_batch_annotate_images_read_blocked"
+        output_gcs_uri_prefix = "gs://{bucket}/{method_name}".format(
+            bucket=self.test_bucket.name, method_name=method_name
+        )
+        output_config = {"gcs_destination": {"uri": output_gcs_uri_prefix}}
+        response = self.client.async_batch_annotate_images([request], output_config)
+        # Wait for the operation to complete.
+        lro_waiting_seconds = 60
+        start_time = time.time()
+        while not response.done() and (time.time() - start_time) < lro_waiting_seconds:
+            time.sleep(1)
+        if not response.done():
+            self.fail(
+                "{method_name} timed out after {lro_waiting_seconds} seconds".format(
+                    method_name=method_name, lro_waiting_seconds=lro_waiting_seconds
+                )
+            )
+        # Make sure getting the result is not an error.
+        response.result()
+        # There should be exactly 1 output file in gcs at the prefix output_gcs_uri_prefix.
+        blobs = list(self.test_bucket.list_blobs(prefix=method_name))
+        assert len(blobs) == 1
+        blob = blobs[0]
+        # Download the output file.
+        result_str = blob.download_as_string().decode("utf8")
+        result = json.loads(result_str)
+        responses = result["responses"]
+        assert len(responses) == 1
+        # Verify the read error.
+        error = responses[0]["error"]
+        assert error["code"] == 7
+        assert (
+            self.gcs_read_error_message in error["message"]
+        ), "'{}' not in '{}'".format(self.gcs_read_error_message, error["message"])
+
+    def test_async_batch_annotate_images_write_blocked(self):
+        # Make the request.
+        request = {
+            "image": {
+                "source": {
+                    "image_uri": "gs://{bucket}/some_image.jpg".format(
+                        bucket=BUCKET_OUTSIDE
+                    )
+                }
+            },
+            "features": [{"type": vision.enums.Feature.Type.LOGO_DETECTION}],
+        }
+        method_name = "test_async_batch_annotate_images_write_blocked"
+        # Write the result to a bucket outside of the secure perimeter.
+        output_gcs_uri_prefix = "gs://{bucket}/{method_name}".format(
+            bucket=BUCKET_OUTSIDE, method_name=method_name
+        )
+        output_config = {"gcs_destination": {"uri": output_gcs_uri_prefix}}
+        response = self.client.async_batch_annotate_images([request], output_config)
+        # Wait for the operation to complete.
+        lro_waiting_seconds = 60
+        start_time = time.time()
+        while not response.done() and (time.time() - start_time) < lro_waiting_seconds:
+            time.sleep(1)
+        if not response.done():
+            self.fail(
+                "{method_name} timed out after {lro_waiting_seconds} seconds".format(
+                    method_name=method_name, lro_waiting_seconds=lro_waiting_seconds
+                )
+            )
+        # Verify there was an error writing to the output bucket.
+        error = response.operation.error
+        assert error.code == 7
+        assert self.gcs_write_error_message in error.message, "'{}' not in '{}'".format(
+            self.gcs_write_error_message, error.message
+        )
+
+    def test_batch_annotate_images_read_blocked(self):
+        response = self.client.logo_detection(
+            {
+                "source": {
+                    "image_uri": "gs://{bucket}/some_image.jpg".format(
+                        bucket=BUCKET_OUTSIDE
+                    )
+                }
+            }
+        )
+        error = response.error
+        assert error.code == 7
+        assert self.gcs_read_error_message in error.message, "'{}' not in '{}'".format(
+            self.gcs_read_error_message, error.message
         )
