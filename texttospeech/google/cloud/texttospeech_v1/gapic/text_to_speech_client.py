@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.texttospeech.v1 TextToSpeech API."""
 
 import pkg_resources
@@ -30,6 +31,7 @@ from google.cloud.texttospeech_v1.gapic import text_to_speech_client_config
 from google.cloud.texttospeech_v1.gapic.transports import text_to_speech_grpc_transport
 from google.cloud.texttospeech_v1.proto import cloud_tts_pb2
 from google.cloud.texttospeech_v1.proto import cloud_tts_pb2_grpc
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     "google-cloud-texttospeech"
