@@ -184,6 +184,42 @@ def test_subscribe_to_messages_async_callbacks(
     future.cancel()
 
 
+def test_creating_subscriptions_with_non_default_settings(
+    publisher, subscriber, project, topic_path, subscription_path, cleanup
+):
+    # Make sure the topic and subscription get deleted.
+    cleanup.append((publisher.delete_topic, topic_path))
+    cleanup.append((subscriber.delete_subscription, subscription_path))
+
+    # create a topic and a subscription, customize the latter's policy
+    publisher.create_topic(topic_path)
+
+    msg_retention_duration = {"seconds": 911}
+    expiration_policy = {"ttl": {"seconds": 90210}}
+    new_subscription = subscriber.create_subscription(
+        subscription_path,
+        topic_path,
+        ack_deadline_seconds=30,
+        retain_acked_messages=True,
+        message_retention_duration=msg_retention_duration,
+        expiration_policy=expiration_policy,
+    )
+
+    # fetch the subscription and check its settings
+    project_path = subscriber.project_path(project)
+    subscriptions = subscriber.list_subscriptions(project_path)
+
+    subscriptions = [sub for sub in subscriptions if sub.topic == topic_path]
+    assert len(subscriptions) == 1
+    subscription = subscriptions[0]
+
+    assert subscription == new_subscription
+    assert subscription.ack_deadline_seconds == 30
+    assert subscription.retain_acked_messages
+    assert subscription.message_retention_duration.seconds == 911
+    assert subscription.expiration_policy.ttl.seconds == 90210
+
+
 def test_listing_project_topics(publisher, project, cleanup):
     topic_paths = [
         publisher.topic_path(project, "topic-{}".format(i) + unique_resource_id("."))
