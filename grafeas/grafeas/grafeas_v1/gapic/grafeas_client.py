@@ -108,12 +108,7 @@ class GrafeasClient(object):
             "projects/{project}", project=project
         )
 
-    def __init__(
-        self,
-        transport,
-        client_config=None,
-        client_info=None,
-    ):
+    def __init__(self, transport, client_config=None, client_info=None):
         """Constructor.
 
         Args:
