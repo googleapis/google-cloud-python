@@ -188,10 +188,11 @@ class Batch(base.Batch):
                 return
 
         # Once in the IN_PROGRESS state, no other thread can publish additional
-        # messages or initiate a commit (those operations becme a no-op), thus
+        # messages or initiate a commit (those operations become a no-op), thus
         # it is safe to release the state lock here. Releasing the lock avoids
         # blocking other threads in case api.publish() below takes a long time
         # to complete.
+        # https://github.com/googleapis/google-cloud-python/issues/8036
 
         # Sanity check: If there are no messages, no-op.
         if not self._messages:
@@ -264,7 +265,8 @@ class Batch(base.Batch):
 
         Add the given message to this object; this will cause it to be
         published once the batch either has enough messages or a sufficient
-        period of time has elapsed.
+        period of time has elapsed. If the batch is full or the commit is
+        already in progress, the method does not do anything.
 
         This method is called by :meth:`~.PublisherClient.publish`.
 
