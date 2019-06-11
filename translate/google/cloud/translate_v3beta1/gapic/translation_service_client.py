@@ -226,39 +226,44 @@ class TranslationServiceClient(object):
 
         Args:
             contents (list[str]): Required. The content of the input in string format.
-                We recommend the total contents to be less than 30k codepoints.
-                Please use BatchTranslateText for larger text.
+                We recommend the total content be less than 30k codepoints.
+                Use BatchTranslateText for larger text.
             target_language_code (str): Required. The BCP-47 language code to use for translation of the input
                 text, set to one of the language codes listed in Language Support.
             mime_type (str): Optional. The format of the source text, for example, "text/html",
-                 "text/plain". If left blank, the MIME type is assumed to be "text/html".
+                 "text/plain". If left blank, the MIME type defaults to "text/html".
             source_language_code (str): Optional. The BCP-47 language code of the input text if
                 known, for example, "en-US" or "sr-Latn". Supported language codes are
                 listed in Language Support. If the source language isn't specified, the API
                 attempts to identify the source language automatically and returns the
-                the source language within the response.
-            parent (str): Optional. Only used when making regionalized call.
-                Format:
-                projects/{project-id}/locations/{location-id}.
+                source language within the response.
+            parent (str): Required. Location to make a regional or global call.
 
-                Only custom model/glossary within the same location-id can be used.
-                Otherwise 400 is returned.
+                Format: ``projects/{project-id}/locations/{location-id}``.
+
+                For global calls, use ``projects/{project-id}/locations/global``.
+
+                Models and glossaries must be within the same region (have same
+                location-id), otherwise an INVALID\_ARGUMENT (400) error is returned.
             model (str): Optional. The ``model`` type requested for this translation.
 
                 The format depends on model type:
 
-                1. Custom models:
-                   projects/{project-id}/locations/{location-id}/models/{model-id}.
-                2. General (built-in) models:
-                   projects/{project-id}/locations/{location-id}/models/general/nmt
-                   projects/{project-id}/locations/{location-id}/models/general/base
+                -  AutoML Translation models:
+                   ``projects/{project-id}/locations/{location-id}/models/{model-id}``
 
-                For global (non-regionalized) requests, use {location-id} 'global'. For
-                example, projects/{project-id}/locations/global/models/general/nmt
+                -  General (built-in) models:
+                   ``projects/{project-id}/locations/{location-id}/models/general/nmt``,
+                   ``projects/{project-id}/locations/{location-id}/models/general/base``
+
+                For global (non-regionalized) requests, use ``location-id`` ``global``.
+                For example,
+                ``projects/{project-id}/locations/global/models/general/nmt``.
 
                 If missing, the system decides which google base model to use.
-            glossary_config (Union[dict, ~google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig]): Optional. Glossary to be applied. The glossary needs to be in the same
-                region as the model, otherwise an INVALID\_ARGUMENT error is returned.
+            glossary_config (Union[dict, ~google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig]): Optional. Glossary to be applied. The glossary must be within the same
+                region (have the same location-id) as the model, otherwise an
+                INVALID\_ARGUMENT (400) error is returned.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig`
@@ -339,18 +344,26 @@ class TranslationServiceClient(object):
             >>> response = client.detect_language()
 
         Args:
-            parent (str): Optional. Only used when making regionalized call.
-                Format:
-                projects/{project-id}/locations/{location-id}.
+            parent (str): Required. Location to make a regional or global call.
 
-                Only custom model within the same location-id can be used.
-                Otherwise 400 is returned.
+                Format: ``projects/{project-id}/locations/{location-id}``.
+
+                For global calls, use ``projects/{project-id}/locations/global``.
+
+                Only models within the same region (has same location-id) can be used.
+                Otherwise an INVALID\_ARGUMENT (400) error is returned.
             model (str): Optional. The language detection model to be used.
-                projects/{project-id}/locations/{location-id}/models/language-detection/{model-id}
-                If not specified, default will be used.
+
+                Format:
+                ``projects/{project-id}/locations/{location-id}/models/language-detection/{model-id}``
+
+                Only one language detection model is currently supported:
+                ``projects/{project-id}/locations/{location-id}/models/language-detection/default``.
+
+                If not specified, the default model is used.
             content (str): The content of the input stored as a string.
             mime_type (str): Optional. The format of the source text, for example, "text/html",
-                "text/plain". If left blank, the MIME type is assumed to be "text/html".
+                "text/plain". If left blank, the MIME type defaults to "text/html".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -425,24 +438,30 @@ class TranslationServiceClient(object):
             >>> response = client.get_supported_languages()
 
         Args:
-            parent (str): Optional. Used for making regionalized calls.
-                Format: projects/{project-id}/locations/{location-id}.
-                For global calls, use projects/{project-id}/locations/global.
-                If missing, the call is treated as a global call.
+            parent (str): Required. Location to make a regional or global call.
 
-                Only custom model within the same location-id can be used.
-                Otherwise 400 is returned.
+                Format: ``projects/{project-id}/locations/{location-id}``.
+
+                For global calls, use ``projects/{project-id}/locations/global``.
+
+                Only models within the same region (have same location-id) can be used,
+                otherwise an INVALID\_ARGUMENT (400) error is returned.
             display_language_code (str): Optional. The language to use to return localized, human readable names
-                of supported languages. If missing, default language is ENGLISH.
+                of supported languages. If missing, then display names are not returned
+                in a response.
             model (str): Optional. Get supported languages of this model.
+
                 The format depends on model type:
-                1. Custom models:
-                projects/{project-id}/locations/{location-id}/models/{model-id}.
-                2. General (built-in) models:
-                projects/{project-id}/locations/{location-id}/models/general/nmt
-                projects/{project-id}/locations/{location-id}/models/general/base
-                Returns languages supported by the specified model.
-                If missing, we get supported languages of Google general NMT model.
+
+                -  AutoML Translation models:
+                   ``projects/{project-id}/locations/{location-id}/models/{model-id}``
+
+                -  General (built-in) models:
+                   ``projects/{project-id}/locations/{location-id}/models/general/nmt``,
+                   ``projects/{project-id}/locations/{location-id}/models/general/base``
+
+                Returns languages supported by the specified model. If missing, we get
+                supported languages of Google general base (PBMT) model.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -559,25 +578,30 @@ class TranslationServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.translate_v3beta1.types.OutputConfig`
-            parent (str): Optional. Only used when making regionalized call.
-                Format:
-                projects/{project-id}/locations/{location-id}.
+            parent (str): Required. Location to make a regional call.
 
-                Only custom models/glossaries within the same location-id can be used.
-                Otherwise 400 is returned.
-            models (dict[str -> str]): Optional. The models to use for translation. Map's key is target language
-                code. Map's value is model name. Value can be a built-in general model,
-                or a custom model built by AutoML.
+                Format: ``projects/{project-id}/locations/{location-id}``.
+
+                The ``global`` location is not supported for batch translation.
+
+                Only AutoML Translation models or glossaries within the same region
+                (have the same location-id) can be used, otherwise an INVALID\_ARGUMENT
+                (400) error is returned.
+            models (dict[str -> str]): Optional. The models to use for translation. Map's key is target
+                language code. Map's value is model name. Value can be a built-in
+                general model, or an AutoML Translation model.
 
                 The value format depends on model type:
-                1. Custom models:
-                projects/{project-id}/locations/{location-id}/models/{model-id}.
-                2. General (built-in) models:
-                projects/{project-id}/locations/{location-id}/models/general/nmt
-                projects/{project-id}/locations/{location-id}/models/general/base
 
-                If the map is empty or a specific model is
-                not requested for a language pair, then default google model is used.
+                -  AutoML Translation models:
+                   ``projects/{project-id}/locations/{location-id}/models/{model-id}``
+
+                -  General (built-in) models:
+                   ``projects/{project-id}/locations/{location-id}/models/general/nmt``,
+                   ``projects/{project-id}/locations/{location-id}/models/general/base``
+
+                If the map is empty or a specific model is not requested for a language
+                pair, then default google model (nmt) is used.
             glossaries (dict[str -> Union[dict, ~google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig]]): Optional. Glossaries to be applied for translation.
                 It's keyed by target language code.
 
@@ -779,9 +803,9 @@ class TranslationServiceClient(object):
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
-            filter_ (str): Optional. Filter specifying constraints of a list operation. For
-                example, ``tags.glossary_name="products*"``. If missing, no filtering is
-                performed.
+            filter_ (str): Optional. Filter specifying constraints of a list operation.
+                Filtering is not supported yet, and the parameter currently has no effect.
+                If missing, no filtering is performed.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.

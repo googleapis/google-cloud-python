@@ -14,10 +14,14 @@
 
 """System tests for Vision API."""
 
+import grpc
 import io
+import json
 import os
+import time
 import unittest
 
+import google.api_core.exceptions
 from google.cloud import exceptions
 from google.cloud import storage
 from google.cloud import vision
@@ -27,13 +31,11 @@ from test_utils.system import unique_resource_id
 
 
 _SYS_TESTS_DIR = os.path.realpath(os.path.dirname(__file__))
-LOGO_FILE = os.path.join(_SYS_TESTS_DIR, "data", "logo.png")
 FACE_FILE = os.path.join(_SYS_TESTS_DIR, "data", "faces.jpg")
-LABEL_FILE = os.path.join(_SYS_TESTS_DIR, "data", "car.jpg")
-LANDMARK_FILE = os.path.join(_SYS_TESTS_DIR, "data", "landmark.jpg")
-TEXT_FILE = os.path.join(_SYS_TESTS_DIR, "data", "text.jpg")
-FULL_TEXT_FILE = os.path.join(_SYS_TESTS_DIR, "data", "full-text.jpg")
+LOGO_FILE = os.path.join(_SYS_TESTS_DIR, "data", "logo.png")
+PDF_FILE = os.path.join(_SYS_TESTS_DIR, "data", "pdf_test.pdf")
 PROJECT_ID = os.environ.get("PROJECT_ID")
+PROJECT_OUTSIDE = os.environ.get("GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT")
 
 
 class VisionSystemTestBase(unittest.TestCase):
@@ -120,6 +122,126 @@ class TestVisionClientLogo(VisionSystemTestBase):
         assert len(response.logo_annotations) == 1
         assert response.logo_annotations[0].description == "google"
 
+    def test_detect_logos_async(self):
+        # Upload the image to Google Cloud Storage.
+        blob_name = "logo_async.png"
+        blob = self.test_bucket.blob(blob_name)
+        self.to_delete_by_case.append(blob)
+        with io.open(LOGO_FILE, "rb") as image_file:
+            blob.upload_from_file(image_file)
+
+        # Make the request.
+        request = {
+            "image": {
+                "source": {
+                    "image_uri": "gs://{bucket}/{blob}".format(
+                        bucket=self.test_bucket.name, blob=blob_name
+                    )
+                }
+            },
+            "features": [{"type": vision.enums.Feature.Type.LOGO_DETECTION}],
+        }
+        method_name = "test_detect_logos_async"
+        output_gcs_uri_prefix = "gs://{bucket}/{method_name}".format(
+            bucket=self.test_bucket.name, method_name=method_name
+        )
+        output_config = {"gcs_destination": {"uri": output_gcs_uri_prefix}}
+        response = self.client.async_batch_annotate_images([request], output_config)
+
+        # Wait for the operation to complete.
+        lro_waiting_seconds = 60
+        start_time = time.time()
+        while not response.done() and (time.time() - start_time) < lro_waiting_seconds:
+            time.sleep(1)
+
+        if not response.done():
+            self.fail(
+                "{method_name} timed out after {lro_waiting_seconds} seconds".format(
+                    method_name=method_name, lro_waiting_seconds=lro_waiting_seconds
+                )
+            )
+
+        # Make sure getting the result is not an error.
+        response.result()
+
+        # There should be exactly 1 output file in gcs at the prefix output_gcs_uri_prefix.
+        blobs = list(self.test_bucket.list_blobs(prefix=method_name))
+        assert len(blobs) == 1
+        blob = blobs[0]
+
+        # Download the output file and verify the result
+        result_str = blob.download_as_string().decode("utf8")
+        result = json.loads(result_str)
+        responses = result["responses"]
+        assert len(responses) == 1
+        logo_annotations = responses[0]["logoAnnotations"]
+        assert len(logo_annotations) == 1
+        assert logo_annotations[0]["description"] == "google"
+
+
+class TestVisionClientFiles(VisionSystemTestBase):
+    def test_async_batch_annotate_files(self):
+        # Upload the image to Google Cloud Storage.
+        blob_name = "async_batch_annotate_files.pdf"
+        blob = self.test_bucket.blob(blob_name)
+        self.to_delete_by_case.append(blob)
+        with io.open(PDF_FILE, "rb") as image_file:
+            blob.upload_from_file(image_file)
+
+        # Make the request.
+        method_name = "test_async_batch_annotate_files"
+        output_gcs_uri_prefix = "gs://{bucket}/{method_name}".format(
+            bucket=self.test_bucket.name, method_name=method_name
+        )
+        request = {
+            "input_config": {
+                "gcs_source": {
+                    "uri": "gs://{bucket}/{blob}".format(
+                        bucket=self.test_bucket.name, blob=blob_name
+                    )
+                },
+                "mime_type": "application/pdf",
+            },
+            "features": [{"type": vision.enums.Feature.Type.DOCUMENT_TEXT_DETECTION}],
+            "output_config": {"gcs_destination": {"uri": output_gcs_uri_prefix}},
+        }
+        response = self.client.async_batch_annotate_files([request])
+
+        # Wait for the operation to complete.
+        lro_waiting_seconds = 60
+        start_time = time.time()
+        while not response.done() and (time.time() - start_time) < lro_waiting_seconds:
+            time.sleep(1)
+
+        if not response.done():
+            self.fail(
+                "{method_name} timed out after {lro_waiting_seconds} seconds".format(
+                    method_name=method_name, lro_waiting_seconds=lro_waiting_seconds
+                )
+            )
+
+        # Make sure getting the result is not an error.
+        response.result()
+
+        # There should be exactly 1 output file in gcs at the prefix output_gcs_uri_prefix.
+        blobs = list(self.test_bucket.list_blobs(prefix=method_name))
+        assert len(blobs) == 1
+        blob = blobs[0]
+
+        # Download the output file and verify the result
+        result_str = blob.download_as_string().decode("utf8")
+        result = json.loads(result_str)
+        responses = result["responses"]
+        assert len(responses) == 1
+        text = responses[0]["fullTextAnnotation"]["text"]
+        expected_text = "test text"
+        self.assertTrue(
+            expected_text in text,
+            "'{expected_text}' not in '{text}'".format(
+                expected_text=expected_text, text=text
+            ),
+        )
+
 
 @unittest.skipUnless(PROJECT_ID, "PROJECT_ID not set in environment.")
 class TestVisionClientProductSearch(VisionSystemTestBase):
@@ -141,6 +263,15 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
             self.ps_client.delete_product(name=product)
         for product_set in self.product_sets_to_delete:
             self.ps_client.delete_product_set(name=product_set)
+
+    def _upload_image(self, image_name):
+        blob = self.test_bucket.blob(image_name)
+        self.to_delete_by_case.append(blob)
+        with io.open(FACE_FILE, "rb") as image_file:
+            blob.upload_from_file(image_file)
+        return "gs://{bucket}/{blob}".format(
+            bucket=self.test_bucket.name, blob=image_name
+        )
 
     def test_create_product_set(self):
         # Create a ProductSet.
@@ -362,15 +493,10 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         )
         self.products_to_delete.append(response.name)
         self.assertEqual(response.name, product_path)
+
         # Upload image to gcs.
-        blob_name = "faces.jpg"
-        blob = self.test_bucket.blob(blob_name)
-        self.to_delete_by_case.append(blob)
-        with io.open(FACE_FILE, "rb") as image_file:
-            blob.upload_from_file(image_file)
-        gcs_uri = "gs://{bucket}/{blob}".format(
-            bucket=self.test_bucket.name, blob=blob_name
-        )
+        gcs_uri = self._upload_image("reference_image_test.jpg")
+
         # Create a ReferenceImage.
         reference_image_id = "reference_image" + unique_resource_id()
         reference_image_path = self.ps_client.reference_image_path(
@@ -387,12 +513,294 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         )
         self.reference_images_to_delete.append(response.name)
         self.assertEqual(response.name, reference_image_path)
+
         # Get the ReferenceImage.
         get_response = self.ps_client.get_reference_image(name=reference_image_path)
         self.assertEqual(get_response.name, reference_image_path)
+
         # List the ReferenceImages in the Product.
         listed_reference_images = list(
             self.ps_client.list_reference_images(parent=product_path)
         )
         self.assertEqual(len(listed_reference_images), 1)
         self.assertEqual(listed_reference_images[0].name, reference_image_path)
+
+    def _build_csv_line(
+        self, gcs_uri_image, reference_image_id, product_set_id, product_id
+    ):
+        return ",".join(
+            [
+                gcs_uri_image,
+                reference_image_id,
+                product_set_id,
+                product_id,
+                "apparel",
+                "display name",
+                '"color=black,style=formal"',
+                "",
+            ]
+        )
+
+    def test_import_product_sets(self):
+        # Generate the ids that will be used in the import.
+        product_set_id = "set" + unique_resource_id()
+        product_set_path = self.ps_client.product_set_path(
+            project=PROJECT_ID, location=self.location, product_set=product_set_id
+        )
+        self.product_sets_to_delete.append(product_set_path)
+        product_id = "product" + unique_resource_id()
+        product_path = self.ps_client.product_path(
+            project=PROJECT_ID, location=self.location, product=product_id
+        )
+        self.products_to_delete.append(product_path)
+        reference_image_id_1 = "reference_image_1" + unique_resource_id()
+        reference_image_path = self.ps_client.reference_image_path(
+            project=PROJECT_ID,
+            location=self.location,
+            product=product_id,
+            reference_image=reference_image_id_1,
+        )
+        self.reference_images_to_delete.append(reference_image_path)
+        reference_image_id_2 = "reference_image_2" + unique_resource_id()
+        reference_image_path = self.ps_client.reference_image_path(
+            project=PROJECT_ID,
+            location=self.location,
+            product=product_id,
+            reference_image=reference_image_id_2,
+        )
+        self.reference_images_to_delete.append(reference_image_path)
+
+        # Upload images to gcs.
+        gcs_uri_image_1 = self._upload_image("import_sets_image_1.jpg")
+        gcs_uri_image_2 = self._upload_image("import_sets_image_2.jpg")
+
+        # Build the string that will be uploaded to gcs as a csv file.
+        csv_data = "\n".join(
+            [
+                self._build_csv_line(
+                    gcs_uri_image_1, reference_image_id_1, product_set_id, product_id
+                ),
+                self._build_csv_line(
+                    gcs_uri_image_2, reference_image_id_2, product_set_id, product_id
+                ),
+            ]
+        )
+
+        # Upload a csv file to gcs.
+        csv_filename = "import_sets.csv"
+        blob = self.test_bucket.blob(csv_filename)
+        self.to_delete_by_case.append(blob)
+        blob.upload_from_string(csv_data)
+
+        # Make the import_product_sets request.
+        gcs_source = vision.types.ImportProductSetsGcsSource(
+            csv_file_uri="gs://{bucket}/{blob}".format(
+                bucket=self.test_bucket.name, blob=csv_filename
+            )
+        )
+        input_config = vision.types.ImportProductSetsInputConfig(gcs_source=gcs_source)
+        response = self.ps_client.import_product_sets(
+            parent=self.location_path, input_config=input_config
+        )
+
+        # Verify the result.
+        image_prefix = "import_sets_image_"
+        for ref_image in response.result().reference_images:
+            self.assertTrue(
+                image_prefix in ref_image.uri,
+                "'{image_prefix}' not in '{uri}'".format(
+                    image_prefix=image_prefix, uri=ref_image.uri
+                ),
+            )
+        for status in response.result().statuses:
+            self.assertEqual(status.code, grpc.StatusCode.OK.value[0])
+
+
+@unittest.skipUnless(
+    PROJECT_OUTSIDE,
+    "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT not set in environment.",
+)
+class TestVisionClientProductSearchVpcsc(VisionSystemTestBase):
+    # Tests to verify ProductSearch is blocked by VPC SC when trying to access a resource outside of a secure perimeter.
+    def setUp(self):
+        VisionSystemTestBase.setUp(self)
+        self.location = "us-west1"
+        self.location_path = self.ps_client.location_path(
+            project=PROJECT_OUTSIDE, location=self.location
+        )
+
+    def _verify_vpc_sc_error(self, call):
+        # Verifies that a VPC SC 403 error is raised.
+        try:
+            # call() should raise a PermissionDenied exception.
+            results = call()
+            # Some of the tests get a GRPCIterator object, which won't raise an exception until iteration starts.
+            for result in results:
+                break
+        except google.api_core.exceptions.PermissionDenied as e:
+            # Verify the PermissionDenied exception was due to VPC SC.
+            self.assertEqual(
+                e.message, "Request is prohibited by organization's policy"
+            )
+            return
+        except Exception as e:
+            self.fail("Unexpected exception raised: {}".format(e))
+        self.fail("No exception raised.")
+
+    def test_create_product_set_blocked(self):
+        product_set_id = "set" + unique_resource_id()
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.create_product_set(
+                parent=self.location_path, product_set={}, product_set_id=product_set_id
+            )
+        )
+
+    def test_get_product_set_blocked(self):
+        product_set_id = "set" + unique_resource_id()
+        product_set_path = self.ps_client.product_set_path(
+            project=PROJECT_OUTSIDE, location=self.location, product_set=product_set_id
+        )
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.get_product_set(name=product_set_path)
+        )
+
+    def test_delete_product_set_blocked(self):
+        product_set_id = "set" + unique_resource_id()
+        product_set_path = self.ps_client.product_set_path(
+            project=PROJECT_OUTSIDE, location=self.location, product_set=product_set_id
+        )
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.delete_product_set(name=product_set_path)
+        )
+
+    def test_list_product_sets_blocked(self):
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.list_product_sets(parent=self.location_path)
+        )
+
+    def test_update_product_set_blocked(self):
+        product_set_id = "set" + unique_resource_id()
+        product_set_path = self.ps_client.product_set_path(
+            project=PROJECT_OUTSIDE, location=self.location, product_set=product_set_id
+        )
+        product_set = vision.types.ProductSet(name=product_set_path)
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.update_product_set(product_set=product_set)
+        )
+
+    def test_create_product_blocked(self):
+        product_id = "product" + unique_resource_id()
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.create_product(
+                parent=self.location_path, product={}, product_id=product_id
+            )
+        )
+
+    def test_get_product_blocked(self):
+        product_id = "product" + unique_resource_id()
+        product_path = self.ps_client.product_path(
+            project=PROJECT_OUTSIDE, location=self.location, product=product_id
+        )
+        self._verify_vpc_sc_error(lambda: self.ps_client.get_product(name=product_path))
+
+    def test_delete_product_blocked(self):
+        product_id = "product" + unique_resource_id()
+        product_path = self.ps_client.product_path(
+            project=PROJECT_OUTSIDE, location=self.location, product=product_id
+        )
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.delete_product(name=product_path)
+        )
+
+    def test_update_product_blocked(self):
+        product_id = "product" + unique_resource_id()
+        product_path = self.ps_client.product_path(
+            project=PROJECT_OUTSIDE, location=self.location, product=product_id
+        )
+        product = vision.types.Product(name=product_path)
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.update_product(product=product)
+        )
+
+    def test_list_products_blocked(self):
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.list_products(parent=self.location_path)
+        )
+
+    def test_list_products_in_product_set_blocked(self):
+        product_set_id = "set" + unique_resource_id()
+        product_set_path = self.ps_client.product_set_path(
+            project=PROJECT_OUTSIDE, location=self.location, product_set=product_set_id
+        )
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.list_products_in_product_set(name=product_set_path)
+        )
+
+    def test_add_remove_product_blocked(self):
+        product_set_id = "set" + unique_resource_id()
+        product_set_path = self.ps_client.product_set_path(
+            project=PROJECT_OUTSIDE, location=self.location, product_set=product_set_id
+        )
+        product_id = "product" + unique_resource_id()
+        product_path = self.ps_client.product_path(
+            project=PROJECT_OUTSIDE, location=self.location, product=product_id
+        )
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.add_product_to_product_set(
+                name=product_set_path, product=product_path
+            )
+        )
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.remove_product_from_product_set(
+                name=product_set_path, product=product_path
+            )
+        )
+
+    def test_create_reference_image_blocked(self):
+        product_id = "product" + unique_resource_id()
+        product_path = self.ps_client.product_path(
+            project=PROJECT_OUTSIDE, location=self.location, product=product_id
+        )
+        reference_image_id = "reference_image" + unique_resource_id()
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.create_reference_image(
+                parent=product_path,
+                reference_image={},
+                reference_image_id=reference_image_id,
+            )
+        )
+
+    def test_get_reference_image_blocked(self):
+        product_id = "product" + unique_resource_id()
+        reference_image_id = "reference_image" + unique_resource_id()
+        reference_image_path = self.ps_client.reference_image_path(
+            project=PROJECT_OUTSIDE,
+            location=self.location,
+            product=product_id,
+            reference_image=reference_image_id,
+        )
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.get_reference_image(name=reference_image_path)
+        )
+
+    def test_delete_reference_image_blocked(self):
+        product_id = "product" + unique_resource_id()
+        reference_image_id = "reference_image" + unique_resource_id()
+        reference_image_path = self.ps_client.reference_image_path(
+            project=PROJECT_OUTSIDE,
+            location=self.location,
+            product=product_id,
+            reference_image=reference_image_id,
+        )
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.delete_reference_image(name=reference_image_path)
+        )
+
+    def test_list_reference_images_blocked(self):
+        product_id = "product" + unique_resource_id()
+        product_path = self.ps_client.product_path(
+            project=PROJECT_OUTSIDE, location=self.location, product=product_id
+        )
+        self._verify_vpc_sc_error(
+            lambda: self.ps_client.list_reference_images(parent=product_path)
+        )

@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-dns/#history
 
+## 0.30.1
+
+06-04-2019 11:13 PDT
+
+
+### Dependencies
+- Don't pin 'google-api-core' in libs using 'google-cloud-core'. ([#8213](https://github.com/googleapis/google-cloud-python/pull/8213))
+
 ## 0.30.0
 
 05-16-2019 12:23 PDT

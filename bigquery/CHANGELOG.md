@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.14.0
+
+06-04-2019 11:11 PDT
+
+
+### New Features
+- Add `maximum_bytes_billed` argument and `context.default_query_job_config` property to magics. ([#8179](https://github.com/googleapis/google-cloud-python/pull/8179))
+
+### Dependencies
+- Don't pin `google-api-core` in libs using `google-cloud-core`. ([#8213](https://github.com/googleapis/google-cloud-python/pull/8213))
+
 ## 1.13.0
 
 05-31-2019 10:22 PDT

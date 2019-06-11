@@ -2265,7 +2265,12 @@ SpeechContext = _reflection.GeneratedProtocolMessageType(
           specific words and phrases, for example, if specific commands
           are typically spoken by the user. This can also be used to add
           additional words to the vocabulary of the recognizer. See
-          `usage limits </speech-to-text/quotas#content>`__.
+          `usage limits </speech-to-text/quotas#content>`__.  List items
+          can also be set to classes for groups of words that represent
+          common concepts that occur in natural language. For example,
+          rather than providing phrase hints for every month of the
+          year, using the $MONTH class improves the likelihood of
+          correctly transcribing audio that includes months.
       boost:
           Hint Boost. Positive value will increase the probability that
           a specific phrase will be recognized over other similar
