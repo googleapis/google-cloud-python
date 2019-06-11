@@ -17,12 +17,12 @@
 
 import google.api_core.grpc_helpers
 
-from google.cloud.container_v1.proto import cluster_service_pb2_grpc
+from google.cloud.container_v1beta1.proto import cluster_service_pb2_grpc
 
 
 class ClusterManagerGrpcTransport(object):
     """gRPC transport class providing stubs for
-    google.container.v1 ClusterManager API.
+    google.container.v1beta1 ClusterManager API.
 
     The transport provides access to the raw gRPC stubs,
     which can be used to take advantage of advanced
@@ -114,7 +114,7 @@ class ClusterManagerGrpcTransport(object):
     def get_cluster(self):
         """Return the gRPC stub for :meth:`ClusterManagerClient.get_cluster`.
 
-        Gets the details of a specific cluster.
+        Gets the details for a specific cluster.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -151,7 +151,7 @@ class ClusterManagerGrpcTransport(object):
     def update_cluster(self):
         """Return the gRPC stub for :meth:`ClusterManagerClient.update_cluster`.
 
-        Updates the settings of a specific cluster.
+        Updates the settings for a specific cluster.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -164,7 +164,7 @@ class ClusterManagerGrpcTransport(object):
     def update_node_pool(self):
         """Return the gRPC stub for :meth:`ClusterManagerClient.update_node_pool`.
 
-        Updates the version and/or image type for a specific node pool.
+        Updates the version and/or image type of a specific node pool.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -177,7 +177,7 @@ class ClusterManagerGrpcTransport(object):
     def set_node_pool_autoscaling(self):
         """Return the gRPC stub for :meth:`ClusterManagerClient.set_node_pool_autoscaling`.
 
-        Sets the autoscaling settings for a specific node pool.
+        Sets the autoscaling settings of a specific node pool.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -255,9 +255,10 @@ class ClusterManagerGrpcTransport(object):
     def set_master_auth(self):
         """Return the gRPC stub for :meth:`ClusterManagerClient.set_master_auth`.
 
-        Used to set master auth materials. Currently supports :-
-        Changing the admin password for a specific cluster.
-        This can be either via password generation or explicitly set the password.
+        Used to set master auth materials. Currently supports :- Changing the
+        admin password for a specific cluster. This can be either via password
+        generation or explicitly set. Modify basic\_auth.csv and reset the K8S
+        API server.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -508,3 +509,29 @@ class ClusterManagerGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["cluster_manager_stub"].SetMaintenancePolicy
+
+    @property
+    def list_usable_subnetworks(self):
+        """Return the gRPC stub for :meth:`ClusterManagerClient.list_usable_subnetworks`.
+
+        Lists subnetworks that are usable for creating clusters in a project.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["cluster_manager_stub"].ListUsableSubnetworks
+
+    @property
+    def list_locations(self):
+        """Return the gRPC stub for :meth:`ClusterManagerClient.list_locations`.
+
+        Used to fetch locations that offer GKE.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["cluster_manager_stub"].ListLocations

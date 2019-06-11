@@ -19,39 +19,44 @@ from synthtool import gcp
 gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
 
+service = 'container'
+versions = ['v1', 'v1beta1']
+config_pattern = '/google/container/artman_container_{version}.yaml'
+
 # ----------------------------------------------------------------------------
 # Generate container GAPIC layer
 # ----------------------------------------------------------------------------
-library = gapic.py_library(
-    "container",
-    "v1",
-    config_path="/google/container/artman_container_v1.yaml",
-    artman_output_name="container-v1",
-    include_protos=True,
-)
+for version in versions:
+    library = gapic.py_library(
+        service,
+        version,
+        config_path=config_pattern.format(version=version),
+        artman_output_name=f'{service}-{version}',
+        include_protos=True,
+    )
 
-s.move(library / "google/cloud/container_v1")
-s.move(library / "tests/unit/gapic/v1")
+    s.move(library / f'google/cloud/{service}_{version}')
+    s.move(library / f'tests/unit/gapic/{version}')
 
-# Issues exist where python files should define the source encoding
-# https://github.com/googleapis/gapic-generator/issues/2097
-s.replace(
-    "google/**/proto/*_pb2.py",
-    r"(^.*$\n)*",
-    r"# -*- coding: utf-8 -*-\n\g<0>")
+    # Issues exist where python files should define the source encoding
+    # https://github.com/googleapis/gapic-generator/issues/2097
+    s.replace(
+        "google/**/proto/*_pb2.py",
+        r"(^.*$\n)*",
+        r"# -*- coding: utf-8 -*-\n\g<0>")
 
 
-# Workaround https://github.com/googleapis/gapic-generator/issues/2449
-s.replace(
-    "google/cloud/container_v1/proto/cluster_service_pb2.py",
-    r"nodePool>\n",
-    r"nodePool>`__\n",
-)
-s.replace(
-    "google/cloud/container_v1/proto/cluster_service_pb2.py",
-    r"(\s+)`__ instead",
-    r"\g<1>instead",
-)
+    # Workaround https://github.com/googleapis/gapic-generator/issues/2449
+    s.replace(
+        f'google/cloud/{service}_{version}/proto/cluster_service_pb2.py',
+        r"nodePool>\n",
+        r"nodePool>`__\n",
+    )
+    s.replace(
+        f'google/cloud/{service}_{version}/proto/cluster_service_pb2.py',
+        r"(\s+)`__ instead",
+        r"\g<1>instead",
+    )
 
 # ----------------------------------------------------------------------------
 # Add templated files

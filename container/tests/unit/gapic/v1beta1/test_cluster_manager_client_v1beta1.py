@@ -19,9 +19,9 @@
 import mock
 import pytest
 
-from google.cloud import container_v1
-from google.cloud.container_v1 import enums
-from google.cloud.container_v1.proto import cluster_service_pb2
+from google.cloud import container_v1beta1
+from google.cloud.container_v1beta1 import enums
+from google.cloud.container_v1beta1.proto import cluster_service_pb2
 from google.protobuf import empty_pb2
 
 
@@ -74,7 +74,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -96,7 +96,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -117,6 +117,8 @@ class TestClusterManagerClient(object):
         subnetwork = "subnetwork-1302785042"
         enable_kubernetes_alpha = False
         label_fingerprint = "labelFingerprint714995737"
+        private_cluster = True
+        master_ipv4_cidr_block = "masterIpv4CidrBlock-97940801"
         self_link = "selfLink-1691268851"
         zone_2 = "zone2-696322977"
         endpoint = "endpoint1741102485"
@@ -130,6 +132,8 @@ class TestClusterManagerClient(object):
         current_node_count = 178977560
         expire_time = "expireTime-96179731"
         location = "location1901043637"
+        enable_tpu = False
+        tpu_ipv4_cidr_block = "tpuIpv4CidrBlock1137906646"
         expected_response = {
             "name": name,
             "description": description,
@@ -141,6 +145,8 @@ class TestClusterManagerClient(object):
             "subnetwork": subnetwork,
             "enable_kubernetes_alpha": enable_kubernetes_alpha,
             "label_fingerprint": label_fingerprint,
+            "private_cluster": private_cluster,
+            "master_ipv4_cidr_block": master_ipv4_cidr_block,
             "self_link": self_link,
             "zone": zone_2,
             "endpoint": endpoint,
@@ -154,6 +160,8 @@ class TestClusterManagerClient(object):
             "current_node_count": current_node_count,
             "expire_time": expire_time,
             "location": location,
+            "enable_tpu": enable_tpu,
+            "tpu_ipv4_cidr_block": tpu_ipv4_cidr_block,
         }
         expected_response = cluster_service_pb2.Cluster(**expected_response)
 
@@ -162,7 +170,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -185,7 +193,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -224,7 +232,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -247,7 +255,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -286,7 +294,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -310,7 +318,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -350,7 +358,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -383,7 +391,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -427,7 +435,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -458,7 +466,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -501,7 +509,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -530,7 +538,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -570,7 +578,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -599,7 +607,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -641,7 +649,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -668,7 +676,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -708,7 +716,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -732,7 +740,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -772,7 +780,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -799,7 +807,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -839,7 +847,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -868,7 +876,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -909,7 +917,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -932,7 +940,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -954,7 +962,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -976,7 +984,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -1014,7 +1022,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -1037,7 +1045,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -1052,7 +1060,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -1074,7 +1082,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -1099,7 +1107,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -1121,7 +1129,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -1142,7 +1150,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -1165,7 +1173,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -1196,7 +1204,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -1223,7 +1231,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -1263,7 +1271,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -1287,7 +1295,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -1327,7 +1335,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -1354,7 +1362,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -1394,7 +1402,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -1423,7 +1431,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -1465,7 +1473,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -1496,7 +1504,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -1539,7 +1547,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -1570,7 +1578,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -1613,7 +1621,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -1637,7 +1645,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -1677,7 +1685,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -1700,7 +1708,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -1739,7 +1747,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -1762,7 +1770,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -1801,7 +1809,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -1832,7 +1840,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -1875,7 +1883,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -1904,7 +1912,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -1944,7 +1952,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup Request
         project_id = "projectId-1969970175"
@@ -1973,7 +1981,7 @@ class TestClusterManagerClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
+            client = container_v1beta1.ClusterManagerClient()
 
         # Setup request
         project_id = "projectId-1969970175"
@@ -1985,3 +1993,93 @@ class TestClusterManagerClient(object):
             client.set_maintenance_policy(
                 project_id, zone, cluster_id, maintenance_policy
             )
+
+    def test_list_usable_subnetworks(self):
+        # Setup Expected Response
+        next_page_token = ""
+        subnetworks_element = {}
+        subnetworks = [subnetworks_element]
+        expected_response = {
+            "next_page_token": next_page_token,
+            "subnetworks": subnetworks,
+        }
+        expected_response = cluster_service_pb2.ListUsableSubnetworksResponse(
+            **expected_response
+        )
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1beta1.ClusterManagerClient()
+
+        # Setup Request
+        parent = "parent-995424086"
+
+        paged_list_response = client.list_usable_subnetworks(parent)
+        resources = list(paged_list_response)
+        assert len(resources) == 1
+
+        assert expected_response.subnetworks[0] == resources[0]
+
+        assert len(channel.requests) == 1
+        expected_request = cluster_service_pb2.ListUsableSubnetworksRequest(
+            parent=parent
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_list_usable_subnetworks_exception(self):
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1beta1.ClusterManagerClient()
+
+        # Setup request
+        parent = "parent-995424086"
+
+        paged_list_response = client.list_usable_subnetworks(parent)
+        with pytest.raises(CustomException):
+            list(paged_list_response)
+
+    def test_list_locations(self):
+        # Setup Expected Response
+        next_page_token = "nextPageToken-1530815211"
+        expected_response = {"next_page_token": next_page_token}
+        expected_response = cluster_service_pb2.ListLocationsResponse(
+            **expected_response
+        )
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1beta1.ClusterManagerClient()
+
+        # Setup Request
+        parent = "parent-995424086"
+
+        response = client.list_locations(parent)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = cluster_service_pb2.ListLocationsRequest(parent=parent)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_list_locations_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1beta1.ClusterManagerClient()
+
+        # Setup request
+        parent = "parent-995424086"
+
+        with pytest.raises(CustomException):
+            client.list_locations(parent)

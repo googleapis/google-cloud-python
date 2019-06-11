@@ -48,6 +48,36 @@ class Cluster(object):
         DEGRADED = 6
 
 
+class IstioConfig(object):
+    class IstioAuthMode(enum.IntEnum):
+        """
+        Istio auth mode, https://istio.io/docs/concepts/security/mutual-tls.html
+
+        Attributes:
+          AUTH_NONE (int): auth not enabled
+          AUTH_MUTUAL_TLS (int): auth mutual TLS enabled
+        """
+
+        AUTH_NONE = 0
+        AUTH_MUTUAL_TLS = 1
+
+
+class Location(object):
+    class LocationType(enum.IntEnum):
+        """
+        LocationType is the type of GKE location, regional or zonal.
+
+        Attributes:
+          LOCATION_TYPE_UNSPECIFIED (int): LOCATION\_TYPE\_UNSPECIFIED means the location type was not determined.
+          ZONE (int): A GKE Location where Zonal clusters can be created.
+          REGION (int): A GKE Location where Regional clusters can be created.
+        """
+
+        LOCATION_TYPE_UNSPECIFIED = 0
+        ZONE = 1
+        REGION = 2
+
+
 class NetworkPolicy(object):
     class Provider(enum.IntEnum):
         """
@@ -91,6 +121,24 @@ class NodePool(object):
         RECONCILING = 4
         STOPPING = 5
         ERROR = 6
+
+
+class NodeTaint(object):
+    class Effect(enum.IntEnum):
+        """
+        Possible values for Effect in taint.
+
+        Attributes:
+          EFFECT_UNSPECIFIED (int): Not set
+          NO_SCHEDULE (int): NoSchedule
+          PREFER_NO_SCHEDULE (int): PreferNoSchedule
+          NO_EXECUTE (int): NoExecute
+        """
+
+        EFFECT_UNSPECIFIED = 0
+        NO_SCHEDULE = 1
+        PREFER_NO_SCHEDULE = 2
+        NO_EXECUTE = 3
 
 
 class Operation(object):
@@ -174,3 +222,73 @@ class SetMasterAuthRequest(object):
         SET_PASSWORD = 1
         GENERATE_PASSWORD = 2
         SET_USERNAME = 3
+
+
+class StatusCondition(object):
+    class Code(enum.IntEnum):
+        """
+        Code for each condition
+
+        Attributes:
+          UNKNOWN (int): UNKNOWN indicates a generic condition.
+          GCE_STOCKOUT (int): GCE\_STOCKOUT indicates a Google Compute Engine stockout.
+          GKE_SERVICE_ACCOUNT_DELETED (int): GKE\_SERVICE\_ACCOUNT\_DELETED indicates that the user deleted their
+          robot service account.
+          GCE_QUOTA_EXCEEDED (int): Google Compute Engine quota was exceeded.
+          SET_BY_OPERATOR (int): Cluster state was manually changed by an SRE due to a system logic error.
+          More codes TBA
+        """
+
+        UNKNOWN = 0
+        GCE_STOCKOUT = 1
+        GKE_SERVICE_ACCOUNT_DELETED = 2
+        GCE_QUOTA_EXCEEDED = 3
+        SET_BY_OPERATOR = 4
+
+
+class UsableSubnetworkSecondaryRange(object):
+    class Status(enum.IntEnum):
+        """
+        Status shows the current usage of a secondary IP range.
+
+        Attributes:
+          UNKNOWN (int): UNKNOWN is the zero value of the Status enum. It's not a valid status.
+          UNUSED (int): UNUSED denotes that this range is unclaimed by any cluster.
+          IN_USE_SERVICE (int): IN\_USE\_SERVICE denotes that this range is claimed by a cluster for
+          services. It cannot be used for other clusters.
+          IN_USE_SHAREABLE_POD (int): IN\_USE\_SHAREABLE\_POD denotes this range was created by the network
+          admin and is currently claimed by a cluster for pods. It can only be
+          used by other clusters as a pod range.
+          IN_USE_MANAGED_POD (int): IN\_USE\_MANAGED\_POD denotes this range was created by GKE and is
+          claimed for pods. It cannot be used for other clusters.
+        """
+
+        UNKNOWN = 0
+        UNUSED = 1
+        IN_USE_SERVICE = 2
+        IN_USE_SHAREABLE_POD = 3
+        IN_USE_MANAGED_POD = 4
+
+
+class WorkloadMetadataConfig(object):
+    class NodeMetadata(enum.IntEnum):
+        """
+        NodeMetadata is the configuration for if and how to expose the node
+        metadata to the workload running on the node.
+
+        Attributes:
+          UNSPECIFIED (int): Not set.
+          SECURE (int): Prevent workloads not in hostNetwork from accessing certain VM metadata,
+          specifically kube-env, which contains Kubelet credentials, and the
+          instance identity token.
+
+          Metadata concealment is a temporary security solution available while the
+          bootstrapping process for cluster nodes is being redesigned with
+          significant security improvements.  This feature is scheduled to be
+          deprecated in the future and later removed.
+          EXPOSE (int): Expose all VM metadata to pods.
+        """
+
+        UNSPECIFIED = 0
+        SECURE = 1
+        EXPOSE = 2

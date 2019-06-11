@@ -14,8 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Accesses the google.container.v1 ClusterManager API."""
+"""Accesses the google.container.v1beta1 ClusterManager API."""
 
+import functools
 import pkg_resources
 import warnings
 
@@ -25,13 +26,16 @@ import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
 import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
+import google.api_core.page_iterator
 import grpc
 
-from google.cloud.container_v1.gapic import cluster_manager_client_config
-from google.cloud.container_v1.gapic import enums
-from google.cloud.container_v1.gapic.transports import cluster_manager_grpc_transport
-from google.cloud.container_v1.proto import cluster_service_pb2
-from google.cloud.container_v1.proto import cluster_service_pb2_grpc
+from google.cloud.container_v1beta1.gapic import cluster_manager_client_config
+from google.cloud.container_v1beta1.gapic import enums
+from google.cloud.container_v1beta1.gapic.transports import (
+    cluster_manager_grpc_transport,
+)
+from google.cloud.container_v1beta1.proto import cluster_service_pb2
+from google.cloud.container_v1beta1.proto import cluster_service_pb2_grpc
 from google.protobuf import empty_pb2
 
 
@@ -41,14 +45,14 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
 
 
 class ClusterManagerClient(object):
-    """Google Kubernetes Engine Cluster Manager v1"""
+    """Google Kubernetes Engine Cluster Manager v1beta1"""
 
     SERVICE_ADDRESS = "container.googleapis.com:443"
     """The default address of the service."""
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = "google.container.v1.ClusterManager"
+    _INTERFACE_NAME = "google.container.v1beta1.ClusterManager"
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -183,9 +187,9 @@ class ClusterManagerClient(object):
         zones.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -216,7 +220,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.ListClustersResponse` instance.
+            A :class:`~google.cloud.container_v1beta1.types.ListClustersResponse` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -267,12 +271,12 @@ class ClusterManagerClient(object):
         metadata=None,
     ):
         """
-        Gets the details of a specific cluster.
+        Gets the details for a specific cluster.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -307,7 +311,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.Cluster` instance.
+            A :class:`~google.cloud.container_v1beta1.types.Cluster` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -372,9 +376,9 @@ class ClusterManagerClient(object):
         which CIDR range is being used by the cluster.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -395,11 +399,11 @@ class ClusterManagerClient(object):
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides. This field has been deprecated and replaced
                 by the parent field.
-            cluster (Union[dict, ~google.cloud.container_v1.types.Cluster]): A `cluster
-                resource <https://cloud.google.com/container-engine/reference/rest/v1/projects.zones.clusters>`__
+            cluster (Union[dict, ~google.cloud.container_v1beta1.types.Cluster]): A `cluster
+                resource <https://cloud.google.com/container-engine/reference/rest/v1beta1/projects.zones.clusters>`__
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.container_v1.types.Cluster`
+                message :class:`~google.cloud.container_v1beta1.types.Cluster`
             parent (str): The parent (project and location) where the cluster will be created.
                 Specified in the format 'projects/*/locations/*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -412,7 +416,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.Operation` instance.
+            A :class:`~google.cloud.container_v1beta1.types.Operation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -464,12 +468,12 @@ class ClusterManagerClient(object):
         metadata=None,
     ):
         """
-        Updates the settings of a specific cluster.
+        Updates the settings for a specific cluster.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -495,10 +499,10 @@ class ClusterManagerClient(object):
                 by the name field.
             cluster_id (str): Deprecated. The name of the cluster to upgrade.
                 This field has been deprecated and replaced by the name field.
-            update (Union[dict, ~google.cloud.container_v1.types.ClusterUpdate]): A description of the update.
+            update (Union[dict, ~google.cloud.container_v1beta1.types.ClusterUpdate]): A description of the update.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.container_v1.types.ClusterUpdate`
+                message :class:`~google.cloud.container_v1beta1.types.ClusterUpdate`
             name (str): The name (project, location, cluster) of the cluster to update.
                 Specified in the format 'projects/*/locations/*/clusters/\*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -511,7 +515,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.Operation` instance.
+            A :class:`~google.cloud.container_v1beta1.types.Operation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -569,12 +573,12 @@ class ClusterManagerClient(object):
         metadata=None,
     ):
         """
-        Updates the version and/or image type for a specific node pool.
+        Updates the version and/or image type of a specific node pool.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -633,7 +637,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.Operation` instance.
+            A :class:`~google.cloud.container_v1beta1.types.Operation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -692,12 +696,12 @@ class ClusterManagerClient(object):
         metadata=None,
     ):
         """
-        Sets the autoscaling settings for a specific node pool.
+        Sets the autoscaling settings of a specific node pool.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -728,10 +732,10 @@ class ClusterManagerClient(object):
                 This field has been deprecated and replaced by the name field.
             node_pool_id (str): Deprecated. The name of the node pool to upgrade.
                 This field has been deprecated and replaced by the name field.
-            autoscaling (Union[dict, ~google.cloud.container_v1.types.NodePoolAutoscaling]): Autoscaling configuration for the node pool.
+            autoscaling (Union[dict, ~google.cloud.container_v1beta1.types.NodePoolAutoscaling]): Autoscaling configuration for the node pool.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.container_v1.types.NodePoolAutoscaling`
+                message :class:`~google.cloud.container_v1beta1.types.NodePoolAutoscaling`
             name (str): The name (project, location, cluster, node pool) of the node pool to set
                 autoscaler settings. Specified in the format
                 'projects/*/locations/*/clusters/*/nodePools/*'.
@@ -745,7 +749,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.Operation` instance.
+            A :class:`~google.cloud.container_v1beta1.types.Operation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -805,9 +809,9 @@ class ClusterManagerClient(object):
         Sets the logging service for a specific cluster.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -850,7 +854,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.Operation` instance.
+            A :class:`~google.cloud.container_v1beta1.types.Operation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -909,9 +913,9 @@ class ClusterManagerClient(object):
         Sets the monitoring service for a specific cluster.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -954,7 +958,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.Operation` instance.
+            A :class:`~google.cloud.container_v1beta1.types.Operation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1013,9 +1017,9 @@ class ClusterManagerClient(object):
         Sets the addons for a specific cluster.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -1041,11 +1045,11 @@ class ClusterManagerClient(object):
                 by the name field.
             cluster_id (str): Deprecated. The name of the cluster to upgrade.
                 This field has been deprecated and replaced by the name field.
-            addons_config (Union[dict, ~google.cloud.container_v1.types.AddonsConfig]): The desired configurations for the various addons available to run in the
+            addons_config (Union[dict, ~google.cloud.container_v1beta1.types.AddonsConfig]): The desired configurations for the various addons available to run in the
                 cluster.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.container_v1.types.AddonsConfig`
+                message :class:`~google.cloud.container_v1beta1.types.AddonsConfig`
             name (str): The name (project, location, cluster) of the cluster to set addons.
                 Specified in the format 'projects/*/locations/*/clusters/\*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1058,7 +1062,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.Operation` instance.
+            A :class:`~google.cloud.container_v1beta1.types.Operation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1117,9 +1121,9 @@ class ClusterManagerClient(object):
         Sets the locations for a specific cluster.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -1146,7 +1150,7 @@ class ClusterManagerClient(object):
             cluster_id (str): Deprecated. The name of the cluster to upgrade.
                 This field has been deprecated and replaced by the name field.
             locations (list[str]): The desired list of Google Compute Engine
-                `locations <https://cloud.google.com/compute/docs/zones#available>`__ in
+                `zones <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster's nodes should be located. Changing the locations a
                 cluster is in will result in nodes being either created or removed from
                 the cluster, depending on whether locations are being added or removed.
@@ -1164,7 +1168,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.Operation` instance.
+            A :class:`~google.cloud.container_v1beta1.types.Operation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1223,9 +1227,9 @@ class ClusterManagerClient(object):
         Updates the master for a specific cluster.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -1253,8 +1257,8 @@ class ClusterManagerClient(object):
                 This field has been deprecated and replaced by the name field.
             master_version (str): The Kubernetes version to change the master to.
 
-                Users may specify either explicit versions offered by Kubernetes Engine or
-                version aliases, which have the following behavior:
+                Users may specify either explicit versions offered by
+                Kubernetes Engine or version aliases, which have the following behavior:
 
                 - "latest": picks the highest valid Kubernetes version
                 - "1.X": picks the highest valid patch+gke.N patch in the 1.X version
@@ -1273,7 +1277,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.Operation` instance.
+            A :class:`~google.cloud.container_v1beta1.types.Operation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1330,15 +1334,16 @@ class ClusterManagerClient(object):
         metadata=None,
     ):
         """
-        Used to set master auth materials. Currently supports :-
-        Changing the admin password for a specific cluster.
-        This can be either via password generation or explicitly set the password.
+        Used to set master auth materials. Currently supports :- Changing the
+        admin password for a specific cluster. This can be either via password
+        generation or explicitly set. Modify basic\_auth.csv and reset the K8S
+        API server.
 
         Example:
-            >>> from google.cloud import container_v1
-            >>> from google.cloud.container_v1 import enums
+            >>> from google.cloud import container_v1beta1
+            >>> from google.cloud.container_v1beta1 import enums
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -1367,11 +1372,11 @@ class ClusterManagerClient(object):
                 by the name field.
             cluster_id (str): Deprecated. The name of the cluster to upgrade.
                 This field has been deprecated and replaced by the name field.
-            action (~google.cloud.container_v1.types.Action): The exact form of action to be taken on the master auth.
-            update (Union[dict, ~google.cloud.container_v1.types.MasterAuth]): A description of the update.
+            action (~google.cloud.container_v1beta1.types.Action): The exact form of action to be taken on the master auth.
+            update (Union[dict, ~google.cloud.container_v1beta1.types.MasterAuth]): A description of the update.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.container_v1.types.MasterAuth`
+                message :class:`~google.cloud.container_v1beta1.types.MasterAuth`
             name (str): The name (project, location, cluster) of the cluster to set auth.
                 Specified in the format 'projects/*/locations/*/clusters/\*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1384,7 +1389,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.Operation` instance.
+            A :class:`~google.cloud.container_v1beta1.types.Operation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1451,9 +1456,9 @@ class ClusterManagerClient(object):
         at the initial create time.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -1488,7 +1493,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.Operation` instance.
+            A :class:`~google.cloud.container_v1beta1.types.Operation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1541,9 +1546,9 @@ class ClusterManagerClient(object):
         Lists all operations in a project in a specific zone or all zones.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -1574,7 +1579,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.ListOperationsResponse` instance.
+            A :class:`~google.cloud.container_v1beta1.types.ListOperationsResponse` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1628,9 +1633,9 @@ class ClusterManagerClient(object):
         Gets the specified operation.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -1665,7 +1670,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.Operation` instance.
+            A :class:`~google.cloud.container_v1beta1.types.Operation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1719,9 +1724,9 @@ class ClusterManagerClient(object):
         Cancels the specified operation.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -1806,9 +1811,9 @@ class ClusterManagerClient(object):
         Returns configuration info about the Kubernetes Engine service.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -1838,7 +1843,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.ServerConfig` instance.
+            A :class:`~google.cloud.container_v1beta1.types.ServerConfig` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1892,9 +1897,9 @@ class ClusterManagerClient(object):
         Lists the node pools for a cluster.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -1929,7 +1934,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.ListNodePoolsResponse` instance.
+            A :class:`~google.cloud.container_v1beta1.types.ListNodePoolsResponse` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1984,9 +1989,9 @@ class ClusterManagerClient(object):
         Retrieves the node pool requested.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -2027,7 +2032,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.NodePool` instance.
+            A :class:`~google.cloud.container_v1beta1.types.NodePool` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2086,9 +2091,9 @@ class ClusterManagerClient(object):
         Creates a node pool for a cluster.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -2114,10 +2119,10 @@ class ClusterManagerClient(object):
                 by the parent field.
             cluster_id (str): Deprecated. The name of the cluster.
                 This field has been deprecated and replaced by the parent field.
-            node_pool (Union[dict, ~google.cloud.container_v1.types.NodePool]): The node pool to create.
+            node_pool (Union[dict, ~google.cloud.container_v1beta1.types.NodePool]): The node pool to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.container_v1.types.NodePool`
+                message :class:`~google.cloud.container_v1beta1.types.NodePool`
             parent (str): The parent (project, location, cluster id) where the node pool will be
                 created. Specified in the format 'projects/*/locations/*/clusters/\*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -2130,7 +2135,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.Operation` instance.
+            A :class:`~google.cloud.container_v1beta1.types.Operation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2189,9 +2194,9 @@ class ClusterManagerClient(object):
         Deletes a node pool from a cluster.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -2232,7 +2237,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.Operation` instance.
+            A :class:`~google.cloud.container_v1beta1.types.Operation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2292,9 +2297,9 @@ class ClusterManagerClient(object):
         This will be an no-op if the last upgrade successfully completed.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -2335,7 +2340,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.Operation` instance.
+            A :class:`~google.cloud.container_v1beta1.types.Operation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2395,9 +2400,9 @@ class ClusterManagerClient(object):
         Sets the NodeManagement options for a node pool.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -2428,10 +2433,10 @@ class ClusterManagerClient(object):
                 This field has been deprecated and replaced by the name field.
             node_pool_id (str): Deprecated. The name of the node pool to update.
                 This field has been deprecated and replaced by the name field.
-            management (Union[dict, ~google.cloud.container_v1.types.NodeManagement]): NodeManagement configuration for the node pool.
+            management (Union[dict, ~google.cloud.container_v1beta1.types.NodeManagement]): NodeManagement configuration for the node pool.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.container_v1.types.NodeManagement`
+                message :class:`~google.cloud.container_v1beta1.types.NodeManagement`
             name (str): The name (project, location, cluster, node pool id) of the node pool to
                 set management properties. Specified in the format
                 'projects/*/locations/*/clusters/*/nodePools/*'.
@@ -2445,7 +2450,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.Operation` instance.
+            A :class:`~google.cloud.container_v1beta1.types.Operation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2506,9 +2511,9 @@ class ClusterManagerClient(object):
         Sets labels on a cluster.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -2556,7 +2561,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.Operation` instance.
+            A :class:`~google.cloud.container_v1beta1.types.Operation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2616,9 +2621,9 @@ class ClusterManagerClient(object):
         Enables or disables the ABAC authorization mechanism on a cluster.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -2657,7 +2662,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.Operation` instance.
+            A :class:`~google.cloud.container_v1beta1.types.Operation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2716,9 +2721,9 @@ class ClusterManagerClient(object):
         Start master IP rotation.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -2754,7 +2759,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.Operation` instance.
+            A :class:`~google.cloud.container_v1beta1.types.Operation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2812,9 +2817,9 @@ class ClusterManagerClient(object):
         Completes master IP rotation.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -2849,7 +2854,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.Operation` instance.
+            A :class:`~google.cloud.container_v1beta1.types.Operation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2905,9 +2910,9 @@ class ClusterManagerClient(object):
         Sets the size for a specific node pool.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -2952,7 +2957,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.Operation` instance.
+            A :class:`~google.cloud.container_v1beta1.types.Operation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -3012,9 +3017,9 @@ class ClusterManagerClient(object):
         Enables/Disables Network Policy for a cluster.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -3040,10 +3045,10 @@ class ClusterManagerClient(object):
                 by the name field.
             cluster_id (str): Deprecated. The name of the cluster.
                 This field has been deprecated and replaced by the name field.
-            network_policy (Union[dict, ~google.cloud.container_v1.types.NetworkPolicy]): Configuration options for the NetworkPolicy feature.
+            network_policy (Union[dict, ~google.cloud.container_v1beta1.types.NetworkPolicy]): Configuration options for the NetworkPolicy feature.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.container_v1.types.NetworkPolicy`
+                message :class:`~google.cloud.container_v1beta1.types.NetworkPolicy`
             name (str): The name (project, location, cluster id) of the cluster to set
                 networking policy. Specified in the format
                 'projects/*/locations/*/clusters/\*'.
@@ -3057,7 +3062,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.Operation` instance.
+            A :class:`~google.cloud.container_v1beta1.types.Operation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -3116,9 +3121,9 @@ class ClusterManagerClient(object):
         Sets the maintenance policy for a cluster.
 
         Example:
-            >>> from google.cloud import container_v1
+            >>> from google.cloud import container_v1beta1
             >>>
-            >>> client = container_v1.ClusterManagerClient()
+            >>> client = container_v1beta1.ClusterManagerClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
@@ -3141,11 +3146,11 @@ class ClusterManagerClient(object):
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides.
             cluster_id (str): The name of the cluster to update.
-            maintenance_policy (Union[dict, ~google.cloud.container_v1.types.MaintenancePolicy]): The maintenance policy to be set for the cluster. An empty field
+            maintenance_policy (Union[dict, ~google.cloud.container_v1beta1.types.MaintenancePolicy]): The maintenance policy to be set for the cluster. An empty field
                 clears the existing maintenance policy.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.container_v1.types.MaintenancePolicy`
+                message :class:`~google.cloud.container_v1beta1.types.MaintenancePolicy`
             name (str): The name (project, location, cluster id) of the cluster to set
                 maintenance policy. Specified in the format
                 'projects/*/locations/*/clusters/\*'.
@@ -3159,7 +3164,7 @@ class ClusterManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.container_v1.types.Operation` instance.
+            A :class:`~google.cloud.container_v1beta1.types.Operation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -3200,5 +3205,186 @@ class ClusterManagerClient(object):
             metadata.append(routing_metadata)
 
         return self._inner_api_calls["set_maintenance_policy"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def list_usable_subnetworks(
+        self,
+        parent,
+        filter_=None,
+        page_size=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Lists subnetworks that are usable for creating clusters in a project.
+
+        Example:
+            >>> from google.cloud import container_v1beta1
+            >>>
+            >>> client = container_v1beta1.ClusterManagerClient()
+            >>>
+            >>> # TODO: Initialize `parent`:
+            >>> parent = ''
+            >>>
+            >>> # Iterate over all results
+            >>> for element in client.list_usable_subnetworks(parent):
+            ...     # process element
+            ...     pass
+            >>>
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
+            >>> for page in client.list_usable_subnetworks(parent).pages:
+            ...     for element in page:
+            ...         # process element
+            ...         pass
+
+        Args:
+            parent (str): The parent project where subnetworks are usable. Specified in the format
+                'projects/\*'.
+            filter_ (str): Filtering currently only supports equality on the networkProjectId and
+                must be in the form: "networkProjectId=[PROJECTID]", where
+                ``networkProjectId`` is the project which owns the listed subnetworks.
+                This defaults to the parent project ID.
+            page_size (int): The maximum number of resources contained in the
+                underlying API response. If page streaming is performed per-
+                resource, this parameter does not affect the return value. If page
+                streaming is performed per-page, this determines the maximum number
+                of resources in a page.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.gax.PageIterator` instance. By default, this
+            is an iterable of :class:`~google.cloud.container_v1beta1.types.UsableSubnetwork` instances.
+            This object can also be configured to iterate over the pages
+            of the response through the `options` parameter.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "list_usable_subnetworks" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "list_usable_subnetworks"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_usable_subnetworks,
+                default_retry=self._method_configs["ListUsableSubnetworks"].retry,
+                default_timeout=self._method_configs["ListUsableSubnetworks"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = cluster_service_pb2.ListUsableSubnetworksRequest(
+            parent=parent, filter=filter_, page_size=page_size
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        iterator = google.api_core.page_iterator.GRPCIterator(
+            client=None,
+            method=functools.partial(
+                self._inner_api_calls["list_usable_subnetworks"],
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            ),
+            request=request,
+            items_field="subnetworks",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
+        )
+        return iterator
+
+    def list_locations(
+        self,
+        parent,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Used to fetch locations that offer GKE.
+
+        Example:
+            >>> from google.cloud import container_v1beta1
+            >>>
+            >>> client = container_v1beta1.ClusterManagerClient()
+            >>>
+            >>> # TODO: Initialize `parent`:
+            >>> parent = ''
+            >>>
+            >>> response = client.list_locations(parent)
+
+        Args:
+            parent (str): Contains the name of the resource requested. Specified in the format
+                'projects/\*'.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.container_v1beta1.types.ListLocationsResponse` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "list_locations" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "list_locations"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_locations,
+                default_retry=self._method_configs["ListLocations"].retry,
+                default_timeout=self._method_configs["ListLocations"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = cluster_service_pb2.ListLocationsRequest(parent=parent)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["list_locations"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
