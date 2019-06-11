@@ -42,7 +42,7 @@ class TransferState(enum.IntEnum):
       PENDING (int): Data transfer is scheduled and is waiting to be picked up by
       data transfer backend.
       RUNNING (int): Data transfer is in progress.
-      SUCCEEDED (int): Data transfer completed successsfully.
+      SUCCEEDED (int): Data transfer completed successfully.
       FAILED (int): Data transfer failed.
       CANCELLED (int): Data transfer is cancelled.
     """
@@ -119,7 +119,7 @@ class DataSourceParameter(object):
           Will be serialized to json as string.
           DOUBLE (int): Double precision floating point parameter.
           BOOLEAN (int): Boolean parameter.
-          RECORD (int): Record parameter.
+          RECORD (int): Deprecated. This field has no effect.
           PLUS_PAGE (int): Page ID for a Google+ Page.
         """
 
@@ -156,9 +156,11 @@ class TransferMessage(object):
           INFO (int): Informational message.
           WARNING (int): Warning message.
           ERROR (int): Error message.
+          DEBUG (int): Debug message.
         """
 
         MESSAGE_SEVERITY_UNSPECIFIED = 0
         INFO = 1
         WARNING = 2
         ERROR = 3
+        DEBUG = 4
