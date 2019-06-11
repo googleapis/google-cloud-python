@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Google Cloud Data Catalog API Client &#8212; google-cloud ce36af9 documentation</title>
+    <title>Types for Google Cloud Data Catalog API Client &#8212; google-cloud 4b366c9 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -38,13 +38,68 @@
   <div class="section" id="module-google.cloud.datacatalog_v1beta1.types">
 <span id="types-for-google-cloud-data-catalog-api-client"></span><h1>Types for Google Cloud Data Catalog API Client<a class="headerlink" href="#module-google.cloud.datacatalog_v1beta1.types" title="Permalink to this headline">#</a></h1>
 <dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.BigQueryDateShardedSpec">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">BigQueryDateShardedSpec</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.BigQueryDateShardedSpec" title="Permalink to this definition">#</a></dt>
+<dd><p>Spec for a group of BigQuery tables with name pattern [prefix]YYYYMMDD.
+Context:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/partitioned-tables#partitioning_versus_sharding">https://cloud.google.com/bigquery/docs/partitioned-tables#partitioning_versus_sharding</a></p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.BigQueryDateShardedSpec.dataset">
+<code class="descname">dataset</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.BigQueryDateShardedSpec.dataset" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The Data Catalog resource name of the dataset
+entry the current table belongs to, e.g. projects/{project_id
+}/locations/{location}/entrygroups/{entry_group_id}
+/entries/{entry_id}</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.BigQueryDateShardedSpec.table_prefix">
+<code class="descname">table_prefix</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.BigQueryDateShardedSpec.table_prefix" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The table name prefix of the shards. The name of
+any given shard is [table_prefix]YYYYMMDD, e.g. for shard
+MyTable20180101, the table_prefix is “MyTable”</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.BigQueryDateShardedSpec.shard_count">
+<code class="descname">shard_count</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.BigQueryDateShardedSpec.shard_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Total number of shards.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">dataset</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.BigQueryDateShardedSpec.dataset</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">shard_count</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.BigQueryDateShardedSpec.shard_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">table_prefix</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.BigQueryDateShardedSpec.table_prefix</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.datacatalog_v1beta1.types.BigQueryTableSpec">
 <em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">BigQueryTableSpec</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.BigQueryTableSpec" title="Permalink to this definition">#</a></dt>
 <dd><p>Describes a BigQuery table.</p>
 <dl class="attribute">
 <dt id="google.cloud.datacatalog_v1beta1.types.BigQueryTableSpec.table_source_type">
 <code class="descname">table_source_type</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.BigQueryTableSpec.table_source_type" title="Permalink to this definition">#</a></dt>
-<dd><p>The table source type.</p>
+<dd><p>Output only. The table source type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.BigQueryTableSpec.type_spec">
+<code class="descname">type_spec</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.BigQueryTableSpec.type_spec" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -55,6 +110,13 @@ if table_source_type is BIGQUERY_VIEW.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.BigQueryTableSpec.table_spec">
+<code class="descname">table_spec</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.BigQueryTableSpec.table_spec" title="Permalink to this definition">#</a></dt>
+<dd><p>Spec of a BigQuery table. This field should only be populated
+if table_source_type is BIGQUERY_TABLE.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">table_source_type</code></dt>
 <dd><p>Field google.cloud.datacatalog.v1beta1.BigQueryTableSpec.table_source_type</p>
@@ -62,8 +124,107 @@ if table_source_type is BIGQUERY_VIEW.</p>
 
 <dl class="attribute">
 <dt>
+<code class="descname">table_spec</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.BigQueryTableSpec.table_spec</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
 <code class="descname">view_spec</code></dt>
 <dd><p>Field google.cloud.datacatalog.v1beta1.BigQueryTableSpec.view_spec</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.Binding">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">Binding</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Binding" title="Permalink to this definition">#</a></dt>
+<dd><p>Associates <code class="docutils literal notranslate"><span class="pre">members</span></code> with a <code class="docutils literal notranslate"><span class="pre">role</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Binding.role">
+<code class="descname">role</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Binding.role" title="Permalink to this definition">#</a></dt>
+<dd><p>Role that is assigned to <code class="docutils literal notranslate"><span class="pre">members</span></code>. For example,
+<code class="docutils literal notranslate"><span class="pre">roles/viewer</span></code>, <code class="docutils literal notranslate"><span class="pre">roles/editor</span></code>, or <code class="docutils literal notranslate"><span class="pre">roles/owner</span></code>.
+Required</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Binding.members">
+<code class="descname">members</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Binding.members" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies the identities requesting access for a Cloud
+Platform resource. <code class="docutils literal notranslate"><span class="pre">members</span></code> can have the following values:
+-  <code class="docutils literal notranslate"><span class="pre">allUsers</span></code>: A special identifier that represents anyone
+who is on    the internet; with or without a Google account.
+-  <code class="docutils literal notranslate"><span class="pre">allAuthenticatedUsers</span></code>: A special identifier that
+represents    anyone who is authenticated with a Google
+account or a service    account.  -  <code class="docutils literal notranslate"><span class="pre">user:{emailid}</span></code>: An
+email address that represents a specific    Google account.
+For example, <code class="docutils literal notranslate"><span class="pre">alice&#64;gmail.com</span></code> or    <code class="docutils literal notranslate"><span class="pre">joe&#64;example.com</span></code>.  -
+<code class="docutils literal notranslate"><span class="pre">serviceAccount:{emailid}</span></code>: An email address that represents
+a    service account. For example,    <code class="docutils literal notranslate"><span class="pre">my-other-</span>
+<span class="pre">app&#64;appspot.gserviceaccount.com</span></code>.  -  <code class="docutils literal notranslate"><span class="pre">group:{emailid}</span></code>: An
+email address that represents a Google group.    For example,
+<code class="docutils literal notranslate"><span class="pre">admins&#64;example.com</span></code>.  -  <code class="docutils literal notranslate"><span class="pre">domain:{domain}</span></code>: A Google Apps
+domain name that represents all    the users of that domain.
+For example, <code class="docutils literal notranslate"><span class="pre">google.com</span></code> or    <code class="docutils literal notranslate"><span class="pre">example.com</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">members</code></dt>
+<dd><p>Field google.iam.v1.Binding.members</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">role</code></dt>
+<dd><p>Field google.iam.v1.Binding.role</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.BindingDelta">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">BindingDelta</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.BindingDelta" title="Permalink to this definition">#</a></dt>
+<dd><p>One delta entry for Binding. Each individual change (only one member in
+each entry) to a binding will be a separate entry.</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.BindingDelta.action">
+<code class="descname">action</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.BindingDelta.action" title="Permalink to this definition">#</a></dt>
+<dd><p>The action that was performed on a Binding. Required</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.BindingDelta.role">
+<code class="descname">role</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.BindingDelta.role" title="Permalink to this definition">#</a></dt>
+<dd><p>Role that is assigned to <code class="docutils literal notranslate"><span class="pre">members</span></code>. For example,
+<code class="docutils literal notranslate"><span class="pre">roles/viewer</span></code>, <code class="docutils literal notranslate"><span class="pre">roles/editor</span></code>, or <code class="docutils literal notranslate"><span class="pre">roles/owner</span></code>.
+Required</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.BindingDelta.member">
+<code class="descname">member</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.BindingDelta.member" title="Permalink to this definition">#</a></dt>
+<dd><p>A single identity requesting access for a Cloud Platform
+resource. Follows the same format of Binding.members. Required</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">action</code></dt>
+<dd><p>Field google.iam.v1.BindingDelta.action</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">member</code></dt>
+<dd><p>Field google.iam.v1.BindingDelta.member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">role</code></dt>
+<dd><p>Field google.iam.v1.BindingDelta.role</p>
 </dd></dl>
 
 </dd></dl>
@@ -88,21 +249,24 @@ inside other columns.</p>
 <dl class="attribute">
 <dt id="google.cloud.datacatalog_v1beta1.types.ColumnSchema.description">
 <code class="descname">description</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.ColumnSchema.description" title="Permalink to this definition">#</a></dt>
-<dd><p>Description of the column.</p>
+<dd><p>Optional. Description of the column. Default value is an empty
+string.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.datacatalog_v1beta1.types.ColumnSchema.mode">
 <code class="descname">mode</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.ColumnSchema.mode" title="Permalink to this definition">#</a></dt>
-<dd><p>A column’s mode indicates whether the values in this column
-are required, nullable, etc. Only ‘NULLABLE’, ‘REQUIRED’ and
-‘REPEATED’ are supported, default mode is ‘NULLABLE’.</p>
+<dd><p>Optional. A column’s mode indicates whether the values in this
+column are required, nullable, etc. Only ‘NULLABLE’,
+‘REQUIRED’ and ‘REPEATED’ are supported. Default mode is
+‘NULLABLE’.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.datacatalog_v1beta1.types.ColumnSchema.subcolumns">
 <code class="descname">subcolumns</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.ColumnSchema.subcolumns" title="Permalink to this definition">#</a></dt>
-<dd><p>Schema of sub-columns.</p>
+<dd><p>Optional. Schema of sub-columns. A column can have zero or
+more sub-columns.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -138,6 +302,230 @@ are required, nullable, etc. Only ‘NULLABLE’, ‘REQUIRED’ and
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.CreateTagRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">CreateTagRequest</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.CreateTagRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[CreateTag][google.cloud.datacatalog.v1beta1.DataCatalog.CreateTag].</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.CreateTagRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.CreateTagRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The name of the resource to attach this tag to. Tags
+can be attached to Entries. (example: “projects/{project_id}/
+locations/{location}/entryGroups/{entry_group_id}/entries/{e
+ntry_id}”).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.CreateTagRequest.tag">
+<code class="descname">tag</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.CreateTagRequest.tag" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The tag to create.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.CreateTagRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">tag</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.CreateTagRequest.tag</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.CreateTagTemplateFieldRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">CreateTagTemplateFieldRequest</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.CreateTagTemplateFieldRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[CreateTagTemplateField][google.cloud.datacatalog.v1beta1.DataCatalog.CreateTagTemplateField].</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.CreateTagTemplateFieldRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.CreateTagTemplateFieldRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The name of the project this template is in.
+Example: “projects/{project_id}/locations/{location}/tagTempl
+ates/{tag_template_id}”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.CreateTagTemplateFieldRequest.tag_template_field_id">
+<code class="descname">tag_template_field_id</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.CreateTagTemplateFieldRequest.tag_template_field_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The id of the tag template field to create. Field
+ids can contain letters (both uppercase and lowercase),
+numbers (0-9), underscores (_) and dashes (-). Field ids must
+be at least 1 character long and at most 128 characters long.
+Field ids must also be unique to their template.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.CreateTagTemplateFieldRequest.tag_template_field">
+<code class="descname">tag_template_field</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.CreateTagTemplateFieldRequest.tag_template_field" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The tag template field to create.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.CreateTagTemplateFieldRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">tag_template_field</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.CreateTagTemplateFieldRequest.tag_template_field</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">tag_template_field_id</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.CreateTagTemplateFieldRequest.tag_template_field_id</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.CreateTagTemplateRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">CreateTagTemplateRequest</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.CreateTagTemplateRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[CreateTagTemplate][google.cloud.datacatalog.v1beta1.DataCatalog.CreateTagTemplate].</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.CreateTagTemplateRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.CreateTagTemplateRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The name of the project and the location this
+template is in. Example:
+“projects/{project_id}/locations/{location}”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.CreateTagTemplateRequest.tag_template_id">
+<code class="descname">tag_template_id</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.CreateTagTemplateRequest.tag_template_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The id of the tag template to create.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.CreateTagTemplateRequest.tag_template">
+<code class="descname">tag_template</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.CreateTagTemplateRequest.tag_template" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The tag template to create.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.CreateTagTemplateRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">tag_template</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.CreateTagTemplateRequest.tag_template</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">tag_template_id</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.CreateTagTemplateRequest.tag_template_id</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.DeleteTagRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">DeleteTagRequest</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.DeleteTagRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[DeleteTag][google.cloud.datacatalog.v1beta1.DataCatalog.DeleteTag].</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.DeleteTagRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.DeleteTagRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The name of the tag to delete. For example, “project
+s/{project_id}/locations/{location}/entryGroups/{entry_group
+_id}/entries/{entry_id}/tags/{tag_id}”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.DeleteTagRequest.name</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.DeleteTagTemplateFieldRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">DeleteTagTemplateFieldRequest</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.DeleteTagTemplateFieldRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[DeleteTagTemplateField][google.cloud.datacatalog.v1beta1.DataCatalog.DeleteTagTemplateField].</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.DeleteTagTemplateFieldRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.DeleteTagTemplateFieldRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The name of the tag template field to delete. For
+example, “projects/{project_id}/locations/{location}/tagTempl
+ates/{tag_template_id}/fields/{tag_template_field_id}”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.DeleteTagTemplateFieldRequest.force">
+<code class="descname">force</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.DeleteTagTemplateFieldRequest.force" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Currently, this field must always be set to true.
+This confirms the deletion of this field from any tags using
+this field. force = false will be supported in the future.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">force</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.DeleteTagTemplateFieldRequest.force</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.DeleteTagTemplateFieldRequest.name</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.DeleteTagTemplateRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">DeleteTagTemplateRequest</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.DeleteTagTemplateRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[DeleteTagTemplate][google.cloud.datacatalog.v1beta1.DataCatalog.DeleteTagTemplate].</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.DeleteTagTemplateRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.DeleteTagTemplateRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The name of the tag template to delete. For example,
+“projects/{project_id}/locations/{location}/tagTemplates/{tag
+_template_id}”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.DeleteTagTemplateRequest.force">
+<code class="descname">force</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.DeleteTagTemplateRequest.force" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Currently, this field must always be set to true.
+This confirms the deletion of any possible tags using this
+template. force = false will be supported in the future.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">force</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.DeleteTagTemplateRequest.force</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.DeleteTagTemplateRequest.name</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.Empty">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">Empty</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Empty" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.datacatalog_v1beta1.types.Entry">
 <em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">Entry</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Entry" title="Permalink to this definition">#</a></dt>
 <dd><p>Entry Metadata. A Data Catalog Entry resource represents another
@@ -145,38 +533,42 @@ resource in Google Cloud Platform, such as a BigQuery Dataset or a
 Pub/Sub Topic. Clients can use the <code class="docutils literal notranslate"><span class="pre">linked_resource</span></code> field in the
 Entry resource to refer to the original resource id of the source
 system.</p>
-<p>An Entry resource contains resource details, such as its schema.</p>
+<p>An Entry resource contains resource details, such as its schema. An
+Entry can also be used to attach flexible metadata, such as a
+[Tag][google.cloud.datacatalog.v1beta1.Tag].</p>
 <dl class="attribute">
 <dt id="google.cloud.datacatalog_v1beta1.types.Entry.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Entry.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Output only. The Data Catalog resource name of the entry in
-URL format. For example, “projects/{project_id}/locations/{lo
-cation}/entryGroups/{entry_group_id}/entries/{entry_id}”.</p>
+<dd><p>Required when used in [UpdateEntryRequest][google.cloud.dataca
+talog.v1beta1.UpdateEntryRequest]. The Data Catalog resource
+name of the entry in URL format. For example, “projects/{proje
+ct_id}/locations/{location}/entryGroups/{entry_group_id}/en
+tries/{entry_id}”.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.datacatalog_v1beta1.types.Entry.linked_resource">
 <code class="descname">linked_resource</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Entry.linked_resource" title="Permalink to this definition">#</a></dt>
-<dd><p>The full name of the cloud resource the entry belongs to. See:
-<a class="reference external" href="https://cloud.google.com/apis/design/resource_names#full_res">https://cloud.google.com/apis/design/resource_names#full_res</a>
-ource_name  Data Catalog supports resources from select
-Google Cloud Platform systems. <code class="docutils literal notranslate"><span class="pre">linked_resource</span></code> is the full
-name of the Google Cloud Platform resource. For example, the
-<code class="docutils literal notranslate"><span class="pre">linked_resource</span></code> for a table resource from BigQuery is:  “/
-/bigquery.googleapis.com/projects/projectId/datasets/datasetId
-/tables/tableId”.</p>
+<dd><p>Output only. The full name of the cloud resource the entry
+belongs to. See: <a class="reference external" href="https://cloud.google.com/apis/design/resource">https://cloud.google.com/apis/design/resource</a>
+_names#full_resource_name  Data Catalog supports resources
+from select Google Cloud Platform systems. <code class="docutils literal notranslate"><span class="pre">linked_resource</span></code>
+is the full name of the Google Cloud Platform resource. For
+example, the <code class="docutils literal notranslate"><span class="pre">linked_resource</span></code> for a table resource from
+BigQuery is:  “//bigquery.googleapis.com/projects/projectId/da
+tasets/datasetId/tables/tableId”.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.datacatalog_v1beta1.types.Entry.type">
 <code class="descname">type</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Entry.type" title="Permalink to this definition">#</a></dt>
-<dd><p>Type of entry.</p>
+<dd><p>Required. Type of entry.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.datacatalog_v1beta1.types.Entry.type_spec">
 <code class="descname">type_spec</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Entry.type_spec" title="Permalink to this definition">#</a></dt>
-<dd><p>Type specification information.</p>
+<dd><p>Optional. Type specification information.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -187,31 +579,48 @@ valid on entries of type TABLE.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Entry.bigquery_date_sharded_spec">
+<code class="descname">bigquery_date_sharded_spec</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Entry.bigquery_date_sharded_spec" title="Permalink to this definition">#</a></dt>
+<dd><p>Specification for a group of BigQuery tables with name pattern
+[prefix]YYYYMMDD. Context:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/partitioned">https://cloud.google.com/bigquery/docs/partitioned</a>-
+tables#partitioning_versus_sharding</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.datacatalog_v1beta1.types.Entry.display_name">
 <code class="descname">display_name</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Entry.display_name" title="Permalink to this definition">#</a></dt>
-<dd><p>Display information such as title and description. A short
-name to identify the entry, for example, “Analytics Data - Jan
-2011”.</p>
+<dd><p>Optional. Display information such as title and description. A
+short name to identify the entry, for example, “Analytics Data
+- Jan 2011”. Default value is an empty string.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.datacatalog_v1beta1.types.Entry.description">
 <code class="descname">description</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Entry.description" title="Permalink to this definition">#</a></dt>
-<dd><p>Entry description, which can consist of several sentences or
-paragraphs that describe entry contents.</p>
+<dd><p>Optional. Entry description, which can consist of several
+sentences or paragraphs that describe entry contents. Default
+value is an empty string.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.datacatalog_v1beta1.types.Entry.schema">
 <code class="descname">schema</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Entry.schema" title="Permalink to this definition">#</a></dt>
-<dd><p>Schema of the entry.</p>
+<dd><p>Optional. Schema of the entry. An entry might not have any
+schema attached to it.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.datacatalog_v1beta1.types.Entry.source_system_timestamps">
 <code class="descname">source_system_timestamps</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Entry.source_system_timestamps" title="Permalink to this definition">#</a></dt>
-<dd><p>Timestamps about the underlying Google Cloud Platform resource
-– not about this Data Catalog Entry.</p>
+<dd><p>Output only. Timestamps about the underlying Google Cloud
+Platform resource – not about this Data Catalog Entry.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">bigquery_date_sharded_spec</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.Entry.bigquery_date_sharded_spec</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -265,6 +674,264 @@ paragraphs that describe entry contents.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.Expr">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">Expr</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Expr" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Expr.description">
+<code class="descname">description</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Expr.description" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.type.Expr.description</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Expr.expression">
+<code class="descname">expression</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Expr.expression" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.type.Expr.expression</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Expr.location">
+<code class="descname">location</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Expr.location" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.type.Expr.location</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Expr.title">
+<code class="descname">title</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Expr.title" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.type.Expr.title</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.FieldMask">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">FieldMask</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.FieldMask" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.FieldMask.paths">
+<code class="descname">paths</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.FieldMask.paths" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldMask.paths</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.FieldType">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">FieldType</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.FieldType" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.FieldType.type_decl">
+<code class="descname">type_decl</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.FieldType.type_decl" title="Permalink to this definition">#</a></dt>
+<dd><p>Required.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.FieldType.primitive_type">
+<code class="descname">primitive_type</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.FieldType.primitive_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents primitive types - string, bool etc.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.FieldType.enum_type">
+<code class="descname">enum_type</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.FieldType.enum_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents an enum type.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.FieldType.EnumType">
+<em class="property">class </em><code class="descname">EnumType</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.FieldType.EnumType" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.FieldType.EnumType.allowed_values">
+<code class="descname">allowed_values</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.FieldType.EnumType.allowed_values" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The set of allowed values for this enum. This set
+must not be empty, the display names of the values in this set
+must not be empty and the display names of the values must be
+case-insensitively unique within this set. Currently, enum
+values can only be added to the list of allowed values.
+Deletion and renaming of enum values are not supported. Can
+have up to 500 allowed values.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.FieldType.EnumType.EnumValue">
+<em class="property">class </em><code class="descname">EnumValue</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.FieldType.EnumType.EnumValue" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.FieldType.EnumType.EnumValue.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.FieldType.EnumType.EnumValue.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The display name of the enum value. Must not be an
+empty string.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">display_name</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.FieldType.EnumType.EnumValue.display_name</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">allowed_values</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.FieldType.EnumType.allowed_values</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">enum_type</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.FieldType.enum_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">primitive_type</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.FieldType.primitive_type</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.GetEntryRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">GetEntryRequest</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.GetEntryRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[GetEntry][google.cloud.datacatalog.v1beta1.DataCatalog.GetEntry].</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.GetEntryRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.GetEntryRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The name of the entry. For example, “projects/{proje
+ct_id}/locations/{location}/entryGroups/{entry_group_id}/en
+tries/{entry_id}”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.GetEntryRequest.name</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.GetIamPolicyRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">GetIamPolicyRequest</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.GetIamPolicyRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for <code class="docutils literal notranslate"><span class="pre">GetIamPolicy</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.GetIamPolicyRequest.resource">
+<code class="descname">resource</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.GetIamPolicyRequest.resource" title="Permalink to this definition">#</a></dt>
+<dd><p>REQUIRED: The resource for which the policy is being
+requested. <code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For
+example, a Project resource is specified as
+<code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">resource</code></dt>
+<dd><p>Field google.iam.v1.GetIamPolicyRequest.resource</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.GetTagTemplateRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">GetTagTemplateRequest</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.GetTagTemplateRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[GetTagTemplate][google.cloud.datacatalog.v1beta1.DataCatalog.GetTagTemplate].</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.GetTagTemplateRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.GetTagTemplateRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The name of the tag template. For example, “projects
+/{project_id}/locations/{location}/tagTemplates/{tag_templat
+e_id}”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.GetTagTemplateRequest.name</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.ListTagsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">ListTagsRequest</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.ListTagsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[ListTags][google.cloud.datacatalog.v1beta1.DataCatalog.ListTags].</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.ListTagsRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.ListTagsRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The name of the Data Catalog resource to list the
+tags of. The resource could be an
+[Entry][google.cloud.datacatalog.v1beta1.Entry].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.ListTagsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.ListTagsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The maximum number of tags to return. Default is 10.
+Max limit is 1000.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.ListTagsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.ListTagsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Token that specifies which page is requested. If
+empty, the first page is returned.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.ListTagsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.ListTagsRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.ListTagsRequest.parent</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.ListTagsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">ListTagsResponse</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.ListTagsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for
+[ListTags][google.cloud.datacatalog.v1beta1.DataCatalog.ListTags].</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.ListTagsResponse.tags">
+<code class="descname">tags</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.ListTagsResponse.tags" title="Permalink to this definition">#</a></dt>
+<dd><p>[Tag][google.cloud.datacatalog.v1beta1.Tag] details.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.ListTagsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.ListTagsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Token to retrieve the next page of results. It is set to empty
+if no items remain in results.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.ListTagsResponse.next_page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">tags</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.ListTagsResponse.tags</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.datacatalog_v1beta1.types.LookupEntryRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">LookupEntryRequest</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.LookupEntryRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request message for
@@ -272,8 +939,8 @@ paragraphs that describe entry contents.</p>
 <dl class="attribute">
 <dt id="google.cloud.datacatalog_v1beta1.types.LookupEntryRequest.target_name">
 <code class="descname">target_name</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.LookupEntryRequest.target_name" title="Permalink to this definition">#</a></dt>
-<dd><p>Represents either the Google Cloud Platform resource or SQL
-name for a Google Cloud Platform resource.</p>
+<dd><p>Required. Represents either the Google Cloud Platform resource
+or SQL name for a Google Cloud Platform resource.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -291,9 +958,16 @@ case-sensitive.  Examples: “//bigquery.googleapis.com/projects
 <dt id="google.cloud.datacatalog_v1beta1.types.LookupEntryRequest.sql_resource">
 <code class="descname">sql_resource</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.LookupEntryRequest.sql_resource" title="Permalink to this definition">#</a></dt>
 <dd><p>The SQL name of the entry. SQL names are case-sensitive.
-Examples: 1. cloud_pubsub.project_id.topic_id 2.
-bigquery.project_id.dataset_id.table_id 3. datacatalog.proj
-ect_id.location_id.entry_group_id.entry_id</p>
+Examples:  .. raw:: html     &lt;ul&gt;  .. raw:: html     &lt;li&gt;
+cloud_pubsub.project_id.topic_id  .. raw:: html     &lt;/li&gt;
+.. raw:: html     &lt;li&gt;  pubsub.project_id.          <code class="docutils literal notranslate"><span class="pre">topic.id.with.dots</span></code>  .. raw:: html     &lt;/li&gt;  .. raw:: html
+&lt;li&gt;  bigquery.project_id.dataset_id.table_id  .. raw::
+html     &lt;/li&gt;  .. raw:: html     &lt;li&gt;  datacatalog.project_i
+d.location_id.entry_group_id.entry_id  .. raw:: html
+&lt;/li&gt;  .. raw:: html     &lt;/ul&gt;  *_ids shoud satisfy the
+standard SQL rules for identifiers.
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/standard">https://cloud.google.com/bigquery/docs/reference/standard</a>-
+sql/lexical</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -311,20 +985,431 @@ ect_id.location_id.entry_group_id.entry_id</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.Policy">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">Policy</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Policy" title="Permalink to this definition">#</a></dt>
+<dd><p>Defines an Identity and Access Management (IAM) policy. It is used to
+specify access control policies for Cloud Platform resources.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">Policy</span></code> consists of a list of <code class="docutils literal notranslate"><span class="pre">bindings</span></code>. A <code class="docutils literal notranslate"><span class="pre">Binding</span></code> binds a
+list of <code class="docutils literal notranslate"><span class="pre">members</span></code> to a <code class="docutils literal notranslate"><span class="pre">role</span></code>, where the members can be user
+accounts, Google groups, Google domains, and service accounts. A
+<code class="docutils literal notranslate"><span class="pre">role</span></code> is a named list of permissions defined by IAM.</p>
+<p><strong>Example</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;bindings&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;roles/owner&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;members&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;user:mike@example.com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;group:admins@example.com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;domain:google.com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;serviceAccount:my-other-app@appspot.gserviceaccount.com&quot;</span><span class="p">,</span>
+      <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;roles/viewer&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;members&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;user:sean@example.com&quot;</span><span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For a description of IAM and its features, see the <a class="reference external" href="https://cloud.google.com/iam">IAM developer’s
+guide</a>.</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Policy.version">
+<code class="descname">version</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Policy.version" title="Permalink to this definition">#</a></dt>
+<dd><p>Version of the <code class="docutils literal notranslate"><span class="pre">Policy</span></code>. The default version is 0.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Policy.bindings">
+<code class="descname">bindings</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Policy.bindings" title="Permalink to this definition">#</a></dt>
+<dd><p>Associates a list of <code class="docutils literal notranslate"><span class="pre">members</span></code> to a <code class="docutils literal notranslate"><span class="pre">role</span></code>. Multiple
+<code class="docutils literal notranslate"><span class="pre">bindings</span></code> must not be specified for the same <code class="docutils literal notranslate"><span class="pre">role</span></code>.
+<code class="docutils literal notranslate"><span class="pre">bindings</span></code> with no members will result in an error.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Policy.etag">
+<code class="descname">etag</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Policy.etag" title="Permalink to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">etag</span></code> is used for optimistic concurrency control as a way
+to help prevent simultaneous updates of a policy from
+overwriting each other. It is strongly suggested that systems
+make use of the <code class="docutils literal notranslate"><span class="pre">etag</span></code> in the read-modify-write cycle to
+perform policy updates in order to avoid race conditions: An
+<code class="docutils literal notranslate"><span class="pre">etag</span></code> is returned in the response to <code class="docutils literal notranslate"><span class="pre">getIamPolicy</span></code>, and
+systems are expected to put that etag in the request to
+<code class="docutils literal notranslate"><span class="pre">setIamPolicy</span></code> to ensure that their change will be applied
+to the same version of the policy.  If no <code class="docutils literal notranslate"><span class="pre">etag</span></code> is provided
+in the call to <code class="docutils literal notranslate"><span class="pre">setIamPolicy</span></code>, then the existing policy is
+overwritten blindly.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">bindings</code></dt>
+<dd><p>Field google.iam.v1.Policy.bindings</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">etag</code></dt>
+<dd><p>Field google.iam.v1.Policy.etag</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">version</code></dt>
+<dd><p>Field google.iam.v1.Policy.version</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.PolicyDelta">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">PolicyDelta</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.PolicyDelta" title="Permalink to this definition">#</a></dt>
+<dd><p>The difference delta between two policies.</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.PolicyDelta.binding_deltas">
+<code class="descname">binding_deltas</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.PolicyDelta.binding_deltas" title="Permalink to this definition">#</a></dt>
+<dd><p>The delta for Bindings between two policies.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">binding_deltas</code></dt>
+<dd><p>Field google.iam.v1.PolicyDelta.binding_deltas</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.RenameTagTemplateFieldRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">RenameTagTemplateFieldRequest</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.RenameTagTemplateFieldRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[RenameTagTemplateField][google.cloud.datacatalog.v1beta1.DataCatalog.RenameTagTemplateField].</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.RenameTagTemplateFieldRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.RenameTagTemplateFieldRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The name of the tag template. For example, “projects
+/{project_id}/locations/{location}/tagTemplates/{tag_templat
+e_id}/fields/{tag_template_field_id}”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.RenameTagTemplateFieldRequest.new_tag_template_field_id">
+<code class="descname">new_tag_template_field_id</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.RenameTagTemplateFieldRequest.new_tag_template_field_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The new ID of this tag template field. For example,
+“my_new_field”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.RenameTagTemplateFieldRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">new_tag_template_field_id</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.RenameTagTemplateFieldRequest.new_tag_template_field_id</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.datacatalog_v1beta1.types.Schema">
 <em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">Schema</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Schema" title="Permalink to this definition">#</a></dt>
 <dd><p>Represents a schema (e.g. BigQuery, GoogleSQL, Avro schema).</p>
 <dl class="attribute">
 <dt id="google.cloud.datacatalog_v1beta1.types.Schema.columns">
 <code class="descname">columns</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Schema.columns" title="Permalink to this definition">#</a></dt>
-<dd><p>Schema of columns. A maximum of 10,000 columns and sub-columns
-can be specified.</p>
+<dd><p>Required. Schema of columns. A maximum of 10,000 columns and
+sub-columns can be specified.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
 <code class="descname">columns</code></dt>
 <dd><p>Field google.cloud.datacatalog.v1beta1.Schema.columns</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.SearchCatalogRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">SearchCatalogRequest</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.SearchCatalogRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[SearchCatalog][google.cloud.datacatalog.v1beta1.DataCatalog.SearchCatalog].</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.SearchCatalogRequest.scope">
+<code class="descname">scope</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.SearchCatalogRequest.scope" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The scope of this search request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.SearchCatalogRequest.query">
+<code class="descname">query</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.SearchCatalogRequest.query" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The query string in search query syntax. The query
+must be non-empty.  Query strings can be simple as “x” or more
+qualified as:  -  name:x -  column:x -  description:y  Note:
+Query tokens need to have a minimum of 3 characters for
+substring matching to work correctly. See <a class="reference external" href="/data-catalog/docs/how-to/search-reference">Data Catalog Search
+Syntax</a> for
+more information.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.SearchCatalogRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.SearchCatalogRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Number of results in the search page. If &lt;=0 then defaults to
+10. Max limit for page_size is 1000. Throws an invalid
+argument for page_size &gt; 1000.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.SearchCatalogRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.SearchCatalogRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional pagination token returned in an earlier [SearchCatalo
+gResponse.next_page_token][google.cloud.datacatalog.v1beta1.
+DataCatalog.SearchCatalogResponse.next_page_token];
+indicates that this is a continuation of a prior [SearchCatalo
+g][google.cloud.datacatalog.v1beta1.DataCatalog.SearchCatalog]
+call, and that the system should return the next page of data.
+If empty then the first page is returned.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.SearchCatalogRequest.order_by">
+<code class="descname">order_by</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.SearchCatalogRequest.order_by" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies the ordering of results, currently supported case-
+sensitive choices are:  .. raw:: html     &lt;ul&gt;  .. raw:: html
+&lt;li&gt;  relevance  .. raw:: html     &lt;/li&gt;  .. raw:: html
+&lt;li&gt;  last_access_timestamp [asc|desc], defaults to
+descending if not specified,  .. raw:: html     &lt;/li&gt;  ..
+raw:: html     &lt;li&gt;  last_modified_timestamp [asc|desc],
+defaults to descending if not specified,  .. raw:: html
+&lt;/li&gt;  .. raw:: html     &lt;li&gt;  title [asc|desc], defaults to
+ascending if not specified.  .. raw:: html     &lt;/li&gt;  .. raw::
+html     &lt;/ul&gt;</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.SearchCatalogRequest.Scope">
+<em class="property">class </em><code class="descname">Scope</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.SearchCatalogRequest.Scope" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.SearchCatalogRequest.Scope.include_org_ids">
+<code class="descname">include_org_ids</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.SearchCatalogRequest.Scope.include_org_ids" title="Permalink to this definition">#</a></dt>
+<dd><p>Data Catalog tries to automatically choose the right corpus of
+data to search through. You can ensure an organization is
+included by adding it to “include_org_ids”. You can ensure a
+project’s org is included with “include_project_ids”. You
+must specify at least one organization using
+“include_org_ids” or “include_project_ids” in all search
+requests.  List of organization IDs to search within. To find
+your organization ID, follow instructions in
+<a class="reference external" href="https://cloud.google.com/resource-manager/docs/creating">https://cloud.google.com/resource-manager/docs/creating</a>-
+managing-organization</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.SearchCatalogRequest.Scope.include_project_ids">
+<code class="descname">include_project_ids</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.SearchCatalogRequest.Scope.include_project_ids" title="Permalink to this definition">#</a></dt>
+<dd><p>List of project IDs to search within. To learn more about the
+distinction between project names/IDs/numbers, go to
+<a class="reference external" href="https://cloud.google.com/docs/overview/#projects">https://cloud.google.com/docs/overview/#projects</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.SearchCatalogRequest.Scope.include_gcp_public_datasets">
+<code class="descname">include_gcp_public_datasets</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.SearchCatalogRequest.Scope.include_gcp_public_datasets" title="Permalink to this definition">#</a></dt>
+<dd><p>If true, include Google Cloud Platform (GCP) public datasets
+in the search results. Info on GCP public datasets is
+available at <a class="reference external" href="https://cloud.google.com/public-datasets/">https://cloud.google.com/public-datasets/</a>. By
+default, GCP public datasets are excluded.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">include_gcp_public_datasets</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.SearchCatalogRequest.Scope.include_gcp_public_datasets</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">include_org_ids</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.SearchCatalogRequest.Scope.include_org_ids</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">include_project_ids</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.SearchCatalogRequest.Scope.include_project_ids</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">order_by</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.SearchCatalogRequest.order_by</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.SearchCatalogRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.SearchCatalogRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">query</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.SearchCatalogRequest.query</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">scope</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.SearchCatalogRequest.scope</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.SearchCatalogResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">SearchCatalogResponse</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.SearchCatalogResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for
+[SearchCatalog][google.cloud.datacatalog.v1beta1.DataCatalog.SearchCatalog].</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.SearchCatalogResponse.results">
+<code class="descname">results</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.SearchCatalogResponse.results" title="Permalink to this definition">#</a></dt>
+<dd><p>Search results in descending order of relevance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.SearchCatalogResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.SearchCatalogResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>The token that can be used to retrieve the next page of
+results.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.SearchCatalogResponse.next_page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">results</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.SearchCatalogResponse.results</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.SearchCatalogResult">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">SearchCatalogResult</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.SearchCatalogResult" title="Permalink to this definition">#</a></dt>
+<dd><p>A result that appears in the response of a search request. Each result
+captures details of one entry that matches the search.</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.SearchCatalogResult.search_result_type">
+<code class="descname">search_result_type</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.SearchCatalogResult.search_result_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Type of the search result. This field can be used to determine
+which Get method to call to fetch the full resource.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.SearchCatalogResult.search_result_subtype">
+<code class="descname">search_result_subtype</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.SearchCatalogResult.search_result_subtype" title="Permalink to this definition">#</a></dt>
+<dd><p>Sub-type of the search result. This is a dot-delimited
+description of the resource’s full type, and is the same as
+the value callers would provide in the “type” search facet.
+Examples: “entry.table”, “entry.dataStream”, “tagTemplate”</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.SearchCatalogResult.relative_resource_name">
+<code class="descname">relative_resource_name</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.SearchCatalogResult.relative_resource_name" title="Permalink to this definition">#</a></dt>
+<dd><p>The relative resource name of the resource in URL format.
+Examples: “projects/{project_id}/locations/{location_id}/ent
+ryGroups/{entry_group_id}/entries/{entry_id}”.
+“projects/{project_id}/tagTemplates/{tag_template_id}”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.SearchCatalogResult.linked_resource">
+<code class="descname">linked_resource</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.SearchCatalogResult.linked_resource" title="Permalink to this definition">#</a></dt>
+<dd><p>The full name of the cloud resource the entry belongs to. See:
+<a class="reference external" href="https://cloud.google.com/apis/design/resource_names#full_res">https://cloud.google.com/apis/design/resource_names#full_res</a>
+ource_name Example: “//bigquery.googleapis.com/projects/proje
+ctId/datasets/datasetId/tables/tableId”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">linked_resource</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.SearchCatalogResult.linked_resource</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">relative_resource_name</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.SearchCatalogResult.relative_resource_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">search_result_subtype</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.SearchCatalogResult.search_result_subtype</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">search_result_type</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.SearchCatalogResult.search_result_type</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.SetIamPolicyRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">SetIamPolicyRequest</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.SetIamPolicyRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for <code class="docutils literal notranslate"><span class="pre">SetIamPolicy</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.SetIamPolicyRequest.resource">
+<code class="descname">resource</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.SetIamPolicyRequest.resource" title="Permalink to this definition">#</a></dt>
+<dd><p>REQUIRED: The resource for which the policy is being
+specified. <code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For
+example, a Project resource is specified as
+<code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.SetIamPolicyRequest.policy">
+<code class="descname">policy</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.SetIamPolicyRequest.policy" title="Permalink to this definition">#</a></dt>
+<dd><p>REQUIRED: The complete policy to be applied to the
+<code class="docutils literal notranslate"><span class="pre">resource</span></code>. The size of the policy is limited to a few 10s
+of KB. An empty policy is a valid policy but certain Cloud
+Platform services (such as Projects) might reject them.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">policy</code></dt>
+<dd><p>Field google.iam.v1.SetIamPolicyRequest.policy</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">resource</code></dt>
+<dd><p>Field google.iam.v1.SetIamPolicyRequest.resource</p>
 </dd></dl>
 
 </dd></dl>
@@ -375,6 +1460,400 @@ given system.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.TableSpec">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">TableSpec</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.TableSpec" title="Permalink to this definition">#</a></dt>
+<dd><p>Normal BigQuery table spec.</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.TableSpec.grouped_entry">
+<code class="descname">grouped_entry</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.TableSpec.grouped_entry" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. If the table is a dated shard, i.e. with name
+pattern [prefix]YYYYMMDD, grouped_entry is the Data Catalog
+resource name of the date sharded grouped entry, e.g. projects
+/{project_id}/locations/{location}/entrygroups/{entry_group          _id} /entries/{entry_id}. Otherwise, grouped_entry will be
+empty.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">grouped_entry</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.TableSpec.grouped_entry</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.Tag">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">Tag</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Tag" title="Permalink to this definition">#</a></dt>
+<dd><p>Tags are used to attach custom metadata to Data Catalog resources. Tags
+conform to the specifications within their tag template.</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Tag.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Tag.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required when used in [UpdateTagRequest][google.cloud.datacata
+log.v1beta1.UpdateTagRequest]. The resource name of the tag in
+URL format. For example, projects/{project_id}/locations/{loc
+ation}/entrygroups/{entry_group_id}/entries/{entry_id}/tags
+/{tag_id}”, where tag_id is a system-generated identifier.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Tag.template">
+<code class="descname">template</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Tag.template" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The resource name of the tag template that this tag
+uses. For example, projects/{project_id}/locations/{location}
+/tagTemplates/{tag_template_id}. This field cannot be
+modified after creation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Tag.template_display_name">
+<code class="descname">template_display_name</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Tag.template_display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The display name of the tag template.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Tag.scope">
+<code class="descname">scope</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Tag.scope" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The scope within the parent resource that this tag
+is attached to. If not provided, the tag is attached to the
+parent resource itself. Deleting the scope from the parent
+resource will delete all tags attached to that scope. These
+fields cannot be updated after creation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Tag.column">
+<code class="descname">column</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Tag.column" title="Permalink to this definition">#</a></dt>
+<dd><p>Resources like Entry can have schemas associated with them.
+This scope allows users to attach tags to an individual column
+based on that schema.  For attaching a tag to a nested column,
+use ‘.’ to separate the column names:
+“outer_column.inner_column”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Tag.fields">
+<code class="descname">fields</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Tag.fields" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. This maps the id of a tag field to the value of &amp;
+additional information about that field. Valid field IDs are
+defined by the tag’s template. A tag must have at least 1
+field and at most 500 fields.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.Tag.FieldsEntry">
+<em class="property">class </em><code class="descname">FieldsEntry</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Tag.FieldsEntry" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Tag.FieldsEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Tag.FieldsEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.Tag.FieldsEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.Tag.FieldsEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Tag.FieldsEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.Tag.FieldsEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">column</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.Tag.column</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">fields</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.Tag.fields</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.Tag.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">template</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.Tag.template</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">template_display_name</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.Tag.template_display_name</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.TagField">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">TagField</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.TagField" title="Permalink to this definition">#</a></dt>
+<dd><p>Contains the value and supporting information for a field within a
+[Tag][google.cloud.datacatalog.v1beta1.Tag].</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.TagField.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.TagField.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The display name of this field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.TagField.kind">
+<code class="descname">kind</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.TagField.kind" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The value of this field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.TagField.double_value">
+<code class="descname">double_value</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.TagField.double_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Holds the value for a tag field with double type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.TagField.string_value">
+<code class="descname">string_value</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.TagField.string_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Holds the value for a tag field with string type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.TagField.bool_value">
+<code class="descname">bool_value</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.TagField.bool_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Holds the value for a tag field with boolean type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.TagField.timestamp_value">
+<code class="descname">timestamp_value</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.TagField.timestamp_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Holds the value for a tag field with timestamp type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.TagField.enum_value">
+<code class="descname">enum_value</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.TagField.enum_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Holds the value for a tag field with enum type. This value
+must be one of the allowed values in the definition of this
+enum.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.TagField.EnumValue">
+<em class="property">class </em><code class="descname">EnumValue</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.TagField.EnumValue" title="Permalink to this definition">#</a></dt>
+<dd><p>Holds an enum value.</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.TagField.EnumValue.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.TagField.EnumValue.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>The display name of the enum value.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">display_name</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.TagField.EnumValue.display_name</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">bool_value</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.TagField.bool_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">display_name</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.TagField.display_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">double_value</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.TagField.double_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">enum_value</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.TagField.enum_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">string_value</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.TagField.string_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">timestamp_value</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.TagField.timestamp_value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.TagTemplate">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">TagTemplate</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.TagTemplate" title="Permalink to this definition">#</a></dt>
+<dd><p>Tag templates defines the schema of the tags used to attach to Data
+Catalog resources. It defines the mapping of accepted field names and
+types that can be used within the tag. The tag template also controls
+the access to the tag.</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.TagTemplate.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.TagTemplate.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required when used in [UpdateTagTemplateRequest][google.cloud.
+datacatalog.v1beta1.UpdateTagTemplateRequest]. The resource
+name of the tag template in URL format. For example, projects/
+{project_id}/locations/{location}/tagTemplates/{tag_template
+_id}.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.TagTemplate.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.TagTemplate.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The display name for this template. Default value is
+an empty string.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.TagTemplate.fields">
+<code class="descname">fields</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.TagTemplate.fields" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Map of tag template field ids to the settings for
+the field. This map is an exhaustive list of the allowed
+fields. This map must contain at least one field and at most
+500 fields.  The keys to this map are tag template field IDs.
+Field IDs can contain letters (both uppercase and lowercase),
+numbers (0-9) and underscores (_). Field IDs must be at least
+1 character long and at most 64 characters long. Field IDs
+must start with a letter or underscore.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.TagTemplate.FieldsEntry">
+<em class="property">class </em><code class="descname">FieldsEntry</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.TagTemplate.FieldsEntry" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.TagTemplate.FieldsEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.TagTemplate.FieldsEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.TagTemplate.FieldsEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.TagTemplate.FieldsEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.TagTemplate.FieldsEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.TagTemplate.FieldsEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">display_name</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.TagTemplate.display_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">fields</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.TagTemplate.fields</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.TagTemplate.name</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.TagTemplateField">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">TagTemplateField</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.TagTemplateField" title="Permalink to this definition">#</a></dt>
+<dd><p>The template for an individual field within a tag template.</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.TagTemplateField.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.TagTemplateField.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The display name for this field. Default value is an
+empty string.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.TagTemplateField.type">
+<code class="descname">type</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.TagTemplateField.type" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The type of value this tag field can contain.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">display_name</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.TagTemplateField.display_name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">type</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.TagTemplateField.type</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.TestIamPermissionsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">TestIamPermissionsRequest</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.TestIamPermissionsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for <code class="docutils literal notranslate"><span class="pre">TestIamPermissions</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.TestIamPermissionsRequest.resource">
+<code class="descname">resource</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.TestIamPermissionsRequest.resource" title="Permalink to this definition">#</a></dt>
+<dd><p>REQUIRED: The resource for which the policy detail is being
+requested. <code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For
+example, a Project resource is specified as
+<code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.TestIamPermissionsRequest.permissions">
+<code class="descname">permissions</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.TestIamPermissionsRequest.permissions" title="Permalink to this definition">#</a></dt>
+<dd><p>The set of permissions to check for the <code class="docutils literal notranslate"><span class="pre">resource</span></code>.
+Permissions with wildcards (such as ‘*’ or ‘storage.*’) are
+not allowed. For more information see <a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM Overview</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">permissions</code></dt>
+<dd><p>Field google.iam.v1.TestIamPermissionsRequest.permissions</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">resource</code></dt>
+<dd><p>Field google.iam.v1.TestIamPermissionsRequest.resource</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.TestIamPermissionsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">TestIamPermissionsResponse</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.TestIamPermissionsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for <code class="docutils literal notranslate"><span class="pre">TestIamPermissions</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.TestIamPermissionsResponse.permissions">
+<code class="descname">permissions</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.TestIamPermissionsResponse.permissions" title="Permalink to this definition">#</a></dt>
+<dd><p>A subset of <code class="docutils literal notranslate"><span class="pre">TestPermissionsRequest.permissions</span></code> that the
+caller is allowed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">permissions</code></dt>
+<dd><p>Field google.iam.v1.TestIamPermissionsResponse.permissions</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.datacatalog_v1beta1.types.Timestamp">
 <em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.Timestamp" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
@@ -392,13 +1871,166 @@ given system.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.UpdateEntryRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">UpdateEntryRequest</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.UpdateEntryRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[UpdateEntry][google.cloud.datacatalog.v1beta1.DataCatalog.UpdateEntry].</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.UpdateEntryRequest.entry">
+<code class="descname">entry</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.UpdateEntryRequest.entry" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The updated Entry.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.UpdateEntryRequest.update_mask">
+<code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.UpdateEntryRequest.update_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The fields to update on the entry. If absent or
+empty, all modifiable fields are updated.  Modifiable fields
+in synced entries:  1. schema (Pub/Sub topics only)
+Modifiable fields in native entries:  1. display_name 2.
+description 3. schema</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">entry</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.UpdateEntryRequest.entry</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_mask</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.UpdateEntryRequest.update_mask</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.UpdateTagRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">UpdateTagRequest</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.UpdateTagRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[UpdateTag][google.cloud.datacatalog.v1beta1.DataCatalog.UpdateTag].</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.UpdateTagRequest.tag">
+<code class="descname">tag</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.UpdateTagRequest.tag" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The updated tag.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.UpdateTagRequest.update_mask">
+<code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.UpdateTagRequest.update_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The fields to update on the Tag. If absent or empty,
+all modifiable fields are updated. Currently the only
+modifiable field is the field <code class="docutils literal notranslate"><span class="pre">fields</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">tag</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.UpdateTagRequest.tag</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_mask</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.UpdateTagRequest.update_mask</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.UpdateTagTemplateFieldRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">UpdateTagTemplateFieldRequest</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.UpdateTagTemplateFieldRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[UpdateTagTemplateField][google.cloud.datacatalog.v1beta1.DataCatalog.UpdateTagTemplateField].</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.UpdateTagTemplateFieldRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.UpdateTagTemplateFieldRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The name of the tag template field. For example, “pr
+ojects/{project_id}/locations/{location}/tagTemplates/{tag_t
+emplate_id}/fields/{tag_template_field_id}”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.UpdateTagTemplateFieldRequest.tag_template_field">
+<code class="descname">tag_template_field</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.UpdateTagTemplateFieldRequest.tag_template_field" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The template to update.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.UpdateTagTemplateFieldRequest.update_mask">
+<code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.UpdateTagTemplateFieldRequest.update_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The field mask specifies the parts of the template
+to overwrite. Allowed fields:  -  display_name -
+type.enum_type  If update_mask is omitted, all of the
+allowed fields above will be updated.  When updating an enum
+type, the provided values will be merged with the existing
+values. Therefore, enum values can only be added, existing
+enum values cannot be deleted nor renamed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.UpdateTagTemplateFieldRequest.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">tag_template_field</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.UpdateTagTemplateFieldRequest.tag_template_field</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_mask</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.UpdateTagTemplateFieldRequest.update_mask</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datacatalog_v1beta1.types.UpdateTagTemplateRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">UpdateTagTemplateRequest</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.UpdateTagTemplateRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[UpdateTagTemplate][google.cloud.datacatalog.v1beta1.DataCatalog.UpdateTagTemplate].</p>
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.UpdateTagTemplateRequest.tag_template">
+<code class="descname">tag_template</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.UpdateTagTemplateRequest.tag_template" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The template to update.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datacatalog_v1beta1.types.UpdateTagTemplateRequest.update_mask">
+<code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.UpdateTagTemplateRequest.update_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The field mask specifies the parts of the template
+to overwrite.  Allowed fields:  -  display_name  If
+update_mask is omitted, all of the allowed fields above will
+be updated.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">tag_template</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.UpdateTagTemplateRequest.tag_template</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_mask</code></dt>
+<dd><p>Field google.cloud.datacatalog.v1beta1.UpdateTagTemplateRequest.update_mask</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.datacatalog_v1beta1.types.ViewSpec">
 <em class="property">class </em><code class="descclassname">google.cloud.datacatalog_v1beta1.types.</code><code class="descname">ViewSpec</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.ViewSpec" title="Permalink to this definition">#</a></dt>
 <dd><p>Table view specification.</p>
 <dl class="attribute">
 <dt id="google.cloud.datacatalog_v1beta1.types.ViewSpec.view_query">
 <code class="descname">view_query</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.ViewSpec.view_query" title="Permalink to this definition">#</a></dt>
-<dd><p>The query that defines the table view.</p>
+<dd><p>Output only. The query that defines the table view.</p>
 </dd></dl>
 
 <dl class="attribute">
