@@ -1,5 +1,6 @@
 [run]
 branch = True
+disable_warnings = module-not-measured
 
 [report]
 fail_under = 100
@@ -16,3 +17,4 @@ omit =
   */proto/*.py
   */core/*.py
   */site-packages/*.py
+  google/cloud/__init__.py

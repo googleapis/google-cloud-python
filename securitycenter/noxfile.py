@@ -16,7 +16,7 @@
 
 from __future__ import absolute_import
 import os
-import shutil 
+import shutil
 
 import nox
 
@@ -46,7 +46,7 @@ def blacken(session):
     """Run black.
 
     Format code to uniform standard.
-    
+
     This currently uses Python 3.6 due to the automated Kokoro run of synthtool.
     That run uses an image that doesn't have 3.6 installed. Before updating this
     check the state of the `gcp_ubuntu_config` we use for that Kokoro run.
@@ -83,7 +83,7 @@ def default(session):
         "--cov-append",
         "--cov-config=.coveragerc",
         "--cov-report=",
-        "--cov-fail-under=97",
+        "--cov-fail-under=0",
         os.path.join("tests", "unit"),
         *session.posargs,
     )
