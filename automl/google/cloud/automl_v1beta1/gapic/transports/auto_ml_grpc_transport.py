@@ -268,8 +268,8 @@ class AutoMlGrpcTransport(object):
         same parameters has no effect. Deploying with different parametrs (as
         e.g. changing
 
-        ``node_number`` ) will update the deployment without pausing the model's
-        availability.
+        ``node_number``) will reset the deployment state without pausing the
+        model's availability.
 
         Only applicable for Text Classification, Image Object Detection and
         Tables; all other domains manage deployment automatically.

@@ -118,15 +118,16 @@ class PredictionServiceGrpcTransport(object):
            image\_bytes up to 30MB.
         -  Image Object Detection - Image in .JPEG, .GIF or .PNG format,
            image\_bytes up to 30MB.
-        -  Text Classification - TextSnippet, content up to 10,000 characters,
+        -  Text Classification - TextSnippet, content up to 60,000 characters,
            UTF-8 encoded.
         -  Text Extraction - TextSnippet, content up to 30,000 characters, UTF-8
-           NFC encoded. \* Translation - TextSnippet, content up to 25,000
-           characters, UTF-8 encoded.
-        -  Tables - Row, with column values matching the columns of the model,
-           up to 5MB.
-        -  Text Sentiment - TextSnippet, content up 500 characters, UTF-8
+           NFC encoded.
+        -  Translation - TextSnippet, content up to 25,000 characters, UTF-8
            encoded.
+        -  Tables - Row, with column values matching the columns of the model,
+           up to 5MB. Not available for FORECASTING
+
+        ``prediction_type``.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -147,6 +148,7 @@ class PredictionServiceGrpcTransport(object):
         Available for following ML problems:
 
         -  Video Classification
+        -  Video Object Tracking
         -  Text Extraction
         -  Tables
 
