@@ -107,10 +107,10 @@ class RepeatedStructuredPropertyPredicate:
             (e.g. "members").
         match_keys (list[str]): Property names to check on the subentities
             being queried (e.g. ["name", "age", "rank"]).
-        entity_pb (entity_pb2.Entity): A partial entity protocol buffer
-            containing the values that must match in a subentity of the
-            repeated structured property. Should contain a value for each key
-            in ``match_keys``.
+        entity_pb (google.cloud.datastore_v1.proto.entity_pb2.Entity): A
+            partial entity protocol buffer containing the values that must
+            match in a subentity of the repeated structured property. Should
+            contain a value for each key in ``match_keys``.
     """
 
     __slots__ = ["name", "match_keys", "match_values"]
