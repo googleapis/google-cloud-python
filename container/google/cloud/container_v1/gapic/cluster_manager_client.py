@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.container.v1 ClusterManager API."""
 
 import pkg_resources
@@ -32,6 +33,7 @@ from google.cloud.container_v1.gapic.transports import cluster_manager_grpc_tran
 from google.cloud.container_v1.proto import cluster_service_pb2
 from google.cloud.container_v1.proto import cluster_service_pb2_grpc
 from google.protobuf import empty_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     "google-cloud-container"
