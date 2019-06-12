@@ -605,7 +605,8 @@ class DocumentSnapshot(object):
         Returns:
             str: The last component of the path of the document.
         """
-        return self._reference.id
+        if self._reference:
+            return self._reference.id
 
     @property
     def reference(self):
