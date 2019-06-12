@@ -122,12 +122,12 @@ def system(session):
     session.install("-e", ".")
 
     # Additional setup for VPCSC system tests
-    env = {
-        "PROJECT_ID": "secure-gcp-test-project-4",
-        "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT": os.environ.get(
-            "PROJECT_ID"
-        ),
-    }
+    # env = {
+    #     "PROJECT_ID": "secure-gcp-test-project-4",
+    #     "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT": os.environ.get(
+    #         "PROJECT_ID"
+    #     ),
+    # }
 
     # Run py.test against the system tests.
     if system_test_exists:
