@@ -297,48 +297,6 @@ def test_listing_topic_subscriptions(publisher, subscriber, project, cleanup):
     assert subscriptions == {subscription_paths[0], subscription_paths[2]}
 
 
-def test_using_snapshots(
-    publisher, subscriber, project, topic_path, subscription_path, cleanup
-):
-    snapshot_path = subscriber.snapshot_path(project, "my-snapshot")
-
-    # Make sure the topic, subscription, and snapshot get deleted.
-    cleanup.append((publisher.delete_topic, topic_path))
-    cleanup.append((subscriber.delete_subscription, subscription_path))
-    cleanup.append((subscriber.delete_snapshot, snapshot_path))
-
-    # publish a message to a topic, pull and acknowledge it
-    publisher.create_topic(topic_path)
-    subscriber.create_subscription(subscription_path, topic_path)
-
-    publisher.publish(topic_path, b"Message 1")
-    response = subscriber.pull(subscription_path, max_messages=100)
-    assert len(response.received_messages) == 1
-    msg = response.received_messages[0]
-    subscriber.acknowledge(subscription_path, [msg.ack_id])
-
-    # repeat the same *after* creating a snapshot
-    subscriber.create_snapshot(snapshot_path, subscription_path)
-
-    publisher.publish(topic_path, b"Message 2")
-    response = subscriber.pull(subscription_path, max_messages=100)
-    msg = response.received_messages[0]
-    subscriber.acknowledge(subscription_path, [msg.ack_id])
-
-    # pulling again, there should be no messages received
-    response = subscriber.pull(
-        subscription_path, max_messages=100, return_immediately=True
-    )
-    assert len(response.received_messages) == 0
-
-    # after seeking to the snapshot, the second message should be received again
-    subscriber.seek(subscription_path, snapshot=snapshot_path)
-    response = subscriber.pull(subscription_path, max_messages=100)
-    assert len(response.received_messages) == 1
-    msg = response.received_messages[0]
-    assert msg.message.data == b"Message 2"
-
-
 def test_managing_topic_iam_policy(publisher, topic_path, cleanup):
     cleanup.append((publisher.delete_topic, topic_path))
 
