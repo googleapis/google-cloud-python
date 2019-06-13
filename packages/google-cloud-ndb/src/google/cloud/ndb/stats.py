@@ -12,7 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Models for accessing datastore usage statistics."""
+"""Models for accessing datastore usage statistics.
+
+These entities cannot be created by users, but are populated in the
+application's datastore by offline processes run by the Google Cloud team.
+"""
 
 from google.cloud.ndb import model
 

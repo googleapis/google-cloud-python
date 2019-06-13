@@ -12,7 +12,128 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""High-level wrapper for datastore queries."""
+"""High-level wrapper for datastore queries.
+
+The fundamental API here overloads the 6 comparison operators to represent
+filters on property values, and supports AND and OR operations (implemented as
+functions -- Python's 'and' and 'or' operators cannot be overloaded, and the
+'&' and '|' operators have a priority that conflicts with the priority of
+comparison operators).
+
+For example::
+
+    class Employee(Model):
+        name = StringProperty()
+        age = IntegerProperty()
+        rank = IntegerProperty()
+
+      @classmethod
+      def demographic(cls, min_age, max_age):
+          return cls.query().filter(AND(cls.age >= min_age,
+                                        cls.age <= max_age))
+
+      @classmethod
+      def ranked(cls, rank):
+          return cls.query(cls.rank == rank).order(cls.age)
+
+    for emp in Employee.seniors(42, 5):
+        print emp.name, emp.age, emp.rank
+
+The 'in' operator cannot be overloaded, but is supported through the IN()
+method. For example::
+
+    Employee.query().filter(Employee.rank.IN([4, 5, 6]))
+
+Sort orders are supported through the order() method; unary minus is
+overloaded on the Property class to represent a descending order::
+
+    Employee.query().order(Employee.name, -Employee.age)
+
+Besides using AND() and OR(), filters can also be combined by repeatedly
+calling .filter()::
+
+    query1 = Employee.query()  # A query that returns all employees
+    query2 = query1.filter(Employee.age >= 30)  # Only those over 30
+    query3 = query2.filter(Employee.age < 40)  # Only those in their 30s
+
+A further shortcut is calling .filter() with multiple arguments; this implies
+AND()::
+
+  query1 = Employee.query()  # A query that returns all employees
+  query3 = query1.filter(Employee.age >= 30,
+                         Employee.age < 40)  # Only those in their 30s
+
+And finally you can also pass one or more filter expressions directly to the
+.query() method::
+
+  query3 = Employee.query(Employee.age >= 30,
+                          Employee.age < 40)  # Only those in their 30s
+
+Query objects are immutable, so these methods always return a new Query object;
+the above calls to filter() do not affect query1. On the other hand, operations
+that are effectively no-ops may return the original Query object.
+
+Sort orders can also be combined this way, and .filter() and .order() calls may
+be intermixed::
+
+    query4 = query3.order(-Employee.age)
+    query5 = query4.order(Employee.name)
+    query6 = query5.filter(Employee.rank == 5)
+
+Again, multiple .order() calls can be combined::
+
+    query5 = query3.order(-Employee.age, Employee.name)
+
+The simplest way to retrieve Query results is a for-loop::
+
+    for emp in query3:
+        print emp.name, emp.age
+
+Some other methods to run a query and access its results::
+
+    :meth:`Query.iter`() # Return an iterator; same as iter(q) but more
+        flexible.
+    :meth:`Query.map`(callback) # Call the callback function for each query
+        result.
+    :meth:`Query.fetch`(N) # Return a list of the first N results
+    :meth:`Query.get`() # Return the first result
+    :meth:`Query.count`(N) # Return the number of results, with a maximum of N
+    :meth:`Query.fetch_page`(N, start_cursor=cursor) # Return (results, cursor,
+        has_more)
+
+All of the above methods take a standard set of additional query options,
+either in the form of keyword arguments such as keys_only=True, or as
+QueryOptions object passed with options=QueryOptions(...). The most important
+query options are:
+
+- keys_only: bool, if set the results are keys instead of entities.
+- limit: int, limits the number of results returned.
+- offset: int, skips this many results first.
+- start_cursor: Cursor, start returning results after this position.
+- end_cursor: Cursor, stop returning results after this position.
+- batch_size: int, hint for the number of results returned per RPC.
+- prefetch_size: int, hint for the number of results in the first RPC.
+- produce_cursors: bool, return Cursor objects with the results.
+
+All of the above methods except for iter() have asynchronous variants as well,
+which return a Future; to get the operation's ultimate result, yield the Future
+(when inside a tasklet) or call the Future's get_result() method (outside a
+tasklet)::
+
+    :meth:`Query.map_async`(callback)  # Callback may be a tasklet or a plain function
+    :meth:`Query.fetch_async`(N)
+    :meth:`Query.get_async`()
+    :meth:`Query.count_async`(N)
+    :meth:`Query.fetch_page_async`(N, start_cursor=cursor)
+
+Finally, there's an idiom to efficiently loop over the Query results in a
+tasklet, properly yielding when appropriate::
+
+    it = query1.iter()
+    while (yield it.has_next_async()):
+        emp = it.next()
+        print emp.name, emp.age
+"""
 
 import functools
 import inspect

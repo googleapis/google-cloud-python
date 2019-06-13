@@ -12,7 +12,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Access datastore metadata."""
+"""Models and helper functions for access to a project's datastore metadata.
+
+These entities cannot be created by users, but are created as the results of
+__namespace__, __kind__, __property__ and __entity_group__ metadata queries
+or gets.
+
+A simplified API is also offered:
+
+    :func:`get_namespaces`: A list of namespace names.
+
+    :func:`get_kinds`: A list of kind names.
+
+    :func:`get_properties_of_kind`: A list of property names
+    for the given kind name.
+
+    :func:`get_representations_of_kind`: A dict mapping
+    property names to lists of representation ids.
+
+    get_kinds(), get_properties_of_kind(), get_representations_of_kind()
+    implicitly apply to the current namespace.
+
+    get_namespaces(), get_kinds(), get_properties_of_kind(),
+    get_representations_of_kind() have optional start and end arguments to
+    limit the query to a range of names, such that start <= name < end.
+"""
 
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import model
@@ -270,9 +294,11 @@ def get_kinds(start=None, end=None):
 
 def get_namespaces(start=None, end=None):
     """Return all namespaces in the specified range.
+
     Args:
         start (str): only return namespaces >= start if start is not None.
         end (str): only return namespaces < end if end is not None.
+
     Returns:
         List[str]: Namespace names between the (optional) start and end values.
     """
@@ -300,6 +326,7 @@ def get_properties_of_kind(kind, start=None, end=None):
         kind (str): name of kind whose properties you want.
         start (str): only return properties >= start if start is not None.
         end (str): only return properties < end if end is not None.
+
     Returns:
         List[str]: Property names of kind between the (optional) start and end
             values.
@@ -334,6 +361,7 @@ def get_representations_of_kind(kind, start=None, end=None):
         kind: name of kind whose properties you want.
         start: only return properties >= start if start is not None.
         end: only return properties < end if end is not None.
+
     Returns:
         dict: map of property names to their list of representations.
     """

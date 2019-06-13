@@ -27,6 +27,220 @@
 .. testcleanup:: *
 
     context.__exit__(None, None, None)
+
+A model class represents the structure of entities stored in the datastore.
+Applications define model classes to indicate the structure of their entities,
+then instantiate those model classes to create entities.
+
+All model classes must inherit (directly or indirectly) from Model. Through
+the magic of metaclasses, straightforward assignments in the model class
+definition can be used to declare the model's structure::
+
+    class Person(Model):
+        name = StringProperty()
+        age = IntegerProperty()
+
+We can now create a Person entity and write it to Cloud Datastore::
+
+    person = Person(name='Arthur Dent', age=42)
+    key = person.put()
+
+The return value from put() is a Key (see the documentation for ndb/key.py),
+which can be used to retrieve the same entity later::
+
+    person2 = key.get()
+    person2 == person  # Returns True
+
+To update an entity, simply change its attributes and write it back (note that
+this doesn't change the key)::
+
+    person2.name = 'Arthur Philip Dent'
+    person2.put()
+
+We can also delete an entity (by using the key)::
+
+    key.delete()
+
+The property definitions in the class body tell the system the names and the
+types of the fields to be stored in Cloud Datastore, whether they must be
+indexed, their default value, and more.
+
+Many different Property types exist.  Most are indexed by default, the
+exceptions are indicated in the list below:
+
+- :class:`StringProperty`: a short text string, limited to at most 1500 bytes (when
+  UTF-8 encoded from :class:`str` to bytes).
+- :class:`TextProperty`: an unlimited text string; unindexed.
+- :class:`BlobProperty`: an unlimited byte string; unindexed.
+- :class:`IntegerProperty`: a 64-bit signed integer.
+- :class:`FloatProperty`: a double precision floating point number.
+- :class:`BooleanProperty`: a bool value.
+- :class:`DateTimeProperty`: a datetime object.  Note: Datastore always uses UTC as the
+  timezone.
+- :class:`DateProperty`: a date object.
+- :class:`TimeProperty`: a time object.
+- :class:`GeoPtProperty`: a geographical location, i.e. (latitude, longitude).
+- :class:`KeyProperty`: a Cloud Datastore Key value, optionally constrained to referring
+  to a specific kind.
+- :class:`UserProperty`: a User object (for backwards compatibility only)
+- :class:`StructuredProperty`: a field that is itself structured like an entity; see
+  below for more details.
+- :class:`LocalStructuredProperty`: like StructuredProperty but the on-disk
+  representation is an opaque blob; unindexed.
+- :class:`ComputedProperty`: a property whose value is computed from other properties by
+  a user-defined function.  The property value is written to Cloud Datastore so
+  that it can be used in queries, but the value from Cloud Datastore is not
+  used when the entity is read back.
+- :class:`GenericProperty`: a property whose type is not constrained; mostly used by the
+  Expando class (see below) but also usable explicitly.
+- :class:`JsonProperty`: a property whose value is any object that can be serialized
+  using JSON; the value written to Cloud Datastore is a JSON representation of
+  that object.
+- :class:`PickleProperty`: a property whose value is any object that can be serialized
+  using Python's pickle protocol; the value written to the Cloud Datastore is
+  the pickled representation of that object, using the highest available pickle
+  protocol
+
+Most Property classes have similar constructor signatures.  They
+accept several optional keyword arguments:
+
+- name=<string>: the name used to store the property value in the datastore.
+  Unlike the following options, this may also be given as a positional
+  argument.
+- indexed=<bool>: indicates whether the property should be indexed (allowing
+  queries on this property's value).
+- repeated=<bool>: indicates that this property can have multiple values in
+  the same entity.
+- write_empty_list<bool>: For repeated value properties, controls whether
+  properties with no elements (the empty list) is written to Datastore. If
+  true, written, if false, then nothing is written to Datastore.
+- required=<bool>: indicates that this property must be given a value.
+- default=<value>: a default value if no explicit value is given.
+- choices=<list of values>: a list or tuple of allowable values.
+- validator=<function>: a general-purpose validation function. It will be
+  called with two arguments (prop, value) and should either return the
+  validated value or raise an exception. It is also allowed for the function
+  to modify the value, but the function should be idempotent. For example: a
+  validator that returns value.strip() or value.lower() is fine, but one that
+  returns value + '$' is not).
+- verbose_name=<value>: A human readable name for this property. This human
+  readable name can be used for html form labels.
+
+The repeated and required/default options are mutually exclusive: a repeated
+property cannot be required nor can it specify a default value (the default is
+always an empty list and an empty list is always an allowed value), but a
+required property can have a default.
+
+Some property types have additional arguments.  Some property types do not
+support all options.
+
+Repeated properties are always represented as Python lists; if there is only
+one value, the list has only one element. When a new list is assigned to a
+repeated property, all elements of the list are validated. Since it is also
+possible to mutate lists in place, repeated properties are re-validated before
+they are written to the datastore.
+
+No validation happens when an entity is read from Cloud Datastore; however
+property values read that have the wrong type (e.g. a string value for an
+IntegerProperty) are ignored.
+
+For non-repeated properties, None is always a possible value, and no validation
+is called when the value is set to None. However for required properties,
+writing the entity to Cloud Datastore requires the value to be something other
+than None (and valid).
+
+The StructuredProperty is different from most other properties; it lets you
+define a sub-structure for your entities. The substructure itself is defined
+using a model class, and the attribute value is an instance of that model
+class. However, it is not stored in the datastore as a separate entity;
+instead, its attribute values are included in the parent entity using a naming
+convention (the name of the structured attribute followed by a dot followed by
+the name of the subattribute). For example::
+
+    class Address(Model):
+      street = StringProperty()
+      city = StringProperty()
+
+    class Person(Model):
+      name = StringProperty()
+      address = StructuredProperty(Address)
+
+    p = Person(name='Harry Potter',
+               address=Address(street='4 Privet Drive',
+               city='Little Whinging'))
+    k = p.put()
+
+This would write a single 'Person' entity with three attributes (as you could
+verify using the Datastore Viewer in the Admin Console)::
+
+    name = 'Harry Potter'
+    address.street = '4 Privet Drive'
+    address.city = 'Little Whinging'
+
+Structured property types can be nested arbitrarily deep, but in a hierarchy of
+nested structured property types, only one level can have the repeated flag
+set. It is fine to have multiple structured properties referencing the same
+model class.
+
+It is also fine to use the same model class both as a top-level entity class
+and as for a structured property; however, queries for the model class will
+only return the top-level entities.
+
+The LocalStructuredProperty works similar to StructuredProperty on the Python
+side. For example::
+
+    class Address(Model):
+        street = StringProperty()
+        city = StringProperty()
+
+    class Person(Model):
+        name = StringProperty()
+        address = LocalStructuredProperty(Address)
+
+    p = Person(name='Harry Potter',
+               address=Address(street='4 Privet Drive',
+               city='Little Whinging'))
+    k = p.put()
+
+However, the data written to Cloud Datastore is different; it writes a 'Person'
+entity with a 'name' attribute as before and a single 'address' attribute
+whose value is a blob which encodes the Address value (using the standard
+"protocol buffer" encoding).
+
+The Model class offers basic query support. You can create a Query object by
+calling the query() class method. Iterating over a Query object returns the
+entities matching the query one at a time. Query objects are fully described
+in the documentation for query, but there is one handy shortcut that is only
+available through Model.query(): positional arguments are interpreted as filter
+expressions which are combined through an AND operator. For example::
+
+    Person.query(Person.name == 'Harry Potter', Person.age >= 11)
+
+is equivalent to::
+
+    Person.query().filter(Person.name == 'Harry Potter', Person.age >= 11)
+
+Keyword arguments passed to .query() are passed along to the Query() constructor.
+
+It is possible to query for field values of structured properties. For
+example::
+
+    qry = Person.query(Person.address.city == 'London')
+
+A number of top-level functions also live in this module:
+
+- :func:`get_multi` reads multiple entities at once.
+- :func:`put_multi` writes multiple entities at once.
+- :func:`delete_multi` deletes multiple entities at once.
+
+All these have a corresponding ``*_async()`` variant as well. The
+``*_multi_async()`` functions return a list of Futures.
+
+There are many other interesting features. For example, Model subclasses may
+define pre-call and post-call hooks for most operations (get, put, delete,
+allocate_ids), and Property classes may be subclassed to suit various needs.
+Documentation for writing a Property subclass is in the docs for the
+:class:`Property` class.
 """
 
 

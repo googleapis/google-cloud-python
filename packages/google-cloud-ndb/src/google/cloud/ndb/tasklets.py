@@ -14,8 +14,44 @@
 
 """Provides a tasklet decorator and related helpers.
 
-Tasklets are a way to write concurrently running functions without
-threads.
+Tasklets are a way to write concurrently running functions without threads.
+Tasklets are executed by an event loop and can suspend themselves blocking for
+I/O or some other operation using a yield statement. The notion of a blocking
+operation is abstracted into the Future class, but a tasklet may also yield an
+RPC in order to wait for that RPC to complete.
+
+The @tasklet decorator wraps generator function so that when it is called, a
+Future is returned while the generator is executed by the event loop. Within
+the tasklet, any yield of a Future waits for and returns the Future's result.
+For example::
+
+    @tasklet
+    def foo():
+        a = yield <some Future>
+        b = yield <another Future>
+        return a + b
+
+    def main():
+        f = foo()
+        x = f.result()
+        print x
+
+Note that blocking until the Future's result is available using result() is
+somewhat inefficient (though not vastly -- it is not busy-waiting). In most
+cases such code should be rewritten as a tasklet instead::
+
+    @tasklet
+    def main_tasklet():
+        f = foo()
+        x = yield f
+        print x
+
+Calling a tasklet automatically schedules it with the event loop::
+
+    def main():
+        f = main_tasklet()
+        eventloop.run()  # Run until no tasklets left to do
+        f.done()  # Returns True
 """
 import functools
 import types
