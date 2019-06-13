@@ -1400,6 +1400,7 @@ class RowIterator(HTTPIterator):
         See ``to_dataframe`` for argument descriptions.
         """
         if bqstorage_client is not None:
+            column_names = [field.name for field in self._schema]
             try:
                 # Iterate over the stream so that read errors are raised (and
                 # the method can then fallback to tabledata.list).
@@ -1407,6 +1408,7 @@ class RowIterator(HTTPIterator):
                     self._project,
                     self._table,
                     bqstorage_client,
+                    column_names,
                     dtypes,
                     preserve_order=self._preserve_order,
                     selected_fields=self._selected_fields,

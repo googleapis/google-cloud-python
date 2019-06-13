@@ -267,6 +267,7 @@ def download_dataframe_bqstorage(
     project_id,
     table,
     bqstorage_client,
+    column_names,
     dtypes,
     preserve_order=False,
     selected_fields=None,
@@ -294,11 +295,6 @@ def download_dataframe_bqstorage(
         read_options=read_options,
         requested_streams=requested_streams,
     )
-
-    # We need to parse the schema manually so that we can rearrange the
-    # columns.
-    schema = json.loads(session.avro_schema.schema)
-    column_names = [field["name"] for field in schema["fields"]]
 
     # Avoid reading rows from an empty table. pandas.concat will fail on an
     # empty list.
