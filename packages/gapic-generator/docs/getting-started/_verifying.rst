@@ -33,7 +33,7 @@ Here is a test script:
   #
   # If you wish, you can send `transport='grpc'` or `transport='http'`
   # to change which underlying transport layer is being used.
-  ia = vision.ImageAnnotator()
+  ia = vision.ImageAnnotator(host='vision.googleapis.com')
 
   # Send the request to the server and get the response.
   response = ia.batch_annotate_images({
