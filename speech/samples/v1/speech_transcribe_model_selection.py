@@ -19,16 +19,20 @@
 # To install the latest published package dependency, execute the following:
 #   pip install google-cloud-speech
 
+# sample-metadata
+#   title: Selecting a Transcription Model (Local File)
+#   description: Transcribe a short audio file using a specified transcription model
+#   usage: python3 samples/v1/speech_transcribe_model_selection.py [--local_file_path "resources/hello.wav"] [--model "phone_call"]
 import sys
 
 # [START speech_transcribe_model_selection]
 
 from google.cloud import speech_v1
 import io
-import six
+
 
 def sample_recognize(local_file_path, model):
-  """
+    """
     Transcribe a short audio file using a specified transcription model
 
     Args:
@@ -37,43 +41,39 @@ def sample_recognize(local_file_path, model):
       For a list of available transcription models, see:
       https://cloud.google.com/speech-to-text/docs/transcription-model#transcription_models
     """
-  # [START speech_transcribe_model_selection_core]
 
-  client = speech_v1.SpeechClient()
+    client = speech_v1.SpeechClient()
 
-  # local_file_path = 'resources/hello.wav'
-  # model = 'phone_call'
+    # local_file_path = 'resources/hello.wav'
+    # model = 'phone_call'
 
-  if isinstance(local_file_path, six.binary_type):
-    local_file_path = local_file_path.decode('utf-8')
-  if isinstance(model, six.binary_type):
-    model = model.decode('utf-8')
+    # The language of the supplied audio
+    language_code = "en-US"
+    config = {"model": model, "language_code": language_code}
+    with io.open(local_file_path, "rb") as f:
+        content = f.read()
+    audio = {"content": content}
 
-  # The language of the supplied audio
-  language_code = 'en-US'
-  config = {'model': model, 'language_code': language_code}
-  with io.open(local_file_path, 'rb') as f:
-    content = f.read()
-  audio = {'content': content}
+    response = client.recognize(config, audio)
+    for result in response.results:
+        # First alternative is the most probable result
+        alternative = result.alternatives[0]
+        print(u"Transcript: {}".format(alternative.transcript))
 
-  response = client.recognize(config, audio)
-  for result in response.results:
-    # First alternative is the most probable result
-    alternative = result.alternatives[0]
-    print('Transcript: {}'.format(alternative.transcript))
 
-  # [END speech_transcribe_model_selection_core]
 # [END speech_transcribe_model_selection]
 
+
 def main():
-  import argparse
+    import argparse
 
-  parser = argparse.ArgumentParser()
-  parser.add_argument('--local_file_path', type=str, default='resources/hello.wav')
-  parser.add_argument('--model', type=str, default='phone_call')
-  args = parser.parse_args()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--local_file_path", type=str, default="resources/hello.wav")
+    parser.add_argument("--model", type=str, default="phone_call")
+    args = parser.parse_args()
 
-  sample_recognize(args.local_file_path, args.model)
+    sample_recognize(args.local_file_path, args.model)
 
-if __name__ == '__main__':
-  main()
+
+if __name__ == "__main__":
+    main()

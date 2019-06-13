@@ -19,64 +19,75 @@
 # To install the latest published package dependency, execute the following:
 #   pip install google-cloud-speech
 
+# sample-metadata
+#   title: Transcript Audio File using Long Running Operation (Cloud Storage) (LRO)
+#   description: Transcribe long audio file from Cloud Storage using asynchronous speech recognition
+
+#   usage: python3 samples/v1/speech_transcribe_async_gcs.py [--storage_uri "gs://cloud-samples-data/speech/brooklyn_bridge.raw"]
 import sys
 
 # [START speech_transcribe_async_gcs]
 
 from google.cloud import speech_v1
 from google.cloud.speech_v1 import enums
-import six
+
 
 def sample_long_running_recognize(storage_uri):
-  """
+    """
     Transcribe long audio file from Cloud Storage using asynchronous speech
     recognition
 
     Args:
       storage_uri URI for audio file in Cloud Storage, e.g. gs://[BUCKET]/[FILE]
     """
-  # [START speech_transcribe_async_gcs_core]
 
-  client = speech_v1.SpeechClient()
+    client = speech_v1.SpeechClient()
 
-  # storage_uri = 'gs://cloud-samples-data/speech/brooklyn_bridge.raw'
+    # storage_uri = 'gs://cloud-samples-data/speech/brooklyn_bridge.raw'
 
-  if isinstance(storage_uri, six.binary_type):
-    storage_uri = storage_uri.decode('utf-8')
+    # Sample rate in Hertz of the audio data sent
+    sample_rate_hertz = 16000
 
-  # Sample rate in Hertz of the audio data sent
-  sample_rate_hertz = 16000
+    # The language of the supplied audio
+    language_code = "en-US"
 
-  # The language of the supplied audio
-  language_code = 'en-US'
+    # Encoding of audio data sent. This sample sets this explicitly.
+    # This field is optional for FLAC and WAV audio formats.
+    encoding = enums.RecognitionConfig.AudioEncoding.LINEAR16
+    config = {
+        "sample_rate_hertz": sample_rate_hertz,
+        "language_code": language_code,
+        "encoding": encoding,
+    }
+    audio = {"uri": storage_uri}
 
-  # Encoding of audio data sent. This sample sets this explicitly.
-  # This field is optional for FLAC and WAV audio formats.
-  encoding = enums.RecognitionConfig.AudioEncoding.LINEAR16
-  config = {'sample_rate_hertz': sample_rate_hertz, 'language_code': language_code, 'encoding': encoding}
-  audio = {'uri': storage_uri}
+    operation = client.long_running_recognize(config, audio)
 
-  operation = client.long_running_recognize(config, audio)
+    print(u"Waiting for operation to complete...")
+    response = operation.result()
 
-  print('Waiting for operation to complete...')
-  response = operation.result()
+    for result in response.results:
+        # First alternative is the most probable result
+        alternative = result.alternatives[0]
+        print(u"Transcript: {}".format(alternative.transcript))
 
-  for result in response.results:
-    # First alternative is the most probable result
-    alternative = result.alternatives[0]
-    print('Transcript: {}'.format(alternative.transcript))
 
-  # [END speech_transcribe_async_gcs_core]
 # [END speech_transcribe_async_gcs]
 
+
 def main():
-  import argparse
+    import argparse
 
-  parser = argparse.ArgumentParser()
-  parser.add_argument('--storage_uri', type=str, default='gs://cloud-samples-data/speech/brooklyn_bridge.raw')
-  args = parser.parse_args()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--storage_uri",
+        type=str,
+        default="gs://cloud-samples-data/speech/brooklyn_bridge.raw",
+    )
+    args = parser.parse_args()
 
-  sample_long_running_recognize(args.storage_uri)
+    sample_long_running_recognize(args.storage_uri)
 
-if __name__ == '__main__':
-  main()
+
+if __name__ == "__main__":
+    main()

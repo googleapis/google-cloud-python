@@ -19,61 +19,70 @@
 # To install the latest published package dependency, execute the following:
 #   pip install google-cloud-speech
 
+# sample-metadata
+#   title: Multi-Channel Audio Transcription (Cloud Storage)
+#   description: Transcribe a short audio file from Cloud Storage with multiple channels
+
+#   usage: python3 samples/v1/speech_transcribe_multichannel_gcs.py [--storage_uri "gs://cloud-samples-data/speech/multi.wav"]
 import sys
 
 # [START speech_transcribe_multichannel_gcs]
 
 from google.cloud import speech_v1
-import six
+
 
 def sample_recognize(storage_uri):
-  """
+    """
     Transcribe a short audio file from Cloud Storage with multiple channels
 
     Args:
       storage_uri URI for audio file in Cloud Storage, e.g. gs://[BUCKET]/[FILE]
     """
-  # [START speech_transcribe_multichannel_gcs_core]
 
-  client = speech_v1.SpeechClient()
+    client = speech_v1.SpeechClient()
 
-  # storage_uri = 'gs://cloud-samples-data/speech/multi.wav'
+    # storage_uri = 'gs://cloud-samples-data/speech/multi.wav'
 
-  if isinstance(storage_uri, six.binary_type):
-    storage_uri = storage_uri.decode('utf-8')
+    # The number of channels in the input audio file (optional)
+    audio_channel_count = 2
 
-  # The number of channels in the input audio file (optional)
-  audio_channel_count = 2
+    # When set to true, each audio channel will be recognized separately.
+    # The recognition result will contain a channel_tag field to state which
+    # channel that result belongs to
+    enable_separate_recognition_per_channel = True
 
-  # When set to true, each audio channel will be recognized separately.
-  # The recognition result will contain a channel_tag field to state which
-  # channel that result belongs to
-  enable_separate_recognition_per_channel = True
+    # The language of the supplied audio
+    language_code = "en-US"
+    config = {
+        "audio_channel_count": audio_channel_count,
+        "enable_separate_recognition_per_channel": enable_separate_recognition_per_channel,
+        "language_code": language_code,
+    }
+    audio = {"uri": storage_uri}
 
-  # The language of the supplied audio
-  language_code = 'en-US'
-  config = {'audio_channel_count': audio_channel_count, 'enable_separate_recognition_per_channel': enable_separate_recognition_per_channel, 'language_code': language_code}
-  audio = {'uri': storage_uri}
+    response = client.recognize(config, audio)
+    for result in response.results:
+        # channel_tag to recognize which audio channel this result is for
+        print(u"Channel tag: {}".format(result.channel_tag))
+        # First alternative is the most probable result
+        alternative = result.alternatives[0]
+        print(u"Transcript: {}".format(alternative.transcript))
 
-  response = client.recognize(config, audio)
-  for result in response.results:
-    # channel_tag to recognize which audio channel this result is for
-    print('Channel tag: {}'.format(result.channel_tag))
-    # First alternative is the most probable result
-    alternative = result.alternatives[0]
-    print('Transcript: {}'.format(alternative.transcript))
 
-  # [END speech_transcribe_multichannel_gcs_core]
 # [END speech_transcribe_multichannel_gcs]
 
+
 def main():
-  import argparse
+    import argparse
 
-  parser = argparse.ArgumentParser()
-  parser.add_argument('--storage_uri', type=str, default='gs://cloud-samples-data/speech/multi.wav')
-  args = parser.parse_args()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--storage_uri", type=str, default="gs://cloud-samples-data/speech/multi.wav"
+    )
+    args = parser.parse_args()
 
-  sample_recognize(args.storage_uri)
+    sample_recognize(args.storage_uri)
 
-if __name__ == '__main__':
-  main()
+
+if __name__ == "__main__":
+    main()

@@ -19,64 +19,75 @@
 # To install the latest published package dependency, execute the following:
 #   pip install google-cloud-speech
 
+# sample-metadata
+#   title: Detecting language spoken automatically (Local File) (Beta)
+#   description: Transcribe a short audio file with language detected from a list of possible languages
+
+#   usage: python3 samples/v1p1beta1/speech_transcribe_multilanguage_beta.py [--local_file_path "resources/brooklyn_bridge.flac"]
 import sys
 
 # [START speech_transcribe_multilanguage_beta]
 
 from google.cloud import speech_v1p1beta1
 import io
-import six
+
 
 def sample_recognize(local_file_path):
-  """
+    """
     Transcribe a short audio file with language detected from a list of possible
     languages
 
     Args:
       local_file_path Path to local audio file, e.g. /path/audio.wav
     """
-  # [START speech_transcribe_multilanguage_beta_core]
 
-  client = speech_v1p1beta1.SpeechClient()
+    client = speech_v1p1beta1.SpeechClient()
 
-  # local_file_path = 'resources/brooklyn_bridge.flac'
+    # local_file_path = 'resources/brooklyn_bridge.flac'
 
-  if isinstance(local_file_path, six.binary_type):
-    local_file_path = local_file_path.decode('utf-8')
+    # The language of the supplied audio. Even though additional languages are
+    # provided by alternative_language_codes, a primary language is still required.
+    language_code = "fr"
 
-  # The language of the supplied audio. Even though additional languages are
-  # provided by alternative_language_codes, a primary language is still required.
-  language_code = 'fr'
+    # Specify up to 3 additional languages as possible alternative languages of the
+    # supplied audio.
+    alternative_language_codes_element = "es"
+    alternative_language_codes_element_2 = "en"
+    alternative_language_codes = [
+        alternative_language_codes_element,
+        alternative_language_codes_element_2,
+    ]
+    config = {
+        "language_code": language_code,
+        "alternative_language_codes": alternative_language_codes,
+    }
+    with io.open(local_file_path, "rb") as f:
+        content = f.read()
+    audio = {"content": content}
 
-  # Specify up to 3 additional languages as possible alternative languages of the
-  # supplied audio.
-  alternative_language_codes_element = 'es'
-  alternative_language_codes_element_2 = 'en'
-  alternative_language_codes = [alternative_language_codes_element, alternative_language_codes_element_2]
-  config = {'language_code': language_code, 'alternative_language_codes': alternative_language_codes}
-  with io.open(local_file_path, 'rb') as f:
-    content = f.read()
-  audio = {'content': content}
+    response = client.recognize(config, audio)
+    for result in response.results:
+        # The language_code which was detected as the most likely being spoken in the audio
+        print(u"Detected language: {}".format(result.language_code))
+        # First alternative is the most probable result
+        alternative = result.alternatives[0]
+        print(u"Transcript: {}".format(alternative.transcript))
 
-  response = client.recognize(config, audio)
-  for result in response.results:
-    # The language_code which was detected as the most likely being spoken in the audio
-    print('Detected language: {}'.format(result.language_code))
-    # First alternative is the most probable result
-    alternative = result.alternatives[0]
-    print('Transcript: {}'.format(alternative.transcript))
 
-  # [END speech_transcribe_multilanguage_beta_core]
 # [END speech_transcribe_multilanguage_beta]
 
+
 def main():
-  import argparse
+    import argparse
 
-  parser = argparse.ArgumentParser()
-  parser.add_argument('--local_file_path', type=str, default='resources/brooklyn_bridge.flac')
-  args = parser.parse_args()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--local_file_path", type=str, default="resources/brooklyn_bridge.flac"
+    )
+    args = parser.parse_args()
 
-  sample_recognize(args.local_file_path)
+    sample_recognize(args.local_file_path)
 
-if __name__ == '__main__':
-  main()
+
+if __name__ == "__main__":
+    main()

@@ -19,13 +19,18 @@
 # To install the latest published package dependency, execute the following:
 #   pip install google-cloud-speech
 
+# sample-metadata
+#   title: Separating different speakers (Local File) (LRO) (Beta)
+#   description: Print confidence level for individual words in a transcription of a short audio file
+Separating different speakers in an audio file recording
+
+#   usage: python3 samples/v1p1beta1/speech_transcribe_diarization_beta.py [--local_file_path "resources/commercial_mono.wav"]
 import sys
 
 # [START speech_transcribe_diarization_beta]
 
 from google.cloud import speech_v1p1beta1
 import io
-import six
 
 def sample_long_running_recognize(local_file_path):
   """
@@ -36,14 +41,10 @@ def sample_long_running_recognize(local_file_path):
     Args:
       local_file_path Path to local audio file, e.g. /path/audio.wav
     """
-  # [START speech_transcribe_diarization_beta_core]
 
   client = speech_v1p1beta1.SpeechClient()
 
   # local_file_path = 'resources/commercial_mono.wav'
-
-  if isinstance(local_file_path, six.binary_type):
-    local_file_path = local_file_path.decode('utf-8')
 
   # If enabled, each word in the first alternative of each result will be
   # tagged with a speaker tag to identify the speaker.
@@ -61,19 +62,17 @@ def sample_long_running_recognize(local_file_path):
 
   operation = client.long_running_recognize(config, audio)
 
-  print('Waiting for operation to complete...')
+  print(u'Waiting for operation to complete...')
   response = operation.result()
 
   for result in response.results:
     # First alternative has words tagged with speakers
     alternative = result.alternatives[0]
-    print('Transcript: {}'.format(alternative.transcript))
+    print(u'Transcript: {}'.format(alternative.transcript))
     # Print the speaker_tag of each word
     for word in alternative.words:
-      print('Word: {}'.format(word.word))
-      print('Speaker tag: {}'.format(word.speaker_tag))
-
-  # [END speech_transcribe_diarization_beta_core]
+      print(u'Word: {}'.format(word.word))
+      print(u'Speaker tag: {}'.format(word.speaker_tag))
 # [END speech_transcribe_diarization_beta]
 
 def main():

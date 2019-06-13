@@ -19,59 +19,67 @@
 # To install the latest published package dependency, execute the following:
 #   pip install google-cloud-speech
 
+# sample-metadata
+#   title: Getting punctuation in results (Local File) (Beta)
+#   description: Transcribe a short audio file with punctuation
+
+#   usage: python3 samples/v1p1beta1/speech_transcribe_auto_punctuation_beta.py [--local_file_path "resources/commercial_mono.wav"]
 import sys
 
 # [START speech_transcribe_auto_punctuation_beta]
 
 from google.cloud import speech_v1p1beta1
 import io
-import six
+
 
 def sample_recognize(local_file_path):
-  """
+    """
     Transcribe a short audio file with punctuation
 
     Args:
       local_file_path Path to local audio file, e.g. /path/audio.wav
     """
-  # [START speech_transcribe_auto_punctuation_beta_core]
 
-  client = speech_v1p1beta1.SpeechClient()
+    client = speech_v1p1beta1.SpeechClient()
 
-  # local_file_path = 'resources/commercial_mono.wav'
+    # local_file_path = 'resources/commercial_mono.wav'
 
-  if isinstance(local_file_path, six.binary_type):
-    local_file_path = local_file_path.decode('utf-8')
+    # When enabled, trascription results may include punctuation (available for
+    # select languages).
+    enable_automatic_punctuation = True
 
-  # When enabled, trascription results may include punctuation (available for
-  # select languages).
-  enable_automatic_punctuation = True
+    # The language of the supplied audio. Even though additional languages are
+    # provided by alternative_language_codes, a primary language is still required.
+    language_code = "en-US"
+    config = {
+        "enable_automatic_punctuation": enable_automatic_punctuation,
+        "language_code": language_code,
+    }
+    with io.open(local_file_path, "rb") as f:
+        content = f.read()
+    audio = {"content": content}
 
-  # The language of the supplied audio. Even though additional languages are
-  # provided by alternative_language_codes, a primary language is still required.
-  language_code = 'en-US'
-  config = {'enable_automatic_punctuation': enable_automatic_punctuation, 'language_code': language_code}
-  with io.open(local_file_path, 'rb') as f:
-    content = f.read()
-  audio = {'content': content}
+    response = client.recognize(config, audio)
+    for result in response.results:
+        # First alternative is the most probable result
+        alternative = result.alternatives[0]
+        print(u"Transcript: {}".format(alternative.transcript))
 
-  response = client.recognize(config, audio)
-  for result in response.results:
-    # First alternative is the most probable result
-    alternative = result.alternatives[0]
-    print('Transcript: {}'.format(alternative.transcript))
 
-  # [END speech_transcribe_auto_punctuation_beta_core]
 # [END speech_transcribe_auto_punctuation_beta]
 
+
 def main():
-  import argparse
+    import argparse
 
-  parser = argparse.ArgumentParser()
-  parser.add_argument('--local_file_path', type=str, default='resources/commercial_mono.wav')
-  args = parser.parse_args()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--local_file_path", type=str, default="resources/commercial_mono.wav"
+    )
+    args = parser.parse_args()
 
-  sample_recognize(args.local_file_path)
+    sample_recognize(args.local_file_path)
 
-if __name__ == '__main__':
-  main()
+
+if __name__ == "__main__":
+    main()

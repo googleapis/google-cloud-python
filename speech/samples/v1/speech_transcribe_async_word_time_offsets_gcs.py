@@ -19,65 +19,83 @@
 # To install the latest published package dependency, execute the following:
 #   pip install google-cloud-speech
 
+# sample-metadata
+#   title: Getting word timestamps (Cloud Storage) (LRO)
+#   description: Print start and end time of each word spoken in audio file from Cloud Storage
+
+#   usage: python3 samples/v1/speech_transcribe_async_word_time_offsets_gcs.py [--storage_uri "gs://cloud-samples-data/speech/brooklyn_bridge.flac"]
 import sys
 
 # [START speech_transcribe_async_word_time_offsets_gcs]
 
 from google.cloud import speech_v1
-import six
+
 
 def sample_long_running_recognize(storage_uri):
-  """
+    """
     Print start and end time of each word spoken in audio file from Cloud Storage
 
     Args:
       storage_uri URI for audio file in Cloud Storage, e.g. gs://[BUCKET]/[FILE]
     """
-  # [START speech_transcribe_async_word_time_offsets_gcs_core]
 
-  client = speech_v1.SpeechClient()
+    client = speech_v1.SpeechClient()
 
-  # storage_uri = 'gs://cloud-samples-data/speech/brooklyn_bridge.flac'
+    # storage_uri = 'gs://cloud-samples-data/speech/brooklyn_bridge.flac'
 
-  if isinstance(storage_uri, six.binary_type):
-    storage_uri = storage_uri.decode('utf-8')
+    # When enabled, the first result returned by the API will include a list
+    # of words and the start and end time offsets (timestamps) for those words.
+    enable_word_time_offsets = True
 
-  # When enabled, the first result returned by the API will include a list
-  # of words and the start and end time offsets (timestamps) for those words.
-  enable_word_time_offsets = True
+    # The language of the supplied audio
+    language_code = "en-US"
+    config = {
+        "enable_word_time_offsets": enable_word_time_offsets,
+        "language_code": language_code,
+    }
+    audio = {"uri": storage_uri}
 
-  # The language of the supplied audio
-  language_code = 'en-US'
-  config = {'enable_word_time_offsets': enable_word_time_offsets, 'language_code': language_code}
-  audio = {'uri': storage_uri}
+    operation = client.long_running_recognize(config, audio)
 
-  operation = client.long_running_recognize(config, audio)
+    print(u"Waiting for operation to complete...")
+    response = operation.result()
 
-  print('Waiting for operation to complete...')
-  response = operation.result()
+    # The first result includes start and end time word offsets
+    result = response.results[0]
+    # First alternative is the most probable result
+    alternative = result.alternatives[0]
+    print(u"Transcript: {}".format(alternative.transcript))
+    # Print the start and end time of each word
+    for word in alternative.words:
+        print(u"Word: {}".format(word.word))
+        print(
+            u"Start time: {} seconds {} nanos".format(
+                word.start_time.seconds, word.start_time.nanos
+            )
+        )
+        print(
+            u"End time: {} seconds {} nanos".format(
+                word.end_time.seconds, word.end_time.nanos
+            )
+        )
 
-  # The first result includes start and end time word offsets
-  result = response.results[0]
-  # First alternative is the most probable result
-  alternative = result.alternatives[0]
-  print('Transcript: {}'.format(alternative.transcript))
-  # Print the start and end time of each word
-  for word in alternative.words:
-    print('Word: {}'.format(word.word))
-    print('Start time: {} seconds {} nanos'.format(word.start_time.seconds, word.start_time.nanos))
-    print('End time: {} seconds {} nanos'.format(word.end_time.seconds, word.end_time.nanos))
 
-  # [END speech_transcribe_async_word_time_offsets_gcs_core]
 # [END speech_transcribe_async_word_time_offsets_gcs]
 
+
 def main():
-  import argparse
+    import argparse
 
-  parser = argparse.ArgumentParser()
-  parser.add_argument('--storage_uri', type=str, default='gs://cloud-samples-data/speech/brooklyn_bridge.flac')
-  args = parser.parse_args()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--storage_uri",
+        type=str,
+        default="gs://cloud-samples-data/speech/brooklyn_bridge.flac",
+    )
+    args = parser.parse_args()
 
-  sample_long_running_recognize(args.storage_uri)
+    sample_long_running_recognize(args.storage_uri)
 
-if __name__ == '__main__':
-  main()
+
+if __name__ == "__main__":
+    main()

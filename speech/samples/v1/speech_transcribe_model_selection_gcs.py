@@ -19,15 +19,20 @@
 # To install the latest published package dependency, execute the following:
 #   pip install google-cloud-speech
 
+# sample-metadata
+#   title: Selecting a Transcription Model (Cloud Storage)
+#   description: Transcribe a short audio file from Cloud Storage using a specified transcription model
+
+#   usage: python3 samples/v1/speech_transcribe_model_selection_gcs.py [--storage_uri "gs://cloud-samples-data/speech/hello.wav"] [--model "phone_call"]
 import sys
 
 # [START speech_transcribe_model_selection_gcs]
 
 from google.cloud import speech_v1
-import six
+
 
 def sample_recognize(storage_uri, model):
-  """
+    """
     Transcribe a short audio file from Cloud Storage using a specified
     transcription model
 
@@ -37,41 +42,39 @@ def sample_recognize(storage_uri, model):
       For a list of available transcription models, see:
       https://cloud.google.com/speech-to-text/docs/transcription-model#transcription_models
     """
-  # [START speech_transcribe_model_selection_gcs_core]
 
-  client = speech_v1.SpeechClient()
+    client = speech_v1.SpeechClient()
 
-  # storage_uri = 'gs://cloud-samples-data/speech/hello.wav'
-  # model = 'phone_call'
+    # storage_uri = 'gs://cloud-samples-data/speech/hello.wav'
+    # model = 'phone_call'
 
-  if isinstance(storage_uri, six.binary_type):
-    storage_uri = storage_uri.decode('utf-8')
-  if isinstance(model, six.binary_type):
-    model = model.decode('utf-8')
+    # The language of the supplied audio
+    language_code = "en-US"
+    config = {"model": model, "language_code": language_code}
+    audio = {"uri": storage_uri}
 
-  # The language of the supplied audio
-  language_code = 'en-US'
-  config = {'model': model, 'language_code': language_code}
-  audio = {'uri': storage_uri}
+    response = client.recognize(config, audio)
+    for result in response.results:
+        # First alternative is the most probable result
+        alternative = result.alternatives[0]
+        print(u"Transcript: {}".format(alternative.transcript))
 
-  response = client.recognize(config, audio)
-  for result in response.results:
-    # First alternative is the most probable result
-    alternative = result.alternatives[0]
-    print('Transcript: {}'.format(alternative.transcript))
 
-  # [END speech_transcribe_model_selection_gcs_core]
 # [END speech_transcribe_model_selection_gcs]
 
+
 def main():
-  import argparse
+    import argparse
 
-  parser = argparse.ArgumentParser()
-  parser.add_argument('--storage_uri', type=str, default='gs://cloud-samples-data/speech/hello.wav')
-  parser.add_argument('--model', type=str, default='phone_call')
-  args = parser.parse_args()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--storage_uri", type=str, default="gs://cloud-samples-data/speech/hello.wav"
+    )
+    parser.add_argument("--model", type=str, default="phone_call")
+    args = parser.parse_args()
 
-  sample_recognize(args.storage_uri, args.model)
+    sample_recognize(args.storage_uri, args.model)
 
-if __name__ == '__main__':
-  main()
+
+if __name__ == "__main__":
+    main()
