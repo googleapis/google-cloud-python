@@ -760,14 +760,8 @@ class DocumentExtractorForMerge(DocumentExtractor):
 
     def _get_update_mask(self, allow_empty_mask=False):
         # Mask uses dotted / quoted paths.
-        mask_paths = [
-            field_path.to_api_repr()
-            for field_path in self.merge
-            if field_path not in self.transform_merge
-        ]
-
-        if mask_paths or allow_empty_mask:
-            return common_pb2.DocumentMask(field_paths=mask_paths)
+        mask_paths = [field_path.to_api_repr() for field_path in self.merge]
+        return common_pb2.DocumentMask(field_paths=mask_paths)
 
 
 def pbs_for_set_with_merge(document_path, document_data, merge):
@@ -836,10 +830,6 @@ class DocumentExtractorForUpdate(DocumentExtractor):
         for field_path in self.top_level_paths:
             if field_path not in self.transform_paths:
                 mask_paths.append(field_path.to_api_repr())
-            else:
-                prefix = FieldPath(*field_path.parts[:-1])
-                if prefix.parts:
-                    mask_paths.append(prefix.to_api_repr())
 
         return common_pb2.DocumentMask(field_paths=mask_paths)
 

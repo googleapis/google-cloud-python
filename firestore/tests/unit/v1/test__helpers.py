@@ -1951,10 +1951,11 @@ class Test_pbs_for_set_with_merge(unittest.TestCase):
         document_data["butter"] = SERVER_TIMESTAMP
 
         write_pbs = self._call_fut(document_path, document_data, merge=True)
-
         update_pb = self._make_write_w_document(document_path, **update_data)
+        update_data["butter"] = SERVER_TIMESTAMP
         self._update_document_mask(update_pb, field_paths=sorted(update_data))
         transform_pb = self._make_write_w_transform(document_path, fields=["butter"])
+
         expected_pbs = [update_pb, transform_pb]
         self.assertEqual(write_pbs, expected_pbs)
 
@@ -1973,7 +1974,7 @@ class Test_pbs_for_set_with_merge(unittest.TestCase):
         update_pb = self._make_write_w_document(
             document_path, cheese=document_data["cheese"]
         )
-        self._update_document_mask(update_pb, ["cheese"])
+        self._update_document_mask(update_pb, ["cheese", "butter"])
         transform_pb = self._make_write_w_transform(document_path, fields=["butter"])
         expected_pbs = [update_pb, transform_pb]
         self.assertEqual(write_pbs, expected_pbs)
@@ -1987,8 +1988,8 @@ class Test_pbs_for_set_with_merge(unittest.TestCase):
         document_data["butter"] = {"pecan": SERVER_TIMESTAMP}
 
         write_pbs = self._call_fut(document_path, document_data, merge=["butter.pecan"])
-
         update_pb = self._make_write_w_document(document_path)
+        self._update_document_mask(update_pb, ["butter.pecan"])
         transform_pb = self._make_write_w_transform(
             document_path, fields=["butter.pecan"]
         )
@@ -2107,14 +2108,8 @@ class Test_pbs_for_update(unittest.TestCase):
             field_updates[field_path2] = SERVER_TIMESTAMP
 
         write_pbs = self._call_fut(document_path, field_updates, option)
-
         map_pb = document_pb2.MapValue(fields={"yum": _value_pb(bytes_value=value)})
-
-        if do_transform:
-            field_paths = [field_path1, "blog"]
-        else:
-            field_paths = [field_path1]
-
+        field_paths = [field_path1]
         expected_update_pb = write_pb2.Write(
             update=document_pb2.Document(
                 name=document_path, fields={"bitez": _value_pb(map_value=map_pb)}
