@@ -802,13 +802,14 @@ class Bucket(_PropertyMixin):
         iterator.bucket = self
         iterator.prefixes = set()
         return iterator
-    
+
     def list_blob_objects(
         self,
         max_results=None,
         prefix=None,
         delimiter=None,
         projection="noAcl",
+        fields=None,
         client=None,
     ):
         """Return an iterator used to find blobs in the bucket.
@@ -833,6 +834,15 @@ class Bucket(_PropertyMixin):
                            Defaults to ``'noAcl'``. Specifies the set of
                            properties to return.
 
+        :type fields: str
+        :param fields:
+            (Optional) Selector specifying which fields to include
+            in a partial response. Must be a list of fields. For
+            example to get a partial response with just the next
+            page token and the name and language of each blob returned:
+            ``'items(name,contentLanguage),nextPageToken'``.
+            See: https://cloud.google.com/storage/docs/json_api/v1/parameters#fields
+
         :type client: :class:`~google.cloud.storage.client.Client`
         :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
@@ -841,14 +851,16 @@ class Bucket(_PropertyMixin):
         :returns: Iterator of all :class:`~google.cloud.storage.blob.Blob`
                   in this bucket matching the arguments.
         """
+
+        if fields is None:
+            fields="items(name)"
+
         iterator = self.list_blobs(
             max_results=max_results,
-            page_token=None,
             prefix=prefix,
             delimiter=delimiter,
-            versions=None,
             projection=projection,
-            fields=None,
+            fields=fields,
             client=client,
         )
         return iterator
