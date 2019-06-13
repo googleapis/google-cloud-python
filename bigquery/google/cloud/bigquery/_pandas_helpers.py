@@ -16,7 +16,6 @@
 
 import collections
 import concurrent.futures
-import json
 import warnings
 
 from six.moves import queue
