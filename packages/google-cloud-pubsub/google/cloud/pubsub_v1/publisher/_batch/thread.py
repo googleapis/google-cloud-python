@@ -187,56 +187,63 @@ class Batch(base.Batch):
                 _LOGGER.debug("Batch is already in progress, exiting commit")
                 return
 
-            # Sanity check: If there are no messages, no-op.
-            if not self._messages:
-                _LOGGER.debug("No messages to publish, exiting commit")
-                self._status = base.BatchStatus.SUCCESS
-                return
+        # Once in the IN_PROGRESS state, no other thread can publish additional
+        # messages or initiate a commit (those operations become a no-op), thus
+        # it is safe to release the state lock here. Releasing the lock avoids
+        # blocking other threads in case api.publish() below takes a long time
+        # to complete.
+        # https://github.com/googleapis/google-cloud-python/issues/8036
 
-            # Begin the request to publish these messages.
-            # Log how long the underlying request takes.
-            start = time.time()
+        # Sanity check: If there are no messages, no-op.
+        if not self._messages:
+            _LOGGER.debug("No messages to publish, exiting commit")
+            self._status = base.BatchStatus.SUCCESS
+            return
 
-            try:
-                response = self._client.api.publish(self._topic, self._messages)
-            except google.api_core.exceptions.GoogleAPIError as exc:
-                # We failed to publish, set the exception on all futures and
-                # exit.
-                self._status = base.BatchStatus.ERROR
+        # Begin the request to publish these messages.
+        # Log how long the underlying request takes.
+        start = time.time()
 
-                for future in self._futures:
-                    future.set_exception(exc)
+        try:
+            response = self._client.api.publish(self._topic, self._messages)
+        except google.api_core.exceptions.GoogleAPIError as exc:
+            # We failed to publish, set the exception on all futures and
+            # exit.
+            self._status = base.BatchStatus.ERROR
 
-                _LOGGER.exception("Failed to publish %s messages.", len(self._futures))
-                return
+            for future in self._futures:
+                future.set_exception(exc)
 
-            end = time.time()
-            _LOGGER.debug("gRPC Publish took %s seconds.", end - start)
+            _LOGGER.exception("Failed to publish %s messages.", len(self._futures))
+            return
 
-            if len(response.message_ids) == len(self._futures):
-                # Iterate over the futures on the queue and return the response
-                # IDs. We are trusting that there is a 1:1 mapping, and raise
-                # an exception if not.
-                self._status = base.BatchStatus.SUCCESS
-                zip_iter = six.moves.zip(response.message_ids, self._futures)
-                for message_id, future in zip_iter:
-                    future.set_result(message_id)
-            else:
-                # Sanity check: If the number of message IDs is not equal to
-                # the number of futures I have, then something went wrong.
-                self._status = base.BatchStatus.ERROR
-                exception = exceptions.PublishError(
-                    "Some messages were not successfully published."
-                )
+        end = time.time()
+        _LOGGER.debug("gRPC Publish took %s seconds.", end - start)
 
-                for future in self._futures:
-                    future.set_exception(exception)
+        if len(response.message_ids) == len(self._futures):
+            # Iterate over the futures on the queue and return the response
+            # IDs. We are trusting that there is a 1:1 mapping, and raise
+            # an exception if not.
+            self._status = base.BatchStatus.SUCCESS
+            zip_iter = six.moves.zip(response.message_ids, self._futures)
+            for message_id, future in zip_iter:
+                future.set_result(message_id)
+        else:
+            # Sanity check: If the number of message IDs is not equal to
+            # the number of futures I have, then something went wrong.
+            self._status = base.BatchStatus.ERROR
+            exception = exceptions.PublishError(
+                "Some messages were not successfully published."
+            )
 
-                _LOGGER.error(
-                    "Only %s of %s messages were published.",
-                    len(response.message_ids),
-                    len(self._futures),
-                )
+            for future in self._futures:
+                future.set_exception(exception)
+
+            _LOGGER.error(
+                "Only %s of %s messages were published.",
+                len(response.message_ids),
+                len(self._futures),
+            )
 
     def monitor(self):
         """Commit this batch after sufficient time has elapsed.
@@ -258,7 +265,8 @@ class Batch(base.Batch):
 
         Add the given message to this object; this will cause it to be
         published once the batch either has enough messages or a sufficient
-        period of time has elapsed.
+        period of time has elapsed. If the batch is full or the commit is
+        already in progress, the method does not do anything.
 
         This method is called by :meth:`~.PublisherClient.publish`.
 
