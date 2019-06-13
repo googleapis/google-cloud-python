@@ -32,7 +32,7 @@ for version in versions:
         "speech",
         version,
         include_protos=True,
-        generator_args=['--dev_samples'])
+        include_samples=True)
 
     # Don't move over __init__.py, as we modify it to make the generated client
     # use helpers.py.
@@ -40,8 +40,8 @@ for version in versions:
     s.move(library / f"google/cloud/speech_{version}/gapic")
     s.move(library / f"google/cloud/speech_{version}/proto")
     s.move(library / f"tests/unit/gapic/{version}")
-    s.move(library / f"samples/{version}")
     s.move(library / f"docs/gapic/{version}")
+    s.copy(library / "samples")
 
 
 # Use the highest version library to generate documentation import alias.
