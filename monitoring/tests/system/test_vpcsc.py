@@ -27,10 +27,8 @@ from google.api_core import exceptions
 from google.cloud import monitoring_v3
 from google.cloud.monitoring_v3 import enums
 
-PROJECT_INSIDE = os.environ.get("PROJECT_ID", None)
-PROJECT_OUTSIDE = os.environ.get(
-    "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT", None
-)
+PROJECT_INSIDE = os.environ.get("PROJECT_INSIDE", None)
+PROJECT_OUTSIDE = os.environ.get("GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT", None)
 IS_INSIDE_VPCSC = os.environ.get("GOOGLE_CLOUD_TESTS_IN_VPCSC", "false")
 
 
@@ -60,7 +58,7 @@ class TestVPCServiceControlV3(object):
             assert TestVPCServiceControlV3._is_rejected(delayed_inside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -75,7 +73,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -90,7 +88,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -105,7 +103,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -120,7 +118,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -135,7 +133,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -150,7 +148,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -165,7 +163,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -180,7 +178,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -195,7 +193,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -210,7 +208,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -225,7 +223,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -240,7 +238,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -255,7 +253,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -274,7 +272,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -293,7 +291,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -312,7 +310,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -327,7 +325,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -344,7 +342,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -363,7 +361,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -378,7 +376,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -397,7 +395,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -416,7 +414,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -437,7 +435,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -456,7 +454,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -471,7 +469,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -494,7 +492,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -509,7 +507,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -528,7 +526,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -547,7 +545,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -562,7 +560,7 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_INSIDE"
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
