@@ -254,8 +254,14 @@ class DataCatalogClient(object):
         return the complete resource, only the resource identifier and high
         level fields. Clients can subsequentally call Get methods.
 
+        Note that searches do not have full recall. There may be results that
+        match your query but are not returned, even in subsequent pages of
+        results. These missing results may vary across repeated calls to search.
+        Do not rely on this method if you need to guarantee full recall.
+
         See `Data Catalog Search
         Syntax <https://cloud.google.com/data-catalog/docs/how-to/search-reference>`__
+        for more information.
 
         Example:
             >>> from google.cloud import datacatalog_v1beta1
@@ -315,8 +321,7 @@ class DataCatalogClient(object):
                       <li> last_access_timestamp [asc|desc], defaults to descending if not
                       specified, </li>
                       <li> last_modified_timestamp [asc|desc], defaults to descending if not
-                      specified, </li>
-                      <li> title [asc|desc], defaults to ascending if not specified. </li>
+                      specified. </li>
                     </ul>
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
@@ -645,7 +650,9 @@ class DataCatalogClient(object):
 
         Args:
             parent (str): Required. The name of the project and the location this template is in.
-                Example: "projects/{project\_id}/locations/{location}".
+                Example: "projects/{project\_id}/locations/{location}". Note that this
+                TagTemplate and its child resources may not actually be stored in the
+                location in this name.
             tag_template_id (str): Required. The id of the tag template to create.
             tag_template (Union[dict, ~google.cloud.datacatalog_v1beta1.types.TagTemplate]): Required. The tag template to create.
 
@@ -965,6 +972,8 @@ class DataCatalogClient(object):
         Args:
             parent (str): Required. The name of the project this template is in. Example:
                 "projects/{project\_id}/locations/{location}/tagTemplates/{tag\_template\_id}".
+                Note that this TagTemplateField may not actually be stored in the
+                location in this name.
             tag_template_field_id (str): Required. The id of the tag template field to create. Field ids can
                 contain letters (both uppercase and lowercase), numbers (0-9),
                 underscores (\_) and dashes (-). Field ids must be at least 1 character
@@ -1302,6 +1311,8 @@ class DataCatalogClient(object):
             parent (str): Required. The name of the resource to attach this tag to. Tags can be
                 attached to Entries. (example:
                 "projects/{project\_id}/locations/{location}/entryGroups/{entry\_group\_id}/entries/{entry\_id}").
+                Note that this Tag and its child resources may not actually be stored in
+                the location in this name.
             tag (Union[dict, ~google.cloud.datacatalog_v1beta1.types.Tag]): Required. The tag to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
