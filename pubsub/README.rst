@@ -113,7 +113,7 @@ messages to it
 
 To learn more, consult the `publishing documentation`_.
 
-.. _publishing documentation: http://google-cloud-python.readthedocs.io/en/latest/pubsub/publisher/index.html
+.. _publishing documentation: https://googleapis.github.io/google-cloud-python/latest/pubsub/publisher/index.html
 
 
 Subscribing
@@ -157,4 +157,4 @@ block the current thread until a given condition obtains:
 
 To learn more, consult the `subscriber documentation`_.
 
-.. _subscriber documentation: http://google-cloud-python.readthedocs.io/en/latest/pubsub/subscriber/index.html
+.. _subscriber documentation: https://googleapis.github.io/google-cloud-python/latest/pubsub/subscriber/index.html

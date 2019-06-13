@@ -15,6 +15,7 @@
 import datetime
 import decimal
 import functools
+import warnings
 
 try:
     import pandas
@@ -26,6 +27,7 @@ try:
 except ImportError:  # pragma: NO COVER
     pyarrow = None
 import pytest
+import pytz
 
 from google.cloud.bigquery import schema
 
@@ -373,7 +375,7 @@ def test_bq_to_arrow_data_type_w_struct_unknown_subfield(module_under_test):
         (
             "GEOGRAPHY",
             [
-                "POINT(30, 10)",
+                "POINT(30 10)",
                 None,
                 "LINESTRING (30 10, 10 30, 40 40)",
                 "POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))",
@@ -438,6 +440,94 @@ def test_bq_to_arrow_array_w_special_floats(module_under_test):
     assert roundtrip[1] != roundtrip[1]  # NaN doesn't equal itself.
     assert roundtrip[2] == float("inf")
     assert roundtrip[3] is None
+
+
+@pytest.mark.skipIf(pandas is None, "Requires `pandas`")
+@pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
+def test_to_arrow_w_required_fields(module_under_test):
+    bq_schema = (
+        schema.SchemaField("field01", "STRING", mode="REQUIRED"),
+        schema.SchemaField("field02", "BYTES", mode="REQUIRED"),
+        schema.SchemaField("field03", "INTEGER", mode="REQUIRED"),
+        schema.SchemaField("field04", "INT64", mode="REQUIRED"),
+        schema.SchemaField("field05", "FLOAT", mode="REQUIRED"),
+        schema.SchemaField("field06", "FLOAT64", mode="REQUIRED"),
+        schema.SchemaField("field07", "NUMERIC", mode="REQUIRED"),
+        schema.SchemaField("field08", "BOOLEAN", mode="REQUIRED"),
+        schema.SchemaField("field09", "BOOL", mode="REQUIRED"),
+        schema.SchemaField("field10", "TIMESTAMP", mode="REQUIRED"),
+        schema.SchemaField("field11", "DATE", mode="REQUIRED"),
+        schema.SchemaField("field12", "TIME", mode="REQUIRED"),
+        schema.SchemaField("field13", "DATETIME", mode="REQUIRED"),
+        schema.SchemaField("field14", "GEOGRAPHY", mode="REQUIRED"),
+    )
+    dataframe = pandas.DataFrame(
+        {
+            "field01": ["hello", "world"],
+            "field02": [b"abd", b"efg"],
+            "field03": [1, 2],
+            "field04": [3, 4],
+            "field05": [1.25, 9.75],
+            "field06": [-1.75, -3.5],
+            "field07": [decimal.Decimal("1.2345"), decimal.Decimal("6.7891")],
+            "field08": [True, False],
+            "field09": [False, True],
+            "field10": [
+                datetime.datetime(1970, 1, 1, 0, 0, 0, tzinfo=pytz.utc),
+                datetime.datetime(2012, 12, 21, 9, 7, 42, tzinfo=pytz.utc),
+            ],
+            "field11": [datetime.date(9999, 12, 31), datetime.date(1970, 1, 1)],
+            "field12": [datetime.time(23, 59, 59, 999999), datetime.time(12, 0, 0)],
+            "field13": [
+                datetime.datetime(1970, 1, 1, 0, 0, 0),
+                datetime.datetime(2012, 12, 21, 9, 7, 42),
+            ],
+            "field14": [
+                "POINT(30 10)",
+                "POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))",
+            ],
+        }
+    )
+
+    arrow_table = module_under_test.to_arrow(dataframe, bq_schema)
+    arrow_schema = arrow_table.schema
+
+    assert len(arrow_schema) == len(bq_schema)
+    for arrow_field in arrow_schema:
+        assert not arrow_field.nullable
+
+
+@pytest.mark.skipIf(pandas is None, "Requires `pandas`")
+@pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
+def test_to_arrow_w_unknown_type(module_under_test):
+    bq_schema = (
+        schema.SchemaField("field00", "UNKNOWN_TYPE"),
+        schema.SchemaField("field01", "STRING"),
+        schema.SchemaField("field02", "BYTES"),
+        schema.SchemaField("field03", "INTEGER"),
+    )
+    dataframe = pandas.DataFrame(
+        {
+            "field00": ["whoami", "whatami"],
+            "field01": ["hello", "world"],
+            "field02": [b"abd", b"efg"],
+            "field03": [1, 2],
+        }
+    )
+
+    with warnings.catch_warnings(record=True) as warned:
+        arrow_table = module_under_test.to_arrow(dataframe, bq_schema)
+    arrow_schema = arrow_table.schema
+
+    assert len(warned) == 1
+    warning = warned[0]
+    assert "field00" in str(warning)
+
+    assert len(arrow_schema) == len(bq_schema)
+    assert arrow_schema[0].name == "field00"
+    assert arrow_schema[1].name == "field01"
+    assert arrow_schema[2].name == "field02"
+    assert arrow_schema[3].name == "field03"
 
 
 @pytest.mark.skipIf(pandas is None, "Requires `pandas`")

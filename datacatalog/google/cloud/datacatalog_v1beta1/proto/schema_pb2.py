@@ -193,8 +193,8 @@ Schema = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       columns:
-          Schema of columns. A maximum of 10,000 columns and sub-columns
-          can be specified.
+          Required. Schema of columns. A maximum of 10,000 columns and
+          sub-columns can be specified.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datacatalog.v1beta1.Schema)
     ),
@@ -217,13 +217,16 @@ ColumnSchema = _reflection.GeneratedProtocolMessageType(
       type:
           Required. Type of the column.
       description:
-          Description of the column.
+          Optional. Description of the column. Default value is an empty
+          string.
       mode:
-          A column's mode indicates whether the values in this column
-          are required, nullable, etc. Only 'NULLABLE', 'REQUIRED' and
-          'REPEATED' are supported, default mode is 'NULLABLE'.
+          Optional. A column's mode indicates whether the values in this
+          column are required, nullable, etc. Only 'NULLABLE',
+          'REQUIRED' and 'REPEATED' are supported. Default mode is
+          'NULLABLE'.
       subcolumns:
-          Schema of sub-columns.
+          Optional. Schema of sub-columns. A column can have zero or
+          more sub-columns.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datacatalog.v1beta1.ColumnSchema)
     ),

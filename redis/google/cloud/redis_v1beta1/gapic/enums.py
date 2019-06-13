@@ -23,7 +23,8 @@ class FailoverInstanceRequest(object):
     class DataProtectionMode(enum.IntEnum):
         """
         Attributes:
-          DATA_PROTECTION_MODE_UNSPECIFIED (int)
+          DATA_PROTECTION_MODE_UNSPECIFIED (int): Defaults to LIMITED\_DATA\_LOSS if a data protection mode is not
+          specified.
           LIMITED_DATA_LOSS (int): Instance failover will be protected with data loss control. More
           specifically, the failover will only be performed if the current
           replication offset diff between master and replica is under a certain

@@ -14,6 +14,8 @@
 
 """Shared helper functions for connecting BigQuery and pandas."""
 
+import warnings
+
 try:
     import pyarrow
     import pyarrow.parquet
@@ -107,6 +109,8 @@ def bq_to_arrow_field(bq_field):
     if arrow_type:
         is_nullable = bq_field.mode.upper() == "NULLABLE"
         return pyarrow.field(bq_field.name, arrow_type, nullable=is_nullable)
+
+    warnings.warn("Unable to determine type for field '{}'.".format(bq_field.name))
     return None
 
 
@@ -117,6 +121,41 @@ def bq_to_arrow_array(series, bq_field):
     if bq_field.field_type.upper() in STRUCT_TYPES:
         return pyarrow.StructArray.from_pandas(series, type=arrow_type)
     return pyarrow.array(series, type=arrow_type)
+
+
+def to_arrow(dataframe, bq_schema):
+    """Convert pandas dataframe to Arrow table, using BigQuery schema.
+
+    Args:
+        dataframe (pandas.DataFrame):
+            DataFrame to convert to convert to Parquet file.
+        bq_schema (Sequence[google.cloud.bigquery.schema.SchemaField]):
+            Desired BigQuery schema. Number of columns must match number of
+            columns in the DataFrame.
+
+    Returns:
+        pyarrow.Table:
+            Table containing dataframe data, with schema derived from
+            BigQuery schema.
+    """
+    if len(bq_schema) != len(dataframe.columns):
+        raise ValueError(
+            "Number of columns in schema must match number of columns in dataframe."
+        )
+
+    arrow_arrays = []
+    arrow_names = []
+    arrow_fields = []
+    for bq_field in bq_schema:
+        arrow_fields.append(bq_to_arrow_field(bq_field))
+        arrow_names.append(bq_field.name)
+        arrow_arrays.append(bq_to_arrow_array(dataframe[bq_field.name], bq_field))
+
+    if all((field is not None for field in arrow_fields)):
+        return pyarrow.Table.from_arrays(
+            arrow_arrays, schema=pyarrow.schema(arrow_fields)
+        )
+    return pyarrow.Table.from_arrays(arrow_arrays, names=arrow_names)
 
 
 def to_parquet(dataframe, bq_schema, filepath):
@@ -137,16 +176,5 @@ def to_parquet(dataframe, bq_schema, filepath):
     if pyarrow is None:
         raise ValueError("pyarrow is required for BigQuery schema conversion.")
 
-    if len(bq_schema) != len(dataframe.columns):
-        raise ValueError(
-            "Number of columns in schema must match number of columns in dataframe."
-        )
-
-    arrow_arrays = []
-    arrow_names = []
-    for bq_field in bq_schema:
-        arrow_names.append(bq_field.name)
-        arrow_arrays.append(bq_to_arrow_array(dataframe[bq_field.name], bq_field))
-
-    arrow_table = pyarrow.Table.from_arrays(arrow_arrays, names=arrow_names)
+    arrow_table = to_arrow(dataframe, bq_schema)
     pyarrow.parquet.write_table(arrow_table, filepath)
