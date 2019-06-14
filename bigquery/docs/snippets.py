@@ -445,8 +445,6 @@ def test_load_and_query_partitioned_table(client, to_delete):
 
     query_job = client.query(
         sql,
-        # Location must match that of the dataset(s) referenced in the query.
-        location="US",
         job_config=job_config,
     )  # API request
 
