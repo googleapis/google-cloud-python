@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.15.0
+
+06-14-2019 10:10 PDT
+
+### Implementation Changes
+
+- Fix bug where `load_table_from_dataframe` could not append to REQUIRED fields. ([#8230](https://github.com/googleapis/google-cloud-python/pull/8230))
+
+### New Features
+
+- Add `page_size` parameter to `QueryJob.result`. ([#8206](https://github.com/googleapis/google-cloud-python/pull/8206))
+
 ## 1.14.0
 
 06-04-2019 11:11 PDT
