@@ -176,6 +176,30 @@ s.replace(
 )
 
 s.replace(
+    "grafeas/**/grafeas_client.py",
+    r'''    @classmethod
+    def from_service_account_file\(cls, filename, \*args, \*\*kwargs\):
+        """Creates an instance of this client using the provided credentials
+        file\.
+
+        Args:
+            filename \(str\): The path to the service account private key json
+                file\.
+            args: Additional arguments to pass to the constructor\.
+            kwargs: Additional arguments to pass to the constructor\.
+
+        Returns:
+            GrafeasClient: The constructed client\.
+        """
+        credentials = service_account\.Credentials\.from_service_account_file\(
+            filename\)
+        kwargs\['credentials'\] = credentials
+        return cls\(\*args, \*\*kwargs\)
+
+    from_service_account_json = from_service_account_file''',
+    "")
+
+s.replace(
     "grafeas/**/grafeas_grpc_transport.py",
     r"""    \# The scopes needed to make gRPC calls to all of the methods defined
     \# in this service\.

@@ -66,26 +66,6 @@ class GrafeasClient(object):
     _INTERFACE_NAME = "grafeas.v1.Grafeas"
 
     @classmethod
-    def from_service_account_file(cls, filename, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials
-        file.
-
-        Args:
-            filename (str): The path to the service account private key json
-                file.
-            args: Additional arguments to pass to the constructor.
-            kwargs: Additional arguments to pass to the constructor.
-
-        Returns:
-            GrafeasClient: The constructed client.
-        """
-        credentials = service_account.Credentials.from_service_account_file(filename)
-        kwargs["credentials"] = credentials
-        return cls(*args, **kwargs)
-
-    from_service_account_json = from_service_account_file
-
-    @classmethod
     def note_path(cls, project, note):
         """Return a fully-qualified note string."""
         return google.api_core.path_template.expand(
