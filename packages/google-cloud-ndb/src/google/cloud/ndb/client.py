@@ -85,7 +85,11 @@ class Client(google_client.ClientWithProject):
         self.host = os.environ.get(
             environment_vars.GCD_HOST, DATASTORE_API_HOST
         )
-        self.secure = True
+
+        # Use insecure connection when using Datastore Emulator, otherwise
+        # use secure connection
+        emulator = bool(os.environ.get("DATASTORE_EMULATOR_HOST"))
+        self.secure = not emulator
 
     @contextlib.contextmanager
     def context(self):

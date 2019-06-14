@@ -36,12 +36,32 @@ def patch_credentials(project):
 class TestClient:
     @staticmethod
     def test_constructor_no_args():
-        with patch_credentials("testing"):
-            client = client_module.Client()
+        patch_environ = mock.patch.dict(
+            "google.cloud.ndb.client.os.environ", {}, clear=True
+        )
+        with patch_environ:
+            with patch_credentials("testing"):
+                client = client_module.Client()
         assert client.SCOPE == ("https://www.googleapis.com/auth/datastore",)
         assert client.namespace is None
         assert client.host == _http.DATASTORE_API_HOST
         assert client.project == "testing"
+        assert client.secure is True
+
+    @staticmethod
+    def test_constructor_no_args_emulator():
+        patch_environ = mock.patch.dict(
+            "google.cloud.ndb.client.os.environ",
+            {"DATASTORE_EMULATOR_HOST": "foo"},
+        )
+        with patch_environ:
+            with patch_credentials("testing"):
+                client = client_module.Client()
+        assert client.SCOPE == ("https://www.googleapis.com/auth/datastore",)
+        assert client.namespace is None
+        assert client.host == "foo"
+        assert client.project == "testing"
+        assert client.secure is False
 
     @staticmethod
     def test_constructor_get_project_from_environ(environ):
