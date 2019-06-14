@@ -82,7 +82,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)
@@ -105,7 +107,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)
@@ -133,7 +137,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)
@@ -158,7 +164,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)
@@ -176,7 +184,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)
@@ -198,7 +208,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)
@@ -229,7 +241,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)
@@ -255,7 +269,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)
@@ -280,7 +296,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)
@@ -306,7 +324,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)
@@ -338,7 +358,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)
@@ -364,7 +386,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)
@@ -394,7 +418,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)
@@ -417,7 +443,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)
@@ -446,7 +474,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)
@@ -469,7 +499,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)
@@ -494,7 +526,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)
@@ -519,7 +553,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)
@@ -537,7 +573,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)
@@ -559,7 +597,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)
@@ -588,7 +628,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)
@@ -615,7 +657,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)
@@ -639,7 +683,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)
@@ -665,7 +711,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)
@@ -695,7 +743,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)
@@ -719,7 +769,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)
@@ -748,7 +800,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)
@@ -773,7 +827,9 @@ class TestGrafeasClient(object):
         with patch as create_channel:
             create_channel.return_value = channel
             address = "[SERVICE_ADDRESS]"
+
             scopes = "SCOPE"
+
             transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
 
             client = grafeas_v1.GrafeasClient(transport)

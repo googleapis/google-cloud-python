@@ -25,35 +25,11 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\rio.grafeas.v1P\001Z8google.golang.org/genproto/googleapis/grafeas/v1;grafeas\242\002\003GRA"
     ),
     serialized_pb=_b(
-        '\n!grafeas_v1/proto/provenance.proto\x12\ngrafeas.v1\x1a\x1fgoogle/protobuf/timestamp.proto"\x90\x04\n\x0f\x42uildProvenance\x12\n\n\x02id\x18\x01 \x01(\t\x12\x12\n\nproject_id\x18\x02 \x01(\t\x12%\n\x08\x63ommands\x18\x03 \x03(\x0b\x32\x13.grafeas.v1.Command\x12-\n\x0f\x62uilt_artifacts\x18\x04 \x03(\x0b\x32\x14.grafeas.v1.Artifact\x12/\n\x0b\x63reate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12.\n\nstart_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0f\n\x07\x63reator\x18\x08 \x01(\t\x12\x10\n\x08logs_uri\x18\t \x01(\t\x12-\n\x11source_provenance\x18\n \x01(\x0b\x32\x12.grafeas.v1.Source\x12\x12\n\ntrigger_id\x18\x0b \x01(\t\x12\x44\n\rbuild_options\x18\x0c \x03(\x0b\x32-.grafeas.v1.BuildProvenance.BuildOptionsEntry\x12\x17\n\x0f\x62uilder_version\x18\r \x01(\t\x1a\x33\n\x11\x42uildOptionsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\x95\x02\n\x06Source\x12#\n\x1b\x61rtifact_storage_source_uri\x18\x01 \x01(\t\x12\x37\n\x0b\x66ile_hashes\x18\x02 \x03(\x0b\x32".grafeas.v1.Source.FileHashesEntry\x12*\n\x07\x63ontext\x18\x03 \x01(\x0b\x32\x19.grafeas.v1.SourceContext\x12\x36\n\x13\x61\x64\x64itional_contexts\x18\x04 \x03(\x0b\x32\x19.grafeas.v1.SourceContext\x1aI\n\x0f\x46ileHashesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12%\n\x05value\x18\x02 \x01(\x0b\x32\x16.grafeas.v1.FileHashes:\x02\x38\x01"1\n\nFileHashes\x12#\n\tfile_hash\x18\x01 \x03(\x0b\x32\x10.grafeas.v1.Hash"q\n\x04Hash\x12\'\n\x04type\x18\x01 \x01(\x0e\x32\x19.grafeas.v1.Hash.HashType\x12\r\n\x05value\x18\x02 \x01(\x0c"1\n\x08HashType\x12\x19\n\x15HASH_TYPE_UNSPECIFIED\x10\x00\x12\n\n\x06SHA256\x10\x01"]\n\x07\x43ommand\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0b\n\x03\x65nv\x18\x02 \x03(\t\x12\x0c\n\x04\x61rgs\x18\x03 \x03(\t\x12\x0b\n\x03\x64ir\x18\x04 \x01(\t\x12\n\n\x02id\x18\x05 \x01(\t\x12\x10\n\x08wait_for\x18\x06 \x03(\t"7\n\x08\x41rtifact\x12\x10\n\x08\x63hecksum\x18\x01 \x01(\t\x12\n\n\x02id\x18\x02 \x01(\t\x12\r\n\x05names\x18\x03 \x03(\t"\x9a\x02\n\rSourceContext\x12\x38\n\ncloud_repo\x18\x01 \x01(\x0b\x32".grafeas.v1.CloudRepoSourceContextH\x00\x12\x31\n\x06gerrit\x18\x02 \x01(\x0b\x32\x1f.grafeas.v1.GerritSourceContextH\x00\x12+\n\x03git\x18\x03 \x01(\x0b\x32\x1c.grafeas.v1.GitSourceContextH\x00\x12\x35\n\x06labels\x18\x04 \x03(\x0b\x32%.grafeas.v1.SourceContext.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\t\n\x07\x63ontext"\x8a\x01\n\x0c\x41liasContext\x12+\n\x04kind\x18\x01 \x01(\x0e\x32\x1d.grafeas.v1.AliasContext.Kind\x12\x0c\n\x04name\x18\x02 \x01(\t"?\n\x04Kind\x12\x14\n\x10KIND_UNSPECIFIED\x10\x00\x12\t\n\x05\x46IXED\x10\x01\x12\x0b\n\x07MOVABLE\x10\x02\x12\t\n\x05OTHER\x10\x04"\x93\x01\n\x16\x43loudRepoSourceContext\x12#\n\x07repo_id\x18\x01 \x01(\x0b\x32\x12.grafeas.v1.RepoId\x12\x15\n\x0brevision_id\x18\x02 \x01(\tH\x00\x12\x31\n\ralias_context\x18\x03 \x01(\x0b\x32\x18.grafeas.v1.AliasContextH\x00\x42\n\n\x08revision"\x95\x01\n\x13GerritSourceContext\x12\x10\n\x08host_uri\x18\x01 \x01(\t\x12\x16\n\x0egerrit_project\x18\x02 \x01(\t\x12\x15\n\x0brevision_id\x18\x03 \x01(\tH\x00\x12\x31\n\ralias_context\x18\x04 \x01(\x0b\x32\x18.grafeas.v1.AliasContextH\x00\x42\n\n\x08revision"4\n\x10GitSourceContext\x12\x0b\n\x03url\x18\x01 \x01(\t\x12\x13\n\x0brevision_id\x18\x02 \x01(\t"S\n\x06RepoId\x12\x34\n\x0fproject_repo_id\x18\x01 \x01(\x0b\x32\x19.grafeas.v1.ProjectRepoIdH\x00\x12\r\n\x03uid\x18\x02 \x01(\tH\x00\x42\x04\n\x02id"6\n\rProjectRepoId\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x11\n\trepo_name\x18\x02 \x01(\tBQ\n\rio.grafeas.v1P\x01Z8google.golang.org/genproto/googleapis/grafeas/v1;grafeas\xa2\x02\x03GRAb\x06proto3'
+        '\n!grafeas_v1/proto/provenance.proto\x12\ngrafeas.v1\x1a\x1fgoogle/protobuf/timestamp.proto"\x90\x04\n\x0f\x42uildProvenance\x12\n\n\x02id\x18\x01 \x01(\t\x12\x12\n\nproject_id\x18\x02 \x01(\t\x12%\n\x08\x63ommands\x18\x03 \x03(\x0b\x32\x13.grafeas.v1.Command\x12-\n\x0f\x62uilt_artifacts\x18\x04 \x03(\x0b\x32\x14.grafeas.v1.Artifact\x12/\n\x0b\x63reate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12.\n\nstart_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0f\n\x07\x63reator\x18\x08 \x01(\t\x12\x10\n\x08logs_uri\x18\t \x01(\t\x12-\n\x11source_provenance\x18\n \x01(\x0b\x32\x12.grafeas.v1.Source\x12\x12\n\ntrigger_id\x18\x0b \x01(\t\x12\x44\n\rbuild_options\x18\x0c \x03(\x0b\x32-.grafeas.v1.BuildProvenance.BuildOptionsEntry\x12\x17\n\x0f\x62uilder_version\x18\r \x01(\t\x1a\x33\n\x11\x42uildOptionsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\x95\x02\n\x06Source\x12#\n\x1b\x61rtifact_storage_source_uri\x18\x01 \x01(\t\x12\x37\n\x0b\x66ile_hashes\x18\x02 \x03(\x0b\x32".grafeas.v1.Source.FileHashesEntry\x12*\n\x07\x63ontext\x18\x03 \x01(\x0b\x32\x19.grafeas.v1.SourceContext\x12\x36\n\x13\x61\x64\x64itional_contexts\x18\x04 \x03(\x0b\x32\x19.grafeas.v1.SourceContext\x1aI\n\x0f\x46ileHashesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12%\n\x05value\x18\x02 \x01(\x0b\x32\x16.grafeas.v1.FileHashes:\x02\x38\x01"1\n\nFileHashes\x12#\n\tfile_hash\x18\x01 \x03(\x0b\x32\x10.grafeas.v1.Hash"#\n\x04Hash\x12\x0c\n\x04type\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x0c"]\n\x07\x43ommand\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0b\n\x03\x65nv\x18\x02 \x03(\t\x12\x0c\n\x04\x61rgs\x18\x03 \x03(\t\x12\x0b\n\x03\x64ir\x18\x04 \x01(\t\x12\n\n\x02id\x18\x05 \x01(\t\x12\x10\n\x08wait_for\x18\x06 \x03(\t"7\n\x08\x41rtifact\x12\x10\n\x08\x63hecksum\x18\x01 \x01(\t\x12\n\n\x02id\x18\x02 \x01(\t\x12\r\n\x05names\x18\x03 \x03(\t"\x9a\x02\n\rSourceContext\x12\x38\n\ncloud_repo\x18\x01 \x01(\x0b\x32".grafeas.v1.CloudRepoSourceContextH\x00\x12\x31\n\x06gerrit\x18\x02 \x01(\x0b\x32\x1f.grafeas.v1.GerritSourceContextH\x00\x12+\n\x03git\x18\x03 \x01(\x0b\x32\x1c.grafeas.v1.GitSourceContextH\x00\x12\x35\n\x06labels\x18\x04 \x03(\x0b\x32%.grafeas.v1.SourceContext.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\t\n\x07\x63ontext"\x8a\x01\n\x0c\x41liasContext\x12+\n\x04kind\x18\x01 \x01(\x0e\x32\x1d.grafeas.v1.AliasContext.Kind\x12\x0c\n\x04name\x18\x02 \x01(\t"?\n\x04Kind\x12\x14\n\x10KIND_UNSPECIFIED\x10\x00\x12\t\n\x05\x46IXED\x10\x01\x12\x0b\n\x07MOVABLE\x10\x02\x12\t\n\x05OTHER\x10\x04"\x93\x01\n\x16\x43loudRepoSourceContext\x12#\n\x07repo_id\x18\x01 \x01(\x0b\x32\x12.grafeas.v1.RepoId\x12\x15\n\x0brevision_id\x18\x02 \x01(\tH\x00\x12\x31\n\ralias_context\x18\x03 \x01(\x0b\x32\x18.grafeas.v1.AliasContextH\x00\x42\n\n\x08revision"\x95\x01\n\x13GerritSourceContext\x12\x10\n\x08host_uri\x18\x01 \x01(\t\x12\x16\n\x0egerrit_project\x18\x02 \x01(\t\x12\x15\n\x0brevision_id\x18\x03 \x01(\tH\x00\x12\x31\n\ralias_context\x18\x04 \x01(\x0b\x32\x18.grafeas.v1.AliasContextH\x00\x42\n\n\x08revision"4\n\x10GitSourceContext\x12\x0b\n\x03url\x18\x01 \x01(\t\x12\x13\n\x0brevision_id\x18\x02 \x01(\t"S\n\x06RepoId\x12\x34\n\x0fproject_repo_id\x18\x01 \x01(\x0b\x32\x19.grafeas.v1.ProjectRepoIdH\x00\x12\r\n\x03uid\x18\x02 \x01(\tH\x00\x42\x04\n\x02id"6\n\rProjectRepoId\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x11\n\trepo_name\x18\x02 \x01(\tBQ\n\rio.grafeas.v1P\x01Z8google.golang.org/genproto/googleapis/grafeas/v1;grafeas\xa2\x02\x03GRAb\x06proto3'
     ),
     dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR],
 )
 
-
-_HASH_HASHTYPE = _descriptor.EnumDescriptor(
-    name="HashType",
-    full_name="grafeas.v1.Hash.HashType",
-    filename=None,
-    file=DESCRIPTOR,
-    values=[
-        _descriptor.EnumValueDescriptor(
-            name="HASH_TYPE_UNSPECIFIED",
-            index=0,
-            number=0,
-            serialized_options=None,
-            type=None,
-        ),
-        _descriptor.EnumValueDescriptor(
-            name="SHA256", index=1, number=1, serialized_options=None, type=None
-        ),
-    ],
-    containing_type=None,
-    serialized_options=None,
-    serialized_start=1008,
-    serialized_end=1057,
-)
-_sym_db.RegisterEnumDescriptor(_HASH_HASHTYPE)
 
 _ALIASCONTEXT_KIND = _descriptor.EnumDescriptor(
     name="Kind",
@@ -80,8 +56,8 @@ _ALIASCONTEXT_KIND = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1572,
-    serialized_end=1635,
+    serialized_start=1494,
+    serialized_end=1557,
 )
 _sym_db.RegisterEnumDescriptor(_ALIASCONTEXT_KIND)
 
@@ -597,11 +573,11 @@ _HASH = _descriptor.Descriptor(
             full_name="grafeas.v1.Hash.type",
             index=0,
             number=1,
-            type=14,
-            cpp_type=8,
+            type=9,
+            cpp_type=9,
             label=1,
             has_default_value=False,
-            default_value=0,
+            default_value=_b("").decode("utf-8"),
             message_type=None,
             enum_type=None,
             containing_type=None,
@@ -631,14 +607,14 @@ _HASH = _descriptor.Descriptor(
     ],
     extensions=[],
     nested_types=[],
-    enum_types=[_HASH_HASHTYPE],
+    enum_types=[],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
     serialized_start=944,
-    serialized_end=1057,
+    serialized_end=979,
 )
 
 
@@ -766,8 +742,8 @@ _COMMAND = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1059,
-    serialized_end=1152,
+    serialized_start=981,
+    serialized_end=1074,
 )
 
 
@@ -841,8 +817,8 @@ _ARTIFACT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1154,
-    serialized_end=1209,
+    serialized_start=1076,
+    serialized_end=1131,
 )
 
 
@@ -898,8 +874,8 @@ _SOURCECONTEXT_LABELSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1438,
-    serialized_end=1483,
+    serialized_start=1360,
+    serialized_end=1405,
 )
 
 _SOURCECONTEXT = _descriptor.Descriptor(
@@ -998,8 +974,8 @@ _SOURCECONTEXT = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1212,
-    serialized_end=1494,
+    serialized_start=1134,
+    serialized_end=1416,
 )
 
 
@@ -1055,8 +1031,8 @@ _ALIASCONTEXT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1497,
-    serialized_end=1635,
+    serialized_start=1419,
+    serialized_end=1557,
 )
 
 
@@ -1138,8 +1114,8 @@ _CLOUDREPOSOURCECONTEXT = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1638,
-    serialized_end=1785,
+    serialized_start=1560,
+    serialized_end=1707,
 )
 
 
@@ -1239,8 +1215,8 @@ _GERRITSOURCECONTEXT = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1788,
-    serialized_end=1937,
+    serialized_start=1710,
+    serialized_end=1859,
 )
 
 
@@ -1296,8 +1272,8 @@ _GITSOURCECONTEXT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1939,
-    serialized_end=1991,
+    serialized_start=1861,
+    serialized_end=1913,
 )
 
 
@@ -1361,8 +1337,8 @@ _REPOID = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1993,
-    serialized_end=2076,
+    serialized_start=1915,
+    serialized_end=1998,
 )
 
 
@@ -1418,8 +1394,8 @@ _PROJECTREPOID = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2078,
-    serialized_end=2132,
+    serialized_start=2000,
+    serialized_end=2054,
 )
 
 _BUILDPROVENANCE_BUILDOPTIONSENTRY.containing_type = _BUILDPROVENANCE
@@ -1444,8 +1420,6 @@ _SOURCE.fields_by_name["file_hashes"].message_type = _SOURCE_FILEHASHESENTRY
 _SOURCE.fields_by_name["context"].message_type = _SOURCECONTEXT
 _SOURCE.fields_by_name["additional_contexts"].message_type = _SOURCECONTEXT
 _FILEHASHES.fields_by_name["file_hash"].message_type = _HASH
-_HASH.fields_by_name["type"].enum_type = _HASH_HASHTYPE
-_HASH_HASHTYPE.containing_type = _HASH
 _SOURCECONTEXT_LABELSENTRY.containing_type = _SOURCECONTEXT
 _SOURCECONTEXT.fields_by_name["cloud_repo"].message_type = _CLOUDREPOSOURCECONTEXT
 _SOURCECONTEXT.fields_by_name["gerrit"].message_type = _GERRITSOURCECONTEXT
@@ -1655,7 +1629,7 @@ Hash = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       type:
-          Required. The type of hash that was performed.
+          Required. The type of hash that was performed, e.g. "SHA-256".
       value:
           Required. The hash value.
   """,

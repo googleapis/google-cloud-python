@@ -99,22 +99,6 @@ class AliasContext(object):
         OTHER = 4
 
 
-class BuildSignature(object):
-    class KeyType(enum.IntEnum):
-        """
-        Public key formats.
-
-        Attributes:
-          KEY_TYPE_UNSPECIFIED (int): ``KeyType`` is not set.
-          PGP_ASCII_ARMORED (int): ``PGP ASCII Armored`` public key.
-          PKIX_PEM (int): ``PKIX PEM`` public key.
-        """
-
-        KEY_TYPE_UNSPECIFIED = 0
-        PGP_ASCII_ARMORED = 1
-        PKIX_PEM = 2
-
-
 class CVSSv3(object):
     class AttackComplexity(enum.IntEnum):
         """
@@ -251,20 +235,6 @@ class DiscoveryOccurrence(object):
         CONTINUOUS_ANALYSIS_UNSPECIFIED = 0
         ACTIVE = 1
         INACTIVE = 2
-
-
-class Hash(object):
-    class HashType(enum.IntEnum):
-        """
-        Specifies the hash algorithm.
-
-        Attributes:
-          HASH_TYPE_UNSPECIFIED (int): Unknown.
-          SHA256 (int): A SHA-256 hash.
-        """
-
-        HASH_TYPE_UNSPECIFIED = 0
-        SHA256 = 1
 
 
 class Version(object):

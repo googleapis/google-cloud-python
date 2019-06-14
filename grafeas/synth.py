@@ -81,13 +81,12 @@ s.replace("docs/**/v*/*.rst", "Container Analysis", "Grafeas")
 # Remove google-specific portions of library
 # ----------------------------------------------------------------------------
 
-# These changes are brittle, and hard to read.
-# Please see this diff TODO: (add link) and PR for more details 
+# Please see this diff TODO: (add link) and PR for more details
 
 # Remove default service address, default scopes, default credentials
 # Update tests and code in docstrings showing client instantiation.
 
-# Remove service address
+
 s.replace(
     "grafeas/**/grafeas_client.py",
     r"""    SERVICE_ADDRESS = 'containeranalysis\.googleapis\.com:443'
@@ -176,67 +175,91 @@ s.replace(
             >>> client = grafeas_v1.GrafeasClient(transport)""",
 )
 
-s.replace("grafeas/**/grafeas_grpc_transport.py",
-        r"""    \# The scopes needed to make gRPC calls to all of the methods defined
+s.replace(
+    "grafeas/**/grafeas_grpc_transport.py",
+    r"""    \# The scopes needed to make gRPC calls to all of the methods defined
     \# in this service\.
     _OAUTH_SCOPES = \(
         'https://www\.googleapis\.com/auth/cloud-platform',
-    \)""", "")
+    \)""",
+    "",
+)
 
-s.replace("grafeas/**/grafeas_grpc_transport.py", r"""    def __init__\(self, channel=None, credentials=None,
-                 address='containeranalysis\.googleapis\.com:443'\):""", """    def __init__(self, address, scopes, channel=None, credentials=None):""")
+s.replace(
+    "grafeas/**/grafeas_grpc_transport.py",
+    r"""    def __init__\(self, channel=None, credentials=None,
+                 address='containeranalysis\.googleapis\.com:443'\):""",
+    """    def __init__(self, address, scopes, channel=None, credentials=None):""",
+)
 
-s.replace("grafeas/**/grafeas_grpc_transport.py", 
+s.replace(
+    "grafeas/**/grafeas_grpc_transport.py",
     r"""        \# Create the channel\.
         if channel is None:
             channel = self\.create_channel\(
                 address=address,
                 credentials=credentials,
             \)
-""", """        # Create the channel.
+""",
+    """        # Create the channel.
         if channel is None:
             channel = self.create_channel(
                 address,
                 scopes,
                 credentials=credentials,
             )
-""")
+""",
+)
 
-s.replace("grafeas/**/grafeas_grpc_transport.py", r"""    def create_channel\(
+s.replace(
+    "grafeas/**/grafeas_grpc_transport.py",
+    r"""    def create_channel\(
                 cls,
                 address='containeranalysis\.googleapis\.com:443',
-                credentials=None\):""", """    def create_channel(
+                credentials=None\):""",
+    """    def create_channel(
                 cls,
                 address,
                 scopes,
-                credentials=None):""")
+                credentials=None):""",
+)
 
-s.replace("grafeas/**/grafeas_grpc_transport.py", r"""        Args:
+s.replace(
+    "grafeas/**/grafeas_grpc_transport.py",
+    r"""        Args:
             address \(str\): The host for the channel to use\.
             credentials \(~\.Credentials\): The
                 authorization credentials to attach to requests\. These
                 credentials identify this application to the service\. If
                 none are specified, the client will attempt to ascertain
-                the credentials from the environment\.""", """        Args:
-            address (str): The host for the channel to use\.
+                the credentials from the environment\.""",
+    """        Args:
+            address (str): The host for the channel to use.
             scopes (Sequence[str]): The scopes needed to make gRPC calls.
             credentials (~.Credentials): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If
                 none are specified, the client will attempt to ascertain
-                the credentials from the environment.""")
+                the credentials from the environment.""",
+)
 
-s.replace("grafeas/**/grafeas_grpc_transport.py", r"""        return google\.api_core\.grpc_helpers\.create_channel\(
+s.replace(
+    "grafeas/**/grafeas_grpc_transport.py",
+    r"""        return google\.api_core\.grpc_helpers\.create_channel\(
             address,
             credentials=credentials,
             scopes=cls\._OAUTH_SCOPES,
-        \)""", """        return google.api_core.grpc_helpers.create_channel(
+        \)""",
+    """        return google.api_core.grpc_helpers.create_channel(
             address,
             credentials=credentials,
             scopes=scopes,
-        )""")
+        )""",
+)
 
-s.replace("grafeas/**/grafeas_grpc_transport.py", r"""        \"\"\"Instantiate the transport class\.
+s.replace(
+    "grafeas/**/grafeas_grpc_transport.py",
+    r"""        \"\"\"Instantiate the transport class\.
 
         Args:
             channel \(grpc\.Channel\): A ``Channel`` instance through
@@ -247,11 +270,12 @@ s.replace("grafeas/**/grafeas_grpc_transport.py", r"""        \"\"\"Instantiate 
                 credentials identify this application to the service\. If none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment\.
-            address \(str\): The address where the service is hosted\.""", '''        """Instantiate the transport class.
+            address \(str\): The address where the service is hosted\.""",
+    '''        """Instantiate the transport class.
 
         Args:
             address (str): The address where the service is hosted.
-            scopes (Sequence[str]): The scopes needed to make gRPC calls.    
+            scopes (Sequence[str]): The scopes needed to make gRPC calls.
             channel (grpc.Channel): A ``Channel`` instance through
                 which to make calls. This argument is mutually exclusive
                 with ``credentials``; providing both will raise an exception.
@@ -260,9 +284,25 @@ s.replace("grafeas/**/grafeas_grpc_transport.py", r"""        \"\"\"Instantiate 
                 credentials identify this application to the service. If none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-        """''')
+        ''',
+)
 
-# s.replace("grafeas/**/grafeas_grpc_transport.py", r""" )
+s.replace(
+    "tests/**/test_grafeas_client_v1.py",
+    r"""from grafeas\.grafeas_v1\.proto import grafeas_pb2""",
+    r"""from grafeas.grafeas_v1.proto import grafeas_pb2
+from grafeas.grafeas_v1.gapic.transports import grafeas_grpc_transport""",
+)
+
+s.replace(
+    "tests/**/test_grafeas_client_v1.py",
+    r"(\s+)client = grafeas_v1\.GrafeasClient\(\)",
+    r"""\g<1>address = "[SERVICE_ADDRESS]"
+\g<1>scopes = ("SCOPE")
+\g<1>transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+\g<1>client=grafeas_v1.GrafeasClient(transport)""",
+)
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
