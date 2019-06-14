@@ -821,3 +821,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(page.remaining, 0)
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, blob_name)
+
+
+if __name__ == '__main__':
+    unittest.main()

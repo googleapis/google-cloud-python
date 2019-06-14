@@ -153,6 +153,26 @@ class Client(ClientWithProject):
         """
         return self._batch_stack.pop()
 
+    def _use_or_init_bucket(self, bucket_or_name):
+        """Helper to return given bucket or create new by name.
+
+        Args:
+            bucket_or_name (Union[ \
+                :class:`~google.cloud.storage.bucket.Bucket`, \
+                 str, \
+            ]):
+                The bucket resource to pass or name to create.
+
+        Returns:
+            google.cloud.storage.bucket.Bucket
+                The newly created bucket.
+        """
+        if isinstance(bucket_or_name, Bucket):
+            bucket = bucket_or_name
+        else:
+            bucket = Bucket(self, name=bucket_or_name)
+        return bucket
+
     @property
     def current_batch(self):
         """Currently-active batch.
@@ -252,12 +272,7 @@ class Client(ClientWithProject):
             >>> bucket = client.get_bucket(bucket)  # API request.
 
         """
-
-        bucket = None
-        if isinstance(bucket_or_name, Bucket):
-            bucket = bucket_or_name
-        else:
-            bucket = Bucket(self, name=bucket_or_name)
+        bucket = self._use_or_init_bucket(bucket_or_name)
 
         bucket.reload(client=self)
         return bucket
@@ -299,7 +314,7 @@ class Client(ClientWithProject):
                 Optional. Whether requester pays for API requests for this
                 bucket and its blobs.
             project (str):
-                Optional. the project under which the  bucket is to be created.
+                Optional. the project under which the bucket is to be created.
                 If not passed, uses the project set on the client.
 
         Returns:
@@ -331,12 +346,7 @@ class Client(ClientWithProject):
             >>> bucket = client.create_bucket(bucket)  # API request.
 
         """
-
-        bucket = None
-        if isinstance(bucket_or_name, Bucket):
-            bucket = bucket_or_name
-        else:
-            bucket = Bucket(self, name=bucket_or_name)
+        bucket = self._use_or_init_bucket(bucket_or_name)
 
         if requester_pays is not None:
             bucket.requester_pays = requester_pays
