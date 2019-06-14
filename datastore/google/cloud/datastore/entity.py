@@ -14,7 +14,7 @@
 
 """Class for representing a single entity in the Cloud Datastore."""
 
-
+import enum
 from google.cloud._helpers import _ensure_tuple_or_list
 
 
@@ -172,6 +172,11 @@ class Entity(dict):
         :returns: False if the entities compare equal, else True.
         """
         return not self == other
+
+    def __setitem__(self, key, value):
+        if isinstance(value, enum.Enum):
+            value = value.value
+        return super(Entity, self).__setitem__(key, value)
 
     @property
     def kind(self):

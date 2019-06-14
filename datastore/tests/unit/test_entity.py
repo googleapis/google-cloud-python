@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import unittest
+import enum
 
 _PROJECT = "PROJECT"
 _KIND = "KIND"
@@ -220,6 +221,18 @@ class TestEntity(unittest.TestCase):
         entity.update(entity_vals)
         expected = "<Entity%s %s>" % (flat_path, entity_vals)
         self.assertEqual(repr(entity), expected)
+
+    def test__set_item_enum(self):
+        """Test if given Enum converts to int."""
+        entity = self._make_one(key=_Key())
+        entity['some_value'] = _IntEnum.VALUE_1
+
+        self.assertEqual(type(entity['some_value']), int)
+        self.assertEqual(entity['some_value'], _IntEnum.VALUE_1.value)
+
+
+class _IntEnum(enum.IntEnum):
+    VALUE_1 = 0
 
 
 class _Key(object):
