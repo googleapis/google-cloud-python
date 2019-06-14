@@ -782,19 +782,6 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["path"], "/b/%s/o" % NAME)
         self.assertEqual(kw["query_params"], EXPECTED)
 
-    def test_list_blobs(self):
-        NAME = "name"
-        connection = _Connection({"items": []})
-        client = _Client(connection)
-        bucket = self._make_one(client=client, name=NAME)
-        iterator = bucket.list_blobs()
-        blobs = list(iterator)
-        self.assertEqual(blobs, [])
-        kw, = connection._requested
-        self.assertEqual(kw["method"], "GET")
-        self.assertEqual(kw["path"], "/b/%s/o" % NAME)
-        self.assertEqual(kw["query_params"], {"projection": "noAcl"})
-
     def test_list_notifications(self):
         from google.cloud.storage.notification import BucketNotification
         from google.cloud.storage.notification import _TOPIC_REF_FMT
