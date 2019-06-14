@@ -29,19 +29,12 @@ class GrafeasGrpcTransport(object):
     features of gRPC.
     """
 
-    # The scopes needed to make gRPC calls to all of the methods defined
-    # in this service.
-    _OAUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
-
-    def __init__(
-        self,
-        channel=None,
-        credentials=None,
-        address="containeranalysis.googleapis.com:443",
-    ):
+    def __init__(self, address, scopes, channel=None, credentials=None):
         """Instantiate the transport class.
 
         Args:
+            address (str): The address where the service is hosted.
+            scopes (Sequence[str]): The scopes needed to make gRPC calls.
             channel (grpc.Channel): A ``Channel`` instance through
                 which to make calls. This argument is mutually exclusive
                 with ``credentials``; providing both will raise an exception.
@@ -50,7 +43,7 @@ class GrafeasGrpcTransport(object):
                 credentials identify this application to the service. If none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            address (str): The address where the service is hosted.
+        
         """
         # If both `channel` and `credentials` are specified, raise an
         # exception (channels come with credentials baked in already).
@@ -61,7 +54,7 @@ class GrafeasGrpcTransport(object):
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(address=address, credentials=credentials)
+            channel = self.create_channel(address, scopes, credentials=credentials)
 
         self._channel = channel
 
@@ -70,13 +63,12 @@ class GrafeasGrpcTransport(object):
         self._stubs = {"grafeas_stub": grafeas_pb2_grpc.GrafeasStub(channel)}
 
     @classmethod
-    def create_channel(
-        cls, address="containeranalysis.googleapis.com:443", credentials=None
-    ):
+    def create_channel(cls, address, scopes, credentials=None):
         """Create and return a gRPC channel object.
 
         Args:
             address (str): The host for the channel to use.
+            scopes (Sequence[str]): The scopes needed to make gRPC calls.
             credentials (~.Credentials): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If
@@ -87,7 +79,7 @@ class GrafeasGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
+            address, credentials=credentials, scopes=scopes
         )
 
     @property
