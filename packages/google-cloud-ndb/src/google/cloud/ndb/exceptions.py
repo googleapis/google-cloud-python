@@ -25,6 +25,7 @@ __all__ = [
     "ContextError",
     "BadValueError",
     "BadArgumentError",
+    "BadRequestError",
     "Rollback",
     "BadQueryError",
     "BadFilterError",
@@ -61,6 +62,13 @@ class BadArgumentError(Error):
     """Indicates an invalid argument was passed.
 
     Raised by ``Query.Order()``, ``Iterator.Next()``, and others.
+    """
+
+
+class BadRequestError(Error):
+    """Indicates a bad request was passed.
+
+    Raised by ``Model.non_transactional()`` and others.
     """
 
 

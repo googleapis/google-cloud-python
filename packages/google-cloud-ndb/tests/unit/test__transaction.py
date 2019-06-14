@@ -19,6 +19,7 @@ from unittest import mock
 import pytest
 
 from google.api_core import exceptions as core_exceptions
+from google.cloud.ndb import exceptions
 from google.cloud.ndb import tasklets
 from google.cloud.ndb import _transaction
 
@@ -240,3 +241,96 @@ class Test_transaction_async:
         assert _datastore_api.rollback.call_count == 4
         assert sleep.call_count == 4
         _datastore_api.commit.assert_not_called()
+
+
+@pytest.mark.usefixtures("in_context")
+@mock.patch("google.cloud.ndb._transaction._datastore_api")
+def test_transactional(_datastore_api):
+    @_transaction.transactional()
+    def simple_function(a, b):
+        return a + b
+
+    begin_future = tasklets.Future("begin transaction")
+    _datastore_api.begin_transaction.return_value = begin_future
+
+    commit_future = tasklets.Future("commit transaction")
+    _datastore_api.commit.return_value = commit_future
+
+    begin_future.set_result(b"tx123")
+    commit_future.set_result(None)
+
+    res = simple_function(100, 42)
+    assert res == 142
+
+
+@pytest.mark.usefixtures("in_context")
+@mock.patch("google.cloud.ndb._transaction._datastore_api")
+def test_transactional_async(_datastore_api):
+    @_transaction.transactional_async()
+    def simple_function(a, b):
+        return a + b
+
+    begin_future = tasklets.Future("begin transaction")
+    _datastore_api.begin_transaction.return_value = begin_future
+
+    commit_future = tasklets.Future("commit transaction")
+    _datastore_api.commit.return_value = commit_future
+
+    begin_future.set_result(b"tx123")
+    commit_future.set_result(None)
+
+    res = simple_function(100, 42)
+    assert res.result() == 142
+
+
+@pytest.mark.usefixtures("in_context")
+@mock.patch("google.cloud.ndb._transaction._datastore_api")
+def test_transactional_tasklet(_datastore_api):
+    @_transaction.transactional_tasklet()
+    def generator_function(dependency):
+        value = yield dependency
+        return value + 42
+
+    begin_future = tasklets.Future("begin transaction")
+    _datastore_api.begin_transaction.return_value = begin_future
+
+    commit_future = tasklets.Future("commit transaction")
+    _datastore_api.commit.return_value = commit_future
+
+    begin_future.set_result(b"tx123")
+    commit_future.set_result(None)
+
+    dependency = tasklets.Future()
+    dependency.set_result(100)
+
+    res = generator_function(dependency)
+    assert res.result() == 142
+
+
+@pytest.mark.usefixtures("in_context")
+def test_non_transactional_out_of_transaction():
+    @_transaction.non_transactional()
+    def simple_function(a, b):
+        return a + b
+
+    res = simple_function(100, 42)
+    assert res == 142
+
+
+@pytest.mark.usefixtures("in_context")
+def test_non_transactional_in_transaction(in_context):
+    with in_context.new(transaction=b"tx123").use():
+
+        def simple_function(a, b):
+            return a + b
+
+        wrapped_function = _transaction.non_transactional()(simple_function)
+
+        res = wrapped_function(100, 42)
+        assert res == 142
+
+        with pytest.raises(exceptions.BadRequestError):
+            wrapped_function = _transaction.non_transactional(
+                allow_existing=False
+            )(simple_function)
+            wrapped_function(100, 42)

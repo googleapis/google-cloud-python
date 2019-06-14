@@ -172,7 +172,6 @@ from google.cloud.ndb.model import Model
 from google.cloud.ndb.model import ModelAdapter
 from google.cloud.ndb.model import ModelAttribute
 from google.cloud.ndb.model import ModelKey
-from google.cloud.ndb.model import non_transactional
 from google.cloud.ndb.model import PickleProperty
 from google.cloud.ndb.model import Property
 from google.cloud.ndb.model import put_multi
@@ -183,9 +182,6 @@ from google.cloud.ndb.model import StringProperty
 from google.cloud.ndb.model import StructuredProperty
 from google.cloud.ndb.model import TextProperty
 from google.cloud.ndb.model import TimeProperty
-from google.cloud.ndb.model import transactional
-from google.cloud.ndb.model import transactional_async
-from google.cloud.ndb.model import transactional_tasklet
 from google.cloud.ndb.model import UnprojectedPropertyError
 from google.cloud.ndb.model import User
 from google.cloud.ndb.model import UserNotFoundError
@@ -224,3 +220,7 @@ from google.cloud.ndb.tasklets import wait_any
 from google.cloud.ndb._transaction import in_transaction
 from google.cloud.ndb._transaction import transaction
 from google.cloud.ndb._transaction import transaction_async
+from google.cloud.ndb._transaction import transactional
+from google.cloud.ndb._transaction import transactional_async
+from google.cloud.ndb._transaction import transactional_tasklet
+from google.cloud.ndb._transaction import non_transactional

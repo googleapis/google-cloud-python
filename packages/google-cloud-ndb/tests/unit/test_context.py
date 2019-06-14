@@ -125,8 +125,7 @@ class TestContext:
 
     def test_in_transaction(self):
         context = self._make_one()
-        with pytest.raises(NotImplementedError):
-            context.in_transaction()
+        assert context.in_transaction() is False
 
     def test_default_cache_policy(self):
         context = self._make_one()

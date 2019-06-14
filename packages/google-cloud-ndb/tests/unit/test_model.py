@@ -4456,26 +4456,6 @@ class TestExpando:
             del expansive.baz
 
 
-def test_transactional():
-    with pytest.raises(NotImplementedError):
-        model.transactional()
-
-
-def test_transactional_async():
-    with pytest.raises(NotImplementedError):
-        model.transactional_async()
-
-
-def test_transactional_tasklet():
-    with pytest.raises(NotImplementedError):
-        model.transactional_tasklet()
-
-
-def test_non_transactional():
-    with pytest.raises(NotImplementedError):
-        model.non_transactional()
-
-
 @pytest.mark.usefixtures("in_context")
 @unittest.mock.patch("google.cloud.ndb.key.Key")
 @unittest.mock.patch("google.cloud.ndb.tasklets.Future")

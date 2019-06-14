@@ -309,10 +309,6 @@ __all__ = [
     "MetaModel",
     "Model",
     "Expando",
-    "transactional",
-    "transactional_async",
-    "transactional_tasklet",
-    "non_transactional",
     "get_multi_async",
     "get_multi",
     "put_multi_async",
@@ -5567,22 +5563,6 @@ class Expando(Model):
                 "base class." % name
             )
         del self._properties[name]
-
-
-def transactional(*args, **kwargs):
-    raise NotImplementedError
-
-
-def transactional_async(*args, **kwargs):
-    raise NotImplementedError
-
-
-def transactional_tasklet(*args, **kwargs):
-    raise NotImplementedError
-
-
-def non_transactional(*args, **kwargs):
-    raise NotImplementedError
 
 
 @_options.ReadOptions.options

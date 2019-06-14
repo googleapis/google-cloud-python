@@ -284,7 +284,7 @@ class Context(_Context):
             bool: :data:`True` if currently in a transaction, otherwise
                 :data:`False`.
         """
-        raise NotImplementedError
+        return self.transaction is not None
 
     @staticmethod
     def default_cache_policy(key):
