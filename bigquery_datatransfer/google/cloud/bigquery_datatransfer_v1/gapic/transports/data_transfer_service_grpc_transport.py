@@ -205,7 +205,7 @@ class DataTransferServiceGrpcTransport(object):
         Creates transfer runs for a time range [start\_time, end\_time]. For
         each date - or whatever granularity the data source supports - in the
         range, one transfer run is created. Note that runs are created per UTC
-        time in the time range.
+        time in the time range. DEPRECATED: use StartManualTransferRuns instead.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -283,3 +283,19 @@ class DataTransferServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["data_transfer_service_stub"].CheckValidCreds
+
+    @property
+    def start_manual_transfer_runs(self):
+        """Return the gRPC stub for :meth:`DataTransferServiceClient.start_manual_transfer_runs`.
+
+        Start manual transfer runs to be executed now with schedule\_time equal
+        to current time. The transfer runs can be created for a time range where
+        the run\_time is between start\_time (inclusive) and end\_time
+        (exclusive), or for a specific run\_time.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_transfer_service_stub"].StartManualTransferRuns
