@@ -990,7 +990,6 @@ def test_load_table_from_file(client, to_delete):
         job = client.load_table_from_file(
             source_file,
             table_ref,
-            location="US",  # Must match the destination dataset location.
             job_config=job_config,
         )  # API request
 
