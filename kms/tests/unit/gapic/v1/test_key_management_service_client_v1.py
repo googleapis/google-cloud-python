@@ -115,6 +115,54 @@ class TestKeyManagementServiceClient(object):
         with pytest.raises(CustomException):
             list(paged_list_response)
 
+    def test_list_import_jobs(self):
+        # Setup Expected Response
+        next_page_token = ""
+        total_size = 705419236
+        import_jobs_element = {}
+        import_jobs = [import_jobs_element]
+        expected_response = {
+            "next_page_token": next_page_token,
+            "total_size": total_size,
+            "import_jobs": import_jobs,
+        }
+        expected_response = service_pb2.ListImportJobsResponse(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = kms_v1.KeyManagementServiceClient()
+
+        # Setup Request
+        parent = client.key_ring_path("[PROJECT]", "[LOCATION]", "[KEY_RING]")
+
+        paged_list_response = client.list_import_jobs(parent)
+        resources = list(paged_list_response)
+        assert len(resources) == 1
+
+        assert expected_response.import_jobs[0] == resources[0]
+
+        assert len(channel.requests) == 1
+        expected_request = service_pb2.ListImportJobsRequest(parent=parent)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_list_import_jobs_exception(self):
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = kms_v1.KeyManagementServiceClient()
+
+        # Setup request
+        parent = client.key_ring_path("[PROJECT]", "[LOCATION]", "[KEY_RING]")
+
+        paged_list_response = client.list_import_jobs(parent)
+        with pytest.raises(CustomException):
+            list(paged_list_response)
+
     def test_list_crypto_keys(self):
         # Setup Expected Response
         next_page_token = ""
@@ -255,6 +303,48 @@ class TestKeyManagementServiceClient(object):
         with pytest.raises(CustomException):
             client.get_key_ring(name)
 
+    def test_get_import_job(self):
+        # Setup Expected Response
+        name_2 = "name2-1052831874"
+        expected_response = {"name": name_2}
+        expected_response = resources_pb2.ImportJob(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = kms_v1.KeyManagementServiceClient()
+
+        # Setup Request
+        name = client.import_job_path(
+            "[PROJECT]", "[LOCATION]", "[KEY_RING]", "[IMPORT_JOB]"
+        )
+
+        response = client.get_import_job(name)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = service_pb2.GetImportJobRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_get_import_job_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = kms_v1.KeyManagementServiceClient()
+
+        # Setup request
+        name = client.import_job_path(
+            "[PROJECT]", "[LOCATION]", "[KEY_RING]", "[IMPORT_JOB]"
+        )
+
+        with pytest.raises(CustomException):
+            client.get_import_job(name)
+
     def test_get_crypto_key(self):
         # Setup Expected Response
         name_2 = "name2-1052831874"
@@ -300,7 +390,13 @@ class TestKeyManagementServiceClient(object):
     def test_get_crypto_key_version(self):
         # Setup Expected Response
         name_2 = "name2-1052831874"
-        expected_response = {"name": name_2}
+        import_job = "importJob2125587491"
+        import_failure_reason = "importFailureReason-494073229"
+        expected_response = {
+            "name": name_2,
+            "import_job": import_job,
+            "import_failure_reason": import_failure_reason,
+        }
         expected_response = resources_pb2.CryptoKeyVersion(**expected_response)
 
         # Mock the API response
@@ -391,6 +487,60 @@ class TestKeyManagementServiceClient(object):
         with pytest.raises(CustomException):
             client.create_key_ring(parent, key_ring_id, key_ring)
 
+    def test_create_import_job(self):
+        # Setup Expected Response
+        name = "name3373707"
+        expected_response = {"name": name}
+        expected_response = resources_pb2.ImportJob(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = kms_v1.KeyManagementServiceClient()
+
+        # Setup Request
+        parent = client.key_ring_path("[PROJECT]", "[LOCATION]", "[KEY_RING]")
+        import_job_id = "my-import-job"
+        import_method = enums.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256
+        protection_level = enums.ProtectionLevel.HSM
+        import_job = {
+            "import_method": import_method,
+            "protection_level": protection_level,
+        }
+
+        response = client.create_import_job(parent, import_job_id, import_job)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = service_pb2.CreateImportJobRequest(
+            parent=parent, import_job_id=import_job_id, import_job=import_job
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_create_import_job_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = kms_v1.KeyManagementServiceClient()
+
+        # Setup request
+        parent = client.key_ring_path("[PROJECT]", "[LOCATION]", "[KEY_RING]")
+        import_job_id = "my-import-job"
+        import_method = enums.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256
+        protection_level = enums.ProtectionLevel.HSM
+        import_job = {
+            "import_method": import_method,
+            "protection_level": protection_level,
+        }
+
+        with pytest.raises(CustomException):
+            client.create_import_job(parent, import_job_id, import_job)
+
     def test_create_crypto_key(self):
         # Setup Expected Response
         name = "name3373707"
@@ -456,7 +606,13 @@ class TestKeyManagementServiceClient(object):
     def test_create_crypto_key_version(self):
         # Setup Expected Response
         name = "name3373707"
-        expected_response = {"name": name}
+        import_job = "importJob2125587491"
+        import_failure_reason = "importFailureReason-494073229"
+        expected_response = {
+            "name": name,
+            "import_job": import_job,
+            "import_failure_reason": import_failure_reason,
+        }
         expected_response = resources_pb2.CryptoKeyVersion(**expected_response)
 
         # Mock the API response
@@ -498,6 +654,64 @@ class TestKeyManagementServiceClient(object):
 
         with pytest.raises(CustomException):
             client.create_crypto_key_version(parent, crypto_key_version)
+
+    def test_import_crypto_key_version(self):
+        # Setup Expected Response
+        name = "name3373707"
+        import_job_2 = "importJob2-1714851050"
+        import_failure_reason = "importFailureReason-494073229"
+        expected_response = {
+            "name": name,
+            "import_job": import_job_2,
+            "import_failure_reason": import_failure_reason,
+        }
+        expected_response = resources_pb2.CryptoKeyVersion(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = kms_v1.KeyManagementServiceClient()
+
+        # Setup Request
+        parent = client.crypto_key_path(
+            "[PROJECT]", "[LOCATION]", "[KEY_RING]", "[CRYPTO_KEY]"
+        )
+        algorithm = (
+            enums.CryptoKeyVersion.CryptoKeyVersionAlgorithm.CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED
+        )
+        import_job = "importJob2125587491"
+
+        response = client.import_crypto_key_version(parent, algorithm, import_job)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = service_pb2.ImportCryptoKeyVersionRequest(
+            parent=parent, algorithm=algorithm, import_job=import_job
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_import_crypto_key_version_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = kms_v1.KeyManagementServiceClient()
+
+        # Setup request
+        parent = client.crypto_key_path(
+            "[PROJECT]", "[LOCATION]", "[KEY_RING]", "[CRYPTO_KEY]"
+        )
+        algorithm = (
+            enums.CryptoKeyVersion.CryptoKeyVersionAlgorithm.CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED
+        )
+        import_job = "importJob2125587491"
+
+        with pytest.raises(CustomException):
+            client.import_crypto_key_version(parent, algorithm, import_job)
 
     def test_update_crypto_key(self):
         # Setup Expected Response
@@ -544,7 +758,13 @@ class TestKeyManagementServiceClient(object):
     def test_update_crypto_key_version(self):
         # Setup Expected Response
         name = "name3373707"
-        expected_response = {"name": name}
+        import_job = "importJob2125587491"
+        import_failure_reason = "importFailureReason-494073229"
+        expected_response = {
+            "name": name,
+            "import_job": import_job,
+            "import_failure_reason": import_failure_reason,
+        }
         expected_response = resources_pb2.CryptoKeyVersion(**expected_response)
 
         # Mock the API response
@@ -721,7 +941,13 @@ class TestKeyManagementServiceClient(object):
     def test_destroy_crypto_key_version(self):
         # Setup Expected Response
         name_2 = "name2-1052831874"
-        expected_response = {"name": name_2}
+        import_job = "importJob2125587491"
+        import_failure_reason = "importFailureReason-494073229"
+        expected_response = {
+            "name": name_2,
+            "import_job": import_job,
+            "import_failure_reason": import_failure_reason,
+        }
         expected_response = resources_pb2.CryptoKeyVersion(**expected_response)
 
         # Mock the API response
@@ -771,7 +997,13 @@ class TestKeyManagementServiceClient(object):
     def test_restore_crypto_key_version(self):
         # Setup Expected Response
         name_2 = "name2-1052831874"
-        expected_response = {"name": name_2}
+        import_job = "importJob2125587491"
+        import_failure_reason = "importFailureReason-494073229"
+        expected_response = {
+            "name": name_2,
+            "import_job": import_job,
+            "import_failure_reason": import_failure_reason,
+        }
         expected_response = resources_pb2.CryptoKeyVersion(**expected_response)
 
         # Mock the API response

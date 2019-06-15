@@ -32,7 +32,10 @@ class KeyManagementServiceGrpcTransport(object):
 
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
-    _OAUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    _OAUTH_SCOPES = (
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/cloudkms",
+    )
 
     def __init__(
         self, channel=None, credentials=None, address="cloudkms.googleapis.com:443"
@@ -114,6 +117,19 @@ class KeyManagementServiceGrpcTransport(object):
         return self._stubs["key_management_service_stub"].ListKeyRings
 
     @property
+    def list_import_jobs(self):
+        """Return the gRPC stub for :meth:`KeyManagementServiceClient.list_import_jobs`.
+
+        Lists ``ImportJobs``.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["key_management_service_stub"].ListImportJobs
+
+    @property
     def list_crypto_keys(self):
         """Return the gRPC stub for :meth:`KeyManagementServiceClient.list_crypto_keys`.
 
@@ -151,6 +167,19 @@ class KeyManagementServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["key_management_service_stub"].GetKeyRing
+
+    @property
+    def get_import_job(self):
+        """Return the gRPC stub for :meth:`KeyManagementServiceClient.get_import_job`.
+
+        Returns metadata for a given ``ImportJob``.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["key_management_service_stub"].GetImportJob
 
     @property
     def get_crypto_key(self):
@@ -193,6 +222,21 @@ class KeyManagementServiceGrpcTransport(object):
         return self._stubs["key_management_service_stub"].CreateKeyRing
 
     @property
+    def create_import_job(self):
+        """Return the gRPC stub for :meth:`KeyManagementServiceClient.create_import_job`.
+
+        Create a new ``ImportJob`` within a ``KeyRing``.
+
+        ``ImportJob.import_method`` is required.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["key_management_service_stub"].CreateImportJob
+
+    @property
     def create_crypto_key(self):
         """Return the gRPC stub for :meth:`KeyManagementServiceClient.create_crypto_key`.
 
@@ -223,6 +267,23 @@ class KeyManagementServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["key_management_service_stub"].CreateCryptoKeyVersion
+
+    @property
+    def import_crypto_key_version(self):
+        """Return the gRPC stub for :meth:`KeyManagementServiceClient.import_crypto_key_version`.
+
+        Imports a new ``CryptoKeyVersion`` into an existing ``CryptoKey`` using
+        the wrapped key material provided in the request.
+
+        The version ID will be assigned the next sequential id within the
+        ``CryptoKey``.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["key_management_service_stub"].ImportCryptoKeyVersion
 
     @property
     def update_crypto_key(self):
@@ -383,8 +444,8 @@ class KeyManagementServiceGrpcTransport(object):
     def set_iam_policy(self):
         """Return the gRPC stub for :meth:`KeyManagementServiceClient.set_iam_policy`.
 
-        Sets the access control policy on the specified resource. Replaces any
-        existing policy.
+        Sets the access control policy on the specified resource. Replaces
+        any existing policy.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -397,9 +458,8 @@ class KeyManagementServiceGrpcTransport(object):
     def get_iam_policy(self):
         """Return the gRPC stub for :meth:`KeyManagementServiceClient.get_iam_policy`.
 
-        Gets the access control policy for a resource.
-        Returns an empty policy if the resource exists and does not have a policy
-        set.
+        Gets the access control policy for a resource. Returns an empty policy
+        if the resource exists and does not have a policy set.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -413,8 +473,8 @@ class KeyManagementServiceGrpcTransport(object):
         """Return the gRPC stub for :meth:`KeyManagementServiceClient.test_iam_permissions`.
 
         Returns permissions that a caller has on the specified resource. If the
-        resource does not exist, this will return an empty set of permissions,
-        not a NOT\_FOUND error.
+        resource does not exist, this will return an empty set of
+        permissions, not a NOT_FOUND error.
 
         Note: This operation is designed to be used for building
         permission-aware UIs and command-line tools, not for authorization
