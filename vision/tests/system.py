@@ -822,8 +822,10 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
     def _verify_vpc_sc_blocks_gcs_bucket(self):
         # Verifies that a VPC SC 403 error is raised when trying to access a bucket in gcs that is outside the perimeter.
         try:
-            outside_bucket = storage.Client()
-            outside_bucket.get_bucket(BUCKET_OUTSIDE)
+            storage_client = storage.Client()
+            outside_bucket = storage_client.get_bucket(BUCKET_OUTSIDE)
+            blob = outside_bucket.blob("set_up_test.txt")
+            blob.download_as_string()
         except google.api_core.exceptions.Forbidden as e:
             # Verify the Forbidden exception was due to VPC SC.
             vpc_sc_error_message = "Request violates VPC Service Controls."
