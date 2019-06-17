@@ -1,0 +1,39 @@
+{
+  "updateTime": "2019-06-05T22:45:41.734439Z",
+  "sources": [
+    {
+      "generator": {
+        "name": "artman",
+        "version": "0.23.1",
+        "dockerImage": "googleapis/artman@sha256:9d5cae1454da64ac3a87028f8ef486b04889e351c83bb95e83b8fab3959faed0"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "5487c78983f6bd5bbafa69166593826a90778a2f",
+        "internalRef": "251716150"
+      }
+    },
+    {
+      "template": {
+        "name": "python_library",
+        "origin": "synthtool.gcp",
+        "version": "2019.5.2"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "containeranalysis",
+        "apiVersion": "v1",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/devtools/containeranalysis/artman_containeranalysis_v1.yaml"
+      }
+    }
+  ]
+}
