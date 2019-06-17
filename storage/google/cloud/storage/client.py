@@ -404,6 +404,82 @@ class Client(ClientWithProject):
 
             blob_or_uri.download_to_file(file_obj, client=self, start=start, end=end)
 
+    def list_blobs(
+        self,
+        bucket_or_name,
+        max_results=None,
+        page_token=None,
+        prefix=None,
+        delimiter=None,
+        versions=None,
+        projection="noAcl",
+        fields=None,
+    ):
+        """Return an iterator used to find blobs in the bucket.
+
+        If :attr:`user_project` is set, bills the API request to that project.
+
+        bucket_or_name (Union[ \
+            :class:`~google.cloud.storage.bucket.Bucket`, \
+             str, \
+        ]):
+            The bucket resource to pass or name to create.
+
+        :type max_results: int
+        :param max_results:
+            (Optional) The maximum number of blobs in each page of results
+            from this request. Non-positive values are ignored. Defaults to
+            a sensible value set by the API.
+
+        :type page_token: str
+        :param page_token:
+            (Optional) If present, return the next batch of blobs, using the
+            value, which must correspond to the ``nextPageToken`` value
+            returned in the previous response.  Deprecated: use the ``pages``
+            property of the returned iterator instead of manually passing the
+            token.
+
+        :type prefix: str
+        :param prefix: (Optional) prefix used to filter blobs.
+
+        :type delimiter: str
+        :param delimiter: (Optional) Delimiter, used with ``prefix`` to
+                          emulate hierarchy.
+
+        :type versions: bool
+        :param versions: (Optional) Whether object versions should be returned
+                         as separate blobs.
+
+        :type projection: str
+        :param projection: (Optional) If used, must be 'full' or 'noAcl'.
+                           Defaults to ``'noAcl'``. Specifies the set of
+                           properties to return.
+
+        :type fields: str
+        :param fields:
+            (Optional) Selector specifying which fields to include
+            in a partial response. Must be a list of fields. For
+            example to get a partial response with just the next
+            page token and the name and language of each blob returned:
+            ``'items(name,contentLanguage),nextPageToken'``.
+            See: https://cloud.google.com/storage/docs/json_api/v1/parameters#fields
+
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
+        :returns: Iterator of all :class:`~google.cloud.storage.blob.Blob`
+                  in this bucket matching the arguments.
+        """
+        bucket = self._use_or_init_bucket(bucket_or_name)
+        return bucket.list_blobs(
+            max_results=max_results,
+            page_token=page_token,
+            prefix=prefix,
+            delimiter=delimiter,
+            versions=versions,
+            projection=projection,
+            fields=fields,
+            client=self
+        )
+
     def list_buckets(
         self,
         max_results=None,
