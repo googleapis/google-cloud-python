@@ -853,7 +853,7 @@ class Bucket(_PropertyMixin):
         """
 
         if fields is None:
-            fields="items(name)"
+            fields = "items(name)"
 
         iterator = self.list_blobs(
             max_results=max_results,
