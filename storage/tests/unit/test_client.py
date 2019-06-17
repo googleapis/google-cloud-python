@@ -932,7 +932,3 @@ class _Connection(object):
             raise NotFound("miss")
         else:
             return response
-
-
-if __name__ == '__main__':
-    unittest.main()

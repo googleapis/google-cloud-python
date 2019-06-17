@@ -165,7 +165,7 @@ class Client(ClientWithProject):
 
         Returns:
             google.cloud.storage.bucket.Bucket
-                The newly created bucket.
+                The newly created bucket or the given one.
         """
         if isinstance(bucket_or_name, Bucket):
             bucket = bucket_or_name
