@@ -721,6 +721,9 @@ class Bucket(_PropertyMixin):
     ):
         """Return an iterator used to find blobs in the bucket.
 
+        .. note::
+          Direct use of this method is deprecated. Use Client.list_blobs instead.
+
         If :attr:`user_project` is set, bills the API request to that project.
 
         :type max_results: int
@@ -770,11 +773,6 @@ class Bucket(_PropertyMixin):
         :returns: Iterator of all :class:`~google.cloud.storage.blob.Blob`
                   in this bucket matching the arguments.
         """
-        warnings.warn(
-            "Bucket.list_blobs method is deprecated. Use Client.list_blobs instead.",
-            PendingDeprecationWarning,
-            stacklevel=2,
-        )
         extra_params = {"projection": projection}
 
         if prefix is not None:
