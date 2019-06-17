@@ -90,7 +90,10 @@ class SpeechGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
+            address,
+            credentials=credentials,
+            scopes=cls._OAUTH_SCOPES,
+            options={"grpc.max_receive_message_length": 256 * 1024 * 1024}.items(),
         )
 
     @property
