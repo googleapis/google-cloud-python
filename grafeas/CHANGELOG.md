@@ -9,6 +9,4 @@
 06-17-2019 10:44 PDT
 
 ### New Features
-- Initial release of the Grafeas client library.
-  ([#8186](https://github.com/googleapis/google-cloud-python/pull/8186))
-
+- Initial release of the Grafeas client library. ([#8186](https://github.com/googleapis/google-cloud-python/pull/8186))
