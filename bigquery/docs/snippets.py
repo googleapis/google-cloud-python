@@ -443,7 +443,8 @@ def test_load_and_query_partitioned_table(client, to_delete):
         bigquery.ScalarQueryParameter("end_date", "DATE", datetime.date(1899, 12, 31)),
     ]
 
-    query_job = client.query(sql, job_config=job_config)  # API request
+    # API request
+    query_job = client.query(sql, job_config=job_config)
 
     rows = list(query_job)
     print("{} states were admitted to the US in the 1800s".format(len(rows)))
