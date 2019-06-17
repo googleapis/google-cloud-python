@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Cloud Key Management Service (KMS) API &#8212; google-cloud cfade2c documentation</title>
+    <title>Client for Cloud Key Management Service (KMS) API &#8212; google-cloud 20d0689 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -201,7 +201,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.kms_v1.KeyManagementServiceClient.create_crypto_key">
-<code class="descname">create_crypto_key</code><span class="sig-paren">(</span><em>parent</em>, <em>crypto_key_id</em>, <em>crypto_key</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/kms_v1/gapic/key_management_service_client.html#KeyManagementServiceClient.create_crypto_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.kms_v1.KeyManagementServiceClient.create_crypto_key" title="Permalink to this definition">#</a></dt>
+<code class="descname">create_crypto_key</code><span class="sig-paren">(</span><em>parent</em>, <em>crypto_key_id</em>, <em>crypto_key</em>, <em>skip_initial_version_creation=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/kms_v1/gapic/key_management_service_client.html#KeyManagementServiceClient.create_crypto_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.kms_v1.KeyManagementServiceClient.create_crypto_key" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a new <code class="docutils literal notranslate"><span class="pre">CryptoKey</span></code> within a <code class="docutils literal notranslate"><span class="pre">KeyRing</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">CryptoKey.purpose</span></code> and <code class="docutils literal notranslate"><span class="pre">CryptoKey.version_template.algorithm</span></code> are
 required.</p>
@@ -236,6 +236,9 @@ expression <code class="docutils literal notranslate"><span class="pre">[a-zA-Z0
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.kms_v1.types.CryptoKey" title="google.cloud.kms_v1.types.CryptoKey"><code class="xref py py-class docutils literal notranslate"><span class="pre">CryptoKey</span></code></a></p>
 </li>
+<li><strong>skip_initial_version_creation</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – If set to true, the request will create a <code class="docutils literal notranslate"><span class="pre">CryptoKey</span></code> without any
+<code class="docutils literal notranslate"><span class="pre">CryptoKeyVersions</span></code>. You must manually call <code class="docutils literal notranslate"><span class="pre">CreateCryptoKeyVersion</span></code>
+or <code class="docutils literal notranslate"><span class="pre">ImportCryptoKeyVersion</span></code> before you can use this <code class="docutils literal notranslate"><span class="pre">CryptoKey</span></code>.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -305,6 +308,66 @@ that is provided to the method.</li>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.kms_v1.types.CryptoKeyVersion" title="google.cloud.kms_v1.types.CryptoKeyVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">CryptoKeyVersion</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.kms_v1.KeyManagementServiceClient.create_import_job">
+<code class="descname">create_import_job</code><span class="sig-paren">(</span><em>parent</em>, <em>import_job_id</em>, <em>import_job</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/kms_v1/gapic/key_management_service_client.html#KeyManagementServiceClient.create_import_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.kms_v1.KeyManagementServiceClient.create_import_job" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a new <code class="docutils literal notranslate"><span class="pre">ImportJob</span></code> within a <code class="docutils literal notranslate"><span class="pre">KeyRing</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">ImportJob.import_method</span></code> is required.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">kms_v1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.kms_v1</span> <span class="k">import</span> <span class="n">enums</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">kms_v1</span><span class="o">.</span><span class="n">KeyManagementServiceClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">key_ring_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[KEY_RING]&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">import_job_id</span> <span class="o">=</span> <span class="s1">&#39;my-import-job&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">import_method</span> <span class="o">=</span> <span class="n">enums</span><span class="o">.</span><span class="n">ImportJob</span><span class="o">.</span><span class="n">ImportMethod</span><span class="o">.</span><span class="n">RSA_OAEP_3072_SHA1_AES_256</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">protection_level</span> <span class="o">=</span> <span class="n">enums</span><span class="o">.</span><span class="n">ProtectionLevel</span><span class="o">.</span><span class="n">HSM</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">import_job</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;import_method&#39;</span><span class="p">:</span> <span class="n">import_method</span><span class="p">,</span> <span class="s1">&#39;protection_level&#39;</span><span class="p">:</span> <span class="n">protection_level</span><span class="p">}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_import_job</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">import_job_id</span><span class="p">,</span> <span class="n">import_job</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The <code class="docutils literal notranslate"><span class="pre">name</span></code> of the <code class="docutils literal notranslate"><span class="pre">KeyRing</span></code> associated with the
+<code class="docutils literal notranslate"><span class="pre">ImportJobs</span></code>.</li>
+<li><strong>import_job_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. It must be unique within a KeyRing and match the regular
+expression <code class="docutils literal notranslate"><span class="pre">[a-zA-Z0-9_-]{1,63}</span></code></li>
+<li><strong>import_job</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.kms_v1.types.ImportJob" title="google.cloud.kms_v1.types.ImportJob"><em>ImportJob</em></a><em>]</em>) – <p>Required. An <code class="docutils literal notranslate"><span class="pre">ImportJob</span></code> with initial field values.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.kms_v1.types.ImportJob" title="google.cloud.kms_v1.types.ImportJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImportJob</span></code></a></p>
+</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.kms_v1.types.ImportJob" title="google.cloud.kms_v1.types.ImportJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImportJob</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
@@ -732,9 +795,8 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.kms_v1.KeyManagementServiceClient.get_iam_policy">
 <code class="descname">get_iam_policy</code><span class="sig-paren">(</span><em>resource</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/kms_v1/gapic/key_management_service_client.html#KeyManagementServiceClient.get_iam_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.kms_v1.KeyManagementServiceClient.get_iam_policy" title="Permalink to this definition">#</a></dt>
-<dd><p>Gets the access control policy for a resource.
-Returns an empty policy if the resource exists and does not have a policy
-set.</p>
+<dd><p>Gets the access control policy for a resource. Returns an empty policy
+if the resource exists and does not have a policy set.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">kms_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -764,6 +826,53 @@ that is provided to the method.</li>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.kms_v1.KeyManagementServiceClient.get_import_job">
+<code class="descname">get_import_job</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/kms_v1/gapic/key_management_service_client.html#KeyManagementServiceClient.get_import_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.kms_v1.KeyManagementServiceClient.get_import_job" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns metadata for a given <code class="docutils literal notranslate"><span class="pre">ImportJob</span></code>.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">kms_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">kms_v1</span><span class="o">.</span><span class="n">KeyManagementServiceClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">import_job_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[KEY_RING]&#39;</span><span class="p">,</span> <span class="s1">&#39;[IMPORT_JOB]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_import_job</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The <code class="docutils literal notranslate"><span class="pre">name</span></code> of the <code class="docutils literal notranslate"><span class="pre">ImportJob</span></code> to get.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.kms_v1.types.ImportJob" title="google.cloud.kms_v1.types.ImportJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImportJob</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
@@ -875,6 +984,88 @@ to a retryable error and retry attempts failed.</li>
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="google.cloud.kms_v1.KeyManagementServiceClient.import_crypto_key_version">
+<code class="descname">import_crypto_key_version</code><span class="sig-paren">(</span><em>parent</em>, <em>algorithm</em>, <em>import_job</em>, <em>rsa_aes_wrapped_key=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/kms_v1/gapic/key_management_service_client.html#KeyManagementServiceClient.import_crypto_key_version"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.kms_v1.KeyManagementServiceClient.import_crypto_key_version" title="Permalink to this definition">#</a></dt>
+<dd><p>Imports a new <code class="docutils literal notranslate"><span class="pre">CryptoKeyVersion</span></code> into an existing <code class="docutils literal notranslate"><span class="pre">CryptoKey</span></code> using
+the wrapped key material provided in the request.</p>
+<p>The version ID will be assigned the next sequential id within the
+<code class="docutils literal notranslate"><span class="pre">CryptoKey</span></code>.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">kms_v1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.kms_v1</span> <span class="k">import</span> <span class="n">enums</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">kms_v1</span><span class="o">.</span><span class="n">KeyManagementServiceClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">crypto_key_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[KEY_RING]&#39;</span><span class="p">,</span> <span class="s1">&#39;[CRYPTO_KEY]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `algorithm`:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">algorithm</span> <span class="o">=</span> <span class="n">enums</span><span class="o">.</span><span class="n">CryptoKeyVersion</span><span class="o">.</span><span class="n">CryptoKeyVersionAlgorithm</span><span class="o">.</span><span class="n">CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO: Initialize `import_job`:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">import_job</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">import_crypto_key_version</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">algorithm</span><span class="p">,</span> <span class="n">import_job</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The <code class="docutils literal notranslate"><span class="pre">name</span></code> of the <code class="docutils literal notranslate"><span class="pre">CryptoKey</span></code> to be imported into.</li>
+<li><strong>algorithm</strong> (<em>CryptoKeyVersionAlgorithm</em>) – Required. The <code class="docutils literal notranslate"><span class="pre">algorithm</span></code> of the key being imported. This does not
+need to match the <code class="docutils literal notranslate"><span class="pre">version_template</span></code> of the <code class="docutils literal notranslate"><span class="pre">CryptoKey</span></code> this version
+imports into.</li>
+<li><strong>import_job</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The <code class="docutils literal notranslate"><span class="pre">name</span></code> of the <code class="docutils literal notranslate"><span class="pre">ImportJob</span></code> that was used to wrap this
+key material.</li>
+<li><strong>rsa_aes_wrapped_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)"><em>bytes</em></a>) – <p>Wrapped key material produced with <code class="docutils literal notranslate"><span class="pre">RSA_OAEP_3072_SHA1_AES_256</span></code> or
+<code class="docutils literal notranslate"><span class="pre">RSA_OAEP_4096_SHA1_AES_256</span></code>.</p>
+<p>This field contains the concatenation of two wrapped keys:</p>
+<ol>
+  <li>An ephemeral AES-256 wrapping key wrapped with the
+      `public_key` using RSAES-OAEP with SHA-1,
+      MGF1 with SHA-1, and an empty label.
+  </li>
+  <li>The key to be imported, wrapped with the ephemeral AES-256 key
+      using AES-KWP (RFC 5649).
+  </li>
+</ol><p>This format is the same as the format produced by PKCS#11 mechanism
+CKM_RSA_AES_KEY_WRAP.</p>
+</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.kms_v1.types.CryptoKeyVersion" title="google.cloud.kms_v1.types.CryptoKeyVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">CryptoKeyVersion</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.kms_v1.KeyManagementServiceClient.import_job_path">
+<em class="property">classmethod </em><code class="descname">import_job_path</code><span class="sig-paren">(</span><em>project</em>, <em>location</em>, <em>key_ring</em>, <em>import_job</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/kms_v1/gapic/key_management_service_client.html#KeyManagementServiceClient.import_job_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.kms_v1.KeyManagementServiceClient.import_job_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a fully-qualified import_job string.</p>
+</dd></dl>
+
 <dl class="classmethod">
 <dt id="google.cloud.kms_v1.KeyManagementServiceClient.key_ring_path">
 <em class="property">classmethod </em><code class="descname">key_ring_path</code><span class="sig-paren">(</span><em>project</em>, <em>location</em>, <em>key_ring</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/kms_v1/gapic/key_management_service_client.html#KeyManagementServiceClient.key_ring_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.kms_v1.KeyManagementServiceClient.key_ring_path" title="Permalink to this definition">#</a></dt>
@@ -883,7 +1074,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.kms_v1.KeyManagementServiceClient.list_crypto_key_versions">
-<code class="descname">list_crypto_key_versions</code><span class="sig-paren">(</span><em>parent</em>, <em>page_size=None</em>, <em>view=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/kms_v1/gapic/key_management_service_client.html#KeyManagementServiceClient.list_crypto_key_versions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.kms_v1.KeyManagementServiceClient.list_crypto_key_versions" title="Permalink to this definition">#</a></dt>
+<code class="descname">list_crypto_key_versions</code><span class="sig-paren">(</span><em>parent</em>, <em>page_size=None</em>, <em>view=None</em>, <em>filter_=None</em>, <em>order_by=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/kms_v1/gapic/key_management_service_client.html#KeyManagementServiceClient.list_crypto_key_versions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.kms_v1.KeyManagementServiceClient.list_crypto_key_versions" title="Permalink to this definition">#</a></dt>
 <dd><p>Lists <code class="docutils literal notranslate"><span class="pre">CryptoKeyVersions</span></code>.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">kms_v1</span>
@@ -920,6 +1111,9 @@ resource, this parameter does not affect the return value. If page
 streaming is performed per-page, this determines the maximum number
 of resources in a page.</li>
 <li><strong>view</strong> (<em>CryptoKeyVersionView</em>) – The fields to include in the response.</li>
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional. Only include resources that match the filter in the response.</li>
+<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional. Specify how the results should be sorted. If not specified, the
+results will be sorted in the default order.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -952,7 +1146,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.kms_v1.KeyManagementServiceClient.list_crypto_keys">
-<code class="descname">list_crypto_keys</code><span class="sig-paren">(</span><em>parent</em>, <em>page_size=None</em>, <em>version_view=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/kms_v1/gapic/key_management_service_client.html#KeyManagementServiceClient.list_crypto_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.kms_v1.KeyManagementServiceClient.list_crypto_keys" title="Permalink to this definition">#</a></dt>
+<code class="descname">list_crypto_keys</code><span class="sig-paren">(</span><em>parent</em>, <em>page_size=None</em>, <em>version_view=None</em>, <em>filter_=None</em>, <em>order_by=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/kms_v1/gapic/key_management_service_client.html#KeyManagementServiceClient.list_crypto_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.kms_v1.KeyManagementServiceClient.list_crypto_keys" title="Permalink to this definition">#</a></dt>
 <dd><p>Lists <code class="docutils literal notranslate"><span class="pre">CryptoKeys</span></code>.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">kms_v1</span>
@@ -989,6 +1183,9 @@ resource, this parameter does not affect the return value. If page
 streaming is performed per-page, this determines the maximum number
 of resources in a page.</li>
 <li><strong>version_view</strong> (<em>CryptoKeyVersionView</em>) – The fields of the primary version to include in the response.</li>
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional. Only include resources that match the filter in the response.</li>
+<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional. Specify how the results should be sorted. If not specified, the
+results will be sorted in the default order.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1020,8 +1217,79 @@ to a retryable error and retry attempts failed.</li>
 </dd></dl>
 
 <dl class="method">
+<dt id="google.cloud.kms_v1.KeyManagementServiceClient.list_import_jobs">
+<code class="descname">list_import_jobs</code><span class="sig-paren">(</span><em>parent</em>, <em>page_size=None</em>, <em>filter_=None</em>, <em>order_by=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/kms_v1/gapic/key_management_service_client.html#KeyManagementServiceClient.list_import_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.kms_v1.KeyManagementServiceClient.list_import_jobs" title="Permalink to this definition">#</a></dt>
+<dd><p>Lists <code class="docutils literal notranslate"><span class="pre">ImportJobs</span></code>.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">kms_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">kms_v1</span><span class="o">.</span><span class="n">KeyManagementServiceClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">key_ring_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">,</span> <span class="s1">&#39;[KEY_RING]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over all results</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_import_jobs</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># process element</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively:</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over results one page at a time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_import_jobs</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="c1"># process element</span>
+<span class="gp">... </span>        <span class="k">pass</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The resource name of the <code class="docutils literal notranslate"><span class="pre">KeyRing</span></code> to list, in the format
+<code class="docutils literal notranslate"><span class="pre">projects/*/locations/*/keyRings/*</span></code>.</li>
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
+underlying API response. If page streaming is performed per-
+resource, this parameter does not affect the return value. If page
+streaming is performed per-page, this determines the maximum number
+of resources in a page.</li>
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional. Only include resources that match the filter in the response.</li>
+<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional. Specify how the results should be sorted. If not specified, the
+results will be sorted in the default order.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
+<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code></a> instance. By default, this
+is an iterable of <a class="reference internal" href="types.html#google.cloud.kms_v1.types.ImportJob" title="google.cloud.kms_v1.types.ImportJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImportJob</span></code></a> instances.
+This object can also be configured to iterate over the pages
+of the response through the <cite>options</cite> parameter.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="google.cloud.kms_v1.KeyManagementServiceClient.list_key_rings">
-<code class="descname">list_key_rings</code><span class="sig-paren">(</span><em>parent</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/kms_v1/gapic/key_management_service_client.html#KeyManagementServiceClient.list_key_rings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.kms_v1.KeyManagementServiceClient.list_key_rings" title="Permalink to this definition">#</a></dt>
+<code class="descname">list_key_rings</code><span class="sig-paren">(</span><em>parent</em>, <em>page_size=None</em>, <em>filter_=None</em>, <em>order_by=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/kms_v1/gapic/key_management_service_client.html#KeyManagementServiceClient.list_key_rings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.kms_v1.KeyManagementServiceClient.list_key_rings" title="Permalink to this definition">#</a></dt>
 <dd><p>Lists <code class="docutils literal notranslate"><span class="pre">KeyRings</span></code>.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">kms_v1</span>
@@ -1057,6 +1325,9 @@ underlying API response. If page streaming is performed per-
 resource, this parameter does not affect the return value. If page
 streaming is performed per-page, this determines the maximum number
 of resources in a page.</li>
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional. Only include resources that match the filter in the response.</li>
+<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional. Specify how the results should be sorted. If not specified, the
+results will be sorted in the default order.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1145,8 +1416,8 @@ to a retryable error and retry attempts failed.</li>
 <dl class="method">
 <dt id="google.cloud.kms_v1.KeyManagementServiceClient.set_iam_policy">
 <code class="descname">set_iam_policy</code><span class="sig-paren">(</span><em>resource</em>, <em>policy</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/kms_v1/gapic/key_management_service_client.html#KeyManagementServiceClient.set_iam_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.kms_v1.KeyManagementServiceClient.set_iam_policy" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets the access control policy on the specified resource. Replaces any
-existing policy.</p>
+<dd><p>Sets the access control policy on the specified resource. Replaces
+any existing policy.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">kms_v1</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1205,8 +1476,8 @@ to a retryable error and retry attempts failed.</li>
 <dt id="google.cloud.kms_v1.KeyManagementServiceClient.test_iam_permissions">
 <code class="descname">test_iam_permissions</code><span class="sig-paren">(</span><em>resource</em>, <em>permissions</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/kms_v1/gapic/key_management_service_client.html#KeyManagementServiceClient.test_iam_permissions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.kms_v1.KeyManagementServiceClient.test_iam_permissions" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns permissions that a caller has on the specified resource. If the
-resource does not exist, this will return an empty set of permissions,
-not a NOT_FOUND error.</p>
+resource does not exist, this will return an empty set of
+permissions, not a NOT_FOUND error.</p>
 <p>Note: This operation is designed to be used for building
 permission-aware UIs and command-line tools, not for authorization
 checking. This operation may “fail open” without warning.</p>

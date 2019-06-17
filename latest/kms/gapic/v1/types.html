@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Key Management Service (KMS) API Client &#8212; google-cloud cfade2c documentation</title>
+    <title>Types for Cloud Key Management Service (KMS) API Client &#8212; google-cloud 20d0689 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -175,6 +175,19 @@ field values.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.kms_v1.types.CreateCryptoKeyRequest.skip_initial_version_creation">
+<code class="descname">skip_initial_version_creation</code><a class="headerlink" href="#google.cloud.kms_v1.types.CreateCryptoKeyRequest.skip_initial_version_creation" title="Permalink to this definition">#</a></dt>
+<dd><p>If set to true, the request will create a
+[CryptoKey][google.cloud.kms.v1.CryptoKey] without any
+[CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]. You
+must manually call [CreateCryptoKeyVersion][google.cloud.kms.v
+1.KeyManagementService.CreateCryptoKeyVersion] or [ImportCrypt
+oKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCr
+yptoKeyVersion] before you can use this
+[CryptoKey][google.cloud.kms.v1.CryptoKey].</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">crypto_key</code></dt>
 <dd><p>Field google.cloud.kms.v1.CreateCryptoKeyRequest.crypto_key</p>
@@ -190,6 +203,12 @@ field values.</p>
 <dt>
 <code class="descname">parent</code></dt>
 <dd><p>Field google.cloud.kms.v1.CreateCryptoKeyRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">skip_initial_version_creation</code></dt>
+<dd><p>Field google.cloud.kms.v1.CreateCryptoKeyRequest.skip_initial_version_creation</p>
 </dd></dl>
 
 </dd></dl>
@@ -224,6 +243,53 @@ with initial field values.</p>
 <dt>
 <code class="descname">parent</code></dt>
 <dd><p>Field google.cloud.kms.v1.CreateCryptoKeyVersionRequest.parent</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.kms_v1.types.CreateImportJobRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">CreateImportJobRequest</code><a class="headerlink" href="#google.cloud.kms_v1.types.CreateImportJobRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[KeyManagementService.CreateImportJob][google.cloud.kms.v1.KeyManagementService.CreateImportJob].</p>
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.CreateImportJobRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.kms_v1.types.CreateImportJobRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The [name][google.cloud.kms.v1.KeyRing.name] of the
+[KeyRing][google.cloud.kms.v1.KeyRing] associated with the
+[ImportJobs][google.cloud.kms.v1.ImportJob].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.CreateImportJobRequest.import_job_id">
+<code class="descname">import_job_id</code><a class="headerlink" href="#google.cloud.kms_v1.types.CreateImportJobRequest.import_job_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. It must be unique within a KeyRing and match the
+regular expression <code class="docutils literal notranslate"><span class="pre">[a-zA-Z0-9_-]{1,63}</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.CreateImportJobRequest.import_job">
+<code class="descname">import_job</code><a class="headerlink" href="#google.cloud.kms_v1.types.CreateImportJobRequest.import_job" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. An [ImportJob][google.cloud.kms.v1.ImportJob] with
+initial field values.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">import_job</code></dt>
+<dd><p>Field google.cloud.kms.v1.CreateImportJobRequest.import_job</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">import_job_id</code></dt>
+<dd><p>Field google.cloud.kms.v1.CreateImportJobRequest.import_job_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.kms.v1.CreateImportJobRequest.parent</p>
 </dd></dl>
 
 </dd></dl>
@@ -545,6 +611,32 @@ e.DESTROYED].</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.kms_v1.types.CryptoKeyVersion.import_job">
+<code class="descname">import_job</code><a class="headerlink" href="#google.cloud.kms_v1.types.CryptoKeyVersion.import_job" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The name of the
+[ImportJob][google.cloud.kms.v1.ImportJob] used to import this
+[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]. Only
+present if the underlying key material was imported.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.CryptoKeyVersion.import_time">
+<code class="descname">import_time</code><a class="headerlink" href="#google.cloud.kms_v1.types.CryptoKeyVersion.import_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The time at which this
+[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]’s key
+material was imported.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.CryptoKeyVersion.import_failure_reason">
+<code class="descname">import_failure_reason</code><a class="headerlink" href="#google.cloud.kms_v1.types.CryptoKeyVersion.import_failure_reason" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The root cause of an import failure. Only present
+if [state][google.cloud.kms.v1.CryptoKeyVersion.state] is [IMP
+ORT_FAILED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVer
+sionState.IMPORT_FAILED].</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">algorithm</code></dt>
 <dd><p>Field google.cloud.kms.v1.CryptoKeyVersion.algorithm</p>
@@ -578,6 +670,24 @@ e.DESTROYED].</p>
 <dt>
 <code class="descname">generate_time</code></dt>
 <dd><p>Field google.cloud.kms.v1.CryptoKeyVersion.generate_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">import_failure_reason</code></dt>
+<dd><p>Field google.cloud.kms.v1.CryptoKeyVersion.import_failure_reason</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">import_job</code></dt>
+<dd><p>Field google.cloud.kms.v1.CryptoKeyVersion.import_job</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">import_time</code></dt>
+<dd><p>Field google.cloud.kms.v1.CryptoKeyVersion.import_time</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -959,6 +1069,26 @@ get.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.kms_v1.types.GetImportJobRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">GetImportJobRequest</code><a class="headerlink" href="#google.cloud.kms_v1.types.GetImportJobRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[KeyManagementService.GetImportJob][google.cloud.kms.v1.KeyManagementService.GetImportJob].</p>
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.GetImportJobRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.kms_v1.types.GetImportJobRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The [name][google.cloud.kms.v1.ImportJob.name] of the
+[ImportJob][google.cloud.kms.v1.ImportJob] to get.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.kms.v1.GetImportJobRequest.name</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.kms_v1.types.GetKeyRingRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">GetKeyRingRequest</code><a class="headerlink" href="#google.cloud.kms_v1.types.GetKeyRingRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request message for
@@ -1000,9 +1130,302 @@ public key to get.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.kms_v1.types.ImportCryptoKeyVersionRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">ImportCryptoKeyVersionRequest</code><a class="headerlink" href="#google.cloud.kms_v1.types.ImportCryptoKeyVersionRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[KeyManagementService.ImportCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion].</p>
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ImportCryptoKeyVersionRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.kms_v1.types.ImportCryptoKeyVersionRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The [name][google.cloud.kms.v1.CryptoKey.name] of
+the [CryptoKey][google.cloud.kms.v1.CryptoKey] to be imported
+into.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ImportCryptoKeyVersionRequest.algorithm">
+<code class="descname">algorithm</code><a class="headerlink" href="#google.cloud.kms_v1.types.ImportCryptoKeyVersionRequest.algorithm" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The [algorithm][google.cloud.kms.v1.CryptoKeyVersion
+.CryptoKeyVersionAlgorithm] of the key being imported. This
+does not need to match the [version_template][google.cloud.km
+s.v1.CryptoKey.version_template] of the
+[CryptoKey][google.cloud.kms.v1.CryptoKey] this version
+imports into.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ImportCryptoKeyVersionRequest.import_job">
+<code class="descname">import_job</code><a class="headerlink" href="#google.cloud.kms_v1.types.ImportCryptoKeyVersionRequest.import_job" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The [name][google.cloud.kms.v1.ImportJob.name] of
+the [ImportJob][google.cloud.kms.v1.ImportJob] that was used
+to wrap this key material.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ImportCryptoKeyVersionRequest.wrapped_key_material">
+<code class="descname">wrapped_key_material</code><a class="headerlink" href="#google.cloud.kms_v1.types.ImportCryptoKeyVersionRequest.wrapped_key_material" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The incoming wrapped key material that is to be
+imported.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ImportCryptoKeyVersionRequest.rsa_aes_wrapped_key">
+<code class="descname">rsa_aes_wrapped_key</code><a class="headerlink" href="#google.cloud.kms_v1.types.ImportCryptoKeyVersionRequest.rsa_aes_wrapped_key" title="Permalink to this definition">#</a></dt>
+<dd><p>Wrapped key material produced with [RSA_OAEP_3072_SHA1_AES
+_256][google.cloud.kms.v1.ImportJob.ImportMethod.RSA_OAEP_3
+072_SHA1_AES_256] or [RSA_OAEP_4096_SHA1_AES_256][goog
+le.cloud.kms.v1.ImportJob.ImportMethod.RSA_OAEP_4096_SHA1_
+AES_256].  This field contains the concatenation of two
+wrapped keys:  .. raw:: html     &lt;ol&gt;  .. raw:: html     &lt;li&gt;
+An ephemeral AES-256 wrapping key wrapped with the
+[public_key][google.cloud.kms.v1.ImportJob.public_key] using
+RSAES-OAEP with SHA-1, MGF1 with SHA-1, and an empty label.
+.. raw:: html     &lt;/li&gt;  .. raw:: html     &lt;li&gt;  The key to be
+imported, wrapped with the ephemeral AES-256 key using AES-KWP
+(RFC 5649).  .. raw:: html     &lt;/li&gt;  .. raw:: html     &lt;/ol&gt;
+This format is the same as the format produced by PKCS#11
+mechanism CKM_RSA_AES_KEY_WRAP.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">algorithm</code></dt>
+<dd><p>Field google.cloud.kms.v1.ImportCryptoKeyVersionRequest.algorithm</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">import_job</code></dt>
+<dd><p>Field google.cloud.kms.v1.ImportCryptoKeyVersionRequest.import_job</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.kms.v1.ImportCryptoKeyVersionRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">rsa_aes_wrapped_key</code></dt>
+<dd><p>Field google.cloud.kms.v1.ImportCryptoKeyVersionRequest.rsa_aes_wrapped_key</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.kms_v1.types.ImportJob">
+<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">ImportJob</code><a class="headerlink" href="#google.cloud.kms_v1.types.ImportJob" title="Permalink to this definition">#</a></dt>
+<dd><p>An [ImportJob][google.cloud.kms.v1.ImportJob] can be used to create
+[CryptoKeys][google.cloud.kms.v1.CryptoKey] and
+[CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion] using
+pre-existing key material, generated outside of Cloud KMS.</p>
+<p>When an [ImportJob][google.cloud.kms.v1.ImportJob] is created, Cloud KMS
+will generate a “wrapping key”, which is a public/private key pair. You
+use the wrapping key to encrypt (also known as wrap) the pre-existing
+key material to protect it during the import process. The nature of the
+wrapping key depends on the choice of
+[import_method][google.cloud.kms.v1.ImportJob.import_method]. When the
+wrapping key generation is complete, the
+[state][google.cloud.kms.v1.ImportJob.state] will be set to
+[ACTIVE][google.cloud.kms.v1.ImportJob.ImportJobState.ACTIVE] and the
+[public_key][google.cloud.kms.v1.ImportJob.public_key] can be fetched.
+The fetched public key can then be used to wrap your pre-existing key
+material.</p>
+<p>Once the key material is wrapped, it can be imported into a new
+[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] in an existing
+[CryptoKey][google.cloud.kms.v1.CryptoKey] by calling
+[ImportCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion].
+Multiple [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion] can
+be imported with a single [ImportJob][google.cloud.kms.v1.ImportJob].
+Cloud KMS uses the private key portion of the wrapping key to unwrap the
+key material. Only Cloud KMS has access to the private key.</p>
+<p>An [ImportJob][google.cloud.kms.v1.ImportJob] expires 3 days after it is
+created. Once expired, Cloud KMS will no longer be able to import or
+unwrap any key material that was wrapped with the
+[ImportJob][google.cloud.kms.v1.ImportJob]’s public key.</p>
+<p>For more information, see <a class="reference external" href="https://cloud.google.com/kms/docs/importing-a-key">Importing a
+key</a>.</p>
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ImportJob.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.kms_v1.types.ImportJob.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The resource name for this
+[ImportJob][google.cloud.kms.v1.ImportJob] in the format
+<code class="docutils literal notranslate"><span class="pre">projects/*/locations/*/keyRings/*/importJobs/*</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ImportJob.import_method">
+<code class="descname">import_method</code><a class="headerlink" href="#google.cloud.kms_v1.types.ImportJob.import_method" title="Permalink to this definition">#</a></dt>
+<dd><p>Required and immutable. The wrapping method to be used for
+incoming key material.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ImportJob.protection_level">
+<code class="descname">protection_level</code><a class="headerlink" href="#google.cloud.kms_v1.types.ImportJob.protection_level" title="Permalink to this definition">#</a></dt>
+<dd><p>Required and immutable. The protection level of the
+[ImportJob][google.cloud.kms.v1.ImportJob]. This must match
+the [protection_level][google.cloud.kms.v1.CryptoKeyVersionTe
+mplate.protection_level] of the [version_template][google.cl
+oud.kms.v1.CryptoKey.version_template] on the
+[CryptoKey][google.cloud.kms.v1.CryptoKey] you attempt to
+import into.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ImportJob.create_time">
+<code class="descname">create_time</code><a class="headerlink" href="#google.cloud.kms_v1.types.ImportJob.create_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The time at which this
+[ImportJob][google.cloud.kms.v1.ImportJob] was created.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ImportJob.generate_time">
+<code class="descname">generate_time</code><a class="headerlink" href="#google.cloud.kms_v1.types.ImportJob.generate_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The time this
+[ImportJob][google.cloud.kms.v1.ImportJob]’s key material was
+generated.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ImportJob.expire_time">
+<code class="descname">expire_time</code><a class="headerlink" href="#google.cloud.kms_v1.types.ImportJob.expire_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The time at which this
+[ImportJob][google.cloud.kms.v1.ImportJob] is scheduled for
+expiration and can no longer be used to import key material.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ImportJob.expire_event_time">
+<code class="descname">expire_event_time</code><a class="headerlink" href="#google.cloud.kms_v1.types.ImportJob.expire_event_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The time this
+[ImportJob][google.cloud.kms.v1.ImportJob] expired. Only
+present if [state][google.cloud.kms.v1.ImportJob.state] is [EX
+PIRED][google.cloud.kms.v1.ImportJob.ImportJobState.EXPIRED].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ImportJob.state">
+<code class="descname">state</code><a class="headerlink" href="#google.cloud.kms_v1.types.ImportJob.state" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The current state of the
+[ImportJob][google.cloud.kms.v1.ImportJob], indicating if it
+can be used.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ImportJob.public_key">
+<code class="descname">public_key</code><a class="headerlink" href="#google.cloud.kms_v1.types.ImportJob.public_key" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The public key with which to wrap key material
+prior to import. Only returned if
+[state][google.cloud.kms.v1.ImportJob.state] is
+[ACTIVE][google.cloud.kms.v1.ImportJob.ImportJobState.ACTIVE].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ImportJob.attestation">
+<code class="descname">attestation</code><a class="headerlink" href="#google.cloud.kms_v1.types.ImportJob.attestation" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Statement that was generated and signed by the
+key creator (for example, an HSM) at key creation time. Use
+this statement to verify attributes of the key as stored on
+the HSM, independently of Google. Only present if the chosen
+[ImportMethod][google.cloud.kms.v1.ImportJob.ImportMethod] is
+one with a protection level of
+[HSM][google.cloud.kms.v1.ProtectionLevel.HSM].</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.kms_v1.types.ImportJob.WrappingPublicKey">
+<em class="property">class </em><code class="descname">WrappingPublicKey</code><a class="headerlink" href="#google.cloud.kms_v1.types.ImportJob.WrappingPublicKey" title="Permalink to this definition">#</a></dt>
+<dd><p>The public key component of the wrapping key. For details of the type of
+key this public key corresponds to, see the
+[ImportMethod][google.cloud.kms.v1.ImportJob.ImportMethod].</p>
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ImportJob.WrappingPublicKey.pem">
+<code class="descname">pem</code><a class="headerlink" href="#google.cloud.kms_v1.types.ImportJob.WrappingPublicKey.pem" title="Permalink to this definition">#</a></dt>
+<dd><p>The public key, encoded in PEM format. For more information,
+see the <a class="reference external" href="https://tools.ietf.org/html/rfc7468">RFC 7468</a>
+sections for <a class="reference external" href="https://tools.ietf.org/html/rfc7468#section-2">General Considerations</a> and
+[Textual Encoding of Subject Public Key Info]
+(<a class="reference external" href="https://tools.ietf.org/html/rfc7468#section-13">https://tools.ietf.org/html/rfc7468#section-13</a>).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">pem</code></dt>
+<dd><p>Field google.cloud.kms.v1.ImportJob.WrappingPublicKey.pem</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">attestation</code></dt>
+<dd><p>Field google.cloud.kms.v1.ImportJob.attestation</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.cloud.kms.v1.ImportJob.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">expire_event_time</code></dt>
+<dd><p>Field google.cloud.kms.v1.ImportJob.expire_event_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">expire_time</code></dt>
+<dd><p>Field google.cloud.kms.v1.ImportJob.expire_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">generate_time</code></dt>
+<dd><p>Field google.cloud.kms.v1.ImportJob.generate_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">import_method</code></dt>
+<dd><p>Field google.cloud.kms.v1.ImportJob.import_method</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.kms.v1.ImportJob.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">protection_level</code></dt>
+<dd><p>Field google.cloud.kms.v1.ImportJob.protection_level</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">public_key</code></dt>
+<dd><p>Field google.cloud.kms.v1.ImportJob.public_key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">state</code></dt>
+<dd><p>Field google.cloud.kms.v1.ImportJob.state</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.kms_v1.types.KeyOperationAttestation">
 <em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">KeyOperationAttestation</code><a class="headerlink" href="#google.cloud.kms_v1.types.KeyOperationAttestation" title="Permalink to this definition">#</a></dt>
-<dd><p>Contains an HSM-generated attestation about a key operation.</p>
+<dd><p>Contains an HSM-generated attestation about a key operation. For more
+information, see [Verifying attestations]
+(<a class="reference external" href="https://cloud.google.com/kms/docs/attest-key">https://cloud.google.com/kms/docs/attest-key</a>).</p>
 <dl class="attribute">
 <dt id="google.cloud.kms_v1.types.KeyOperationAttestation.format">
 <code class="descname">format</code><a class="headerlink" href="#google.cloud.kms_v1.types.KeyOperationAttestation.format" title="Permalink to this definition">#</a></dt>
@@ -1102,6 +1525,32 @@ yptoKeyVersionsResponse.next_page_token].</p>
 <dt id="google.cloud.kms_v1.types.ListCryptoKeyVersionsRequest.view">
 <code class="descname">view</code><a class="headerlink" href="#google.cloud.kms_v1.types.ListCryptoKeyVersionsRequest.view" title="Permalink to this definition">#</a></dt>
 <dd><p>The fields to include in the response.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ListCryptoKeyVersionsRequest.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.kms_v1.types.ListCryptoKeyVersionsRequest.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Only include resources that match the filter in the
+response.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ListCryptoKeyVersionsRequest.order_by">
+<code class="descname">order_by</code><a class="headerlink" href="#google.cloud.kms_v1.types.ListCryptoKeyVersionsRequest.order_by" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Specify how the results should be sorted. If not
+specified, the results will be sorted in the default order.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">filter</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListCryptoKeyVersionsRequest.filter</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">order_by</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListCryptoKeyVersionsRequest.order_by</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1219,6 +1668,32 @@ sResponse.next_page_token].</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ListCryptoKeysRequest.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.kms_v1.types.ListCryptoKeysRequest.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Only include resources that match the filter in the
+response.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ListCryptoKeysRequest.order_by">
+<code class="descname">order_by</code><a class="headerlink" href="#google.cloud.kms_v1.types.ListCryptoKeysRequest.order_by" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Specify how the results should be sorted. If not
+specified, the results will be sorted in the default order.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">filter</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListCryptoKeysRequest.filter</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">order_by</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListCryptoKeysRequest.order_by</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">page_size</code></dt>
 <dd><p>Field google.cloud.kms.v1.ListCryptoKeysRequest.page_size</p>
@@ -1293,6 +1768,133 @@ query.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.kms_v1.types.ListImportJobsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">ListImportJobsRequest</code><a class="headerlink" href="#google.cloud.kms_v1.types.ListImportJobsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for
+[KeyManagementService.ListImportJobs][google.cloud.kms.v1.KeyManagementService.ListImportJobs].</p>
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ListImportJobsRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.kms_v1.types.ListImportJobsRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The resource name of the
+[KeyRing][google.cloud.kms.v1.KeyRing] to list, in the format
+<code class="docutils literal notranslate"><span class="pre">projects/*/locations/*/keyRings/*</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ListImportJobsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.kms_v1.types.ListImportJobsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional limit on the number of
+[ImportJobs][google.cloud.kms.v1.ImportJob] to include in the
+response. Further [ImportJobs][google.cloud.kms.v1.ImportJob]
+can subsequently be obtained by including the [ListImportJobsR
+esponse.next_page_token][google.cloud.kms.v1.ListImportJobsR
+esponse.next_page_token] in a subsequent request. If
+unspecified, the server will pick an appropriate default.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ListImportJobsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.kms_v1.types.ListImportJobsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional pagination token, returned earlier via [ListImportJob
+sResponse.next_page_token][google.cloud.kms.v1.ListImportJob
+sResponse.next_page_token].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ListImportJobsRequest.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.kms_v1.types.ListImportJobsRequest.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Only include resources that match the filter in the
+response.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ListImportJobsRequest.order_by">
+<code class="descname">order_by</code><a class="headerlink" href="#google.cloud.kms_v1.types.ListImportJobsRequest.order_by" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Specify how the results should be sorted. If not
+specified, the results will be sorted in the default order.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">filter</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListImportJobsRequest.filter</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">order_by</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListImportJobsRequest.order_by</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListImportJobsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListImportJobsRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListImportJobsRequest.parent</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.kms_v1.types.ListImportJobsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">ListImportJobsResponse</code><a class="headerlink" href="#google.cloud.kms_v1.types.ListImportJobsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for
+[KeyManagementService.ListImportJobs][google.cloud.kms.v1.KeyManagementService.ListImportJobs].</p>
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ListImportJobsResponse.import_jobs">
+<code class="descname">import_jobs</code><a class="headerlink" href="#google.cloud.kms_v1.types.ListImportJobsResponse.import_jobs" title="Permalink to this definition">#</a></dt>
+<dd><p>The list of [ImportJobs][google.cloud.kms.v1.ImportJob].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ListImportJobsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.kms_v1.types.ListImportJobsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>A token to retrieve next page of results. Pass this value in [
+ListImportJobsRequest.page_token][google.cloud.kms.v1.ListImp
+ortJobsRequest.page_token] to retrieve the next page of
+results.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ListImportJobsResponse.total_size">
+<code class="descname">total_size</code><a class="headerlink" href="#google.cloud.kms_v1.types.ListImportJobsResponse.total_size" title="Permalink to this definition">#</a></dt>
+<dd><p>The total number of
+[ImportJobs][google.cloud.kms.v1.ImportJob] that matched the
+query.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">import_jobs</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListImportJobsResponse.import_jobs</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListImportJobsResponse.next_page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">total_size</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListImportJobsResponse.total_size</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.kms_v1.types.ListKeyRingsRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.kms_v1.types.</code><code class="descname">ListKeyRingsRequest</code><a class="headerlink" href="#google.cloud.kms_v1.types.ListKeyRingsRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request message for
@@ -1323,6 +1925,32 @@ the server will pick an appropriate default.</p>
 <dd><p>Optional pagination token, returned earlier via [ListKeyRingsR
 esponse.next_page_token][google.cloud.kms.v1.ListKeyRingsRes
 ponse.next_page_token].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ListKeyRingsRequest.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.kms_v1.types.ListKeyRingsRequest.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Only include resources that match the filter in the
+response.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.kms_v1.types.ListKeyRingsRequest.order_by">
+<code class="descname">order_by</code><a class="headerlink" href="#google.cloud.kms_v1.types.ListKeyRingsRequest.order_by" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Specify how the results should be sorted. If not
+specified, the results will be sorted in the default order.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">filter</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListKeyRingsRequest.filter</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">order_by</code></dt>
+<dd><p>Field google.cloud.kms.v1.ListKeyRingsRequest.order_by</p>
 </dd></dl>
 
 <dl class="attribute">
