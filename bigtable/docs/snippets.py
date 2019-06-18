@@ -484,10 +484,6 @@ def test_bigtable_project_path():
     project_path = client.project_path
     # [END bigtable_project_path]
 
-    _project_path = r"^projects/(?P<project_id>[_a-zA-Z0-9][-_.a-zA-Z0-9]*)$"
-    _project_path_re = re.compile(_project_path)
-    assert _project_path_re.match(project_path)
-
 
 def test_bigtable_table_data_client():
     # [START bigtable_table_data_client]
@@ -496,8 +492,6 @@ def test_bigtable_table_data_client():
     client = Client(admin=True)
     table_data_client = client.table_data_client
     # [END bigtable_table_data_client]
-    assert "BigtableClient" in str(table_data_client)
-
 
 def test_bigtable_table_admin_client():
     # [START bigtable_table_admin_client]
@@ -506,7 +500,6 @@ def test_bigtable_table_admin_client():
     client = Client(admin=True)
     table_admin_client = client.table_admin_client
     # [END bigtable_table_admin_client]
-    assert "BigtableTableAdmin" in str(table_admin_client)
 
 
 def test_bigtable_instance_admin_client():
@@ -516,7 +509,6 @@ def test_bigtable_instance_admin_client():
     client = Client(admin=True)
     instance_admin_client = client.instance_admin_client
     # [END bigtable_instance_admin_client]
-    assert "BigtableInstanceAdmin" in str(instance_admin_client)
 
 
 def test_bigtable_admins_policy():
@@ -614,13 +606,6 @@ def test_bigtable_instance_name():
     instance_name = instance.name
     # [END bigtable_instance_name]
 
-    _instance_name_re = re.compile(
-        r"^projects/(?P<project>[^/]+)/"
-        r"instances/(?P<instance_id>"
-        r"[a-z][-a-z0-9]*)$"
-    )
-    assert _instance_name_re.match(instance_name)
-
 
 def test_bigtable_cluster_name():
     import re
@@ -633,15 +618,6 @@ def test_bigtable_cluster_name():
     cluster = instance.cluster(CLUSTER_ID)
     cluster_name = cluster.name
     # [END bigtable_cluster_name]
-
-    _cluster_name_re = re.compile(
-        r"^projects/(?P<project>[^/]+)/"
-        r"instances/(?P<instance>[^/]+)/"
-        r"clusters/(?P<cluster_id>"
-        r"[_a-zA-Z0-9][-_.a-zA-Z0-9]*)$"
-    )
-
-    assert _cluster_name_re.match(cluster_name)
 
 
 def test_bigtable_instance_from_pb():
