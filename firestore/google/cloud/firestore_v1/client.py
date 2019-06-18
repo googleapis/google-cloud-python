@@ -23,6 +23,9 @@ In the hierarchy of API concepts
 * a :class:`~google.cloud.firestore_v1.client.Client` owns a
   :class:`~google.cloud.firestore_v1.document.DocumentReference`
 """
+import os
+import grpc
+
 from google.api_core.gapic_v1 import client_info
 from google.cloud.client import ClientWithProject
 
@@ -38,6 +41,8 @@ from google.cloud.firestore_v1.field_path import render_field_path
 from google.cloud.firestore_v1.gapic import firestore_client
 from google.cloud.firestore_v1.gapic.transports import firestore_grpc_transport
 from google.cloud.firestore_v1.transaction import Transaction
+from google.cloud.firestore_v1.gapic.transports import firestore_grpc_transport
+from google.cloud.environment_vars import FIRESTORE_EMULATOR
 
 
 DEFAULT_DATABASE = "(default)"
@@ -103,6 +108,10 @@ class Client(ClientWithProject):
         )
         self._client_info = client_info
         self._database = database
+        self._emulator_host = os.getenv(FIRESTORE_EMULATOR)
+        self._emulator_channel = None
+        if self._emulator_host is not None:
+            self._emulator_channel = grpc.insecure_channel(self._emulator_host)
 
     @property
     def _firestore_api(self):
@@ -113,21 +122,30 @@ class Client(ClientWithProject):
             <The GAPIC client with the credentials of the current client.
         """
         if self._firestore_api_internal is None:
-            # Use a custom channel.
-            # We need this in order to set appropriate keepalive options.
-            channel = firestore_grpc_transport.FirestoreGrpcTransport.create_channel(
-                self._target,
-                credentials=self._credentials,
-                options={"grpc.keepalive_time_ms": 30000}.items(),
-            )
 
-            self._transport = firestore_grpc_transport.FirestoreGrpcTransport(
-                address=self._target, channel=channel
-            )
+            if self._emulator_host:
+                transport = firestore_grpc_transport.FirestoreGrpcTransport(
+                    address=self._emulator_host, channel=self._emulator_channel
+                )
+                self._firestore_api_internal = firestore_client.FirestoreClient(
+                    transport=transport, client_info=self._client_info
+                )
+            else:
+                # Use a custom channel.
+                # We need this in order to set appropriate keepalive options.
+                channel = firestore_grpc_transport.FirestoreGrpcTransport.create_channel(
+                    self._target,
+                    credentials=self._credentials,
+                    options={"grpc.keepalive_time_ms": 30000}.items(),
+                )
 
-            self._firestore_api_internal = firestore_client.FirestoreClient(
-                transport=self._transport, client_info=self._client_info
-            )
+                self._transport = firestore_grpc_transport.FirestoreGrpcTransport(
+                    address=self._target, channel=channel
+                )
+
+                self._firestore_api_internal = firestore_client.FirestoreClient(
+                    transport=self._transport, client_info=self._client_info
+                )
 
         return self._firestore_api_internal
 

@@ -31,6 +31,8 @@ from google.cloud._helpers import _pb_timestamp_to_datetime
 from google.cloud._helpers import UTC
 from google.cloud import firestore_v1 as firestore
 from test_utils.system import unique_resource_id
+from test_utils.system import EmulatorCreds
+from google.cloud.environment_vars import FIRESTORE_EMULATOR
 
 from time import sleep
 
@@ -43,9 +45,16 @@ DOCUMENT_EXISTS = "Document already exists: "
 
 @pytest.fixture(scope=u"module")
 def client():
-    credentials = service_account.Credentials.from_service_account_file(FIRESTORE_CREDS)
-    project = FIRESTORE_PROJECT or credentials.project_id
-    yield firestore.Client(project=project, credentials=credentials)
+    emulator = os.getenv(FIRESTORE_EMULATOR) is not None
+    if emulator:
+        credentials = EmulatorCreds()
+        yield firestore.Client(project=FIRESTORE_PROJECT, credentials=credentials)
+    else:
+        credentials = service_account.Credentials.from_service_account_file(
+            FIRESTORE_CREDS
+        )
+        project = FIRESTORE_PROJECT or credentials.project_id
+        yield firestore.Client(project=project, credentials=credentials)
 
 
 @pytest.fixture
