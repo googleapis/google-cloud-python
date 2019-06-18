@@ -90,14 +90,30 @@ class Model(object):
         Attributes:
           MODEL_TYPE_UNSPECIFIED (int)
           LINEAR_REGRESSION (int): Linear regression model.
-          LOGISTIC_REGRESSION (int): Logistic regression model.
+          LOGISTIC_REGRESSION (int): Logistic regression based classification model.
           KMEANS (int): [Beta] K-means clustering model.
+          TENSORFLOW (int): [Beta] An imported TensorFlow model.
         """
 
         MODEL_TYPE_UNSPECIFIED = 0
         LINEAR_REGRESSION = 1
         LOGISTIC_REGRESSION = 2
         KMEANS = 3
+        TENSORFLOW = 6
+
+    class OptimizationStrategy(enum.IntEnum):
+        """
+        Indicates the optimization strategy used for training.
+
+        Attributes:
+          OPTIMIZATION_STRATEGY_UNSPECIFIED (int)
+          BATCH_GRADIENT_DESCENT (int): Uses an iterative batch gradient descent algorithm.
+          NORMAL_EQUATION (int): Uses a normal equation to solve linear regression problem.
+        """
+
+        OPTIMIZATION_STRATEGY_UNSPECIFIED = 0
+        BATCH_GRADIENT_DESCENT = 1
+        NORMAL_EQUATION = 2
 
 
 class StandardSqlDataType(object):
