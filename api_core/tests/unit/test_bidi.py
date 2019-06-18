@@ -119,22 +119,30 @@ class Test_RequestQueueGenerator(object):
 
 class Test_Throttle(object):
     def test_repr(self):
-        instance = bidi._Throttle(time_window=4.5, entry_cap=42)
-        assert repr(instance) == "_Throttle(time_window=4.5, entry_cap=42)"
+        delta = datetime.timedelta(seconds=4.5)
+        instance = bidi._Throttle(access_limit=42, time_window=delta)
+        assert repr(instance) == \
+            "_Throttle(access_limit=42, time_window={})".format(repr(delta))
 
     def test_raises_error_on_invalid_init_arguments(self):
         with pytest.raises(ValueError) as exc_info:
-            bidi._Throttle(time_window=0.0, entry_cap=10)
+            bidi._Throttle(
+                access_limit=10, time_window=datetime.timedelta(seconds=0.0)
+            )
         assert "time_window" in str(exc_info.value)
-        assert "must be positive" in str(exc_info.value)
+        assert "must be a positive timedelta" in str(exc_info.value)
 
         with pytest.raises(ValueError) as exc_info:
-            bidi._Throttle(time_window=10, entry_cap=0)
-        assert "entry_cap" in str(exc_info.value)
+            bidi._Throttle(
+                access_limit=0, time_window=datetime.timedelta(seconds=10)
+            )
+        assert "access_limit" in str(exc_info.value)
         assert "must be positive" in str(exc_info.value)
 
     def test_does_not_delay_entry_attempts_under_threshold(self):
-        throttle = bidi._Throttle(time_window=1, entry_cap=3)
+        throttle = bidi._Throttle(
+            access_limit=3, time_window=datetime.timedelta(seconds=1)
+        )
         entries = []
 
         for _ in range(3):
@@ -155,7 +163,9 @@ class Test_Throttle(object):
         assert delta.total_seconds() < 0.1
 
     def test_delays_entry_attempts_above_threshold(self):
-        throttle = bidi._Throttle(time_window=1, entry_cap=3)
+        throttle = bidi._Throttle(
+            access_limit=3, time_window=datetime.timedelta(seconds=1)
+        )
         entries = []
 
         for _ in range(6):

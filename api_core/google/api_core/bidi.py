@@ -140,8 +140,8 @@ class _RequestQueueGenerator(object):
 class _Throttle(object):
     """A context manager limiting the total entries in a sliding time window.
 
-    If more than ``entry_cap`` attempts are made to enter the context manager
-    instance in the last ``time window`` seconds, the exceeding requests block
+    If more than ``access_limit`` attempts are made to enter the context manager
+    instance in the last ``time window`` interval, the exceeding requests block
     until enough time elapses.
 
     The context manager instances are thread-safe and can be shared between
@@ -150,27 +150,29 @@ class _Throttle(object):
 
     Example::
 
-        max_three_per_second = Throttle(time_window=1, entry_cap=3)
+        max_three_per_second = _Throttle(
+            access_limit=3, time_window=datetime.timedelta(seconds=1)
+        )
 
         for i in range(5):
             with max_three_per_second as time_waited:
                 print("{}: Waited {} seconds to enter".format(i, time_waited))
 
     Args:
-        time_window (float): the width of the sliding time window in seconds
-        entry_cap (int): the maximum number of entries allowed in the time window
+        access_limit (int): the maximum number of entries allowed in the time window
+        time_window (datetime.timedelta): the width of the sliding time window
     """
 
-    def __init__(self, time_window, entry_cap):
-        if time_window <= 0.0:
-            raise ValueError("time_window argument must be positive")
+    def __init__(self, access_limit, time_window):
+        if access_limit < 1:
+            raise ValueError("access_limit argument must be positive")
 
-        if entry_cap < 1:
-            raise ValueError("entry_cap argument must be positive")
+        if time_window <= datetime.timedelta(0):
+            raise ValueError("time_window argument must be a positive timedelta")
 
-        self._time_window = datetime.timedelta(seconds=time_window)
-        self._entry_cap = entry_cap
-        self._past_entries = collections.deque(maxlen=entry_cap)  # least recent first
+        self._time_window = time_window
+        self._access_limit = access_limit
+        self._past_entries = collections.deque(maxlen=access_limit)  # least recent first
         self._entry_lock = threading.Lock()
 
     def __enter__(self):
@@ -181,7 +183,7 @@ class _Throttle(object):
             while self._past_entries and self._past_entries[0] < cutoff_time:
                 self._past_entries.popleft()
 
-            if len(self._past_entries) < self._entry_cap:
+            if len(self._past_entries) < self._access_limit:
                 self._past_entries.append(datetime.datetime.now())
                 return 0.0  # no waiting was needed
 
@@ -195,8 +197,10 @@ class _Throttle(object):
         pass
 
     def __repr__(self):
-        return "{}(time_window={}, entry_cap={})".format(
-            self.__class__.__name__, self._time_window.total_seconds(), self._entry_cap
+        return "{}(access_limit={}, time_window={})".format(
+            self.__class__.__name__,
+            self._access_limit,
+            repr(self._time_window),
         )
 
 
@@ -408,7 +412,9 @@ class ResumableBidiRpc(BidiRpc):
         self._finalize_lock = threading.Lock()
 
         if throttle_reopen:
-            self._reopen_throttle = _Throttle(entry_cap=5, time_window=10)
+            self._reopen_throttle = _Throttle(
+                access_limit=5, time_window=datetime.timedelta(seconds=10),
+            )
         else:
             self._reopen_throttle = None
 
