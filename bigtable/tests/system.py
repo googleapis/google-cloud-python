@@ -273,7 +273,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.instances_to_delete.append(instance)
 
         # We want to make sure the operation completes.
-        operation.result(timeout=10)
+        operation.result(timeout=30)
 
         # Create a new instance instance and make sure it is the same.
         instance_alt = Config.CLIENT.instance(ALT_INSTANCE_ID)
@@ -531,7 +531,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         operation = cluster_2.create()
 
         # We want to make sure the operation completes.
-        operation.result(timeout=10)
+        operation.result(timeout=30)
 
         # Create a new object instance, reload  and make sure it is the same.
         alt_cluster = Config.INSTANCE.cluster(ALT_CLUSTER_ID)
