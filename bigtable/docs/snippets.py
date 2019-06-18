@@ -201,6 +201,7 @@ def test_bigtable_list_instances():
     client = Client(admin=True)
     (instances_list, failed_locations_list) = client.list_instances()
     # [END bigtable_list_instances]
+
     assert len(instances_list) > 0
 
 
@@ -212,6 +213,7 @@ def test_bigtable_list_clusters_on_instance():
     instance = client.instance(INSTANCE_ID)
     (clusters_list, failed_locations_list) = instance.list_clusters()
     # [END bigtable_list_clusters_on_instance]
+
     assert len(clusters_list) > 0
 
 
@@ -256,6 +258,7 @@ def test_bigtable_instance_exists():
     instance = client.instance(INSTANCE_ID)
     instance_exists = instance.exists()
     # [END bigtable_check_instance_exists]
+
     assert instance_exists
 
 
@@ -268,6 +271,7 @@ def test_bigtable_cluster_exists():
     cluster = instance.cluster(CLUSTER_ID)
     cluster_exists = cluster.exists()
     # [END bigtable_check_cluster_exists]
+
     assert cluster_exists
 
 
@@ -279,6 +283,7 @@ def test_bigtable_reload_instance():
     instance = client.instance(INSTANCE_ID)
     instance.reload()
     # [END bigtable_reload_instance]
+
     assert instance.type_ == PRODUCTION.value
 
 
@@ -291,6 +296,7 @@ def test_bigtable_reload_cluster():
     cluster = instance.cluster(CLUSTER_ID)
     cluster.reload()
     # [END bigtable_reload_cluster]
+
     assert cluster.serve_nodes == SERVER_NODES
 
 
@@ -318,6 +324,7 @@ def test_bigtable_update_cluster():
     cluster.serve_nodes = 4
     cluster.update()
     # [END bigtable_update_cluster]
+
     assert cluster.serve_nodes == 4
 
 
@@ -390,6 +397,7 @@ def test_bigtable_delete_cluster():
 
     cluster_to_delete.delete()
     # [END bigtable_delete_cluster]
+
     assert not cluster_to_delete.exists()
 
 
@@ -635,6 +643,7 @@ def test_bigtable_instance_from_pb():
 
     instance2 = instance.from_pb(instance_pb, client)
     # [END bigtable_instance_from_pb]
+
     assert instance2.name == instance.name
 
 
@@ -659,6 +668,7 @@ def test_bigtable_cluster_from_pb():
 
     cluster2 = cluster.from_pb(cluster_pb, instance)
     # [END bigtable_cluster_from_pb]
+
     assert cluster2.name == cluster.name
 
 
@@ -670,6 +680,7 @@ def test_bigtable_instance_state():
     instance = client.instance(INSTANCE_ID)
     instance_state = instance.state
     # [END bigtable_instance_state]
+
     assert not instance_state
 
 
