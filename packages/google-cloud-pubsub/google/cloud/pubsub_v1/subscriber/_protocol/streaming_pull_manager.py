@@ -383,6 +383,7 @@ class StreamingPullManager(object):
             start_rpc=self._client.api.streaming_pull,
             initial_request=self._get_initial_request,
             should_recover=self._should_recover,
+            throttle_reopen=True,
         )
         self._rpc.add_done_callback(self._on_rpc_done)
 
