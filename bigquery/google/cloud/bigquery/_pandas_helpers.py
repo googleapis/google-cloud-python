@@ -331,6 +331,12 @@ def download_dataframe_bqstorage(
             ]
 
             while not_done:
+                # Don't block on the worker threads. For performance reasons,
+                # we want to block on the queue's get method, instead. This
+                # prevents the queue from filling up, because the main thread
+                # has smaller gaps in time between calls to the queue's get
+                # method. For a detailed explaination, see:
+                # https://friendliness.dev/2019/06/18/python-nowait/
                 done, not_done = _nowait(not_done)
                 for future in done:
                     # Call result() on any finished threads to raise any
