@@ -444,7 +444,7 @@ def test_bq_to_arrow_array_w_special_floats(module_under_test):
 
 @pytest.mark.skipIf(pandas is None, "Requires `pandas`")
 @pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
-def test_to_arrow_w_required_fields(module_under_test):
+def test_dataframe_to_arrow_w_required_fields(module_under_test):
     bq_schema = (
         schema.SchemaField("field01", "STRING", mode="REQUIRED"),
         schema.SchemaField("field02", "BYTES", mode="REQUIRED"),
@@ -489,7 +489,7 @@ def test_to_arrow_w_required_fields(module_under_test):
         }
     )
 
-    arrow_table = module_under_test.to_arrow(dataframe, bq_schema)
+    arrow_table = module_under_test.dataframe_to_arrow(dataframe, bq_schema)
     arrow_schema = arrow_table.schema
 
     assert len(arrow_schema) == len(bq_schema)
@@ -499,7 +499,7 @@ def test_to_arrow_w_required_fields(module_under_test):
 
 @pytest.mark.skipIf(pandas is None, "Requires `pandas`")
 @pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
-def test_to_arrow_w_unknown_type(module_under_test):
+def test_dataframe_to_arrow_w_unknown_type(module_under_test):
     bq_schema = (
         schema.SchemaField("field00", "UNKNOWN_TYPE"),
         schema.SchemaField("field01", "STRING"),
@@ -516,7 +516,7 @@ def test_to_arrow_w_unknown_type(module_under_test):
     )
 
     with warnings.catch_warnings(record=True) as warned:
-        arrow_table = module_under_test.to_arrow(dataframe, bq_schema)
+        arrow_table = module_under_test.dataframe_to_arrow(dataframe, bq_schema)
     arrow_schema = arrow_table.schema
 
     assert len(warned) == 1
@@ -531,18 +531,18 @@ def test_to_arrow_w_unknown_type(module_under_test):
 
 
 @pytest.mark.skipIf(pandas is None, "Requires `pandas`")
-def test_to_parquet_without_pyarrow(module_under_test, monkeypatch):
+def test_dataframe_to_parquet_without_pyarrow(module_under_test, monkeypatch):
     monkeypatch.setattr(module_under_test, "pyarrow", None)
     with pytest.raises(ValueError) as exc:
-        module_under_test.to_parquet(pandas.DataFrame(), (), None)
+        module_under_test.dataframe_to_parquet(pandas.DataFrame(), (), None)
     assert "pyarrow is required" in str(exc)
 
 
 @pytest.mark.skipIf(pandas is None, "Requires `pandas`")
 @pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
-def test_to_parquet_w_missing_columns(module_under_test, monkeypatch):
+def test_dataframe_to_parquet_w_missing_columns(module_under_test, monkeypatch):
     with pytest.raises(ValueError) as exc:
-        module_under_test.to_parquet(
+        module_under_test.dataframe_to_parquet(
             pandas.DataFrame(), (schema.SchemaField("not_found", "STRING"),), None
         )
     assert "columns in schema must match" in str(exc)
