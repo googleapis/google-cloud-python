@@ -1662,10 +1662,8 @@ SearchCatalogRequest = _reflection.GeneratedProtocolMessageType(
           <li>  last\_access\_timestamp [asc\|desc], defaults to
           descending if not specified,  .. raw:: html     </li>  ..
           raw:: html     <li>  last\_modified\_timestamp [asc\|desc],
-          defaults to descending if not specified,  .. raw:: html
-          </li>  .. raw:: html     <li>  title [asc\|desc], defaults to
-          ascending if not specified.  .. raw:: html     </li>  .. raw::
-          html     </ul>
+          defaults to descending if not specified.  .. raw:: html
+          </li>  .. raw:: html     </ul>
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datacatalog.v1beta1.SearchCatalogRequest)
     ),
@@ -1804,7 +1802,9 @@ Entry = _reflection.GeneratedProtocolMessageType(
           talog.v1beta1.UpdateEntryRequest]. The Data Catalog resource
           name of the entry in URL format. For example, "projects/{proje
           ct\_id}/locations/{location}/entryGroups/{entry\_group\_id}/en
-          tries/{entry\_id}".
+          tries/{entry\_id}". Note that this Entry and its child
+          resources may not actually be stored in the location in this
+          name.
       linked_resource:
           Output only. The full name of the cloud resource the entry
           belongs to. See: https://cloud.google.com/apis/design/resource
@@ -1860,7 +1860,9 @@ CreateTagTemplateRequest = _reflection.GeneratedProtocolMessageType(
       parent:
           Required. The name of the project and the location this
           template is in. Example:
-          "projects/{project\_id}/locations/{location}".
+          "projects/{project\_id}/locations/{location}". Note that this
+          TagTemplate and its child resources may not actually be stored
+          in the location in this name.
       tag_template_id:
           Required. The id of the tag template to create.
       tag_template:
@@ -1956,7 +1958,8 @@ CreateTagRequest = _reflection.GeneratedProtocolMessageType(
           Required. The name of the resource to attach this tag to. Tags
           can be attached to Entries. (example: "projects/{project\_id}/
           locations/{location}/entryGroups/{entry\_group\_id}/entries/{e
-          ntry\_id}").
+          ntry\_id}"). Note that this Tag and its child resources may
+          not actually be stored in the location in this name.
       tag:
           Required. The tag to create.
   """,
@@ -2023,7 +2026,8 @@ CreateTagTemplateFieldRequest = _reflection.GeneratedProtocolMessageType(
       parent:
           Required. The name of the project this template is in.
           Example: "projects/{project\_id}/locations/{location}/tagTempl
-          ates/{tag\_template\_id}".
+          ates/{tag\_template\_id}". Note that this TagTemplateField may
+          not actually be stored in the location in this name.
       tag_template_field_id:
           Required. The id of the tag template field to create. Field
           ids can contain letters (both uppercase and lowercase),

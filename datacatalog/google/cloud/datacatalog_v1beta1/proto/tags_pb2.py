@@ -832,6 +832,8 @@ Tag = _reflection.GeneratedProtocolMessageType(
           URL format. For example, projects/{project\_id}/locations/{loc
           ation}/entrygroups/{entry\_group\_id}/entries/{entry\_id}/tags
           /{tag\_id}", where tag\_id is a system-generated identifier.
+          Note that this Tag may not actually be stored in the location
+          in this name.
       template:
           Required. The resource name of the tag template that this tag
           uses. For example, projects/{project\_id}/locations/{location}
@@ -940,7 +942,8 @@ TagTemplate = _reflection.GeneratedProtocolMessageType(
           datacatalog.v1beta1.UpdateTagTemplateRequest]. The resource
           name of the tag template in URL format. For example, projects/
           {project\_id}/locations/{location}/tagTemplates/{tag\_template
-          \_id}.
+          \_id}. Note that this TagTemplate and its child resources may
+          not actually be stored in the location in this name.
       display_name:
           Optional. The display name for this template. Default value is
           an empty string.
