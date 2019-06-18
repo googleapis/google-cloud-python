@@ -39,9 +39,10 @@ from test_utils.retry import RetryResult
 from test_utils.system import EmulatorCreds
 from test_utils.system import unique_resource_id
 
+UNIQUE_SUFFIX = unique_resource_id("-")
 LOCATION_ID = "us-central1-c"
-INSTANCE_ID = "g-c-p" + unique_resource_id("-")
-INSTANCE_ID_DATA = "g-c-p-d" + unique_resource_id("-")
+INSTANCE_ID = "g-c-p" + UNIQUE_SUFFIX
+INSTANCE_ID_DATA = "g-c-p-d" + UNIQUE_SUFFIX
 TABLE_ID = "google-cloud-python-test-table"
 CLUSTER_ID = INSTANCE_ID + "-cluster"
 CLUSTER_ID_DATA = INSTANCE_ID_DATA + "-cluster"
@@ -172,7 +173,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
     def test_create_instance_defaults(self):
         from google.cloud.bigtable import enums
 
-        ALT_INSTANCE_ID = "ndef" + unique_resource_id("-")
+        ALT_INSTANCE_ID = "ndef" + UNIQUE_SUFFIX
         instance = Config.CLIENT.instance(ALT_INSTANCE_ID, labels=LABELS)
         ALT_CLUSTER_ID = ALT_INSTANCE_ID + "-cluster"
         cluster = instance.cluster(
@@ -200,9 +201,8 @@ class TestInstanceAdminAPI(unittest.TestCase):
         from google.cloud.bigtable import enums
 
         _DEVELOPMENT = enums.Instance.Type.DEVELOPMENT
-        _STATE = enums.Instance.State.READY
 
-        ALT_INSTANCE_ID = "new" + unique_resource_id("-")
+        ALT_INSTANCE_ID = "new" + UNIQUE_SUFFIX
         instance = Config.CLIENT.instance(
             ALT_INSTANCE_ID, instance_type=_DEVELOPMENT, labels=LABELS
         )
@@ -224,7 +224,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertEqual(instance.display_name, instance_alt.display_name)
         self.assertEqual(instance.type_, instance_alt.type_)
         self.assertEqual(instance_alt.labels, LABELS)
-        self.assertEqual(_STATE, instance_alt.state)
+        self.assertEqual(instance_alt.state, enums.Instance.State.READY)
 
     def test_cluster_exists(self):
         NONEXISTING_CLUSTER_ID = "cluster-id"
@@ -246,7 +246,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         from google.cloud.bigtable.table import ClusterState
 
         _PRODUCTION = enums.Instance.Type.PRODUCTION
-        ALT_INSTANCE_ID = "dif" + unique_resource_id("-")
+        ALT_INSTANCE_ID = "dif" + UNIQUE_SUFFIX
         instance = Config.CLIENT.instance(
             ALT_INSTANCE_ID, instance_type=_PRODUCTION, labels=LABELS
         )
@@ -466,11 +466,12 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
         _DEVELOPMENT = Instance.Type.DEVELOPMENT
         _PRODUCTION = Instance.Type.PRODUCTION
-        ALT_INSTANCE_ID = "ndif" + unique_resource_id("-")
+        ALT_INSTANCE_ID = "ndif" + UNIQUE_SUFFIX
         instance = Config.CLIENT.instance(
             ALT_INSTANCE_ID, instance_type=_DEVELOPMENT, labels=LABELS
         )
         operation = instance.create(location_id=LOCATION_ID, serve_nodes=None)
+
         # Make sure this instance gets deleted after the test case.
         self.instances_to_delete.append(instance)
 
