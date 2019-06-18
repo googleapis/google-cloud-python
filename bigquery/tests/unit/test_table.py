@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import concurrent.futures
 import itertools
 import json
 import time
@@ -22,7 +21,6 @@ import warnings
 import mock
 import pytest
 import six
-from six.moves import queue
 
 import google.api_core.exceptions
 
@@ -1859,9 +1857,6 @@ class TestRowIterator(unittest.TestCase):
         from google.cloud.bigquery import table as mut
         from google.cloud.bigquery_storage_v1beta1 import reader
 
-        # Speed up testing.
-        mut._PROGRESS_INTERVAL = 0.01
-
         bqstorage_client = mock.create_autospec(
             bigquery_storage_v1beta1.BigQueryStorageClient
         )
@@ -1893,20 +1888,12 @@ class TestRowIterator(unittest.TestCase):
             {"colA": -1, "colB": "def", "colC": 4.0},
         ]
 
-        def blocking_to_dataframe(*args, **kwargs):
-            # Sleep for longer than the waiting interval so that we know we're
-            # only reading one page per loop at most.
-            time.sleep(2 * mut._PROGRESS_INTERVAL)
-            return pandas.DataFrame(page_items, columns=["colA", "colB", "colC"])
-
         mock_page = mock.create_autospec(reader.ReadRowsPage)
-        mock_page.to_dataframe.side_effect = blocking_to_dataframe
+        mock_page.to_dataframe.return_value = pandas.DataFrame(
+            page_items, columns=["colA", "colB", "colC"]
+        )
         mock_pages = (mock_page, mock_page, mock_page)
         type(mock_rows).pages = mock.PropertyMock(return_value=mock_pages)
-
-        # Test that full queue errors are ignored.
-        mock_queue = mock.create_autospec(mut._NoopProgressBarQueue)
-        mock_queue().put_nowait.side_effect = queue.Full
 
         schema = [
             schema.SchemaField("colA", "IGNORED"),
@@ -1923,10 +1910,7 @@ class TestRowIterator(unittest.TestCase):
             selected_fields=schema,
         )
 
-        with mock.patch.object(mut, "_NoopProgressBarQueue", mock_queue), mock.patch(
-            "concurrent.futures.wait", wraps=concurrent.futures.wait
-        ) as mock_wait:
-            got = row_iterator.to_dataframe(bqstorage_client=bqstorage_client)
+        got = row_iterator.to_dataframe(bqstorage_client=bqstorage_client)
 
         # Are the columns in the expected order?
         column_names = ["colA", "colC", "colB"]
@@ -1936,12 +1920,6 @@ class TestRowIterator(unittest.TestCase):
         total_pages = len(streams) * len(mock_pages)
         total_rows = len(page_items) * total_pages
         self.assertEqual(len(got.index), total_rows)
-
-        # Make sure that this test looped through multiple progress intervals.
-        self.assertGreaterEqual(mock_wait.call_count, 2)
-
-        # Make sure that this test pushed to the progress queue.
-        self.assertEqual(mock_queue().put_nowait.call_count, total_pages)
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(

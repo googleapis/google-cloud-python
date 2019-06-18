@@ -16,18 +16,12 @@
 
 from __future__ import absolute_import
 
-import collections
-import concurrent.futures
 import copy
 import datetime
-import json
 import operator
-import threading
-import time
 import warnings
 
 import six
-from six.moves import queue
 
 try:
     from google.cloud import bigquery_storage_v1beta1
@@ -49,6 +43,7 @@ from google.api_core.page_iterator import HTTPIterator
 
 import google.cloud._helpers
 from google.cloud.bigquery import _helpers
+from google.cloud.bigquery import _pandas_helpers
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.schema import _build_schema_resource
 from google.cloud.bigquery.schema import _parse_schema_resource
@@ -68,13 +63,6 @@ _NO_TQDM_ERROR = (
     "library. Please install tqdm to use the progress bar functionality."
 )
 _TABLE_HAS_NO_SCHEMA = 'Table has no schema:  call "client.get_table()"'
-_MARKER = object()
-_PROGRESS_INTERVAL = 0.2  # Time between download status updates, in seconds.
-
-# Send multiple updates from the worker threads, so there are at least a few
-# waiting next time the prgrogess bar is updated.
-_PROGRESS_UPDATES_PER_INTERVAL = 3
-_PROGRESS_WORKER_INTERVAL = _PROGRESS_INTERVAL / _PROGRESS_UPDATES_PER_INTERVAL
 
 
 def _reference_getter(table):
@@ -1371,221 +1359,14 @@ class RowIterator(HTTPIterator):
 
     @property
     def schema(self):
-        """List[google.cloud.bigquery.schema.SchemaField]: Table's schema."""
+        """List[google.cloud.bigquery.schema.SchemaField]: The subset of
+        columns to be read from the table."""
         return list(self._schema)
 
     @property
     def total_rows(self):
         """int: The total number of rows in the table."""
         return self._total_rows
-
-    def _to_dataframe_dtypes(self, page, column_names, dtypes):
-        columns = collections.defaultdict(list)
-        for row in page:
-            for column in column_names:
-                columns[column].append(row[column])
-        for column in dtypes:
-            columns[column] = pandas.Series(columns[column], dtype=dtypes[column])
-        return pandas.DataFrame(columns, columns=column_names)
-
-    def _to_dataframe_tabledata_list(self, dtypes, progress_bar=None):
-        """Use (slower, but free) tabledata.list to construct a DataFrame."""
-        column_names = [field.name for field in self.schema]
-        frames = []
-
-        for page in iter(self.pages):
-            current_frame = self._to_dataframe_dtypes(page, column_names, dtypes)
-            frames.append(current_frame)
-
-            if progress_bar is not None:
-                # In some cases, the number of total rows is not populated
-                # until the first page of rows is fetched. Update the
-                # progress bar's total to keep an accurate count.
-                progress_bar.total = progress_bar.total or self.total_rows
-                progress_bar.update(len(current_frame))
-
-        if progress_bar is not None:
-            # Indicate that the download has finished.
-            progress_bar.close()
-
-        return pandas.concat(frames, ignore_index=True)
-
-    def _to_dataframe_bqstorage_stream(
-        self, bqstorage_client, dtypes, columns, session, stream, worker_queue
-    ):
-        position = bigquery_storage_v1beta1.types.StreamPosition(stream=stream)
-        rowstream = bqstorage_client.read_rows(position).rows(session)
-
-        frames = []
-        for page in rowstream.pages:
-            if self._to_dataframe_finished:
-                return
-            frames.append(page.to_dataframe(dtypes=dtypes))
-
-            try:
-                worker_queue.put_nowait(page.num_items)
-            except queue.Full:
-                # It's okay if we miss a few progress updates. Don't slow
-                # down parsing for that.
-                pass
-
-        # Avoid errors on unlucky streams with no blocks. pandas.concat
-        # will fail on an empty list.
-        if not frames:
-            return pandas.DataFrame(columns=columns)
-
-        # page.to_dataframe() does not preserve column order. Rearrange at
-        # the end using manually-parsed schema.
-        return pandas.concat(frames)[columns]
-
-    def _process_worker_updates(self, worker_queue, progress_queue):
-        last_update_time = time.time()
-        current_update = 0
-
-        # Sum all updates in a contant loop.
-        while True:
-            try:
-                current_update += worker_queue.get(timeout=_PROGRESS_INTERVAL)
-
-                # Time to send to the progress bar queue?
-                current_time = time.time()
-                elapsed_time = current_time - last_update_time
-                if elapsed_time > _PROGRESS_WORKER_INTERVAL:
-                    progress_queue.put(current_update)
-                    last_update_time = current_time
-                    current_update = 0
-
-            except queue.Empty:
-                # Keep going, unless there probably aren't going to be any
-                # additional updates.
-                if self._to_dataframe_finished:
-                    progress_queue.put(current_update)
-                    return
-
-    def _process_progress_updates(self, progress_queue, progress_bar):
-        if progress_bar is None:
-            return
-
-        # Output all updates since the last interval.
-        while True:
-            try:
-                next_update = progress_queue.get_nowait()
-                progress_bar.update(next_update)
-            except queue.Empty:
-                break
-
-        if self._to_dataframe_finished:
-            progress_bar.close()
-            return
-
-    def _to_dataframe_bqstorage(self, bqstorage_client, dtypes, progress_bar=None):
-        """Use (faster, but billable) BQ Storage API to construct DataFrame."""
-        if bigquery_storage_v1beta1 is None:
-            raise ValueError(_NO_BQSTORAGE_ERROR)
-
-        if "$" in self._table.table_id:
-            raise ValueError(
-                "Reading from a specific partition is not currently supported."
-            )
-        if "@" in self._table.table_id:
-            raise ValueError(
-                "Reading from a specific snapshot is not currently supported."
-            )
-
-        read_options = bigquery_storage_v1beta1.types.TableReadOptions()
-        if self._selected_fields is not None:
-            for field in self._selected_fields:
-                read_options.selected_fields.append(field.name)
-
-        requested_streams = 0
-        if self._preserve_order:
-            requested_streams = 1
-
-        session = bqstorage_client.create_read_session(
-            self._table.to_bqstorage(),
-            "projects/{}".format(self._project),
-            read_options=read_options,
-            requested_streams=requested_streams,
-        )
-
-        # We need to parse the schema manually so that we can rearrange the
-        # columns.
-        schema = json.loads(session.avro_schema.schema)
-        columns = [field["name"] for field in schema["fields"]]
-
-        # Avoid reading rows from an empty table. pandas.concat will fail on an
-        # empty list.
-        if not session.streams:
-            return pandas.DataFrame(columns=columns)
-
-        total_streams = len(session.streams)
-
-        # Use _to_dataframe_finished to notify worker threads when to quit.
-        # See: https://stackoverflow.com/a/29237343/101923
-        self._to_dataframe_finished = False
-
-        # Create a queue to track progress updates across threads.
-        worker_queue = _NoopProgressBarQueue()
-        progress_queue = None
-        progress_thread = None
-        if progress_bar is not None:
-            worker_queue = queue.Queue()
-            progress_queue = queue.Queue()
-            progress_thread = threading.Thread(
-                target=self._process_worker_updates, args=(worker_queue, progress_queue)
-            )
-            progress_thread.start()
-
-        def get_frames(pool):
-            frames = []
-
-            # Manually submit jobs and wait for download to complete rather
-            # than using pool.map because pool.map continues running in the
-            # background even if there is an exception on the main thread.
-            # See: https://github.com/googleapis/google-cloud-python/pull/7698
-            not_done = [
-                pool.submit(
-                    self._to_dataframe_bqstorage_stream,
-                    bqstorage_client,
-                    dtypes,
-                    columns,
-                    session,
-                    stream,
-                    worker_queue,
-                )
-                for stream in session.streams
-            ]
-
-            while not_done:
-                done, not_done = concurrent.futures.wait(
-                    not_done, timeout=_PROGRESS_INTERVAL
-                )
-                frames.extend([future.result() for future in done])
-
-                # The progress bar needs to update on the main thread to avoid
-                # contention over stdout / stderr.
-                self._process_progress_updates(progress_queue, progress_bar)
-
-            return frames
-
-        with concurrent.futures.ThreadPoolExecutor(max_workers=total_streams) as pool:
-            try:
-                frames = get_frames(pool)
-            finally:
-                # No need for a lock because reading/replacing a variable is
-                # defined to be an atomic operation in the Python language
-                # definition (enforced by the global interpreter lock).
-                self._to_dataframe_finished = True
-
-                # Shutdown all background threads, now that they should know to
-                # exit early.
-                pool.shutdown(wait=True)
-                if progress_thread is not None:
-                    progress_thread.join()
-
-        # Update the progress bar one last time to close it.
-        self._process_progress_updates(progress_queue, progress_bar)
-        return pandas.concat(frames, ignore_index=True)
 
     def _get_progress_bar(self, progress_bar_type):
         """Construct a tqdm progress bar object, if tqdm is installed."""
@@ -1612,6 +1393,45 @@ class RowIterator(HTTPIterator):
             # no progress bar.
             warnings.warn(_NO_TQDM_ERROR, UserWarning, stacklevel=3)
         return None
+
+    def _to_dataframe_iterable(self, bqstorage_client=None, dtypes=None):
+        """Create an iterable of pandas DataFrames, to process the table as a stream.
+
+        See ``to_dataframe`` for argument descriptions.
+        """
+        if bqstorage_client is not None:
+            column_names = [field.name for field in self._schema]
+            try:
+                # Iterate over the stream so that read errors are raised (and
+                # the method can then fallback to tabledata.list).
+                for frame in _pandas_helpers.download_dataframe_bqstorage(
+                    self._project,
+                    self._table,
+                    bqstorage_client,
+                    column_names,
+                    dtypes,
+                    preserve_order=self._preserve_order,
+                    selected_fields=self._selected_fields,
+                ):
+                    yield frame
+                return
+            except google.api_core.exceptions.Forbidden:
+                # Don't hide errors such as insufficient permissions to create
+                # a read session, or the API is not enabled. Both of those are
+                # clearly problems if the developer has explicitly asked for
+                # BigQuery Storage API support.
+                raise
+            except google.api_core.exceptions.GoogleAPICallError:
+                # There is a known issue with reading from small anonymous
+                # query results tables, so some errors are expected. Rather
+                # than throw those errors, try reading the DataFrame again, but
+                # with the tabledata.list API.
+                pass
+
+        for frame in _pandas_helpers.download_dataframe_tabledata_list(
+            iter(self.pages), self.schema, dtypes
+        ):
+            yield frame
 
     def to_dataframe(self, bqstorage_client=None, dtypes=None, progress_bar_type=None):
         """Create a pandas DataFrame by loading all pages of a query.
@@ -1682,25 +1502,28 @@ class RowIterator(HTTPIterator):
 
         progress_bar = self._get_progress_bar(progress_bar_type)
 
-        if bqstorage_client is not None:
-            try:
-                return self._to_dataframe_bqstorage(
-                    bqstorage_client, dtypes, progress_bar=progress_bar
-                )
-            except google.api_core.exceptions.Forbidden:
-                # Don't hide errors such as insufficient permissions to create
-                # a read session, or the API is not enabled. Both of those are
-                # clearly problems if the developer has explicitly asked for
-                # BigQuery Storage API support.
-                raise
-            except google.api_core.exceptions.GoogleAPICallError:
-                # There is a known issue with reading from small anonymous
-                # query results tables, so some errors are expected. Rather
-                # than throw those errors, try reading the DataFrame again, but
-                # with the tabledata.list API.
-                pass
+        frames = []
+        for frame in self._to_dataframe_iterable(
+            bqstorage_client=bqstorage_client, dtypes=dtypes
+        ):
+            frames.append(frame)
 
-        return self._to_dataframe_tabledata_list(dtypes, progress_bar=progress_bar)
+            if progress_bar is not None:
+                # In some cases, the number of total rows is not populated
+                # until the first page of rows is fetched. Update the
+                # progress bar's total to keep an accurate count.
+                progress_bar.total = progress_bar.total or self.total_rows
+                progress_bar.update(len(frame))
+
+        if progress_bar is not None:
+            # Indicate that the download has finished.
+            progress_bar.close()
+
+        # Avoid concatting an empty list.
+        if not frames:
+            column_names = [field.name for field in self._schema]
+            return pandas.DataFrame(columns=column_names)
+        return pandas.concat(frames, ignore_index=True)
 
 
 class _EmptyRowIterator(object):
