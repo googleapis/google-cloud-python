@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 0.42.1
+
+06-18-2019 15:14 PDT
+
+
+### Implementation Changes
+- Increase the minimum allowed version for api core. ([#8419](https://github.com/googleapis/google-cloud-python/pull/8419))
+- Allow kwargs to be passed to create_channel. ([#8399](https://github.com/googleapis/google-cloud-python/pull/8399))
+
 ## 0.42.0
 
 06-18-2019 11:32 PDT
