@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 1.12.0
+
+06-18-2019 12:37 PDT
+
+
+### New Features
+- Add Throttling to Bidi Reopening. Mitigates ResumableBidiRpc consuming 100% CPU ([#8193](https://github.com/googleapis/google-cloud-python/pull/8193))
+
 ## 1.11.1
 
 05-28-2019 11:19 PDT

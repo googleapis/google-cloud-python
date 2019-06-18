@@ -32,10 +32,6 @@ for version in versions:
 # Use the highest version library to generate import alias.
 s.move(library / "google/cloud/securitycenter.py")
 
-# Add encoding header to protoc-generated files.
-# See: https://github.com/googleapis/gapic-generator/issues/2097
-s.replace("**/proto/*_pb2.py", r"(^.*$\n)*", r"# -*- coding: utf-8 -*-\n\g<0>")
-
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
