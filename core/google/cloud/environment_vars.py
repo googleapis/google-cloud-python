@@ -31,7 +31,10 @@ BIGTABLE_EMULATOR = "BIGTABLE_EMULATOR_HOST"
 """Environment variable defining host for Bigtable emulator."""
 
 DISABLE_GRPC = "GOOGLE_CLOUD_DISABLE_GRPC"
-"""Environment variable acting as flag to disable gRPC.
+"""Environment variable acting as flag to disable gRPC."""
+
+FIRESTORE_EMULATOR = "FIRESTORE_EMULATOR_HOST"
+"""Environment variable defining host for Firestore emulator.
 
 To be used for APIs where both an HTTP and gRPC implementation
 exist.
