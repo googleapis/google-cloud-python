@@ -8,9 +8,9 @@ and retrieval of critical metadata about all of your software artifacts.
 - `Product Documentation`_
 
 .. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
-.. _Container Analysis API: https://cloud.google.com/container-registry/docs/container-analysis
+.. _Container Analysis API: https://cloud.google.com/containeranalysis
 .. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/containeranalysis/usage.html
-.. _Product Documentation:  https://cloud.google.com/container-registry/docs/container-analysis
+.. _Product Documentation:  https://cloud.google.com/containeranalysis
 
 Quick Start
 -----------
@@ -24,7 +24,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Container Analysis API.:  https://cloud.google.com/container-registry/docs/container-analysis
+.. _Enable the Container Analysis API.:  https://cloud.google.com/containeranalysis
 .. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
 
 Installation
@@ -72,5 +72,5 @@ Next Steps
 -  View this `repository’s main README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Container Analysis API Product documentation:  https://cloud.google.com/container-registry/docs/container-analysis
+.. _Container Analysis API Product documentation:  https://cloud.google.com/containeranalysis
 .. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
