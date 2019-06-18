@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.table &#8212; google-cloud dfa1cf3 documentation</title>
+    <title>google.cloud.bigquery.table &#8212; google-cloud fd24b4b documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -52,18 +52,12 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
 
-<span class="kn">import</span> <span class="nn">collections</span>
-<span class="kn">import</span> <span class="nn">concurrent.futures</span>
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
-<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">operator</span>
-<span class="kn">import</span> <span class="nn">threading</span>
-<span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">six</span>
-<span class="kn">from</span> <span class="nn">six.moves</span> <span class="k">import</span> <span class="n">queue</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">bigquery_storage_v1beta1</span>
@@ -85,6 +79,7 @@
 
 <span class="kn">import</span> <span class="nn">google.cloud._helpers</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery</span> <span class="k">import</span> <span class="n">_helpers</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery</span> <span class="k">import</span> <span class="n">_pandas_helpers</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.schema</span> <span class="k">import</span> <span class="n">SchemaField</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.schema</span> <span class="k">import</span> <span class="n">_build_schema_resource</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.schema</span> <span class="k">import</span> <span class="n">_parse_schema_resource</span>
@@ -104,13 +99,6 @@
     <span class="s2">&quot;library. Please install tqdm to use the progress bar functionality.&quot;</span>
 <span class="p">)</span>
 <span class="n">_TABLE_HAS_NO_SCHEMA</span> <span class="o">=</span> <span class="s1">&#39;Table has no schema:  call &quot;client.get_table()&quot;&#39;</span>
-<span class="n">_MARKER</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
-<span class="n">_PROGRESS_INTERVAL</span> <span class="o">=</span> <span class="mf">0.2</span>  <span class="c1"># Time between download status updates, in seconds.</span>
-
-<span class="c1"># Send multiple updates from the worker threads, so there are at least a few</span>
-<span class="c1"># waiting next time the prgrogess bar is updated.</span>
-<span class="n">_PROGRESS_UPDATES_PER_INTERVAL</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="n">_PROGRESS_WORKER_INTERVAL</span> <span class="o">=</span> <span class="n">_PROGRESS_INTERVAL</span> <span class="o">/</span> <span class="n">_PROGRESS_UPDATES_PER_INTERVAL</span>
 
 
 <span class="k">def</span> <span class="nf">_reference_getter</span><span class="p">(</span><span class="n">table</span><span class="p">):</span>
@@ -1407,221 +1395,14 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;List[google.cloud.bigquery.schema.SchemaField]: Table&#39;s schema.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;List[google.cloud.bigquery.schema.SchemaField]: The subset of</span>
+<span class="sd">        columns to be read from the table.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">total_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;int: The total number of rows in the table.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total_rows</span>
-
-    <span class="k">def</span> <span class="nf">_to_dataframe_dtypes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">column_names</span><span class="p">,</span> <span class="n">dtypes</span><span class="p">):</span>
-        <span class="n">columns</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">column_names</span><span class="p">:</span>
-                <span class="n">columns</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">column</span><span class="p">])</span>
-        <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">dtypes</span><span class="p">:</span>
-            <span class="n">columns</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">columns</span><span class="p">[</span><span class="n">column</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtypes</span><span class="p">[</span><span class="n">column</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">column_names</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_to_dataframe_tabledata_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtypes</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Use (slower, but free) tabledata.list to construct a DataFrame.&quot;&quot;&quot;</span>
-        <span class="n">column_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">]</span>
-        <span class="n">frames</span> <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="p">):</span>
-            <span class="n">current_frame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_dataframe_dtypes</span><span class="p">(</span><span class="n">page</span><span class="p">,</span> <span class="n">column_names</span><span class="p">,</span> <span class="n">dtypes</span><span class="p">)</span>
-            <span class="n">frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_frame</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="n">progress_bar</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="c1"># In some cases, the number of total rows is not populated</span>
-                <span class="c1"># until the first page of rows is fetched. Update the</span>
-                <span class="c1"># progress bar&#39;s total to keep an accurate count.</span>
-                <span class="n">progress_bar</span><span class="o">.</span><span class="n">total</span> <span class="o">=</span> <span class="n">progress_bar</span><span class="o">.</span><span class="n">total</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_rows</span>
-                <span class="n">progress_bar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">current_frame</span><span class="p">))</span>
-
-        <span class="k">if</span> <span class="n">progress_bar</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># Indicate that the download has finished.</span>
-            <span class="n">progress_bar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-
-        <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_to_dataframe_bqstorage_stream</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">bqstorage_client</span><span class="p">,</span> <span class="n">dtypes</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">worker_queue</span>
-    <span class="p">):</span>
-        <span class="n">position</span> <span class="o">=</span> <span class="n">bigquery_storage_v1beta1</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">StreamPosition</span><span class="p">(</span><span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">)</span>
-        <span class="n">rowstream</span> <span class="o">=</span> <span class="n">bqstorage_client</span><span class="o">.</span><span class="n">read_rows</span><span class="p">(</span><span class="n">position</span><span class="p">)</span><span class="o">.</span><span class="n">rows</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
-
-        <span class="n">frames</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">rowstream</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_dataframe_finished</span><span class="p">:</span>
-                <span class="k">return</span>
-            <span class="n">frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">(</span><span class="n">dtypes</span><span class="o">=</span><span class="n">dtypes</span><span class="p">))</span>
-
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">worker_queue</span><span class="o">.</span><span class="n">put_nowait</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">num_items</span><span class="p">)</span>
-            <span class="k">except</span> <span class="n">queue</span><span class="o">.</span><span class="n">Full</span><span class="p">:</span>
-                <span class="c1"># It&#39;s okay if we miss a few progress updates. Don&#39;t slow</span>
-                <span class="c1"># down parsing for that.</span>
-                <span class="k">pass</span>
-
-        <span class="c1"># Avoid errors on unlucky streams with no blocks. pandas.concat</span>
-        <span class="c1"># will fail on an empty list.</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">frames</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
-
-        <span class="c1"># page.to_dataframe() does not preserve column order. Rearrange at</span>
-        <span class="c1"># the end using manually-parsed schema.</span>
-        <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">)[</span><span class="n">columns</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="nf">_process_worker_updates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker_queue</span><span class="p">,</span> <span class="n">progress_queue</span><span class="p">):</span>
-        <span class="n">last_update_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-        <span class="n">current_update</span> <span class="o">=</span> <span class="mi">0</span>
-
-        <span class="c1"># Sum all updates in a contant loop.</span>
-        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">current_update</span> <span class="o">+=</span> <span class="n">worker_queue</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">_PROGRESS_INTERVAL</span><span class="p">)</span>
-
-                <span class="c1"># Time to send to the progress bar queue?</span>
-                <span class="n">current_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-                <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">current_time</span> <span class="o">-</span> <span class="n">last_update_time</span>
-                <span class="k">if</span> <span class="n">elapsed_time</span> <span class="o">&gt;</span> <span class="n">_PROGRESS_WORKER_INTERVAL</span><span class="p">:</span>
-                    <span class="n">progress_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">current_update</span><span class="p">)</span>
-                    <span class="n">last_update_time</span> <span class="o">=</span> <span class="n">current_time</span>
-                    <span class="n">current_update</span> <span class="o">=</span> <span class="mi">0</span>
-
-            <span class="k">except</span> <span class="n">queue</span><span class="o">.</span><span class="n">Empty</span><span class="p">:</span>
-                <span class="c1"># Keep going, unless there probably aren&#39;t going to be any</span>
-                <span class="c1"># additional updates.</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_dataframe_finished</span><span class="p">:</span>
-                    <span class="n">progress_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">current_update</span><span class="p">)</span>
-                    <span class="k">return</span>
-
-    <span class="k">def</span> <span class="nf">_process_progress_updates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progress_queue</span><span class="p">,</span> <span class="n">progress_bar</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">progress_bar</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span>
-
-        <span class="c1"># Output all updates since the last interval.</span>
-        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">next_update</span> <span class="o">=</span> <span class="n">progress_queue</span><span class="o">.</span><span class="n">get_nowait</span><span class="p">()</span>
-                <span class="n">progress_bar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">next_update</span><span class="p">)</span>
-            <span class="k">except</span> <span class="n">queue</span><span class="o">.</span><span class="n">Empty</span><span class="p">:</span>
-                <span class="k">break</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_dataframe_finished</span><span class="p">:</span>
-            <span class="n">progress_bar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-            <span class="k">return</span>
-
-    <span class="k">def</span> <span class="nf">_to_dataframe_bqstorage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bqstorage_client</span><span class="p">,</span> <span class="n">dtypes</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Use (faster, but billable) BQ Storage API to construct DataFrame.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">bigquery_storage_v1beta1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_NO_BQSTORAGE_ERROR</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="s2">&quot;$&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">table_id</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Reading from a specific partition is not currently supported.&quot;</span>
-            <span class="p">)</span>
-        <span class="k">if</span> <span class="s2">&quot;@&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">table_id</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Reading from a specific snapshot is not currently supported.&quot;</span>
-            <span class="p">)</span>
-
-        <span class="n">read_options</span> <span class="o">=</span> <span class="n">bigquery_storage_v1beta1</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">TableReadOptions</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_selected_fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_selected_fields</span><span class="p">:</span>
-                <span class="n">read_options</span><span class="o">.</span><span class="n">selected_fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-
-        <span class="n">requested_streams</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_preserve_order</span><span class="p">:</span>
-            <span class="n">requested_streams</span> <span class="o">=</span> <span class="mi">1</span>
-
-        <span class="n">session</span> <span class="o">=</span> <span class="n">bqstorage_client</span><span class="o">.</span><span class="n">create_read_session</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">to_bqstorage</span><span class="p">(),</span>
-            <span class="s2">&quot;projects/</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_project</span><span class="p">),</span>
-            <span class="n">read_options</span><span class="o">=</span><span class="n">read_options</span><span class="p">,</span>
-            <span class="n">requested_streams</span><span class="o">=</span><span class="n">requested_streams</span><span class="p">,</span>
-        <span class="p">)</span>
-
-        <span class="c1"># We need to parse the schema manually so that we can rearrange the</span>
-        <span class="c1"># columns.</span>
-        <span class="n">schema</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">avro_schema</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
-        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">field</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;fields&quot;</span><span class="p">]]</span>
-
-        <span class="c1"># Avoid reading rows from an empty table. pandas.concat will fail on an</span>
-        <span class="c1"># empty list.</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">session</span><span class="o">.</span><span class="n">streams</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
-
-        <span class="n">total_streams</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">streams</span><span class="p">)</span>
-
-        <span class="c1"># Use _to_dataframe_finished to notify worker threads when to quit.</span>
-        <span class="c1"># See: https://stackoverflow.com/a/29237343/101923</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_to_dataframe_finished</span> <span class="o">=</span> <span class="kc">False</span>
-
-        <span class="c1"># Create a queue to track progress updates across threads.</span>
-        <span class="n">worker_queue</span> <span class="o">=</span> <span class="n">_NoopProgressBarQueue</span><span class="p">()</span>
-        <span class="n">progress_queue</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">progress_thread</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="n">progress_bar</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">worker_queue</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">()</span>
-            <span class="n">progress_queue</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">()</span>
-            <span class="n">progress_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span>
-                <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_process_worker_updates</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">worker_queue</span><span class="p">,</span> <span class="n">progress_queue</span><span class="p">)</span>
-            <span class="p">)</span>
-            <span class="n">progress_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-
-        <span class="k">def</span> <span class="nf">get_frames</span><span class="p">(</span><span class="n">pool</span><span class="p">):</span>
-            <span class="n">frames</span> <span class="o">=</span> <span class="p">[]</span>
-
-            <span class="c1"># Manually submit jobs and wait for download to complete rather</span>
-            <span class="c1"># than using pool.map because pool.map continues running in the</span>
-            <span class="c1"># background even if there is an exception on the main thread.</span>
-            <span class="c1"># See: https://github.com/googleapis/google-cloud-python/pull/7698</span>
-            <span class="n">not_done</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">pool</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_to_dataframe_bqstorage_stream</span><span class="p">,</span>
-                    <span class="n">bqstorage_client</span><span class="p">,</span>
-                    <span class="n">dtypes</span><span class="p">,</span>
-                    <span class="n">columns</span><span class="p">,</span>
-                    <span class="n">session</span><span class="p">,</span>
-                    <span class="n">stream</span><span class="p">,</span>
-                    <span class="n">worker_queue</span><span class="p">,</span>
-                <span class="p">)</span>
-                <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">streams</span>
-            <span class="p">]</span>
-
-            <span class="k">while</span> <span class="n">not_done</span><span class="p">:</span>
-                <span class="n">done</span><span class="p">,</span> <span class="n">not_done</span> <span class="o">=</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span>
-                    <span class="n">not_done</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">_PROGRESS_INTERVAL</span>
-                <span class="p">)</span>
-                <span class="n">frames</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span> <span class="k">for</span> <span class="n">future</span> <span class="ow">in</span> <span class="n">done</span><span class="p">])</span>
-
-                <span class="c1"># The progress bar needs to update on the main thread to avoid</span>
-                <span class="c1"># contention over stdout / stderr.</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_process_progress_updates</span><span class="p">(</span><span class="n">progress_queue</span><span class="p">,</span> <span class="n">progress_bar</span><span class="p">)</span>
-
-            <span class="k">return</span> <span class="n">frames</span>
-
-        <span class="k">with</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="n">total_streams</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">frames</span> <span class="o">=</span> <span class="n">get_frames</span><span class="p">(</span><span class="n">pool</span><span class="p">)</span>
-            <span class="k">finally</span><span class="p">:</span>
-                <span class="c1"># No need for a lock because reading/replacing a variable is</span>
-                <span class="c1"># defined to be an atomic operation in the Python language</span>
-                <span class="c1"># definition (enforced by the global interpreter lock).</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_to_dataframe_finished</span> <span class="o">=</span> <span class="kc">True</span>
-
-                <span class="c1"># Shutdown all background threads, now that they should know to</span>
-                <span class="c1"># exit early.</span>
-                <span class="n">pool</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">progress_thread</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">progress_thread</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
-
-        <span class="c1"># Update the progress bar one last time to close it.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_process_progress_updates</span><span class="p">(</span><span class="n">progress_queue</span><span class="p">,</span> <span class="n">progress_bar</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_progress_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progress_bar_type</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a tqdm progress bar object, if tqdm is installed.&quot;&quot;&quot;</span>
@@ -1648,6 +1429,45 @@
             <span class="c1"># no progress bar.</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">_NO_TQDM_ERROR</span><span class="p">,</span> <span class="ne">UserWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_to_dataframe_iterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bqstorage_client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dtypes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create an iterable of pandas DataFrames, to process the table as a stream.</span>
+
+<span class="sd">        See ``to_dataframe`` for argument descriptions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">bqstorage_client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">column_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">]</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Iterate over the stream so that read errors are raised (and</span>
+                <span class="c1"># the method can then fallback to tabledata.list).</span>
+                <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">_pandas_helpers</span><span class="o">.</span><span class="n">download_dataframe_bqstorage</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_project</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="p">,</span>
+                    <span class="n">bqstorage_client</span><span class="p">,</span>
+                    <span class="n">column_names</span><span class="p">,</span>
+                    <span class="n">dtypes</span><span class="p">,</span>
+                    <span class="n">preserve_order</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_preserve_order</span><span class="p">,</span>
+                    <span class="n">selected_fields</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_selected_fields</span><span class="p">,</span>
+                <span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">frame</span>
+                <span class="k">return</span>
+            <span class="k">except</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">Forbidden</span><span class="p">:</span>
+                <span class="c1"># Don&#39;t hide errors such as insufficient permissions to create</span>
+                <span class="c1"># a read session, or the API is not enabled. Both of those are</span>
+                <span class="c1"># clearly problems if the developer has explicitly asked for</span>
+                <span class="c1"># BigQuery Storage API support.</span>
+                <span class="k">raise</span>
+            <span class="k">except</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">GoogleAPICallError</span><span class="p">:</span>
+                <span class="c1"># There is a known issue with reading from small anonymous</span>
+                <span class="c1"># query results tables, so some errors are expected. Rather</span>
+                <span class="c1"># than throw those errors, try reading the DataFrame again, but</span>
+                <span class="c1"># with the tabledata.list API.</span>
+                <span class="k">pass</span>
+
+        <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">_pandas_helpers</span><span class="o">.</span><span class="n">download_dataframe_tabledata_list</span><span class="p">(</span>
+            <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">,</span> <span class="n">dtypes</span>
+        <span class="p">):</span>
+            <span class="k">yield</span> <span class="n">frame</span>
 
 <div class="viewcode-block" id="RowIterator.to_dataframe"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.table.RowIterator.html#google.cloud.bigquery.table.RowIterator.to_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bqstorage_client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dtypes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progress_bar_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a pandas DataFrame by loading all pages of a query.</span>
@@ -1718,25 +1538,28 @@
 
         <span class="n">progress_bar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_progress_bar</span><span class="p">(</span><span class="n">progress_bar_type</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">bqstorage_client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_dataframe_bqstorage</span><span class="p">(</span>
-                    <span class="n">bqstorage_client</span><span class="p">,</span> <span class="n">dtypes</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="n">progress_bar</span>
-                <span class="p">)</span>
-            <span class="k">except</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">Forbidden</span><span class="p">:</span>
-                <span class="c1"># Don&#39;t hide errors such as insufficient permissions to create</span>
-                <span class="c1"># a read session, or the API is not enabled. Both of those are</span>
-                <span class="c1"># clearly problems if the developer has explicitly asked for</span>
-                <span class="c1"># BigQuery Storage API support.</span>
-                <span class="k">raise</span>
-            <span class="k">except</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">GoogleAPICallError</span><span class="p">:</span>
-                <span class="c1"># There is a known issue with reading from small anonymous</span>
-                <span class="c1"># query results tables, so some errors are expected. Rather</span>
-                <span class="c1"># than throw those errors, try reading the DataFrame again, but</span>
-                <span class="c1"># with the tabledata.list API.</span>
-                <span class="k">pass</span>
+        <span class="n">frames</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_dataframe_iterable</span><span class="p">(</span>
+            <span class="n">bqstorage_client</span><span class="o">=</span><span class="n">bqstorage_client</span><span class="p">,</span> <span class="n">dtypes</span><span class="o">=</span><span class="n">dtypes</span>
+        <span class="p">):</span>
+            <span class="n">frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_dataframe_tabledata_list</span><span class="p">(</span><span class="n">dtypes</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="n">progress_bar</span><span class="p">)</span></div></div>
+            <span class="k">if</span> <span class="n">progress_bar</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># In some cases, the number of total rows is not populated</span>
+                <span class="c1"># until the first page of rows is fetched. Update the</span>
+                <span class="c1"># progress bar&#39;s total to keep an accurate count.</span>
+                <span class="n">progress_bar</span><span class="o">.</span><span class="n">total</span> <span class="o">=</span> <span class="n">progress_bar</span><span class="o">.</span><span class="n">total</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_rows</span>
+                <span class="n">progress_bar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">frame</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">progress_bar</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Indicate that the download has finished.</span>
+            <span class="n">progress_bar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="c1"># Avoid concatting an empty list.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">frames</span><span class="p">:</span>
+            <span class="n">column_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">column_names</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div></div>
 
 
 <span class="k">class</span> <span class="nc">_EmptyRowIterator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
