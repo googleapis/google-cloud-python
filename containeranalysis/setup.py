@@ -29,6 +29,7 @@ dependencies = [
   'google-api-core[grpc] >= 1.4.1, < 2.0.0dev',
   'grpc-google-iam-v1 >= 0.11.1, < 0.12dev',
   'enum34; python_version < "3.4"',
+  'grafeas',
 ]
 
 
