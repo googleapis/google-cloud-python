@@ -428,6 +428,7 @@ def test_open(heartbeater, dispatcher, leaser, background_consumer, resumable_bi
         start_rpc=manager._client.api.streaming_pull,
         initial_request=manager._get_initial_request,
         should_recover=manager._should_recover,
+        throttle_reopen=True,
     )
     resumable_bidi_rpc.return_value.add_done_callback.assert_called_once_with(
         manager._on_rpc_done
