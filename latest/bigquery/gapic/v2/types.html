@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for BigQuery API Client &#8212; google-cloud fd24b4b documentation</title>
+    <title>Types for BigQuery API Client &#8212; google-cloud 65f1657 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -312,15 +312,13 @@ millisecs since the epoch.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_v2.types.Model.description">
 <code class="descname">description</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.description" title="Permalink to this definition">#</a></dt>
-<dd><p>[Optional] A user-friendly description of this model. &#64;mutable
-bigquery.models.patch</p>
+<dd><p>[Optional] A user-friendly description of this model.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.bigquery_v2.types.Model.friendly_name">
 <code class="descname">friendly_name</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.friendly_name" title="Permalink to this definition">#</a></dt>
-<dd><p>[Optional] A descriptive name for this model. &#64;mutable
-bigquery.models.patch</p>
+<dd><p>[Optional] A descriptive name for this model.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -332,8 +330,7 @@ can be no longer than 63 characters, can only contain
 lowercase letters, numeric characters, underscores and dashes.
 International characters are allowed. Label values are
 optional. Label keys must start with a letter and each label
-in the list must have a different key. &#64;mutable
-bigquery.models.patch</p>
+in the list must have a different key.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -344,8 +341,7 @@ since the epoch. If not present, the model will persist
 indefinitely. Expired models will be deleted and their storage
 reclaimed. The defaultTableExpirationMs property of the
 encapsulating dataset can be used to set a default
-expirationTime on newly created models. &#64;mutable
-bigquery.models.patch</p>
+expirationTime on newly created models.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -379,18 +375,19 @@ this model.</p>
 <dt id="google.cloud.bigquery_v2.types.Model.label_columns">
 <code class="descname">label_columns</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.label_columns" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. Label columns that were used to train this model.
-The output of the model will have a <code class="docutils literal notranslate"><span class="pre">predicted\_</span></code> prefix to
+The output of the model will have a “predicted_” prefix to
 these columns.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.bigquery_v2.types.Model.AggregateClassificationMetrics">
 <em class="property">class </em><code class="descname">AggregateClassificationMetrics</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.AggregateClassificationMetrics" title="Permalink to this definition">#</a></dt>
-<dd><p>Aggregate metrics for classification models. For multi-class models, the
-metrics are either macro-averaged: metrics are calculated for each label
-and then an unweighted average is taken of those values or
-micro-averaged: the metric is calculated globally by counting the total
-number of correctly predicted rows.</p>
+<dd><p>Aggregate metrics for classification/classifier models. For multi-class
+models, the metrics are either macro-averaged or micro-averaged. When
+macro-averaged, the metrics are calculated for each label and then an
+unweighted average is taken of those values. When micro-averaged, the
+metric is calculated globally by counting the total number of correctly
+predicted rows.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_v2.types.Model.AggregateClassificationMetrics.precision">
 <code class="descname">precision</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.AggregateClassificationMetrics.precision" title="Permalink to this definition">#</a></dt>
@@ -491,7 +488,7 @@ averaged metric.</p>
 <dl class="class">
 <dt id="google.cloud.bigquery_v2.types.Model.BinaryClassificationMetrics">
 <em class="property">class </em><code class="descname">BinaryClassificationMetrics</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.BinaryClassificationMetrics" title="Permalink to this definition">#</a></dt>
-<dd><p>Evaluation metrics for binary classification models.</p>
+<dd><p>Evaluation metrics for binary classification/classifier models.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_v2.types.Model.BinaryClassificationMetrics.aggregate_classification_metrics">
 <code class="descname">aggregate_classification_metrics</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.BinaryClassificationMetrics.aggregate_classification_metrics" title="Permalink to this definition">#</a></dt>
@@ -502,6 +499,18 @@ averaged metric.</p>
 <dt id="google.cloud.bigquery_v2.types.Model.BinaryClassificationMetrics.binary_confusion_matrix_list">
 <code class="descname">binary_confusion_matrix_list</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.BinaryClassificationMetrics.binary_confusion_matrix_list" title="Permalink to this definition">#</a></dt>
 <dd><p>Binary confusion matrix at multiple thresholds.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_v2.types.Model.BinaryClassificationMetrics.positive_label">
+<code class="descname">positive_label</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.BinaryClassificationMetrics.positive_label" title="Permalink to this definition">#</a></dt>
+<dd><p>Label representing the positive class.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_v2.types.Model.BinaryClassificationMetrics.negative_label">
+<code class="descname">negative_label</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.BinaryClassificationMetrics.negative_label" title="Permalink to this definition">#</a></dt>
+<dd><p>Label representing the negative class.</p>
 </dd></dl>
 
 <dl class="class">
@@ -542,13 +551,39 @@ metric.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_v2.types.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.precision">
 <code class="descname">precision</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.precision" title="Permalink to this definition">#</a></dt>
-<dd><p>Aggregate precision.</p>
+<dd><p>The fraction of actual positive predictions that had positive
+actual labels.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.bigquery_v2.types.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.recall">
 <code class="descname">recall</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.recall" title="Permalink to this definition">#</a></dt>
-<dd><p>Aggregate recall.</p>
+<dd><p>The fraction of actual positive labels that were given a
+positive prediction.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_v2.types.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.f1_score">
+<code class="descname">f1_score</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.f1_score" title="Permalink to this definition">#</a></dt>
+<dd><p>The equally weighted average of recall and precision.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_v2.types.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.accuracy">
+<code class="descname">accuracy</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.accuracy" title="Permalink to this definition">#</a></dt>
+<dd><p>The fraction of predictions given the correct label.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">accuracy</code></dt>
+<dd><p>Field google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.accuracy</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">f1_score</code></dt>
+<dd><p>Field google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.f1_score</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -607,6 +642,18 @@ metric.</p>
 <dd><p>Field google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.binary_confusion_matrix_list</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">negative_label</code></dt>
+<dd><p>Field google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.negative_label</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">positive_label</code></dt>
+<dd><p>Field google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.positive_label</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -645,7 +692,7 @@ centroid.</p>
 <em class="property">class </em><code class="descname">EvaluationMetrics</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.EvaluationMetrics" title="Permalink to this definition">#</a></dt>
 <dd><p>Evaluation metrics of a model. These are either computed on all training
 data or just the eval data based on whether eval data was used during
-training.</p>
+training. These are not present for imported models.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_v2.types.Model.EvaluationMetrics.regression_metrics">
 <code class="descname">regression_metrics</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.EvaluationMetrics.regression_metrics" title="Permalink to this definition">#</a></dt>
@@ -655,13 +702,13 @@ training.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_v2.types.Model.EvaluationMetrics.binary_classification_metrics">
 <code class="descname">binary_classification_metrics</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.EvaluationMetrics.binary_classification_metrics" title="Permalink to this definition">#</a></dt>
-<dd><p>Populated for binary classification models.</p>
+<dd><p>Populated for binary classification/classifier models.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.bigquery_v2.types.Model.EvaluationMetrics.multi_class_classification_metrics">
 <code class="descname">multi_class_classification_metrics</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.EvaluationMetrics.multi_class_classification_metrics" title="Permalink to this definition">#</a></dt>
-<dd><p>Populated for multi-class classification models.</p>
+<dd><p>Populated for multi-class classification/classifier models.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -716,7 +763,7 @@ training.</p>
 <dl class="class">
 <dt id="google.cloud.bigquery_v2.types.Model.MultiClassClassificationMetrics">
 <em class="property">class </em><code class="descname">MultiClassClassificationMetrics</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.MultiClassClassificationMetrics" title="Permalink to this definition">#</a></dt>
-<dd><p>Evaluation metrics for multi-class classification models.</p>
+<dd><p>Evaluation metrics for multi-class classification/classifier models.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_v2.types.Model.MultiClassClassificationMetrics.aggregate_classification_metrics">
 <code class="descname">aggregate_classification_metrics</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.MultiClassClassificationMetrics.aggregate_classification_metrics" title="Permalink to this definition">#</a></dt>
@@ -1062,7 +1109,8 @@ cluster.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.max_iterations">
 <code class="descname">max_iterations</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.max_iterations" title="Permalink to this definition">#</a></dt>
-<dd><p>The maximum number of iterations in training.</p>
+<dd><p>The maximum number of iterations in training. Used only for
+iterative training algorithms.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1074,7 +1122,8 @@ cluster.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.learn_rate">
 <code class="descname">learn_rate</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.learn_rate" title="Permalink to this definition">#</a></dt>
-<dd><p>Learning rate in training.</p>
+<dd><p>Learning rate in training. Used only for iterative training
+algorithms.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1093,7 +1142,8 @@ cluster.</p>
 <dt id="google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.min_relative_progress">
 <code class="descname">min_relative_progress</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.min_relative_progress" title="Permalink to this definition">#</a></dt>
 <dd><p>When early_stop is true, stops training when accuracy
-improvement is less than ‘min_relative_progress’.</p>
+improvement is less than ‘min_relative_progress’. Used only
+for iterative training algorithms.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1106,7 +1156,8 @@ improvement is less than ‘min_relative_progress’.</p>
 <dt id="google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.early_stop">
 <code class="descname">early_stop</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.early_stop" title="Permalink to this definition">#</a></dt>
 <dd><p>Whether to stop early when the loss doesn’t improve
-significantly any more (compared to min_relative_progress).</p>
+significantly any more (compared to min_relative_progress).
+Used only for iterative training algorithms.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1149,21 +1200,22 @@ sql/data-types#data-type-properties</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.learn_rate_strategy">
 <code class="descname">learn_rate_strategy</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.learn_rate_strategy" title="Permalink to this definition">#</a></dt>
-<dd><p>The strategy to determine learning rate.</p>
+<dd><p>The strategy to determine learn rate for the current
+iteration.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.initial_learn_rate">
 <code class="descname">initial_learn_rate</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.initial_learn_rate" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the initial learning rate for line search to start
-at.</p>
+<dd><p>Specifies the initial learning rate for the line search learn
+rate strategy.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.label_class_weights">
 <code class="descname">label_class_weights</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.label_class_weights" title="Permalink to this definition">#</a></dt>
 <dd><p>Weights associated with each label class, for rebalancing the
-training data.</p>
+training data. Only applicable for classification models.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1176,6 +1228,19 @@ training data.</p>
 <dt id="google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.num_clusters">
 <code class="descname">num_clusters</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.num_clusters" title="Permalink to this definition">#</a></dt>
 <dd><p>[Beta] Number of clusters for clustering models.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.model_uri">
+<code class="descname">model_uri</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.model_uri" title="Permalink to this definition">#</a></dt>
+<dd><p>[Beta] Google Cloud Storage URI from which the model was
+imported. Only applicable for imported models.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.optimization_strategy">
+<code class="descname">optimization_strategy</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.optimization_strategy" title="Permalink to this definition">#</a></dt>
+<dd><p>Optimization strategy for training linear regression models.</p>
 </dd></dl>
 
 <dl class="class">
@@ -1287,8 +1352,20 @@ training data.</p>
 
 <dl class="attribute">
 <dt>
+<code class="descname">model_uri</code></dt>
+<dd><p>Field google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.model_uri</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
 <code class="descname">num_clusters</code></dt>
 <dd><p>Field google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.num_clusters</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">optimization_strategy</code></dt>
+<dd><p>Field google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.optimization_strategy</p>
 </dd></dl>
 
 <dl class="attribute">

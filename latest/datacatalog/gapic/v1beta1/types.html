@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Google Cloud Data Catalog API Client &#8212; google-cloud fd24b4b documentation</title>
+    <title>Types for Google Cloud Data Catalog API Client &#8212; google-cloud 65f1657 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -312,7 +312,8 @@ more sub-columns.</p>
 <dd><p>Required. The name of the resource to attach this tag to. Tags
 can be attached to Entries. (example: “projects/{project_id}/
 locations/{location}/entryGroups/{entry_group_id}/entries/{e
-ntry_id}”).</p>
+ntry_id}”). Note that this Tag and its child resources may
+not actually be stored in the location in this name.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -345,7 +346,8 @@ ntry_id}”).</p>
 <code class="descname">parent</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.CreateTagTemplateFieldRequest.parent" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The name of the project this template is in.
 Example: “projects/{project_id}/locations/{location}/tagTempl
-ates/{tag_template_id}”.</p>
+ates/{tag_template_id}”. Note that this TagTemplateField may
+not actually be stored in the location in this name.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -394,7 +396,9 @@ Field ids must also be unique to their template.</p>
 <code class="descname">parent</code><a class="headerlink" href="#google.cloud.datacatalog_v1beta1.types.CreateTagTemplateRequest.parent" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The name of the project and the location this
 template is in. Example:
-“projects/{project_id}/locations/{location}”.</p>
+“projects/{project_id}/locations/{location}”. Note that this
+TagTemplate and its child resources may not actually be stored
+in the location in this name.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -543,7 +547,9 @@ Entry can also be used to attach flexible metadata, such as a
 talog.v1beta1.UpdateEntryRequest]. The Data Catalog resource
 name of the entry in URL format. For example, “projects/{proje
 ct_id}/locations/{location}/entryGroups/{entry_group_id}/en
-tries/{entry_id}”.</p>
+tries/{entry_id}”. Note that this Entry and its child
+resources may not actually be stored in the location in this
+name.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1188,10 +1194,8 @@ sensitive choices are:  .. raw:: html     &lt;ul&gt;  .. raw:: html
 &lt;li&gt;  last_access_timestamp [asc|desc], defaults to
 descending if not specified,  .. raw:: html     &lt;/li&gt;  ..
 raw:: html     &lt;li&gt;  last_modified_timestamp [asc|desc],
-defaults to descending if not specified,  .. raw:: html
-&lt;/li&gt;  .. raw:: html     &lt;li&gt;  title [asc|desc], defaults to
-ascending if not specified.  .. raw:: html     &lt;/li&gt;  .. raw::
-html     &lt;/ul&gt;</p>
+defaults to descending if not specified.  .. raw:: html
+&lt;/li&gt;  .. raw:: html     &lt;/ul&gt;</p>
 </dd></dl>
 
 <dl class="class">
@@ -1493,7 +1497,9 @@ conform to the specifications within their tag template.</p>
 log.v1beta1.UpdateTagRequest]. The resource name of the tag in
 URL format. For example, projects/{project_id}/locations/{loc
 ation}/entrygroups/{entry_group_id}/entries/{entry_id}/tags
-/{tag_id}”, where tag_id is a system-generated identifier.</p>
+/{tag_id}”, where tag_id is a system-generated identifier.
+Note that this Tag may not actually be stored in the location
+in this name.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1708,7 +1714,8 @@ the access to the tag.</p>
 datacatalog.v1beta1.UpdateTagTemplateRequest]. The resource
 name of the tag template in URL format. For example, projects/
 {project_id}/locations/{location}/tagTemplates/{tag_template
-_id}.</p>
+_id}. Note that this TagTemplate and its child resources may
+not actually be stored in the location in this name.</p>
 </dd></dl>
 
 <dl class="attribute">

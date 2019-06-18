@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Enums for BigQuery API Client &#8212; google-cloud fd24b4b documentation</title>
+    <title>Enums for BigQuery API Client &#8212; google-cloud 65f1657 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -309,7 +309,7 @@
 <dl class="attribute">
 <dt id="google.cloud.bigquery_v2.gapic.enums.Model.ModelType.LOGISTIC_REGRESSION">
 <code class="descname">LOGISTIC_REGRESSION</code><a class="headerlink" href="#google.cloud.bigquery_v2.gapic.enums.Model.ModelType.LOGISTIC_REGRESSION" title="Permalink to this definition">#</a></dt>
-<dd><p>Logistic regression model.</p>
+<dd><p>Logistic regression based classification model.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -324,6 +324,67 @@
 <dt id="google.cloud.bigquery_v2.gapic.enums.Model.ModelType.KMEANS">
 <code class="descname">KMEANS</code><a class="headerlink" href="#google.cloud.bigquery_v2.gapic.enums.Model.ModelType.KMEANS" title="Permalink to this definition">#</a></dt>
 <dd><p>[Beta] K-means clustering model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_v2.gapic.enums.Model.ModelType.TENSORFLOW">
+<code class="descname">TENSORFLOW</code><a class="headerlink" href="#google.cloud.bigquery_v2.gapic.enums.Model.ModelType.TENSORFLOW" title="Permalink to this definition">#</a></dt>
+<dd><p>[Beta] An imported TensorFlow model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_v2.gapic.enums.Model.OptimizationStrategy">
+<em class="property">class </em><code class="descname">OptimizationStrategy</code><a class="reference internal" href="../../../_modules/google/cloud/bigquery_v2/gapic/enums.html#Model.OptimizationStrategy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_v2.gapic.enums.Model.OptimizationStrategy" title="Permalink to this definition">#</a></dt>
+<dd><p>Indicates the optimization strategy used for training.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_v2.gapic.enums.Model.OptimizationStrategy.OPTIMIZATION_STRATEGY_UNSPECIFIED">
+<code class="descname">OPTIMIZATION_STRATEGY_UNSPECIFIED</code><a class="headerlink" href="#google.cloud.bigquery_v2.gapic.enums.Model.OptimizationStrategy.OPTIMIZATION_STRATEGY_UNSPECIFIED" title="Permalink to this definition">#</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_v2.gapic.enums.Model.OptimizationStrategy.BATCH_GRADIENT_DESCENT">
+<code class="descname">BATCH_GRADIENT_DESCENT</code><a class="headerlink" href="#google.cloud.bigquery_v2.gapic.enums.Model.OptimizationStrategy.BATCH_GRADIENT_DESCENT" title="Permalink to this definition">#</a></dt>
+<dd><p>Uses an iterative batch gradient descent algorithm.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_v2.gapic.enums.Model.OptimizationStrategy.NORMAL_EQUATION">
+<code class="descname">NORMAL_EQUATION</code><a class="headerlink" href="#google.cloud.bigquery_v2.gapic.enums.Model.OptimizationStrategy.NORMAL_EQUATION" title="Permalink to this definition">#</a></dt>
+<dd><p>Uses a normal equation to solve linear regression problem.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

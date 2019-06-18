@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.datacatalog_v1beta1.gapic.data_catalog_client &#8212; google-cloud fd24b4b documentation</title>
+    <title>google.cloud.datacatalog_v1beta1.gapic.data_catalog_client &#8212; google-cloud 65f1657 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -290,8 +290,14 @@
 <span class="sd">        return the complete resource, only the resource identifier and high</span>
 <span class="sd">        level fields. Clients can subsequentally call Get methods.</span>
 
+<span class="sd">        Note that searches do not have full recall. There may be results that</span>
+<span class="sd">        match your query but are not returned, even in subsequent pages of</span>
+<span class="sd">        results. These missing results may vary across repeated calls to search.</span>
+<span class="sd">        Do not rely on this method if you need to guarantee full recall.</span>
+
 <span class="sd">        See `Data Catalog Search</span>
 <span class="sd">        Syntax &lt;https://cloud.google.com/data-catalog/docs/how-to/search-reference&gt;`__</span>
+<span class="sd">        for more information.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import datacatalog_v1beta1</span>
@@ -351,8 +357,7 @@
 <span class="sd">                      &lt;li&gt; last_access_timestamp [asc|desc], defaults to descending if not</span>
 <span class="sd">                      specified, &lt;/li&gt;</span>
 <span class="sd">                      &lt;li&gt; last_modified_timestamp [asc|desc], defaults to descending if not</span>
-<span class="sd">                      specified, &lt;/li&gt;</span>
-<span class="sd">                      &lt;li&gt; title [asc|desc], defaults to ascending if not specified. &lt;/li&gt;</span>
+<span class="sd">                      specified. &lt;/li&gt;</span>
 <span class="sd">                    &lt;/ul&gt;</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
@@ -681,7 +686,9 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): Required. The name of the project and the location this template is in.</span>
-<span class="sd">                Example: &quot;projects/{project\_id}/locations/{location}&quot;.</span>
+<span class="sd">                Example: &quot;projects/{project\_id}/locations/{location}&quot;. Note that this</span>
+<span class="sd">                TagTemplate and its child resources may not actually be stored in the</span>
+<span class="sd">                location in this name.</span>
 <span class="sd">            tag_template_id (str): Required. The id of the tag template to create.</span>
 <span class="sd">            tag_template (Union[dict, ~google.cloud.datacatalog_v1beta1.types.TagTemplate]): Required. The tag template to create.</span>
 
@@ -1001,6 +1008,8 @@
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): Required. The name of the project this template is in. Example:</span>
 <span class="sd">                &quot;projects/{project\_id}/locations/{location}/tagTemplates/{tag\_template\_id}&quot;.</span>
+<span class="sd">                Note that this TagTemplateField may not actually be stored in the</span>
+<span class="sd">                location in this name.</span>
 <span class="sd">            tag_template_field_id (str): Required. The id of the tag template field to create. Field ids can</span>
 <span class="sd">                contain letters (both uppercase and lowercase), numbers (0-9),</span>
 <span class="sd">                underscores (\_) and dashes (-). Field ids must be at least 1 character</span>
@@ -1338,6 +1347,8 @@
 <span class="sd">            parent (str): Required. The name of the resource to attach this tag to. Tags can be</span>
 <span class="sd">                attached to Entries. (example:</span>
 <span class="sd">                &quot;projects/{project\_id}/locations/{location}/entryGroups/{entry\_group\_id}/entries/{entry\_id}&quot;).</span>
+<span class="sd">                Note that this Tag and its child resources may not actually be stored in</span>
+<span class="sd">                the location in this name.</span>
 <span class="sd">            tag (Union[dict, ~google.cloud.datacatalog_v1beta1.types.Tag]): Required. The tag to create.</span>
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2 &#8212; google-cloud fd24b4b documentation</title>
+    <title>google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2 &#8212; google-cloud 65f1657 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -1698,10 +1698,8 @@
 <span class="s2">          &lt;li&gt;  last\_access\_timestamp [asc\|desc], defaults to</span>
 <span class="s2">          descending if not specified,  .. raw:: html     &lt;/li&gt;  ..</span>
 <span class="s2">          raw:: html     &lt;li&gt;  last\_modified\_timestamp [asc\|desc],</span>
-<span class="s2">          defaults to descending if not specified,  .. raw:: html</span>
-<span class="s2">          &lt;/li&gt;  .. raw:: html     &lt;li&gt;  title [asc\|desc], defaults to</span>
-<span class="s2">          ascending if not specified.  .. raw:: html     &lt;/li&gt;  .. raw::</span>
-<span class="s2">          html     &lt;/ul&gt;</span>
+<span class="s2">          defaults to descending if not specified.  .. raw:: html</span>
+<span class="s2">          &lt;/li&gt;  .. raw:: html     &lt;/ul&gt;</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
         <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.datacatalog.v1beta1.SearchCatalogRequest)</span>
     <span class="p">),</span>
@@ -1840,7 +1838,9 @@
 <span class="s2">          talog.v1beta1.UpdateEntryRequest]. The Data Catalog resource</span>
 <span class="s2">          name of the entry in URL format. For example, &quot;projects/{proje</span>
 <span class="s2">          ct\_id}/locations/</span><span class="si">{location}</span><span class="s2">/entryGroups/{entry\_group\_id}/en</span>
-<span class="s2">          tries/{entry\_id}&quot;.</span>
+<span class="s2">          tries/{entry\_id}&quot;. Note that this Entry and its child</span>
+<span class="s2">          resources may not actually be stored in the location in this</span>
+<span class="s2">          name.</span>
 <span class="s2">      linked_resource:</span>
 <span class="s2">          Output only. The full name of the cloud resource the entry</span>
 <span class="s2">          belongs to. See: https://cloud.google.com/apis/design/resource</span>
@@ -1896,7 +1896,9 @@
 <span class="s2">      parent:</span>
 <span class="s2">          Required. The name of the project and the location this</span>
 <span class="s2">          template is in. Example:</span>
-<span class="s2">          &quot;projects/{project\_id}/locations/</span><span class="si">{location}</span><span class="s2">&quot;.</span>
+<span class="s2">          &quot;projects/{project\_id}/locations/</span><span class="si">{location}</span><span class="s2">&quot;. Note that this</span>
+<span class="s2">          TagTemplate and its child resources may not actually be stored</span>
+<span class="s2">          in the location in this name.</span>
 <span class="s2">      tag_template_id:</span>
 <span class="s2">          Required. The id of the tag template to create.</span>
 <span class="s2">      tag_template:</span>
@@ -1992,7 +1994,8 @@
 <span class="s2">          Required. The name of the resource to attach this tag to. Tags</span>
 <span class="s2">          can be attached to Entries. (example: &quot;projects/{project\_id}/</span>
 <span class="s2">          locations/</span><span class="si">{location}</span><span class="s2">/entryGroups/{entry\_group\_id}/entries/{e</span>
-<span class="s2">          ntry\_id}&quot;).</span>
+<span class="s2">          ntry\_id}&quot;). Note that this Tag and its child resources may</span>
+<span class="s2">          not actually be stored in the location in this name.</span>
 <span class="s2">      tag:</span>
 <span class="s2">          Required. The tag to create.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
@@ -2059,7 +2062,8 @@
 <span class="s2">      parent:</span>
 <span class="s2">          Required. The name of the project this template is in.</span>
 <span class="s2">          Example: &quot;projects/{project\_id}/locations/</span><span class="si">{location}</span><span class="s2">/tagTempl</span>
-<span class="s2">          ates/{tag\_template\_id}&quot;.</span>
+<span class="s2">          ates/{tag\_template\_id}&quot;. Note that this TagTemplateField may</span>
+<span class="s2">          not actually be stored in the location in this name.</span>
 <span class="s2">      tag_template_field_id:</span>
 <span class="s2">          Required. The id of the tag template field to create. Field</span>
 <span class="s2">          ids can contain letters (both uppercase and lowercase),</span>
