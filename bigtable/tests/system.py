@@ -126,10 +126,10 @@ def setUpModule():
         EXISTING_INSTANCES[:] = instances
 
         # After listing, create the test instances.
-        created_op = Config.INSTANCE.create(clusters=[Config.CLUSTER])
-        created_op.result(timeout=10)
-        created_op = Config.INSTANCE_DATA.create(clusters=[Config.CLUSTER_DATA])
-        created_op.result(timeout=10)
+        admin_op = Config.INSTANCE.create(clusters=[Config.CLUSTER])
+        admin_op.result(timeout=10)
+        data_op = Config.INSTANCE_DATA.create(clusters=[Config.CLUSTER_DATA])
+        data_op.result(timeout=10)
 
 
 def tearDownModule():
@@ -141,7 +141,7 @@ def tearDownModule():
 class TestInstanceAdminAPI(unittest.TestCase):
     def setUp(self):
         if Config.IN_EMULATOR:
-            self.skipTest("Instance Admin API not supported in Bigtable emulator")
+            self.skipTest("Instance Admin API not supported in emulator")
         self.instances_to_delete = []
 
     def tearDown(self):
