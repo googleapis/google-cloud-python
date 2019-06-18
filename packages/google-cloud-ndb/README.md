@@ -17,8 +17,7 @@ run on other Python 3 platforms as well.
 
 ## Release Status
 
-This version of the client is not yet officially released (it is in a
-pre-Alpha state) and is still under active development.
+Alpha
 
 ### Supported Python Versions
 Python >= 3.6

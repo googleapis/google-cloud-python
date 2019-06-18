@@ -21,7 +21,7 @@ version of the ``db`` API (hence ``ndb``).
 .. autodata:: __all__
 """
 
-__version__ = "0.0.1.dev1"
+__version__ = "0.0.1"
 """Current ``ndb`` version."""
 __all__ = [
     "AutoBatcher",
