@@ -50,6 +50,17 @@ class Test_transaction:
                 _transaction.transaction(None)
 
     @staticmethod
+    def test_transaction_inherits_and_merges_cache(in_context):
+        original_cache = in_context.cache
+        in_context.cache["test"] = "original value"
+        with in_context.new(transaction=b"tx123").use() as new_context:
+            assert new_context.cache is not original_cache
+            assert new_context.cache["test"] == original_cache["test"]
+            new_context.cache["test"] = "new_value"
+            assert new_context.cache["test"] != original_cache["test"]
+        assert in_context.cache["test"] == "new_value"
+
+    @staticmethod
     @mock.patch("google.cloud.ndb._transaction.transaction_async")
     def test_success(transaction_async):
         transaction_async.return_value.result.return_value = 42

@@ -256,6 +256,7 @@ from google.cloud.datastore import entity as entity_module
 from google.cloud.datastore import helpers
 from google.cloud.datastore_v1.proto import entity_pb2
 
+from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _datastore_api
 from google.cloud.ndb import _datastore_types
 from google.cloud.ndb import exceptions
@@ -4740,14 +4741,19 @@ class Model(metaclass=MetaModel):
                 entity. This is always a complete key.
         """
 
+        self._pre_put_hook()
+
         @tasklets.tasklet
         def put(self):
-            self._pre_put_hook()
             entity_pb = _entity_to_protobuf(self)
             key_pb = yield _datastore_api.put(entity_pb, _options)
             if key_pb:
                 ds_key = helpers.key_from_protobuf(key_pb)
                 self._key = key_module.Key._from_ds_key(ds_key)
+
+                if _options.use_cache:
+                    context_module.get_context().cache[self._key] = self
+
             return self._key
 
         future = put(self)

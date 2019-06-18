@@ -50,8 +50,8 @@ class TestOptions:
 
     @staticmethod
     def test_constructor_w_use_cache():
-        with pytest.raises(NotImplementedError):
-            MyOptions(use_cache=20)
+        options = MyOptions(use_cache=20)
+        assert options.use_cache == 20
 
     @staticmethod
     def test_constructor_w_memcache_timeout():

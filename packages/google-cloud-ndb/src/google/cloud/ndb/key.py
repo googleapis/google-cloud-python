@@ -837,14 +837,30 @@ class Key:
 
         cls = model.Model._kind_map.get(self.kind())
 
+        if cls:
+            cls._pre_get_hook(self)
+
         @tasklets.tasklet
         def get():
-            if cls:
-                cls._pre_get_hook(self)
+            if _options.use_cache:
+                try:
+                    # This result may be None, if None is cached for this key.
+                    return context_module.get_context().cache.get_and_validate(
+                        self
+                    )
+                except KeyError:
+                    pass
 
             entity_pb = yield _datastore_api.lookup(self._key, _options)
             if entity_pb is not _datastore_api._NOT_FOUND:
-                return model._entity_from_protobuf(entity_pb)
+                result = model._entity_from_protobuf(entity_pb)
+            else:
+                result = None
+
+            if _options.use_cache:
+                context_module.get_context().cache[self] = result
+
+            return result
 
         future = get()
         if cls:
@@ -952,7 +968,14 @@ class Key:
         if cls:
             cls._pre_delete_hook(self)
 
-        future = _datastore_api.delete(self._key, _options)
+        @tasklets.tasklet
+        def delete():
+            result = yield _datastore_api.delete(self._key, _options)
+            if _options.use_cache:
+                context_module.get_context().cache[self] = None
+            return result
+
+        future = delete()
 
         if cls:
             future.add_done_callback(

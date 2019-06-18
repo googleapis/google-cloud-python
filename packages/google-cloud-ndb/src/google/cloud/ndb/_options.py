@@ -29,8 +29,8 @@ class Options:
         # Supported
         "retries",
         "timeout",
-        # Not yet implemented
         "use_cache",
+        # Not yet implemented
         "use_memcache",
         "use_datastore",
         "memcache_timeout",
@@ -135,9 +135,6 @@ class Options:
                     type(self).__name__, next(iter(kwargs))
                 )
             )
-
-        if self.use_cache is not None:
-            raise NotImplementedError
 
         if self.use_memcache is not None:
             raise NotImplementedError

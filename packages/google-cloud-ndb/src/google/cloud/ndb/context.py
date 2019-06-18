@@ -41,6 +41,7 @@ _ContextTuple = collections.namedtuple(
         "batches",
         "commit_batches",
         "transaction",
+        "cache",
     ],
 )
 
@@ -77,6 +78,25 @@ def get_context():
     raise exceptions.ContextError()
 
 
+class _Cache(collections.UserDict):
+    """An in-memory entity cache.
+
+    This cache verifies the fetched entity has the correct key before
+    returning a result, in order to handle cases where the entity's key was
+    modified but the cache's key was not updated."""
+
+    def get_and_validate(self, key):
+        """Verify that the entity's key has not changed since it was added
+           to the cache. If it has changed, consider this a cache miss.
+           See issue 13.  http://goo.gl/jxjOP"""
+        entity = self.data[key]  # May be None, meaning "doesn't exist".
+        if entity is None or entity._key == key:
+            return entity
+        else:
+            del self.data[key]
+            raise KeyError(key)
+
+
 class _Context(_ContextTuple):
     """Current runtime state.
 
@@ -102,6 +122,7 @@ class _Context(_ContextTuple):
         batches=None,
         commit_batches=None,
         transaction=None,
+        cache=None,
     ):
         if eventloop is None:
             eventloop = _eventloop.EventLoop()
@@ -115,6 +136,15 @@ class _Context(_ContextTuple):
         if commit_batches is None:
             commit_batches = {}
 
+        # Create a cache and, if an existing cache was passed into this
+        # method, duplicate its entries.
+        if cache:
+            new_cache = _Cache()
+            new_cache.update(cache)
+            cache = new_cache
+        else:
+            cache = _Cache()
+
         return super(_Context, cls).__new__(
             cls,
             client=client,
@@ -123,6 +153,7 @@ class _Context(_ContextTuple):
             batches=batches,
             commit_batches=commit_batches,
             transaction=transaction,
+            cache=cache,
         )
 
     def new(self, **kwargs):
@@ -148,6 +179,8 @@ class _Context(_ContextTuple):
         try:
             yield self
         finally:
+            if prev_context:
+                prev_context.cache.update(self.cache)
             _state.context = prev_context
 
 
@@ -159,7 +192,7 @@ class Context(_Context):
 
         This does not affect memcache.
         """
-        raise NotImplementedError
+        self.cache.clear()
 
     def flush(self):
         """Force any pending batch operations to go ahead and run."""
