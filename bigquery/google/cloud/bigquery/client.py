@@ -1310,7 +1310,9 @@ class Client(ClientWithProject):
 
         try:
             if pyarrow and job_config.schema:
-                _pandas_helpers.to_parquet(dataframe, job_config.schema, tmppath)
+                _pandas_helpers.dataframe_to_parquet(
+                    dataframe, job_config.schema, tmppath
+                )
             else:
                 if job_config.schema:
                     warnings.warn(
