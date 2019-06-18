@@ -60,7 +60,7 @@ r'''    def get_grafeas_client(self):
         """Returns an equivalent grafeas client.
 
         Returns:
-            A :class:`~grafeas.grafeas_v1\.GrafeasClient` instance.
+            A :class:`~grafeas.grafeas_v1.GrafeasClient` instance.
         """
         grafeas_transport = grafeas_grpc_transport.GrafeasGrpcTransport(
             self.SERVICE_ADDRESS,

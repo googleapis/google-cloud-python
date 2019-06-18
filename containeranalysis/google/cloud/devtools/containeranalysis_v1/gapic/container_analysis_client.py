@@ -201,7 +201,7 @@ class ContainerAnalysisClient(object):
         """Returns an equivalent grafeas client.
 
         Returns:
-            A :class:`~grafeas.grafeas_v1\.GrafeasClient` instance.
+            A :class:`~grafeas.grafeas_v1.GrafeasClient` instance.
         """
         grafeas_transport = grafeas_grpc_transport.GrafeasGrpcTransport(
             self.SERVICE_ADDRESS, self.transport._OAUTH_SCOPES
