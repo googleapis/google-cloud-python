@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.devtools.containeranalysis_v1.gapic.container_analysis_client &#8212; google-cloud ed2366c documentation</title>
+    <title>google.cloud.devtools.containeranalysis_v1.gapic.container_analysis_client &#8212; google-cloud 26752c6 documentation</title>
     <link rel="stylesheet" href="../../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../../" src="../../../../../../_static/documentation_options.js"></script>
@@ -74,6 +74,9 @@
 <span class="kn">from</span> <span class="nn">google.iam.v1</span> <span class="k">import</span> <span class="n">iam_policy_pb2</span>
 <span class="kn">from</span> <span class="nn">google.iam.v1</span> <span class="k">import</span> <span class="n">policy_pb2</span>
 
+
+<span class="kn">from</span> <span class="nn">grafeas</span> <span class="k">import</span> <span class="n">grafeas_v1</span>
+<span class="kn">from</span> <span class="nn">grafeas.grafeas_v1.gapic.transports</span> <span class="k">import</span> <span class="n">grafeas_grpc_transport</span>
 
 <span class="n">_GAPIC_LIBRARY_VERSION</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">get_distribution</span><span class="p">(</span>
     <span class="s2">&quot;google-cloud-containeranalysis&quot;</span>
@@ -229,6 +232,18 @@
         <span class="c1"># transport methods, wrapped with `wrap_method` to add retry,</span>
         <span class="c1"># timeout, and the like.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="ContainerAnalysisClient.get_grafeas_client"><a class="viewcode-back" href="../../../../../../containeranalysis/gapic/v1/api.html#google.cloud.devtools.containeranalysis_v1.ContainerAnalysisClient.get_grafeas_client">[docs]</a>    <span class="k">def</span> <span class="nf">get_grafeas_client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns an equivalent grafeas client.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~grafeas.grafeas_v1.GrafeasClient` instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">grafeas_transport</span> <span class="o">=</span> <span class="n">grafeas_grpc_transport</span><span class="o">.</span><span class="n">GrafeasGrpcTransport</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">_OAUTH_SCOPES</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">grafeas_v1</span><span class="o">.</span><span class="n">GrafeasClient</span><span class="p">(</span><span class="n">grafeas_transport</span><span class="p">)</span></div>
 
     <span class="c1"># Service calls</span>
 <div class="viewcode-block" id="ContainerAnalysisClient.set_iam_policy"><a class="viewcode-back" href="../../../../../../containeranalysis/gapic/v1/api.html#google.cloud.devtools.containeranalysis_v1.ContainerAnalysisClient.set_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">set_iam_policy</span><span class="p">(</span>
