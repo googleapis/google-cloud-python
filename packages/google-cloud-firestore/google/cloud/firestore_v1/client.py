@@ -203,7 +203,7 @@ class Client(ClientWithProject):
 
         .. code-block:: python
 
-            >>> query = firestore.collection_group('mygroup')
+            >>> query = client.collection_group('mygroup')
 
         @param {string} collectionId Identifies the collections to query over.
         Every collection or subcollection with this ID as the last segment of its
