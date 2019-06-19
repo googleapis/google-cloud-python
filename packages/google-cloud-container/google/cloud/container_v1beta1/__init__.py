@@ -17,9 +17,14 @@
 
 from __future__ import absolute_import
 
-from google.cloud.container_v1 import ClusterManagerClient
-from google.cloud.container_v1 import enums
-from google.cloud.container_v1 import types
+from google.cloud.container_v1beta1 import types
+from google.cloud.container_v1beta1.gapic import cluster_manager_client
+from google.cloud.container_v1beta1.gapic import enums
+
+
+class ClusterManagerClient(cluster_manager_client.ClusterManagerClient):
+    __doc__ = cluster_manager_client.ClusterManagerClient.__doc__
+    enums = enums
 
 
 __all__ = ("enums", "types", "ClusterManagerClient")
