@@ -440,7 +440,7 @@ class PartialRowsData(object):
         Parse the response and its chunks into a new/existing row in
         :attr:`_rows`. Rows are returned in order by row key.
         """
-        while True:
+        while not self._stop:
             try:
                 response = self._read_next_response()
             except StopIteration:
@@ -448,17 +448,14 @@ class PartialRowsData(object):
                     raise ValueError("The row remains partial / is not committed.")
                 break
 
-            try:
-                for chunk in response.chunks:
-                    if self._stop:
-                        raise StopIteration
-                    self._process_chunk(chunk)
-                    if chunk.commit_row:
-                        self.last_scanned_row_key = self._previous_row.row_key
-                        self._counter += 1
-                        yield self._previous_row
-            except StopIteration:
-                break
+            for chunk in response.chunks:
+                if self._stop:
+                    break
+                self._process_chunk(chunk)
+                if chunk.commit_row:
+                    self.last_scanned_row_key = self._previous_row.row_key
+                    self._counter += 1
+                    yield self._previous_row
 
             resp_last_key = response.last_scanned_row_key
             if resp_last_key and resp_last_key > self.last_scanned_row_key:
