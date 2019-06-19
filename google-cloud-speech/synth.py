@@ -42,10 +42,6 @@ for version in versions:
 # Use the highest version library to generate documentation import alias.
 s.move(library / "google/cloud/speech.py")
 
-# Issues exist where python files should define the source encoding
-# https://github.com/googleapis/gapic-generator/issues/2097
-s.replace("**/proto/*_pb2.py", r"(^.*$\n)*", r"# -*- coding: utf-8 -*-\n\g<0>")
-
 
 # Fix tests to use the direct gapic client instead of the wrapped helper
 # client.
@@ -59,10 +55,9 @@ s.replace(
 # often insufficient in practice.
 s.replace(
     "google/cloud/speech_v1/gapic/transports/speech_grpc_transport.py",
-    r".*scopes=cls\._OAUTH_SCOPES.*",
-    """\g<0>
-    options={"grpc.max_receive_message_length": 256 * 1024 * 1024}.items()
-    """,
+    "^(\s+)scopes=cls\._OAUTH_SCOPES,",
+    "\g<1>scopes=cls._OAUTH_SCOPES,\n"
+    "\g<1>options={\"grpc.max_receive_message_length\": 256 * 1024 * 1024}.items(),"
 )
 
 # ----------------------------------------------------------------------------
