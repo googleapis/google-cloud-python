@@ -852,9 +852,6 @@ class Bucket(_PropertyMixin):
                   in this bucket matching the arguments.
         """
 
-        if fields is None:
-            fields = "items(name)"
-
         iterator = self.list_blobs(
             max_results=max_results,
             prefix=prefix,

@@ -802,11 +802,13 @@ class Test_Bucket(unittest.TestCase):
         PREFIX = "subfolder"
         DELIMITER = "/"
         PROJECTION = "full"
+        FIELDS = "items/contentLanguage,nextPageToken"
         EXPECTED = {
             "maxResults": 10,
             "prefix": PREFIX,
             "delimiter": DELIMITER,
             "projection": PROJECTION,
+            "fields": FIELDS,
             "userProject": USER_PROJECT,
         }
         connection = _Connection({"items": []})
@@ -817,6 +819,7 @@ class Test_Bucket(unittest.TestCase):
             prefix=PREFIX,
             delimiter=DELIMITER,
             projection=PROJECTION,
+            fields=FIELDS,
             client=client,
         )
         blobs = list(iterator)
