@@ -1996,7 +1996,7 @@ def _quote(value, safe=b"~"):
     :param value: The value to be URL-quoted.
 
     :type safe: bytes
-    :param safe: Bytes *not* to be quoted.
+    :param safe: Bytes *not* to be quoted.  By default, includes only ``b'~'``.
 
     :rtype: str
     :returns: The encoded value (bytes in Python 2, unicode in Python 3).
