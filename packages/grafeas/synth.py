@@ -240,12 +240,14 @@ s.replace(
     r"""    def create_channel\(
                 cls,
                 address='containeranalysis\.googleapis\.com:443',
-                credentials=None\):""",
+                credentials=None,
+                \*\*kwargs\):""",
     """    def create_channel(
                 cls,
                 address,
                 scopes,
-                credentials=None):""",
+                credentials=None,
+                **kwargs):""",
 )
 
 s.replace(
@@ -273,11 +275,13 @@ s.replace(
             address,
             credentials=credentials,
             scopes=cls\._OAUTH_SCOPES,
+            \*\*kwargs
         \)""",
     """        return google.api_core.grpc_helpers.create_channel(
             address,
             credentials=credentials,
             scopes=scopes,
+            **kwargs
         )""",
 )
 
