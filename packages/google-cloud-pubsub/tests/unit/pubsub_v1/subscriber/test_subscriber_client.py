@@ -73,7 +73,9 @@ def test_subscribe(manager_open):
 
     assert future._manager._subscription == "sub_name_a"
     manager_open.assert_called_once_with(
-        mock.ANY, mock.sentinel.callback, future.set_exception
+        mock.ANY,
+        callback=mock.sentinel.callback,
+        on_callback_error=future.set_exception,
     )
 
 
@@ -100,5 +102,7 @@ def test_subscribe_options(manager_open):
     assert future._manager.flow_control == flow_control
     assert future._manager._scheduler == scheduler
     manager_open.assert_called_once_with(
-        mock.ANY, mock.sentinel.callback, future.set_exception
+        mock.ANY,
+        callback=mock.sentinel.callback,
+        on_callback_error=future.set_exception,
     )
