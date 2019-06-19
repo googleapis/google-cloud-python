@@ -39,6 +39,9 @@ from google.iam.v1 import iam_policy_pb2
 from google.iam.v1 import policy_pb2
 
 
+from grafeas import grafeas_v1
+from grafeas.grafeas_v1.gapic.transports import grafeas_grpc_transport
+
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     "google-cloud-containeranalysis"
 ).version
@@ -193,6 +196,18 @@ class ContainerAnalysisClient(object):
         # transport methods, wrapped with `wrap_method` to add retry,
         # timeout, and the like.
         self._inner_api_calls = {}
+
+    def get_grafeas_client(self):
+        """Returns an equivalent grafeas client.
+
+        Returns:
+            A :class:`~grafeas.grafeas_v1.GrafeasClient` instance.
+        """
+        grafeas_transport = grafeas_grpc_transport.GrafeasGrpcTransport(
+            self.SERVICE_ADDRESS, self.transport._OAUTH_SCOPES
+        )
+
+        return grafeas_v1.GrafeasClient(grafeas_transport)
 
     # Service calls
     def set_iam_policy(
