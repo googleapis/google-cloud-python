@@ -97,8 +97,8 @@ class SpeechGrpcTransport(object):
             address,
             credentials=credentials,
             scopes=cls._OAUTH_SCOPES,
-            options={"grpc.max_receive_message_length": 256 * 1024 * 1024}.items()
-            ** kwargs,
+            options={"grpc.max_receive_message_length": 256 * 1024 * 1024}.items(),
+            **kwargs
         )
 
     @property

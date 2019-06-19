@@ -55,10 +55,9 @@ s.replace(
 # often insufficient in practice.
 s.replace(
     "google/cloud/speech_v1/gapic/transports/speech_grpc_transport.py",
-    r".*scopes=cls\._OAUTH_SCOPES.*",
-    """\g<0>
-    options={"grpc.max_receive_message_length": 256 * 1024 * 1024}.items()
-    """,
+    "^(\s+)scopes=cls\._OAUTH_SCOPES,",
+    "\g<1>scopes=cls._OAUTH_SCOPES,\n"
+    "\g<1>options={\"grpc.max_receive_message_length\": 256 * 1024 * 1024}.items(),"
 )
 
 # ----------------------------------------------------------------------------
