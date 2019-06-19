@@ -63,9 +63,7 @@ class GrafeasGrpcTransport(object):
         self._stubs = {"grafeas_stub": grafeas_pb2_grpc.GrafeasStub(channel)}
 
     @classmethod
-    def create_channel(
-        cls, address="containeranalysis.googleapis.com:443", credentials=None, **kwargs
-    ):
+    def create_channel(cls, address, scopes, credentials=None, **kwargs):
         """Create and return a gRPC channel object.
 
         Args:
@@ -83,7 +81,7 @@ class GrafeasGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES, **kwargs
+            address, credentials=credentials, scopes=scopes, **kwargs
         )
 
     @property
