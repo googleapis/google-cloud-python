@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from google.cloud.exceptions import NotFound
 from google.cloud._helpers import _rfc3339_to_datetime
 
 
@@ -124,3 +125,63 @@ class HMACKeyMetadata(object):
         value = self._properties.get("updated")
         if value is not None:
             return _rfc3339_to_datetime(value)
+
+    @property
+    def path(self):
+        """Resource path for the metadata's key."""
+
+        if self.access_id is None:
+            raise ValueError("No 'access_id' set.")
+
+        project = self.project
+        if project is None:
+            project = self._client.project
+
+        return "/projects/{}/hmacKeys/{}".format(project, self.access_id)
+
+    def exists(self):
+        """Determine whether or not the key for this metadata exists.
+
+        :rtype: bool
+        :returns: True if the key exists in Cloud Storage.
+        """
+        try:
+            self._client._connection.api_request(method="GET", path=self.path)
+        except NotFound:
+            return False
+        else:
+            return True
+
+    def reload(self):
+        """Reload properties from Cloud Storage.
+
+        :raises :class:`~google.api_core.exceptions.NotFound`:
+            if the key does not exist on the back-end.
+        """
+        self._properties = self._client._connection.api_request(
+            method="GET", path=self.path
+        )
+
+    def update(self):
+        """Save writable properties to Cloud Storage.
+
+        :raises :class:`~google.api_core.exceptions.NotFound`:
+            if the key does not exist on the back-end.
+        """
+        payload = {"state": self.state}
+        self._properties = self._client._connection.api_request(
+            method="POST", path=self.path, data=payload
+        )
+
+    def delete(self):
+        """Delete the key from Cloud Storage.
+
+        :raises :class:`~google.api_core.exceptions.NotFound`:
+            if the key does not exist on the back-end.
+        """
+        if self.state != self.INACTIVE_STATE:
+            raise ValueError("Cannot delete key if not in 'INACTIVE' state.")
+
+        self._client._connection.api_request(
+            method="DELETE", path=self.path
+        )
