@@ -238,7 +238,7 @@ class Blob(_PropertyMixin):
         else:
             bucket_name = None
 
-        return "<Blob: %s, %s>" % (bucket_name, self.name)
+        return "<Blob: %s, %s, %s>" % (bucket_name, self.name, self.generation)
 
     @property
     def path(self):
