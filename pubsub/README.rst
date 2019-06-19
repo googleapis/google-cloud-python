@@ -158,3 +158,35 @@ block the current thread until a given condition obtains:
 To learn more, consult the `subscriber documentation`_.
 
 .. _subscriber documentation: https://googleapis.github.io/google-cloud-python/latest/pubsub/subscriber/index.html
+
+
+Authentication
+^^^^^^^^^^^^^^
+
+It is possible to specify the authentication method to use with the Pub/Sub
+clients. This can be done by providing an explicit `Credentials`_ instance from
+the `google-auth`_ library.
+
+For example, to use JSON Web Tokens, provide a `jwt.Credentials`_ instance:
+
+.. code-block:: python
+
+    import json
+    from google.auth import jwt
+
+    service_account_info = json.load(open("service-account-info.json"))
+    audience = "https://pubsub.googleapis.com/google.pubsub.v1.Subscriber"
+
+    credentials = jwt.Credentials.from_service_account_info(
+        service_account_info, audience=audience
+    )
+
+    publisher = pubsub_v1.PublisherClient(credentials=credentials)
+    subscriber = pubsub_v1.SubscriberClient(credentials=credentials)
+
+Check the `google-auth`_ library documentation for the list of supported
+authentication methods.
+
+.. _Credentials: https://google-auth.readthedocs.io/en/latest/reference/google.auth.credentials.html#google.auth.credentials.Credentials
+.. _google-auth: https://google-auth.readthedocs.io/en/latest/index.html
+.. _jwt.Credentials: https://google-auth.readthedocs.io/en/latest/reference/google.auth.jwt.html#google.auth.jwt.Credentials
