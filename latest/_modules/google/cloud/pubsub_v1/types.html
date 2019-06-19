@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.types &#8212; google-cloud c7cf8ef documentation</title>
+    <title>google.cloud.pubsub_v1.types &#8212; google-cloud 7e9069f documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -106,6 +106,39 @@
     <span class="mf">0.01</span><span class="p">,</span>  <span class="c1"># max_request_batch_latency: 0.01s</span>
     <span class="mi">2</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span><span class="p">,</span>  <span class="c1"># max_lease_duration: 2 hours.</span>
 <span class="p">)</span>
+
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+    <span class="n">FlowControl</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;The settings for controlling the rate at which messages are pulled &quot;</span>
+        <span class="s2">&quot;with an asynchronous subscription.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">FlowControl</span><span class="o">.</span><span class="n">max_bytes</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;The maximum total size of received - but not yet processed - messages &quot;</span>
+        <span class="s2">&quot;before pausing the message stream.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">FlowControl</span><span class="o">.</span><span class="n">max_messages</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;The maximum number of received - but not yet processed - messages before &quot;</span>
+        <span class="s2">&quot;pausing the message stream.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">FlowControl</span><span class="o">.</span><span class="n">resume_threshold</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;The relative threshold of the ``max_bytes`` and ``max_messages`` limits &quot;</span>
+        <span class="s2">&quot;below which to resume the message stream. Must be a positive number not &quot;</span>
+        <span class="s2">&quot;greater than ``1.0``.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">FlowControl</span><span class="o">.</span><span class="n">max_requests</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;Currently not in use.&quot;</span>
+    <span class="n">FlowControl</span><span class="o">.</span><span class="n">max_request_batch_size</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;The maximum number of requests scheduled by callbacks to process and &quot;</span>
+        <span class="s2">&quot;dispatch at a time.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">FlowControl</span><span class="o">.</span><span class="n">max_request_batch_latency</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;The maximum amount of time in seconds to wait for additional request &quot;</span>
+        <span class="s2">&quot;items before processing the next batch of requests.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">FlowControl</span><span class="o">.</span><span class="n">max_lease_duration</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;The maximum amount of time in seconds to hold a lease on a message &quot;</span>
+        <span class="s2">&quot;before dropping it from the lease management.&quot;</span>
+    <span class="p">)</span>
+
 
 <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
     <span class="n">FlowControl</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
