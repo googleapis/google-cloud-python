@@ -1,19 +1,19 @@
 {
-  "updateTime": "2019-06-17T08:38:08.782762Z",
+  "updateTime": "2019-06-19T16:01:34.389010Z",
   "sources": [
     {
       "generator": {
         "name": "artman",
-        "version": "0.26.0",
-        "dockerImage": "googleapis/artman@sha256:6db0735b0d3beec5b887153a2a7c7411fc7bb53f73f6f389a822096bd14a3a15"
+        "version": "0.28.0",
+        "dockerImage": "googleapis/artman@sha256:6ced5a36b08b82a328c69844e629300d58c14067f25cadab47f52542bdef7daf"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "7b58b37559f6a5337c4c564518e9573d742df225",
-        "internalRef": "253322136"
+        "sha": "ac13167e31a20314aa05cc9911c95df250880485",
+        "internalRef": "253867808"
       }
     },
     {
