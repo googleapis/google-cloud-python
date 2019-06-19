@@ -610,7 +610,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         )
 
         operation = app_profile.update(ignore_warnings)
-        operation.result(timeout=10)
+        operation.result(timeout=30)
 
         alt_app_profile = instance.app_profile(app_profile_id)
         alt_app_profile.reload()
