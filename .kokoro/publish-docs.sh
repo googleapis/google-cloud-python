@@ -7,7 +7,14 @@ export PYTHONUNBUFFERED=1
 
 cd github/google-cloud-python/${PACKAGE}
 
-VERSION=$(python3 ../test_utils/scripts/get_package_version.py)
+VERSION=$(python3 setup.py --version)
+
+# Remove old nox
+python3.6 -m pip uninstall --yes --quiet nox-automation
+
+# Install nox
+python3.6 -m pip install --upgrade --quiet nox
+python3.6 -m nox --version
 
 # build docs
 nox -s docs
@@ -23,6 +30,4 @@ python3 -m docuploader create-metadata \
 --language python
 
 # upload docs
-python3 -m docuploader upload . \
---credentials ${CREDENTIALS} \
---staging-bucket ${STAGING_BUCKET}
+python3 -m docuploader upload . --staging-bucket docs-staging
