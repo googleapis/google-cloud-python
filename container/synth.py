@@ -18,20 +18,25 @@ from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
+versions = ["v1beta1", "v1"]
 
 # ----------------------------------------------------------------------------
 # Generate container GAPIC layer
 # ----------------------------------------------------------------------------
-library = gapic.py_library(
-    "container",
-    "v1",
-    config_path="/google/container/artman_container_v1.yaml",
-    artman_output_name="container-v1",
-    include_protos=True,
-)
+for version in versions:
+    library = gapic.py_library(
+        "container",
+        version,
+        config_path=f"/google/container/artman_container_{version}.yaml",
+        artman_output_name=f"container-{version}",
+        include_protos=True,
+    )
 
-s.move(library / "google/cloud/container_v1")
-s.move(library / "tests/unit/gapic/v1")
+    s.move(library / f"google/cloud/container_{version}")
+    s.move(library / f"tests/unit/gapic/{version}")
+
+# Use the highest version library to generate import alias.
+s.move(library / "google/cloud/container.py")
 
 # Issues exist where python files should define the source encoding
 # https://github.com/googleapis/gapic-generator/issues/2097
@@ -43,12 +48,12 @@ s.replace(
 
 # Workaround https://github.com/googleapis/gapic-generator/issues/2449
 s.replace(
-    "google/cloud/container_v1/proto/cluster_service_pb2.py",
+    "google/**/proto/cluster_service_pb2.py",
     r"nodePool>\n",
     r"nodePool>`__\n",
 )
 s.replace(
-    "google/cloud/container_v1/proto/cluster_service_pb2.py",
+    "google/**/proto/cluster_service_pb2.py",
     r"(\s+)`__ instead",
     r"\g<1>instead",
 )
