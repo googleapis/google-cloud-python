@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Video Intelligence API Client &#8212; google-cloud 7e9069f documentation</title>
+    <title>Types for Cloud Video Intelligence API Client &#8212; google-cloud 06507a9 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -1395,6 +1395,44 @@ gs://bucket_id/object_id/cloud_project_name-session_id</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingAutomlClassificationConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">StreamingAutomlClassificationConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAutomlClassificationConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Config for AUTOML_CLASSIFICATION in streaming mode.</p>
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingAutomlClassificationConfig.model_name">
+<code class="descname">model_name</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAutomlClassificationConfig.model_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource name of AutoML model. Format: <code class="docutils literal notranslate"><span class="pre">projects/{project_id}</span>
+<span class="pre">/locations/{location_id}/models/{model_id}</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">model_name</code></dt>
+<dd><p>Field google.cloud.videointelligence.v1p3beta1.StreamingAutomlClassificationConfig.model_name</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingAutomlObjectTrackingConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">StreamingAutomlObjectTrackingConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAutomlObjectTrackingConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Config for AUTOML_OBJECT_TRACKING in streaming mode.</p>
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingAutomlObjectTrackingConfig.model_name">
+<code class="descname">model_name</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAutomlObjectTrackingConfig.model_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource name of AutoML model. Format: <code class="docutils literal notranslate"><span class="pre">projects/{project_id}</span>
+<span class="pre">/locations/{location_id}/models/{model_id}</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">model_name</code></dt>
+<dd><p>Field google.cloud.videointelligence.v1p3beta1.StreamingAutomlObjectTrackingConfig.model_name</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingExplicitContentDetectionConfig">
 <em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">StreamingExplicitContentDetectionConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingExplicitContentDetectionConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for EXPLICIT_CONTENT_DETECTION in streaming mode.</p>
@@ -1574,9 +1612,33 @@ request.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.automl_classification_config">
+<code class="descname">automl_classification_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.automl_classification_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Config for STREAMING_AUTOML_CLASSIFICATION.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.automl_object_tracking_config">
+<code class="descname">automl_object_tracking_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.automl_object_tracking_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Config for STREAMING_AUTOML_OBJECT_TRACKING.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.storage_config">
 <code class="descname">storage_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.storage_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Streaming storage option. By default: storage is disabled.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">automl_classification_config</code></dt>
+<dd><p>Field google.cloud.videointelligence.v1p3beta1.StreamingVideoConfig.automl_classification_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">automl_object_tracking_config</code></dt>
+<dd><p>Field google.cloud.videointelligence.v1p3beta1.StreamingVideoConfig.automl_object_tracking_config</p>
 </dd></dl>
 
 <dl class="attribute">
