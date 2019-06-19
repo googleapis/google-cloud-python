@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Cloud Data Loss Prevention (DLP) API &#8212; google-cloud 126474c documentation</title>
+    <title>Client for Cloud Data Loss Prevention (DLP) API &#8212; google-cloud 2e351a3 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -1247,10 +1247,14 @@ A sequence of restrictions implicitly uses <code class="docutils literal notrans
 <li><code class="docutils literal notranslate"><span class="pre">inspected_storage</span></code> - DATASTORE|CLOUD_STORAGE|BIGQUERY</li>
 <li><code class="docutils literal notranslate"><span class="pre">trigger_name</span></code> - The resource name of the trigger that created
 job.</li>
+<li>’end_time` - Corresponds to time the job finished.</li>
+<li>’start_time` - Corresponds to time the job finished.</li>
 </ul>
 </li>
 <li>Supported fields for risk analysis jobs:<ul>
 <li><code class="docutils literal notranslate"><span class="pre">state</span></code> - RUNNING|CANCELED|FINISHED|FAILED</li>
+<li>’end_time` - Corresponds to time the job finished.</li>
+<li>’start_time` - Corresponds to time the job finished.</li>
 </ul>
 </li>
 <li>The operator must be <code class="docutils literal notranslate"><span class="pre">=</span></code> or <code class="docutils literal notranslate"><span class="pre">!=</span></code>.</li>
@@ -1261,6 +1265,7 @@ job.</li>
 <li>inspected_storage = cloud_storage OR inspected_storage = bigquery</li>
 <li>inspected_storage = cloud_storage AND (state = done OR state =
 canceled)</li>
+<li>end_time &gt; “2017-12-12T00:00:00+00:00”</li>
 </ul>
 <p>The length of this field should be no more than 500 characters.</p>
 </li>

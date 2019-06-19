@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Data Loss Prevention (DLP) API Client &#8212; google-cloud 126474c documentation</title>
+    <title>Types for Cloud Data Loss Prevention (DLP) API Client &#8212; google-cloud 2e351a3 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -90,8 +90,11 @@ this action can be specified. Compatible with: Inspect</p>
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.Action.PublishToPubSub">
 <em class="property">class </em><code class="descname">PublishToPubSub</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Action.PublishToPubSub" title="Permalink to this definition">#</a></dt>
-<dd><p>Publish the results of a DlpJob to a pub sub channel. Compatible with:
-Inspect, Risk</p>
+<dd><p>Publish a message into given Pub/Sub topic when DlpJob has completed.
+The message contains a single field, <code class="docutils literal notranslate"><span class="pre">DlpJobName</span></code>, which is equal to
+the finished job’s
+<code class="docutils literal notranslate"><span class="pre">`DlpJob.name</span></code> &lt;/dlp/docs/reference/rest/v2/projects.dlpJobs#DlpJob&gt;`__.
+Compatible with: Inspect, Risk</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.Action.PublishToPubSub.topic">
 <code class="descname">topic</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Action.PublishToPubSub.topic" title="Permalink to this definition">#</a></dt>
@@ -4863,6 +4866,24 @@ dictionary phrase.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.dlp_v2.types.LargeCustomDictionaryStats">
+<em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">LargeCustomDictionaryStats</code><a class="headerlink" href="#google.cloud.dlp_v2.types.LargeCustomDictionaryStats" title="Permalink to this definition">#</a></dt>
+<dd><p>Summary statistics of a custom dictionary.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.LargeCustomDictionaryStats.approx_num_phrases">
+<code class="descname">approx_num_phrases</code><a class="headerlink" href="#google.cloud.dlp_v2.types.LargeCustomDictionaryStats.approx_num_phrases" title="Permalink to this definition">#</a></dt>
+<dd><p>Approximate number of distinct phrases in the dictionary.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">approx_num_phrases</code></dt>
+<dd><p>Field google.privacy.dlp.v2.LargeCustomDictionaryStats.approx_num_phrases</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.dlp_v2.types.ListDeidentifyTemplatesRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">ListDeidentifyTemplatesRequest</code><a class="headerlink" href="#google.cloud.dlp_v2.types.ListDeidentifyTemplatesRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request message for ListDeidentifyTemplates.</p>
@@ -4981,13 +5002,18 @@ operators.    A sequence of restrictions implicitly uses
 <code class="docutils literal notranslate"><span class="pre">state</span></code> - PENDING|RUNNING|CANCELED|FINISHED|FAILED    -
 <code class="docutils literal notranslate"><span class="pre">inspected_storage</span></code> - DATASTORE|CLOUD_STORAGE|BIGQUERY
 -  <code class="docutils literal notranslate"><span class="pre">trigger_name</span></code> - The resource name of the trigger that
-created       job.  -  Supported fields for risk analysis
-jobs:     -  <code class="docutils literal notranslate"><span class="pre">state</span></code> - RUNNING|CANCELED|FINISHED|FAILED
--  The operator must be <code class="docutils literal notranslate"><span class="pre">=</span></code> or <code class="docutils literal notranslate"><span class="pre">!=</span></code>.  Examples:  -
+created       job.    -  ‘end_time` - Corresponds to time
+the job finished.    -  ‘start_time` - Corresponds to time
+the job finished.  -  Supported fields for risk analysis jobs:
+-  <code class="docutils literal notranslate"><span class="pre">state</span></code> - RUNNING|CANCELED|FINISHED|FAILED    -
+‘end_time` - Corresponds to time the job finished.    -
+‘start_time` - Corresponds to time the job finished.  -  The
+operator must be <code class="docutils literal notranslate"><span class="pre">=</span></code> or <code class="docutils literal notranslate"><span class="pre">!=</span></code>.  Examples:  -
 inspected_storage = cloud_storage AND state = done -
 inspected_storage = cloud_storage OR inspected_storage =
 bigquery -  inspected_storage = cloud_storage AND (state =
-done OR state =    canceled)  The length of this field should
+done OR state =    canceled) -  end_time &gt;
+“2017-12-12T00:00:00+00:00”  The length of this field should
 be no more than 500 characters.</p>
 </dd></dl>
 
@@ -7095,6 +7121,25 @@ phrases.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.dlp_v2.types.StoredInfoTypeStats">
+<em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">StoredInfoTypeStats</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StoredInfoTypeStats" title="Permalink to this definition">#</a></dt>
+<dd><p>Statistics for a StoredInfoType.</p>
+<dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.StoredInfoTypeStats.large_custom_dictionary">
+<code class="descname">large_custom_dictionary</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StoredInfoTypeStats.large_custom_dictionary" title="Permalink to this definition">#</a></dt>
+<dd><p>StoredInfoType where findings are defined by a dictionary of
+phrases.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">large_custom_dictionary</code></dt>
+<dd><p>Field google.privacy.dlp.v2.StoredInfoTypeStats.large_custom_dictionary</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.dlp_v2.types.StoredInfoTypeVersion">
 <em class="property">class </em><code class="descclassname">google.cloud.dlp_v2.types.</code><code class="descname">StoredInfoTypeVersion</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StoredInfoTypeVersion" title="Permalink to this definition">#</a></dt>
 <dd><p>Version of a StoredInfoType, including the configuration used to build
@@ -7138,6 +7183,12 @@ the error.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.StoredInfoTypeVersion.stats">
+<code class="descname">stats</code><a class="headerlink" href="#google.cloud.dlp_v2.types.StoredInfoTypeVersion.stats" title="Permalink to this definition">#</a></dt>
+<dd><p>Statistics about this storedInfoType version.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">config</code></dt>
 <dd><p>Field google.privacy.dlp.v2.StoredInfoTypeVersion.config</p>
@@ -7159,6 +7210,12 @@ the error.</p>
 <dt>
 <code class="descname">state</code></dt>
 <dd><p>Field google.privacy.dlp.v2.StoredInfoTypeVersion.state</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">stats</code></dt>
+<dd><p>Field google.privacy.dlp.v2.StoredInfoTypeVersion.stats</p>
 </dd></dl>
 
 </dd></dl>
