@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.automl_v1beta1.gapic.prediction_service_client &#8212; google-cloud e65044c documentation</title>
+    <title>google.cloud.automl_v1beta1.gapic.prediction_service_client &#8212; google-cloud 18d92f8 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -71,6 +71,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.gapic.transports</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">prediction_service_grpc_transport</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.proto</span> <span class="k">import</span> <span class="n">annotation_spec_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.proto</span> <span class="k">import</span> <span class="n">column_spec_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.proto</span> <span class="k">import</span> <span class="n">data_items_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.proto</span> <span class="k">import</span> <span class="n">dataset_pb2</span>
@@ -254,15 +255,16 @@
 <span class="sd">           image\_bytes up to 30MB.</span>
 <span class="sd">        -  Image Object Detection - Image in .JPEG, .GIF or .PNG format,</span>
 <span class="sd">           image\_bytes up to 30MB.</span>
-<span class="sd">        -  Text Classification - TextSnippet, content up to 10,000 characters,</span>
+<span class="sd">        -  Text Classification - TextSnippet, content up to 60,000 characters,</span>
 <span class="sd">           UTF-8 encoded.</span>
 <span class="sd">        -  Text Extraction - TextSnippet, content up to 30,000 characters, UTF-8</span>
-<span class="sd">           NFC encoded. \* Translation - TextSnippet, content up to 25,000</span>
-<span class="sd">           characters, UTF-8 encoded.</span>
-<span class="sd">        -  Tables - Row, with column values matching the columns of the model,</span>
-<span class="sd">           up to 5MB.</span>
-<span class="sd">        -  Text Sentiment - TextSnippet, content up 500 characters, UTF-8</span>
+<span class="sd">           NFC encoded.</span>
+<span class="sd">        -  Translation - TextSnippet, content up to 25,000 characters, UTF-8</span>
 <span class="sd">           encoded.</span>
+<span class="sd">        -  Tables - Row, with column values matching the columns of the model,</span>
+<span class="sd">           up to 5MB. Not available for FORECASTING</span>
+
+<span class="sd">        ``prediction_type``.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import automl_v1beta1</span>
@@ -293,12 +295,13 @@
 <span class="sd">                   makes predictions for an image, it will only produce results that</span>
 <span class="sd">                   have at least this confidence score. The default is 0.5.</span>
 
-<span class="sd">                -  For Image Object Detection: ``score_threshold`` - (float) When Model</span>
-<span class="sd">                   detects objects on the image, it will only produce bounding boxes</span>
-<span class="sd">                   which have at least this confidence score. Value in 0 to 1 range,</span>
-<span class="sd">                   default is 0.5. ``max_bounding_box_count`` - (int64) No more than</span>
-<span class="sd">                   this number of bounding boxes will be returned in the response.</span>
-<span class="sd">                   Default is 100, the requested value may be limited by server.</span>
+<span class="sd">                -  For Tables: ``feature_importance`` - (boolean) Whether</span>
+
+<span class="sd">                [feature\_importance][[google.cloud.automl.v1beta1.TablesModelColumnInfo.feature\_importance]</span>
+<span class="sd">                should be populated in the returned</span>
+
+<span class="sd">                [TablesAnnotation(-s)][[google.cloud.automl.v1beta1.TablesAnnotation].</span>
+<span class="sd">                The default is false.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -368,6 +371,7 @@
 <span class="sd">        Available for following ML problems:</span>
 
 <span class="sd">        -  Video Classification</span>
+<span class="sd">        -  Video Object Tracking</span>
 <span class="sd">        -  Text Extraction</span>
 <span class="sd">        -  Tables</span>
 
@@ -433,6 +437,16 @@
 <span class="sd">                   classification type, the quality of it depends on training data, but</span>
 <span class="sd">                   there are no metrics provided to describe that quality. The default</span>
 <span class="sd">                   is &quot;false&quot;.</span>
+
+<span class="sd">                -  For Video Object Tracking: ``score_threshold`` - (float) When Model</span>
+<span class="sd">                   detects objects on video frames, it will only produce bounding boxes</span>
+<span class="sd">                   which have at least this confidence score. Value in 0 to 1 range,</span>
+<span class="sd">                   default is 0.5. ``max_bounding_box_count`` - (int64) No more than</span>
+<span class="sd">                   this number of bounding boxes will be returned per frame. Default is</span>
+<span class="sd">                   100, the requested value may be limited by server.</span>
+<span class="sd">                   ``min_bounding_box_size`` - (float) Only bounding boxes with shortest</span>
+<span class="sd">                   edge at least that long as a relative value of video frame size will</span>
+<span class="sd">                   be returned. Value in 0 to 1 range. Default is 0.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>

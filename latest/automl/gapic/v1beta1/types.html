@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud AutoML API Client &#8212; google-cloud e65044c documentation</title>
+    <title>Types for Cloud AutoML API Client &#8212; google-cloud 18d92f8 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -74,6 +74,12 @@ Video Classification predictions.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.AnnotationPayload.video_object_tracking">
+<code class="descname">video_object_tracking</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.AnnotationPayload.video_object_tracking" title="Permalink to this definition">#</a></dt>
+<dd><p>Annotation details for video object tracking.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.automl_v1beta1.types.AnnotationPayload.text_extraction">
 <code class="descname">text_extraction</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.AnnotationPayload.text_extraction" title="Permalink to this definition">#</a></dt>
 <dd><p>Annotation details for text extraction.</p>
@@ -103,12 +109,12 @@ model in use.</p>
 <dl class="attribute">
 <dt id="google.cloud.automl_v1beta1.types.AnnotationPayload.display_name">
 <code class="descname">display_name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.AnnotationPayload.display_name" title="Permalink to this definition">#</a></dt>
-<dd><p>Output only. The value of [AnnotationSpec.display_name][googl
-e.cloud.automl.v1beta1.AnnotationSpec.display_name] when the
-model was trained. Because this field returns a value at model
-training time, for different models trained using the same
-dataset, the returned value could be different as model owner
-could update the display_name between any two model training.</p>
+<dd><p>Output only. The value of [display_name][google.cloud.automl.
+v1beta1.AnnotationSpec.display_name] when the model was
+trained. Because this field returns a value at model training
+time, for different models trained using the same dataset, the
+returned value could be different as model owner could update
+the <code class="docutils literal notranslate"><span class="pre">display_name</span></code> between any two model training.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -165,12 +171,18 @@ could update the display_name between any two model training.</p>
 <dd><p>Field google.cloud.automl.v1beta1.AnnotationPayload.video_classification</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">video_object_tracking</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.AnnotationPayload.video_object_tracking</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.AnnotationSpec">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">AnnotationSpec</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.AnnotationSpec" title="Permalink to this definition">#</a></dt>
-<dd><p>A definition of an annotation.</p>
+<dd><p>A definition of an annotation spec.</p>
 <dl class="attribute">
 <dt id="google.cloud.automl_v1beta1.types.AnnotationSpec.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.AnnotationSpec.name" title="Permalink to this definition">#</a></dt>
@@ -183,9 +195,9 @@ _id}/annotationSpecs/{annotation_spec_id}’</p>
 <dt id="google.cloud.automl_v1beta1.types.AnnotationSpec.display_name">
 <code class="descname">display_name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.AnnotationSpec.display_name" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The name of the annotation spec to show in the
-interface. The name can be up to 32 characters long and can
-consist only of ASCII Latin letters A-Z and a-z, underscores
-(_), and ASCII digits 0-9.</p>
+interface. The name can be up to 32 characters long and must
+match the regexp <code class="docutils literal notranslate"><span class="pre">[a-zA-Z0-9_]+</span></code>. (_), and ASCII digits
+0-9.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -262,51 +274,108 @@ prediction. As input source the
 expected, unless specified otherwise.</p>
 <p>The formats are represented in EBNF with commas being literal and with
 non-terminal symbols defined near the end of this comment. The formats
-are:</p>
+are: * For Video Classification: CSV file(s) with each line in format:
+GCS_FILE_PATH,TIME_SEGMENT_START,TIME_SEGMENT_END GCS_FILE_PATH
+leads to video of up to 50GB in size and up to 3h duration. Supported
+extensions: .MOV, .MPEG4, .MP4, .AVI. TIME_SEGMENT_START and
+TIME_SEGMENT_END must be within the length of the video, and end has
+to be after the start. Three sample rows: gs://folder/video1.mp4,10,40
+gs://folder/video1.mp4,20,60 gs://folder/vid2.mov,0,inf</p>
 <ul class="simple">
-<li>For Video Classification: CSV file(s) with each line in format:
+<li>For Video Object Tracking: CSV file(s) with each line in format:
 GCS_FILE_PATH,TIME_SEGMENT_START,TIME_SEGMENT_END
 GCS_FILE_PATH leads to video of up to 50GB in size and up to 3h
 duration. Supported extensions: .MOV, .MPEG4, .MP4, .AVI.
 TIME_SEGMENT_START and TIME_SEGMENT_END must be within the length
 of the video, and end has to be after the start. Three sample rows:
-gs://folder/video1.mp4,10,40 gs://folder/video1.mp4,20,60
+gs://folder/video1.mp4,10,240 gs://folder/video1.mp4,300,360
 gs://folder/vid2.mov,0,inf</li>
 <li>For Text Extraction .JSONL (i.e. JSON Lines) file(s) which either
 provide text in-line or as documents (for a single BatchPredict call
 only one of the these formats may be used). The in-line .JSONL
 file(s) contain per line a proto that wraps a temporary user-assigned
-TextSnippet ID (string up to 2000 characters long) called “id”
-followed by a TextSnippet proto (in json representation). Any given
-text snippet content must have 30,000 characters or less, and also be
-UTF-8 NFC encoded (ASCII already is). The IDs provided should be
-unique. The document .JSONL file(s) contain, per line, a proto that
-wraps a Document proto with input_config set. Only PDF documents are
-supported now, and each document must be up to 2MB large. Any given
-.JSONL file must be 100MB or smaller, and no more than 20 files may
-be given.</li>
+TextSnippet ID (string up to 2000 characters long) called “id”, a
+TextSnippet proto (in json representation) and zero or more
+TextFeature protos. Any given text snippet content must have 30,000
+characters or less, and also be UTF-8 NFC encoded (ASCII already is).
+The IDs provided should be unique. The document .JSONL file(s)
+contain, per line, a proto that wraps a Document proto with
+input_config set. Only PDF documents are supported now, and each
+document must be up to 2MB large. Any given .JSONL file must be 100MB
+or smaller, and no more than 20 files may be given.</li>
 <li>For Tables: Either
 [gcs_source][google.cloud.automl.v1beta1.InputConfig.gcs_source] or</li>
 </ul>
 <p>[bigquery_source][google.cloud.automl.v1beta1.InputConfig.bigquery_source].
-For gcs_source: CSV file(s), where first file must have a header
-containing column names, other files may have such header line too, and
-all other lines contain values for the header columns. The column names
-must be exactly same (order may differ) as the model’s</p>
-<p>[input_feature_column_specs’][google.cloud.automl.v1beta1.TablesModelMetadata.input_feature_column_specs]
-[display_names][google.cloud.automl.v1beta1.display_name], with values
-compatible with these column specs data types. Prediction on all the
-rows, i.e. the CSV lines, will be attempted. Each line must have
-1,000,000 or fewer characters. First three sample rows of a CSV file:
-“First Name”,”Last Name”,”Dob”,”Addresses”</p>
+GCS case: CSV file(s), each by itself 10GB or smaller and total size
+must be 100GB or smaller, where first file must have a header containing
+column names. If the first row of a subsequent file is the same as the
+header, then it is also treated as a header. All other rows contain
+values for the corresponding columns. For all CLASSIFICATION and
+REGRESSION</p>
+<p>[prediction_type-s][google.cloud.automl.v1beta1.TablesModelMetadata.prediction_type]:
+The column names must contain the model’s</p>
+<p>[input_feature_column_specs’][google.cloud.automl.v1beta1.TablesModelMetadata.input_feature_column_specs]</p>
+<p>[display_name-s][google.cloud.automl.v1beta1.ColumnSpec.display_name]
+(order doesn’t matter). The columns corresponding to the model’s input
+feature column specs must contain values compatible with the column
+spec’s data types. Prediction on all the rows, i.e. the CSV lines, will
+be attempted. First three sample rows of a CSV file: “First Name”,”Last
+Name”,”Dob”,”Addresses”</p>
 <p>“John”,”Doe”,”1968-01-22”,”[{“status”:”current”,”address”:”123_First_Avenue”,”city”:”Seattle”,”state”:”WA”,”zip”:”11111”,”numberOfYears”:”1”},{“status”:”previous”,”address”:”456_Main_Street”,”city”:”Portland”,”state”:”OR”,”zip”:”22222”,”numberOfYears”:”5”}]”</p>
 <p>“Jane”,”Doe”,”1980-10-16”,”[{“status”:”current”,”address”:”789_Any_Avenue”,”city”:”Albany”,”state”:”NY”,”zip”:”33333”,”numberOfYears”:”2”},{“status”:”previous”,”address”:”321_Main_Street”,”city”:”Hoboken”,”state”:”NJ”,”zip”:”44444”,”numberOfYears”:”3”}]}
-For bigquery_source: An URI of a BigQuery table. The table’s columns
-must be exactly same (order may differ) as all model’s</p>
-<p>[input_feature_column_specs’][google.cloud.automl.v1beta1.TablesModelMetadata.input_feature_column_specs]
-[display_names][google.cloud.automl.v1beta1.display_name], with data
-compatible with these colum specs data types. Prediction on all the rows
-of the table will be attempted.</p>
+For FORECASTING</p>
+<p>[prediction_type][google.cloud.automl.v1beta1.TablesModelMetadata.prediction_type]:
+The column names must contain the union of the model’s</p>
+<p>[input_feature_column_specs’][google.cloud.automl.v1beta1.TablesModelMetadata.input_feature_column_specs]</p>
+<p>[display_name-s][google.cloud.automl.v1beta1.ColumnSpec.display_name]
+and</p>
+<p>[target_column_specs’][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec]</p>
+<p>[display_name][google.cloud.automl.v1beta1.ColumnSpec.display_name]
+(order doesn’t matter), with values compatible with these column specs
+data types, except as specified below. The input rows must contain not
+only the to-be-predicted rows but also the historical data rows, even if
+they would be identical as the ones on which the model has been trained.
+The historical rows must have non-NULL target column values. The
+to-be-predicted rows must have NULL values in the target column and all
+columns having</p>
+<p>[TIME_SERIES_AVAILABLE_PAST_ONLY][google.cloud.automl.v1beta1.ColumnSpec.ForecastingMetadata.ColumnType.KEY]
+type, regardless if these columns are
+[nullable][google.cloud.automl.v1beta1.DataType.nullable]. Prediction
+only on the to-be-predicted rows will be attempted. First four sample
+rows of a CSV file:</p>
+<p>“Year”,”City”,”OlympicsThatYear”,”Population”,”WaterUsedGigaGallons”
+“2000”,”NYC”,”true”,”8008278”,”452.7”
+“2001”,”NYC”,”false”,”8024963”,”432.2” “2002”,”NYC”,”true”,”“,””
+BigQuery case: An URI of a BigQuery table. The user data size of the
+BigQuery table must be 100GB or smaller. For all CLASSIFICATION and
+REGRESSION</p>
+<p>[prediction_type-s][google.cloud.automl.v1beta1.TablesModelMetadata.prediction_type]:
+The column names must contain the model’s</p>
+<p>[input_feature_column_specs’][google.cloud.automl.v1beta1.TablesModelMetadata.input_feature_column_specs]</p>
+<p>[display_name-s][google.cloud.automl.v1beta1.ColumnSpec.display_name]
+(order doesn’t matter). The columns corresponding to the model’s input
+feature column specs must contain values compatible with the column
+spec’s data types. Prediction on all the rows of the table will be
+attempted. For FORECASTING</p>
+<p>[prediction_type][google.cloud.automl.v1beta1.TablesModelMetadata.prediction_type]:
+The column names must contain the union of the model’s</p>
+<p>[input_feature_column_specs’][google.cloud.automl.v1beta1.TablesModelMetadata.input_feature_column_specs]</p>
+<p>[display_name-s][google.cloud.automl.v1beta1.ColumnSpec.display_name]
+and</p>
+<p>[target_column_specs’][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec]</p>
+<p>[display_name][google.cloud.automl.v1beta1.ColumnSpec.display_name]
+(order doesn’t matter), with values compatible with these column specs
+data types, except as specified below. The table’s rows must contain not
+only the to-be-predicted rows but also the historical data rows, even if
+they would be identical as the ones on which the model has been trained.
+The historical rows must have non-NULL target column values. The
+to-be-predicted rows must have NULL values in the target column and all
+columns having</p>
+<p>[TIME_SERIES_AVAILABLE_PAST_ONLY][google.cloud.automl.v1beta1.ColumnSpec.ForecastingMetadata.ColumnType.KEY]
+type, regardless if these columns are
+[nullable][google.cloud.automl.v1beta1.DataType.nullable]. Prediction
+only on the to-be-predicted rows will be attempted.</p>
 <p>Definitions: GCS_FILE_PATH = A path to file on GCS, e.g.
 “gs://folder/video.avi”. TIME_SEGMENT_START = TIME_OFFSET Expresses a
 beginning, inclusive, of a time segment within an example that has a
@@ -375,7 +444,7 @@ predict’s output.</p>
 <dt id="google.cloud.automl_v1beta1.types.BatchPredictOperationMetadata.BatchPredictOutputInfo">
 <em class="property">class </em><code class="descname">BatchPredictOutputInfo</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.BatchPredictOperationMetadata.BatchPredictOutputInfo" title="Permalink to this definition">#</a></dt>
 <dd><p>Further describes this batch predict’s output. Supplements</p>
-<p>[BatchPredictionOutputConfig][google.cloud.automl.v1beta1.BatchPredictionOutputConfig].</p>
+<p>[BatchPredictOutputConfig][google.cloud.automl.v1beta1.BatchPredictOutputConfig].</p>
 <dl class="attribute">
 <dt id="google.cloud.automl_v1beta1.types.BatchPredictOperationMetadata.BatchPredictOutputInfo.output_location">
 <code class="descname">output_location</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.BatchPredictOperationMetadata.BatchPredictOutputInfo.output_location" title="Permalink to this definition">#</a></dt>
@@ -434,25 +503,21 @@ output is written.</p>
 must be set unless specified otherwise for a domain. If gcs_destination
 is set then in the given directory a new directory will be created. Its
 name will be “prediction–”, where timestamp is in
-YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format. The contents of it depend on
-the ML problem the predictions are made for.</p>
-<ul>
-<li><p class="first">For Video Classification: In the created directory a
-video_classification.csv file, and a .JSON file per each video
-classification requested in the input (i.e. each line in given
-CSV(s)), will be created.</p>
+YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format. The contents of it depends on
+the ML problem the predictions are made for. * For Video
+Classification: In the created directory a video_classification.csv
+file, and a .JSON file per each video classification requested in the
+input (i.e. each line in given CSV(s)), will be created.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">The</span> <span class="nb">format</span> <span class="n">of</span> <span class="n">video_classification</span><span class="o">.</span><span class="n">csv</span> <span class="ow">is</span><span class="p">:</span>
 </pre></div>
 </div>
-</li>
-</ul>
 <p>GCS_FILE_PATH,TIME_SEGMENT_START,TIME_SEGMENT_END,JSON_FILE_NAME,STATUS
 where: GCS_FILE_PATH,TIME_SEGMENT_START,TIME_SEGMENT_END = matches
 1 to 1 the prediction input lines (i.e. video_classification.csv has
 precisely the same number of lines as the prediction input had.)
 JSON_FILE_NAME = Name of .JSON file in the output directory, which
 contains prediction responses for the video time segment. STATUS = “OK”
-if prediction completed successfully, or an error code and,or message
+if prediction completed successfully, or an error code with message
 otherwise. If STATUS is not “OK” then the .JSON file for that line may
 not exist or be empty.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Each .JSON file, assuming STATUS is &quot;OK&quot;, will contain a list of
@@ -463,6 +528,34 @@ video_classification field set, and will be sorted by
 video_classification.type field (note that the returned types are
 governed by `classifaction_types` parameter in
 [PredictService.BatchPredictRequest.params][]).
+</pre></div>
+</div>
+<ul>
+<li><p class="first">For Video Object Tracking: In the created directory a
+video_object_tracking.csv file will be created, and multiple files
+video_object_trackinng_1.json,
+video_object_trackinng_2.json,…,
+video_object_trackinng_N.json, where N is the number of requests
+in the input (i.e. the number of lines in given CSV(s)).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">The</span> <span class="nb">format</span> <span class="n">of</span> <span class="n">video_object_tracking</span><span class="o">.</span><span class="n">csv</span> <span class="ow">is</span><span class="p">:</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>GCS_FILE_PATH,TIME_SEGMENT_START,TIME_SEGMENT_END,JSON_FILE_NAME,STATUS
+where: GCS_FILE_PATH,TIME_SEGMENT_START,TIME_SEGMENT_END = matches
+1 to 1 the prediction input lines (i.e. video_object_tracking.csv has
+precisely the same number of lines as the prediction input had.)
+JSON_FILE_NAME = Name of .JSON file in the output directory, which
+contains prediction responses for the video time segment. STATUS = “OK”
+if prediction completed successfully, or an error code with message
+otherwise. If STATUS is not “OK” then the .JSON file for that line may
+not exist or be empty.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Each</span> <span class="o">.</span><span class="n">JSON</span> <span class="n">file</span><span class="p">,</span> <span class="n">assuming</span> <span class="n">STATUS</span> <span class="ow">is</span> <span class="s2">&quot;OK&quot;</span><span class="p">,</span> <span class="n">will</span> <span class="n">contain</span> <span class="n">a</span> <span class="nb">list</span> <span class="n">of</span>
+<span class="n">AnnotationPayload</span> <span class="n">protos</span> <span class="ow">in</span> <span class="n">JSON</span> <span class="nb">format</span><span class="p">,</span> <span class="n">which</span> <span class="n">are</span> <span class="n">the</span> <span class="n">predictions</span>
+<span class="k">for</span> <span class="n">each</span> <span class="n">frame</span> <span class="n">of</span> <span class="n">the</span> <span class="n">video</span> <span class="n">time</span> <span class="n">segment</span> <span class="n">the</span> <span class="n">file</span> <span class="ow">is</span> <span class="n">assigned</span> <span class="n">to</span> <span class="ow">in</span>
+<span class="n">video_object_tracking</span><span class="o">.</span><span class="n">csv</span><span class="o">.</span> <span class="n">All</span> <span class="n">AnnotationPayload</span> <span class="n">protos</span> <span class="n">will</span> <span class="n">have</span>
+<span class="n">video_object_tracking</span> <span class="n">field</span> <span class="nb">set</span><span class="o">.</span>
 </pre></div>
 </div>
 <ul class="simple">
@@ -505,11 +598,11 @@ or</p>
 is set (either is allowed). GCS case: In the created directory files
 <code class="docutils literal notranslate"><span class="pre">tables_1.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">tables_2.csv</span></code>,…, <code class="docutils literal notranslate"><span class="pre">tables_N.csv</span></code> will be
 created, where N may be 1, and depends on the total number of the
-successfully predicted rows. For the classification models: Each .csv
-file will contain a header, listing all model’s</p>
-<p>[input_feature_column_specs’][google.cloud.automl.v1beta1.TablesModelMetadata.input_feature_column_specs]</p>
-<p>[display_names][google.cloud.automl.v1beta1.ColumnSpec.display_name]
-followed by M target column names in the format of</p>
+successfully predicted rows. For all CLASSIFICATION</p>
+<p>[prediction_type-s][google.cloud.automl.v1beta1.TablesModelMetadata.prediction_type]:
+Each .csv file will contain a header, listing all columns’</p>
+<p>[display_name-s][google.cloud.automl.v1beta1.ColumnSpec.display_name]
+given on input followed by M target column names in the format of</p>
 <p>“&lt;[target_column_specs][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec]</p>
 <p>[display_name][google.cloud.automl.v1beta1.ColumnSpec.display_name]&gt;__score”
 where M is the number of distinct target values, i.e. number of distinct
@@ -517,14 +610,14 @@ values in the target column of the table used to train the model.
 Subsequent lines will contain the respective values of successfully
 predicted rows, with the last, i.e. the target, columns having the
 corresponding prediction
-[scores][google.cloud.automl.v1beta1.TablesAnnotation.score]. For the
-regression models: Each .csv file will contain a header, listing all
-model’s</p>
-<p>[input_feature_column_specs][google.cloud.automl.v1beta1.TablesModelMetadata.input_feature_column_specs]
-[display_names][google.cloud.automl.v1beta1.display_name] followed by
-the target column with name equal to</p>
-<p>[target_column_specs’][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec]</p>
-<p>[display_name][google.cloud.automl.v1beta1.ColumnSpec.display_name].
+[scores][google.cloud.automl.v1beta1.TablesAnnotation.score]. For
+REGRESSION and FORECASTING</p>
+<p>[prediction_type-s][google.cloud.automl.v1beta1.TablesModelMetadata.prediction_type]:
+Each .csv file will contain a header, listing all columns’
+[display_name-s][google.cloud.automl.v1beta1.display_name] given on
+input followed by the predicted target column with name in the format of</p>
+<p>“predicted_&lt;[target_column_specs][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec]</p>
+<p>[display_name][google.cloud.automl.v1beta1.ColumnSpec.display_name]&gt;”
 Subsequent lines will contain the respective values of successfully
 predicted rows, with the last, i.e. the target, column having the
 predicted target value. If prediction for any rows failed, then an
@@ -543,20 +636,22 @@ will be made BigQuery-dataset-name compatible (e.g. most special
 characters will become underscores), and timestamp will be in
 YYYY_MM_DDThh_mm_ss_sssZ “based on ISO-8601” format. In the dataset
 two tables will be created, <code class="docutils literal notranslate"><span class="pre">predictions</span></code>, and <code class="docutils literal notranslate"><span class="pre">errors</span></code>. The
-<code class="docutils literal notranslate"><span class="pre">predictions</span></code> table’s column names will be the</p>
-<p>[input_feature_column_specs’][google.cloud.automl.v1beta1.TablesModelMetadata.input_feature_column_specs]</p>
-<p>[display_names][google.cloud.automl.v1beta1.ColumnSpec.display_name]
-followed by model’s</p>
-<p>[target_column_specs’][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec]</p>
-<p>[display_name][google.cloud.automl.v1beta1.ColumnSpec.display_name].
+<code class="docutils literal notranslate"><span class="pre">predictions</span></code> table’s column names will be the input columns’</p>
+<p>[display_name-s][google.cloud.automl.v1beta1.ColumnSpec.display_name]
+followed by the target column with name in the format of</p>
+<p>“predicted_&lt;[target_column_specs][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec]</p>
+<p>[display_name][google.cloud.automl.v1beta1.ColumnSpec.display_name]&gt;”
 The input feature columns will contain the respective values of
 successfully predicted rows, with the target column having an ARRAY of</p>
 <p>[AnnotationPayloads][google.cloud.automl.v1beta1.AnnotationPayload],
 represented as STRUCT-s, containing
 [TablesAnnotation][google.cloud.automl.v1beta1.TablesAnnotation]. The
 <code class="docutils literal notranslate"><span class="pre">errors</span></code> table contains rows for which the prediction has failed, it
-has analogous input feature and target columns, but here the target
-column as a value has</p>
+has analogous input columns while the target column name is in the
+format of</p>
+<p>“errors_&lt;[target_column_specs][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec]</p>
+<p>[display_name][google.cloud.automl.v1beta1.ColumnSpec.display_name]&gt;”,
+and as a value has</p>
 <p><code class="docutils literal notranslate"><span class="pre">`google.rpc.Status</span></code> &lt;<a class="reference external" href="https:%20//github.com/googleapis/googleapis/blob/master/google/rpc/status.proto">https:%20//github.com/googleapis/googleapis/blob/master/google/rpc/status.proto</a>&gt;`__
 represented as a STRUCT, and containing only <code class="docutils literal notranslate"><span class="pre">code</span></code> and <code class="docutils literal notranslate"><span class="pre">message</span></code>.</p>
 <dl class="attribute">
@@ -648,7 +743,17 @@ segment of the video that user specified in the    request
 configuration. WARNING: Model evaluation is not done for this
 classification type, the quality of it depends on training
 data, but    there are no metrics provided to describe that
-quality. The default    is “false”.</p>
+quality. The default    is “false”.  -  For Video Object
+Tracking: <code class="docutils literal notranslate"><span class="pre">score_threshold</span></code> - (float) When Model    detects
+objects on video frames, it will only produce bounding boxes
+which have at least this confidence score. Value in 0 to 1
+range,    default is 0.5. <code class="docutils literal notranslate"><span class="pre">max_bounding_box_count</span></code> - (int64)
+No more than    this number of bounding boxes will be returned
+per frame. Default is    100, the requested value may be
+limited by server.    <code class="docutils literal notranslate"><span class="pre">min_bounding_box_size</span></code> - (float) Only
+bounding boxes with shortest    edge at least that long as a
+relative value of video frame size will    be returned. Value
+in 0 to 1 range. Default is 0.</p>
 </dd></dl>
 
 <dl class="class">
@@ -697,7 +802,10 @@ quality. The default    is “false”.</p>
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.BatchPredictResult">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">BatchPredictResult</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.BatchPredictResult" title="Permalink to this definition">#</a></dt>
-<dd><p>Batch predict result.</p>
+<dd><p>Result of the Batch Predict. This message is returned in
+[response][google.longrunning.Operation.response] of the operation
+returned by the
+[PredictionService.BatchPredict][google.cloud.automl.v1beta1.PredictionService.BatchPredict].</p>
 </dd></dl>
 
 <dl class="class">
@@ -984,9 +1092,11 @@ curve metric. Micro-averaged for the overall evaluation.</p>
 <code class="descname">confidence_metrics_entry</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.confidence_metrics_entry" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. Metrics for each confidence_threshold in
 0.00,0.05,0.10,…,0.95,0.96,0.97,0.98,0.99 and
-position_threshold = INT32_MAX_VALUE. Precision-recall
-curve is derived from them. The above metrics may also be
-supplied for additional values of position_threshold.</p>
+position_threshold = INT32_MAX_VALUE. ROC and precision-
+recall curves, and other aggregated metrics are derived from
+them. The confidence metrics entries may also be supplied for
+additional values of position_threshold, but from these no
+aggregated metrics are computed.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1208,7 +1318,9 @@ label.</p>
 <dt id="google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfusionMatrix.annotation_spec_id">
 <code class="descname">annotation_spec_id</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfusionMatrix.annotation_spec_id" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. IDs of the annotation specs used in the confusion
-matrix.</p>
+matrix. For Tables CLASSIFICATION  [prediction_type][google.c
+loud.automl.v1beta1.TablesModelMetadata.prediction_type] only
+list of [annotation_spec_display_name-s][] is populated.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1230,8 +1342,10 @@ truth of the <code class="docutils literal notranslate"><span class="pre">annota
 <code class="descname">example_count</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfusionMatrix.Row.example_count" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. Value of the specific cell in the confusion
 matrix. The number of values each row has (i.e. the length of
-the row) is equal to the length of the annotation_spec_id
-field.</p>
+the row) is equal to the length of the <code class="docutils literal notranslate"><span class="pre">annotation_spec_id</span></code>
+field or, if that one is not populated, length of the [display
+_name][google.cloud.automl.v1beta1.ClassificationEvaluationMe
+trics.ConfusionMatrix.display_name] field.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1575,6 +1689,12 @@ created.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.DataStats.valid_value_count">
+<code class="descname">valid_value_count</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DataStats.valid_value_count" title="Permalink to this definition">#</a></dt>
+<dd><p>The number of values that are valid.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">array_stats</code></dt>
 <dd><p>Field google.cloud.automl.v1beta1.DataStats.array_stats</p>
@@ -1620,6 +1740,12 @@ created.</p>
 <dt>
 <code class="descname">timestamp_stats</code></dt>
 <dd><p>Field google.cloud.automl.v1beta1.DataStats.timestamp_stats</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">valid_value_count</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.DataStats.valid_value_count</p>
 </dd></dl>
 
 </dd></dl>
@@ -1680,7 +1806,8 @@ for this type.</p>
 <dl class="attribute">
 <dt id="google.cloud.automl_v1beta1.types.DataType.nullable">
 <code class="descname">nullable</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DataType.nullable" title="Permalink to this definition">#</a></dt>
-<dd><p>If true, this DataType can also be <code class="docutils literal notranslate"><span class="pre">null</span></code>.</p>
+<dd><p>If true, this DataType can also be <code class="docutils literal notranslate"><span class="pre">NULL</span></code>. In .CSV files
+<code class="docutils literal notranslate"><span class="pre">NULL</span></code> value is expressed as an empty string.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1755,6 +1882,12 @@ type.</p>
 <dt id="google.cloud.automl_v1beta1.types.Dataset.video_classification_dataset_metadata">
 <code class="descname">video_classification_dataset_metadata</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Dataset.video_classification_dataset_metadata" title="Permalink to this definition">#</a></dt>
 <dd><p>Metadata for a dataset used for video classification.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Dataset.video_object_tracking_dataset_metadata">
+<code class="descname">video_object_tracking_dataset_metadata</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Dataset.video_object_tracking_dataset_metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Metadata for a dataset used for video object tracking.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1899,6 +2032,12 @@ set, a blind “overwrite” update happens.</p>
 <dt>
 <code class="descname">video_classification_dataset_metadata</code></dt>
 <dd><p>Field google.cloud.automl.v1beta1.Dataset.video_classification_dataset_metadata</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">video_object_tracking_dataset_metadata</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Dataset.video_object_tracking_dataset_metadata</p>
 </dd></dl>
 
 </dd></dl>
@@ -2296,8 +2435,8 @@ where will be made BigQuery-dataset-name compatible (e.g. most special
 characters will become underscores), and timestamp will be in
 YYYY_MM_DDThh_mm_ss_sssZ “based on ISO-8601” format. In the dataset
 an <code class="docutils literal notranslate"><span class="pre">evaluated_examples</span></code> table will be created. It will have all the
-same columns as the [primary</p>
-<p>table][google.cloud.automl.v1beta1.TablesDatasetMetadata.primary_table_spec_id]
+same columns as the</p>
+<p>[primary_table][google.cloud.automl.v1beta1.TablesDatasetMetadata.primary_table_spec_id]
 of the [dataset][google.cloud.automl.v1beta1.Model.dataset_id] from
 which the model was created, as they were at the moment of model’s
 evaluation (this includes the target column with its ground truth),
@@ -3091,6 +3230,36 @@ is deployed.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ImageObjectDetectionModelMetadata.stop_reason">
+<code class="descname">stop_reason</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ImageObjectDetectionModelMetadata.stop_reason" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The reason that this create model operation
+stopped, e.g. <code class="docutils literal notranslate"><span class="pre">BUDGET_REACHED</span></code>, <code class="docutils literal notranslate"><span class="pre">MODEL_CONVERGED</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ImageObjectDetectionModelMetadata.train_budget_milli_node_hours">
+<code class="descname">train_budget_milli_node_hours</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ImageObjectDetectionModelMetadata.train_budget_milli_node_hours" title="Permalink to this definition">#</a></dt>
+<dd><p>The train budget of creating this model, expressed in milli
+node hours i.e. 1,000 value in this field means 1 node hour.
+The actual <code class="docutils literal notranslate"><span class="pre">train_cost</span></code> will be equal or less than this
+value. If further model training ceases to provide any
+improvements, it will stop without using full budget and the
+stop_reason will be <code class="docutils literal notranslate"><span class="pre">MODEL_CONVERGED</span></code>. Note, node_hour =
+actual_hour * number_of_nodes_invovled. The train budget
+must be between 20,000 and 2,000,000 milli node hours,
+inclusive. The default value is 216, 000 which represents one
+day in wall time.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ImageObjectDetectionModelMetadata.train_cost_milli_node_hours">
+<code class="descname">train_cost_milli_node_hours</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ImageObjectDetectionModelMetadata.train_cost_milli_node_hours" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The actual train cost of creating this model,
+expressed in milli node hours, i.e. 1,000 value in this field
+means 1 node hour. Guaranteed to not exceed the train budget.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">model_type</code></dt>
 <dd><p>Field google.cloud.automl.v1beta1.ImageObjectDetectionModelMetadata.model_type</p>
@@ -3106,6 +3275,24 @@ is deployed.</p>
 <dt>
 <code class="descname">node_qps</code></dt>
 <dd><p>Field google.cloud.automl.v1beta1.ImageObjectDetectionModelMetadata.node_qps</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">stop_reason</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ImageObjectDetectionModelMetadata.stop_reason</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">train_budget_milli_node_hours</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ImageObjectDetectionModelMetadata.train_budget_milli_node_hours</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">train_cost_milli_node_hours</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ImageObjectDetectionModelMetadata.train_cost_milli_node_hours</p>
 </dd></dl>
 
 </dd></dl>
@@ -3156,84 +3343,155 @@ semantics, if any.</p>
 <p>The format of input depends on dataset_metadata the Dataset into which
 the import is happening has. As input source the
 [gcs_source][google.cloud.automl.v1beta1.InputConfig.gcs_source] is
-expected, unless specified otherwise. If a file with identical content
-(even if it had different GCS_FILE_PATH) is mentioned multiple times ,
-then its label, bounding boxes etc. are appended. The same file should
-be always provided with the same ML_USE and GCS_FILE_PATH, if it is
-not then these values are nondeterministically selected from the given
-ones.</p>
+expected, unless specified otherwise. Additionally any input .CSV file
+by itself must be 100MB or smaller, unless specified otherwise. If an
+“example” file (i.e. image, video etc.) with identical content (even if
+it had different GCS_FILE_PATH) is mentioned multiple times, then its
+label, bounding boxes etc. are appended. The same file should be always
+provided with the same ML_USE and GCS_FILE_PATH, if it is not then
+these values are nondeterministically selected from the given ones.</p>
 <p>The formats are represented in EBNF with commas being literal and with
 non-terminal symbols defined near the end of this comment. The formats
 are:</p>
 <ul class="simple">
+<li>For Image Classification: CSV file(s) with each line in format:
+ML_USE,GCS_FILE_PATH,LABEL,LABEL,… GCS_FILE_PATH leads to
+image of up to 30MB in size. Supported extensions: .JPEG, .GIF, .PNG,
+.WEBP, .BMP, .TIFF, .ICO For MULTICLASS classification type, at most
+one LABEL is allowed per image. If an image has not yet been labeled,
+then it should be mentioned just once with no LABEL. Some sample
+rows: TRAIN,gs://folder/image1.jpg,daisy
+TEST,gs://folder/image2.jpg,dandelion,tulip,rose
+UNASSIGNED,gs://folder/image3.jpg,daisy
+UNASSIGNED,gs://folder/image4.jpg</li>
 <li>For Image Object Detection: CSV file(s) with each line in format:
-ML_USE,GCS_FILE_PATH,LABEL,BOUNDING_BOX GCS_FILE_PATH leads to
-image of up to 30MB in size. Supported extensions: .JPEG, .GIF, .PNG.
-Each image is assumed to be exhaustively labeled. The minimum allowed
-BOUNDING_BOX edge length is 0.01, and no more than 500
-BOUNDING_BOX-es per image are allowed. Three sample rows:
+ML_USE,GCS_FILE_PATH,(LABEL,BOUNDING_BOX | ,,,,,,,)
+GCS_FILE_PATH leads to image of up to 30MB in size. Supported
+extensions: .JPEG, .GIF, .PNG. Each image is assumed to be
+exhaustively labeled. The minimum allowed BOUNDING_BOX edge length
+is 0.01, and no more than 500 BOUNDING_BOX-es per image are allowed
+(one BOUNDING_BOX is defined per line). If an image has not yet been
+labeled, then it should be mentioned just once with no LABEL and the
+“,,,,,,,” in place of the BOUNDING_BOX. Four sample rows:
 TRAIN,gs://folder/image1.png,car,0.1,0.1,,,0.3,0.3,,
 TRAIN,gs://folder/image1.png,bike,.7,.6,,,.8,.9,,
-TEST,gs://folder/im2.png,car,0.1,0.1,0.2,0.1,0.2,0.3,0.1,0.3</li>
+UNASSIGNED,gs://folder/im2.png,car,0.1,0.1,0.2,0.1,0.2,0.3,0.1,0.3
+TEST,gs://folder/im3.png,,,,,,,,,</li>
 <li>For Video Classification: CSV file(s) with each line in format:
 ML_USE,GCS_FILE_PATH where ML_USE VALIDATE value should not be
 used. The GCS_FILE_PATH should lead to another .csv file which
 describes examples that have given ML_USE, using the following row
-format: GCS_FILE_PATH,LABEL,TIME_SEGMENT_START,TIME_SEGMENT_END
+format:
+GCS_FILE_PATH,(LABEL,TIME_SEGMENT_START,TIME_SEGMENT_END | ,,)
 Here GCS_FILE_PATH leads to a video of up to 50GB in size and up to
 3h duration. Supported extensions: .MOV, .MPEG4, .MP4, .AVI.
 TIME_SEGMENT_START and TIME_SEGMENT_END must be within the length
 of the video, and end has to be after the start. Any segment of a
 video which has one or more labels on it, is considered a hard
 negative for all other labels. Any segment with no labels on it is
-considered to be unknown. Sample top level CSV file:
+considered to be unknown. If a whole video is unknown, then it shuold
+be mentioned just once with “,,” in place of LABEL,
+TIME_SEGMENT_START,TIME_SEGMENT_END. Sample top level CSV file:
 TRAIN,gs://folder/train_videos.csv TEST,gs://folder/test_videos.csv
-UNASSIGNED,gs://folder/other_videos.csv Three sample rows of a CSV
-file for a particular ML_USE:
-gs://folder/video1.avi,car,120,180.000021
+UNASSIGNED,gs://folder/other_videos.csv Sample rows of a CSV file
+for a particular ML_USE: gs://folder/video1.avi,car,120,180.000021
 gs://folder/video1.avi,bike,150,180.000021
-gs://folder/vid2.avi,car,0,60.5</li>
+gs://folder/vid2.avi,car,0,60.5 gs://folder/vid3.avi,,,</li>
+<li>For Video Object Tracking: CSV file(s) with each line in format:
+ML_USE,GCS_FILE_PATH where ML_USE VALIDATE value should not be
+used. The GCS_FILE_PATH should lead to another .csv file which
+describes examples that have given ML_USE, using one of the
+following row format:
+GCS_FILE_PATH,LABEL,[INSTANCE_ID],TIMESTAMP,BOUNDING_BOX or
+GCS_FILE_PATH,,,,,,,,,, Here GCS_FILE_PATH leads to a video of up
+to 50GB in size and up to 3h duration. Supported extensions: .MOV,
+.MPEG4, .MP4, .AVI. Providing INSTANCE_IDs can help to obtain a
+better model. When a specific labeled entity leaves the video frame,
+and shows up afterwards it is not required, albeit preferable, that
+the same INSTANCE_ID is given to it. TIMESTAMP must be within the
+length of the video, the BOUNDING_BOX is assumed to be drawn on the
+closest video’s frame to the TIMESTAMP. Any mentioned by the
+TIMESTAMP frame is expected to be exhaustively labeled and no more
+than 500 BOUNDING_BOX-es per frame are allowed. If a whole video is
+unknown, then it should be mentioned just once with “,,,,,,,,,,” in
+place of LABEL, [INSTANCE_ID],TIMESTAMP,BOUNDING_BOX. Sample top
+level CSV file: TRAIN,gs://folder/train_videos.csv
+TEST,gs://folder/test_videos.csv
+UNASSIGNED,gs://folder/other_videos.csv Seven sample rows of a CSV
+file for a particular ML_USE:
+gs://folder/video1.avi,car,1,12.10,0.8,0.8,0.9,0.8,0.9,0.9,0.8,0.9
+gs://folder/video1.avi,car,1,12.90,0.4,0.8,0.5,0.8,0.5,0.9,0.4,0.9
+gs://folder/video1.avi,car,2,12.10,.4,.2,.5,.2,.5,.3,.4,.3
+gs://folder/video1.avi,car,2,12.90,.8,.2,,,.9,.3,,
+gs://folder/video1.avi,bike,,12.50,.45,.45,,,.55,.55,,
+gs://folder/video2.avi,car,1,0,.1,.9,,,.9,.1,,
+gs://folder/video2.avi,,,,,,,,,,,</li>
 <li>For Text Extraction: CSV file(s) with each line in format:
 ML_USE,GCS_FILE_PATH GCS_FILE_PATH leads to a .JSONL (i.e. JSON
 Lines) file which either imports text in-line or as documents. The
 in-line .JSONL file contains, per line, a proto that wraps a
 TextSnippet proto (in json representation) followed by one or more
 AnnotationPayload protos (called annotations), which have
-display_name and text_extraction detail populated. Given text is
-expected to be annotated exhaustively, e.g. if you look for animals
-and text contains “dolphin” that is not labeled, then “dolphin” will
-be assumed to not be an animal. Any given text snippet content must
-have 30,000 characters or less, and also be UTF-8 NFC encoded (ASCII
-already is). The document .JSONL file contains, per line, a proto
-that wraps a Document proto with input_config set. Only PDF
-documents are supported now, and each document may be up to 2MB
-large. Currently annotations on documents cannot be specified at
+display_name and text_extraction detail populated. The given text
+is expected to be annotated exhaustively, e.g. if you look for
+animals and text contains “dolphin” that is not labeled, then
+“dolphin” will be assumed to not be an animal. Any given text snippet
+content must have 30,000 characters or less, and also be UTF-8 NFC
+encoded (ASCII already is). The document .JSONL file contains, per
+line, a proto that wraps a Document proto with input_config set.
+Only PDF documents are supported now, and each document may be up to
+2MB large. Currently annotations on documents cannot be specified at
 import. Any given .JSONL file must be 100MB or smaller. Three sample
 CSV rows: TRAIN,gs://folder/file1.jsonl
 VALIDATE,gs://folder/file2.jsonl TEST,gs://folder/file3.jsonl</li>
+<li>For Text Classification: CSV file(s) with each line in format:
+ML_USE,(TEXT_SNIPPET | GCS_FILE_PATH),LABEL,LABEL,…
+TEXT_SNIPPET and GCS_FILE_PATH are distinguished by a pattern. If
+the column content is a valid gcs file path, i.e. prefixed by
+“gs://”, it will be treated as a GCS_FILE_PATH, else if the content
+is enclosed within double quotes (“”), it will be treated as a
+TEXT_SNIPPET. In the GCS_FILE_PATH case, the path must lead to a
+.txt file with UTF-8 encoding, e.g. “gs://folder/content.txt”, and
+the content in it will be extracted as a text snippet. In
+TEXT_SNIPPET case, the column content excluding quotes will be
+treated as to be imported text snippet. In both cases, the text
+snippet/file size must be within 128kB. Maximum 100 unique labels are
+allowed per CSV row. Four sample rows: TRAIN,”They have bad food and
+very rude”,RudeService,BadFood
+TRAIN,gs://folder/content.txt,SlowService TEST,”Typically always bad
+service there.”,RudeService VALIDATE,”Stomach ache to go.”,BadFood</li>
+<li>For Text Sentiment: CSV file(s) with each line in format:
+ML_USE,(TEXT_SNIPPET | GCS_FILE_PATH),SENTIMENT TEXT_SNIPPET
+and GCS_FILE_PATH are distinguished by a pattern. If the column
+content is a valid gcs file path, i.e. prefixed by “gs://”, it will
+be treated as a GCS_FILE_PATH, otherwise it will be treated as a
+TEXT_SNIPPET. In the GCS_FILE_PATH case, the path must lead to a
+.txt file with UTF-8 encoding, e.g. “gs://folder/content.txt”, and
+the content in it will be extracted as a text snippet. In
+TEXT_SNIPPET case, the column content itself will be treated as to
+be imported text snippet. In both cases, the text snippet must be up
+to 500 characters long. Four sample rows: TRAIN,”&#64;freewrytin God is
+way too good for Claritin”,2 TRAIN,”I need Claritin so bad”,3
+TEST,”Thank god for Claritin.”,4 VALIDATE,gs://folder/content.txt,2</li>
 <li>For Tables: Either
 [gcs_source][google.cloud.automl.v1beta1.InputConfig.gcs_source] or</li>
 </ul>
 <p>[bigquery_source][google.cloud.automl.v1beta1.InputConfig.bigquery_source]
 can be used. All inputs will be concatenated into a single</p>
 <p>[primary_table][google.cloud.automl.v1beta1.TablesDatasetMetadata.primary_table_name]
-For gcs_source: CSV file(s), where first file must have a header
-containing unique column names, other files may have such header line
-too, and all other lines contain values for the header columns. Each
-line must have 1,000,000 or fewer characters. First three sample rows of
-a CSV file: “Id”,”First Name”,”Last Name”,”Dob”,”Addresses”</p>
+For gcs_source: CSV file(s), where the first row of the first file is
+the header, containing unique column names. If the first row of a
+subsequent file is the same as the header, then it is also treated as a
+header. All other rows contain values for the corresponding columns.
+Each .CSV file by itself must be 10GB or smaller, and their total size
+must be 100GB or smaller. First three sample rows of a CSV file:
+“Id”,”First Name”,”Last Name”,”Dob”,”Addresses”</p>
 <p>“1”,”John”,”Doe”,”1968-01-22”,”[{“status”:”current”,”address”:”123_First_Avenue”,”city”:”Seattle”,”state”:”WA”,”zip”:”11111”,”numberOfYears”:”1”},{“status”:”previous”,”address”:”456_Main_Street”,”city”:”Portland”,”state”:”OR”,”zip”:”22222”,”numberOfYears”:”5”}]”</p>
 <p>“2”,”Jane”,”Doe”,”1980-10-16”,”[{“status”:”current”,”address”:”789_Any_Avenue”,”city”:”Albany”,”state”:”NY”,”zip”:”33333”,”numberOfYears”:”2”},{“status”:”previous”,”address”:”321_Main_Street”,”city”:”Hoboken”,”state”:”NJ”,”zip”:”44444”,”numberOfYears”:”3”}]}
-For bigquery_source: An URI of a BigQuery table. An imported table must
-have between 2 and 1,000 columns, inclusive, and between 1,000 and
-10,000,000 rows, inclusive.</p>
-<ul class="simple">
-<li>For Text Sentiment: CSV file(s) with each line in format:
-ML_USE,TEXT_SNIPPET,SENTIMENT TEXT_SNIPPET must have up to 500
-characters. Three sample rows: TRAIN,”&#64;freewrytin God is way too good
-for Claritin”,2 TRAIN,”I need Claritin so bad”,3 TEST,”Thank god for
-Claritin.”,4</li>
-</ul>
+For bigquery_source: An URI of a BigQuery table. The user data size of
+the BigQuery table must be 100GB or smaller. An imported table must have
+between 2 and 1,000 columns, inclusive, and between 1000 and 100,000,000
+rows, inclusive. There are at most 5 import data running in parallel.</p>
 <p>Definitions: ML_USE = “TRAIN” | “VALIDATE” | “TEST” | “UNASSIGNED”
 Describes how the given example (file) should be used for model
 training. “UNASSIGNED” can be used when user has no preference.
@@ -3261,8 +3519,8 @@ segment within an example that has a time dimension (e.g. video).
 TIME_OFFSET = A number of seconds as measured from the start of an
 example (e.g. video). Fractions are allowed, up to a microsecond
 precision. “inf” is allowed, and it means the end of the example.
-TEXT_SNIPPET = A content of a text snippet, UTF-8 encoded. SENTIMENT =
-An integer between 0 and
+TEXT_SNIPPET = A content of a text snippet, UTF-8 encoded, enclosed
+within double quotes (“”). SENTIMENT = An integer between 0 and
 Dataset.text_sentiment_dataset_metadata.sentiment_max (inclusive).
 Describes the ordinal of the sentiment - higher value means a more
 positive sentiment. All the values are completely relative, i.e. neither
@@ -3284,13 +3542,15 @@ Operation.metadata.partial_failures.</p>
 <dl class="attribute">
 <dt id="google.cloud.automl_v1beta1.types.InputConfig.source">
 <code class="descname">source</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.InputConfig.source" title="Permalink to this definition">#</a></dt>
-<dd><p>Required. The source of the input.</p>
+<dd><p>The source of the input.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.automl_v1beta1.types.InputConfig.gcs_source">
 <code class="descname">gcs_source</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.InputConfig.gcs_source" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Cloud Storage location for the input content.</p>
+<dd><p>The Google Cloud Storage location for the input content. In
+ImportData, the gcs_source points to a csv with structure
+described in the comment.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3960,6 +4220,12 @@ train the model.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Model.video_object_tracking_model_metadata">
+<code class="descname">video_object_tracking_model_metadata</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Model.video_object_tracking_model_metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Metadata for video object tracking models.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.automl_v1beta1.types.Model.text_extraction_model_metadata">
 <code class="descname">text_extraction_model_metadata</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Model.text_extraction_model_metadata" title="Permalink to this definition">#</a></dt>
 <dd><p>Metadata for text extraction models.</p>
@@ -4004,7 +4270,8 @@ and location.</p>
 <dl class="attribute">
 <dt id="google.cloud.automl_v1beta1.types.Model.create_time">
 <code class="descname">create_time</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Model.create_time" title="Permalink to this definition">#</a></dt>
-<dd><p>Output only. Timestamp when this model was created.</p>
+<dd><p>Output only. Timestamp when the model training finished and
+can be used for prediction.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -4104,6 +4371,12 @@ serve prediction requests after it gets deployed.</p>
 <dd><p>Field google.cloud.automl.v1beta1.Model.video_classification_model_metadata</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">video_object_tracking_model_metadata</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Model.video_object_tracking_model_metadata</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -4121,8 +4394,7 @@ serve prediction requests after it gets deployed.</p>
 <code class="descname">classification_evaluation_metrics</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ModelEvaluation.classification_evaluation_metrics" title="Permalink to this definition">#</a></dt>
 <dd><p>Model evaluation metrics for image, text, video and tables
 classification. Tables problem is considered a classification
-when the target column has either CATEGORY or ARRAY(CATEGORY)
-DataType.</p>
+when the target column is CATEGORY DataType.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -4143,6 +4415,12 @@ DataType.</p>
 <dt id="google.cloud.automl_v1beta1.types.ModelEvaluation.image_object_detection_evaluation_metrics">
 <code class="descname">image_object_detection_evaluation_metrics</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ModelEvaluation.image_object_detection_evaluation_metrics" title="Permalink to this definition">#</a></dt>
 <dd><p>Model evaluation metrics for image object detection.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.ModelEvaluation.video_object_tracking_evaluation_metrics">
+<code class="descname">video_object_tracking_evaluation_metrics</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ModelEvaluation.video_object_tracking_evaluation_metrics" title="Permalink to this definition">#</a></dt>
+<dd><p>Model evaluation metrics for video object tracking.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -4170,24 +4448,28 @@ d}/modelEvaluations/{model_evaluation_id}`</cite></p>
 <code class="descname">annotation_spec_id</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ModelEvaluation.annotation_spec_id" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The ID of the annotation spec that the model
 evaluation applies to. The The ID is empty for the overall
-model evaluation. For Tables classification these are the
-distinct values of the target column at the moment of the
-evaluation; for this problem annotation specs in the dataset
-do not exist. NOTE: Currently there is no way to obtain the
-display_name of the annotation spec from its ID. To see the
-display_names, review the model evaluations in the UI.</p>
+model evaluation. For Tables annotation specs in the dataset
+do not exist and this ID is always not set, but for
+CLASSIFICATION  [prediction_type-s][google.cloud.automl.v1bet
+a1.TablesModelMetadata.prediction_type] the [display_name][g
+oogle.cloud.automl.v1beta1.ModelEvaluation.display_name]
+field is used.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.automl_v1beta1.types.ModelEvaluation.display_name">
 <code class="descname">display_name</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.ModelEvaluation.display_name" title="Permalink to this definition">#</a></dt>
-<dd><p>Output only. The value of [AnnotationSpec.display_name][googl
-e.cloud.automl.v1beta1.AnnotationSpec.display_name] when the
+<dd><p>Output only. The value of [display_name][google.cloud.automl.
+v1beta1.AnnotationSpec.dispay_name] at the moment when the
 model was trained. Because this field returns a value at model
-training time, for different models trained using the same
-dataset, the returned value could be different as model owner
-could update the display_name between any two model training.
-The display_name is empty for the overall model evaluation.</p>
+training time, for different models trained from the same
+dataset, the values may differ, since display names could had
+been changed between the two model’s trainings. For Tables
+CLASSIFICATION  [prediction_type-s][google.cloud.automl.v1bet
+a1.TablesModelMetadata.prediction_type] distinct values of
+the target column at the moment of the model evaluation are
+populated here. The display_name is empty for the overall
+model evaluation.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -4276,6 +4558,12 @@ valuation.annotation_spec_id].</p>
 <dd><p>Field google.cloud.automl.v1beta1.ModelEvaluation.translation_evaluation_metrics</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">video_object_tracking_evaluation_metrics</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.ModelEvaluation.video_object_tracking_evaluation_metrics</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -4326,8 +4614,8 @@ devices. -  edgetpu_tflite - Used for <a class="reference external" href="https:
 tf_saved_model - A tensorflow model in SavedModel format. -
 docker - Used for Docker containers. Use the params field to
 customize the container. The container is verified to work
-correctly    on ubuntu 16.04 operating system. -  core_ml -
-Used for iOS mobile devices.</p>
+correctly    on ubuntu 16.04 operating system. See more at
+<a class="reference external" href="https://cloud.google.com/vision/automl/docs/containers-gcs-quickstart">containers    quickstart</a> -  core_ml - Used for iOS mobile devices.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -4644,36 +4932,18 @@ time.</p>
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.OutputConfig">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">OutputConfig</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.OutputConfig" title="Permalink to this definition">#</a></dt>
-<dd><p>Output configuration for ExportData.</p>
-<p>As destination the
-[gcs_destination][google.cloud.automl.v1beta1.OutputConfig.gcs_destination]
-must be set unless specified otherwise for a domain. Only ground truth
-annotations are exported (not approved annotations are not exported).</p>
-<p>The outputs correspond to how the data was imported, and may be used as
-input to import data. The output formats are represented as EBNF with
-literal commas and same non-terminal symbols definitions are these in
-import data’s [InputConfig][google.cloud.automl.v1beta1.InputConfig]:</p>
-<ul class="simple">
-<li>For Image Object Detection: CSV file(s)
-<code class="docutils literal notranslate"><span class="pre">image_object_detection_1.csv</span></code>,
-<code class="docutils literal notranslate"><span class="pre">image_object_detection_2.csv</span></code>,…,<code class="docutils literal notranslate"><span class="pre">image_object_detection_N.csv</span></code>
-with each line in format: ML_USE,GCS_FILE_PATH,LABEL,BOUNDING_BOX
-where GCS_FILE_PATHs point at the original, source locations of the
-imported images.</li>
-<li>For Video Classification: CSV file <code class="docutils literal notranslate"><span class="pre">video_classification.csv</span></code>, with
-each line in format: ML_USE,GCS_FILE_PATH (may have muliple lines
-per a single ML_USE). Each GCS_FILE_PATH leads to another .csv
-file which describes examples that have given ML_USE, using the
-following row format:
-GCS_FILE_PATH,LABEL,TIME_SEGMENT_START,TIME_SEGMENT_END Here
-GCS_FILE_PATHs point at the original, source locations of the
-imported videos.</li>
-<li>For Text Extraction: CSV file <code class="docutils literal notranslate"><span class="pre">text_extraction.csv</span></code>, with each line
-in format: ML_USE,GCS_FILE_PATH GCS_FILE_PATH leads to a .JSONL
-(i.e. JSON Lines) file which contains, per line, a proto that wraps a
-TextSnippet proto (in json representation) followed by
-AnnotationPayload protos (called annotations). If initially documents
-had been imported, corresponding OCR-ed representation is returned.</li>
+<dd><ul class="simple">
+<li><dl class="first docutils">
+<dt>For Translation: CSV file <code class="docutils literal notranslate"><span class="pre">translation.csv</span></code>, with each line in</dt>
+<dd>format: ML_USE,GCS_FILE_PATH GCS_FILE_PATH leads to a .TSV file
+which describes examples that have given ML_USE, using the following
+row format per line: TEXT_SNIPPET (in source language)
+tTEXT_SNIPPET (in target language)</dd>
+</dl>
+</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
 <li>For Tables: Output depends on whether the dataset was imported from
 GCS or BigQuery. GCS case:</li>
 </ul>
@@ -4691,38 +4961,33 @@ characters will become underscores), and timestamp will be in
 YYYY_MM_DDThh_mm_ss_sssZ “based on ISO-8601” format. In that
 dataset a new table called <code class="docutils literal notranslate"><span class="pre">primary_table</span></code> will be created, and filled
 with precisely the same data as this obtained on import.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><dl class="first last docutils">
+<dt>destination:</dt>
+<dd>Required. The destination of the output.</dd>
+<dt>gcs_destination:</dt>
+<dd>The Google Cloud Storage location where the output is to be
+written to. For Image Object Detection, Text Extraction, Video
+Classification and Tables, in the given directory a new
+directory will be created with name: export_data– where
+timestamp is in YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format. All
+export output will be written into that directory.</dd>
+<dt>bigquery_destination:</dt>
+<dd>The BigQuery location where the output is to be written to.</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
 <dl class="attribute">
-<dt id="google.cloud.automl_v1beta1.types.OutputConfig.destination">
-<code class="descname">destination</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.OutputConfig.destination" title="Permalink to this definition">#</a></dt>
-<dd><p>Required. The destination of the output.</p>
+<dt id="google.cloud.automl_v1beta1.types.OutputConfig.bigquery_destination">
+<code class="descname">bigquery_destination</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.OutputConfig.bigquery_destination" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.automl.v1beta1.OutputConfig.bigquery_destination</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.automl_v1beta1.types.OutputConfig.gcs_destination">
 <code class="descname">gcs_destination</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.OutputConfig.gcs_destination" title="Permalink to this definition">#</a></dt>
-<dd><p>The Google Cloud Storage location where the output is to be
-written to. For Image Object Detection, Text Extraction, Video
-Classification and Tables, in the given directory a new
-directory will be created with name: export_data– where
-timestamp is in YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format. All
-export output will be written into that directory.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.automl_v1beta1.types.OutputConfig.bigquery_destination">
-<code class="descname">bigquery_destination</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.OutputConfig.bigquery_destination" title="Permalink to this definition">#</a></dt>
-<dd><p>The BigQuery location where the output is to be written to.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">bigquery_destination</code></dt>
-<dd><p>Field google.cloud.automl.v1beta1.OutputConfig.bigquery_destination</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">gcs_destination</code></dt>
 <dd><p>Field google.cloud.automl.v1beta1.OutputConfig.gcs_destination</p>
 </dd></dl>
 
@@ -4754,13 +5019,11 @@ to 25000 characters long.  -  For Image Classification:
 <code class="docutils literal notranslate"><span class="pre">score_threshold</span></code> - (float) A value from 0.0 to 1.0. When
 the model makes predictions for an image, it will only produce
 results that have at least this confidence score. The default
-is 0.5.  -  For Image Object Detection: <code class="docutils literal notranslate"><span class="pre">score_threshold</span></code> -
-(float) When Model    detects objects on the image, it will
-only produce bounding boxes    which have at least this
-confidence score. Value in 0 to 1 range,    default is 0.5.
-<code class="docutils literal notranslate"><span class="pre">max_bounding_box_count</span></code> - (int64) No more than    this
-number of bounding boxes will be returned in the response.
-Default is 100, the requested value may be limited by server.</p>
+is 0.5. * For Tables: <code class="docutils literal notranslate"><span class="pre">feature_importance</span></code> - (boolean)
+Whether  [feature_importance][[google.cloud.automl.v1beta1.Ta
+blesModelColumnInfo.feature_importance] should be populated
+in the returned  [TablesAnnotation(-s)][[google.cloud.automl.v
+1beta1.TablesAnnotation]. The default is false.</p>
 </dd></dl>
 
 <dl class="class">
@@ -4891,6 +5154,12 @@ ground truth values are are positive.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.RegressionEvaluationMetrics.root_mean_squared_log_error">
+<code class="descname">root_mean_squared_log_error</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.RegressionEvaluationMetrics.root_mean_squared_log_error" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Root mean squared log error.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">mean_absolute_error</code></dt>
 <dd><p>Field google.cloud.automl.v1beta1.RegressionEvaluationMetrics.mean_absolute_error</p>
@@ -4914,6 +5183,12 @@ ground truth values are are positive.</p>
 <dd><p>Field google.cloud.automl.v1beta1.RegressionEvaluationMetrics.root_mean_squared_error</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">root_mean_squared_log_error</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.RegressionEvaluationMetrics.root_mean_squared_log_error</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -4923,23 +5198,23 @@ ground truth values are are positive.</p>
 <dl class="attribute">
 <dt id="google.cloud.automl_v1beta1.types.Row.column_spec_ids">
 <code class="descname">column_spec_ids</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Row.column_spec_ids" title="Permalink to this definition">#</a></dt>
-<dd><p>The resource IDs of the column specs describing the columns of
-the row. If set must contain, but possibly in a different
-order, all input feature  [column_spec_ids][google.cloud.aut
-oml.v1beta1.TablesModelMetadata.input_feature_column_specs]
-of the Model this row is being passed to. Note: The below
-<code class="docutils literal notranslate"><span class="pre">values</span></code> field must match order of this field, if this field
-is set.</p>
+<dd><p>Input Only. The resource IDs of the column specs describing
+the columns of the row. If set must contain, but possibly in a
+different order, all input feature  [column_spec_ids][google
+.cloud.automl.v1beta1.TablesModelMetadata.input_feature_colu
+mn_specs] of the Model this row is being passed to. Note: The
+below <code class="docutils literal notranslate"><span class="pre">values</span></code> field must match order of this field, if this
+field is set.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.automl_v1beta1.types.Row.values">
 <code class="descname">values</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Row.values" title="Permalink to this definition">#</a></dt>
-<dd><p>Required. The values of the row cells, given in the same order
-as the column_spec_ids, or, if not set, then in the same
-order as input feature  [column_specs][google.cloud.automl.v1
-beta1.TablesModelMetadata.input_feature_column_specs] of
-the Model this row is being passed to.</p>
+<dd><p>Input Only. The values of the row cells, given in the same
+order as the column_spec_ids, or, if not set, then in the
+same order as input feature  [column_specs][google.cloud.auto
+ml.v1beta1.TablesModelMetadata.input_feature_column_specs]
+of the Model this row is being passed to.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -5236,12 +5511,8 @@ set, a blind “overwrite” update happens.</p>
 <dd><p>Output only. A confidence estimate between 0.0 and 1.0,
 inclusive. A higher value means greater confidence in the
 returned value. For  [target_column_spec][google.cloud.autom
-l.v1beta1.TablesModelMetadata.target_column_spec] of
-ARRAY(CATEGORY) data type, this is a confidence that one of
-the values in the ARRAY would be the provided value. For  [tar
-get_column_spec][google.cloud.automl.v1beta1.TablesModelMeta
-data.target_column_spec] of FLOAT64 data type the score is
-not populated.</p>
+l.v1beta1.TablesModelMetadata.target_column_spec] of FLOAT64
+data type the score is not populated.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -5249,9 +5520,8 @@ not populated.</p>
 <code class="descname">prediction_interval</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TablesAnnotation.prediction_interval" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. Only populated when  [target_column_spec][googl
 e.cloud.automl.v1beta1.TablesModelMetadata.target_column_spe
-c] has FLOAT64 data type (i.e. for regression predictions). An
-interval in which the exactly correct target value has 95%
-chance to be in.</p>
+c] has FLOAT64 data type. An interval in which the exactly
+correct target value has 95% chance to be in.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -5261,19 +5531,21 @@ chance to be in.</p>
 d.automl.v1beta1.TablesModelMetadata.target_column_spec].
 The value depends on the column’s DataType: CATEGORY - the
 predicted (with the above confidence <code class="docutils literal notranslate"><span class="pre">score</span></code>) CATEGORY
-value. FLOAT64 - the predicted (with the above confidence
-<code class="docutils literal notranslate"><span class="pre">score</span></code>) FLOAT64 value. ARRAY(CATEGORY) - CATEGORY value
-meaning that this value would be in the ARRAY in that column
-(with the above confidence <code class="docutils literal notranslate"><span class="pre">score</span></code>).</p>
+value. FLOAT64 - the predicted (with above
+<code class="docutils literal notranslate"><span class="pre">prediction_interval</span></code>) FLOAT64 value.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.automl_v1beta1.types.TablesAnnotation.tables_model_column_info">
 <code class="descname">tables_model_column_info</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TablesAnnotation.tables_model_column_info" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. Auxiliary information for each of the model’s  [i
-nput_feature_column_specs’][google.cloud.automl.v1beta1.Tab
-lesModelMetadata.input_feature_column_specs] with respect
-to this particular prediction.</p>
+nput_feature_column_specs][google.cloud.automl.v1beta1.Tabl
+esModelMetadata.input_feature_column_specs] with respect to
+this particular prediction. If no other fields than  [column_
+spec_name][google.cloud.automl.v1beta1.TablesModelColumnInfo.
+column_spec_name] and  [column_display_name][google.cloud.
+automl.v1beta1.TablesModelColumnInfo.column_display_name]
+would be populated, then this whole field is not.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -5319,14 +5591,11 @@ dataset.</p>
 <dd><p>column_spec_id of the primary table’s column that should be
 used as the training &amp; prediction target. This column must be
 non-nullable and have one of following data types (otherwise
-model creation will error): * CATEGORY * ARRAY(CATEGORY) *
-FLOAT64 Furthermore, if the type is CATEGORY or
-ARRAY(CATEGORY), then only up to 40 unique values may exist in
-that column across all rows, but for ARRAY(CATEGORY) unique
-values are counted as elements of the ARRAY (i.e. following 3
-ARRAY-s: [A, B], [A], [B] are counted as having 2 unique
-values).  NOTE: Updates of this field will instantly affect
-any other users concurrently working with the dataset.</p>
+model creation will error): * CATEGORY * FLOAT64
+Furthermore, if the type is CATEGORY , then only up to 100
+unique values may exist in that column across all rows.  NOTE:
+Updates of this field will instantly affect any other users
+concurrently working with the dataset.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -5363,10 +5632,11 @@ affect any other users concurrently working with the dataset.</p>
 <dl class="attribute">
 <dt id="google.cloud.automl_v1beta1.types.TablesDatasetMetadata.target_column_correlations">
 <code class="descname">target_column_correlations</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TablesDatasetMetadata.target_column_correlations" title="Permalink to this definition">#</a></dt>
-<dd><p>Output only. Correlations between  [target_column][google.clo
-ud.automl.v1beta1.TablesDatasetMetadata.target_column], and
-other columns of the  [primary_table][google.cloud.automl.v1b
-eta1.TablesDatasetMetadata.primary_table_spec_id]. Only set
+<dd><p>Output only. Correlations between  [TablesDatasetMetadata.targ
+et_column_spec_id][google.cloud.automl.v1beta1.TablesDatase
+tMetadata.target_column_spec_id], and other columns of the
+[TablesDatasetMetadataprimary_table][google.cloud.automl.v1be
+ta1.TablesDatasetMetadata.primary_table_spec_id]. Only set
 if the target column is set. Mapping from other column spec id
 to its CorrelationStats with the target column. This field may
 be stale, see the stats_update_time field for for the
@@ -5461,16 +5731,21 @@ display_name of its ColumnSpec).</p>
 <dl class="attribute">
 <dt id="google.cloud.automl_v1beta1.types.TablesModelColumnInfo.feature_importance">
 <code class="descname">feature_importance</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TablesModelColumnInfo.feature_importance" title="Permalink to this definition">#</a></dt>
-<dd><p>Output only.  When given as part of a Model: Measurement of
-how much model predictions correctness on the TEST data depend
-on values in this column. A value between 0 and 1, higher
-means higher influence. These values are normalized - for all
-input feature columns of a given model they add to 1.  When
-given back by Predict or Batch Predict: Measurement of how
-impactful for the prediction returned for the given row the
-value in this column was. A value between 0 and 1, higher
-means larger impact. These values are normalized - for all
-input feature columns of a single predicted row they add to 1.</p>
+<dd><p>Output only.  When given as part of a Model (always
+populated): Measurement of how much model predictions
+correctness on the TEST data depend on values in this column.
+A value between 0 and 1, higher means higher influence. These
+values are normalized - for all input feature columns of a
+given model they add to 1.  When given back by Predict
+(populated iff [feature_importance
+param][google.cloud.automl.v1beta1.PredictRequest.params] is
+set) or Batch Predict (populated iff [feature_importance][goo
+gle.cloud.automl.v1beta1.PredictRequest.params] param is set):
+Measurement of how impactful for the prediction returned for
+the given row the value in this column was. A value between 0
+and 1, higher means larger impact. These values are normalized
+- for all input feature columns of a single predicted row they
+add to 1.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -5533,44 +5808,44 @@ input. display_name - Output only. data_type - Output only.</p>
 <dd><p>Objective function the model is optimizing towards. The
 training process creates a model that maximizes/minimizes the
 value of the objective function over the validation set.  The
-supported optimization objectives depend on the
-prediction_type. If the field is not set, a default objective
-function is used.  CLASSIFICATION_BINARY: “MAXIMIZE_AU_ROC”
-(default) - Maximize the area under the receiver operating
-characteristic (ROC) curve. “MINIMIZE_LOG_LOSS” - Minimize
-log loss. “MAXIMIZE_AU_PRC” - Maximize the area under the
-precision-recall curve.  CLASSIFICATION_MULTI_CLASS :
+supported optimization objectives depend on the prediction
+type. If the field is not set, a default objective function is
+used.  CLASSIFICATION_BINARY: “MAXIMIZE_AU_ROC” (default) -
+Maximize the area under the receiver operating characteristic
+(ROC) curve. “MINIMIZE_LOG_LOSS” - Minimize log loss.
+“MAXIMIZE_AU_PRC” - Maximize the area under the precision-
+recall curve.  CLASSIFICATION_MULTI_CLASS :
 “MINIMIZE_LOG_LOSS” (default) - Minimize log loss.
-CLASSIFICATION_MULTI_LABEL: “MINIMIZE_LOG_LOSS” (default)
-- Minimize log loss.  REGRESSION: “MINIMIZE_RMSE” (default) -
+REGRESSION: “MINIMIZE_RMSE” (default) - Minimize root-mean-
+squared error (RMSE). “MINIMIZE_MAE” - Minimize mean-absolute
+error (MAE). “MINIMIZE_RMSLE” - Minimize root-mean-squared
+log error (RMSLE).  FORECASTING: “MINIMIZE_RMSE” (default) -
 Minimize root-mean-squared error (RMSE). “MINIMIZE_MAE” -
-Minimize mean-absolute error (MAE). “MINIMIZE_RMSLE” -
-Minimize root-mean-squared log error (RMSLE).  FORECASTING:
-“MINIMIZE_RMSE” (default) - Minimize root-mean-squared error
-(RMSE). “MINIMIZE_MAE” - Minimize mean-absolute error (MAE).</p>
+Minimize mean-absolute error (MAE).</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.automl_v1beta1.types.TablesModelMetadata.tables_model_column_info">
 <code class="descname">tables_model_column_info</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TablesModelMetadata.tables_model_column_info" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. Auxiliary information for each of the
-input_feature_column_specs, with respect to this particular
+input_feature_column_specs with respect to this particular
 model.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.automl_v1beta1.types.TablesModelMetadata.train_budget_milli_node_hours">
 <code class="descname">train_budget_milli_node_hours</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TablesModelMetadata.train_budget_milli_node_hours" title="Permalink to this definition">#</a></dt>
-<dd><p>The train budget of creating this model, expressed in milli
-node hours i.e. 1,000 value in this field means 1 node hour.
-The training cost of the model will not exceed this budget.
-The final cost will be attempted to be close to the budget,
-though may end up being (even) noticeably smaller - at the
-backend’s discretion. This especially may happen when further
-model training ceases to provide any improvements.  If the
-budget is set to a value known to be insufficient to train a
-model for the given dataset, the training won’t be attempted
-and will error.</p>
+<dd><p>Required. The train budget of creating this model, expressed
+in milli node hours i.e. 1,000 value in this field means 1
+node hour.  The training cost of the model will not exceed
+this budget. The final cost will be attempted to be close to
+the budget, though may end up being (even) noticeably smaller
+- at the backend’s discretion. This especially may happen when
+further model training ceases to provide any improvements.  If
+the budget is set to a value known to be insufficient to train
+a model for the given dataset, the training won’t be attempted
+and will error.  The train budget must be between 1,000 and
+72,000 milli node hours, inclusive.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -5579,6 +5854,21 @@ and will error.</p>
 <dd><p>Output only. The actual training cost of the model, expressed
 in milli node hours, i.e. 1,000 value in this field means 1
 node hour. Guaranteed to not exceed the train budget.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.TablesModelMetadata.disable_early_stopping">
+<code class="descname">disable_early_stopping</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TablesModelMetadata.disable_early_stopping" title="Permalink to this definition">#</a></dt>
+<dd><p>Use the entire training budget. This disables the early
+stopping feature. By default, the early stopping feature is
+enabled, which means that AutoML Tables might stop training
+before the entire training budget has been used.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">disable_early_stopping</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.TablesModelMetadata.disable_early_stopping</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -5648,18 +5938,25 @@ node hour. Guaranteed to not exceed the train budget.</p>
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">TextExtractionAnnotation</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TextExtractionAnnotation" title="Permalink to this definition">#</a></dt>
 <dd><p>Annotation for identifying spans of text.</p>
 <dl class="attribute">
-<dt id="google.cloud.automl_v1beta1.types.TextExtractionAnnotation.score">
-<code class="descname">score</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TextExtractionAnnotation.score" title="Permalink to this definition">#</a></dt>
-<dd><p>Output only. A confidence estimate between 0.0 and 1.0. A
-higher value means greater confidence in correctness of the
-annotation.</p>
+<dt id="google.cloud.automl_v1beta1.types.TextExtractionAnnotation.annotation">
+<code class="descname">annotation</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TextExtractionAnnotation.annotation" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Text extraction annotations can either be a text
+segment or a text relation.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.automl_v1beta1.types.TextExtractionAnnotation.text_segment">
 <code class="descname">text_segment</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TextExtractionAnnotation.text_segment" title="Permalink to this definition">#</a></dt>
-<dd><p>Required. The part of the original text to which this
-annotation pertains.</p>
+<dd><p>An entity annotation will set this, which is the part of the
+original text to which the annotation pertains.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.TextExtractionAnnotation.score">
+<code class="descname">score</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TextExtractionAnnotation.score" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. A confidence estimate between 0.0 and 1.0. A
+higher value means greater confidence in correctness of the
+annotation.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -5779,7 +6076,7 @@ threshold are considered to be ones the model would return.</p>
 <dt id="google.cloud.automl_v1beta1.types.TextSegment">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">TextSegment</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TextSegment" title="Permalink to this definition">#</a></dt>
 <dd><p>A contiguous part of a text (string), assuming it has an UTF-8 NFC
-encoding. .</p>
+encoding.</p>
 <dl class="attribute">
 <dt id="google.cloud.automl_v1beta1.types.TextSegment.content">
 <code class="descname">content</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TextSegment.content" title="Permalink to this definition">#</a></dt>
@@ -5945,10 +6242,7 @@ annotation spec.</p>
 <dt id="google.cloud.automl_v1beta1.types.TextSentimentEvaluationMetrics.annotation_spec_id">
 <code class="descname">annotation_spec_id</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TextSentimentEvaluationMetrics.annotation_spec_id" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The annotation spec ids used for this evaluation.
-Deprecated, remove after Boq Migration and use then
-TextSentimentModelMetadata.annotation_spec_count for count,
-and list all model evaluations to see the exact
-annotation_spec_ids that were used.</p>
+Deprecated .</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -6010,7 +6304,7 @@ annotation_spec_ids that were used.</p>
 <dl class="class">
 <dt id="google.cloud.automl_v1beta1.types.TextSentimentModelMetadata">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">TextSentimentModelMetadata</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.TextSentimentModelMetadata" title="Permalink to this definition">#</a></dt>
-<dd><p>Model metadata that is specific to text classification.</p>
+<dd><p>Model metadata that is specific to text sentiment.</p>
 </dd></dl>
 
 <dl class="class">
@@ -6550,6 +6844,149 @@ Classification datasets are treated as multi label.</p>
 <dt id="google.cloud.automl_v1beta1.types.VideoClassificationModelMetadata">
 <em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">VideoClassificationModelMetadata</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.VideoClassificationModelMetadata" title="Permalink to this definition">#</a></dt>
 <dd><p>Model metadata specific to video classification.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.VideoObjectTrackingAnnotation">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">VideoObjectTrackingAnnotation</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.VideoObjectTrackingAnnotation" title="Permalink to this definition">#</a></dt>
+<dd><p>Annotation details for video object tracking.</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.VideoObjectTrackingAnnotation.instance_id">
+<code class="descname">instance_id</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.VideoObjectTrackingAnnotation.instance_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The instance of the object, expressed as a positive
+integer. Used to tell apart objects of the same type (i.e.
+AnnotationSpec) when multiple are present on a single example.
+NOTE: Instance ID prediction quality is not a part of model
+evaluation and is done as best effort. Especially in cases
+when an entity goes off-screen for a longer time (minutes),
+when it comes back it may be given a new instance ID.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.VideoObjectTrackingAnnotation.time_offset">
+<code class="descname">time_offset</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.VideoObjectTrackingAnnotation.time_offset" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. A time (frame) of a video to which this annotation
+pertains. Represented as the duration since the video’s start.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.VideoObjectTrackingAnnotation.bounding_box">
+<code class="descname">bounding_box</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.VideoObjectTrackingAnnotation.bounding_box" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The rectangle representing the object location on
+the frame (i.e. at the time_offset of the video).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.VideoObjectTrackingAnnotation.score">
+<code class="descname">score</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.VideoObjectTrackingAnnotation.score" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The confidence that this annotation is positive
+for the video at the time_offset, value in [0, 1], higher
+means higher positivity confidence. For annotations created by
+the user the score is 1. When user approves an annotation, the
+original float score is kept (and not changed to 1).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">bounding_box</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.VideoObjectTrackingAnnotation.bounding_box</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">instance_id</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.VideoObjectTrackingAnnotation.instance_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">score</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.VideoObjectTrackingAnnotation.score</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">time_offset</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.VideoObjectTrackingAnnotation.time_offset</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.VideoObjectTrackingDatasetMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">VideoObjectTrackingDatasetMetadata</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.VideoObjectTrackingDatasetMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Dataset metadata specific to video object tracking.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.VideoObjectTrackingEvaluationMetrics">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">VideoObjectTrackingEvaluationMetrics</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.VideoObjectTrackingEvaluationMetrics" title="Permalink to this definition">#</a></dt>
+<dd><p>Model evaluation metrics for video object tracking problems. Evaluates
+prediction quality of both labeled bounding boxes and labeled tracks
+(i.e. series of bounding boxes sharing same label and instance ID).</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.VideoObjectTrackingEvaluationMetrics.evaluated_frame_count">
+<code class="descname">evaluated_frame_count</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.VideoObjectTrackingEvaluationMetrics.evaluated_frame_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The number of video frames used to create this
+evaluation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.VideoObjectTrackingEvaluationMetrics.evaluated_bounding_box_count">
+<code class="descname">evaluated_bounding_box_count</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.VideoObjectTrackingEvaluationMetrics.evaluated_bounding_box_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The total number of bounding boxes (i.e. summed
+over all frames) the ground truth used to create this
+evaluation had.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.VideoObjectTrackingEvaluationMetrics.bounding_box_metrics_entries">
+<code class="descname">bounding_box_metrics_entries</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.VideoObjectTrackingEvaluationMetrics.bounding_box_metrics_entries" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The bounding boxes match metrics for each
+Intersection-over-union threshold
+0.05,0.10,…,0.95,0.96,0.97,0.98,0.99 and each label
+confidence threshold 0.05,0.10,…,0.95,0.96,0.97,0.98,0.99
+pair.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.VideoObjectTrackingEvaluationMetrics.bounding_box_mean_average_precision">
+<code class="descname">bounding_box_mean_average_precision</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.VideoObjectTrackingEvaluationMetrics.bounding_box_mean_average_precision" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The single metric for bounding boxes evaluation:
+the mean_average_precision averaged over all
+bounding_box_metrics_entries.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">bounding_box_mean_average_precision</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.VideoObjectTrackingEvaluationMetrics.bounding_box_mean_average_precision</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">bounding_box_metrics_entries</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.VideoObjectTrackingEvaluationMetrics.bounding_box_metrics_entries</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">evaluated_bounding_box_count</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.VideoObjectTrackingEvaluationMetrics.evaluated_bounding_box_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">evaluated_frame_count</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.VideoObjectTrackingEvaluationMetrics.evaluated_frame_count</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.VideoObjectTrackingModelMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.automl_v1beta1.types.</code><code class="descname">VideoObjectTrackingModelMetadata</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.VideoObjectTrackingModelMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Model metadata specific to video object tracking.</p>
 </dd></dl>
 
 </div>

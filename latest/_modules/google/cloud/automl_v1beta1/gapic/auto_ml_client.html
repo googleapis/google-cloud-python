@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.automl_v1beta1.gapic.auto_ml_client &#8212; google-cloud e65044c documentation</title>
+    <title>google.cloud.automl_v1beta1.gapic.auto_ml_client &#8212; google-cloud 18d92f8 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -72,6 +72,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.gapic</span> <span class="k">import</span> <span class="n">auto_ml_client_config</span>
 <span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.gapic</span> <span class="k">import</span> <span class="n">enums</span>
 <span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.gapic.transports</span> <span class="k">import</span> <span class="n">auto_ml_grpc_transport</span>
+<span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.proto</span> <span class="k">import</span> <span class="n">annotation_spec_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.proto</span> <span class="k">import</span> <span class="n">column_spec_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.proto</span> <span class="k">import</span> <span class="n">dataset_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.proto</span> <span class="k">import</span> <span class="n">image_pb2</span>
@@ -1308,8 +1309,8 @@
 <span class="sd">        same parameters has no effect. Deploying with different parametrs (as</span>
 <span class="sd">        e.g. changing</span>
 
-<span class="sd">        ``node_number`` ) will update the deployment without pausing the model&#39;s</span>
-<span class="sd">        availability.</span>
+<span class="sd">        ``node_number``) will reset the deployment state without pausing the</span>
+<span class="sd">        model&#39;s availability.</span>
 
 <span class="sd">        Only applicable for Text Classification, Image Object Detection and</span>
 <span class="sd">        Tables; all other domains manage deployment automatically.</span>
