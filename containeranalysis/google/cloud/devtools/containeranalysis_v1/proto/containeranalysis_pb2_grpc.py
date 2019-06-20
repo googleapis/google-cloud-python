@@ -8,7 +8,7 @@ from google.iam.v1 import policy_pb2 as google_dot_iam_dot_v1_dot_policy__pb2
 class ContainerAnalysisStub(object):
     """Retrieves analysis results of Cloud components such as Docker container
   images. The Container Analysis API is an implementation of the
-  [Grafeas](grafeas.io) API.
+  [Grafeas](https://grafeas.io) API.
 
   Analysis results are stored as a series of occurrences. An `Occurrence`
   contains information about a specific analysis instance on a resource. An
@@ -47,7 +47,7 @@ class ContainerAnalysisStub(object):
 class ContainerAnalysisServicer(object):
     """Retrieves analysis results of Cloud components such as Docker container
   images. The Container Analysis API is an implementation of the
-  [Grafeas](grafeas.io) API.
+  [Grafeas](https://grafeas.io) API.
 
   Analysis results are stored as a series of occurrences. An `Occurrence`
   contains information about a specific analysis instance on a resource. An
