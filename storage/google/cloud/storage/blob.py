@@ -319,7 +319,7 @@ class Blob(_PropertyMixin):
 
          :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.
+         :param client: Optional. The client to use.
 
          :rtype: :class:`google.cloud.storage.blob.Blob`
          :returns: The blob object created.
