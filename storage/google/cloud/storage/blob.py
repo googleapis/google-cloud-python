@@ -317,9 +317,9 @@ class Blob(_PropertyMixin):
          :type uri: str
          :param uri: The blob uri pass to get blob object.
 
-         :type client: :class:`~google.cloud.storage.client.Client` or ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
-                       to the ``client`` stored on the current bucket.
+         :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: Optional. The client to use.
 
          :rtype: :class:`google.cloud.storage.blob.Blob`
          :returns: The blob object created.
