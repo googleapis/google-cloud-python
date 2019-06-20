@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.row_data &#8212; google-cloud d7a1e50 documentation</title>
+    <title>google.cloud.bigtable.row_data &#8212; google-cloud e65044c documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -436,6 +436,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">rows</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">STATE_NEW_ROW</span>
 
+        <span class="c1"># Flag to stop iteration, for any reason not related to self.retry()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cancelled</span> <span class="o">=</span> <span class="kc">False</span>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;State machine state.</span>
@@ -448,6 +451,7 @@
 
 <div class="viewcode-block" id="PartialRowsData.cancel"><a class="viewcode-back" href="../../../../bigtable/row-data.html#google.cloud.bigtable.row_data.PartialRowsData.cancel">[docs]</a>    <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Cancels the iterator, closing the stream.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cancelled</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">response_iterator</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PartialRowsData.consume_all"><a class="viewcode-back" href="../../../../bigtable/row-data.html#google.cloud.bigtable.row_data.PartialRowsData.consume_all">[docs]</a>    <span class="k">def</span> <span class="nf">consume_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_loops</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -496,7 +500,7 @@
 <span class="sd">        Parse the response and its chunks into a new/existing row in</span>
 <span class="sd">        :attr:`_rows`. Rows are returned in order by row key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cancelled</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_next_response</span><span class="p">()</span>
             <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
@@ -505,6 +509,8 @@
                 <span class="k">break</span>
 
             <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">chunks</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cancelled</span><span class="p">:</span>
+                    <span class="k">break</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_process_chunk</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">commit_row</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">last_scanned_row_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_previous_row</span><span class="o">.</span><span class="n">row_key</span>
