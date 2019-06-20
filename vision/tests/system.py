@@ -815,6 +815,10 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
     # Tests to verify Vision API methods are blocked by VPC SC when trying to access a gcs resource outside of a secure perimeter.
     def setUp(self):
         VisionSystemTestBase.setUp(self)
+        self.blocked_file = "LC08/01_$folder$"
+        self.gcs_uri_blocked_file = "gs://{bucket}/{file}".format(
+            bucket=BUCKET_OUTSIDE, file=self.blocked_file
+        )
         self._verify_vpc_sc_blocks_gcs_bucket()
         self.gcs_read_error_message = "Error opening file: gs://"
         self.gcs_write_error_message = "Error writing final output to: gs://"
@@ -824,7 +828,7 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
         try:
             storage_client = storage.Client()
             outside_bucket = storage_client.get_bucket(BUCKET_OUTSIDE)
-            blob = outside_bucket.blob("set_up_test.txt")
+            blob = outside_bucket.blob(self.blocked_file)
             blob.download_as_string()
         except google.api_core.exceptions.Forbidden as e:
             # Verify the Forbidden exception was due to VPC SC.
@@ -839,14 +843,16 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
                 "Unexpected exception raised while accessing gcs bucket: {}".format(e)
             )
         self.fail(
-            "No exception raised when accessing gcs bucket: {}".format(BUCKET_OUTSIDE)
+            "No exception raised when accessing gcs bucket: {}".format(
+                self.gcs_uri_blocked_file
+            )
         )
 
     @unittest.skipUnless(PROJECT_ID, "PROJECT_ID not set in environment.")
     def test_import_product_sets_blocked(self):
         # The csv file is outside the secure perimeter.
         gcs_source = vision.types.ImportProductSetsGcsSource(
-            csv_file_uri="gs://{bucket}/some_file.csv".format(bucket=BUCKET_OUTSIDE)
+            csv_file_uri=self.gcs_uri_blocked_file
         )
         input_config = vision.types.ImportProductSetsInputConfig(gcs_source=gcs_source)
         # Use a valid Project ID.
@@ -878,9 +884,7 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
         # The input file is in a gcs bucket that is outside of the secure perimeter.
         request = {
             "input_config": {
-                "gcs_source": {
-                    "uri": "gs://{bucket}/some_file.pdf".format(bucket=BUCKET_OUTSIDE)
-                },
+                "gcs_source": {"uri": self.gcs_uri_blocked_file},
                 "mime_type": "application/pdf",
             },
             "features": [{"type": vision.enums.Feature.Type.DOCUMENT_TEXT_DETECTION}],
@@ -946,13 +950,7 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
     def test_async_batch_annotate_images_read_blocked(self):
         # Make the request. The input file is in a gcs bucket that is outside of the secure perimeter.
         request = {
-            "image": {
-                "source": {
-                    "image_uri": "gs://{bucket}/some_image.jpg".format(
-                        bucket=BUCKET_OUTSIDE
-                    )
-                }
-            },
+            "image": {"source": {"image_uri": self.gcs_uri_blocked_file}},
             "features": [{"type": vision.enums.Feature.Type.LOGO_DETECTION}],
         }
         method_name = "test_async_batch_annotate_images_read_blocked"
@@ -1029,13 +1027,7 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
 
     def test_batch_annotate_images_read_blocked(self):
         response = self.client.logo_detection(
-            {
-                "source": {
-                    "image_uri": "gs://{bucket}/some_image.jpg".format(
-                        bucket=BUCKET_OUTSIDE
-                    )
-                }
-            }
+            {"source": {"image_uri": self.gcs_uri_blocked_file}}
         )
         error = response.error
         assert error.code == 7
