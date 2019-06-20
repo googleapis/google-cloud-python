@@ -168,6 +168,20 @@ s.replace(
 )
 
 # document FlowControl settings in Python 3.5+
+
+# ... first remove any existing code that injects the docs
+s.replace(
+    "google/cloud/pubsub_v1/types.py",
+    r"if sys\.version_info >= \(3, 5\):",
+    "",
+)
+s.replace(
+    "google/cloud/pubsub_v1/types.py",
+    r"    FlowControl\..*?__doc__ = \(.*?\)",
+    "",
+    flags=re.DOTALL,
+)
+
 s.replace(
     "google/cloud/pubsub_v1/types.py",
     "FlowControl.__new__.__defaults__ = \(.*?\)",
