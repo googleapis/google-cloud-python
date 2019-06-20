@@ -13,7 +13,7 @@ retrieval of critical metadata about all of your software artifacts.
 .. _Product Documentation:  https://grafeas.io/
 
 Installation
-~~~~~~~~~~~~
+--------------
 
 Install this library in a `virtualenv`_ using pip. `virtualenv`_ is a tool to
 create isolated Python environments. The basic problem it addresses is one of
@@ -48,7 +48,7 @@ Windows
     <your-env>\Scripts\pip.exe install grafeas
 
 Next Steps
-~~~~~~~~~~
+--------------
 
 -  Read the `Client Library Documentation`_ for Grafeas API
    API to see other available methods on the client.
