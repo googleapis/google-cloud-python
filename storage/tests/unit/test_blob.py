@@ -23,6 +23,7 @@ import unittest
 
 import google.cloud.storage.blob
 import mock
+import pytest
 import six
 from six.moves import http_client
 
@@ -3170,6 +3171,29 @@ class Test_Blob(unittest.TestCase):
         BUCKET = object()
         blob = self._make_one("blob-name", bucket=BUCKET)
         self.assertIsNone(blob.updated)
+
+    def test_from_string_w_valid_uri(self):
+        from google.cloud.storage.blob import Blob
+
+        connection = _Connection()
+        client = _Client(connection)
+        uri = "gs://BUCKET_NAME/b"
+        blob = Blob.from_string(uri, client)
+
+        self.assertIsInstance(blob, Blob)
+        self.assertIs(blob.client, client)
+        self.assertEqual(blob.name, "b")
+
+    def test_from_string_w_invalid_uri(self):
+        from google.cloud.storage.blob import Blob
+
+        connection = _Connection()
+        client = _Client(connection)
+        blob = mock.Mock()
+
+        with mock.patch("google.cloud.storage.client.Blob", return_value=blob):
+            with pytest.raises(ValueError, match="URI scheme must be gs"):
+                Blob.from_string("http://bucket_name/b", client)
 
 
 class Test__quote(unittest.TestCase):

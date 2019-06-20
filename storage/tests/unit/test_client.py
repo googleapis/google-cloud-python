@@ -1202,3 +1202,4 @@ class TestClient(unittest.TestCase):
         http.request.assert_called_once_with(
             method="GET", url=URI, data=None, headers=mock.ANY
         )
+
