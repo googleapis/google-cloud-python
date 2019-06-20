@@ -223,6 +223,41 @@ s.replace(
     flags=re.DOTALL,
 )
 
+# document BatchSettings in Python 3.5+
+
+# ... first make sure to remove any existing code that injects the docs
+# (the "if sys version" line is removed by the block above)
+s.replace(
+    "google/cloud/pubsub_v1/types.py",
+    r"    BatchSettings\..*?__doc__ = \(.*?\)",
+    "",
+    flags=re.DOTALL,
+)
+
+s.replace(
+    "google/cloud/pubsub_v1/types.py",
+    r"BatchSettings\.__new__\.__defaults__ = \(.*?\)",
+    textwrap.dedent("""\
+    \g<0>
+
+    if sys.version_info >= (3, 5):
+        BatchSettings.__doc__ = "The settings for batch publishing the messages."
+        BatchSettings.max_bytes.__doc__ = (
+            "The maximum total size of the messages to collect before automatically "
+            "publishing the batch."
+        )
+        BatchSettings.max_latency.__doc__ = (
+            "The maximum number of seconds to wait for additional messages before "
+            "automatically publishing the batch."
+        )
+        BatchSettings.max_messages.__doc__ = (
+            "The maximum number of messages to collect before automatically "
+            "publishing the batch."
+        )
+    """),
+    flags=re.DOTALL,
+)
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------

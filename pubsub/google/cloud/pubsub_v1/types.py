@@ -44,6 +44,22 @@ BatchSettings.__new__.__defaults__ = (
     1000,  # max_messages: 1,000
 )
 
+if sys.version_info >= (3, 5):
+    BatchSettings.__doc__ = "The settings for batch publishing the messages."
+    BatchSettings.max_bytes.__doc__ = (
+        "The maximum total size of the messages to collect before automatically "
+        "publishing the batch."
+    )
+    BatchSettings.max_latency.__doc__ = (
+        "The maximum number of seconds to wait for additional messages before "
+        "automatically publishing the batch."
+    )
+    BatchSettings.max_messages.__doc__ = (
+        "The maximum number of messages to collect before automatically "
+        "publishing the batch."
+    )
+
+
 # Define the type class and default values for flow control settings.
 #
 # This class is used when creating a publisher or subscriber client, and
