@@ -150,7 +150,7 @@ class TestVisionClientLogo(VisionSystemTestBase):
         response = self.client.async_batch_annotate_images([request], output_config)
 
         # Wait for the operation to complete.
-        lro_waiting_seconds = 60
+        lro_waiting_seconds = 90
         start_time = time.time()
         while not response.done() and (time.time() - start_time) < lro_waiting_seconds:
             time.sleep(1)
@@ -209,7 +209,7 @@ class TestVisionClientFiles(VisionSystemTestBase):
         response = self.client.async_batch_annotate_files([request])
 
         # Wait for the operation to complete.
-        lro_waiting_seconds = 60
+        lro_waiting_seconds = 90
         start_time = time.time()
         while not response.done() and (time.time() - start_time) < lro_waiting_seconds:
             time.sleep(1)
@@ -930,7 +930,7 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
         }
         response = self.client.async_batch_annotate_files([request])
         # Wait for the operation to complete.
-        lro_waiting_seconds = 60
+        lro_waiting_seconds = 90
         start_time = time.time()
         while not response.done() and (time.time() - start_time) < lro_waiting_seconds:
             time.sleep(1)
@@ -960,7 +960,7 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
         output_config = {"gcs_destination": {"uri": output_gcs_uri_prefix}}
         response = self.client.async_batch_annotate_images([request], output_config)
         # Wait for the operation to complete.
-        lro_waiting_seconds = 60
+        lro_waiting_seconds = 90
         start_time = time.time()
         while not response.done() and (time.time() - start_time) < lro_waiting_seconds:
             time.sleep(1)
@@ -991,13 +991,7 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
     def test_async_batch_annotate_images_write_blocked(self):
         # Make the request.
         request = {
-            "image": {
-                "source": {
-                    "image_uri": "gs://{bucket}/some_image.jpg".format(
-                        bucket=BUCKET_OUTSIDE
-                    )
-                }
-            },
+            "image": {"source": {"image_uri": self.gcs_uri_blocked_file}},
             "features": [{"type": vision.enums.Feature.Type.LOGO_DETECTION}],
         }
         method_name = "test_async_batch_annotate_images_write_blocked"
@@ -1008,7 +1002,7 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
         output_config = {"gcs_destination": {"uri": output_gcs_uri_prefix}}
         response = self.client.async_batch_annotate_images([request], output_config)
         # Wait for the operation to complete.
-        lro_waiting_seconds = 60
+        lro_waiting_seconds = 90
         start_time = time.time()
         while not response.done() and (time.time() - start_time) < lro_waiting_seconds:
             time.sleep(1)
