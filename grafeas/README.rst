@@ -8,24 +8,9 @@ retrieval of critical metadata about all of your software artifacts.
 - `Product Documentation`_
 
 .. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
-.. _Grafeas API: https://cloud.google.com/grafeas
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/grafeas/usage.html
-.. _Product Documentation:  https://cloud.google.com/grafeas
-
-Quick Start
------------
-
-In order to use this library, you first need to go through the following steps:
-
-1. `Select or create a Cloud Platform project.`_
-2. `Enable billing for your project.`_
-3. `Enable the Grafeas API.`_
-4. `Setup Authentication.`_
-
-.. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
-.. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Grafeas API.:  https://cloud.google.com/grafeas
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Grafeas API: https://grafeas.io/
+.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/grafeas/index.html
+.. _Product Documentation:  https://grafeas.io/
 
 Installation
 ~~~~~~~~~~~~
@@ -72,5 +57,5 @@ Next Steps
 -  View this `repository’s main README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Grafeas API Product documentation:  https://cloud.google.com/grafeas
+.. _Grafeas API Product documentation:  https://grafeas.io/
 .. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
