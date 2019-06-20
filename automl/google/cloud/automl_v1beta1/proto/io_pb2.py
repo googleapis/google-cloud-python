@@ -1212,33 +1212,7 @@ BatchPredictInputConfig = _reflection.GeneratedProtocolMessageType(
      contain, per line, a proto that wraps a Document proto with
      input\_config set. Only PDF documents are supported now, and each
      document must be up to 2MB large. Any given .JSONL file must be 100MB
-     or smaller, and no more than 20 files may be given. Sample in-line
-     JSON Lines file (presented here with artificial line breaks, but the
-     only actual line break is denoted by :raw-latex:`\n`): { "id":
-     "my\_first\_id", "text\_snippet": { "content": "dog car cat"},
-     "text\_features": [ { "text\_segment": {"start\_offset": 4,
-     "end\_offset": 6}, "structural\_type": PARAGRAPH, "bounding\_poly": {
-     "normalized\_vertices": [ {"x": 0.1, "y": 0.1}, {"x": 0.1, "y": 0.3},
-     {"x": 0.3, "y": 0.3}, {"x": 0.3, "y": 0.1}, ] }, } ], }:raw-latex:`\n
-           {
-             "id": "2",
-             "text_snippet": {
-               "content": "An elaborate content",
-               "mime_type": "text/plain"
-             }
-           }` Sample document JSON Lines file (presented here with
-     artificial line breaks, but the only actual line break is denoted by
-     :raw-latex:`\n`).: { "document": { "input\_config": { "gcs\_source":
-     { "input\_uris": [ "gs://folder/document1.pdf" ] } } }
-     }:raw-latex:`\n
-           {
-             "document": {
-               "input_config": {
-                 "gcs_source": { "input_uris": [ "gs://folder/document2.pdf" ]
-                 }
-               }
-             }
-           }`
+     or smaller, and no more than 20 files may be given. 
   
   -  For Tables: Either
      [gcs\_source][google.cloud.automl.v1beta1.InputConfig.gcs\_source] or
@@ -1392,11 +1366,12 @@ OutputConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_OUTPUTCONFIG,
         __module__="google.cloud.automl_v1beta1.proto.io_pb2",
-        __doc__="""-  For Translation: CSV file ``translation.csv``, with each line in
+        __doc__="""
+-  For Translation: CSV file ``translation.csv``, with each line in
      format: ML\_USE,GCS\_FILE\_PATH GCS\_FILE\_PATH leads to a .TSV file
      which describes examples that have given ML\_USE, using the following
      row format per line: TEXT\_SNIPPET (in source language)
-     :raw-latex:`\t `TEXT\_SNIPPET (in target language)
+     \\tTEXT\_SNIPPET (in target language)
   
   -  For Tables: Output depends on whether the dataset was imported from
      GCS or BigQuery. GCS case:
