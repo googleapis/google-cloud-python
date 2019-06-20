@@ -1033,18 +1033,20 @@ class TestSession(unittest.TestCase):
             called_with.append((txn, args, kw))
             txn.insert(TABLE_NAME, COLUMNS, VALUES)
 
-        # retry once w/ timeout_secs=1
-        def _time(_results=[1, 1.5, 2.5]):
+        # retry several times to check backoff
+        def _time(_results=[1, 2, 4, 8]):
             return _results.pop(0)
 
         with mock.patch("time.time", _time):
             with mock.patch("time.sleep") as sleep_mock:
                 with self.assertRaises(Aborted):
-                    session.run_in_transaction(unit_of_work, timeout_secs=1)
+                    session.run_in_transaction(unit_of_work, timeout_secs=8)
 
-        sleep_mock.assert_not_called()
+        sleep_mock.assert_has_calls(
+            (mock.call(2), mock.call(4))
+        )
 
-        self.assertEqual(len(called_with), 2)
+        self.assertEqual(len(called_with), 3)
         for txn, args, kw in called_with:
             self.assertIsInstance(txn, Transaction)
             self.assertIsNone(txn.committed)
@@ -1061,7 +1063,7 @@ class TestSession(unittest.TestCase):
                     metadata=[("google-cloud-resource-prefix", database.name)],
                 )
             ]
-            * 2,
+            * 3,
         )
         self.assertEqual(
             gax_api.commit.call_args_list,
@@ -1073,5 +1075,5 @@ class TestSession(unittest.TestCase):
                     metadata=[("google-cloud-resource-prefix", database.name)],
                 )
             ]
-            * 2,
+            * 3,
         )
