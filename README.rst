@@ -42,6 +42,7 @@ The following client libraries have **GA** support:
 -  `Google Cloud Natural Language`_ (`Natural Language README`_)
 -  `Google Cloud Scheduler`_ (`Scheduler README`_)
 -  `Google Cloud Spanner`_ (`Spanner README`_)
+-  `Google Cloud Speech`_ (`Speech README`_)
 -  `Google Cloud Storage`_ (`Storage README`_)
 -  `Google Cloud Tasks`_ (`Tasks README`_)
 -  `Google Cloud Translation`_ (`Translation README`_)
@@ -57,6 +58,8 @@ The following client libraries have **GA** support:
 .. _Natural Language README: https://github.com/googleapis/google-cloud-python/tree/master/language
 .. _Google Cloud Spanner: https://pypi.org/project/google-cloud-spanner
 .. _Spanner README: https://github.com/googleapis/google-cloud-python/tree/master/spanner
+.. _Google Cloud Speech: https://pypi.org/project/google-cloud-speech/
+.. _Speech README: https://github.com/googleapis/google-cloud-python/tree/master/speech
 .. _Google Cloud Storage: https://pypi.org/project/google-cloud-storage/
 .. _Storage README: https://github.com/googleapis/google-cloud-python/tree/master/storage
 .. _Google Cloud Tasks: https://pypi.org/project/google-cloud-tasks/
@@ -80,7 +83,6 @@ The following client libraries have **beta** support:
 -  `Google Cloud Bigtable`_ (`Bigtable README`_)
 -  `Google Cloud Firestore`_ (`Firestore README`_)
 -  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_)
--  `Google Cloud Speech`_ (`Speech README`_)
 -  `Google Cloud Video Intelligence`_ (`Video Intelligence README`_)
 -  `Google Cloud Vision`_ (`Vision README`_)
 
@@ -90,8 +92,6 @@ The following client libraries have **beta** support:
 .. _Firestore README: https://github.com/googleapis/google-cloud-python/tree/master/firestore
 .. _Google Cloud Pub/Sub: https://pypi.org/project/google-cloud-pubsub/
 .. _Pub/Sub README: https://github.com/googleapis/google-cloud-python/tree/master/pubsub
-.. _Google Cloud Speech: https://pypi.org/project/google-cloud-speech/
-.. _Speech README: https://github.com/googleapis/google-cloud-python/tree/master/speech
 .. _Google Cloud Video Intelligence: https://pypi.org/project/google-cloud-videointelligence
 .. _Video Intelligence README: https://github.com/googleapis/google-cloud-python/tree/master/videointelligence
 .. _Google Cloud Vision: https://pypi.org/project/google-cloud-vision/
