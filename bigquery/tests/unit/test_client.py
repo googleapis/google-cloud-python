@@ -866,6 +866,34 @@ class TestClient(unittest.TestCase):
             ]
         )
 
+    def test_create_routine_w_minimal_resource(self):
+        from google.cloud.bigquery.routine import Routine
+        from google.cloud.bigquery.routine import RoutineReference
+
+        creds = _make_credentials()
+        resource = {
+            "routineReference": {
+                "projectId": "test-routine-project",
+                "datasetId": "test_routines",
+                "routineId": "minimal_routine",
+            }
+        }
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        conn = client._connection = make_connection(resource)
+        full_routine_id = "test-routine-project.test_routines.minimal_routine"
+        routine = Routine(full_routine_id)
+
+        actual_routine = client.create_routine(routine)
+
+        conn.api_request.assert_called_once_with(
+            method="POST",
+            path="/projects/test-routine-project/datasets/test_routines/routines",
+            data=resource,
+        )
+        self.assertEqual(
+            actual_routine.reference, RoutineReference.from_string(full_routine_id)
+        )
+
     def test_create_table_w_day_partition(self):
         from google.cloud.bigquery.table import Table
         from google.cloud.bigquery.table import TimePartitioning
