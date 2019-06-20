@@ -377,7 +377,7 @@ class PartialRowsData(object):
         self._state = self.STATE_NEW_ROW
 
         # Flag to stop iteration, for any reason not related to self.retry()
-        self._stop = False
+        self._cancelled = False
 
     @property
     def state(self):
@@ -391,7 +391,7 @@ class PartialRowsData(object):
 
     def cancel(self):
         """Cancels the iterator, closing the stream."""
-        self._stop = True
+        self._cancelled = True
         self.response_iterator.cancel()
 
     def consume_all(self, max_loops=None):
@@ -440,7 +440,7 @@ class PartialRowsData(object):
         Parse the response and its chunks into a new/existing row in
         :attr:`_rows`. Rows are returned in order by row key.
         """
-        while not self._stop:
+        while not self._cancelled:
             try:
                 response = self._read_next_response()
             except StopIteration:
@@ -449,7 +449,7 @@ class PartialRowsData(object):
                 break
 
             for chunk in response.chunks:
-                if self._stop:
+                if self._cancelled:
                     break
                 self._process_chunk(chunk)
                 if chunk.commit_row:
