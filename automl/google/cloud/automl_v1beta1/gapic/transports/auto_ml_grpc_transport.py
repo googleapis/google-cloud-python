@@ -75,7 +75,9 @@ class AutoMlGrpcTransport(object):
         )
 
     @classmethod
-    def create_channel(cls, address="automl.googleapis.com:443", credentials=None):
+    def create_channel(
+        cls, address="automl.googleapis.com:443", credentials=None, **kwargs
+    ):
         """Create and return a gRPC channel object.
 
         Args:
@@ -85,12 +87,14 @@ class AutoMlGrpcTransport(object):
                 credentials identify this application to the service. If
                 none are specified, the client will attempt to ascertain
                 the credentials from the environment.
+            kwargs (dict): Keyword arguments, which are passed to the
+                channel creation.
 
         Returns:
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES, **kwargs
         )
 
     @property
@@ -268,8 +272,8 @@ class AutoMlGrpcTransport(object):
         same parameters has no effect. Deploying with different parametrs (as
         e.g. changing
 
-        ``node_number`` ) will update the deployment without pausing the model's
-        availability.
+        ``node_number``) will reset the deployment state without pausing the
+        model's availability.
 
         Only applicable for Text Classification, Image Object Detection and
         Tables; all other domains manage deployment automatically.

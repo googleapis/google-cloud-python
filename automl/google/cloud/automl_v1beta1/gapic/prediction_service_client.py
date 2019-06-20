@@ -35,6 +35,7 @@ from google.cloud.automl_v1beta1.gapic import prediction_service_client_config
 from google.cloud.automl_v1beta1.gapic.transports import (
     prediction_service_grpc_transport,
 )
+from google.cloud.automl_v1beta1.proto import annotation_spec_pb2
 from google.cloud.automl_v1beta1.proto import column_spec_pb2
 from google.cloud.automl_v1beta1.proto import data_items_pb2
 from google.cloud.automl_v1beta1.proto import dataset_pb2
@@ -218,15 +219,16 @@ class PredictionServiceClient(object):
            image\_bytes up to 30MB.
         -  Image Object Detection - Image in .JPEG, .GIF or .PNG format,
            image\_bytes up to 30MB.
-        -  Text Classification - TextSnippet, content up to 10,000 characters,
+        -  Text Classification - TextSnippet, content up to 60,000 characters,
            UTF-8 encoded.
         -  Text Extraction - TextSnippet, content up to 30,000 characters, UTF-8
-           NFC encoded. \* Translation - TextSnippet, content up to 25,000
-           characters, UTF-8 encoded.
-        -  Tables - Row, with column values matching the columns of the model,
-           up to 5MB.
-        -  Text Sentiment - TextSnippet, content up 500 characters, UTF-8
+           NFC encoded.
+        -  Translation - TextSnippet, content up to 25,000 characters, UTF-8
            encoded.
+        -  Tables - Row, with column values matching the columns of the model,
+           up to 5MB. Not available for FORECASTING
+
+        ``prediction_type``.
 
         Example:
             >>> from google.cloud import automl_v1beta1
@@ -257,12 +259,13 @@ class PredictionServiceClient(object):
                    makes predictions for an image, it will only produce results that
                    have at least this confidence score. The default is 0.5.
 
-                -  For Image Object Detection: ``score_threshold`` - (float) When Model
-                   detects objects on the image, it will only produce bounding boxes
-                   which have at least this confidence score. Value in 0 to 1 range,
-                   default is 0.5. ``max_bounding_box_count`` - (int64) No more than
-                   this number of bounding boxes will be returned in the response.
-                   Default is 100, the requested value may be limited by server.
+                -  For Tables: ``feature_importance`` - (boolean) Whether
+
+                [feature\_importance][[google.cloud.automl.v1beta1.TablesModelColumnInfo.feature\_importance]
+                should be populated in the returned
+
+                [TablesAnnotation(-s)][[google.cloud.automl.v1beta1.TablesAnnotation].
+                The default is false.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -332,6 +335,7 @@ class PredictionServiceClient(object):
         Available for following ML problems:
 
         -  Video Classification
+        -  Video Object Tracking
         -  Text Extraction
         -  Tables
 
@@ -397,6 +401,16 @@ class PredictionServiceClient(object):
                    classification type, the quality of it depends on training data, but
                    there are no metrics provided to describe that quality. The default
                    is "false".
+
+                -  For Video Object Tracking: ``score_threshold`` - (float) When Model
+                   detects objects on video frames, it will only produce bounding boxes
+                   which have at least this confidence score. Value in 0 to 1 range,
+                   default is 0.5. ``max_bounding_box_count`` - (int64) No more than
+                   this number of bounding boxes will be returned per frame. Default is
+                   100, the requested value may be limited by server.
+                   ``min_bounding_box_size`` - (float) Only bounding boxes with shortest
+                   edge at least that long as a relative value of video frame size will
+                   be returned. Value in 0 to 1 range. Default is 0.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
