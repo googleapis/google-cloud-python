@@ -164,8 +164,8 @@ Authentication
 ^^^^^^^^^^^^^^
 
 It is possible to specify the authentication method to use with the Pub/Sub
-clients. This can be done by providing an explicit `Credentials`_ instance from
-the `google-auth`_ library.
+clients. This can be done by providing an explicit `Credentials`_ instance. Support
+for various authentication methods is available from the `google-auth`_ library.
 
 For example, to use JSON Web Tokens, provide a `jwt.Credentials`_ instance:
 
@@ -183,9 +183,6 @@ For example, to use JSON Web Tokens, provide a `jwt.Credentials`_ instance:
 
     publisher = pubsub_v1.PublisherClient(credentials=credentials)
     subscriber = pubsub_v1.SubscriberClient(credentials=credentials)
-
-Check the `google-auth`_ library documentation for the list of supported
-authentication methods.
 
 .. _Credentials: https://google-auth.readthedocs.io/en/latest/reference/google.auth.credentials.html#google.auth.credentials.Credentials
 .. _google-auth: https://google-auth.readthedocs.io/en/latest/index.html
