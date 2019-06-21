@@ -904,6 +904,19 @@ def test_bigtable_row_setcell_rowkey():
     assert table1 == table
     table.truncate(timeout=200)
 
+    # [START bigtable_row_row_content]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    row = table.row(ROW_KEY1)
+    # [END bigtable_row_row_content]
+
+    row_content1 = table.read_row(ROW_KEY1)
+    assert row_content1 == row.row_content
+
 
 def test_bigtable_row_delete():
     table_row_del = Config.INSTANCE.table(TABLE_ID)

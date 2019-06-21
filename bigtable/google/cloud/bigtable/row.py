@@ -82,6 +82,21 @@ class Row(object):
         """
         return self._table
 
+    @property
+    def row_content(self):
+        """Row content.
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_row_row_content]
+            :end-before: [END bigtable_row_row_content]
+
+        :rtype: row_content: :class:`PartialRowData <google.cloud.bigtable.row_data.PartialRowData>`
+        :returns: Contents of the row read from table.
+        """
+        return self.table.read_row(self.row_key)
+
 
 class _SetDeleteRow(Row):
     """Row helper for setting or deleting cell values.
@@ -451,11 +466,15 @@ class DirectRow(_SetDeleteRow):
             :start-after: [START bigtable_row_commit]
             :end-before: [END bigtable_row_commit]
 
+        :rtype: row_content: :class:`PartialRowData <google.cloud.bigtable.row_data.PartialRowData>`
+        :returns: Contents of the row.
+
         :raises: :exc:`~.table.TooManyMutationsError` if the number of
                  mutations is greater than 100,000.
         """
         self._table.mutate_rows([self])
         self.clear()
+        return self.row_content
 
     def clear(self):
         """Removes all currently accumulated mutations on the current row.
@@ -558,9 +577,9 @@ class ConditionalRow(_SetDeleteRow):
             :start-after: [START bigtable_row_commit]
             :end-before: [END bigtable_row_commit]
 
-        :rtype: bool
-        :returns: Flag indicating if the filter was matched (which also
-                  indicates which set of mutations were applied by the server).
+        :rtype: row_content: :class:`PartialRowData <google.cloud.bigtable.row_data.PartialRowData>`
+        :returns: Contents of the row.
+
         :raises: :class:`ValueError <exceptions.ValueError>` if the number of
                  mutations exceeds the :data:`MAX_MUTATIONS`.
         """
@@ -578,7 +597,7 @@ class ConditionalRow(_SetDeleteRow):
             )
 
         data_client = self._table._instance._client.table_data_client
-        resp = data_client.check_and_mutate_row(
+        data_client.check_and_mutate_row(
             table_name=self._table.name,
             row_key=self._row_key,
             predicate_filter=self._filter.to_pb(),
@@ -586,7 +605,7 @@ class ConditionalRow(_SetDeleteRow):
             false_mutations=false_mutations,
         )
         self.clear()
-        return resp.predicate_matched
+        return self.row_content
 
     # pylint: disable=arguments-differ
     def set_cell(self, column_family_id, column, value, timestamp=None, state=True):
@@ -888,12 +907,9 @@ class AppendRow(Row):
             :start-after: [START bigtable_row_commit]
             :end-before: [END bigtable_row_commit]
 
-        :rtype: dict
-        :returns: The new contents of all modified cells. Returned as a
-                  dictionary of column families, each of which holds a
-                  dictionary of columns. Each column contains a list of cells
-                  modified. Each cell is represented with a two-tuple with the
-                  value (in bytes) and the timestamp for the cell.
+        :rtype: row_content: :class:`PartialRowData <google.cloud.bigtable.row_data.PartialRowData>`
+        :returns: Contents of the row.
+
         :raises: :class:`ValueError <exceptions.ValueError>` if the number of
                  mutations exceeds the :data:`MAX_MUTATIONS`.
         """
@@ -907,15 +923,13 @@ class AppendRow(Row):
             )
 
         data_client = self._table._instance._client.table_data_client
-        row_response = data_client.read_modify_write_row(
+        data_client.read_modify_write_row(
             table_name=self._table.name, row_key=self._row_key, rules=self._rule_pb_list
         )
 
         # Reset modifications after commit-ing request.
         self.clear()
-
-        # NOTE: We expect row_response.key == self._row_key but don't check.
-        return _parse_rmw_row_response(row_response)
+        return self.row_content
 
 
 def _parse_rmw_row_response(row_response):

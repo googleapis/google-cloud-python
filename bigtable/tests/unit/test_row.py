@@ -356,7 +356,9 @@ class TestDirectRow(unittest.TestCase):
 
         # Perform the method and check the result.
         row.set_cell(column_family_id, column, value)
-        row.commit()
+        result = row.commit()
+        self.assertIsInstance(result, _PartialRowData)
+        self.assertEqual(result.row_key, row_key)
         self.assertEqual(table.mutated_rows, [row])
 
 
@@ -435,16 +437,16 @@ class TestConditionalRow(unittest.TestCase):
         api.transport.check_and_mutate_row.side_effect = [response_pb]
         client._table_data_client = api
 
-        # Create expected_result.
-        expected_result = predicate_matched
-
         # Perform the method and check the result.
         row.set_cell(column_family_id1, column1, value1, state=True)
         row.delete(state=False)
         row.delete_cell(column_family_id2, column2, state=True)
         row.delete_cells(column_family_id3, row.ALL_COLUMNS, state=True)
+
         result = row.commit()
-        self.assertEqual(result, expected_result)
+        self.assertIsInstance(result, _PartialRowData)
+        self.assertEqual(result.row_key, row_key)
+
         self.assertEqual(row._true_pb_mutations, [])
         self.assertEqual(row._false_pb_mutations, [])
 
@@ -594,7 +596,8 @@ class TestAppendRow(unittest.TestCase):
             row.append_cell_value(column_family_id, column, value)
             result = row.commit()
 
-        self.assertEqual(result, expected_result)
+        self.assertIsInstance(result, _PartialRowData)
+        self.assertEqual(result.row_key, row_key)
         self.assertEqual(row._rule_pb_list, [])
 
     def test_commit_no_rules(self):
@@ -813,6 +816,11 @@ def _ReadModifyWriteRulePB(*args, **kw):
     return data_v2_pb2.ReadModifyWriteRule(*args, **kw)
 
 
+class _PartialRowData(object):
+    def __init__(self, row_key):
+        self.row_key = row_key
+
+
 class _Instance(object):
     def __init__(self, client=None):
         self._client = client
@@ -827,3 +835,6 @@ class _Table(object):
 
     def mutate_rows(self, rows):
         self.mutated_rows.extend(rows)
+
+    def read_row(self, key):
+        return _PartialRowData(key)
