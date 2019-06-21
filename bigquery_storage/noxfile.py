@@ -37,7 +37,7 @@ def default(session):
     session.install('mock', 'pytest', 'pytest-cov')
     for local_dep in LOCAL_DEPS:
         session.install('-e', local_dep)
-    session.install('-e', '.[pandas,fastavro]')
+    session.install('-e', '.[pandas,fastavro,pyarrow]')
 
     # Run py.test against the unit tests.
     session.run(

@@ -75,6 +75,8 @@ def pyarrow_timestamp():
 
 
 if pyarrow:
+    # This dictionary is duplicated in bigquery_storage/test/unite/test_reader.py
+    # When modifying it be sure to update it there as well.
     BQ_TO_ARROW_SCALARS = {
         "BOOL": pyarrow.bool_,
         "BOOLEAN": pyarrow.bool_,
