@@ -3,7 +3,7 @@
   "name_pretty": "Cloud Identity and Access Management",
   "product_documentation": "https://cloud.google.com/iam/docs/",
   "client_documentation": "https://googleapis.dev/python/iam/latest",
-  "issue_tracker": "",
+  "issue_tracker": "https://issuetracker.google.com/savedsearches/559761",
   "release_level": "alpha",
   "language": "python",
   "repo": "googleapis/google-cloud-python",

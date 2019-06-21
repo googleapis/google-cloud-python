@@ -5,7 +5,7 @@
   "client_documentation": "https://googleapis.dev/python/bigquery/latest",
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559654",
   "release_level": "ga",
-  "language": "nodejs",
+  "language": "python",
   "repo": "googleapis/google-cloud-python",
   "distribution_name": "google-cloud-bigquery",
   "api_id": "bigquery.googleapis.com",
