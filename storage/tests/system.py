@@ -552,6 +552,21 @@ class TestStorageWriteFiles(TestStorageFiles):
         copied_contents = new_blob.download_as_string()
         self.assertEqual(base_contents, copied_contents)
 
+    def test_download_blob_w_uri(self):
+        blob = self.bucket.blob("MyBuffer")
+        file_contents = b"Hello World"
+        blob.upload_from_string(file_contents)
+        self.case_blobs_to_delete.append(blob)
+
+        temp_filename = tempfile.mktemp()
+        with open(temp_filename, "wb") as file_obj:
+            Config.CLIENT.download_blob_to_file('gs://'+self.bucket.name+'/MyBuffer', file_obj)
+
+        with open(temp_filename, "rb") as file_obj:
+            stored_contents = file_obj.read()
+
+        self.assertEqual(file_contents, stored_contents)
+
 
 class TestUnicode(unittest.TestCase):
     @unittest.skipIf(RUNNING_IN_VPCSC, "Test is not VPCSC compatible.")
@@ -585,7 +600,7 @@ class TestStorageListFiles(TestStorageFiles):
         _empty_bucket(cls.bucket)
 
         logo_path = cls.FILES["logo"]["path"]
-        blob = storage.Blob(cls.FILENAMES[0], bucket=cls.bucket)
+        blob = storage.Blob(cls.FILENAMESFILENAMES[0], bucket=cls.bucket)
         blob.upload_from_filename(logo_path)
         cls.suite_blobs_to_delete = [blob]
 
