@@ -5,5 +5,5 @@
   "release_level": "ga",
   "language": "python",
   "repo": "googleapis/google-cloud-python",
-  "distribution_name": "google-cloud-core",
+  "distribution_name": "google-cloud-core"
 }
