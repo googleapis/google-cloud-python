@@ -11,6 +11,12 @@ from google.cloud.datalabeling_v1beta1.proto import (
     dataset_pb2 as google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_dataset__pb2,
 )
 from google.cloud.datalabeling_v1beta1.proto import (
+    evaluation_job_pb2 as google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_evaluation__job__pb2,
+)
+from google.cloud.datalabeling_v1beta1.proto import (
+    evaluation_pb2 as google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_evaluation__pb2,
+)
+from google.cloud.datalabeling_v1beta1.proto import (
     instruction_pb2 as google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_instruction__pb2,
 )
 from google.longrunning import (
@@ -99,11 +105,6 @@ class DataLabelingServiceStub(object):
             request_serializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.LabelTextRequest.SerializeToString,
             response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
         )
-        self.LabelAudio = channel.unary_unary(
-            "/google.cloud.datalabeling.v1beta1.DataLabelingService/LabelAudio",
-            request_serializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.LabelAudioRequest.SerializeToString,
-            response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-        )
         self.GetExample = channel.unary_unary(
             "/google.cloud.datalabeling.v1beta1.DataLabelingService/GetExample",
             request_serializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.GetExampleRequest.SerializeToString,
@@ -153,6 +154,56 @@ class DataLabelingServiceStub(object):
             "/google.cloud.datalabeling.v1beta1.DataLabelingService/DeleteInstruction",
             request_serializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.DeleteInstructionRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+        )
+        self.GetEvaluation = channel.unary_unary(
+            "/google.cloud.datalabeling.v1beta1.DataLabelingService/GetEvaluation",
+            request_serializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.GetEvaluationRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_evaluation__pb2.Evaluation.FromString,
+        )
+        self.SearchEvaluations = channel.unary_unary(
+            "/google.cloud.datalabeling.v1beta1.DataLabelingService/SearchEvaluations",
+            request_serializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.SearchEvaluationsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.SearchEvaluationsResponse.FromString,
+        )
+        self.SearchExampleComparisons = channel.unary_unary(
+            "/google.cloud.datalabeling.v1beta1.DataLabelingService/SearchExampleComparisons",
+            request_serializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.SearchExampleComparisonsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.SearchExampleComparisonsResponse.FromString,
+        )
+        self.CreateEvaluationJob = channel.unary_unary(
+            "/google.cloud.datalabeling.v1beta1.DataLabelingService/CreateEvaluationJob",
+            request_serializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.CreateEvaluationJobRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_evaluation__job__pb2.EvaluationJob.FromString,
+        )
+        self.UpdateEvaluationJob = channel.unary_unary(
+            "/google.cloud.datalabeling.v1beta1.DataLabelingService/UpdateEvaluationJob",
+            request_serializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.UpdateEvaluationJobRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_evaluation__job__pb2.EvaluationJob.FromString,
+        )
+        self.GetEvaluationJob = channel.unary_unary(
+            "/google.cloud.datalabeling.v1beta1.DataLabelingService/GetEvaluationJob",
+            request_serializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.GetEvaluationJobRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_evaluation__job__pb2.EvaluationJob.FromString,
+        )
+        self.PauseEvaluationJob = channel.unary_unary(
+            "/google.cloud.datalabeling.v1beta1.DataLabelingService/PauseEvaluationJob",
+            request_serializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.PauseEvaluationJobRequest.SerializeToString,
+            response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+        )
+        self.ResumeEvaluationJob = channel.unary_unary(
+            "/google.cloud.datalabeling.v1beta1.DataLabelingService/ResumeEvaluationJob",
+            request_serializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.ResumeEvaluationJobRequest.SerializeToString,
+            response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+        )
+        self.DeleteEvaluationJob = channel.unary_unary(
+            "/google.cloud.datalabeling.v1beta1.DataLabelingService/DeleteEvaluationJob",
+            request_serializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.DeleteEvaluationJobRequest.SerializeToString,
+            response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+        )
+        self.ListEvaluationJobs = channel.unary_unary(
+            "/google.cloud.datalabeling.v1beta1.DataLabelingService/ListEvaluationJobs",
+            request_serializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.ListEvaluationJobsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.ListEvaluationJobsResponse.FromString,
         )
 
 
@@ -267,14 +318,6 @@ class DataLabelingServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
-    def LabelAudio(self, request, context):
-        """Starts a labeling task for audio. The type of audio labeling task is
-    configured by feature in the request.
-    """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
-
     def GetExample(self, request, context):
         """Gets an example by resource name, including both data and annotation.
     """
@@ -340,6 +383,82 @@ class DataLabelingServiceServicer(object):
 
     def DeleteInstruction(self, request, context):
         """Deletes an instruction object by resource name.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def GetEvaluation(self, request, context):
+        """Gets an evaluation by resource name.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def SearchEvaluations(self, request, context):
+        """Searchs evaluations within a project. Supported filter: evaluation_job,
+    evaluation_time.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def SearchExampleComparisons(self, request, context):
+        """Searchs example comparisons in evaluation, in format of examples
+    of both ground truth and prediction(s). It is represented as a search with
+    evaluation id.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def CreateEvaluationJob(self, request, context):
+        """Creates an evaluation job.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def UpdateEvaluationJob(self, request, context):
+        """Updates an evaluation job.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def GetEvaluationJob(self, request, context):
+        """Gets an evaluation job by resource name.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def PauseEvaluationJob(self, request, context):
+        """Pauses an evaluation job. Pausing a evaluation job that is already in
+    PAUSED state will be a no-op.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def ResumeEvaluationJob(self, request, context):
+        """Resumes a paused evaluation job. Deleted evaluation job can't be resumed.
+    Resuming a running evaluation job will be a no-op.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def DeleteEvaluationJob(self, request, context):
+        """Stops and deletes an evaluation job.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def ListEvaluationJobs(self, request, context):
+        """Lists all evaluation jobs within a project with possible filters.
+    Pagination is supported.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -418,11 +537,6 @@ def add_DataLabelingServiceServicer_to_server(servicer, server):
             request_deserializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.LabelTextRequest.FromString,
             response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
         ),
-        "LabelAudio": grpc.unary_unary_rpc_method_handler(
-            servicer.LabelAudio,
-            request_deserializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.LabelAudioRequest.FromString,
-            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-        ),
         "GetExample": grpc.unary_unary_rpc_method_handler(
             servicer.GetExample,
             request_deserializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.GetExampleRequest.FromString,
@@ -472,6 +586,56 @@ def add_DataLabelingServiceServicer_to_server(servicer, server):
             servicer.DeleteInstruction,
             request_deserializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.DeleteInstructionRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+        ),
+        "GetEvaluation": grpc.unary_unary_rpc_method_handler(
+            servicer.GetEvaluation,
+            request_deserializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.GetEvaluationRequest.FromString,
+            response_serializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_evaluation__pb2.Evaluation.SerializeToString,
+        ),
+        "SearchEvaluations": grpc.unary_unary_rpc_method_handler(
+            servicer.SearchEvaluations,
+            request_deserializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.SearchEvaluationsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.SearchEvaluationsResponse.SerializeToString,
+        ),
+        "SearchExampleComparisons": grpc.unary_unary_rpc_method_handler(
+            servicer.SearchExampleComparisons,
+            request_deserializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.SearchExampleComparisonsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.SearchExampleComparisonsResponse.SerializeToString,
+        ),
+        "CreateEvaluationJob": grpc.unary_unary_rpc_method_handler(
+            servicer.CreateEvaluationJob,
+            request_deserializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.CreateEvaluationJobRequest.FromString,
+            response_serializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_evaluation__job__pb2.EvaluationJob.SerializeToString,
+        ),
+        "UpdateEvaluationJob": grpc.unary_unary_rpc_method_handler(
+            servicer.UpdateEvaluationJob,
+            request_deserializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.UpdateEvaluationJobRequest.FromString,
+            response_serializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_evaluation__job__pb2.EvaluationJob.SerializeToString,
+        ),
+        "GetEvaluationJob": grpc.unary_unary_rpc_method_handler(
+            servicer.GetEvaluationJob,
+            request_deserializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.GetEvaluationJobRequest.FromString,
+            response_serializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_evaluation__job__pb2.EvaluationJob.SerializeToString,
+        ),
+        "PauseEvaluationJob": grpc.unary_unary_rpc_method_handler(
+            servicer.PauseEvaluationJob,
+            request_deserializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.PauseEvaluationJobRequest.FromString,
+            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+        ),
+        "ResumeEvaluationJob": grpc.unary_unary_rpc_method_handler(
+            servicer.ResumeEvaluationJob,
+            request_deserializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.ResumeEvaluationJobRequest.FromString,
+            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+        ),
+        "DeleteEvaluationJob": grpc.unary_unary_rpc_method_handler(
+            servicer.DeleteEvaluationJob,
+            request_deserializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.DeleteEvaluationJobRequest.FromString,
+            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+        ),
+        "ListEvaluationJobs": grpc.unary_unary_rpc_method_handler(
+            servicer.ListEvaluationJobs,
+            request_deserializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.ListEvaluationJobsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__labeling__service__pb2.ListEvaluationJobsResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
