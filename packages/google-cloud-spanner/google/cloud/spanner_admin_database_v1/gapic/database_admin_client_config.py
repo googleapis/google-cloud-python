@@ -23,7 +23,7 @@ config = {
                     "retry_params_name": "default",
                 },
                 "CreateDatabase": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 3600000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
@@ -33,12 +33,12 @@ config = {
                     "retry_params_name": "default",
                 },
                 "UpdateDatabaseDdl": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 3600000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "DropDatabase": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 3600000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
