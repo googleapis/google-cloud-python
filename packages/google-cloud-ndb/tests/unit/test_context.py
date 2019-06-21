@@ -18,6 +18,8 @@ from unittest import mock
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _eventloop
 from google.cloud.ndb import exceptions
+from google.cloud.ndb import key as key_module
+from google.cloud.ndb import model
 import tests.unit.utils
 
 
@@ -81,8 +83,9 @@ class TestContext:
 
     def test_get_cache_policy(self):
         context = self._make_one()
-        with pytest.raises(NotImplementedError):
-            context.get_cache_policy()
+        assert (
+            context.get_cache_policy() is context_module._default_cache_policy
+        )
 
     def test_get_datastore_policy(self):
         context = self._make_one()
@@ -100,9 +103,22 @@ class TestContext:
             context.get_memcache_timeout_policy()
 
     def test_set_cache_policy(self):
+        policy = object()
         context = self._make_one()
-        with pytest.raises(NotImplementedError):
-            context.set_cache_policy(None)
+        context.set_cache_policy(policy)
+        assert context.get_cache_policy() is policy
+
+    def test_set_cache_policy_to_None(self):
+        context = self._make_one()
+        context.set_cache_policy(None)
+        assert (
+            context.get_cache_policy() is context_module._default_cache_policy
+        )
+
+    def test_set_cache_policy_with_bool(self):
+        context = self._make_one()
+        context.set_cache_policy(False)
+        assert context.get_cache_policy()(None) is False
 
     def test_set_datastore_policy(self):
         context = self._make_one()
@@ -127,11 +143,6 @@ class TestContext:
     def test_in_transaction(self):
         context = self._make_one()
         assert context.in_transaction() is False
-
-    def test_default_cache_policy(self):
-        context = self._make_one()
-        with pytest.raises(NotImplementedError):
-            context.default_cache_policy(None)
 
     def test_default_datastore_policy(self):
         context = self._make_one()
@@ -218,6 +229,48 @@ class TestTransactionOptions:
     def test_constructor():
         with pytest.raises(NotImplementedError):
             context_module.TransactionOptions()
+
+
+class Test_default_cache_policy:
+    @staticmethod
+    def test_key_is_None():
+        assert context_module._default_cache_policy(None) is None
+
+    @staticmethod
+    def test_no_model_class():
+        key = mock.Mock(kind=mock.Mock(return_value="nokind"), spec=("kind",))
+        assert context_module._default_cache_policy(key) is None
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_standard_model():
+        class ThisKind(model.Model):
+            pass
+
+        key = key_module.Key("ThisKind", 0)
+        assert context_module._default_cache_policy(key) is None
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_standard_model_defines_policy():
+        flag = object()
+
+        class ThisKind(model.Model):
+            @classmethod
+            def _use_cache(cls, key):
+                return flag
+
+        key = key_module.Key("ThisKind", 0)
+        assert context_module._default_cache_policy(key) is flag
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_standard_model_defines_policy_as_bool():
+        class ThisKind(model.Model):
+            _use_cache = False
+
+        key = key_module.Key("ThisKind", 0)
+        assert context_module._default_cache_policy(key) is False
 
 
 class TestCache:

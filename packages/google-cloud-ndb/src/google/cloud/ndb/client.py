@@ -92,7 +92,7 @@ class Client(google_client.ClientWithProject):
         self.secure = not emulator
 
     @contextlib.contextmanager
-    def context(self):
+    def context(self, cache_policy=None):
         """Establish a context for a set of NDB calls.
 
         This method provides a context manager which establishes the runtime
@@ -121,8 +121,13 @@ class Client(google_client.ClientWithProject):
         In a web application, it is recommended that a single context be used
         per HTTP request. This can typically be accomplished in a middleware
         layer.
+
+        Arguments:
+            cache_policy (Optional[Callable[[key.Key], bool]]): The
+                cache policy to use in this context. See:
+                :meth:`~google.cloud.ndb.context.Context.set_cache_policy`.
         """
-        context = context_module.Context(self)
+        context = context_module.Context(self, cache_policy=cache_policy)
         with context.use():
             yield context
 

@@ -21,6 +21,7 @@ import threading
 from google.cloud.ndb import _datastore_api
 from google.cloud.ndb import _eventloop
 from google.cloud.ndb import exceptions
+from google.cloud.ndb import model
 
 
 __all__ = [
@@ -30,20 +31,6 @@ __all__ = [
     "get_context",
     "TransactionOptions",
 ]
-
-
-_ContextTuple = collections.namedtuple(
-    "_ContextTuple",
-    [
-        "client",
-        "eventloop",
-        "stub",
-        "batches",
-        "commit_batches",
-        "transaction",
-        "cache",
-    ],
-)
 
 
 class _LocalState(threading.local):
@@ -97,6 +84,41 @@ class _Cache(collections.UserDict):
             raise KeyError(key)
 
 
+def _default_cache_policy(key):
+    """The default cache policy.
+
+    Defers to ``_use_cache`` on the Model class for the key's kind.
+
+    See: :meth:`~google.cloud.ndb.context.Context.set_cache_policy`
+    """
+    flag = None
+    if key is not None:
+        modelclass = model.Model._kind_map.get(key.kind())
+        if modelclass is not None:
+            policy = getattr(modelclass, "_use_cache", None)
+            if policy is not None:
+                if isinstance(policy, bool):
+                    flag = policy
+                else:
+                    flag = policy(key)
+
+    return flag
+
+
+_ContextTuple = collections.namedtuple(
+    "_ContextTuple",
+    [
+        "client",
+        "eventloop",
+        "stub",
+        "batches",
+        "commit_batches",
+        "transaction",
+        "cache",
+    ],
+)
+
+
 class _Context(_ContextTuple):
     """Current runtime state.
 
@@ -106,8 +128,8 @@ class _Context(_ContextTuple):
     loop. A new context can be derived from an existing context using
     :meth:`new`.
 
-    :class:`Context` is a subclass of :class:`_Context` which provides
-    only publicly facing interface. The use of two classes is only to provide a
+    :class:`Context` is a subclass of :class:`_Context` which provides only
+    publicly facing interface. The use of two classes is only to provide a
     distinction between public and private API.
 
     Arguments:
@@ -123,6 +145,7 @@ class _Context(_ContextTuple):
         commit_batches=None,
         transaction=None,
         cache=None,
+        cache_policy=None,
     ):
         if eventloop is None:
             eventloop = _eventloop.EventLoop()
@@ -145,7 +168,7 @@ class _Context(_ContextTuple):
         else:
             cache = _Cache()
 
-        return super(_Context, cls).__new__(
+        context = super(_Context, cls).__new__(
             cls,
             client=client,
             eventloop=eventloop,
@@ -155,6 +178,10 @@ class _Context(_ContextTuple):
             transaction=transaction,
             cache=cache,
         )
+
+        context.set_cache_policy(cache_policy)
+
+        return context
 
     def new(self, **kwargs):
         """Create a new :class:`_Context` instance.
@@ -205,9 +232,9 @@ class Context(_Context):
             Callable: A function that accepts a
                 :class:`~google.cloud.ndb.key.Key` instance as a single
                 positional argument and returns a ``bool`` indicating if it
-                should be cached.  May be :data:`None`.
+                should be cached. May be :data:`None`.
         """
-        raise NotImplementedError
+        return self.cache_policy
 
     def get_datastore_policy(self):
         """Return the current context datastore policy function.
@@ -238,7 +265,7 @@ class Context(_Context):
             Callable: A function that accepts a
                 :class:`~google.cloud.ndb.key.Key` instance as a single
                 positional argument and returns an ``int`` indicating the
-                timeout, in seconds, for the key. :data:`0` implies the default
+                timeout, in seconds, for the key. ``0`` implies the default
                 timeout. May be :data:`None`.
         """
         raise NotImplementedError
@@ -252,7 +279,16 @@ class Context(_Context):
                 positional argument and returns a ``bool`` indicating if it
                 should be cached.  May be :data:`None`.
         """
-        raise NotImplementedError
+        if policy is None:
+            policy = _default_cache_policy
+
+        elif isinstance(policy, bool):
+            flag = policy
+
+            def policy(key):
+                return flag
+
+        self.cache_policy = policy
 
     def set_datastore_policy(self, policy):
         """Set the context datastore policy function.
@@ -283,7 +319,7 @@ class Context(_Context):
             policy (Callable): A function that accepts a
                 :class:`~google.cloud.ndb.key.Key` instance as a single
                 positional argument and returns an ``int`` indicating the
-                timeout, in seconds, for the key. :data:`0` implies the default
+                timeout, in seconds, for the key. ``0`` implies the default
                 timout. May be :data:`None`.
         """
         raise NotImplementedError
@@ -320,30 +356,16 @@ class Context(_Context):
         return self.transaction is not None
 
     @staticmethod
-    def default_cache_policy(key):
-        """Default cache policy.
-
-        This defers to :meth:`~google.cloud.ndb.model.Model._use_cache`.
-
-        Args:
-            key (google.cloud.ndb.model.key.Key): The key.
-
-        Returns:
-            Union[bool, NoneType]: Whether to cache the key.
-        """
-        raise NotImplementedError
-
-    @staticmethod
     def default_datastore_policy(key):
         """Default cache policy.
 
-        This defers to :meth:`~google.cloud.ndb.model.Model._use_datastore`.
+        This defers to ``Model._use_datastore``.
 
         Args:
-            key (google.cloud.ndb.model.key.Key): The key.
+            key (google.cloud.ndb.key.Key): The key.
 
         Returns:
-            Union[bool, NoneType]: Whether to use datastore.
+            Union[bool, None]: Whether to use datastore.
         """
         raise NotImplementedError
 
@@ -351,13 +373,13 @@ class Context(_Context):
     def default_memcache_policy(key):
         """Default memcache policy.
 
-        This defers to :meth:`~google.cloud.ndb.model.Model._use_memcache`.
+        This defers to ``Model._use_memcache``.
 
         Args:
-            key (google.cloud.ndb.model.key.Key): The key.
+            key (google.cloud.ndb.key.Key): The key.
 
         Returns:
-            Union[bool, NoneType]: Whether to cache the key.
+            Union[bool, None]: Whether to cache the key.
         """
         raise NotImplementedError
 
@@ -365,13 +387,13 @@ class Context(_Context):
     def default_memcache_timeout_policy(key):
         """Default memcache timeout policy.
 
-        This defers to :meth:`~google.cloud.ndb.model.Model._memcache_timeout`.
+        This defers to ``Model._memcache_timeout``.
 
         Args:
-            key (google.cloud.ndb.model.key.Key): The key.
+            key (google.cloud.ndb.key.Key): The key.
 
         Returns:
-            Union[int, NoneType]: Memcache timeout to use.
+            Union[int, None]: Memcache timeout to use.
         """
         raise NotImplementedError
 
@@ -415,6 +437,15 @@ class Context(_Context):
     def urlfetch(self, *args, **kwargs):
         """Fetch a resource using HTTP."""
         raise NotImplementedError
+
+    def _use_cache(self, key, options):
+        """Return whether to use the context cache for this key."""
+        flag = options.use_cache
+        if flag is None:
+            flag = self.cache_policy(key)
+        if flag is None:
+            flag = True
+        return flag
 
 
 class ContextOptions:

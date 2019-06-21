@@ -7,6 +7,7 @@
    :maxdepth: 2
 
    client
+   context
    key
    model
    query

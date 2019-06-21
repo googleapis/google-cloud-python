@@ -41,6 +41,7 @@ nitpick_ignore = [
     ("py:class", "google.cloud.datastore_v1.proto.entity_pb2.Entity"),
     ("py:class", "_datastore_query.Cursor"),
     ("py:meth", "_datastore_query.Cursor.urlsafe"),
+    ("py:class", "google.cloud.ndb.context._Context"),
     ("py:class", "google.cloud.ndb.metadata._BaseMetadata"),
     ("py:class", "google.cloud.ndb._options.ReadOptions"),
     ("py:class", "QueryIterator"),

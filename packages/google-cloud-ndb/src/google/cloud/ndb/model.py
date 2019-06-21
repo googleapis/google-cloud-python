@@ -4751,8 +4751,9 @@ class Model(metaclass=MetaModel):
                 ds_key = helpers.key_from_protobuf(key_pb)
                 self._key = key_module.Key._from_ds_key(ds_key)
 
-                if _options.use_cache:
-                    context_module.get_context().cache[self._key] = self
+                context = context_module.get_context()
+                if context._use_cache(self._key, _options):
+                    context.cache[self._key] = self
 
             return self._key
 

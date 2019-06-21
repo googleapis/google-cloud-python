@@ -92,5 +92,5 @@ def namespace():
 @pytest.fixture
 def client_context(namespace):
     client = ndb.Client(namespace=namespace)
-    with client.context():
-        yield
+    with client.context(cache_policy=False) as the_context:
+        yield the_context
