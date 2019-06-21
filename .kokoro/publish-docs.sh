@@ -21,10 +21,13 @@ nox -s docs
 
 python3 -m pip install gcp-docuploader
 
+# install json parser
+npm i json@9.0.6 -g
+
 # create metadata
 python3 -m docuploader create-metadata \
   --name=$(cat .repo-metadata.json | json name) \
-  --version=$(cat package.json | json version) \
+  --version=$VERSION
   --language=$(cat .repo-metadata.json | json language) \
   --distribution-name=$(cat .repo-metadata.json | json distribution_name) \
   --product-page=$(cat .repo-metadata.json | json product_documentation) \
