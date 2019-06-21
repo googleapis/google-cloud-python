@@ -19,15 +19,17 @@ python3.6 -m nox --version
 # build docs
 nox -s docs
 
-cd docs/_build/html
-
 python3 -m pip install gcp-docuploader
 
 # create metadata
 python3 -m docuploader create-metadata \
---name ${NAME} \
---version ${VERSION} \
---language python
+  --name=$(cat .repo-metadata.json | json name) \
+  --version=$(cat package.json | json version) \
+  --language=$(cat .repo-metadata.json | json language) \
+  --distribution-name=$(cat .repo-metadata.json | json distribution_name) \
+  --product-page=$(cat .repo-metadata.json | json product_documentation) \
+  --github-repository=$(cat .repo-metadata.json | json repo) \
+  --issue-tracker=$(cat .repo-metadata.json | json issue_tracker)
 
 # upload docs
-python3 -m docuploader upload . --staging-bucket docs-staging
+python3 -m docuploader upload docs/_build/html --staging-bucket test-docs-staging
