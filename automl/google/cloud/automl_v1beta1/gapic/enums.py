@@ -24,7 +24,7 @@ class ClassificationType(enum.IntEnum):
     Type of the classification problem.
 
     Attributes:
-      CLASSIFICATION_TYPE_UNSPECIFIED (int): Should not be used, an un-set enum has this value by default.
+      CLASSIFICATION_TYPE_UNSPECIFIED (int): An un-set value of this enum.
       MULTICLASS (int): At most one label is allowed per example.
       MULTILABEL (int): Multiple labels are allowed for one example.
     """
