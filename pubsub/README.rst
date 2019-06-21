@@ -167,7 +167,7 @@ It is possible to specify the authentication method to use with the Pub/Sub
 clients. This can be done by providing an explicit `Credentials`_ instance. Support
 for various authentication methods is available from the `google-auth`_ library.
 
-For example, to use JSON Web Tokens, provide a `jwt.Credentials`_ instance:
+For example, to use JSON Web Tokens, provide a `google.auth.jwt.Credentials`_ instance:
 
 .. code-block:: python
 
@@ -181,9 +181,13 @@ For example, to use JSON Web Tokens, provide a `jwt.Credentials`_ instance:
         service_account_info, audience=audience
     )
 
-    publisher = pubsub_v1.PublisherClient(credentials=credentials)
     subscriber = pubsub_v1.SubscriberClient(credentials=credentials)
+
+    # The same for the publisher, except that the "audience" claim needs to be adjusted
+    publisher_audience = "https://pubsub.googleapis.com/google.pubsub.v1.Publisher"
+    credentials_pub = credentials.with_claims(audience=publisher_audience) 
+    publisher = pubsub_v1.PublisherClient(credentials=credentials_pub)
 
 .. _Credentials: https://google-auth.readthedocs.io/en/latest/reference/google.auth.credentials.html#google.auth.credentials.Credentials
 .. _google-auth: https://google-auth.readthedocs.io/en/latest/index.html
-.. _jwt.Credentials: https://google-auth.readthedocs.io/en/latest/reference/google.auth.jwt.html#google.auth.jwt.Credentials
+.. _google.auth.jwt.Credentials: https://google-auth.readthedocs.io/en/latest/reference/google.auth.jwt.html#google.auth.jwt.Credentials
