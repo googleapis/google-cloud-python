@@ -45,8 +45,7 @@ DOCUMENT_EXISTS = "Document already exists: "
 
 @pytest.fixture(scope=u"module")
 def client():
-    emulator = os.getenv(FIRESTORE_EMULATOR) is not None
-    if emulator:
+    if os.getenv(FIRESTORE_EMULATOR) is not None:
         credentials = EmulatorCreds()
         yield firestore.Client(project=FIRESTORE_PROJECT, credentials=credentials)
     else:

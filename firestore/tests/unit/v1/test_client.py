@@ -65,7 +65,7 @@ class TestClient(unittest.TestCase):
 
     def test_constructor_with_emulator_host(self):
         from google.cloud.environment_vars import FIRESTORE_EMULATOR
-
+        import pdb;pdb.set_trace()
         credentials = _make_credentials()
         emulator_host = "localhost:8081"
         with mock.patch("os.getenv") as getenv:
@@ -74,10 +74,10 @@ class TestClient(unittest.TestCase):
                 getenv.return_value = emulator_host
                 client = self._make_one(project=self.PROJECT, credentials=credentials)
 
-        self.assertEqual(client._emulator_host, emulator_host)
-        self.assertIs(client._emulator_channel, factory.return_value)
-        factory.assert_called_once_with(emulator_host)
-        getenv.assert_called_once_with(FIRESTORE_EMULATOR)
+            self.assertEqual(client._emulator_host, emulator_host)
+            self.assertIs(client._emulator_channel, factory.return_value)
+            factory.assert_called_once_with(emulator_host)
+            getenv.assert_called_once_with(FIRESTORE_EMULATOR)
 
     @mock.patch(
         "google.cloud.firestore_v1.gapic.firestore_client." "FirestoreClient",
