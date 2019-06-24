@@ -16,6 +16,7 @@
 
 import contextlib
 import os
+import requests
 
 from google.cloud import environment_vars
 from google.cloud import _helpers
@@ -80,7 +81,6 @@ class Client(google_client.ClientWithProject):
     """The scopes required for authenticating as a Cloud Datastore consumer."""
 
     def __init__(self, project=None, namespace=None, credentials=None):
-        super(Client, self).__init__(project=project, credentials=credentials)
         self.namespace = namespace
         self.host = os.environ.get(
             environment_vars.GCD_HOST, DATASTORE_API_HOST
@@ -90,6 +90,22 @@ class Client(google_client.ClientWithProject):
         # use secure connection
         emulator = bool(os.environ.get("DATASTORE_EMULATOR_HOST"))
         self.secure = not emulator
+
+        if emulator:
+            # When using the emulator, in theory, the client shouldn't need to
+            # call home to authenticate, as you don't need to authenticate to
+            # use the local emulator. Unfortunately, the client calls home to
+            # authenticate anyway, unless you pass ``requests.Session`` to
+            # ``_http`` which seems to be the preferred work around.
+            super(Client, self).__init__(
+                project=project,
+                credentials=credentials,
+                _http=requests.Session,
+            )
+        else:
+            super(Client, self).__init__(
+                project=project, credentials=credentials
+            )
 
     @contextlib.contextmanager
     def context(self, cache_policy=None):

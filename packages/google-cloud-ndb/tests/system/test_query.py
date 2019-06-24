@@ -522,6 +522,9 @@ def test_fetch_page(dispose_of):
         page_size, start_cursor=next_cursor
     )
     assert [entity.foo for entity in results] == [5, 6, 7, 8, 9]
+
+    results, cursor, more = query.fetch_page(page_size, start_cursor=cursor)
+    assert not results
     assert not more
 
 

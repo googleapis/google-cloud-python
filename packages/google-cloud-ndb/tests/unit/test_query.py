@@ -1961,6 +1961,33 @@ class TestQuery:
     @staticmethod
     @pytest.mark.usefixtures("in_context")
     @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_fetch_page_beyond_last_page(_datastore_query):
+        class DummyQueryIterator:
+            # Emulates the Datastore emulator behavior
+            _more_results_after_limit = True
+
+            def __init__(self):
+                self.items = []
+
+            def has_next_async(self):
+                return utils.future_result(False)
+
+        _datastore_query.iterate.return_value = DummyQueryIterator()
+        query = query_module.Query()
+        results, cursor, more = query.fetch_page(5, start_cursor="cursor000")
+        assert results == []
+        assert not more
+
+        _datastore_query.iterate.assert_called_once_with(
+            query_module.QueryOptions(
+                project="testing", limit=5, start_cursor="cursor000"
+            ),
+            raw=True,
+        )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
     def test_fetch_page_async(_datastore_query):
         class DummyQueryIterator:
             _more_results_after_limit = True

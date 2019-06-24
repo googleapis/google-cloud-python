@@ -2279,7 +2279,7 @@ class Query:
             results.append(result.entity())
             cursor = result.cursor
 
-        more = (
+        more = results and (
             iterator._more_results_after_limit or iterator.probably_has_next()
         )
         return results, cursor, more
