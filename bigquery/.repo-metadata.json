@@ -1,6 +1,6 @@
 {
   "name": "bigquery",
-  "name_pretty": "Google Cloud Bigquery",
+  "name_pretty": "Google Cloud BigQuery",
   "product_documentation": "https://cloud.google.com/bigquery",
   "client_documentation": "https://googleapis.dev/python/bigquery/latest",
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559654",
