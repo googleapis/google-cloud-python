@@ -112,6 +112,7 @@ The following client libraries have **alpha** support:
 -  `Google BigQuery Data Transfer`_ (`BigQuery Data Transfer README`_)
 -  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_)
 -  `Google Cloud Container`_ (`Container README`_)
+-  `Google Cloud Container Analysis`_ (`Container Analysis README`_)
 -  `Google Cloud Dataproc`_ (`Dataproc README`_)
 -  `Google Cloud DLP`_ (`DLP README`_)
 -  `Google Cloud DNS`_ (`DNS README`_)
@@ -123,6 +124,7 @@ The following client libraries have **alpha** support:
 -  `Google Cloud Tasks`_ (`Tasks README`_)
 -  `Google Cloud Trace`_ (`Trace README`_)
 -  `Google Cloud Text-to-Speech`_ (`Text-to-Speech README`_)
+-  `Grafeas_ (`Grafeas README`_)
 -  `Stackdriver Error Reporting`_ (`Error Reporting README`_)
 -  `Stackdriver Monitoring`_ (`Monitoring README`_)
 
@@ -136,6 +138,8 @@ The following client libraries have **alpha** support:
 .. _HappyBase README: https://github.com/googleapis/google-cloud-python-happybase
 .. _Google Cloud Container: https://pypi.org/project/google-cloud-container/
 .. _Container README: https://github.com/googleapis/google-cloud-python/tree/master/container
+.. _Google Cloud Container Analysis: https://pypi.org/project/google-cloud-containeranalysis/
+.. _Container Analysis README: https://github.com/googleapis/google-cloud-python/tree/master/containeranalysis
 .. _Google Cloud Dataproc: https://pypi.org/project/google-cloud-dataproc/
 .. _Dataproc README: https://github.com/googleapis/google-cloud-python/tree/master/dataproc
 .. _Google Cloud DLP: https://pypi.org/project/google-cloud-dlp/
@@ -156,6 +160,8 @@ The following client libraries have **alpha** support:
 .. _Text-to-Speech README: https://github.com/googleapis/google-cloud-python/tree/master/texttospeech
 .. _Google Cloud Trace: https://pypi.org/project/google-cloud-trace/
 .. _Trace README: https://github.com/googleapis/google-cloud-python/tree/master/trace
+.. _Grafeas: https://pypi.org/project/grafeas/
+.. _Grafeas README: https://github.com/googleapis/google-cloud-python/tree/master/grafeas
 .. _Stackdriver Error Reporting: https://pypi.org/project/google-cloud-error-reporting/
 .. _Error Reporting README: https://github.com/googleapis/google-cloud-python/tree/master/error_reporting
 .. _Stackdriver Monitoring: https://pypi.org/project/google-cloud-monitoring/
