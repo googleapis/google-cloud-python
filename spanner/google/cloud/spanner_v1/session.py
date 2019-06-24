@@ -26,6 +26,7 @@ from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1.batch import Batch
 from google.cloud.spanner_v1.snapshot import Snapshot
 from google.cloud.spanner_v1.transaction import Transaction
+import random
 
 # pylint: enable=ungrouped-imports
 
@@ -376,4 +377,4 @@ def _get_retry_delay(cause, attempts):
         nanos = retry_info.retry_delay.nanos
         return retry_info.retry_delay.seconds + nanos / 1.0e9
 
-    return 2 ** attempts
+    return 2 ** attempts + random.random()

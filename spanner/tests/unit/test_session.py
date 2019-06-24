@@ -1042,9 +1042,11 @@ class TestSession(unittest.TestCase):
                 with self.assertRaises(Aborted):
                     session.run_in_transaction(unit_of_work, timeout_secs=8)
 
-        sleep_mock.assert_has_calls(
-            (mock.call(2), mock.call(4))
-        )
+        # unpacking call args into list
+        call_args = [call_[0][0] for call_ in sleep_mock.call_args_list]
+        call_args = list(map(int, call_args))
+        assert call_args == [2, 4]
+        assert sleep_mock.call_count == 2
 
         self.assertEqual(len(called_with), 3)
         for txn, args, kw in called_with:
