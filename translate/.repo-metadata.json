@@ -1,5 +1,5 @@
 {
-  "name": "translate",
+  "name": "translation",
   "name_pretty": "Cloud Translation",
   "product_documentation": "https://cloud.google.com/translate/docs/",
   "client_documentation": "https://googleapis.dev/python/translate/latest",
@@ -8,6 +8,6 @@
   "language": "python",
   "repo": "googleapis/google-cloud-python",
   "distribution_name": "google-cloud-translate",
-  "api_id": "translate.googleapis.com",
+  "api_id": "translation.googleapis.com",
   "requires_billing": true
 }

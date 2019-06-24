@@ -1,5 +1,5 @@
 {
-  "name": "kms",
+  "name": "cloudkms",
   "name_pretty": "Google Cloud Key Management Service",
   "product_documentation": "https://cloud.google.com/kms",
   "client_documentation": "https://googleapis.dev/python/kms/latest",
@@ -8,6 +8,6 @@
   "language": "python",
   "repo": "googleapis/google-cloud-python",
   "distribution_name": "google-cloud-kms",
-  "api_id": "kms.googleapis.com",
+  "api_id": "cloudkms.googleapis.com",
   "requires_billing": true
 }

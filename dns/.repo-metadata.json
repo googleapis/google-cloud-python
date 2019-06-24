@@ -8,6 +8,5 @@
   "language": "python",
   "repo": "googleapis/google-cloud-python",
   "distribution_name": "google-cloud-dns",
-  "api_id": "dns.googleapis.com",
   "requires_billing": true
 }

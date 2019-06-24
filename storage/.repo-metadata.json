@@ -8,6 +8,6 @@
   "language": "python",
   "repo": "googleapis/google-cloud-python",
   "distribution_name": "google-cloud-storage",
-  "api_id": "storage-api.googleapis.com",
+  "api_id": "storage.googleapis.com",
   "requires_billing": true
 }

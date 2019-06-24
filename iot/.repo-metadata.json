@@ -1,5 +1,5 @@
 {
-  "name": "iot",
+  "name": "cloudiot",
   "name_pretty": "Google Cloud Internet of Things (IoT) Core",
   "product_documentation": "https://cloud.google.com/iot",
   "client_documentation": "https://googleapis.dev/python/iot/latest",
@@ -8,6 +8,6 @@
   "language": "python",
   "repo": "googleapis/google-cloud-python",
   "distribution_name": "google-cloud-iot",
-  "api_id": "iot.googleapis.com",
+  "api_id": "cloudiot.googleapis.com",
   "requires_billing": true
 }

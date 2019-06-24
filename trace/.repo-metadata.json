@@ -1,5 +1,5 @@
 {
-  "name": "trace",
+  "name": "cloudtrace",
   "name_pretty": "Stackdriver Trace",
   "product_documentation": "https://cloud.google.com/trace/docs",
   "client_documentation": "https://googleapis.dev/python/trace/latest",

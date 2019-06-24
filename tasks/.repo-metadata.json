@@ -1,5 +1,5 @@
 {
-  "name": "tasks",
+  "name": "cloudtasks",
   "name_pretty": "Cloud Tasks",
   "product_documentation": "https://cloud.google.com/tasks/docs/",
   "client_documentation": "https://googleapis.dev/python/tasks/latest",
@@ -8,6 +8,6 @@
   "language": "python",
   "repo": "googleapis/google-cloud-python",
   "distribution_name": "google-cloud-tasks",
-  "api_id": "tasks.googleapis.com",
+  "api_id": "cloudtasks.googleapis.com",
   "requires_billing": true
 }

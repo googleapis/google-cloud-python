@@ -1,5 +1,5 @@
 {
-  "name": "bigquery-storage",
+  "name": "bigquerystorage",
   "name_pretty": "Google BigQuery Storage",
   "product_documentation": "https://cloud.google.com/bigquery/docs/reference/storage/",
   "client_documentation": "https://googleapis.dev/python/bigquery-storage/latest",
@@ -8,6 +8,6 @@
   "language": "python",
   "repo": "googleapis/google-cloud-python",
   "distribution_name": "google-cloud-bigquery-storage",
-  "api_id": "bigquerydatatransfer.googleapis.com",
+  "api_id": "bigquerystorage.googleapis.com",
   "requires_billing": true
 }
