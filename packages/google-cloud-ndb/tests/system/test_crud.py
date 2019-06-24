@@ -417,3 +417,18 @@ def test_insert_entity_with_structured_property(dispose_of):
     assert isinstance(retrieved.bar, OtherKind)
 
     dispose_of(key._key)
+
+@pytest.mark.usefixtures("client_context")
+def test_insert_expando(dispose_of):
+    class SomeKind(ndb.Expando):
+        foo = ndb.IntegerProperty()
+
+    entity = SomeKind(foo=42)
+    entity.expando_prop = "exp-value"
+    key = entity.put()
+
+    retrieved = key.get()
+    assert retrieved.foo == 42
+    assert retrieved.expando_prop == "exp-value"
+
+    dispose_of(key._key)
