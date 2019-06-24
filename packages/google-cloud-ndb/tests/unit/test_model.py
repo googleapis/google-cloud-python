@@ -4304,6 +4304,53 @@ class Test_entity_from_protobuf:
         assert entity._key.kind() == "ThisKind"
         assert entity._key.id() == 123
 
+    @staticmethod
+    def test_expando_property():
+        class ThisKind(model.Expando):
+            key = model.StringProperty()
+
+        key = datastore.Key("ThisKind", 123, project="testing")
+        datastore_entity = datastore.Entity(key=key)
+        datastore_entity.update({"key": "luck", "expando_prop": "good"})
+        protobuf = helpers.entity_to_protobuf(datastore_entity)
+        entity = model._entity_from_protobuf(protobuf)
+        assert isinstance(entity, ThisKind)
+        assert entity.key == "luck"
+        assert entity._key.kind() == "ThisKind"
+        assert entity._key.id() == 123
+        assert entity.expando_prop == "good"
+
+    @staticmethod
+    def test_expando_property_list_value():
+        class ThisKind(model.Expando):
+            key = model.StringProperty()
+
+        key = datastore.Key("ThisKind", 123, project="testing")
+        datastore_entity = datastore.Entity(key=key)
+        datastore_entity.update({"key": "luck", "expando_prop": ["good"]})
+        protobuf = helpers.entity_to_protobuf(datastore_entity)
+        entity = model._entity_from_protobuf(protobuf)
+        assert isinstance(entity, ThisKind)
+        assert entity.key == "luck"
+        assert entity._key.kind() == "ThisKind"
+        assert entity._key.id() == 123
+        assert entity.expando_prop == ["good"]
+
+    @staticmethod
+    def test_value_but_non_expando_property():
+        class ThisKind(model.Model):
+            key = model.StringProperty()
+
+        key = datastore.Key("ThisKind", 123, project="testing")
+        datastore_entity = datastore.Entity(key=key)
+        datastore_entity.update({"key": "luck", "expando_prop": None})
+        protobuf = helpers.entity_to_protobuf(datastore_entity)
+        entity = model._entity_from_protobuf(protobuf)
+        assert isinstance(entity, ThisKind)
+        assert entity.key == "luck"
+        assert entity._key.kind() == "ThisKind"
+        assert entity._key.id() == 123
+
 
 class Test_entity_to_protobuf:
     @staticmethod

@@ -418,6 +418,7 @@ def test_insert_entity_with_structured_property(dispose_of):
 
     dispose_of(key._key)
 
+
 @pytest.mark.usefixtures("client_context")
 def test_insert_expando(dispose_of):
     class SomeKind(ndb.Expando):

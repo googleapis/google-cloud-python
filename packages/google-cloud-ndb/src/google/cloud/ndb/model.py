@@ -526,16 +526,24 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
     for name, value in ds_entity.items():
         prop = getattr(model_class, name, None)
         if not (prop is not None and isinstance(prop, Property)):
-            if value is not None and isinstance(entity, Expando):
+            if value is not None and isinstance(  # pragma: no branch
+                entity, Expando
+            ):
                 if isinstance(value, list):
-                    value = [(_BaseValue(sub_value) if sub_value else None) for sub_value in value]
+                    value = [
+                        (_BaseValue(sub_value) if sub_value else None)
+                        for sub_value in value
+                    ]
                 else:
                     value = _BaseValue(value)
                 setattr(entity, name, value)
             continue
         if value is not None:
             if prop._repeated:
-                value = [(_BaseValue(sub_value) if sub_value else None) for sub_value in value]
+                value = [
+                    (_BaseValue(sub_value) if sub_value else None)
+                    for sub_value in value
+                ]
             else:
                 value = _BaseValue(value)
         prop._store_value(entity, value)
@@ -568,7 +576,7 @@ def _entity_to_ds_entity(entity, set_key=True):
     """
     data = {}
     for cls in type(entity).mro():
-        if not hasattr(cls, '_properties'):
+        if not hasattr(cls, "_properties"):
             continue
 
         for prop in cls._properties.values():
