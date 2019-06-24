@@ -22,7 +22,8 @@ import enum
 class ProtectionLevel(enum.IntEnum):
     """
     ``ProtectionLevel`` specifies how cryptographic operations are
-    performed.
+    performed. For more information, see [Protection levels]
+    (https://cloud.google.com/kms/docs/algorithms#protection\_levels).
 
     Attributes:
       PROTECTION_LEVEL_UNSPECIFIED (int): Not specified.
@@ -40,7 +41,8 @@ class CryptoKey(object):
         """
         ``CryptoKeyPurpose`` describes the cryptographic capabilities of a
         ``CryptoKey``. A given key can only be used for the operations allowed
-        by its purpose.
+        by its purpose. For more information, see `Key
+        purposes <https://cloud.google.com/kms/docs/algorithms#key_purposes>`__.
 
         Attributes:
           CRYPTO_KEY_PURPOSE_UNSPECIFIED (int): Not specified.
@@ -90,18 +92,24 @@ class CryptoKeyVersion(object):
         The fields in the name after "EC\_SIGN\_" correspond to the following
         parameters: elliptic curve, digest algorithm.
 
+        For more information, see [Key purposes and algorithms]
+        (https://cloud.google.com/kms/docs/algorithms).
+
         Attributes:
           CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED (int): Not specified.
           GOOGLE_SYMMETRIC_ENCRYPTION (int): Creates symmetric encryption keys.
           RSA_SIGN_PSS_2048_SHA256 (int): RSASSA-PSS 2048 bit key with a SHA256 digest.
           RSA_SIGN_PSS_3072_SHA256 (int): RSASSA-PSS 3072 bit key with a SHA256 digest.
           RSA_SIGN_PSS_4096_SHA256 (int): RSASSA-PSS 4096 bit key with a SHA256 digest.
+          RSA_SIGN_PSS_4096_SHA512 (int): RSASSA-PSS 4096 bit key with a SHA512 digest.
           RSA_SIGN_PKCS1_2048_SHA256 (int): RSASSA-PKCS1-v1\_5 with a 2048 bit key and a SHA256 digest.
           RSA_SIGN_PKCS1_3072_SHA256 (int): RSASSA-PKCS1-v1\_5 with a 3072 bit key and a SHA256 digest.
           RSA_SIGN_PKCS1_4096_SHA256 (int): RSASSA-PKCS1-v1\_5 with a 4096 bit key and a SHA256 digest.
+          RSA_SIGN_PKCS1_4096_SHA512 (int): RSASSA-PKCS1-v1\_5 with a 4096 bit key and a SHA512 digest.
           RSA_DECRYPT_OAEP_2048_SHA256 (int): RSAES-OAEP 2048 bit key with a SHA256 digest.
           RSA_DECRYPT_OAEP_3072_SHA256 (int): RSAES-OAEP 3072 bit key with a SHA256 digest.
           RSA_DECRYPT_OAEP_4096_SHA256 (int): RSAES-OAEP 4096 bit key with a SHA256 digest.
+          RSA_DECRYPT_OAEP_4096_SHA512 (int): RSAES-OAEP 4096 bit key with a SHA512 digest.
           EC_SIGN_P256_SHA256 (int): ECDSA on the NIST P-256 curve with a SHA256 digest.
           EC_SIGN_P384_SHA384 (int): ECDSA on the NIST P-384 curve with a SHA384 digest.
         """
@@ -111,12 +119,15 @@ class CryptoKeyVersion(object):
         RSA_SIGN_PSS_2048_SHA256 = 2
         RSA_SIGN_PSS_3072_SHA256 = 3
         RSA_SIGN_PSS_4096_SHA256 = 4
+        RSA_SIGN_PSS_4096_SHA512 = 15
         RSA_SIGN_PKCS1_2048_SHA256 = 5
         RSA_SIGN_PKCS1_3072_SHA256 = 6
         RSA_SIGN_PKCS1_4096_SHA256 = 7
+        RSA_SIGN_PKCS1_4096_SHA512 = 16
         RSA_DECRYPT_OAEP_2048_SHA256 = 8
         RSA_DECRYPT_OAEP_3072_SHA256 = 9
         RSA_DECRYPT_OAEP_4096_SHA256 = 10
+        RSA_DECRYPT_OAEP_4096_SHA512 = 17
         EC_SIGN_P256_SHA256 = 12
         EC_SIGN_P384_SHA384 = 13
 
@@ -137,6 +148,13 @@ class CryptoKeyVersion(object):
           DESTROY_SCHEDULED (int): This version is scheduled for destruction, and will be destroyed soon.
           Call ``RestoreCryptoKeyVersion`` to put it back into the ``DISABLED``
           state.
+          PENDING_IMPORT (int): This version is still being imported. It may not be used, enabled,
+          disabled, or destroyed yet. Cloud KMS will automatically mark this
+          version ``ENABLED`` as soon as the version is ready.
+          IMPORT_FAILED (int): This version was not imported successfully. It may not be used, enabled,
+          disabled, or destroyed. The submitted key material has been discarded.
+          Additional details can be found in
+          ``CryptoKeyVersion.import_failure_reason``.
         """
 
         CRYPTO_KEY_VERSION_STATE_UNSPECIFIED = 0
@@ -145,6 +163,8 @@ class CryptoKeyVersion(object):
         DISABLED = 2
         DESTROYED = 3
         DESTROY_SCHEDULED = 4
+        PENDING_IMPORT = 6
+        IMPORT_FAILED = 7
 
     class CryptoKeyVersionView(enum.IntEnum):
         """
@@ -164,17 +184,63 @@ class CryptoKeyVersion(object):
         FULL = 1
 
 
+class ImportJob(object):
+    class ImportJobState(enum.IntEnum):
+        """
+        The state of the ``ImportJob``, indicating if it can be used.
+
+        Attributes:
+          IMPORT_JOB_STATE_UNSPECIFIED (int): Not specified.
+          PENDING_GENERATION (int): The wrapping key for this job is still being generated. It may not be
+          used. Cloud KMS will automatically mark this job as ``ACTIVE`` as soon
+          as the wrapping key is generated.
+          ACTIVE (int): This job may be used in ``CreateCryptoKey`` and
+          ``CreateCryptoKeyVersion`` requests.
+          EXPIRED (int): This job can no longer be used and may not leave this state once entered.
+        """
+
+        IMPORT_JOB_STATE_UNSPECIFIED = 0
+        PENDING_GENERATION = 1
+        ACTIVE = 2
+        EXPIRED = 3
+
+    class ImportMethod(enum.IntEnum):
+        """
+        ``ImportMethod`` describes the key wrapping method chosen for this
+        ``ImportJob``.
+
+        Attributes:
+          IMPORT_METHOD_UNSPECIFIED (int): Not specified.
+          RSA_OAEP_3072_SHA1_AES_256 (int): This ImportMethod represents the CKM\_RSA\_AES\_KEY\_WRAP key wrapping
+          scheme defined in the PKCS #11 standard. In summary, this involves
+          wrapping the raw key with an ephemeral AES key, and wrapping the
+          ephemeral AES key with a 3072 bit RSA key. For more details, see `RSA
+          AES key wrap
+          mechanism <http://docs.oasis-open.org/pkcs11/pkcs11-curr/v2.40/cos01/pkcs11-curr-v2.40-cos01.html#_Toc408226908>`__.
+          RSA_OAEP_4096_SHA1_AES_256 (int): This ImportMethod represents the CKM\_RSA\_AES\_KEY\_WRAP key wrapping
+          scheme defined in the PKCS #11 standard. In summary, this involves
+          wrapping the raw key with an ephemeral AES key, and wrapping the
+          ephemeral AES key with a 4096 bit RSA key. For more details, see `RSA
+          AES key wrap
+          mechanism <http://docs.oasis-open.org/pkcs11/pkcs11-curr/v2.40/cos01/pkcs11-curr-v2.40-cos01.html#_Toc408226908>`__.
+        """
+
+        IMPORT_METHOD_UNSPECIFIED = 0
+        RSA_OAEP_3072_SHA1_AES_256 = 1
+        RSA_OAEP_4096_SHA1_AES_256 = 2
+
+
 class KeyOperationAttestation(object):
     class AttestationFormat(enum.IntEnum):
         """
-        Attestion formats provided by the HSM.
+        Attestation formats provided by the HSM.
 
         Attributes:
-          ATTESTATION_FORMAT_UNSPECIFIED (int)
+          ATTESTATION_FORMAT_UNSPECIFIED (int): Not specified.
           CAVIUM_V1_COMPRESSED (int): Cavium HSM attestation compressed with gzip. Note that this format is
           defined by Cavium and subject to change at any time.
           CAVIUM_V2_COMPRESSED (int): Cavium HSM attestation V2 compressed with gzip. This is a new format
-          Introduced in Cavium's version 3.2-08
+          introduced in Cavium's version 3.2-08.
         """
 
         ATTESTATION_FORMAT_UNSPECIFIED = 0

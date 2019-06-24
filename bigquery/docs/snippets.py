@@ -443,12 +443,8 @@ def test_load_and_query_partitioned_table(client, to_delete):
         bigquery.ScalarQueryParameter("end_date", "DATE", datetime.date(1899, 12, 31)),
     ]
 
-    query_job = client.query(
-        sql,
-        # Location must match that of the dataset(s) referenced in the query.
-        location="US",
-        job_config=job_config,
-    )  # API request
+    # API request
+    query_job = client.query(sql, job_config=job_config)
 
     rows = list(query_job)
     print("{} states were admitted to the US in the 1800s".format(len(rows)))
@@ -987,12 +983,7 @@ def test_load_table_from_file(client, to_delete):
     job_config.autodetect = True
 
     with open(filename, "rb") as source_file:
-        job = client.load_table_from_file(
-            source_file,
-            table_ref,
-            location="US",  # Must match the destination dataset location.
-            job_config=job_config,
-        )  # API request
+        job = client.load_table_from_file(source_file, table_ref, job_config=job_config)
 
     job.result()  # Waits for table load to complete.
 

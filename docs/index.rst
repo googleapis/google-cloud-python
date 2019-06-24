@@ -10,6 +10,7 @@
   BigQuery Storage <bigquery_storage/index>
   Bigtable <bigtable/index>
   Container <container/index>
+  Container Analysis <containeranalysis/index>
   Data Catalog <datacatalog/index>
   Data Labeling <datalabeling/index>
   Data Loss Prevention <dlp/index>
@@ -17,6 +18,7 @@
   Datastore <datastore/index>
   DNS <dns/index>
   Firestore <firestore/index>
+  Grafeas <grafeas/index>
   IAM <iam/index>
   IoT <iot/index>
   Key Management <kms/index>

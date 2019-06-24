@@ -36,6 +36,7 @@ import grpc
 from google.cloud.automl_v1beta1.gapic import auto_ml_client_config
 from google.cloud.automl_v1beta1.gapic import enums
 from google.cloud.automl_v1beta1.gapic.transports import auto_ml_grpc_transport
+from google.cloud.automl_v1beta1.proto import annotation_spec_pb2
 from google.cloud.automl_v1beta1.proto import column_spec_pb2
 from google.cloud.automl_v1beta1.proto import dataset_pb2
 from google.cloud.automl_v1beta1.proto import image_pb2
@@ -1272,8 +1273,8 @@ class AutoMlClient(object):
         same parameters has no effect. Deploying with different parametrs (as
         e.g. changing
 
-        ``node_number`` ) will update the deployment without pausing the model's
-        availability.
+        ``node_number``) will reset the deployment state without pausing the
+        model's availability.
 
         Only applicable for Text Classification, Image Object Detection and
         Tables; all other domains manage deployment automatically.

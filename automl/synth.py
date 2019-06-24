@@ -59,20 +59,34 @@ s.replace(
 # Remove 'raw-latex' sections with sample JSON Lines files
 s.replace(
     "google/cloud/**/io_pb2.py",
+    r"""Sample in-line
+     JSON Lines file.*?\}`\n""",
+    "\n",
+    flags=re.DOTALL,
+)
+
+# Remove 'raw-latex' sections with sample JSON Lines files
+s.replace(
+    "google/cloud/**/io_pb2.py",
     r"""Sample
      in-line JSON Lines file.*?\}`\n""",
     "\n",
     flags=re.DOTALL,
 )
+
+# Replace docstring with no summary line
 s.replace(
-    "google/cloud/**/io_pb2.py",
-    r"""Sample in-line JSON Lines file \(presented here with
-     artificial line breaks, but the only actual line break is denoted by.*?\}`\n""",
-    "\n",
-    flags=re.DOTALL,
+"google/cloud/**/io_pb2.py",
+r"""__doc__ = \"\"\"-  For Translation: CSV file ``translation\.csv``, with each """,
+r'''__doc__ = """
+-  For Translation: CSV file ``translation.csv``, with each ''',
+flags=re.DOTALL,
 )
 
-
+s.replace(
+"google/cloud/**/io_pb2.py",
+r":raw-latex:`\\t `",
+r"\\\\t")
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------

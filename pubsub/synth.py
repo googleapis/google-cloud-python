@@ -15,6 +15,7 @@
 """This script is used to synthesize generated parts of this library."""
 
 import re
+import textwrap
 
 import synthtool as s
 from synthtool import gcp
