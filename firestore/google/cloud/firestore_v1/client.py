@@ -520,8 +520,9 @@ def _parse_batch_get(get_doc_response, reference_map, client):
             update_time=get_doc_response.found.update_time,
         )
     elif result_type == "missing":
+        reference = _get_reference(get_doc_response.missing, reference_map)
         snapshot = DocumentSnapshot(
-            None,
+            reference,
             None,
             exists=False,
             read_time=get_doc_response.read_time,

@@ -595,9 +595,9 @@ class Test__parse_batch_get(unittest.TestCase):
 
     def test_missing(self):
         ref_string = self._dummy_ref_string()
+        reference_map = {ref_string: mock.sentinel.reference}
         response_pb = _make_batch_response(missing=ref_string)
-
-        snapshot = self._call_fut(response_pb, {})
+        snapshot = self._call_fut(response_pb, reference_map)
         self.assertFalse(snapshot.exists)
 
     def test_unset_result_type(self):

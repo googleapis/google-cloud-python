@@ -603,11 +603,9 @@ class DocumentSnapshot(object):
         """The document identifier (within its collection).
 
         Returns:
-            str: The last component of the path of the document if it exists.
+            str: The last component of the path of the document.
         """
-        if self._reference:
-            return self._reference.id
-        return None
+        return self._reference.id
 
     @property
     def reference(self):
