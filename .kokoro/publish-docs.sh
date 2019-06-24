@@ -20,9 +20,9 @@ nox -s docs
 python3 -m pip install gcp-docuploader
 
 # install a json parser
-sudo add-apt-repository universe
 sudo apt-get update
 sudo apt-get -y install software-properties-common
+sudo add-apt-repository universe
 sudo apt-get -y install jq
 
 # create metadata
