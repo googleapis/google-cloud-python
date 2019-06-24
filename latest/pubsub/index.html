@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Python Client for Google Cloud Pub / Sub &#8212; google-cloud 20f83b1 documentation</title>
+    <title>Python Client for Google Cloud Pub / Sub &#8212; google-cloud e80709c documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -153,6 +153,31 @@ block the current thread until a given condition obtains:</p>
 </div>
 <p>It is also possible to pull messages in a synchronous (blocking) fashion. To
 learn more about subscribing, consult the <a class="reference external" href="https://googleapis.github.io/google-cloud-python/latest/pubsub/subscriber/index.html">subscriber documentation</a>.</p>
+</div>
+<div class="section" id="authentication">
+<h4>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">#</a></h4>
+<p>It is possible to specify the authentication method to use with the Pub/Sub
+clients. This can be done by providing an explicit <a class="reference external" href="https://google-auth.readthedocs.io/en/latest/reference/google.auth.credentials.html#google.auth.credentials.Credentials">Credentials</a> instance. Support
+for various authentication methods is available from the <a class="reference external" href="https://google-auth.readthedocs.io/en/latest/index.html">google-auth</a> library.</p>
+<p>For example, to use JSON Web Tokens, provide a <a class="reference external" href="https://google-auth.readthedocs.io/en/latest/reference/google.auth.jwt.html#google.auth.jwt.Credentials">google.auth.jwt.Credentials</a> instance:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">google.auth</span> <span class="kn">import</span> <span class="n">jwt</span>
+
+<span class="n">service_account_info</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;service-account-info.json&quot;</span><span class="p">))</span>
+<span class="n">audience</span> <span class="o">=</span> <span class="s2">&quot;https://pubsub.googleapis.com/google.pubsub.v1.Subscriber&quot;</span>
+
+<span class="n">credentials</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_info</span><span class="p">(</span>
+    <span class="n">service_account_info</span><span class="p">,</span> <span class="n">audience</span><span class="o">=</span><span class="n">audience</span>
+<span class="p">)</span>
+
+<span class="n">subscriber</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span>
+
+<span class="c1"># The same for the publisher, except that the &quot;audience&quot; claim needs to be adjusted</span>
+<span class="n">publisher_audience</span> <span class="o">=</span> <span class="s2">&quot;https://pubsub.googleapis.com/google.pubsub.v1.Publisher&quot;</span>
+<span class="n">credentials_pub</span> <span class="o">=</span> <span class="n">credentials</span><span class="o">.</span><span class="n">with_claims</span><span class="p">(</span><span class="n">audience</span><span class="o">=</span><span class="n">publisher_audience</span><span class="p">)</span>
+<span class="n">publisher</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">PublisherClient</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials_pub</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>
