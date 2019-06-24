@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 1.13.0
+
+06-24-2019 10:34 PDT
+
+### New Features
+- Add `client_options.ClientOptions` object. ([#8265](https://github.com/googleapis/google-cloud-python/pull/8265))
+
 ## 1.12.0
 
 06-18-2019 12:37 PDT
