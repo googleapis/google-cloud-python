@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Subscribing to Messages &#8212; google-cloud 9d9051f documentation</title>
+    <title>Subscribing to Messages &#8212; google-cloud 20f83b1 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -61,27 +61,46 @@ once”. Even in the case where multiple clients pull the same subscription,
 </div>
 <p>Creating a subscription requires that you already know what topic you want
 to subscribe to, and it must already exist. Once you have that, it is easy:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Substitute {project}, {topic}, and {subscription} with appropriate</span>
-<span class="c1"># values for your application.</span>
-<span class="n">topic_name</span> <span class="o">=</span> <span class="s1">&#39;projects/{project}/topics/{topic}&#39;</span>
-<span class="n">sub_name</span> <span class="o">=</span> <span class="s1">&#39;projects/{project}/subscriptions/{subscription}&#39;</span>
-<span class="n">subscriber</span><span class="o">.</span><span class="n">create_subscription</span><span class="p">(</span><span class="n">sub_name</span><span class="p">,</span> <span class="n">topic_name</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Substitute PROJECT, SUBSCRIPTION, and TOPIC with appropriate values for</span>
+<span class="c1"># your application.</span>
+<span class="n">sub_path</span> <span class="o">=</span> <span class="n">subscriber</span><span class="o">.</span><span class="n">subscription_path</span><span class="p">(</span><span class="n">PROJECT</span><span class="p">,</span> <span class="n">SUBSCRIPTION</span><span class="p">)</span>
+<span class="n">topic_path</span> <span class="o">=</span> <span class="n">subscriber</span><span class="o">.</span><span class="n">topic_path</span><span class="p">(</span><span class="n">PROJECT</span><span class="p">,</span> <span class="n">TOPIC</span><span class="p">)</span>
+<span class="n">subscriber</span><span class="o">.</span><span class="n">create_subscription</span><span class="p">(</span><span class="n">sub_path</span><span class="p">,</span> <span class="n">topic_path</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="pulling-a-subscription">
-<h2>Pulling a Subscription<a class="headerlink" href="#pulling-a-subscription" title="Permalink to this headline">#</a></h2>
 <p>Once you have created a subscription (or if you already had one), the next
-step is to pull data from it. The subscriber client uses the
+step is to pull data from it.</p>
+</div>
+<div class="section" id="pulling-a-subscription-synchronously">
+<h2>Pulling a Subscription Synchronously<a class="headerlink" href="#pulling-a-subscription-synchronously" title="Permalink to this headline">#</a></h2>
+<p>To pull the messages synchronously, use the client’s
+<a class="reference internal" href="api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.pull" title="google.cloud.pubsub_v1.subscriber.client.Client.pull"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pull()</span></code></a> method.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Substitute PROJECT and SUBSCRIPTION with appropriate values for your</span>
+<span class="c1"># application.</span>
+<span class="n">subscription_path</span> <span class="o">=</span> <span class="n">subscriber</span><span class="o">.</span><span class="n">subscription_path</span><span class="p">(</span><span class="n">PROJECT</span><span class="p">,</span> <span class="n">SUBSCRIPTION</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">subscriber</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">subscription_path</span><span class="p">,</span> <span class="n">max_messages</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">received_messages</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Received message:&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">ack_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">msg</span><span class="o">.</span><span class="n">ack_id</span> <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">received_messages</span><span class="p">]</span>
+<span class="n">subscriber</span><span class="o">.</span><span class="n">acknowledge</span><span class="p">(</span><span class="n">subscription_path</span><span class="p">,</span> <span class="n">ack_ids</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The method returns a <a class="reference internal" href="../types.html#google.cloud.pubsub_v1.types.PullResponse" title="google.cloud.pubsub_v1.types.PullResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">PullResponse</span></code></a> instance that
+cointains a list of received <a class="reference internal" href="../types.html#google.cloud.pubsub_v1.types.ReceivedMessage" title="google.cloud.pubsub_v1.types.ReceivedMessage"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReceivedMessage</span></code></a>
+instances.</p>
+</div>
+<div class="section" id="pulling-a-subscription-asynchronously">
+<h2>Pulling a Subscription Asynchronously<a class="headerlink" href="#pulling-a-subscription-asynchronously" title="Permalink to this headline">#</a></h2>
+<p>The subscriber client uses the
 <a class="reference internal" href="api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.subscribe" title="google.cloud.pubsub_v1.subscriber.client.Client.subscribe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">subscribe()</span></code></a> method to start a
 background thread to receive messages from Pub/Sub and calls a callback with
 each message received.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># As before, substitute {project} and {subscription} with appropriate</span>
-<span class="c1"># values for your application.</span>
-<span class="n">future</span> <span class="o">=</span> <span class="n">subscriber</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span>
-    <span class="s1">&#39;projects/{project}/subscriptions/{subscription}&#39;</span><span class="p">,</span>
-    <span class="n">callback</span>
-<span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Substitute PROJECT and SUBSCRIPTION with appropriate values for your</span>
+<span class="c1"># application.</span>
+<span class="n">subscription_path</span> <span class="o">=</span> <span class="n">subscriber</span><span class="o">.</span><span class="n">subscription_path</span><span class="p">(</span><span class="n">PROJECT</span><span class="p">,</span> <span class="n">SUBSCRIPTION</span><span class="p">)</span>
+<span class="n">future</span> <span class="o">=</span> <span class="n">subscriber</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">subscription_path</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This will return a
@@ -93,8 +112,10 @@ you to control the background thread that is managing the subscription.</p>
 <p>Messages received from a subscription are processed asynchronously through
 <strong>callbacks</strong>.</p>
 <p>The basic idea: Define a function that takes one argument; this argument
-will be a <a class="reference internal" href="api/message.html#google.cloud.pubsub_v1.subscriber.message.Message" title="google.cloud.pubsub_v1.subscriber.message.Message"><code class="xref py py-class docutils literal notranslate"><span class="pre">Message</span></code></a> instance. This
-function should do whatever processing is necessary. At the end, the
+will be a <a class="reference internal" href="api/message.html#google.cloud.pubsub_v1.subscriber.message.Message" title="google.cloud.pubsub_v1.subscriber.message.Message"><code class="xref py py-class docutils literal notranslate"><span class="pre">Message</span></code></a> instance, which is
+a convenience wrapper around the <a class="reference internal" href="../types.html#google.cloud.pubsub_v1.types.PubsubMessage" title="google.cloud.pubsub_v1.types.PubsubMessage"><code class="xref py py-class docutils literal notranslate"><span class="pre">PubsubMessage</span></code></a>
+instance received from the server (and stored under the <code class="docutils literal notranslate"><span class="pre">message</span></code> attribute).</p>
+<p>This function should do whatever processing is necessary. At the end, the
 function should either <a class="reference internal" href="api/message.html#google.cloud.pubsub_v1.subscriber.message.Message.ack" title="google.cloud.pubsub_v1.subscriber.message.Message.ack"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ack()</span></code></a>
 or <a class="reference internal" href="api/message.html#google.cloud.pubsub_v1.subscriber.message.Message.nack" title="google.cloud.pubsub_v1.subscriber.message.Message.nack"><code class="xref py py-meth docutils literal notranslate"><span class="pre">nack()</span></code></a> the message.</p>
 <p>When you call <a class="reference internal" href="api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.subscribe" title="google.cloud.pubsub_v1.subscriber.client.Client.subscribe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">subscribe()</span></code></a>, you
@@ -104,13 +125,14 @@ must pass the callback that will be used.</p>
 <span class="c1"># Note that the callback is defined *before* the subscription is opened.</span>
 <span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
     <span class="n">do_something_with</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>  <span class="c1"># Replace this with your actual logic.</span>
-    <span class="n">message</span><span class="o">.</span><span class="n">ack</span><span class="p">()</span>
+    <span class="n">message</span><span class="o">.</span><span class="n">ack</span><span class="p">()</span>  <span class="c1"># Asynchronously acknowledge the message.</span>
+
+<span class="c1"># Substitute PROJECT and SUBSCRIPTION with appropriate values for your</span>
+<span class="c1"># application.</span>
+<span class="n">subscription_path</span> <span class="o">=</span> <span class="n">subscriber</span><span class="o">.</span><span class="n">subscription_path</span><span class="p">(</span><span class="n">PROJECT</span><span class="p">,</span> <span class="n">SUBSCRIPTION</span><span class="p">)</span>
 
 <span class="c1"># Open the subscription, passing the callback.</span>
-<span class="n">future</span> <span class="o">=</span> <span class="n">subscriber</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span>
-    <span class="s1">&#39;projects/{project}/subscriptions/{subscription}&#39;</span><span class="p">,</span>
-    <span class="n">callback</span>
-<span class="p">)</span>
+<span class="n">future</span> <span class="o">=</span> <span class="n">subscriber</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">subscription_path</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The <a class="reference internal" href="api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.subscribe" title="google.cloud.pubsub_v1.subscriber.client.Client.subscribe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">subscribe()</span></code></a> method returns

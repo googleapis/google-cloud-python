@@ -155,6 +155,7 @@ block the current thread until a given condition obtains:
     except KeyboardInterrupt:
         future.cancel()
 
-To learn more, consult the `subscriber documentation`_.
+It is also possible to pull messages in a synchronous (blocking) fashion. To
+learn more about subscribing, consult the `subscriber documentation`_.
 
 .. _subscriber documentation: https://googleapis.github.io/google-cloud-python/latest/pubsub/subscriber/index.html
