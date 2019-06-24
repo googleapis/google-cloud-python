@@ -153,7 +153,7 @@ class Client(ClientWithProject):
         """
         return self._batch_stack.pop()
 
-    def _use_or_init_bucket(self, bucket_or_name):
+    def _bucket_arg_to_bucket(self, bucket_or_name):
         """Helper to return given bucket or create new by name.
 
         Args:
@@ -272,7 +272,7 @@ class Client(ClientWithProject):
             >>> bucket = client.get_bucket(bucket)  # API request.
 
         """
-        bucket = self._use_or_init_bucket(bucket_or_name)
+        bucket = self._bucket_arg_to_bucket(bucket_or_name)
 
         bucket.reload(client=self)
         return bucket
@@ -346,7 +346,7 @@ class Client(ClientWithProject):
             >>> bucket = client.create_bucket(bucket)  # API request.
 
         """
-        bucket = self._use_or_init_bucket(bucket_or_name)
+        bucket = self._bucket_arg_to_bucket(bucket_or_name)
 
         if requester_pays is not None:
             bucket.requester_pays = requester_pays
@@ -419,56 +419,54 @@ class Client(ClientWithProject):
 
         If :attr:`user_project` is set, bills the API request to that project.
 
-        bucket_or_name (Union[ \
-            :class:`~google.cloud.storage.bucket.Bucket`, \
-             str, \
-        ]):
-            The bucket resource to pass or name to create.
+        Args:
+            bucket_or_name (Union[ \
+                :class:`~google.cloud.storage.bucket.Bucket`, \
+                 str, \
+            ]):
+                The bucket resource to pass or name to create.
 
-        :type max_results: int
-        :param max_results:
-            (Optional) The maximum number of blobs in each page of results
-            from this request. Non-positive values are ignored. Defaults to
-            a sensible value set by the API.
+            max_results (int):
+                (Optional) The maximum number of blobs in each page of results
+                from this request. Non-positive values are ignored. Defaults to
+                a sensible value set by the API.
 
-        :type page_token: str
-        :param page_token:
-            (Optional) If present, return the next batch of blobs, using the
-            value, which must correspond to the ``nextPageToken`` value
-            returned in the previous response.  Deprecated: use the ``pages``
-            property of the returned iterator instead of manually passing the
-            token.
+            page_token (str):
+                (Optional) If present, return the next batch of blobs, using the
+                value, which must correspond to the ``nextPageToken`` value
+                returned in the previous response.  Deprecated: use the ``pages``
+                property of the returned iterator instead of manually passing the
+                token.
 
-        :type prefix: str
-        :param prefix: (Optional) prefix used to filter blobs.
+            prefix (str):
+                (Optional) prefix used to filter blobs.
 
-        :type delimiter: str
-        :param delimiter: (Optional) Delimiter, used with ``prefix`` to
-                          emulate hierarchy.
+            delimiter (str):
+                (Optional) Delimiter, used with ``prefix`` to
+                emulate hierarchy.
 
-        :type versions: bool
-        :param versions: (Optional) Whether object versions should be returned
-                         as separate blobs.
+            versions (bool):
+                (Optional) Whether object versions should be returned
+                as separate blobs.
 
-        :type projection: str
-        :param projection: (Optional) If used, must be 'full' or 'noAcl'.
-                           Defaults to ``'noAcl'``. Specifies the set of
-                           properties to return.
+            projection (str):
+                (Optional) If used, must be 'full' or 'noAcl'.
+                Defaults to ``'noAcl'``. Specifies the set of
+                properties to return.
 
-        :type fields: str
-        :param fields:
-            (Optional) Selector specifying which fields to include
-            in a partial response. Must be a list of fields. For
-            example to get a partial response with just the next
-            page token and the name and language of each blob returned:
-            ``'items(name,contentLanguage),nextPageToken'``.
-            See: https://cloud.google.com/storage/docs/json_api/v1/parameters#fields
+            fields (str):
+                (Optional) Selector specifying which fields to include
+                in a partial response. Must be a list of fields. For
+                example to get a partial response with just the next
+                page token and the name and language of each blob returned:
+                ``'items(name,contentLanguage),nextPageToken'``.
+                See: https://cloud.google.com/storage/docs/json_api/v1/parameters#fields
 
-        :rtype: :class:`~google.api_core.page_iterator.Iterator`
-        :returns: Iterator of all :class:`~google.cloud.storage.blob.Blob`
-                  in this bucket matching the arguments.
+        Returns:
+            Iterator of all :class:`~google.cloud.storage.blob.Blob`
+            in this bucket matching the arguments.
         """
-        bucket = self._use_or_init_bucket(bucket_or_name)
+        bucket = self._bucket_arg_to_bucket(bucket_or_name)
         return bucket.list_blobs(
             max_results=max_results,
             page_token=page_token,

@@ -28,6 +28,16 @@ def _make_credentials():
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
+def _make_connection(*responses):
+    import google.cloud.storage._http
+    from google.cloud.exceptions import NotFound
+
+    mock_conn = mock.create_autospec(google.cloud.storage._http.Connection)
+    mock_conn.user_agent = "testing 1.2.3"
+    mock_conn.api_request.side_effect = list(responses) + [NotFound("miss")]
+    return mock_conn
+
+
 def _make_response(status=http_client.OK, content=b"", headers={}):
     response = requests.Response()
     response.status_code = status
@@ -645,7 +655,7 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
         client = self._make_one(project="PROJECT", credentials=credentials)
-        connection = _Connection({"items": []})
+        connection = _make_connection({"items": []})
 
         with mock.patch(
             'google.cloud.storage.client.Client._connection',
@@ -658,10 +668,11 @@ class TestClient(unittest.TestCase):
             blobs = list(iterator)
 
             self.assertEqual(blobs, [])
-            kw, = connection._requested
-            self.assertEqual(kw["method"], "GET")
-            self.assertEqual(kw["path"], "/b/%s/o" % BUCKET_NAME)
-            self.assertEqual(kw["query_params"], {"projection": "noAcl"})
+            connection.api_request.assert_called_once_with(
+                method="GET",
+                path="/b/%s/o" % BUCKET_NAME,
+                query_params={"projection": "noAcl"}
+            )
 
     def test_list_blobs_w_all_arguments_and_user_project(self):
         from google.cloud.storage.bucket import Bucket
@@ -687,7 +698,7 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
         client = self._make_one(project=USER_PROJECT, credentials=credentials)
-        connection = _Connection({"items": []})
+        connection = _make_connection({"items": []})
 
         with mock.patch(
             'google.cloud.storage.client.Client._connection',
@@ -709,10 +720,11 @@ class TestClient(unittest.TestCase):
             blobs = list(iterator)
 
             self.assertEqual(blobs, [])
-            kw, = connection._requested
-            self.assertEqual(kw["method"], "GET")
-            self.assertEqual(kw["path"], "/b/%s/o" % BUCKET_NAME)
-            self.assertEqual(kw["query_params"], EXPECTED)
+            connection.api_request.assert_called_once_with(
+                method="GET",
+                path="/b/%s/o" % BUCKET_NAME,
+                query_params=EXPECTED
+            )
 
     def test_list_buckets_wo_project(self):
         CREDENTIALS = _make_credentials()
@@ -896,39 +908,3 @@ class TestClient(unittest.TestCase):
         self.assertEqual(page.remaining, 0)
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, blob_name)
-
-
-class _Connection(object):
-    _delete_bucket = False
-
-    def __init__(self, *responses):
-        self._responses = responses
-        self._requested = []
-        self._deleted_buckets = []
-        self.credentials = None
-
-    @staticmethod
-    def _is_bucket_path(path):
-        # Now just ensure the path only has /b/ and one more segment.
-        return path.startswith("/b/") and path.count("/") == 2
-
-    def api_request(self, **kw):
-        from google.cloud.exceptions import NotFound
-
-        self._requested.append(kw)
-
-        method = kw.get("method")
-        path = kw.get("path", "")
-        if method == "DELETE" and self._is_bucket_path(path):
-            self._deleted_buckets.append(kw)
-            if self._delete_bucket:
-                return
-            else:
-                raise NotFound("miss")
-
-        try:
-            response, self._responses = self._responses[0], self._responses[1:]
-        except IndexError:
-            raise NotFound("miss")
-        else:
-            return response
