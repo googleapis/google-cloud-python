@@ -34,30 +34,54 @@ to subscribe to, and it must already exist. Once you have that, it is easy:
 
 .. code-block:: python
 
-    # Substitute {project}, {topic}, and {subscription} with appropriate
-    # values for your application.
-    topic_name = 'projects/{project}/topics/{topic}'
-    sub_name = 'projects/{project}/subscriptions/{subscription}'
-    subscriber.create_subscription(sub_name, topic_name)
-
-
-Pulling a Subscription
-----------------------
+    # Substitute PROJECT, SUBSCRIPTION, and TOPIC with appropriate values for
+    # your application.
+    sub_path = subscriber.subscription_path(PROJECT, SUBSCRIPTION)
+    topic_path = subscriber.topic_path(PROJECT, TOPIC)
+    subscriber.create_subscription(sub_path, topic_path)
 
 Once you have created a subscription (or if you already had one), the next
-step is to pull data from it. The subscriber client uses the
+step is to pull data from it.
+
+
+Pulling a Subscription Synchronously
+------------------------------------
+
+To pull the messages synchronously, use the client's
+:meth:`~.pubsub_v1.subscriber.client.Client.pull` method.
+
+.. code-block:: python
+
+    # Substitute PROJECT and SUBSCRIPTION with appropriate values for your
+    # application.
+    subscription_path = subscriber.subscription_path(PROJECT, SUBSCRIPTION)
+    response = subscriber.pull(subscription_path, max_messages=5)
+
+    for msg in response.received_messages:
+        print("Received message:", msg.message.data)
+
+    ack_ids = [msg.ack_id for msg in response.received_messages]
+    subscriber.acknowledge(subscription_path, ack_ids)
+
+The method returns a :class:`~.pubsub_v1.types.PullResponse` instance that
+cointains a list of received :class:`~.pubsub_v1.types.ReceivedMessage`
+instances.
+
+
+Pulling a Subscription Asynchronously
+-------------------------------------
+
+The subscriber client uses the
 :meth:`~.pubsub_v1.subscriber.client.Client.subscribe` method to start a
 background thread to receive messages from Pub/Sub and calls a callback with
 each message received.
 
 .. code-block:: python
 
-    # As before, substitute {project} and {subscription} with appropriate
-    # values for your application.
-    future = subscriber.subscribe(
-        'projects/{project}/subscriptions/{subscription}',
-        callback
-    )
+    # Substitute PROJECT and SUBSCRIPTION with appropriate values for your
+    # application.
+    subscription_path = subscriber.subscription_path(PROJECT, SUBSCRIPTION)
+    future = subscriber.subscribe(subscription_path, callback)
 
 This will return a
 :class:`~.pubsub_v1.subscriber.futures.StreamingPullFuture`. This future allows
@@ -71,8 +95,11 @@ Messages received from a subscription are processed asynchronously through
 **callbacks**.
 
 The basic idea: Define a function that takes one argument; this argument
-will be a :class:`~.pubsub_v1.subscriber.message.Message` instance. This
-function should do whatever processing is necessary. At the end, the
+will be a :class:`~.pubsub_v1.subscriber.message.Message` instance, which is
+a convenience wrapper around the :class:`~.pubsub_v1.types.PubsubMessage`
+instance received from the server (and stored under the ``message`` attribute).
+
+This function should do whatever processing is necessary. At the end, the
 function should either :meth:`~.pubsub_v1.subscriber.message.Message.ack`
 or :meth:`~.pubsub_v1.subscriber.message.Message.nack` the message.
 
@@ -87,13 +114,14 @@ Here is an example:
     # Note that the callback is defined *before* the subscription is opened.
     def callback(message):
         do_something_with(message)  # Replace this with your actual logic.
-        message.ack()
+        message.ack()  # Asynchronously acknowledge the message.
+
+    # Substitute PROJECT and SUBSCRIPTION with appropriate values for your
+    # application.
+    subscription_path = subscriber.subscription_path(PROJECT, SUBSCRIPTION)
 
     # Open the subscription, passing the callback.
-    future = subscriber.subscribe(
-        'projects/{project}/subscriptions/{subscription}',
-        callback
-    )
+    future = subscriber.subscribe(subscription_path, callback)
 
 The :meth:`~.pubsub_v1.subscriber.client.Client.subscribe` method returns
 a :class:`~.pubsub_v1.subscriber.futures.StreamingPullFuture`, which is both
