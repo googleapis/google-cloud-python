@@ -9,7 +9,7 @@
 06-24-2019 10:34 PDT
 
 ### New Features
-- Add client options. ([#8265](https://github.com/googleapis/google-cloud-python/pull/8265))
+- Add `client_options.ClientOptions` object. ([#8265](https://github.com/googleapis/google-cloud-python/pull/8265))
 
 ## 1.12.0
 
