@@ -1324,7 +1324,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         worker = self._make_worker(
             client, table.name, [[row_1, row_2, row_3], [row_4, row_5, row_6]]
         )
-        statuses = worker(retry=retry)
+        worker(retry=retry)
 
         self.assertEqual(worker.latest_executing_batch_index, 2)
 
