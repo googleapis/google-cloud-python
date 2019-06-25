@@ -691,9 +691,11 @@ class _RetryableMutateRowsWorker(object):
     def __init__(self, client, table_name, batches, app_profile_id=None, timeout=None):
         self.client = client
         self.table_name = table_name
-        self.batches = dict([(index,batch) for index, batch in enumerate(batches)])
+        self.batches = dict([(index, batch) for index, batch in enumerate(batches)])
         self.app_profile_id = app_profile_id
-        self.responses_statuses = dict([(index,[None] * len(batch)) for index, batch in enumerate(batches)])
+        self.responses_statuses = dict(
+            [(index, [None] * len(batch)) for index, batch in enumerate(batches)]
+        )
         self.timeout = timeout
         self.latest_executing_batch_index = 0
         self.no_of_batches = len(batches)
