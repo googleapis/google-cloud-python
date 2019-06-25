@@ -600,7 +600,7 @@ class TestStorageListFiles(TestStorageFiles):
         _empty_bucket(cls.bucket)
 
         logo_path = cls.FILES["logo"]["path"]
-        blob = storage.Blob(cls.FILENAMESFILENAMES[0], bucket=cls.bucket)
+        blob = storage.Blob(cls.FILENAMES[0], bucket=cls.bucket)
         blob.upload_from_filename(logo_path)
         cls.suite_blobs_to_delete = [blob]
 
