@@ -1,0 +1,13 @@
+{
+  "name": "firestore",
+  "name_pretty": "Cloud Firestore",
+  "product_documentation": "https://cloud.google.com/firestore",
+  "client_documentation": "https://googleapis.dev/python/firestore/latest",
+  "issue_tracker": "https://issuetracker.google.com/savedsearches/5337669",
+  "release_level": "beta",
+  "language": "python",
+  "repo": "googleapis/google-cloud-python",
+  "distribution_name": "google-cloud-firestore",
+  "api_id": "firestore.googleapis.com",
+  "requires_billing": true
+}

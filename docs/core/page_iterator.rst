@@ -1,6 +1,1 @@
-Page Iterators
-==============
-
-.. automodule:: google.api_core.page_iterator
-  :members:
-  :show-inheritance:
+../../api_core/docs/page_iterator.rst

@@ -14,6 +14,7 @@
 
 from __future__ import absolute_import
 import os
+import shutil
 
 # https://github.com/google/importlab/issues/25
 import nox  # pytype: disable=import-error
@@ -103,3 +104,26 @@ def cover(session):
     session.install("coverage", "pytest-cov")
     session.run("coverage", "report", "--show-missing", "--fail-under=100")
     session.run("coverage", "erase")
+
+
+@nox.session(python="3.7")
+def docs(session):
+    """Build the docs for this library."""
+
+    session.install(".", "grpcio >= 1.8.2", "grpcio-gcp >= 0.2.2")
+    session.install("-e", ".")
+    session.install("sphinx", "alabaster", "recommonmark")
+
+    shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
+    session.run(
+        "sphinx-build",
+        "-W",  # warnings as errors
+        "-T",  # show full traceback on exception
+        "-N",  # no colors
+        "-b",
+        "html",
+        "-d",
+        os.path.join("docs", "_build", "doctrees", ""),
+        os.path.join("docs", ""),
+        os.path.join("docs", "_build", "html", ""),
+    )
