@@ -1,0 +1,13 @@
+{
+  "name": "datacatalog ",
+  "name_pretty": "Google Cloud Data Catalog",
+  "product_documentation": "https://cloud.google.com/data-catalog",
+  "client_documentation": "https://cloud.google.com/nodejs/docs/reference/datacatalog/latest/",
+  "issue_tracker": "",
+  "release_level": "alpha",
+  "language": "python",
+  "repo": "googleapis/google-cloud-python",
+  "distribution_name": "google-cloud-datacatalog",
+  "api_id": "datacatalog.googleapis.com",
+  "requires_billing": true
+}
