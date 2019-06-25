@@ -1,6 +1,1 @@
-Exceptions
-==========
-
-.. automodule:: google.api_core.exceptions
-  :members:
-  :show-inheritance:
+../../api_core/docs/exceptions.rst
