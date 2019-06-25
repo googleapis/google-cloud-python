@@ -223,6 +223,38 @@ def test_document_set_merge(client, cleanup):
     assert snapshot2.update_time == write_result2.update_time
 
 
+def test_document_set_merge_w_server_timestamp(client, cleanup):
+    document_id = "for-set" + unique_resource_id("-")
+    document = client.document("i-did-it", document_id)
+    # Add to clean-up before API request (in case ``set()`` fails).
+    cleanup(document)
+
+    # 0. Make sure the document doesn't exist yet
+    snapshot = document.get()
+    assert not snapshot.exists
+
+    # 1. Use ``create()`` to create the document.
+    data1 = {"name": "Sam", "address": {"city": "SF", "state": "CA"}}
+    write_result1 = document.create(data1)
+    snapshot1 = document.get()
+    assert snapshot1.update_time == write_result1.update_time
+
+    # 2. Call ``set()`` to merge
+    data2 = {"address": {"city": "LA"}, "now": firestore.SERVER_TIMESTAMP}
+    write_result2 = document.set(data2, merge=True)
+    snapshot2 = document.get()
+    stored_data = snapshot2.to_dict()
+    server_now = stored_data["now"]
+    assert stored_data == {
+        "name": "Sam",
+        "address": {"city": "LA", "state": "CA"},
+        "now": server_now,
+    }
+    # Make sure the create time hasn't changed.
+    assert snapshot2.create_time == snapshot1.create_time
+    assert snapshot2.update_time == write_result2.update_time
+
+
 def test_document_set_w_int_field(client, cleanup):
     document_id = "set-int-key" + unique_resource_id("-")
     document = client.document("i-did-it", document_id)
@@ -331,6 +363,30 @@ def test_update_document(client, cleanup):
     option6 = client.write_option(last_update_time=timestamp_pb)
     with pytest.raises(FailedPrecondition) as exc_info:
         document.update({"bad": "time-future"}, option=option6)
+
+
+def test_update_document_w_server_timestamp(client, cleanup):
+    document_id = "for-update" + unique_resource_id("-")
+    document = client.document("made", document_id)
+    # Add to clean-up before API request (in case ``create()`` fails).
+    cleanup(document)
+
+    # 1. Update and create the document (with an option).
+    data = {"foo": {"bar": "baz"}, "scoop": {"barn": 981}, "other": True}
+    write_result2 = document.create(data)
+
+    # 2. Send an update without a field path (no option).
+    field_updates3 = {"foo.now": firestore.SERVER_TIMESTAMP}
+    write_result3 = document.update(field_updates3)
+    assert_timestamp_less(write_result2.update_time, write_result3.update_time)
+    snapshot3 = document.get()
+    stored_data = snapshot3.to_dict()
+    expected3 = {
+        "foo": stored_data["foo"],
+        "scoop": data["scoop"],
+        "other": data["other"],
+    }
+    assert stored_data == expected3
 
 
 def check_snapshot(snapshot, document, data, write_result):
