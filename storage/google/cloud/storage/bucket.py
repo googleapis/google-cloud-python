@@ -434,19 +434,19 @@ class Bucket(_PropertyMixin):
     https://cloud.google.com/storage/docs/storage-classes
     """
 
-    MULTI_REGION_LOCATION_TYPE = "MULTI_REGION"
+    MULTI_REGION_LOCATION_TYPE = "multi-region"
     """Location type: data will be replicated across regions in a multi-region.
 
     Provides highest availability across largest area.
     """
 
-    REGION_LOCATION_TYPE = "REGION"
+    REGION_LOCATION_TYPE = "region"
     """Location type: data will be stored within a single region.
 
     Provides lowest latency within a single region.
     """
 
-    DUAL_REGION_LOCATION_TYPE = "DUAL_REGION"
+    DUAL_REGION_LOCATION_TYPE = "dual-region"
     """Location type: data will be stored within two primary regions.
 
     Provides high availability and low latency across two regions.

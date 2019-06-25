@@ -1532,7 +1532,7 @@ class Test_Bucket(unittest.TestCase):
         NAME = "name"
         bucket = self._make_one(name=NAME)
         with self.assertRaises(ValueError):
-            bucket.location_type = "BOGUS"
+            bucket.location_type = "bogus"
         self.assertFalse("locationType" in bucket._changes)
 
     def test_location_type_setter_MULTI_REGION(self):
