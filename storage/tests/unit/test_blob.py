@@ -1069,7 +1069,12 @@ class Test_Blob(unittest.TestCase):
         with _NamedTemporaryFile() as temp:
             file_ = blob.download_to_file_object(temp.name)
             print('\nprint: ', file_.read())
+            # file_.seek(2, 0)
             print('\nprint: ', file_.read())
+            file_.close()
+
+            file_ = open(temp.name, 'rb')
+            print('bigg: ', file_.read())
             file_.close()
 
             transport.request.assert_called_once_with(

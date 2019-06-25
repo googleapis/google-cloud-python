@@ -1984,8 +1984,13 @@ class StreamingFile(FileIO):
             self._download.chunk_size = size
         try:
             readed = self._download.consume_next_chunk(self._transport).content
+            print('\nreaded: ', readed)
+            # self.flush()
         except resumable_media.InvalidResponse as exc:
             _raise_from_invalid_response(exc)
+        self.seek(0, 0)
+        readed = super(StreamingFile, self).read()
+        print('laaa: ', readed)
         return readed
 
 
