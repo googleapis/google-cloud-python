@@ -1018,6 +1018,68 @@ class Test_Blob(unittest.TestCase):
     def test_download_to_file_with_chunk_size(self):
         self._download_to_file_helper(use_chunks=True)
 
+    def test_download_to_file_obj(self):
+        from google.cloud._testing import _NamedTemporaryFile
+
+        blob_name = "blob-name"
+        transport = mock.Mock(spec=["request"])
+        empty_hash = base64.b64encode(hashlib.md5(b"").digest()).decode(u"utf-8")
+        headers = {
+            "x-goog-hash": "md5=" + empty_hash,
+            "content-length": "3",
+            "content-range": "bytes 0-2/6"
+        }
+        mock_raw = mock.Mock(headers=headers, spec=["headers"])
+        response = mock.MagicMock(
+            headers=headers,
+            status_code=http_client.OK,
+            raw=mock_raw,
+            spec=[
+                "headers",
+                "iter_content",
+                "status_code",
+                "raw",
+            ],
+            content=b"abc"
+        )
+
+        response2 = mock.MagicMock(
+            headers=headers,
+            status_code=http_client.OK,
+            raw=mock_raw,
+            spec=[
+                "headers",
+                "iter_content",
+                "status_code",
+                "raw",
+            ],
+            content=b"def"
+        )
+
+        transport.request.side_effect = (response, response2)
+        # Create a fake client/bucket and use them in the Blob() constructor.
+        client = mock.Mock(_http=transport, spec=["_http"])
+        bucket = mock.Mock(
+            client=client, user_project=None, spec=["client", "user_project"]
+        )
+        media_link = "http://example.com/media/"
+        properties = {"mediaLink": media_link}
+        blob = self._make_one(blob_name, bucket=bucket, properties=properties, chunk_size=262144)
+
+        with _NamedTemporaryFile() as temp:
+            file_ = blob.download_to_file_object(temp.name)
+            print('\nprint: ', file_.read())
+            print('\nprint: ', file_.read())
+            file_.close()
+
+            transport.request.assert_called_once_with(
+                "GET",
+                media_link,
+                data=None,
+                headers={"accept-encoding": "gzip"},
+                stream=True,
+            )
+
     def _download_to_filename_helper(self, updated=None):
         import os
         import time
@@ -3319,3 +3381,7 @@ class _Client(object):
     @property
     def _credentials(self):
         return self._base_connection.credentials
+
+
+if __name__ == '__main__':
+    unittest.main()

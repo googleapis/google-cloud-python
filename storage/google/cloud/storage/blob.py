@@ -28,7 +28,7 @@
 import base64
 import copy
 import hashlib
-from io import BytesIO
+from io import BytesIO, FileIO
 import mimetypes
 import os
 import time
@@ -585,6 +585,16 @@ class Blob(_PropertyMixin):
 
             while not download.finished:
                 download.consume_next_chunk(transport)
+
+    def download_to_file_object(self, filename, client=None, start=None, end=None):
+        download_url = self._get_download_url()
+        headers = _get_encryption_headers(self._encryption_key)
+        headers["accept-encoding"] = "gzip"
+        transport = self._get_transport(client)
+
+        stream_file = StreamingFile(filename)
+        stream_file.start_download(download_url, headers, transport, self.chunk_size, start, end, client)
+        return stream_file
 
     def download_to_file(self, file_obj, client=None, start=None, end=None):
         """Download the contents of this blob into a file-like object.
@@ -1949,6 +1959,34 @@ class Blob(_PropertyMixin):
         value = self._properties.get("updated")
         if value is not None:
             return _rfc3339_to_datetime(value)
+
+
+class StreamingFile(FileIO):
+    def __init__(self, name):
+        super(StreamingFile, self).__init__(name, 'wb+')
+        self._download = None
+        self._transport = None
+
+    def start_download(self, download_url, headers, transport, chunk_size, start, end, client):
+        print('\nstarting\n')
+        self._download = ChunkedDownload(
+            download_url,
+            chunk_size,
+            self,
+            headers=headers,
+            start=start if start else 0,
+            end=end,
+        )
+        self._transport = transport
+
+    def read(self, size=-1):
+        if size != -1:
+            self._download.chunk_size = size
+        try:
+            readed = self._download.consume_next_chunk(self._transport).content
+        except resumable_media.InvalidResponse as exc:
+            _raise_from_invalid_response(exc)
+        return readed
 
 
 def _get_encryption_headers(key, source=False):
