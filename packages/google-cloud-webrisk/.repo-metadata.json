@@ -1,0 +1,13 @@
+{
+  "name": "webrisk",
+  "name_pretty": "Web Risk",
+  "product_documentation": "https://cloud.google.com/web-risk/docs/",
+  "client_documentation": "https://googleapis.dev/python/webrisk/latest",
+  "issue_tracker": "",
+  "release_level": "alpha",
+  "language": "python",
+  "repo": "googleapis/google-cloud-python",
+  "distribution_name": "google-cloud-webrisk",
+  "api_id": "webrisk.googleapis.com",
+  "requires_billing": true
+}
