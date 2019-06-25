@@ -332,29 +332,45 @@ class TestClient(unittest.TestCase):
         data2 = {"b": True, "c": 18}
         info = self._info_for_get_all(data1, data2)
         client, document1, document2, response1, response2 = info
-
+        document3 = client.document("pineapple", "lamp3")
+        response3 = _make_batch_response(missing=document3._document_path)
         # Exercise the mocked ``batch_get_documents``.
         field_paths = ["a", "b"]
         snapshots = self._get_all_helper(
             client,
-            [document1, document2],
-            [response1, response2],
+            [document1, document2, document3],
+            [response1, response2, response3],
             field_paths=field_paths,
         )
-        self.assertEqual(len(snapshots), 2)
+        self.assertEqual(len(snapshots), 3)
 
         snapshot1 = snapshots[0]
         self.assertIsInstance(snapshot1, DocumentSnapshot)
         self.assertIs(snapshot1._reference, document1)
         self.assertEqual(snapshot1._data, data1)
+        self.assertTrue(snapshot1.exists)
+        self.assertEqual(snapshot1.id, "lamp1")
 
         snapshot2 = snapshots[1]
         self.assertIsInstance(snapshot2, DocumentSnapshot)
         self.assertIs(snapshot2._reference, document2)
         self.assertEqual(snapshot2._data, data2)
+        self.assertTrue(snapshot2.exists)
+        self.assertEqual(snapshot2.id, "lamp2")
+
+        snapshot3 = snapshots[2]
+        self.assertIsInstance(snapshot3, DocumentSnapshot)
+        self.assertIs(snapshot3._reference, document3)
+        self.assertIsNone(snapshot3._data)
+        self.assertFalse(snapshot3.exists)
+        self.assertEqual(snapshot3.id, "lamp3")
 
         # Verify the call to the mock.
-        doc_paths = [document1._document_path, document2._document_path]
+        doc_paths = [
+            document1._document_path,
+            document2._document_path,
+            document3._document_path,
+        ]
         mask = common_pb2.DocumentMask(field_paths=field_paths)
         client._firestore_api.batch_get_documents.assert_called_once_with(
             client._database_string,

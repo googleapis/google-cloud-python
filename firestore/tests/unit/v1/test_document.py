@@ -735,7 +735,7 @@ class TestDocumentSnapshot(unittest.TestCase):
         snapshot = self._make_one(None, None, False, None, None, None)
         as_dict = snapshot.to_dict()
         self.assertIsNone(as_dict)
-        self.assertIsNone(snapshot.id)
+        self.assertFalse(snapshot.exists)
 
 
 class Test__get_document_path(unittest.TestCase):
