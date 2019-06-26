@@ -43,7 +43,7 @@ Authentication
 ==============
 
 The authentication credentials can be implicitly determined from the
-environment or directly. See `Authentication <https://googleapis.dev/python/google-api-core/latest/config.html#authentication>`_.
+environment or directly. See `Authentication <https://googleapis.dev/python/google-api-core/latest/auth.html#authentication>`_.
 
 Logging in via ``gcloud beta auth application-default login`` will
 automatically configure a JSON key file with your default project ID and
