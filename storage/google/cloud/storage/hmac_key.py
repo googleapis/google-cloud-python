@@ -170,7 +170,7 @@ class HMACKeyMetadata(object):
         """
         payload = {"state": self.state}
         self._properties = self._client._connection.api_request(
-            method="POST", path=self.path, data=payload
+            method="PUT", path=self.path, data=payload
         )
 
     def delete(self):

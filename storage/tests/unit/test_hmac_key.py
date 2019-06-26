@@ -245,7 +245,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
             client.DEFAULT_PROJECT, access_id
         )
         expected_kwargs = {
-            "method": "POST",
+            "method": "PUT",
             "path": expected_path,
             "data": {
                 "state": "INACTIVE",
@@ -277,7 +277,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
 
         expected_path = "/projects/{}/hmacKeys/{}".format(project, access_id)
         expected_kwargs = {
-            "method": "POST",
+            "method": "PUT",
             "path": expected_path,
             "data": {
                 "state": "ACTIVE",
