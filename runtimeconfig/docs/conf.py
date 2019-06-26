@@ -339,17 +339,13 @@ texinfo_documents = [
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
     "python": ("http://python.readthedocs.org/en/latest/", None),
-    "gax": ("https://gax-python.readthedocs.org/en/latest/", None),
     "google-auth": ("https://google-auth.readthedocs.io/en/stable", None),
-    "google-gax": ("https://gax-python.readthedocs.io/en/latest/", None),
     "google.api_core": (
         "https://googleapis.github.io/google-cloud-python/latest",
         None,
     ),
     "grpc": ("https://grpc.io/grpc/python/", None),
     "requests": ("http://docs.python-requests.org/en/master/", None),
-    "fastavro": ("https://fastavro.readthedocs.io/en/stable/", None),
-    "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
 }
 
 
