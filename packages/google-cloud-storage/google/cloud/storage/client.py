@@ -390,7 +390,7 @@ class Client(ClientWithProject):
             if scheme != "gs":
                 raise ValueError("URI scheme must be gs")
             bucket = Bucket(self, name=netloc)
-            blob_or_uri = Blob(path, bucket)
+            blob_or_uri = Blob(path[1:], bucket)
 
             blob_or_uri.download_to_file(file_obj, client=self, start=start, end=end)
 
