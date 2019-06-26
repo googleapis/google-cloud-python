@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.firestore_v1.client &#8212; google-cloud a9d9cca documentation</title>
+    <title>google.cloud.firestore_v1.client &#8212; google-cloud 83f0262 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -556,8 +556,9 @@
             <span class="n">update_time</span><span class="o">=</span><span class="n">get_doc_response</span><span class="o">.</span><span class="n">found</span><span class="o">.</span><span class="n">update_time</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">elif</span> <span class="n">result_type</span> <span class="o">==</span> <span class="s2">&quot;missing&quot;</span><span class="p">:</span>
+        <span class="n">reference</span> <span class="o">=</span> <span class="n">_get_reference</span><span class="p">(</span><span class="n">get_doc_response</span><span class="o">.</span><span class="n">missing</span><span class="p">,</span> <span class="n">reference_map</span><span class="p">)</span>
         <span class="n">snapshot</span> <span class="o">=</span> <span class="n">DocumentSnapshot</span><span class="p">(</span>
-            <span class="kc">None</span><span class="p">,</span>
+            <span class="n">reference</span><span class="p">,</span>
             <span class="kc">None</span><span class="p">,</span>
             <span class="n">exists</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">read_time</span><span class="o">=</span><span class="n">get_doc_response</span><span class="o">.</span><span class="n">read_time</span><span class="p">,</span>
