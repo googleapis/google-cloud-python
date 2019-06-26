@@ -2029,12 +2029,16 @@ class Blob(_PropertyMixin):
 
     def _upload_from_list(self, content_type, client, predefined_acl):
         while self._total_files > self._file_count:
-            self.upload_from_filename(
-                self._files_list[self._file_count], content_type, client, predefined_acl
-            )
             self._lock.acquire()
+            current_file_index = self._file_count
             self._file_count += 1
             self._lock.release()
+            self.upload_from_filename(
+                self._files_list[current_file_index],
+                content_type,
+                client,
+                predefined_acl,
+            )
             time.sleep(0.3)
 
 
