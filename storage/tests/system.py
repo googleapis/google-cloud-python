@@ -560,7 +560,9 @@ class TestStorageWriteFiles(TestStorageFiles):
 
         temp_filename = tempfile.mktemp()
         with open(temp_filename, "wb") as file_obj:
-            Config.CLIENT.download_blob_to_file('gs://'+self.bucket.name+'/MyBuffer', file_obj)
+            Config.CLIENT.download_blob_to_file(
+                "gs://" + self.bucket.name + "/MyBuffer", file_obj
+            )
 
         with open(temp_filename, "rb") as file_obj:
             stored_contents = file_obj.read()
