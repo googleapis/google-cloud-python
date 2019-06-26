@@ -15,6 +15,7 @@
 from __future__ import absolute_import
 
 import os
+import shutil
 
 import nox
 
@@ -132,4 +133,23 @@ def blacken(session):
         "google",
         "tests",
         "docs",
+    )
+
+@nox.session(python='3.6')
+def docs(session):
+    """Build the docs."""
+
+    session.install('sphinx', 'sphinx_rtd_theme')
+    session.install('-e', '.[pandas,fastavro]')
+
+    shutil.rmtree(os.path.join('docs', '_build'), ignore_errors=True)
+    session.run(
+        'sphinx-build',
+        '-W',  # warnings as errors
+        '-T',  # show full traceback on exception
+        '-N',  # no colors
+        '-b', 'html',
+        '-d', os.path.join('docs', '_build', 'doctrees', ''),
+        os.path.join('docs', ''),
+        os.path.join('docs', '_build', 'html', ''),
     )
