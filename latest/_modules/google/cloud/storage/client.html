@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.client &#8212; google-cloud 021e3fb documentation</title>
+    <title>google.cloud.storage.client &#8212; google-cloud a9d9cca documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -426,7 +426,7 @@
             <span class="k">if</span> <span class="n">scheme</span> <span class="o">!=</span> <span class="s2">&quot;gs&quot;</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;URI scheme must be gs&quot;</span><span class="p">)</span>
             <span class="n">bucket</span> <span class="o">=</span> <span class="n">Bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">netloc</span><span class="p">)</span>
-            <span class="n">blob_or_uri</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">bucket</span><span class="p">)</span>
+            <span class="n">blob_or_uri</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="n">path</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">bucket</span><span class="p">)</span>
 
             <span class="n">blob_or_uri</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">)</span></div>
 
