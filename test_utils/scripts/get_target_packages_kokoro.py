@@ -46,16 +46,6 @@ def get_changed_files_from_base(base):
     ], stderr=subprocess.DEVNULL).decode('utf8').strip().split('\n')
 
 
-
-def parse_response_link(response):
-    header = response.headers.get("link")
-    if header is not None:
-        for link in header.split(","):
-            link = link.strip()
-            wrapped_url, rel = link.split(";")
-            if rel.strip() == 'rel="next"':
-                return wrapped_url[1:-1]  # strip <>
-
 _URL_TEMPLATE = (
     'https://api.github.com/repos/googleapis/google-cloud-python/pulls/'
     '{}/files'
@@ -68,7 +58,7 @@ def get_changed_files_from_pr(pr):
         response = requests.get(url)
         for info in response.json():
             yield info['filename']
-        url = parse_response_link(response)
+        url = response.links.get('next', {}).get('url')
 
 
 def determine_changed_packages(changed_files):
