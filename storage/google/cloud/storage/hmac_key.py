@@ -39,6 +39,18 @@ class HMACKeyMetadata(object):
         self._client = client
         self._properties = {}
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+
+        return (
+            self._client == other._client and
+            self.access_id == other.access_id
+        )
+
+    def __hash__(self):
+        return hash(self._client) + hash(self.access_id)
+
     @property
     def access_id(self):
         """ID of the key.

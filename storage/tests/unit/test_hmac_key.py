@@ -42,6 +42,37 @@ class TestHMACKeyMetadata(unittest.TestCase):
         self.assertIsNone(metadata.time_created)
         self.assertIsNone(metadata.updated)
 
+    def test___eq___other_type(self):
+        metadata = self._make_one()
+        for bogus in (None, "bogus", 123, 456.78, [], (), {}, set()):
+            self.assertNotEqual(metadata, bogus)
+
+    def test___eq___mismatched_client(self):
+        metadata = self._make_one()
+        other_client = _Client(project='other-project-456')
+        other = self._make_one(other_client)
+        self.assertNotEqual(metadata, other)
+
+    def test___eq___mismatched_access_id(self):
+        metadata = self._make_one()
+        metadata._properties['accessId'] = 'ABC123'
+        other = self._make_one(metadata._client)
+        metadata._properties['accessId'] = 'DEF456'
+        self.assertNotEqual(metadata, other)
+
+    def test___eq___hit(self):
+        metadata = self._make_one()
+        metadata._properties['accessId'] = 'ABC123'
+        other = self._make_one(metadata._client)
+        other._properties['accessId'] = metadata.access_id
+        self.assertEqual(metadata, other)
+
+    def test___hash__(self):
+        client = _Client()
+        metadata = self._make_one(client)
+        metadata._properties['accessId'] = 'ABC123'
+        self.assertEqual(hash(metadata), hash(client) + hash('ABC123'))
+
     def test_access_id_getter(self):
         metadata = self._make_one()
         expected = "ACCESS-ID"
@@ -343,3 +374,14 @@ class _Client(object):
     def __init__(self, connection=None, project=DEFAULT_PROJECT):
         self._connection = connection
         self.project = project
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return (
+            self._connection == other._connection and
+            self.project == other.project
+        )
+
+    def __hash__(self):
+        return hash(self._connection) + hash(self.project)
