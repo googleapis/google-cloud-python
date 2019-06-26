@@ -190,6 +190,8 @@ class Blob(_PropertyMixin):
             self._properties["generation"] = generation
 
         self._file_count = 0
+        self._total_files = 0
+        self._files_list = []
         self._lock = threading.Lock()
 
     @property
@@ -1973,9 +1975,9 @@ class Blob(_PropertyMixin):
     def upload_parallel(
         self, path, content_type=None, client=None, predefined_acl=None
     ):
-        """Upload this blob's contents parallel from the content of file in directory.
+        """Upload this blob's contents in parallel, from the contents of a file in the directory.
 
-        The content type of the upload will be determined in order
+        The type of the uploaded content will be determined in the order
         of precedence:
 
         - The value passed in to this method (if not :data:`None`)
@@ -2011,13 +2013,13 @@ class Blob(_PropertyMixin):
         :param predefined_acl: (Optional) predefined access control list
         """
         threads = []
-        files_list = self._get_files(path)
-        total_files = len(files_list)
-        max_thread_to_start = min(total_files, _MAX_THREAD_LIMIT)
+        self._files_list = self._get_files(path)
+        self._total_files = len(self._files_list)
+        max_thread_to_start = min(self._total_files, _MAX_THREAD_LIMIT)
         for _ in range(max_thread_to_start):
             thread = threading.Thread(
                 target=self._upload_from_list,
-                args=(files_list, total_files, content_type, client, predefined_acl),
+                args=(content_type, client, predefined_acl),
             )
             thread.start()
             threads.append(thread)
@@ -2025,12 +2027,10 @@ class Blob(_PropertyMixin):
         for thread in threads:
             thread.join()
 
-    def _upload_from_list(
-        self, files_list, total_files, content_type, client, predefined_acl
-    ):
-        while total_files > self._file_count:
+    def _upload_from_list(self, content_type, client, predefined_acl):
+        while self._total_files > self._file_count:
             self.upload_from_filename(
-                files_list[self._file_count], content_type, client, predefined_acl
+                self._files_list[self._file_count], content_type, client, predefined_acl
             )
             self._lock.acquire()
             self._file_count += 1
