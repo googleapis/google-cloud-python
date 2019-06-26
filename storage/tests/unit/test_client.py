@@ -953,7 +953,9 @@ class TestClient(unittest.TestCase):
                 client._connection.API_BASE_URL,
                 "storage",
                 client._connection.API_VERSION,
-                "projects/%s/hmacKeys",
+                "projects",
+                PROJECT,
+                "hmacKeys",
             ]
         )
         QS_PARAMS = {"serviceAccountEmail": EMAIL}
@@ -979,7 +981,9 @@ class TestClient(unittest.TestCase):
                 client._connection.API_BASE_URL,
                 "storage",
                 client._connection.API_VERSION,
-                "projects/%s/hmacKeys",
+                "projects",
+                PROJECT,
+               "hmacKeys",
             ]
         )
         http.request.assert_called_once_with(
@@ -1031,7 +1035,9 @@ class TestClient(unittest.TestCase):
                 client._connection.API_BASE_URL,
                 "storage",
                 client._connection.API_VERSION,
-                "projects/%s/hmacKeys",
+                "projects",
+                PROJECT,
+                "hmacKeys",
             ]
         )
         QS_PARAMS = {

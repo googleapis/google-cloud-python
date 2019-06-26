@@ -572,7 +572,7 @@ class Client(ClientWithProject):
             Tuple[:class:`~google.cloud.storage.hmac_key.HMACKeyMetadata`, str]
         :returns: metadata for the created key, plus the bytes of the key's secret, which is an 40-character base64-encoded string.
         """
-        path = "/projects/%s/hmacKeys".format(self.project)
+        path = "/projects/{}/hmacKeys".format(self.project)
         qs_params = {"serviceAccountEmail": service_account_email}
         api_response = self._connection.api_request(
             method="POST", path=path, query_params=qs_params
@@ -604,7 +604,7 @@ class Client(ClientWithProject):
             Tuple[:class:`~google.cloud.storage.hmac_key.HMACKeyMetadata`, str]
         :returns: metadata for the created key, plus the bytes of the key's secret, which is an 40-character base64-encoded string.
         """
-        path = "/projects/%s/hmacKeys".format(self.project)
+        path = "/projects/{}/hmacKeys".format(self.project)
         extra_params = {}
 
         if service_account_email is not None:
