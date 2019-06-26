@@ -90,6 +90,17 @@ def tearDownModule():
 
 
 class TestClient(unittest.TestCase):
+    def setUp(self):
+        self.case_hmac_keys_to_delete = []
+
+    def tearDown(self):
+        for hmac_key in self.case_hmac_keys_to_delete:
+            if hmac_key.state == HMACKeyMetadata.ACTIVE_STATE:
+                hmac_key.state = HMACKeyMetadata.INACTIVE_STATE
+                hmac_key.update()
+            if hmac_key.state == HMACKeyMetadata.INACTIVE_STATE:
+                retry_429_harder(hmac_key.delete)()
+
     def test_get_service_account_email(self):
         domain = "gs-project-accounts.iam.gserviceaccount.com"
 
@@ -101,6 +112,44 @@ class TestClient(unittest.TestCase):
         matches = [pattern.match(email) for pattern in patterns]
 
         self.assertTrue(any(match for match in matches if match is not None))
+
+    def test_hmac_key_crud(self):
+        from google.cloud.storage.hmac_key import HMACKeyMetadata
+
+        #email = Config.CLIENT.get_service_account_email()
+
+        credentials = Config.CLIENT._credentials
+        email = credentials.service_account_email
+
+        before_keys = set(Config.CLIENT.list_hmac_keys())
+
+        metadata, secret = Config.CLIENT.create_hmac_key(email)
+        self.case_hmac_keys_to_delete.append(metadata)
+
+        self.assertIsInstance(secret, six.text_type)
+        self.assertEqual(len(secret), 40)
+
+        after_keys = set(Config.CLIENT.list_hmac_keys())
+        self.assertFalse(metadata in before_keys)
+        self.assertTrue(metadata in after_keys)
+
+        another = HMACKeyMetadata(Config.CLIENT)
+
+        another._properties["accessId"] = "nonesuch"
+        self.assertFalse(another.exists())
+
+        another._properties["accessId"] = metadata.access_id
+        self.assertTrue(another.exists())
+
+        another.reload()
+
+        self.assertEqual(another._properties, metadata._properties)
+
+        metadata.state = HMACKeyMetadata.INACTIVE_STATE
+        metadata.update()
+
+        metadata.delete()
+        self.case_hmac_keys_to_delete.remove(metadata)
 
 
 class TestStorageBuckets(unittest.TestCase):
