@@ -769,6 +769,7 @@ def test_get_all(client, cleanup):
     assert snapshots[0].exists
     assert snapshots[1].exists
     assert not snapshots[2].exists
+
     snapshots = [snapshot for snapshot in snapshots if snapshot.exists]
     id_attr = operator.attrgetter("id")
     snapshots.sort(key=id_attr)
