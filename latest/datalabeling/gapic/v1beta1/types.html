@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Data Labeling API Client &#8212; google-cloud 3d32438 documentation</title>
+    <title>Types for Data Labeling API Client &#8212; google-cloud dd52140 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -112,6 +112,13 @@ annotated dataset.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.AnnotatedDataset.blocking_resources">
+<code class="descname">blocking_resources</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.AnnotatedDataset.blocking_resources" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The names of any related resources that are
+blocking changes to the annotated dataset.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">annotation_source</code></dt>
 <dd><p>Field google.cloud.datalabeling.v1beta1.AnnotatedDataset.annotation_source</p>
@@ -121,6 +128,12 @@ annotated dataset.</p>
 <dt>
 <code class="descname">annotation_type</code></dt>
 <dd><p>Field google.cloud.datalabeling.v1beta1.AnnotatedDataset.annotation_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">blocking_resources</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.AnnotatedDataset.blocking_resources</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -177,13 +190,6 @@ annotated dataset.</p>
 <dt id="google.cloud.datalabeling_v1beta1.types.AnnotatedDatasetMetadata">
 <em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">AnnotatedDatasetMetadata</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.AnnotatedDatasetMetadata" title="Permalink to this definition">#</a></dt>
 <dd><p>Metadata on AnnotatedDataset.</p>
-<dl class="attribute">
-<dt id="google.cloud.datalabeling_v1beta1.types.AnnotatedDatasetMetadata.human_annotation_config">
-<code class="descname">human_annotation_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.AnnotatedDatasetMetadata.human_annotation_config" title="Permalink to this definition">#</a></dt>
-<dd><p>HumanAnnotationConfig used when requesting the human labeling
-task for this AnnotatedDataset.</p>
-</dd></dl>
-
 <dl class="attribute">
 <dt id="google.cloud.datalabeling_v1beta1.types.AnnotatedDatasetMetadata.annotation_request_config">
 <code class="descname">annotation_request_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.AnnotatedDatasetMetadata.annotation_request_config" title="Permalink to this definition">#</a></dt>
@@ -249,6 +255,13 @@ labeling task.</p>
 <dt id="google.cloud.datalabeling_v1beta1.types.AnnotatedDatasetMetadata.text_entity_extraction_config">
 <code class="descname">text_entity_extraction_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.AnnotatedDatasetMetadata.text_entity_extraction_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Configuration for text entity extraction task.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.AnnotatedDatasetMetadata.human_annotation_config">
+<code class="descname">human_annotation_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.AnnotatedDatasetMetadata.human_annotation_config" title="Permalink to this definition">#</a></dt>
+<dd><p>HumanAnnotationConfig used when requesting the human labeling
+task for this AnnotatedDataset.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -478,9 +491,22 @@ characters long.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.AnnotationSpecSet.blocking_resources">
+<code class="descname">blocking_resources</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.AnnotationSpecSet.blocking_resources" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The names of any related resources that are
+blocking changes to the annotation spec set.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">annotation_specs</code></dt>
 <dd><p>Field google.cloud.datalabeling.v1beta1.AnnotationSpecSet.annotation_specs</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">blocking_resources</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.AnnotationSpecSet.blocking_resources</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -542,6 +568,12 @@ The line segments can cross each other.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.AnnotationValue.text_entity_extraction_annotation">
+<code class="descname">text_entity_extraction_annotation</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.AnnotationValue.text_entity_extraction_annotation" title="Permalink to this definition">#</a></dt>
+<dd><p>Annotation value for text entity extraction case.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.datalabeling_v1beta1.types.AnnotationValue.video_classification_annotation">
 <code class="descname">video_classification_annotation</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.AnnotationValue.video_classification_annotation" title="Permalink to this definition">#</a></dt>
 <dd><p>Annotation value for video classification case.</p>
@@ -557,18 +589,6 @@ The line segments can cross each other.</p>
 <dt id="google.cloud.datalabeling_v1beta1.types.AnnotationValue.video_event_annotation">
 <code class="descname">video_event_annotation</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.AnnotationValue.video_event_annotation" title="Permalink to this definition">#</a></dt>
 <dd><p>Annotation value for video event case.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.datalabeling_v1beta1.types.AnnotationValue.audio_recognition_annotation">
-<code class="descname">audio_recognition_annotation</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.AnnotationValue.audio_recognition_annotation" title="Permalink to this definition">#</a></dt>
-<dd><p>Annotation value for speech audio recognition case.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">audio_recognition_annotation</code></dt>
-<dd><p>Field google.cloud.datalabeling.v1beta1.AnnotationValue.audio_recognition_annotation</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -599,6 +619,12 @@ The line segments can cross each other.</p>
 <dt>
 <code class="descname">text_classification_annotation</code></dt>
 <dd><p>Field google.cloud.datalabeling.v1beta1.AnnotationValue.text_classification_annotation</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">text_entity_extraction_annotation</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.AnnotationValue.text_entity_extraction_annotation</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -639,79 +665,58 @@ The line segments can cross each other.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="google.cloud.datalabeling_v1beta1.types.AudioPayload">
-<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">AudioPayload</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.AudioPayload" title="Permalink to this definition">#</a></dt>
-<dd><p>Container of information of an audio.</p>
+<dt id="google.cloud.datalabeling_v1beta1.types.Attempt">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">Attempt</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.Attempt" title="Permalink to this definition">#</a></dt>
+<dd><p>Records a failed attempt.</p>
 <dl class="attribute">
-<dt id="google.cloud.datalabeling_v1beta1.types.AudioPayload.audio_uri">
-<code class="descname">audio_uri</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.AudioPayload.audio_uri" title="Permalink to this definition">#</a></dt>
-<dd><p>Audio uri in user bucket.</p>
+<dt id="google.cloud.datalabeling_v1beta1.types.Attempt.attempt_time">
+<code class="descname">attempt_time</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.Attempt.attempt_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.Attempt.attempt_time</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.datalabeling_v1beta1.types.AudioPayload.sample_rate_hertz">
-<code class="descname">sample_rate_hertz</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.AudioPayload.sample_rate_hertz" title="Permalink to this definition">#</a></dt>
-<dd><p>Sample rate in Hertz of the audio data sent in all
-<code class="docutils literal notranslate"><span class="pre">RecognitionAudio</span></code> messages. This field is optional for
-<code class="docutils literal notranslate"><span class="pre">FLAC</span></code> and <code class="docutils literal notranslate"><span class="pre">WAV</span></code> audio files and required for all other
-audio formats. For details, see [AudioEncoding][google.cloud.d
-atalabeling.v1beta1.AudioPayload.AudioEncoding].</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">audio_uri</code></dt>
-<dd><p>Field google.cloud.datalabeling.v1beta1.AudioPayload.audio_uri</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">sample_rate_hertz</code></dt>
-<dd><p>Field google.cloud.datalabeling.v1beta1.AudioPayload.sample_rate_hertz</p>
+<dt id="google.cloud.datalabeling_v1beta1.types.Attempt.partial_failures">
+<code class="descname">partial_failures</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.Attempt.partial_failures" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.Attempt.partial_failures</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="google.cloud.datalabeling_v1beta1.types.AudioRecognitionAnnotation">
-<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">AudioRecognitionAnnotation</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.AudioRecognitionAnnotation" title="Permalink to this definition">#</a></dt>
-<dd><p>Speech audio recognition.</p>
+<dt id="google.cloud.datalabeling_v1beta1.types.BigQuerySource">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">BigQuerySource</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.BigQuerySource" title="Permalink to this definition">#</a></dt>
+<dd><p>The BigQuery location for the input content.</p>
 <dl class="attribute">
-<dt id="google.cloud.datalabeling_v1beta1.types.AudioRecognitionAnnotation.transcript">
-<code class="descname">transcript</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.AudioRecognitionAnnotation.transcript" title="Permalink to this definition">#</a></dt>
-<dd><p>Transcript text representing the words spoken.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.datalabeling_v1beta1.types.AudioRecognitionAnnotation.start_offset">
-<code class="descname">start_offset</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.AudioRecognitionAnnotation.start_offset" title="Permalink to this definition">#</a></dt>
-<dd><p>Start position in audio file that the transcription
-corresponds to.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.datalabeling_v1beta1.types.AudioRecognitionAnnotation.end_offset">
-<code class="descname">end_offset</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.AudioRecognitionAnnotation.end_offset" title="Permalink to this definition">#</a></dt>
-<dd><p>End position in audio file that the transcription corresponds
-to.</p>
+<dt id="google.cloud.datalabeling_v1beta1.types.BigQuerySource.input_uri">
+<code class="descname">input_uri</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.BigQuerySource.input_uri" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. BigQuery URI to a table, up to 2000 characters long.
+Accepted forms: BigQuery gs path e.g.
+bq://projectId.bqDatasetId.bqTableId</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">end_offset</code></dt>
-<dd><p>Field google.cloud.datalabeling.v1beta1.AudioRecognitionAnnotation.end_offset</p>
+<code class="descname">input_uri</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.BigQuerySource.input_uri</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.BoundingBoxEvaluationOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">BoundingBoxEvaluationOptions</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.BoundingBoxEvaluationOptions" title="Permalink to this definition">#</a></dt>
+<dd><p>Options regarding evaluation between bounding boxes.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.BoundingBoxEvaluationOptions.iou_threshold">
+<code class="descname">iou_threshold</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.BoundingBoxEvaluationOptions.iou_threshold" title="Permalink to this definition">#</a></dt>
+<dd><p>Minimize IoU required to consider 2 bounding boxes are
+matched.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">start_offset</code></dt>
-<dd><p>Field google.cloud.datalabeling.v1beta1.AudioRecognitionAnnotation.start_offset</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">transcript</code></dt>
-<dd><p>Field google.cloud.datalabeling.v1beta1.AudioRecognitionAnnotation.transcript</p>
+<code class="descname">iou_threshold</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.BoundingBoxEvaluationOptions.iou_threshold</p>
 </dd></dl>
 
 </dd></dl>
@@ -776,6 +781,119 @@ to.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.ClassificationMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">ClassificationMetadata</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ClassificationMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Metadata for classification annotations.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ClassificationMetadata.is_multi_label">
+<code class="descname">is_multi_label</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ClassificationMetadata.is_multi_label" title="Permalink to this definition">#</a></dt>
+<dd><p>Whether the classification task is multi-label or not.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">is_multi_label</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ClassificationMetadata.is_multi_label</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.ClassificationMetrics">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">ClassificationMetrics</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ClassificationMetrics" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ClassificationMetrics.pr_curve">
+<code class="descname">pr_curve</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ClassificationMetrics.pr_curve" title="Permalink to this definition">#</a></dt>
+<dd><p>Precision-recall curve.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ClassificationMetrics.confusion_matrix">
+<code class="descname">confusion_matrix</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ClassificationMetrics.confusion_matrix" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ClassificationMetrics.confusion_matrix</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">pr_curve</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ClassificationMetrics.pr_curve</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.ConfusionMatrix">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">ConfusionMatrix</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ConfusionMatrix" title="Permalink to this definition">#</a></dt>
+<dd><p>Confusion matrix of the model running the classification. Not applicable
+when label filtering is specified in evaluation option.</p>
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.ConfusionMatrix.ConfusionMatrixEntry">
+<em class="property">class </em><code class="descname">ConfusionMatrixEntry</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ConfusionMatrix.ConfusionMatrixEntry" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ConfusionMatrix.ConfusionMatrixEntry.annotation_spec">
+<code class="descname">annotation_spec</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ConfusionMatrix.ConfusionMatrixEntry.annotation_spec" title="Permalink to this definition">#</a></dt>
+<dd><p>The predicted annotation spec.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ConfusionMatrix.ConfusionMatrixEntry.item_count">
+<code class="descname">item_count</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ConfusionMatrix.ConfusionMatrixEntry.item_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Number of items being predicted as this label.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">annotation_spec</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ConfusionMatrix.ConfusionMatrixEntry.annotation_spec</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">item_count</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ConfusionMatrix.ConfusionMatrixEntry.item_count</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.ConfusionMatrix.Row">
+<em class="property">class </em><code class="descname">Row</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ConfusionMatrix.Row" title="Permalink to this definition">#</a></dt>
+<dd><p>A row in the confusion matrix.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ConfusionMatrix.Row.annotation_spec">
+<code class="descname">annotation_spec</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ConfusionMatrix.Row.annotation_spec" title="Permalink to this definition">#</a></dt>
+<dd><p>the original annotation spec of this row.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ConfusionMatrix.Row.entries">
+<code class="descname">entries</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ConfusionMatrix.Row.entries" title="Permalink to this definition">#</a></dt>
+<dd><p>Info describing predicted label distribution.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">annotation_spec</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ConfusionMatrix.Row.annotation_spec</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">entries</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ConfusionMatrix.Row.entries</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ConfusionMatrix.row">
+<code class="descname">row</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ConfusionMatrix.row" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ConfusionMatrix.row</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.datalabeling_v1beta1.types.CreateAnnotationSpecSetRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">CreateAnnotationSpecSetRequest</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.CreateAnnotationSpecSetRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request message for CreateAnnotationSpecSet.</p>
@@ -835,6 +953,82 @@ projects/{project_id}</p>
 <dt>
 <code class="descname">parent</code></dt>
 <dd><p>Field google.cloud.datalabeling.v1beta1.CreateDatasetRequest.parent</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.CreateEvaluationJobRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">CreateEvaluationJobRequest</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.CreateEvaluationJobRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for CreateEvaluationJob.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.CreateEvaluationJobRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.CreateEvaluationJobRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Evaluation job resource parent, format:
+projects/{project_id}.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.CreateEvaluationJobRequest.job">
+<code class="descname">job</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.CreateEvaluationJobRequest.job" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The evaluation job to create.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">job</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.CreateEvaluationJobRequest.job</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.CreateEvaluationJobRequest.parent</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.CreateInstructionMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">CreateInstructionMetadata</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.CreateInstructionMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Metadata of a CreateInstruction operation.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.CreateInstructionMetadata.instruction">
+<code class="descname">instruction</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.CreateInstructionMetadata.instruction" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the created Instruction.
+projects/{project_id}/instructions/{instruction_id}</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.CreateInstructionMetadata.partial_failures">
+<code class="descname">partial_failures</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.CreateInstructionMetadata.partial_failures" title="Permalink to this definition">#</a></dt>
+<dd><p>Partial failures encountered. E.g. single files that couldn’t
+be read. Status details field will contain standard GCP error
+details.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.CreateInstructionMetadata.create_time">
+<code class="descname">create_time</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.CreateInstructionMetadata.create_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Timestamp when create instruction request was created.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.CreateInstructionMetadata.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">instruction</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.CreateInstructionMetadata.instruction</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">partial_failures</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.CreateInstructionMetadata.partial_failures</p>
 </dd></dl>
 
 </dd></dl>
@@ -917,22 +1111,10 @@ projects/{project_id}</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.datalabeling_v1beta1.types.DataItem.audio_payload">
-<code class="descname">audio_payload</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.DataItem.audio_payload" title="Permalink to this definition">#</a></dt>
-<dd><p>The audio payload, a container of the audio uri.</p>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="google.cloud.datalabeling_v1beta1.types.DataItem.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.DataItem.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. Name of the data item, in format of: projects/{pr
 oject_id}/datasets/{dataset_id}/dataItems/{data_item_id}</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">audio_payload</code></dt>
-<dd><p>Field google.cloud.datalabeling.v1beta1.DataItem.audio_payload</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1004,9 +1186,34 @@ clients import data to this dataset.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.Dataset.blocking_resources">
+<code class="descname">blocking_resources</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.Dataset.blocking_resources" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The names of any related resources that are
+blocking changes to the dataset.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.Dataset.data_item_count">
+<code class="descname">data_item_count</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.Dataset.data_item_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The number of data items in the dataset.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">blocking_resources</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.Dataset.blocking_resources</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">create_time</code></dt>
 <dd><p>Field google.cloud.datalabeling.v1beta1.Dataset.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">data_item_count</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.Dataset.data_item_count</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1094,6 +1301,26 @@ projects/{project_id}/datasets/{dataset_id}</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.DeleteEvaluationJobRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">DeleteEvaluationJobRequest</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.DeleteEvaluationJobRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message DeleteEvaluationJob.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.DeleteEvaluationJobRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.DeleteEvaluationJobRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Name of the evaluation job that is going to be
+deleted. Format:
+‘projects/{project_id}/evaluationJobs/{evaluation_job_id}’</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.DeleteEvaluationJobRequest.name</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.datalabeling_v1beta1.types.DeleteInstructionRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">DeleteInstructionRequest</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.DeleteInstructionRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request message for DeleteInstruction.</p>
@@ -1146,6 +1373,456 @@ projects/{project_id}/instructions/{instruction_id}</p>
 <dd></dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.Evaluation">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">Evaluation</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.Evaluation" title="Permalink to this definition">#</a></dt>
+<dd><p>Describes an evaluation between 2 annotated datasets. Created by an
+evaluation plan.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.Evaluation.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.Evaluation.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource name of an evaluation. Format: ‘projects/{project_id
+}/datasets/{dataset_id}/evaluations/{evaluation_id}’</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.Evaluation.config">
+<code class="descname">config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.Evaluation.config" title="Permalink to this definition">#</a></dt>
+<dd><p>Options used in evaluation plan for creating the evaluation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.Evaluation.evaluation_job_run_time">
+<code class="descname">evaluation_job_run_time</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.Evaluation.evaluation_job_run_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Timestamp when the evaluation plan triggered this
+evaluation flow.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.Evaluation.create_time">
+<code class="descname">create_time</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.Evaluation.create_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Timestamp when this model evaluation was created.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.Evaluation.evaluation_metrics">
+<code class="descname">evaluation_metrics</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.Evaluation.evaluation_metrics" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Metrics of the evaluation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.Evaluation.annotation_type">
+<code class="descname">annotation_type</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.Evaluation.annotation_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Type of the annotation to compute metrics for in the
+groundtruth and annotation labeled dataset. Required for
+creation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.Evaluation.evaluated_item_count">
+<code class="descname">evaluated_item_count</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.Evaluation.evaluated_item_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Count of items in groundtruth dataset included in
+this evaluation. Will be unset if annotation type is not
+applicable.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">annotation_type</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.Evaluation.annotation_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">config</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.Evaluation.config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.Evaluation.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">evaluated_item_count</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.Evaluation.evaluated_item_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">evaluation_job_run_time</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.Evaluation.evaluation_job_run_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">evaluation_metrics</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.Evaluation.evaluation_metrics</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.Evaluation.name</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">EvaluationConfig</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationConfig" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationConfig.vertical_option">
+<code class="descname">vertical_option</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationConfig.vertical_option" title="Permalink to this definition">#</a></dt>
+<dd><p>Vertical specific options for general metrics.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationConfig.bounding_box_evaluation_options">
+<code class="descname">bounding_box_evaluation_options</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationConfig.bounding_box_evaluation_options" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationConfig.bounding_box_evaluation_options</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJob">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">EvaluationJob</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJob" title="Permalink to this definition">#</a></dt>
+<dd><p>Defines an evaluation job that is triggered periodically to generate
+evaluations.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJob.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJob.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Format:
+‘projects/{project_id}/evaluationJobs/{evaluation_job_id}’</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJob.description">
+<code class="descname">description</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJob.description" title="Permalink to this definition">#</a></dt>
+<dd><p>Description of the job. The description can be up to 25000
+characters long.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJob.schedule">
+<code class="descname">schedule</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJob.schedule" title="Permalink to this definition">#</a></dt>
+<dd><p>Describes the schedule on which the job will be executed.
+Minimum schedule unit is 1 day.  The schedule can be either of
+the following types: * <a class="reference external" href="http://en.wikipedia.org/wiki/Cron#Overview">Crontab</a> * English-
+like  <a class="reference external" href="https:%20//cloud.google.com/scheduler/docs/configuring/cron-job-schedules">schedule</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJob.model_version">
+<code class="descname">model_version</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJob.model_version" title="Permalink to this definition">#</a></dt>
+<dd><p>The versioned model that is being evaluated here. Only one job
+is allowed for each model name. Format:
+‘projects/<em>/models/</em>/versions/*’</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJob.evaluation_job_config">
+<code class="descname">evaluation_job_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJob.evaluation_job_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Detailed config for running this eval job.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJob.annotation_spec_set">
+<code class="descname">annotation_spec_set</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJob.annotation_spec_set" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the AnnotationSpecSet.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJob.label_missing_ground_truth">
+<code class="descname">label_missing_ground_truth</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJob.label_missing_ground_truth" title="Permalink to this definition">#</a></dt>
+<dd><p>If a human annotation should be requested when some data don’t
+have ground truth.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJob.attempts">
+<code class="descname">attempts</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJob.attempts" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Any attempts with errors happening in evaluation
+job runs each time will be recorded here incrementally.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJob.create_time">
+<code class="descname">create_time</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJob.create_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Timestamp when this evaluation job was created.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">annotation_spec_set</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationJob.annotation_spec_set</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">attempts</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationJob.attempts</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationJob.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">description</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationJob.description</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">evaluation_job_config</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationJob.evaluation_job_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">label_missing_ground_truth</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationJob.label_missing_ground_truth</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">model_version</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationJob.model_version</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationJob.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">schedule</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationJob.schedule</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJob.state">
+<code class="descname">state</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJob.state" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationJob.state</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJobAlertConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">EvaluationJobAlertConfig</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJobAlertConfig" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJobAlertConfig.email">
+<code class="descname">email</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJobAlertConfig.email" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Email of the user who will be receiving the alert.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJobAlertConfig.min_acceptable_mean_average_precision">
+<code class="descname">min_acceptable_mean_average_precision</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJobAlertConfig.min_acceptable_mean_average_precision" title="Permalink to this definition">#</a></dt>
+<dd><p>If a single evaluation run’s aggregate mean average precision
+is lower than this threshold, the alert will be triggered.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">email</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationJobAlertConfig.email</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">min_acceptable_mean_average_precision</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationJobAlertConfig.min_acceptable_mean_average_precision</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">EvaluationJobConfig</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.human_annotation_request_config">
+<code class="descname">human_annotation_request_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.human_annotation_request_config" title="Permalink to this definition">#</a></dt>
+<dd><p>config specific to different supported human annotation use
+cases.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.input_config">
+<code class="descname">input_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.input_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Input config for data, gcs_source in the config will be the
+root path for data. Data should be organzied chronically under
+that path.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.evaluation_config">
+<code class="descname">evaluation_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.evaluation_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Config used to create evaluation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.bigquery_import_keys">
+<code class="descname">bigquery_import_keys</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.bigquery_import_keys" title="Permalink to this definition">#</a></dt>
+<dd><p>Mappings between reserved keys for bigquery import and
+customized tensor names. Key is the reserved key, value is
+tensor name in the bigquery table. Different annotation type
+has different required key mapping. See user manual for more
+details:  https: //docs.google.com/document/d/1bg1meMIBGY //
+9I5QEoFoHSX6u9LsZQYBSmPt6E9SxqHZc/edit#heading=h.tfyjhxhvsqem</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.example_count">
+<code class="descname">example_count</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.example_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Max number of examples to collect in each period.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.example_sample_percentage">
+<code class="descname">example_sample_percentage</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.example_sample_percentage" title="Permalink to this definition">#</a></dt>
+<dd><p>Percentage of examples to collect in each period. 0.1 means
+10% of total examples will be collected, and 0.0 means no
+collection.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.evaluation_job_alert_config">
+<code class="descname">evaluation_job_alert_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.evaluation_job_alert_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Alert config for the evaluation job. The alert will be
+triggered when its criteria is met.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.BigqueryImportKeysEntry">
+<em class="property">class </em><code class="descname">BigqueryImportKeysEntry</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.BigqueryImportKeysEntry" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.BigqueryImportKeysEntry.key">
+<code class="descname">key</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.BigqueryImportKeysEntry.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationJobConfig.BigqueryImportKeysEntry.key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.BigqueryImportKeysEntry.value">
+<code class="descname">value</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.BigqueryImportKeysEntry.value" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationJobConfig.BigqueryImportKeysEntry.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">bigquery_import_keys</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationJobConfig.bigquery_import_keys</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.bounding_poly_config">
+<code class="descname">bounding_poly_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.bounding_poly_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationJobConfig.bounding_poly_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">evaluation_config</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationJobConfig.evaluation_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">evaluation_job_alert_config</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationJobConfig.evaluation_job_alert_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">example_count</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationJobConfig.example_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">example_sample_percentage</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationJobConfig.example_sample_percentage</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.human_annotation_config">
+<code class="descname">human_annotation_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.human_annotation_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationJobConfig.human_annotation_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.image_classification_config">
+<code class="descname">image_classification_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.image_classification_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationJobConfig.image_classification_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">input_config</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationJobConfig.input_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.object_detection_config">
+<code class="descname">object_detection_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.object_detection_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationJobConfig.object_detection_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.object_tracking_config">
+<code class="descname">object_tracking_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.object_tracking_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationJobConfig.object_tracking_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.text_classification_config">
+<code class="descname">text_classification_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.text_classification_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationJobConfig.text_classification_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.video_classification_config">
+<code class="descname">video_classification_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.video_classification_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationJobConfig.video_classification_config</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationMetrics">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">EvaluationMetrics</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationMetrics" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationMetrics.metrics">
+<code class="descname">metrics</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationMetrics.metrics" title="Permalink to this definition">#</a></dt>
+<dd><p>Common metrics covering most genernal cases.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationMetrics.classification_metrics">
+<code class="descname">classification_metrics</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationMetrics.classification_metrics" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationMetrics.classification_metrics</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.EvaluationMetrics.object_detection_metrics">
+<code class="descname">object_detection_metrics</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EvaluationMetrics.object_detection_metrics" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.EvaluationMetrics.object_detection_metrics</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.datalabeling_v1beta1.types.EventConfig">
 <em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">EventConfig</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.EventConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for video event human labeling task.</p>
@@ -1195,12 +1872,6 @@ with label “house”.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.datalabeling_v1beta1.types.Example.audio_payload">
-<code class="descname">audio_payload</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.Example.audio_payload" title="Permalink to this definition">#</a></dt>
-<dd><p>The audio payload, a container of the audio uri.</p>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="google.cloud.datalabeling_v1beta1.types.Example.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.Example.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. Name of the example, in format of: projects/{proj
@@ -1219,12 +1890,6 @@ piece of data can have multiple annotations.</p>
 <dt>
 <code class="descname">annotations</code></dt>
 <dd><p>Field google.cloud.datalabeling.v1beta1.Example.annotations</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">audio_payload</code></dt>
-<dd><p>Field google.cloud.datalabeling.v1beta1.Example.audio_payload</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1249,6 +1914,120 @@ piece of data can have multiple annotations.</p>
 <dt>
 <code class="descname">video_payload</code></dt>
 <dd><p>Field google.cloud.datalabeling.v1beta1.Example.video_payload</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.ExportDataOperationMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">ExportDataOperationMetadata</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ExportDataOperationMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Metadata of an ExportData operation.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ExportDataOperationMetadata.dataset">
+<code class="descname">dataset</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ExportDataOperationMetadata.dataset" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The name of dataset to be exported.
+“projects/<em>/datasets/</em>/Datasets/*”</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ExportDataOperationMetadata.partial_failures">
+<code class="descname">partial_failures</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ExportDataOperationMetadata.partial_failures" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Partial failures encountered. E.g. single files
+that couldn’t be read. Status details field will contain
+standard GCP error details.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ExportDataOperationMetadata.create_time">
+<code class="descname">create_time</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ExportDataOperationMetadata.create_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Timestamp when export dataset request was
+created.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ExportDataOperationMetadata.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">dataset</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ExportDataOperationMetadata.dataset</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">partial_failures</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ExportDataOperationMetadata.partial_failures</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.ExportDataOperationResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">ExportDataOperationResponse</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ExportDataOperationResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response used for ExportDataset longrunning operation.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ExportDataOperationResponse.dataset">
+<code class="descname">dataset</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ExportDataOperationResponse.dataset" title="Permalink to this definition">#</a></dt>
+<dd><p>Ouptut only. The name of dataset.
+“projects/<em>/datasets/</em>/Datasets/*”</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ExportDataOperationResponse.total_count">
+<code class="descname">total_count</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ExportDataOperationResponse.total_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Total number of examples requested to export</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ExportDataOperationResponse.export_count">
+<code class="descname">export_count</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ExportDataOperationResponse.export_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Number of examples exported successfully.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ExportDataOperationResponse.label_stats">
+<code class="descname">label_stats</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ExportDataOperationResponse.label_stats" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Statistic infos of labels in the exported
+dataset.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ExportDataOperationResponse.output_config">
+<code class="descname">output_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ExportDataOperationResponse.output_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. output_config in the ExportData request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">dataset</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ExportDataOperationResponse.dataset</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">export_count</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ExportDataOperationResponse.export_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">label_stats</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ExportDataOperationResponse.label_stats</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">output_config</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ExportDataOperationResponse.output_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">total_count</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ExportDataOperationResponse.total_count</p>
 </dd></dl>
 
 </dd></dl>
@@ -1286,6 +2065,13 @@ ataset_id}/annotatedDatasets/ {annotated_dataset_id}</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ExportDataRequest.user_email_address">
+<code class="descname">user_email_address</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ExportDataRequest.user_email_address" title="Permalink to this definition">#</a></dt>
+<dd><p>Email of the user who started the export task and should be
+notified by email. If empty no notification will be sent.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">annotated_dataset</code></dt>
 <dd><p>Field google.cloud.datalabeling.v1beta1.ExportDataRequest.annotated_dataset</p>
@@ -1307,6 +2093,23 @@ ataset_id}/annotatedDatasets/ {annotated_dataset_id}</p>
 <dt>
 <code class="descname">output_config</code></dt>
 <dd><p>Field google.cloud.datalabeling.v1beta1.ExportDataRequest.output_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">user_email_address</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ExportDataRequest.user_email_address</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.FieldMask">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">FieldMask</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.FieldMask" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.FieldMask.paths">
+<code class="descname">paths</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.FieldMask.paths" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.protobuf.FieldMask.paths</p>
 </dd></dl>
 
 </dd></dl>
@@ -1349,7 +2152,7 @@ and “application/json” are supported.</p>
 <dl class="attribute">
 <dt id="google.cloud.datalabeling_v1beta1.types.GcsFolderDestination.output_folder_uri">
 <code class="descname">output_folder_uri</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.GcsFolderDestination.output_folder_uri" title="Permalink to this definition">#</a></dt>
-<dd><p>Required. GCS folder to export data to.</p>
+<dd><p>Required. Cloud Storage directory to export data to.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1363,18 +2166,18 @@ and “application/json” are supported.</p>
 <dl class="class">
 <dt id="google.cloud.datalabeling_v1beta1.types.GcsSource">
 <em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">GcsSource</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.GcsSource" title="Permalink to this definition">#</a></dt>
-<dd><p>Source of the GCS file to be imported. Only gcs path is allowed in
-input_uri.</p>
+<dd><p>Source of the Cloud Storage file to be imported.</p>
 <dl class="attribute">
 <dt id="google.cloud.datalabeling_v1beta1.types.GcsSource.input_uri">
 <code class="descname">input_uri</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.GcsSource.input_uri" title="Permalink to this definition">#</a></dt>
-<dd><p>Required. The input uri of source file.</p>
+<dd><p>Required. The input URI of source file. This must be a Cloud
+Storage path (<code class="docutils literal notranslate"><span class="pre">gs://...</span></code>).</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.datalabeling_v1beta1.types.GcsSource.mime_type">
 <code class="descname">mime_type</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.GcsSource.mime_type" title="Permalink to this definition">#</a></dt>
-<dd><p>Required. The format of the gcs source. Only “text/csv” is
+<dd><p>Required. The format of the source file. Only “text/csv” is
 supported.</p>
 </dd></dl>
 
@@ -1465,6 +2268,44 @@ projects/{project_id}/datasets/{dataset_id}</p>
 <dt>
 <code class="descname">name</code></dt>
 <dd><p>Field google.cloud.datalabeling.v1beta1.GetDatasetRequest.name</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.GetEvaluationJobRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">GetEvaluationJobRequest</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.GetEvaluationJobRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for GetEvaluationJob.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.GetEvaluationJobRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.GetEvaluationJobRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Name of the evaluation job. Format:
+‘projects/{project_id}/evaluationJobs/{evaluation_job_id}’</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.GetEvaluationJobRequest.name</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.GetEvaluationRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">GetEvaluationRequest</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.GetEvaluationRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for GetEvaluation.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.GetEvaluationRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.GetEvaluationRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Name of the evaluation. Format: ‘projects/{project_
+id}/datasets/{dataset_id}/evaluations/{evaluation_id}’</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.GetEvaluationRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -1603,6 +2444,13 @@ compute.appspot.com/</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig.user_email_address">
+<code class="descname">user_email_address</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig.user_email_address" title="Permalink to this definition">#</a></dt>
+<dd><p>Email of the user who started the labeling task and should be
+notified by email. If empty no notification will be sent.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">annotated_dataset_description</code></dt>
 <dd><p>Field google.cloud.datalabeling.v1beta1.HumanAnnotationConfig.annotated_dataset_description</p>
@@ -1648,6 +2496,12 @@ compute.appspot.com/</p>
 <dt>
 <code class="descname">replica_count</code></dt>
 <dd><p>Field google.cloud.datalabeling.v1beta1.HumanAnnotationConfig.replica_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">user_email_address</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.HumanAnnotationConfig.user_email_address</p>
 </dd></dl>
 
 </dd></dl>
@@ -1764,13 +2618,19 @@ able to choose multiple labels for one image.</p>
 <dl class="attribute">
 <dt id="google.cloud.datalabeling_v1beta1.types.ImagePayload.image_thumbnail">
 <code class="descname">image_thumbnail</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ImagePayload.image_thumbnail" title="Permalink to this definition">#</a></dt>
-<dd><p>A byte string of a full image.</p>
+<dd><p>A byte string of a thumbnail image.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.datalabeling_v1beta1.types.ImagePayload.image_uri">
 <code class="descname">image_uri</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ImagePayload.image_uri" title="Permalink to this definition">#</a></dt>
 <dd><p>Image uri from the user bucket.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ImagePayload.signed_uri">
+<code class="descname">signed_uri</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ImagePayload.signed_uri" title="Permalink to this definition">#</a></dt>
+<dd><p>Signed uri of the image file in the service bucket.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1789,6 +2649,12 @@ able to choose multiple labels for one image.</p>
 <dt>
 <code class="descname">mime_type</code></dt>
 <dd><p>Field google.cloud.datalabeling.v1beta1.ImagePayload.mime_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">signed_uri</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ImagePayload.signed_uri</p>
 </dd></dl>
 
 </dd></dl>
@@ -1885,6 +2751,94 @@ is the AnnotationSpec.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.ImportDataOperationMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">ImportDataOperationMetadata</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ImportDataOperationMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Metadata of an ImportData operation.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ImportDataOperationMetadata.dataset">
+<code class="descname">dataset</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ImportDataOperationMetadata.dataset" title="Permalink to this definition">#</a></dt>
+<dd><p>Ouptut only. The name of imported dataset.
+“projects/<em>/datasets/</em>”</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ImportDataOperationMetadata.partial_failures">
+<code class="descname">partial_failures</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ImportDataOperationMetadata.partial_failures" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Partial failures encountered. E.g. single files
+that couldn’t be read. Status details field will contain
+standard GCP error details.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ImportDataOperationMetadata.create_time">
+<code class="descname">create_time</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ImportDataOperationMetadata.create_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Timestamp when import dataset request was
+created.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ImportDataOperationMetadata.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">dataset</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ImportDataOperationMetadata.dataset</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">partial_failures</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ImportDataOperationMetadata.partial_failures</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.ImportDataOperationResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">ImportDataOperationResponse</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ImportDataOperationResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response used for ImportData longrunning operation.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ImportDataOperationResponse.dataset">
+<code class="descname">dataset</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ImportDataOperationResponse.dataset" title="Permalink to this definition">#</a></dt>
+<dd><p>Ouptut only. The name of imported dataset.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ImportDataOperationResponse.total_count">
+<code class="descname">total_count</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ImportDataOperationResponse.total_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Total number of examples requested to import</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ImportDataOperationResponse.import_count">
+<code class="descname">import_count</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ImportDataOperationResponse.import_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Number of examples imported successfully.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">dataset</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ImportDataOperationResponse.dataset</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">import_count</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ImportDataOperationResponse.import_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">total_count</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ImportDataOperationResponse.total_count</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.datalabeling_v1beta1.types.ImportDataRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">ImportDataRequest</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ImportDataRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request message for ImportData API.</p>
@@ -1902,6 +2856,13 @@ projects/{project_id}/datasets/{dataset_id}</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ImportDataRequest.user_email_address">
+<code class="descname">user_email_address</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ImportDataRequest.user_email_address" title="Permalink to this definition">#</a></dt>
+<dd><p>Email of the user who started the import task and should be
+notified by email. If empty no notification will be sent.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">input_config</code></dt>
 <dd><p>Field google.cloud.datalabeling.v1beta1.ImportDataRequest.input_config</p>
@@ -1913,6 +2874,12 @@ projects/{project_id}/datasets/{dataset_id}</p>
 <dd><p>Field google.cloud.datalabeling.v1beta1.ImportDataRequest.name</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">user_email_address</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ImportDataRequest.user_email_address</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1920,9 +2887,27 @@ projects/{project_id}/datasets/{dataset_id}</p>
 <em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">InputConfig</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.InputConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>The configuration of input data, including data type, location, etc.</p>
 <dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.InputConfig.data_type_metadata">
+<code class="descname">data_type_metadata</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.InputConfig.data_type_metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. The metadata associated with each data type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.InputConfig.text_metadata">
+<code class="descname">text_metadata</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.InputConfig.text_metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Required for text import, as language code must be specified.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.datalabeling_v1beta1.types.InputConfig.source">
 <code class="descname">source</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.InputConfig.source" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. Where the data is from.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.InputConfig.gcs_source">
+<code class="descname">gcs_source</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.InputConfig.gcs_source" title="Permalink to this definition">#</a></dt>
+<dd><p>Source located in Cloud Storage.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1933,15 +2918,55 @@ data.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.InputConfig.annotation_type">
+<code class="descname">annotation_type</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.InputConfig.annotation_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. If input contains annotation, user needs to specify
+the type and metadata of the annotation when creating it as an
+annotated dataset.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.InputConfig.classification_metadata">
+<code class="descname">classification_metadata</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.InputConfig.classification_metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Metadata about annotations in the input. Each
+annotation type may have different metadata. Metadata for
+classification problem.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">annotation_type</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.InputConfig.annotation_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.InputConfig.bigquery_source">
+<code class="descname">bigquery_source</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.InputConfig.bigquery_source" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.InputConfig.bigquery_source</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">classification_metadata</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.InputConfig.classification_metadata</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">data_type</code></dt>
 <dd><p>Field google.cloud.datalabeling.v1beta1.InputConfig.data_type</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.datalabeling_v1beta1.types.InputConfig.gcs_source">
-<code class="descname">gcs_source</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.InputConfig.gcs_source" title="Permalink to this definition">#</a></dt>
+<dt>
+<code class="descname">gcs_source</code></dt>
 <dd><p>Field google.cloud.datalabeling.v1beta1.InputConfig.gcs_source</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">text_metadata</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.InputConfig.text_metadata</p>
 </dd></dl>
 
 </dd></dl>
@@ -1997,18 +3022,32 @@ description can be up to 10000 characters long.</p>
 <dl class="attribute">
 <dt id="google.cloud.datalabeling_v1beta1.types.Instruction.csv_instruction">
 <code class="descname">csv_instruction</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.Instruction.csv_instruction" title="Permalink to this definition">#</a></dt>
-<dd><p>One of CSV and PDF instruction is required. Instruction from a
-csv file, such as for classification task. Csv file should
-have exact two columns, in the format of: The first column is
-labeled data, such as image reference, text. The second column
-is comma separated labels associated with data.</p>
+<dd><p>One of CSV or PDF instruction is required. Instruction from a
+CSV file, such as for classification task. The CSV file should
+have exact two columns, in the following format:  -  The first
+column is labeled data, such as an image reference, text. -
+The second column is comma separated labels associated with
+data.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.datalabeling_v1beta1.types.Instruction.pdf_instruction">
 <code class="descname">pdf_instruction</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.Instruction.pdf_instruction" title="Permalink to this definition">#</a></dt>
-<dd><p>One of CSV and PDF instruction is required. Instruction from a
-PDF doc. The PDF doc should be in GCS bucket.</p>
+<dd><p>One of CSV or PDF instruction is required. Instruction from a
+PDF document. The PDF should be in a Cloud Storage bucket.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.Instruction.blocking_resources">
+<code class="descname">blocking_resources</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.Instruction.blocking_resources" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The names of any related resources that are
+blocking changes to the instruction.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">blocking_resources</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.Instruction.blocking_resources</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2062,44 +3101,91 @@ PDF doc. The PDF doc should be in GCS bucket.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="google.cloud.datalabeling_v1beta1.types.LabelAudioRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">LabelAudioRequest</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelAudioRequest" title="Permalink to this definition">#</a></dt>
-<dd><p>Request message for LabelAudio.</p>
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelImageBoundingBoxOperationMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">LabelImageBoundingBoxOperationMetadata</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelImageBoundingBoxOperationMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Details of a LabelImageBoundingBox operation metadata.</p>
 <dl class="attribute">
-<dt id="google.cloud.datalabeling_v1beta1.types.LabelAudioRequest.parent">
-<code class="descname">parent</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelAudioRequest.parent" title="Permalink to this definition">#</a></dt>
-<dd><p>Required. Name of the dataset to request labeling task,
-format: projects/{project_id}/datasets/{dataset_id}</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.datalabeling_v1beta1.types.LabelAudioRequest.basic_config">
-<code class="descname">basic_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelAudioRequest.basic_config" title="Permalink to this definition">#</a></dt>
-<dd><p>Required. Basic human annotation config.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.datalabeling_v1beta1.types.LabelAudioRequest.feature">
-<code class="descname">feature</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelAudioRequest.feature" title="Permalink to this definition">#</a></dt>
-<dd><p>Required. The type of audio labeling task.</p>
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelImageBoundingBoxOperationMetadata.basic_config">
+<code class="descname">basic_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelImageBoundingBoxOperationMetadata.basic_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Basic human annotation config used in labeling request.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
 <code class="descname">basic_config</code></dt>
-<dd><p>Field google.cloud.datalabeling.v1beta1.LabelAudioRequest.basic_config</p>
+<dd><p>Field google.cloud.datalabeling.v1beta1.LabelImageBoundingBoxOperationMetadata.basic_config</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelImageBoundingPolyOperationMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">LabelImageBoundingPolyOperationMetadata</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelImageBoundingPolyOperationMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Details of LabelImageBoundingPoly operation metadata.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelImageBoundingPolyOperationMetadata.basic_config">
+<code class="descname">basic_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelImageBoundingPolyOperationMetadata.basic_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Basic human annotation config used in labeling request.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">feature</code></dt>
-<dd><p>Field google.cloud.datalabeling.v1beta1.LabelAudioRequest.feature</p>
+<code class="descname">basic_config</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.LabelImageBoundingPolyOperationMetadata.basic_config</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelImageClassificationOperationMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">LabelImageClassificationOperationMetadata</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelImageClassificationOperationMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Metadata of a LabelImageClassification operation.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelImageClassificationOperationMetadata.basic_config">
+<code class="descname">basic_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelImageClassificationOperationMetadata.basic_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Basic human annotation config used in labeling request.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">parent</code></dt>
-<dd><p>Field google.cloud.datalabeling.v1beta1.LabelAudioRequest.parent</p>
+<code class="descname">basic_config</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.LabelImageClassificationOperationMetadata.basic_config</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelImageOrientedBoundingBoxOperationMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">LabelImageOrientedBoundingBoxOperationMetadata</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelImageOrientedBoundingBoxOperationMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Details of a LabelImageOrientedBoundingBox operation metadata.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelImageOrientedBoundingBoxOperationMetadata.basic_config">
+<code class="descname">basic_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelImageOrientedBoundingBoxOperationMetadata.basic_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Basic human annotation config.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">basic_config</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.LabelImageOrientedBoundingBoxOperationMetadata.basic_config</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelImagePolylineOperationMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">LabelImagePolylineOperationMetadata</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelImagePolylineOperationMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Details of LabelImagePolyline operation metadata.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelImagePolylineOperationMetadata.basic_config">
+<code class="descname">basic_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelImagePolylineOperationMetadata.basic_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Basic human annotation config used in labeling request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">basic_config</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.LabelImagePolylineOperationMetadata.basic_config</p>
 </dd></dl>
 
 </dd></dl>
@@ -2120,7 +3206,7 @@ config must match the selected feature.</p>
 <code class="descname">image_classification_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelImageRequest.image_classification_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Configuration for image classification task. One of
 image_classification_config, bounding_poly_config,
-polyline_config and segmentation_config is required.</p>
+polyline_config and segmentation_config are required.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2128,7 +3214,7 @@ polyline_config and segmentation_config is required.</p>
 <code class="descname">bounding_poly_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelImageRequest.bounding_poly_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Configuration for bounding box and bounding poly task. One of
 image_classification_config, bounding_poly_config,
-polyline_config and segmentation_config is required.</p>
+polyline_config and segmentation_config are required.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2136,7 +3222,7 @@ polyline_config and segmentation_config is required.</p>
 <code class="descname">polyline_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelImageRequest.polyline_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Configuration for polyline task. One of
 image_classification_config, bounding_poly_config,
-polyline_config and segmentation_config is required.</p>
+polyline_config and segmentation_config are required.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2144,7 +3230,7 @@ polyline_config and segmentation_config is required.</p>
 <code class="descname">segmentation_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelImageRequest.segmentation_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Configuration for segmentation task. One of
 image_classification_config, bounding_poly_config,
-polyline_config and segmentation_config is required.</p>
+polyline_config and segmentation_config are required.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2211,6 +3297,219 @@ format: projects/{project_id}/datasets/{dataset_id}</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelImageSegmentationOperationMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">LabelImageSegmentationOperationMetadata</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelImageSegmentationOperationMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Details of a LabelImageSegmentation operation metadata.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelImageSegmentationOperationMetadata.basic_config">
+<code class="descname">basic_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelImageSegmentationOperationMetadata.basic_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Basic human annotation config.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">basic_config</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.LabelImageSegmentationOperationMetadata.basic_config</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">LabelOperationMetadata</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Metadata of a labeling operation, such as LabelImage or LabelVideo. Next
+tag: 18</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.details">
+<code class="descname">details</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.details" title="Permalink to this definition">#</a></dt>
+<dd><p>Ouptut only. Details of specific label operation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.image_classification_details">
+<code class="descname">image_classification_details</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.image_classification_details" title="Permalink to this definition">#</a></dt>
+<dd><p>Details of label image classification operation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.image_bounding_box_details">
+<code class="descname">image_bounding_box_details</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.image_bounding_box_details" title="Permalink to this definition">#</a></dt>
+<dd><p>Details of label image bounding box operation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.image_bounding_poly_details">
+<code class="descname">image_bounding_poly_details</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.image_bounding_poly_details" title="Permalink to this definition">#</a></dt>
+<dd><p>Details of label image bounding poly operation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.image_oriented_bounding_box_details">
+<code class="descname">image_oriented_bounding_box_details</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.image_oriented_bounding_box_details" title="Permalink to this definition">#</a></dt>
+<dd><p>Details of label image oriented bounding box operation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.image_polyline_details">
+<code class="descname">image_polyline_details</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.image_polyline_details" title="Permalink to this definition">#</a></dt>
+<dd><p>Details of label image polyline operation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.image_segmentation_details">
+<code class="descname">image_segmentation_details</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.image_segmentation_details" title="Permalink to this definition">#</a></dt>
+<dd><p>Details of label image segmentation operation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.video_classification_details">
+<code class="descname">video_classification_details</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.video_classification_details" title="Permalink to this definition">#</a></dt>
+<dd><p>Details of label video classification operation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.video_object_detection_details">
+<code class="descname">video_object_detection_details</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.video_object_detection_details" title="Permalink to this definition">#</a></dt>
+<dd><p>Details of label video object detection operation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.video_object_tracking_details">
+<code class="descname">video_object_tracking_details</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.video_object_tracking_details" title="Permalink to this definition">#</a></dt>
+<dd><p>Details of label video object tracking operation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.video_event_details">
+<code class="descname">video_event_details</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.video_event_details" title="Permalink to this definition">#</a></dt>
+<dd><p>Details of label video event operation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.text_classification_details">
+<code class="descname">text_classification_details</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.text_classification_details" title="Permalink to this definition">#</a></dt>
+<dd><p>Details of label text classification operation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.text_entity_extraction_details">
+<code class="descname">text_entity_extraction_details</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.text_entity_extraction_details" title="Permalink to this definition">#</a></dt>
+<dd><p>Details of label text entity extraction operation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.progress_percent">
+<code class="descname">progress_percent</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.progress_percent" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Progress of label operation. Range: [0, 100].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.partial_failures">
+<code class="descname">partial_failures</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.partial_failures" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Partial failures encountered. E.g. single files
+that couldn’t be read. Status details field will contain
+standard GCP error details.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.create_time">
+<code class="descname">create_time</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelOperationMetadata.create_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Timestamp when labeling request was created.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">create_time</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.LabelOperationMetadata.create_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">image_bounding_box_details</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.LabelOperationMetadata.image_bounding_box_details</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">image_bounding_poly_details</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.LabelOperationMetadata.image_bounding_poly_details</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">image_classification_details</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.LabelOperationMetadata.image_classification_details</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">image_oriented_bounding_box_details</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.LabelOperationMetadata.image_oriented_bounding_box_details</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">image_polyline_details</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.LabelOperationMetadata.image_polyline_details</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">image_segmentation_details</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.LabelOperationMetadata.image_segmentation_details</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">partial_failures</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.LabelOperationMetadata.partial_failures</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">progress_percent</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.LabelOperationMetadata.progress_percent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">text_classification_details</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.LabelOperationMetadata.text_classification_details</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">text_entity_extraction_details</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.LabelOperationMetadata.text_entity_extraction_details</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">video_classification_details</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.LabelOperationMetadata.video_classification_details</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">video_event_details</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.LabelOperationMetadata.video_event_details</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">video_object_detection_details</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.LabelOperationMetadata.video_object_detection_details</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">video_object_tracking_details</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.LabelOperationMetadata.video_object_tracking_details</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.datalabeling_v1beta1.types.LabelStats">
 <em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">LabelStats</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelStats" title="Permalink to this definition">#</a></dt>
 <dd><p>Statistics about annotation specs.</p>
@@ -2219,7 +3518,9 @@ format: projects/{project_id}/datasets/{dataset_id}</p>
 <code class="descname">example_count</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelStats.example_count" title="Permalink to this definition">#</a></dt>
 <dd><p>Map of each annotation spec’s example count. Key is the
 annotation spec name and value is the number of examples for
-that annotation spec.</p>
+that annotation spec. If the annotated dataset does not have
+annotation spec, the map will return a pair where the key is
+empty string and value is the total number of annotations.</p>
 </dd></dl>
 
 <dl class="class">
@@ -2243,6 +3544,42 @@ that annotation spec.</p>
 <dt>
 <code class="descname">example_count</code></dt>
 <dd><p>Field google.cloud.datalabeling.v1beta1.LabelStats.example_count</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelTextClassificationOperationMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">LabelTextClassificationOperationMetadata</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelTextClassificationOperationMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Details of a LabelTextClassification operation metadata.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelTextClassificationOperationMetadata.basic_config">
+<code class="descname">basic_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelTextClassificationOperationMetadata.basic_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Basic human annotation config used in labeling request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">basic_config</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.LabelTextClassificationOperationMetadata.basic_config</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelTextEntityExtractionOperationMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">LabelTextEntityExtractionOperationMetadata</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelTextEntityExtractionOperationMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Details of a LabelTextEntityExtraction operation metadata.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelTextEntityExtractionOperationMetadata.basic_config">
+<code class="descname">basic_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelTextEntityExtractionOperationMetadata.basic_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Basic human annotation config used in labeling request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">basic_config</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.LabelTextEntityExtractionOperationMetadata.basic_config</p>
 </dd></dl>
 
 </dd></dl>
@@ -2321,6 +3658,78 @@ format: projects/{project_id}/datasets/{dataset_id}</p>
 <dt>
 <code class="descname">text_entity_extraction_config</code></dt>
 <dd><p>Field google.cloud.datalabeling.v1beta1.LabelTextRequest.text_entity_extraction_config</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelVideoClassificationOperationMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">LabelVideoClassificationOperationMetadata</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelVideoClassificationOperationMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Details of a LabelVideoClassification operation metadata.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelVideoClassificationOperationMetadata.basic_config">
+<code class="descname">basic_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelVideoClassificationOperationMetadata.basic_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Basic human annotation config used in labeling request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">basic_config</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.LabelVideoClassificationOperationMetadata.basic_config</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelVideoEventOperationMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">LabelVideoEventOperationMetadata</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelVideoEventOperationMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Details of a LabelVideoEvent operation metadata.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelVideoEventOperationMetadata.basic_config">
+<code class="descname">basic_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelVideoEventOperationMetadata.basic_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Basic human annotation config used in labeling request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">basic_config</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.LabelVideoEventOperationMetadata.basic_config</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelVideoObjectDetectionOperationMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">LabelVideoObjectDetectionOperationMetadata</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelVideoObjectDetectionOperationMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Details of a LabelVideoObjectDetection operation metadata.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelVideoObjectDetectionOperationMetadata.basic_config">
+<code class="descname">basic_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelVideoObjectDetectionOperationMetadata.basic_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Basic human annotation config used in labeling request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">basic_config</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.LabelVideoObjectDetectionOperationMetadata.basic_config</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelVideoObjectTrackingOperationMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">LabelVideoObjectTrackingOperationMetadata</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelVideoObjectTrackingOperationMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Details of a LabelVideoObjectTracking operation metadata.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.LabelVideoObjectTrackingOperationMetadata.basic_config">
+<code class="descname">basic_config</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.LabelVideoObjectTrackingOperationMetadata.basic_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Basic human annotation config used in labeling request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">basic_config</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.LabelVideoObjectTrackingOperationMetadata.basic_config</p>
 </dd></dl>
 
 </dd></dl>
@@ -2796,6 +4205,98 @@ page if empty.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.ListEvaluationJobsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">ListEvaluationJobsRequest</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ListEvaluationJobsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for ListEvaluationJobs.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ListEvaluationJobsRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ListEvaluationJobsRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Evaluation resource parent. Format:
+“projects/{project_id}”</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ListEvaluationJobsRequest.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ListEvaluationJobsRequest.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Only support filter by model id and job state.
+Format: “evaluation_job.model_id = {model_id} AND
+evaluation_job.state = {EvaluationJob::State}”</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ListEvaluationJobsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ListEvaluationJobsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Requested page size. Server may return fewer results
+than requested. Default value is 100.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ListEvaluationJobsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ListEvaluationJobsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. A token identifying a page of results for the server
+to return. Typically obtained by
+[ListEvaluationJobs.next_page_token][] of the previous
+[DataLabelingService.ListEvaluationJobs] call. Return first
+page if empty.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">filter</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ListEvaluationJobsRequest.filter</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ListEvaluationJobsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ListEvaluationJobsRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ListEvaluationJobsRequest.parent</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.ListEvaluationJobsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">ListEvaluationJobsResponse</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ListEvaluationJobsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Results for listing evaluation jobs.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ListEvaluationJobsResponse.evaluation_jobs">
+<code class="descname">evaluation_jobs</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ListEvaluationJobsResponse.evaluation_jobs" title="Permalink to this definition">#</a></dt>
+<dd><p>The list of evaluation jobs to return.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ListEvaluationJobsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ListEvaluationJobsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>A token to retrieve next page of results.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">evaluation_jobs</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ListEvaluationJobsResponse.evaluation_jobs</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ListEvaluationJobsResponse.next_page_token</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.datalabeling_v1beta1.types.ListExamplesRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">ListExamplesRequest</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ListExamplesRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request message for ListExamples.</p>
@@ -3100,12 +4601,6 @@ rate.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.datalabeling_v1beta1.types.ObjectDetectionConfig.instruction_message">
-<code class="descname">instruction_message</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ObjectDetectionConfig.instruction_message" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional. Instruction message showed on labelers UI.</p>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="google.cloud.datalabeling_v1beta1.types.ObjectDetectionConfig.extraction_frame_rate">
 <code class="descname">extraction_frame_rate</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ObjectDetectionConfig.extraction_frame_rate" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. Number of frames per second to be extracted from the
@@ -3124,10 +4619,21 @@ video.</p>
 <dd><p>Field google.cloud.datalabeling.v1beta1.ObjectDetectionConfig.extraction_frame_rate</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.ObjectDetectionMetrics">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">ObjectDetectionMetrics</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ObjectDetectionMetrics" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ObjectDetectionMetrics.pr_curve">
+<code class="descname">pr_curve</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ObjectDetectionMetrics.pr_curve" title="Permalink to this definition">#</a></dt>
+<dd><p>Precision-recall curve.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt>
-<code class="descname">instruction_message</code></dt>
-<dd><p>Field google.cloud.datalabeling.v1beta1.ObjectDetectionConfig.instruction_message</p>
+<code class="descname">pr_curve</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ObjectDetectionMetrics.pr_curve</p>
 </dd></dl>
 
 </dd></dl>
@@ -3272,6 +4778,12 @@ the final label, the confidence score will be 0.67 (2/3).</p>
 <dl class="attribute">
 <dt id="google.cloud.datalabeling_v1beta1.types.OperatorMetadata.comments">
 <code class="descname">comments</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.OperatorMetadata.comments" title="Permalink to this definition">#</a></dt>
+<dd><p>Comments from contributors.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">comments</code></dt>
 <dd><p>Field google.cloud.datalabeling.v1beta1.OperatorMetadata.comments</p>
 </dd></dl>
 
@@ -3308,15 +4820,15 @@ the final label, the confidence score will be 0.67 (2/3).</p>
 <dl class="attribute">
 <dt id="google.cloud.datalabeling_v1beta1.types.OutputConfig.gcs_destination">
 <code class="descname">gcs_destination</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.OutputConfig.gcs_destination" title="Permalink to this definition">#</a></dt>
-<dd><p>Output to a GCS file. Should be used for labeling output other
-than Audio transcription.</p>
+<dd><p>Output to a file in Cloud Storage. Should be used for labeling
+output other thanimage segmentation.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.datalabeling_v1beta1.types.OutputConfig.gcs_folder_destination">
 <code class="descname">gcs_folder_destination</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.OutputConfig.gcs_folder_destination" title="Permalink to this definition">#</a></dt>
-<dd><p>Output to a GCS folder. Should be used for Audio transcription
-labeling output.</p>
+<dd><p>Output to a folder in Cloud Storage. Should be used for image
+segmentation labeling output.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3329,6 +4841,26 @@ labeling output.</p>
 <dt>
 <code class="descname">gcs_folder_destination</code></dt>
 <dd><p>Field google.cloud.datalabeling.v1beta1.OutputConfig.gcs_folder_destination</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.PauseEvaluationJobRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">PauseEvaluationJobRequest</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.PauseEvaluationJobRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for PauseEvaluationJob.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.PauseEvaluationJobRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.PauseEvaluationJobRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Name of the evaluation job that is going to be
+paused. Format:
+‘projects/{project_id}/evaluationJobs/{evaluation_job_id}’</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.PauseEvaluationJobRequest.name</p>
 </dd></dl>
 
 </dd></dl>
@@ -3400,6 +4932,402 @@ labeling output.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.PrCurve">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">PrCurve</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.PrCurve" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.PrCurve.annotation_spec">
+<code class="descname">annotation_spec</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.PrCurve.annotation_spec" title="Permalink to this definition">#</a></dt>
+<dd><p>PR curve against which annotation spec. Could be empty.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.PrCurve.area_under_curve">
+<code class="descname">area_under_curve</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.PrCurve.area_under_curve" title="Permalink to this definition">#</a></dt>
+<dd><p>Area under precision recall curve.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.PrCurve.confidence_metrics_entries">
+<code class="descname">confidence_metrics_entries</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.PrCurve.confidence_metrics_entries" title="Permalink to this definition">#</a></dt>
+<dd><p>entries to draw PR graph.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.PrCurve.mean_average_precision">
+<code class="descname">mean_average_precision</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.PrCurve.mean_average_precision" title="Permalink to this definition">#</a></dt>
+<dd><p>mean average prcision of this curve.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.PrCurve.ConfidenceMetricsEntry">
+<em class="property">class </em><code class="descname">ConfidenceMetricsEntry</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.PrCurve.ConfidenceMetricsEntry" title="Permalink to this definition">#</a></dt>
+<dd><dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.PrCurve.ConfidenceMetricsEntry.confidence_threshold">
+<code class="descname">confidence_threshold</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.PrCurve.ConfidenceMetricsEntry.confidence_threshold" title="Permalink to this definition">#</a></dt>
+<dd><p>Threshold used for this entry, for example, IoU threshold for
+bounding box problem, or detection threshold for
+classification.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.PrCurve.ConfidenceMetricsEntry.recall">
+<code class="descname">recall</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.PrCurve.ConfidenceMetricsEntry.recall" title="Permalink to this definition">#</a></dt>
+<dd><p>Recall value.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.PrCurve.ConfidenceMetricsEntry.precision">
+<code class="descname">precision</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.PrCurve.ConfidenceMetricsEntry.precision" title="Permalink to this definition">#</a></dt>
+<dd><p>Precision value.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.PrCurve.ConfidenceMetricsEntry.f1_score">
+<code class="descname">f1_score</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.PrCurve.ConfidenceMetricsEntry.f1_score" title="Permalink to this definition">#</a></dt>
+<dd><p>Harmonic mean of recall and precision.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.PrCurve.ConfidenceMetricsEntry.recall_at1">
+<code class="descname">recall_at1</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.PrCurve.ConfidenceMetricsEntry.recall_at1" title="Permalink to this definition">#</a></dt>
+<dd><p>Recall value for entries with label that has highest score.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.PrCurve.ConfidenceMetricsEntry.precision_at1">
+<code class="descname">precision_at1</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.PrCurve.ConfidenceMetricsEntry.precision_at1" title="Permalink to this definition">#</a></dt>
+<dd><p>Precision value for entries with label that has highest score.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.PrCurve.ConfidenceMetricsEntry.f1_score_at1">
+<code class="descname">f1_score_at1</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.PrCurve.ConfidenceMetricsEntry.f1_score_at1" title="Permalink to this definition">#</a></dt>
+<dd><p>The harmonic mean of [recall_at1][google.cloud.datalabeling.v
+1beta1.PrCurve.ConfidenceMetricsEntry.recall_at1] and [precis
+ion_at1][google.cloud.datalabeling.v1beta1.PrCurve.Confidence
+MetricsEntry.precision_at1].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.PrCurve.ConfidenceMetricsEntry.recall_at5">
+<code class="descname">recall_at5</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.PrCurve.ConfidenceMetricsEntry.recall_at5" title="Permalink to this definition">#</a></dt>
+<dd><p>Recall value for entries with label that has highest 5 scores.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.PrCurve.ConfidenceMetricsEntry.precision_at5">
+<code class="descname">precision_at5</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.PrCurve.ConfidenceMetricsEntry.precision_at5" title="Permalink to this definition">#</a></dt>
+<dd><p>Precision value for entries with label that has highest 5
+scores.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.PrCurve.ConfidenceMetricsEntry.f1_score_at5">
+<code class="descname">f1_score_at5</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.PrCurve.ConfidenceMetricsEntry.f1_score_at5" title="Permalink to this definition">#</a></dt>
+<dd><p>The harmonic mean of [recall_at5][google.cloud.datalabeling.v
+1beta1.PrCurve.ConfidenceMetricsEntry.recall_at5] and [precis
+ion_at5][google.cloud.datalabeling.v1beta1.PrCurve.Confidence
+MetricsEntry.precision_at5].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">confidence_threshold</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.confidence_threshold</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">f1_score</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.f1_score</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">f1_score_at1</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.f1_score_at1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">f1_score_at5</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.f1_score_at5</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">precision</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.precision</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">precision_at1</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.precision_at1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">precision_at5</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.precision_at5</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">recall</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.recall</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">recall_at1</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.recall_at1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">recall_at5</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.recall_at5</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">annotation_spec</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.PrCurve.annotation_spec</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">area_under_curve</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.PrCurve.area_under_curve</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">confidence_metrics_entries</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.PrCurve.confidence_metrics_entries</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">mean_average_precision</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.PrCurve.mean_average_precision</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.ResumeEvaluationJobRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">ResumeEvaluationJobRequest</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ResumeEvaluationJobRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message ResumeEvaluationJob.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.ResumeEvaluationJobRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.ResumeEvaluationJobRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Name of the evaluation job that is going to be
+resumed. Format:
+‘projects/{project_id}/evaluationJobs/{evaluation_job_id}’</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.ResumeEvaluationJobRequest.name</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.SearchEvaluationsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">SearchEvaluationsRequest</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.SearchEvaluationsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for SearchEvaluation.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.SearchEvaluationsRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.SearchEvaluationsRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Evaluation search parent. Format:
+projects/{project_id}</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.SearchEvaluationsRequest.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.SearchEvaluationsRequest.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Support filtering by model id, job state, start and
+end time. Format: “evaluation_job.evaluation_job_id =
+{evaluation_job_id} AND
+evaluation_job.evaluation_job_run_time_start =
+{timestamp} AND
+evaluation_job.evaluation_job_run_time_end = {timestamp}
+AND annotation_spec.display_name = {display_name}”</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.SearchEvaluationsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.SearchEvaluationsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Requested page size. Server may return fewer results
+than requested. Default value is 100.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.SearchEvaluationsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.SearchEvaluationsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. A token identifying a page of results for the server
+to return. Typically obtained by [SearchEvaluationsResponse.ne
+xt_page_token][google.cloud.datalabeling.v1beta1.SearchEvalu
+ationsResponse.next_page_token] of the previous
+[DataLabelingService.SearchEvaluations] call. Return first
+page if empty.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">filter</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.SearchEvaluationsRequest.filter</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.SearchEvaluationsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.SearchEvaluationsRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.SearchEvaluationsRequest.parent</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.SearchEvaluationsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">SearchEvaluationsResponse</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.SearchEvaluationsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Results of searching evaluations.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.SearchEvaluationsResponse.evaluations">
+<code class="descname">evaluations</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.SearchEvaluationsResponse.evaluations" title="Permalink to this definition">#</a></dt>
+<dd><p>The list of evaluations to return.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.SearchEvaluationsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.SearchEvaluationsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>A token to retrieve next page of results.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">evaluations</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.SearchEvaluationsResponse.evaluations</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.SearchEvaluationsResponse.next_page_token</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">SearchExampleComparisonsRequest</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message of SearchExampleComparisons.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Name of the Evaluation resource to search example
+comparison from. Format: projects/{project_id}/datasets/{data
+set_id}/evaluations/{evaluation_id}</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Requested page size. Server may return fewer results
+than requested. Default value is 100.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. A token identifying a page of results for the server
+to return. Typically obtained by
+[SearchExampleComparisons.next_page_token][] of the previous
+[DataLabelingService.SearchExampleComparisons] call. Return
+first page if empty.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.SearchExampleComparisonsRequest.page_size</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.SearchExampleComparisonsRequest.page_token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.SearchExampleComparisonsRequest.parent</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">SearchExampleComparisonsResponse</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Results of searching example comparisons.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>A token to retrieve next page of results.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsResponse.ExampleComparison">
+<em class="property">class </em><code class="descname">ExampleComparison</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsResponse.ExampleComparison" title="Permalink to this definition">#</a></dt>
+<dd><p>Example comparisons containing annotation comparison between groundtruth
+and predictions.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsResponse.ExampleComparison.ground_truth_example">
+<code class="descname">ground_truth_example</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsResponse.ExampleComparison.ground_truth_example" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.SearchExampleComparisonsResponse.ExampleComparison.ground_truth_example</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsResponse.ExampleComparison.model_created_examples">
+<code class="descname">model_created_examples</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsResponse.ExampleComparison.model_created_examples" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.SearchExampleComparisonsResponse.ExampleComparison.model_created_examples</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsResponse.example_comparisons">
+<code class="descname">example_comparisons</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsResponse.example_comparisons" title="Permalink to this definition">#</a></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.SearchExampleComparisonsResponse.example_comparisons</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.SearchExampleComparisonsResponse.next_page_token</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.datalabeling_v1beta1.types.SegmentationConfig">
 <em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">SegmentationConfig</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.SegmentationConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for image segmentation</p>
@@ -3446,6 +5374,36 @@ or positive label. Default is false.</p>
 <dt>
 <code class="descname">enable_label_sentiment_selection</code></dt>
 <dd><p>Field google.cloud.datalabeling.v1beta1.SentimentConfig.enable_label_sentiment_selection</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.SequentialSegment">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">SequentialSegment</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.SequentialSegment" title="Permalink to this definition">#</a></dt>
+<dd><p>Start and end position in a sequence (e.g. text segment).</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.SequentialSegment.start">
+<code class="descname">start</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.SequentialSegment.start" title="Permalink to this definition">#</a></dt>
+<dd><p>Start position (inclusive).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.SequentialSegment.end">
+<code class="descname">end</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.SequentialSegment.end" title="Permalink to this definition">#</a></dt>
+<dd><p>End position (exclusive).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">end</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.SequentialSegment.end</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">start</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.SequentialSegment.start</p>
 </dd></dl>
 
 </dd></dl>
@@ -3535,6 +5493,36 @@ able to choose multiple labels for one text segment.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.TextEntityExtractionAnnotation">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">TextEntityExtractionAnnotation</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.TextEntityExtractionAnnotation" title="Permalink to this definition">#</a></dt>
+<dd><p>Text entity extraction annotation.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.TextEntityExtractionAnnotation.annotation_spec">
+<code class="descname">annotation_spec</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.TextEntityExtractionAnnotation.annotation_spec" title="Permalink to this definition">#</a></dt>
+<dd><p>Label of the text entities.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.TextEntityExtractionAnnotation.sequential_segment">
+<code class="descname">sequential_segment</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.TextEntityExtractionAnnotation.sequential_segment" title="Permalink to this definition">#</a></dt>
+<dd><p>Position of the entity.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">annotation_spec</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.TextEntityExtractionAnnotation.annotation_spec</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">sequential_segment</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.TextEntityExtractionAnnotation.sequential_segment</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.datalabeling_v1beta1.types.TextEntityExtractionConfig">
 <em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">TextEntityExtractionConfig</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.TextEntityExtractionConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for text entity extraction human labeling task.</p>
@@ -3548,6 +5536,24 @@ able to choose multiple labels for one text segment.</p>
 <dt>
 <code class="descname">annotation_spec_set</code></dt>
 <dd><p>Field google.cloud.datalabeling.v1beta1.TextEntityExtractionConfig.annotation_spec_set</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.TextMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">TextMetadata</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.TextMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Metadata for the text.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.TextMetadata.language_code">
+<code class="descname">language_code</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.TextMetadata.language_code" title="Permalink to this definition">#</a></dt>
+<dd><p>The language of this text, as a <a class="reference external" href="https://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP-47</a>. Default value is en-US.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">language_code</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.TextMetadata.language_code</p>
 </dd></dl>
 
 </dd></dl>
@@ -3616,6 +5622,37 @@ duration since the example start.</p>
 <dt id="google.cloud.datalabeling_v1beta1.types.Timestamp.seconds">
 <code class="descname">seconds</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.Timestamp.seconds" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Timestamp.seconds</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.datalabeling_v1beta1.types.UpdateEvaluationJobRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.datalabeling_v1beta1.types.</code><code class="descname">UpdateEvaluationJobRequest</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.UpdateEvaluationJobRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for UpdateEvaluationJob.</p>
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.UpdateEvaluationJobRequest.evaluation_job">
+<code class="descname">evaluation_job</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.UpdateEvaluationJobRequest.evaluation_job" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Evaluation job that is going to be updated.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.UpdateEvaluationJobRequest.update_mask">
+<code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.UpdateEvaluationJobRequest.update_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Mask for which field in evaluation_job should be
+updated.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">evaluation_job</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.UpdateEvaluationJobRequest.evaluation_job</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_mask</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.UpdateEvaluationJobRequest.update_mask</p>
 </dd></dl>
 
 </dd></dl>
@@ -3845,6 +5882,12 @@ applies.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.datalabeling_v1beta1.types.VideoPayload.signed_uri">
+<code class="descname">signed_uri</code><a class="headerlink" href="#google.cloud.datalabeling_v1beta1.types.VideoPayload.signed_uri" title="Permalink to this definition">#</a></dt>
+<dd><p>Signed uri of the video file in the service bucket.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">frame_rate</code></dt>
 <dd><p>Field google.cloud.datalabeling.v1beta1.VideoPayload.frame_rate</p>
@@ -3854,6 +5897,12 @@ applies.</p>
 <dt>
 <code class="descname">mime_type</code></dt>
 <dd><p>Field google.cloud.datalabeling.v1beta1.VideoPayload.mime_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">signed_uri</code></dt>
+<dd><p>Field google.cloud.datalabeling.v1beta1.VideoPayload.signed_uri</p>
 </dd></dl>
 
 <dl class="attribute">

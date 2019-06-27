@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.datalabeling_v1beta1.proto.annotation_pb2 &#8212; google-cloud 3d32438 documentation</title>
+    <title>google.cloud.datalabeling_v1beta1.proto.annotation_pb2 &#8212; google-cloud dd52140 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -52,13 +52,14 @@
 <span class="n">_sym_db</span> <span class="o">=</span> <span class="n">_symbol_database</span><span class="o">.</span><span class="n">Default</span><span class="p">()</span>
 
 
+<span class="kn">from</span> <span class="nn">google.api</span> <span class="k">import</span> <span class="n">annotations_pb2</span> <span class="k">as</span> <span class="n">google_dot_api_dot_annotations__pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.datalabeling_v1beta1.proto</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">annotation_spec_set_pb2</span> <span class="k">as</span> <span class="n">google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_annotation__spec__set__pb2</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">google.cloud.datalabeling_v1beta1.proto</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">data_payloads_pb2</span> <span class="k">as</span> <span class="n">google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__payloads__pb2</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">duration_pb2</span> <span class="k">as</span> <span class="n">google_dot_protobuf_dot_duration__pb2</span>
-<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">struct_pb2</span> <span class="k">as</span> <span class="n">google_dot_protobuf_dot_struct__pb2</span>
-<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">timestamp_pb2</span> <span class="k">as</span> <span class="n">google_dot_protobuf_dot_timestamp__pb2</span>
-<span class="kn">from</span> <span class="nn">google.api</span> <span class="k">import</span> <span class="n">annotations_pb2</span> <span class="k">as</span> <span class="n">google_dot_api_dot_annotations__pb2</span>
 
 
 <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">FileDescriptor</span><span class="p">(</span>
@@ -69,14 +70,13 @@
         <span class="s2">&quot;</span><span class="se">\n</span><span class="si">%c</span><span class="s2">om.google.cloud.datalabeling.v1beta1P</span><span class="se">\001</span><span class="s2">ZMgoogle.golang.org/genproto/googleapis/cloud/datalabeling/v1beta1;datalabeling&quot;</span>
     <span class="p">),</span>
     <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span>
-        <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">8google/cloud/datalabeling_v1beta1/proto/annotation.proto</span><span class="se">\x12</span><span class="s1">!google.cloud.datalabeling.v1beta1</span><span class="se">\x1a\x41</span><span class="s1">google/cloud/datalabeling_v1beta1/proto/annotation_spec_set.proto</span><span class="se">\x1a\x1e</span><span class="s1">google/protobuf/duration.proto</span><span class="se">\x1a\x1c</span><span class="s1">google/protobuf/struct.proto</span><span class="se">\x1a\x1f</span><span class="s1">google/protobuf/timestamp.proto</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto&quot;</span><span class="se">\xe2\x02\n\n</span><span class="s1">Annotation</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">N</span><span class="se">\n\x11\x61</span><span class="s1">nnotation_source</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32\x33</span><span class="s1">.google.cloud.datalabeling.v1beta1.AnnotationSource</span><span class="se">\x12</span><span class="s1">L</span><span class="se">\n\x10\x61</span><span class="s1">nnotation_value</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x32</span><span class="s1">.google.cloud.datalabeling.v1beta1.AnnotationValue</span><span class="se">\x12</span><span class="s1">R</span><span class="se">\n\x13\x61</span><span class="s1">nnotation_metadata</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x35</span><span class="s1">.google.cloud.datalabeling.v1beta1.AnnotationMetadata</span><span class="se">\x12</span><span class="s1">T</span><span class="se">\n\x14\x61</span><span class="s1">nnotation_sentiment</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32\x36</span><span class="s1">.google.cloud.datalabeling.v1beta1.AnnotationSentiment&quot;</span><span class="se">\xc8\x07\n\x0f\x41</span><span class="s1">nnotationValue</span><span class="se">\x12</span><span class="s1">k</span><span class="se">\n\x1f</span><span class="s1">image_classification_annotation</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">@.google.cloud.datalabeling.v1beta1.ImageClassificationAnnotationH</span><span class="se">\x00\x12</span><span class="s1">h</span><span class="se">\n\x1e</span><span class="s1">image_bounding_poly_annotation</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">&gt;.google.cloud.datalabeling.v1beta1.ImageBoundingPolyAnnotationH</span><span class="se">\x00\x12</span><span class="s1">_</span><span class="se">\n\x19</span><span class="s1">image_polyline_annotation</span><span class="se">\x18\x08</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">:.google.cloud.datalabeling.v1beta1.ImagePolylineAnnotationH</span><span class="se">\x00\x12</span><span class="s1">g</span><span class="se">\n\x1d</span><span class="s1">image_segmentation_annotation</span><span class="se">\x18\t</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">&gt;.google.cloud.datalabeling.v1beta1.ImageSegmentationAnnotationH</span><span class="se">\x00\x12</span><span class="s1">i</span><span class="se">\n\x1e</span><span class="s1">text_classification_annotation</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">?.google.cloud.datalabeling.v1beta1.TextClassificationAnnotationH</span><span class="se">\x00\x12</span><span class="s1">k</span><span class="se">\n\x1f</span><span class="s1">video_classification_annotation</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">@.google.cloud.datalabeling.v1beta1.VideoClassificationAnnotationH</span><span class="se">\x00\x12</span><span class="s1">l</span><span class="se">\n</span><span class="s1"> video_object_tracking_annotation</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">@.google.cloud.datalabeling.v1beta1.VideoObjectTrackingAnnotationH</span><span class="se">\x00\x12</span><span class="s1">Y</span><span class="se">\n\x16</span><span class="s1">video_event_annotation</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x37</span><span class="s1">.google.cloud.datalabeling.v1beta1.VideoEventAnnotationH</span><span class="se">\x00\x12\x65\n\x1c\x61</span><span class="s1">udio_recognition_annotation</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">=.google.cloud.datalabeling.v1beta1.AudioRecognitionAnnotationH</span><span class="se">\x00\x42\x0c\n\n</span><span class="s1">value_type&quot;k</span><span class="se">\n\x1d</span><span class="s1">ImageClassificationAnnotation</span><span class="se">\x12</span><span class="s1">J</span><span class="se">\n\x0f\x61</span><span class="s1">nnotation_spec</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x31</span><span class="s1">.google.cloud.datalabeling.v1beta1.AnnotationSpec&quot;</span><span class="se">\x1e\n\x06</span><span class="s1">Vertex</span><span class="se">\x12\t\n\x01</span><span class="s1">x</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\t\n\x01</span><span class="s1">y</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05</span><span class="s1">&quot;(</span><span class="se">\n\x10</span><span class="s1">NormalizedVertex</span><span class="se">\x12\t\n\x01</span><span class="s1">x</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x12\t\n\x01</span><span class="s1">y</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02</span><span class="s1">&quot;K</span><span class="se">\n\x0c\x42</span><span class="s1">oundingPoly</span><span class="se">\x12</span><span class="s1">;</span><span class="se">\n\x08</span><span class="s1">vertices</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">).google.cloud.datalabeling.v1beta1.Vertex&quot;j</span><span class="se">\n\x16</span><span class="s1">NormalizedBoundingPoly</span><span class="se">\x12</span><span class="s1">P</span><span class="se">\n\x13</span><span class="s1">normalized_vertices</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x33</span><span class="s1">.google.cloud.datalabeling.v1beta1.NormalizedVertex&quot;</span><span class="se">\xa2\x02\n\x1b</span><span class="s1">ImageBoundingPolyAnnotation</span><span class="se">\x12</span><span class="s1">H</span><span class="se">\n\r</span><span class="s1">bounding_poly</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">/.google.cloud.datalabeling.v1beta1.BoundingPolyH</span><span class="se">\x00\x12</span><span class="s1">]</span><span class="se">\n\x18</span><span class="s1">normalized_bounding_poly</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x39</span><span class="s1">.google.cloud.datalabeling.v1beta1.NormalizedBoundingPolyH</span><span class="se">\x00\x12</span><span class="s1">J</span><span class="se">\n\x0f\x61</span><span class="s1">nnotation_spec</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x31</span><span class="s1">.google.cloud.datalabeling.v1beta1.AnnotationSpecB</span><span class="se">\x0e\n\x0c\x62</span><span class="s1">ounded_area&quot;G</span><span class="se">\n\x08</span><span class="s1">Polyline</span><span class="se">\x12</span><span class="s1">;</span><span class="se">\n\x08</span><span class="s1">vertices</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">).google.cloud.datalabeling.v1beta1.Vertex&quot;f</span><span class="se">\n\x12</span><span class="s1">NormalizedPolyline</span><span class="se">\x12</span><span class="s1">P</span><span class="se">\n\x13</span><span class="s1">normalized_vertices</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x33</span><span class="s1">.google.cloud.datalabeling.v1beta1.NormalizedVertex&quot;</span><span class="se">\x84\x02\n\x17</span><span class="s1">ImagePolylineAnnotation</span><span class="se">\x12</span><span class="s1">?</span><span class="se">\n\x08</span><span class="s1">polyline</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">+.google.cloud.datalabeling.v1beta1.PolylineH</span><span class="se">\x00\x12</span><span class="s1">T</span><span class="se">\n\x13</span><span class="s1">normalized_polyline</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x35</span><span class="s1">.google.cloud.datalabeling.v1beta1.NormalizedPolylineH</span><span class="se">\x00\x12</span><span class="s1">J</span><span class="se">\n\x0f\x61</span><span class="s1">nnotation_spec</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x31</span><span class="s1">.google.cloud.datalabeling.v1beta1.AnnotationSpecB</span><span class="se">\x06\n\x04</span><span class="s1">poly&quot;</span><span class="se">\xa2\x02\n\x1b</span><span class="s1">ImageSegmentationAnnotation</span><span class="se">\x12</span><span class="s1">o</span><span class="se">\n\x11\x61</span><span class="s1">nnotation_colors</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">T.google.cloud.datalabeling.v1beta1.ImageSegmentationAnnotation.AnnotationColorsEntry</span><span class="se">\x12\x11\n\t</span><span class="s1">mime_type</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x13\n\x0b</span><span class="s1">image_bytes</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c\x1a</span><span class="s1">j</span><span class="se">\n\x15\x41</span><span class="s1">nnotationColorsEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">@</span><span class="se">\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x31</span><span class="s1">.google.cloud.datalabeling.v1beta1.AnnotationSpec:</span><span class="se">\x02\x38\x01</span><span class="s1">&quot;j</span><span class="se">\n\x1c</span><span class="s1">TextClassificationAnnotation</span><span class="se">\x12</span><span class="s1">J</span><span class="se">\n\x0f\x61</span><span class="s1">nnotation_spec</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x31</span><span class="s1">.google.cloud.datalabeling.v1beta1.AnnotationSpec&quot;w</span><span class="se">\n\x0b</span><span class="s1">TimeSegment</span><span class="se">\x12\x34\n\x11</span><span class="s1">start_time_offset</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x19</span><span class="s1">.google.protobuf.Duration</span><span class="se">\x12\x32\n\x0f\x65</span><span class="s1">nd_time_offset</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x19</span><span class="s1">.google.protobuf.Duration&quot;</span><span class="se">\xb1\x01\n\x1d</span><span class="s1">VideoClassificationAnnotation</span><span class="se">\x12\x44\n\x0c</span><span class="s1">time_segment</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">..google.cloud.datalabeling.v1beta1.TimeSegment</span><span class="se">\x12</span><span class="s1">J</span><span class="se">\n\x0f\x61</span><span class="s1">nnotation_spec</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x31</span><span class="s1">.google.cloud.datalabeling.v1beta1.AnnotationSpec&quot;</span><span class="se">\xfe\x01\n\x13</span><span class="s1">ObjectTrackingFrame</span><span class="se">\x12</span><span class="s1">H</span><span class="se">\n\r</span><span class="s1">bounding_poly</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">/.google.cloud.datalabeling.v1beta1.BoundingPolyH</span><span class="se">\x00\x12</span><span class="s1">]</span><span class="se">\n\x18</span><span class="s1">normalized_bounding_poly</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x39</span><span class="s1">.google.cloud.datalabeling.v1beta1.NormalizedBoundingPolyH</span><span class="se">\x00\x12</span><span class="s1">.</span><span class="se">\n\x0b</span><span class="s1">time_offset</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x19</span><span class="s1">.google.protobuf.DurationB</span><span class="se">\x0e\n\x0c\x62</span><span class="s1">ounded_area&quot;</span><span class="se">\x89\x02\n\x1d</span><span class="s1">VideoObjectTrackingAnnotation</span><span class="se">\x12</span><span class="s1">J</span><span class="se">\n\x0f\x61</span><span class="s1">nnotation_spec</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x31</span><span class="s1">.google.cloud.datalabeling.v1beta1.AnnotationSpec</span><span class="se">\x12\x44\n\x0c</span><span class="s1">time_segment</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">..google.cloud.datalabeling.v1beta1.TimeSegment</span><span class="se">\x12</span><span class="s1">V</span><span class="se">\n\x16</span><span class="s1">object_tracking_frames</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x36</span><span class="s1">.google.cloud.datalabeling.v1beta1.ObjectTrackingFrame&quot;</span><span class="se">\xa8\x01\n\x14</span><span class="s1">VideoEventAnnotation</span><span class="se">\x12</span><span class="s1">J</span><span class="se">\n\x0f\x61</span><span class="s1">nnotation_spec</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x31</span><span class="s1">.google.cloud.datalabeling.v1beta1.AnnotationSpec</span><span class="se">\x12\x44\n\x0c</span><span class="s1">time_segment</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">..google.cloud.datalabeling.v1beta1.TimeSegment&quot;</span><span class="se">\x90\x01\n\x1a\x41</span><span class="s1">udioRecognitionAnnotation</span><span class="se">\x12\x12\n\n</span><span class="s1">transcript</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">/</span><span class="se">\n\x0c</span><span class="s1">start_offset</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x19</span><span class="s1">.google.protobuf.Duration</span><span class="se">\x12</span><span class="s1">-</span><span class="se">\n\n</span><span class="s1">end_offset</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x19</span><span class="s1">.google.protobuf.Duration&quot;d</span><span class="se">\n\x12\x41</span><span class="s1">nnotationMetadata</span><span class="se">\x12</span><span class="s1">N</span><span class="se">\n\x11</span><span class="s1">operator_metadata</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x33</span><span class="s1">.google.cloud.datalabeling.v1beta1.OperatorMetadata&quot;]</span><span class="se">\n\x10</span><span class="s1">OperatorMetadata</span><span class="se">\x12\r\n\x05</span><span class="s1">score</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x12\x13\n\x0b</span><span class="s1">total_votes</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x13\n\x0b</span><span class="s1">label_votes</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x10\n\x08\x63</span><span class="s1">omments</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\t</span><span class="s1">*C</span><span class="se">\n\x10\x41</span><span class="s1">nnotationSource</span><span class="se">\x12</span><span class="s1">!</span><span class="se">\n\x1d\x41</span><span class="s1">NNOTATION_SOURCE_UNSPECIFIED</span><span class="se">\x10\x00\x12\x0c\n\x08</span><span class="s1">OPERATOR</span><span class="se">\x10\x03</span><span class="s1">*W</span><span class="se">\n\x13\x41</span><span class="s1">nnotationSentiment</span><span class="se">\x12</span><span class="s1">$</span><span class="se">\n</span><span class="s1"> ANNOTATION_SENTIMENT_UNSPECIFIED</span><span class="se">\x10\x00\x12\x0c\n\x08</span><span class="s1">NEGATIVE</span><span class="se">\x10\x01\x12\x0c\n\x08</span><span class="s1">POSITIVE</span><span class="se">\x10\x02</span><span class="s1">*</span><span class="se">\x8e\x04\n\x0e\x41</span><span class="s1">nnotationType</span><span class="se">\x12\x1f\n\x1b\x41</span><span class="s1">NNOTATION_TYPE_UNSPECIFIED</span><span class="se">\x10\x00\x12</span><span class="s1">#</span><span class="se">\n\x1f</span><span class="s1">IMAGE_CLASSIFICATION_ANNOTATION</span><span class="se">\x10\x01\x12</span><span class="s1">!</span><span class="se">\n\x1d</span><span class="s1">IMAGE_BOUNDING_BOX_ANNOTATION</span><span class="se">\x10\x02\x12</span><span class="s1">*</span><span class="se">\n</span><span class="s1">&amp;IMAGE_ORIENTED_BOUNDING_BOX_ANNOTATION</span><span class="se">\x10\r\x12</span><span class="s1">&quot;</span><span class="se">\n\x1e</span><span class="s1">IMAGE_BOUNDING_POLY_ANNOTATION</span><span class="se">\x10\n\x12\x1d\n\x19</span><span class="s1">IMAGE_POLYLINE_ANNOTATION</span><span class="se">\x10\x0b\x12</span><span class="s1">!</span><span class="se">\n\x1d</span><span class="s1">IMAGE_SEGMENTATION_ANNOTATION</span><span class="se">\x10\x0c\x12</span><span class="s1">)</span><span class="se">\n</span><span class="s1">%VIDEO_SHOTS_CLASSIFICATION_ANNOTATION</span><span class="se">\x10\x03\x12</span><span class="s1">$</span><span class="se">\n</span><span class="s1"> VIDEO_OBJECT_TRACKING_ANNOTATION</span><span class="se">\x10\x04\x12</span><span class="s1">%</span><span class="se">\n</span><span class="s1">!VIDEO_OBJECT_DETECTION_ANNOTATION</span><span class="se">\x10\x05\x12\x1a\n\x16</span><span class="s1">VIDEO_EVENT_ANNOTATION</span><span class="se">\x10\x06\x12</span><span class="s1">&quot;</span><span class="se">\n\x1e\x41</span><span class="s1">UDIO_TRANSCRIPTION_ANNOTATION</span><span class="se">\x10\x07\x12</span><span class="s1">&quot;</span><span class="se">\n\x1e</span><span class="s1">TEXT_CLASSIFICATION_ANNOTATION</span><span class="se">\x10\x08\x12</span><span class="s1">%</span><span class="se">\n</span><span class="s1">!TEXT_ENTITY_EXTRACTION_ANNOTATION</span><span class="se">\x10\t</span><span class="s1">Bx</span><span class="se">\n</span><span class="si">%c</span><span class="s1">om.google.cloud.datalabeling.v1beta1P</span><span class="se">\x01</span><span class="s1">ZMgoogle.golang.org/genproto/googleapis/cloud/datalabeling/v1beta1;datalabelingb</span><span class="se">\x06</span><span class="s1">proto3&#39;</span>
+        <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">8google/cloud/datalabeling_v1beta1/proto/annotation.proto</span><span class="se">\x12</span><span class="s1">!google.cloud.datalabeling.v1beta1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a\x41</span><span class="s1">google/cloud/datalabeling_v1beta1/proto/annotation_spec_set.proto</span><span class="se">\x1a</span><span class="s1">;google/cloud/datalabeling_v1beta1/proto/data_payloads.proto</span><span class="se">\x1a\x1e</span><span class="s1">google/protobuf/duration.proto&quot;</span><span class="se">\xe2\x02\n\n</span><span class="s1">Annotation</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">N</span><span class="se">\n\x11\x61</span><span class="s1">nnotation_source</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32\x33</span><span class="s1">.google.cloud.datalabeling.v1beta1.AnnotationSource</span><span class="se">\x12</span><span class="s1">L</span><span class="se">\n\x10\x61</span><span class="s1">nnotation_value</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x32</span><span class="s1">.google.cloud.datalabeling.v1beta1.AnnotationValue</span><span class="se">\x12</span><span class="s1">R</span><span class="se">\n\x13\x61</span><span class="s1">nnotation_metadata</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x35</span><span class="s1">.google.cloud.datalabeling.v1beta1.AnnotationMetadata</span><span class="se">\x12</span><span class="s1">T</span><span class="se">\n\x14\x61</span><span class="s1">nnotation_sentiment</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32\x36</span><span class="s1">.google.cloud.datalabeling.v1beta1.AnnotationSentiment&quot;</span><span class="se">\xd1\x07\n\x0f\x41</span><span class="s1">nnotationValue</span><span class="se">\x12</span><span class="s1">k</span><span class="se">\n\x1f</span><span class="s1">image_classification_annotation</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">@.google.cloud.datalabeling.v1beta1.ImageClassificationAnnotationH</span><span class="se">\x00\x12</span><span class="s1">h</span><span class="se">\n\x1e</span><span class="s1">image_bounding_poly_annotation</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">&gt;.google.cloud.datalabeling.v1beta1.ImageBoundingPolyAnnotationH</span><span class="se">\x00\x12</span><span class="s1">_</span><span class="se">\n\x19</span><span class="s1">image_polyline_annotation</span><span class="se">\x18\x08</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">:.google.cloud.datalabeling.v1beta1.ImagePolylineAnnotationH</span><span class="se">\x00\x12</span><span class="s1">g</span><span class="se">\n\x1d</span><span class="s1">image_segmentation_annotation</span><span class="se">\x18\t</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">&gt;.google.cloud.datalabeling.v1beta1.ImageSegmentationAnnotationH</span><span class="se">\x00\x12</span><span class="s1">i</span><span class="se">\n\x1e</span><span class="s1">text_classification_annotation</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">?.google.cloud.datalabeling.v1beta1.TextClassificationAnnotationH</span><span class="se">\x00\x12</span><span class="s1">n</span><span class="se">\n</span><span class="s1">!text_entity_extraction_annotation</span><span class="se">\x18\n</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x41</span><span class="s1">.google.cloud.datalabeling.v1beta1.TextEntityExtractionAnnotationH</span><span class="se">\x00\x12</span><span class="s1">k</span><span class="se">\n\x1f</span><span class="s1">video_classification_annotation</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">@.google.cloud.datalabeling.v1beta1.VideoClassificationAnnotationH</span><span class="se">\x00\x12</span><span class="s1">l</span><span class="se">\n</span><span class="s1"> video_object_tracking_annotation</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">@.google.cloud.datalabeling.v1beta1.VideoObjectTrackingAnnotationH</span><span class="se">\x00\x12</span><span class="s1">Y</span><span class="se">\n\x16</span><span class="s1">video_event_annotation</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x37</span><span class="s1">.google.cloud.datalabeling.v1beta1.VideoEventAnnotationH</span><span class="se">\x00\x42\x0c\n\n</span><span class="s1">value_type&quot;k</span><span class="se">\n\x1d</span><span class="s1">ImageClassificationAnnotation</span><span class="se">\x12</span><span class="s1">J</span><span class="se">\n\x0f\x61</span><span class="s1">nnotation_spec</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x31</span><span class="s1">.google.cloud.datalabeling.v1beta1.AnnotationSpec&quot;</span><span class="se">\x1e\n\x06</span><span class="s1">Vertex</span><span class="se">\x12\t\n\x01</span><span class="s1">x</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\t\n\x01</span><span class="s1">y</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05</span><span class="s1">&quot;(</span><span class="se">\n\x10</span><span class="s1">NormalizedVertex</span><span class="se">\x12\t\n\x01</span><span class="s1">x</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x12\t\n\x01</span><span class="s1">y</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02</span><span class="s1">&quot;K</span><span class="se">\n\x0c\x42</span><span class="s1">oundingPoly</span><span class="se">\x12</span><span class="s1">;</span><span class="se">\n\x08</span><span class="s1">vertices</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">).google.cloud.datalabeling.v1beta1.Vertex&quot;j</span><span class="se">\n\x16</span><span class="s1">NormalizedBoundingPoly</span><span class="se">\x12</span><span class="s1">P</span><span class="se">\n\x13</span><span class="s1">normalized_vertices</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x33</span><span class="s1">.google.cloud.datalabeling.v1beta1.NormalizedVertex&quot;</span><span class="se">\xa2\x02\n\x1b</span><span class="s1">ImageBoundingPolyAnnotation</span><span class="se">\x12</span><span class="s1">H</span><span class="se">\n\r</span><span class="s1">bounding_poly</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">/.google.cloud.datalabeling.v1beta1.BoundingPolyH</span><span class="se">\x00\x12</span><span class="s1">]</span><span class="se">\n\x18</span><span class="s1">normalized_bounding_poly</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x39</span><span class="s1">.google.cloud.datalabeling.v1beta1.NormalizedBoundingPolyH</span><span class="se">\x00\x12</span><span class="s1">J</span><span class="se">\n\x0f\x61</span><span class="s1">nnotation_spec</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x31</span><span class="s1">.google.cloud.datalabeling.v1beta1.AnnotationSpecB</span><span class="se">\x0e\n\x0c\x62</span><span class="s1">ounded_area&quot;G</span><span class="se">\n\x08</span><span class="s1">Polyline</span><span class="se">\x12</span><span class="s1">;</span><span class="se">\n\x08</span><span class="s1">vertices</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">).google.cloud.datalabeling.v1beta1.Vertex&quot;f</span><span class="se">\n\x12</span><span class="s1">NormalizedPolyline</span><span class="se">\x12</span><span class="s1">P</span><span class="se">\n\x13</span><span class="s1">normalized_vertices</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x33</span><span class="s1">.google.cloud.datalabeling.v1beta1.NormalizedVertex&quot;</span><span class="se">\x84\x02\n\x17</span><span class="s1">ImagePolylineAnnotation</span><span class="se">\x12</span><span class="s1">?</span><span class="se">\n\x08</span><span class="s1">polyline</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">+.google.cloud.datalabeling.v1beta1.PolylineH</span><span class="se">\x00\x12</span><span class="s1">T</span><span class="se">\n\x13</span><span class="s1">normalized_polyline</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x35</span><span class="s1">.google.cloud.datalabeling.v1beta1.NormalizedPolylineH</span><span class="se">\x00\x12</span><span class="s1">J</span><span class="se">\n\x0f\x61</span><span class="s1">nnotation_spec</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x31</span><span class="s1">.google.cloud.datalabeling.v1beta1.AnnotationSpecB</span><span class="se">\x06\n\x04</span><span class="s1">poly&quot;</span><span class="se">\xa2\x02\n\x1b</span><span class="s1">ImageSegmentationAnnotation</span><span class="se">\x12</span><span class="s1">o</span><span class="se">\n\x11\x61</span><span class="s1">nnotation_colors</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">T.google.cloud.datalabeling.v1beta1.ImageSegmentationAnnotation.AnnotationColorsEntry</span><span class="se">\x12\x11\n\t</span><span class="s1">mime_type</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x13\n\x0b</span><span class="s1">image_bytes</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c\x1a</span><span class="s1">j</span><span class="se">\n\x15\x41</span><span class="s1">nnotationColorsEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">@</span><span class="se">\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x31</span><span class="s1">.google.cloud.datalabeling.v1beta1.AnnotationSpec:</span><span class="se">\x02\x38\x01</span><span class="s1">&quot;j</span><span class="se">\n\x1c</span><span class="s1">TextClassificationAnnotation</span><span class="se">\x12</span><span class="s1">J</span><span class="se">\n\x0f\x61</span><span class="s1">nnotation_spec</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x31</span><span class="s1">.google.cloud.datalabeling.v1beta1.AnnotationSpec&quot;</span><span class="se">\xbe\x01\n\x1e</span><span class="s1">TextEntityExtractionAnnotation</span><span class="se">\x12</span><span class="s1">J</span><span class="se">\n\x0f\x61</span><span class="s1">nnotation_spec</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x31</span><span class="s1">.google.cloud.datalabeling.v1beta1.AnnotationSpec</span><span class="se">\x12</span><span class="s1">P</span><span class="se">\n\x12</span><span class="s1">sequential_segment</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x34</span><span class="s1">.google.cloud.datalabeling.v1beta1.SequentialSegment&quot;/</span><span class="se">\n\x11</span><span class="s1">SequentialSegment</span><span class="se">\x12\r\n\x05</span><span class="s1">start</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x0b\n\x03\x65</span><span class="s1">nd</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05</span><span class="s1">&quot;w</span><span class="se">\n\x0b</span><span class="s1">TimeSegment</span><span class="se">\x12\x34\n\x11</span><span class="s1">start_time_offset</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x19</span><span class="s1">.google.protobuf.Duration</span><span class="se">\x12\x32\n\x0f\x65</span><span class="s1">nd_time_offset</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x19</span><span class="s1">.google.protobuf.Duration&quot;</span><span class="se">\xb1\x01\n\x1d</span><span class="s1">VideoClassificationAnnotation</span><span class="se">\x12\x44\n\x0c</span><span class="s1">time_segment</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">..google.cloud.datalabeling.v1beta1.TimeSegment</span><span class="se">\x12</span><span class="s1">J</span><span class="se">\n\x0f\x61</span><span class="s1">nnotation_spec</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x31</span><span class="s1">.google.cloud.datalabeling.v1beta1.AnnotationSpec&quot;</span><span class="se">\xfe\x01\n\x13</span><span class="s1">ObjectTrackingFrame</span><span class="se">\x12</span><span class="s1">H</span><span class="se">\n\r</span><span class="s1">bounding_poly</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">/.google.cloud.datalabeling.v1beta1.BoundingPolyH</span><span class="se">\x00\x12</span><span class="s1">]</span><span class="se">\n\x18</span><span class="s1">normalized_bounding_poly</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x39</span><span class="s1">.google.cloud.datalabeling.v1beta1.NormalizedBoundingPolyH</span><span class="se">\x00\x12</span><span class="s1">.</span><span class="se">\n\x0b</span><span class="s1">time_offset</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x19</span><span class="s1">.google.protobuf.DurationB</span><span class="se">\x0e\n\x0c\x62</span><span class="s1">ounded_area&quot;</span><span class="se">\x89\x02\n\x1d</span><span class="s1">VideoObjectTrackingAnnotation</span><span class="se">\x12</span><span class="s1">J</span><span class="se">\n\x0f\x61</span><span class="s1">nnotation_spec</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x31</span><span class="s1">.google.cloud.datalabeling.v1beta1.AnnotationSpec</span><span class="se">\x12\x44\n\x0c</span><span class="s1">time_segment</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">..google.cloud.datalabeling.v1beta1.TimeSegment</span><span class="se">\x12</span><span class="s1">V</span><span class="se">\n\x16</span><span class="s1">object_tracking_frames</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x36</span><span class="s1">.google.cloud.datalabeling.v1beta1.ObjectTrackingFrame&quot;</span><span class="se">\xa8\x01\n\x14</span><span class="s1">VideoEventAnnotation</span><span class="se">\x12</span><span class="s1">J</span><span class="se">\n\x0f\x61</span><span class="s1">nnotation_spec</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x31</span><span class="s1">.google.cloud.datalabeling.v1beta1.AnnotationSpec</span><span class="se">\x12\x44\n\x0c</span><span class="s1">time_segment</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">..google.cloud.datalabeling.v1beta1.TimeSegment&quot;d</span><span class="se">\n\x12\x41</span><span class="s1">nnotationMetadata</span><span class="se">\x12</span><span class="s1">N</span><span class="se">\n\x11</span><span class="s1">operator_metadata</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x33</span><span class="s1">.google.cloud.datalabeling.v1beta1.OperatorMetadata&quot;]</span><span class="se">\n\x10</span><span class="s1">OperatorMetadata</span><span class="se">\x12\r\n\x05</span><span class="s1">score</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x12\x13\n\x0b</span><span class="s1">total_votes</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x13\n\x0b</span><span class="s1">label_votes</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x10\n\x08\x63</span><span class="s1">omments</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\t</span><span class="s1">*C</span><span class="se">\n\x10\x41</span><span class="s1">nnotationSource</span><span class="se">\x12</span><span class="s1">!</span><span class="se">\n\x1d\x41</span><span class="s1">NNOTATION_SOURCE_UNSPECIFIED</span><span class="se">\x10\x00\x12\x0c\n\x08</span><span class="s1">OPERATOR</span><span class="se">\x10\x03</span><span class="s1">*W</span><span class="se">\n\x13\x41</span><span class="s1">nnotationSentiment</span><span class="se">\x12</span><span class="s1">$</span><span class="se">\n</span><span class="s1"> ANNOTATION_SENTIMENT_UNSPECIFIED</span><span class="se">\x10\x00\x12\x0c\n\x08</span><span class="s1">NEGATIVE</span><span class="se">\x10\x01\x12\x0c\n\x08</span><span class="s1">POSITIVE</span><span class="se">\x10\x02</span><span class="s1">*</span><span class="se">\x91\x04\n\x0e\x41</span><span class="s1">nnotationType</span><span class="se">\x12\x1f\n\x1b\x41</span><span class="s1">NNOTATION_TYPE_UNSPECIFIED</span><span class="se">\x10\x00\x12</span><span class="s1">#</span><span class="se">\n\x1f</span><span class="s1">IMAGE_CLASSIFICATION_ANNOTATION</span><span class="se">\x10\x01\x12</span><span class="s1">!</span><span class="se">\n\x1d</span><span class="s1">IMAGE_BOUNDING_BOX_ANNOTATION</span><span class="se">\x10\x02\x12</span><span class="s1">*</span><span class="se">\n</span><span class="s1">&amp;IMAGE_ORIENTED_BOUNDING_BOX_ANNOTATION</span><span class="se">\x10\r\x12</span><span class="s1">&quot;</span><span class="se">\n\x1e</span><span class="s1">IMAGE_BOUNDING_POLY_ANNOTATION</span><span class="se">\x10\n\x12\x1d\n\x19</span><span class="s1">IMAGE_POLYLINE_ANNOTATION</span><span class="se">\x10\x0b\x12</span><span class="s1">!</span><span class="se">\n\x1d</span><span class="s1">IMAGE_SEGMENTATION_ANNOTATION</span><span class="se">\x10\x0c\x12</span><span class="s1">)</span><span class="se">\n</span><span class="s1">%VIDEO_SHOTS_CLASSIFICATION_ANNOTATION</span><span class="se">\x10\x03\x12</span><span class="s1">$</span><span class="se">\n</span><span class="s1"> VIDEO_OBJECT_TRACKING_ANNOTATION</span><span class="se">\x10\x04\x12</span><span class="s1">%</span><span class="se">\n</span><span class="s1">!VIDEO_OBJECT_DETECTION_ANNOTATION</span><span class="se">\x10\x05\x12\x1a\n\x16</span><span class="s1">VIDEO_EVENT_ANNOTATION</span><span class="se">\x10\x06\x12</span><span class="s1">&quot;</span><span class="se">\n\x1e</span><span class="s1">TEXT_CLASSIFICATION_ANNOTATION</span><span class="se">\x10\x08\x12</span><span class="s1">%</span><span class="se">\n</span><span class="s1">!TEXT_ENTITY_EXTRACTION_ANNOTATION</span><span class="se">\x10\t\x12</span><span class="s1">%</span><span class="se">\n</span><span class="s1">!GENERAL_CLASSIFICATION_ANNOTATION</span><span class="se">\x10\x0e\x42</span><span class="s1">x</span><span class="se">\n</span><span class="si">%c</span><span class="s1">om.google.cloud.datalabeling.v1beta1P</span><span class="se">\x01</span><span class="s1">ZMgoogle.golang.org/genproto/googleapis/cloud/datalabeling/v1beta1;datalabelingb</span><span class="se">\x06</span><span class="s1">proto3&#39;</span>
     <span class="p">),</span>
     <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span>
-        <span class="n">google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_annotation__spec__set__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-        <span class="n">google_dot_protobuf_dot_duration__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-        <span class="n">google_dot_protobuf_dot_struct__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-        <span class="n">google_dot_protobuf_dot_timestamp__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="n">google_dot_api_dot_annotations__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="n">google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_annotation__spec__set__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="n">google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_data__payloads__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="n">google_dot_protobuf_dot_duration__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
     <span class="p">],</span>
 <span class="p">)</span>
 
@@ -99,8 +99,8 @@
     <span class="p">],</span>
     <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4458</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4525</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4560</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4627</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterEnumDescriptor</span><span class="p">(</span><span class="n">_ANNOTATIONSOURCE</span><span class="p">)</span>
 
@@ -127,8 +127,8 @@
     <span class="p">],</span>
     <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4527</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4614</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4629</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4716</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterEnumDescriptor</span><span class="p">(</span><span class="n">_ANNOTATIONSENTIMENT</span><span class="p">)</span>
 
@@ -217,31 +217,31 @@
             <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;AUDIO_TRANSCRIPTION_ANNOTATION&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
-            <span class="n">number</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
-            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="p">),</span>
-        <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;TEXT_CLASSIFICATION_ANNOTATION&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
             <span class="n">number</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
             <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;TEXT_ENTITY_EXTRACTION_ANNOTATION&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
             <span class="n">number</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumValueDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;GENERAL_CLASSIFICATION_ANNOTATION&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
             <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">],</span>
     <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4617</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">5143</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4719</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">5248</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterEnumDescriptor</span><span class="p">(</span><span class="n">_ANNOTATIONTYPE</span><span class="p">)</span>
 
@@ -262,9 +262,9 @@
 <span class="n">VIDEO_OBJECT_TRACKING_ANNOTATION</span> <span class="o">=</span> <span class="mi">4</span>
 <span class="n">VIDEO_OBJECT_DETECTION_ANNOTATION</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="n">VIDEO_EVENT_ANNOTATION</span> <span class="o">=</span> <span class="mi">6</span>
-<span class="n">AUDIO_TRANSCRIPTION_ANNOTATION</span> <span class="o">=</span> <span class="mi">7</span>
 <span class="n">TEXT_CLASSIFICATION_ANNOTATION</span> <span class="o">=</span> <span class="mi">8</span>
 <span class="n">TEXT_ENTITY_EXTRACTION_ANNOTATION</span> <span class="o">=</span> <span class="mi">9</span>
+<span class="n">GENERAL_CLASSIFICATION_ANNOTATION</span> <span class="o">=</span> <span class="mi">14</span>
 
 
 <span class="n">_ANNOTATION</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
@@ -373,8 +373,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">288</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">642</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">286</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">640</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -476,9 +476,27 @@
             <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;text_entity_extraction_annotation&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.datalabeling.v1beta1.AnnotationValue.text_entity_extraction_annotation&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;video_classification_annotation&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.datalabeling.v1beta1.AnnotationValue.video_classification_annotation&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
             <span class="n">number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
             <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
@@ -496,7 +514,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;video_object_tracking_annotation&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.datalabeling.v1beta1.AnnotationValue.video_object_tracking_annotation&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
             <span class="n">number</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
             <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
@@ -514,26 +532,8 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;video_event_annotation&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.datalabeling.v1beta1.AnnotationValue.video_event_annotation&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
-            <span class="n">number</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
-            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
-            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-        <span class="p">),</span>
-        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;audio_recognition_annotation&quot;</span><span class="p">,</span>
-            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.datalabeling.v1beta1.AnnotationValue.audio_recognition_annotation&quot;</span><span class="p">,</span>
             <span class="n">index</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
-            <span class="n">number</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
             <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
             <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
@@ -564,8 +564,8 @@
             <span class="n">fields</span><span class="o">=</span><span class="p">[],</span>
         <span class="p">)</span>
     <span class="p">],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">645</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1613</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">643</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1620</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -603,8 +603,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1615</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1722</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1622</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1729</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -660,8 +660,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1724</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1754</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1731</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1761</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -717,8 +717,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1756</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1796</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1763</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1803</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -756,8 +756,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1798</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1873</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1805</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1880</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -795,8 +795,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1875</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1981</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1882</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1988</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -878,8 +878,8 @@
             <span class="n">fields</span><span class="o">=</span><span class="p">[],</span>
         <span class="p">)</span>
     <span class="p">],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1984</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2274</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1991</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2281</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -917,8 +917,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2276</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2347</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2283</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2354</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -956,8 +956,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2349</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2451</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2356</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2458</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1039,8 +1039,8 @@
             <span class="n">fields</span><span class="o">=</span><span class="p">[],</span>
         <span class="p">)</span>
     <span class="p">],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2454</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2714</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2461</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2721</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1096,8 +1096,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2901</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3007</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2908</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3014</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_IMAGESEGMENTATIONANNOTATION</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
@@ -1170,8 +1170,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2717</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3007</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2724</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3014</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1209,8 +1209,122 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3009</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3115</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3016</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3122</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">_TEXTENTITYEXTRACTIONANNOTATION</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;TextEntityExtractionAnnotation&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.datalabeling.v1beta1.TextEntityExtractionAnnotation&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;annotation_spec&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.datalabeling.v1beta1.TextEntityExtractionAnnotation.annotation_spec&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;sequential_segment&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.datalabeling.v1beta1.TextEntityExtractionAnnotation.sequential_segment&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3125</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3315</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">_SEQUENTIALSEGMENT</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;SequentialSegment&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.datalabeling.v1beta1.SequentialSegment&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;start&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.datalabeling.v1beta1.SequentialSegment.start&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;end&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.datalabeling.v1beta1.SequentialSegment.end&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3317</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3364</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1266,8 +1380,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3117</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3236</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3366</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3485</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1323,8 +1437,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3239</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3416</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3488</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3665</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1406,8 +1520,8 @@
             <span class="n">fields</span><span class="o">=</span><span class="p">[],</span>
         <span class="p">)</span>
     <span class="p">],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3419</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3673</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3668</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3922</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1481,8 +1595,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3676</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3941</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3925</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4190</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1538,83 +1652,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3944</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4112</span><span class="p">,</span>
-<span class="p">)</span>
-
-
-<span class="n">_AUDIORECOGNITIONANNOTATION</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;AudioRecognitionAnnotation&quot;</span><span class="p">,</span>
-    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.datalabeling.v1beta1.AudioRecognitionAnnotation&quot;</span><span class="p">,</span>
-    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
-        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;transcript&quot;</span><span class="p">,</span>
-            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.datalabeling.v1beta1.AudioRecognitionAnnotation.transcript&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-            <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-            <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
-            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
-            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-        <span class="p">),</span>
-        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;start_offset&quot;</span><span class="p">,</span>
-            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.datalabeling.v1beta1.AudioRecognitionAnnotation.start_offset&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-            <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
-            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-        <span class="p">),</span>
-        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;end_offset&quot;</span><span class="p">,</span>
-            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.datalabeling.v1beta1.AudioRecognitionAnnotation.end_offset&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-            <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-            <span class="nb">type</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
-            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-        <span class="p">),</span>
-    <span class="p">],</span>
-    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
-    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4115</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4259</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4193</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4361</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1652,8 +1691,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4261</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4361</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4363</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4463</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1745,8 +1784,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4363</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4456</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4465</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4558</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_ANNOTATION</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;annotation_source&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">enum_type</span> <span class="o">=</span> <span class="n">_ANNOTATIONSOURCE</span>
@@ -1769,6 +1808,9 @@
     <span class="s2">&quot;text_classification_annotation&quot;</span>
 <span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_TEXTCLASSIFICATIONANNOTATION</span>
 <span class="n">_ANNOTATIONVALUE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;text_entity_extraction_annotation&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_TEXTENTITYEXTRACTIONANNOTATION</span>
+<span class="n">_ANNOTATIONVALUE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
     <span class="s2">&quot;video_classification_annotation&quot;</span>
 <span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_VIDEOCLASSIFICATIONANNOTATION</span>
 <span class="n">_ANNOTATIONVALUE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
@@ -1777,9 +1819,6 @@
 <span class="n">_ANNOTATIONVALUE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
     <span class="s2">&quot;video_event_annotation&quot;</span>
 <span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_VIDEOEVENTANNOTATION</span>
-<span class="n">_ANNOTATIONVALUE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
-    <span class="s2">&quot;audio_recognition_annotation&quot;</span>
-<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_AUDIORECOGNITIONANNOTATION</span>
 <span class="n">_ANNOTATIONVALUE</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;value_type&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
     <span class="n">_ANNOTATIONVALUE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;image_classification_annotation&quot;</span><span class="p">]</span>
 <span class="p">)</span>
@@ -1811,6 +1850,12 @@
     <span class="s2">&quot;text_classification_annotation&quot;</span>
 <span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_ANNOTATIONVALUE</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;value_type&quot;</span><span class="p">]</span>
 <span class="n">_ANNOTATIONVALUE</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;value_type&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+    <span class="n">_ANNOTATIONVALUE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;text_entity_extraction_annotation&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">_ANNOTATIONVALUE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;text_entity_extraction_annotation&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_ANNOTATIONVALUE</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;value_type&quot;</span><span class="p">]</span>
+<span class="n">_ANNOTATIONVALUE</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;value_type&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
     <span class="n">_ANNOTATIONVALUE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;video_classification_annotation&quot;</span><span class="p">]</span>
 <span class="p">)</span>
 <span class="n">_ANNOTATIONVALUE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
@@ -1827,12 +1872,6 @@
 <span class="p">)</span>
 <span class="n">_ANNOTATIONVALUE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
     <span class="s2">&quot;video_event_annotation&quot;</span>
-<span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_ANNOTATIONVALUE</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;value_type&quot;</span><span class="p">]</span>
-<span class="n">_ANNOTATIONVALUE</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;value_type&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-    <span class="n">_ANNOTATIONVALUE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;audio_recognition_annotation&quot;</span><span class="p">]</span>
-<span class="p">)</span>
-<span class="n">_ANNOTATIONVALUE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
-    <span class="s2">&quot;audio_recognition_annotation&quot;</span>
 <span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_ANNOTATIONVALUE</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;value_type&quot;</span><span class="p">]</span>
 <span class="n">_IMAGECLASSIFICATIONANNOTATION</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
     <span class="s2">&quot;annotation_spec&quot;</span>
@@ -1907,6 +1946,14 @@
 <span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_annotation__spec__set__pb2</span><span class="o">.</span><span class="n">_ANNOTATIONSPEC</span>
 <span class="p">)</span>
+<span class="n">_TEXTENTITYEXTRACTIONANNOTATION</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;annotation_spec&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_annotation__spec__set__pb2</span><span class="o">.</span><span class="n">_ANNOTATIONSPEC</span>
+<span class="p">)</span>
+<span class="n">_TEXTENTITYEXTRACTIONANNOTATION</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;sequential_segment&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_SEQUENTIALSEGMENT</span>
 <span class="n">_TIMESEGMENT</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
     <span class="s2">&quot;start_time_offset&quot;</span>
 <span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_duration__pb2</span><span class="o">.</span><span class="n">_DURATION</span>
@@ -1957,12 +2004,6 @@
     <span class="n">google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_annotation__spec__set__pb2</span><span class="o">.</span><span class="n">_ANNOTATIONSPEC</span>
 <span class="p">)</span>
 <span class="n">_VIDEOEVENTANNOTATION</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;time_segment&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_TIMESEGMENT</span>
-<span class="n">_AUDIORECOGNITIONANNOTATION</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
-    <span class="s2">&quot;start_offset&quot;</span>
-<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_duration__pb2</span><span class="o">.</span><span class="n">_DURATION</span>
-<span class="n">_AUDIORECOGNITIONANNOTATION</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
-    <span class="s2">&quot;end_offset&quot;</span>
-<span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_protobuf_dot_duration__pb2</span><span class="o">.</span><span class="n">_DURATION</span>
 <span class="n">_ANNOTATIONMETADATA</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;operator_metadata&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">_OPERATORMETADATA</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;Annotation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_ANNOTATION</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;AnnotationValue&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_ANNOTATIONVALUE</span>
@@ -1985,6 +2026,10 @@
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span>
     <span class="s2">&quot;TextClassificationAnnotation&quot;</span>
 <span class="p">]</span> <span class="o">=</span> <span class="n">_TEXTCLASSIFICATIONANNOTATION</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;TextEntityExtractionAnnotation&quot;</span>
+<span class="p">]</span> <span class="o">=</span> <span class="n">_TEXTENTITYEXTRACTIONANNOTATION</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;SequentialSegment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_SEQUENTIALSEGMENT</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;TimeSegment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_TIMESEGMENT</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span>
     <span class="s2">&quot;VideoClassificationAnnotation&quot;</span>
@@ -1994,9 +2039,6 @@
     <span class="s2">&quot;VideoObjectTrackingAnnotation&quot;</span>
 <span class="p">]</span> <span class="o">=</span> <span class="n">_VIDEOOBJECTTRACKINGANNOTATION</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;VideoEventAnnotation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_VIDEOEVENTANNOTATION</span>
-<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span>
-    <span class="s2">&quot;AudioRecognitionAnnotation&quot;</span>
-<span class="p">]</span> <span class="o">=</span> <span class="n">_AUDIORECOGNITIONANNOTATION</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;AnnotationMetadata&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_ANNOTATIONMETADATA</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;OperatorMetadata&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_OPERATORMETADATA</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">enum_types_by_name</span><span class="p">[</span><span class="s2">&quot;AnnotationSource&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_ANNOTATIONSOURCE</span>
@@ -2061,14 +2103,14 @@
 <span class="s2">          Annotation value for image segmentation.</span>
 <span class="s2">      text_classification_annotation:</span>
 <span class="s2">          Annotation value for text classification case.</span>
+<span class="s2">      text_entity_extraction_annotation:</span>
+<span class="s2">          Annotation value for text entity extraction case.</span>
 <span class="s2">      video_classification_annotation:</span>
 <span class="s2">          Annotation value for video classification case.</span>
 <span class="s2">      video_object_tracking_annotation:</span>
 <span class="s2">          Annotation value for video object detection and tracking case.</span>
 <span class="s2">      video_event_annotation:</span>
 <span class="s2">          Annotation value for video event case.</span>
-<span class="s2">      audio_recognition_annotation:</span>
-<span class="s2">          Annotation value for speech audio recognition case.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
         <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.AnnotationValue)</span>
     <span class="p">),</span>
@@ -2293,6 +2335,46 @@
 <span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">TextClassificationAnnotation</span><span class="p">)</span>
 
+<span class="n">TextEntityExtractionAnnotation</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
+    <span class="s2">&quot;TextEntityExtractionAnnotation&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
+    <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_TEXTENTITYEXTRACTIONANNOTATION</span><span class="p">,</span>
+        <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.datalabeling_v1beta1.proto.annotation_pb2&quot;</span><span class="p">,</span>
+        <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Text entity extraction annotation.</span>
+<span class="s2">  </span>
+<span class="s2">  </span>
+<span class="s2">  Attributes:</span>
+<span class="s2">      annotation_spec:</span>
+<span class="s2">          Label of the text entities.</span>
+<span class="s2">      sequential_segment:</span>
+<span class="s2">          Position of the entity.</span>
+<span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.TextEntityExtractionAnnotation)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">TextEntityExtractionAnnotation</span><span class="p">)</span>
+
+<span class="n">SequentialSegment</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
+    <span class="s2">&quot;SequentialSegment&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
+    <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_SEQUENTIALSEGMENT</span><span class="p">,</span>
+        <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.datalabeling_v1beta1.proto.annotation_pb2&quot;</span><span class="p">,</span>
+        <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Start and end position in a sequence (e.g. text segment).</span>
+<span class="s2">  </span>
+<span class="s2">  </span>
+<span class="s2">  Attributes:</span>
+<span class="s2">      start:</span>
+<span class="s2">          Start position (inclusive).</span>
+<span class="s2">      end:</span>
+<span class="s2">          End position (exclusive).</span>
+<span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.SequentialSegment)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">SequentialSegment</span><span class="p">)</span>
+
 <span class="n">TimeSegment</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
     <span class="s2">&quot;TimeSegment&quot;</span><span class="p">,</span>
     <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
@@ -2400,30 +2482,6 @@
 <span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">VideoEventAnnotation</span><span class="p">)</span>
 
-<span class="n">AudioRecognitionAnnotation</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
-    <span class="s2">&quot;AudioRecognitionAnnotation&quot;</span><span class="p">,</span>
-    <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
-    <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_AUDIORECOGNITIONANNOTATION</span><span class="p">,</span>
-        <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.datalabeling_v1beta1.proto.annotation_pb2&quot;</span><span class="p">,</span>
-        <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Speech audio recognition.</span>
-<span class="s2">  </span>
-<span class="s2">  </span>
-<span class="s2">  Attributes:</span>
-<span class="s2">      transcript:</span>
-<span class="s2">          Transcript text representing the words spoken.</span>
-<span class="s2">      start_offset:</span>
-<span class="s2">          Start position in audio file that the transcription</span>
-<span class="s2">          corresponds to.</span>
-<span class="s2">      end_offset:</span>
-<span class="s2">          End position in audio file that the transcription corresponds</span>
-<span class="s2">          to.</span>
-<span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
-        <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.AudioRecognitionAnnotation)</span>
-    <span class="p">),</span>
-<span class="p">)</span>
-<span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">AudioRecognitionAnnotation</span><span class="p">)</span>
-
 <span class="n">AnnotationMetadata</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
     <span class="s2">&quot;AnnotationMetadata&quot;</span><span class="p">,</span>
     <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
@@ -2460,6 +2518,8 @@
 <span class="s2">          The total number of contributors that answer this question.</span>
 <span class="s2">      label_votes:</span>
 <span class="s2">          The total number of contributors that choose this label.</span>
+<span class="s2">      comments:</span>
+<span class="s2">          Comments from contributors.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
         <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.OperatorMetadata)</span>
     <span class="p">),</span>
