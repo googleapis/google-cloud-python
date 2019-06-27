@@ -458,7 +458,7 @@ class PartialRowsData(object):
         return self.retry(self._read_next, on_error=self._on_error)()
 
     def __iter__(self):
-        """Consume the ``ReadRowsResponse``s from the stream.
+        """Consume the ``ReadRowsResponse`` s from the stream.
         Read the rows and yield each to the reader
 
         Parse the response and its chunks into a new/existing row in

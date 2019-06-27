@@ -1,4 +1,4 @@
-.. include:: /../resource_manager/README.rst
+.. include:: README.rst
 
 
 API Reference
