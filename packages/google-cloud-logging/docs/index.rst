@@ -1,4 +1,4 @@
-.. include:: /../logging/README.rst
+.. include:: README.rst
 
 Usage Documentation
 -------------------
