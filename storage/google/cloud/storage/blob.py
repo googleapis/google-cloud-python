@@ -2000,10 +2000,6 @@ class StreamingFile(FileIO):
         make authenticated requests.
 
     chunk_size (int): Size of chunk to be downloaded.
-
-    start (int): (Optional) The first byte in a range to be downloaded.
-
-    end (int): (Optional) The last byte in a range to be downloaded.
     """
     def __init__(self, filename, download_url, headers, transport, chunk_size):
         super(StreamingFile, self).__init__(filename, 'wb+')
@@ -2020,7 +2016,7 @@ class StreamingFile(FileIO):
         """Overriding read() method to organize streaming.
 
         Checks, if part that user trying to read is already
-        downloaded, and if not, calculates missing part,
+        downloaded. If not, calculates missing part,
         then downloads it, and redirects to super().read().
 
         Args:
@@ -2037,6 +2033,7 @@ class StreamingFile(FileIO):
                 while not self._download.finished:
                     self._download_chunk()
             else:  # download requested part if needed
+                # calculating the missing part
                 can_be_read = os.fstat(self.fileno()).st_size - cursor_place
                 to_download = size - can_be_read
 
