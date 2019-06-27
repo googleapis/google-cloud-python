@@ -278,6 +278,19 @@ class IncidentServiceGrpcTransport(object):
         return self._stubs["incident_service_stub"].GetSignal
 
     @property
+    def lookup_signal(self):
+        """Return the gRPC stub for :meth:`IncidentServiceClient.lookup_signal`.
+
+        Finds a signal by other unique IDs.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["incident_service_stub"].LookupSignal
+
+    @property
     def update_signal(self):
         """Return the gRPC stub for :meth:`IncidentServiceClient.update_signal`.
 
