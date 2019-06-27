@@ -26,6 +26,8 @@ from google.cloud.datalabeling_v1beta1 import enums
 from google.cloud.datalabeling_v1beta1.proto import annotation_spec_set_pb2
 from google.cloud.datalabeling_v1beta1.proto import data_labeling_service_pb2
 from google.cloud.datalabeling_v1beta1.proto import dataset_pb2
+from google.cloud.datalabeling_v1beta1.proto import evaluation_job_pb2
+from google.cloud.datalabeling_v1beta1.proto import evaluation_pb2
 from google.cloud.datalabeling_v1beta1.proto import human_annotation_config_pb2
 from google.cloud.datalabeling_v1beta1.proto import instruction_pb2
 from google.cloud.datalabeling_v1beta1.proto import (
@@ -33,6 +35,7 @@ from google.cloud.datalabeling_v1beta1.proto import (
 )
 from google.longrunning import operations_pb2 as longrunning_operations_pb2
 from google.protobuf import empty_pb2
+from google.protobuf import field_mask_pb2
 
 
 class MultiCallableStub(object):
@@ -77,10 +80,12 @@ class TestDataLabelingServiceClient(object):
         name = "name3373707"
         display_name = "displayName1615086568"
         description = "description-1724546052"
+        data_item_count = 2014260376
         expected_response = {
             "name": name,
             "display_name": display_name,
             "description": description,
+            "data_item_count": data_item_count,
         }
         expected_response = dataset_pb2.Dataset(**expected_response)
 
@@ -125,10 +130,12 @@ class TestDataLabelingServiceClient(object):
         name_2 = "name2-1052831874"
         display_name = "displayName1615086568"
         description = "description-1724546052"
+        data_item_count = 2014260376
         expected_response = {
             "name": name_2,
             "display_name": display_name,
             "description": description,
+            "data_item_count": data_item_count,
         }
         expected_response = dataset_pb2.Dataset(**expected_response)
 
@@ -759,73 +766,6 @@ class TestDataLabelingServiceClient(object):
         exception = response.exception()
         assert exception.errors[0] == error
 
-    def test_label_audio(self):
-        # Setup Expected Response
-        name = "name3373707"
-        display_name = "displayName1615086568"
-        description = "description-1724546052"
-        example_count = 1517063674
-        completed_example_count = 612567290
-        expected_response = {
-            "name": name,
-            "display_name": display_name,
-            "description": description,
-            "example_count": example_count,
-            "completed_example_count": completed_example_count,
-        }
-        expected_response = dataset_pb2.AnnotatedDataset(**expected_response)
-        operation = longrunning_operations_pb2.Operation(
-            name="operations/test_label_audio", done=True
-        )
-        operation.response.Pack(expected_response)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[operation])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = datalabeling_v1beta1.DataLabelingServiceClient()
-
-        # Setup Request
-        parent = client.dataset_path("[PROJECT]", "[DATASET]")
-        basic_config = {}
-        feature = enums.LabelAudioRequest.Feature.FEATURE_UNSPECIFIED
-
-        response = client.label_audio(parent, basic_config, feature)
-        result = response.result()
-        assert expected_response == result
-
-        assert len(channel.requests) == 1
-        expected_request = data_labeling_service_pb2.LabelAudioRequest(
-            parent=parent, basic_config=basic_config, feature=feature
-        )
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_label_audio_exception(self):
-        # Setup Response
-        error = status_pb2.Status()
-        operation = longrunning_operations_pb2.Operation(
-            name="operations/test_label_audio_exception", done=True
-        )
-        operation.error.CopyFrom(error)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[operation])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = datalabeling_v1beta1.DataLabelingServiceClient()
-
-        # Setup Request
-        parent = client.dataset_path("[PROJECT]", "[DATASET]")
-        basic_config = {}
-        feature = enums.LabelAudioRequest.Feature.FEATURE_UNSPECIFIED
-
-        response = client.label_audio(parent, basic_config, feature)
-        exception = response.exception()
-        assert exception.errors[0] == error
-
     def test_get_example(self):
         # Setup Expected Response
         name_2 = "name2-1052831874"
@@ -1283,6 +1223,459 @@ class TestDataLabelingServiceClient(object):
 
         with pytest.raises(CustomException):
             client.delete_instruction(name)
+
+    def test_get_evaluation(self):
+        # Setup Expected Response
+        name_2 = "name2-1052831874"
+        evaluated_item_count = 358077111
+        expected_response = {
+            "name": name_2,
+            "evaluated_item_count": evaluated_item_count,
+        }
+        expected_response = evaluation_pb2.Evaluation(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+        # Setup Request
+        name = client.evaluation_path("[PROJECT]", "[DATASET]", "[EVALUATION]")
+
+        response = client.get_evaluation(name)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = data_labeling_service_pb2.GetEvaluationRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_get_evaluation_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+        # Setup request
+        name = client.evaluation_path("[PROJECT]", "[DATASET]", "[EVALUATION]")
+
+        with pytest.raises(CustomException):
+            client.get_evaluation(name)
+
+    def test_search_evaluations(self):
+        # Setup Expected Response
+        next_page_token = ""
+        evaluations_element = {}
+        evaluations = [evaluations_element]
+        expected_response = {
+            "next_page_token": next_page_token,
+            "evaluations": evaluations,
+        }
+        expected_response = data_labeling_service_pb2.SearchEvaluationsResponse(
+            **expected_response
+        )
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+        # Setup Request
+        parent = client.project_path("[PROJECT]")
+        filter_ = "filter-1274492040"
+
+        paged_list_response = client.search_evaluations(parent, filter_)
+        resources = list(paged_list_response)
+        assert len(resources) == 1
+
+        assert expected_response.evaluations[0] == resources[0]
+
+        assert len(channel.requests) == 1
+        expected_request = data_labeling_service_pb2.SearchEvaluationsRequest(
+            parent=parent, filter=filter_
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_search_evaluations_exception(self):
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+        # Setup request
+        parent = client.project_path("[PROJECT]")
+        filter_ = "filter-1274492040"
+
+        paged_list_response = client.search_evaluations(parent, filter_)
+        with pytest.raises(CustomException):
+            list(paged_list_response)
+
+    def test_search_example_comparisons(self):
+        # Setup Expected Response
+        next_page_token = ""
+        example_comparisons_element = {}
+        example_comparisons = [example_comparisons_element]
+        expected_response = {
+            "next_page_token": next_page_token,
+            "example_comparisons": example_comparisons,
+        }
+        expected_response = data_labeling_service_pb2.SearchExampleComparisonsResponse(
+            **expected_response
+        )
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+        # Setup Request
+        parent = client.evaluation_path("[PROJECT]", "[DATASET]", "[EVALUATION]")
+
+        paged_list_response = client.search_example_comparisons(parent)
+        resources = list(paged_list_response)
+        assert len(resources) == 1
+
+        assert expected_response.example_comparisons[0] == resources[0]
+
+        assert len(channel.requests) == 1
+        expected_request = data_labeling_service_pb2.SearchExampleComparisonsRequest(
+            parent=parent
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_search_example_comparisons_exception(self):
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+        # Setup request
+        parent = client.evaluation_path("[PROJECT]", "[DATASET]", "[EVALUATION]")
+
+        paged_list_response = client.search_example_comparisons(parent)
+        with pytest.raises(CustomException):
+            list(paged_list_response)
+
+    def test_create_evaluation_job(self):
+        # Setup Expected Response
+        name = "name3373707"
+        description = "description-1724546052"
+        schedule = "schedule-697920873"
+        model_version = "modelVersion-1669102142"
+        annotation_spec_set = "annotationSpecSet1881405678"
+        label_missing_ground_truth = False
+        expected_response = {
+            "name": name,
+            "description": description,
+            "schedule": schedule,
+            "model_version": model_version,
+            "annotation_spec_set": annotation_spec_set,
+            "label_missing_ground_truth": label_missing_ground_truth,
+        }
+        expected_response = evaluation_job_pb2.EvaluationJob(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+        # Setup Request
+        parent = client.project_path("[PROJECT]")
+        job = {}
+
+        response = client.create_evaluation_job(parent, job)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = data_labeling_service_pb2.CreateEvaluationJobRequest(
+            parent=parent, job=job
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_create_evaluation_job_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+        # Setup request
+        parent = client.project_path("[PROJECT]")
+        job = {}
+
+        with pytest.raises(CustomException):
+            client.create_evaluation_job(parent, job)
+
+    def test_update_evaluation_job(self):
+        # Setup Expected Response
+        name = "name3373707"
+        description = "description-1724546052"
+        schedule = "schedule-697920873"
+        model_version = "modelVersion-1669102142"
+        annotation_spec_set = "annotationSpecSet1881405678"
+        label_missing_ground_truth = False
+        expected_response = {
+            "name": name,
+            "description": description,
+            "schedule": schedule,
+            "model_version": model_version,
+            "annotation_spec_set": annotation_spec_set,
+            "label_missing_ground_truth": label_missing_ground_truth,
+        }
+        expected_response = evaluation_job_pb2.EvaluationJob(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+        # Setup Request
+        evaluation_job = {}
+        update_mask = {}
+
+        response = client.update_evaluation_job(evaluation_job, update_mask)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = data_labeling_service_pb2.UpdateEvaluationJobRequest(
+            evaluation_job=evaluation_job, update_mask=update_mask
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_update_evaluation_job_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+        # Setup request
+        evaluation_job = {}
+        update_mask = {}
+
+        with pytest.raises(CustomException):
+            client.update_evaluation_job(evaluation_job, update_mask)
+
+    def test_get_evaluation_job(self):
+        # Setup Expected Response
+        name_2 = "name2-1052831874"
+        description = "description-1724546052"
+        schedule = "schedule-697920873"
+        model_version = "modelVersion-1669102142"
+        annotation_spec_set = "annotationSpecSet1881405678"
+        label_missing_ground_truth = False
+        expected_response = {
+            "name": name_2,
+            "description": description,
+            "schedule": schedule,
+            "model_version": model_version,
+            "annotation_spec_set": annotation_spec_set,
+            "label_missing_ground_truth": label_missing_ground_truth,
+        }
+        expected_response = evaluation_job_pb2.EvaluationJob(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+        # Setup Request
+        name = client.evaluation_job_path("[PROJECT]", "[EVALUATION_JOB]")
+
+        response = client.get_evaluation_job(name)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = data_labeling_service_pb2.GetEvaluationJobRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_get_evaluation_job_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+        # Setup request
+        name = client.evaluation_job_path("[PROJECT]", "[EVALUATION_JOB]")
+
+        with pytest.raises(CustomException):
+            client.get_evaluation_job(name)
+
+    def test_pause_evaluation_job(self):
+        channel = ChannelStub()
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+        # Setup Request
+        name = client.evaluation_job_path("[PROJECT]", "[EVALUATION_JOB]")
+
+        client.pause_evaluation_job(name)
+
+        assert len(channel.requests) == 1
+        expected_request = data_labeling_service_pb2.PauseEvaluationJobRequest(
+            name=name
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_pause_evaluation_job_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+        # Setup request
+        name = client.evaluation_job_path("[PROJECT]", "[EVALUATION_JOB]")
+
+        with pytest.raises(CustomException):
+            client.pause_evaluation_job(name)
+
+    def test_resume_evaluation_job(self):
+        channel = ChannelStub()
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+        # Setup Request
+        name = client.evaluation_job_path("[PROJECT]", "[EVALUATION_JOB]")
+
+        client.resume_evaluation_job(name)
+
+        assert len(channel.requests) == 1
+        expected_request = data_labeling_service_pb2.ResumeEvaluationJobRequest(
+            name=name
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_resume_evaluation_job_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+        # Setup request
+        name = client.evaluation_job_path("[PROJECT]", "[EVALUATION_JOB]")
+
+        with pytest.raises(CustomException):
+            client.resume_evaluation_job(name)
+
+    def test_delete_evaluation_job(self):
+        channel = ChannelStub()
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+        # Setup Request
+        name = client.evaluation_job_path("[PROJECT]", "[EVALUATION_JOB]")
+
+        client.delete_evaluation_job(name)
+
+        assert len(channel.requests) == 1
+        expected_request = data_labeling_service_pb2.DeleteEvaluationJobRequest(
+            name=name
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_delete_evaluation_job_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+        # Setup request
+        name = client.evaluation_job_path("[PROJECT]", "[EVALUATION_JOB]")
+
+        with pytest.raises(CustomException):
+            client.delete_evaluation_job(name)
+
+    def test_list_evaluation_jobs(self):
+        # Setup Expected Response
+        next_page_token = ""
+        evaluation_jobs_element = {}
+        evaluation_jobs = [evaluation_jobs_element]
+        expected_response = {
+            "next_page_token": next_page_token,
+            "evaluation_jobs": evaluation_jobs,
+        }
+        expected_response = data_labeling_service_pb2.ListEvaluationJobsResponse(
+            **expected_response
+        )
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+        # Setup Request
+        parent = client.project_path("[PROJECT]")
+        filter_ = "filter-1274492040"
+
+        paged_list_response = client.list_evaluation_jobs(parent, filter_)
+        resources = list(paged_list_response)
+        assert len(resources) == 1
+
+        assert expected_response.evaluation_jobs[0] == resources[0]
+
+        assert len(channel.requests) == 1
+        expected_request = data_labeling_service_pb2.ListEvaluationJobsRequest(
+            parent=parent, filter=filter_
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_list_evaluation_jobs_exception(self):
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+        # Setup request
+        parent = client.project_path("[PROJECT]")
+        filter_ = "filter-1274492040"
+
+        paged_list_response = client.list_evaluation_jobs(parent, filter_)
+        with pytest.raises(CustomException):
+            list(paged_list_response)
 
     def test_delete_annotated_dataset(self):
         channel = ChannelStub()
