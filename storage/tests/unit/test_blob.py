@@ -3432,7 +3432,3 @@ class _Client(object):
     @property
     def _credentials(self):
         return self._base_connection.credentials
-
-
-if __name__ == '__main__':
-    unittest.main()

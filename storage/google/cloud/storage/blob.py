@@ -588,8 +588,8 @@ class Blob(_PropertyMixin):
             while not download.finished:
                 download.consume_next_chunk(transport)
 
-    def get_streaming_file(self, filename, client=None, start=None, end=None):
-        """Return streaming file connected to :class:`~google.resumable_media.requests.ChunkedDownload` of this blob.
+    def get_streaming_file(self, filename, client=None):
+        """Returns streaming file connected to :class:`~google.resumable_media.requests.ChunkedDownload` of this blob.
 
         Args:
             filename (str): A filename to be passed to ``open``.
@@ -600,12 +600,6 @@ class Blob(_PropertyMixin):
             ]):
                 (Optional) The client to use. If not passed, falls back
                 to the ``client`` stored on the blob's bucket.
-
-            start (int):
-                (Optional) The first byte in a range to be downloaded.
-
-            end (int):
-                (Optional) The last byte in a range to be downloaded.
 
         Returns
             File-like object, that can be partially downloaded/processed.
@@ -620,9 +614,7 @@ class Blob(_PropertyMixin):
             download_url=download_url,
             headers=headers,
             transport=transport,
-            chunk_size=self.chunk_size,
-            start=start,
-            end=end
+            chunk_size=self.chunk_size
         )
 
     def download_to_file(self, file_obj, client=None, start=None, end=None):
@@ -1995,13 +1987,13 @@ class StreamingFile(FileIO):
 
     When read() called, it checks if requested part of
     file already downloaded. If not, it downloads chunk,
-    that enough to sutisfy request and then reades itself.
+    that enough to sutisfy read() call, and then reads itself.
 
     filename (str): Name of file, to which data will be downloaded.
 
     download_url (str): The URL where the media can be accessed.
 
-    headers (dict): (Optional) headers to be sent with the request(s).
+    headers (dict): (Optional) Headers to be sent with the request(s).
 
     transport (:class:`~google.auth.transport.requests.AuthorizedSession`):
         The transport (with credentials) that will
@@ -2013,7 +2005,7 @@ class StreamingFile(FileIO):
 
     end (int): (Optional) The last byte in a range to be downloaded.
     """
-    def __init__(self, filename, download_url, headers, transport, chunk_size, start=None, end=None):
+    def __init__(self, filename, download_url, headers, transport, chunk_size):
         super(StreamingFile, self).__init__(filename, 'wb+')
 
         self._transport = transport
@@ -2021,9 +2013,7 @@ class StreamingFile(FileIO):
             download_url,
             chunk_size,
             self,
-            headers=headers,
-            start=start or 0,
-            end=end
+            headers=headers
         )
 
     def read(self, size=None):
