@@ -146,6 +146,28 @@ def _bq_to_avro_blocks(bq_blocks, avro_schema_json):
     return avro_blocks
 
 
+def _bq_to_arrow_batches(bq_blocks, arrow_schema):
+    arrow_batches = []
+    for block in bq_blocks:
+        arrays = []
+        for name in arrow_schema.names:
+            arrays.append(
+                pyarrow.array(
+                    (row[name] for row in block),
+                    type=arrow_schema.field_by_name(name).type,
+                    size=len(block),
+                )
+            )
+        record_batch = pyarrow.RecordBatch.from_arrays(arrays, arrow_schema)
+
+        response = bigquery_storage_v1beta1.types.ReadRowsResponse()
+        response.arrow_record_batch.serialized_record_batch = (
+            record_batch.serialize().to_pybytes()
+        )
+        arrow_batches.append(response)
+    return arrow_batches
+
+
 def _avro_blocks_w_unavailable(avro_blocks):
     for block in avro_blocks:
         yield block
@@ -236,10 +258,35 @@ def test_pyarrow_rows_raises_import_error(
         reader.rows(read_session)
 
 
+def test_rows_no_schema_set_raises_type_error(
+    mut, class_under_test, mock_client, monkeypatch
+):
+    reader = class_under_test(
+        [], mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
+    )
+    read_session = bigquery_storage_v1beta1.types.ReadSession()
+
+    with pytest.raises(TypeError):
+        reader.rows(read_session)
+
+
 def test_rows_w_empty_stream(class_under_test, mock_client):
     bq_columns = [{"name": "int_col", "type": "int64"}]
     avro_schema = _bq_to_avro_schema(bq_columns)
     read_session = _generate_avro_read_session(avro_schema)
+    reader = class_under_test(
+        [], mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
+    )
+
+    got = reader.rows(read_session)
+    assert got.total_rows is None
+    assert tuple(got) == ()
+
+
+def test_rows_w_empty_stream_arrow(class_under_test, mock_client):
+    bq_columns = [{"name": "int_col", "type": "int64"}]
+    arrow_schema = _bq_to_arrow_schema(bq_columns)
+    read_session = _generate_arrow_read_session(arrow_schema)
     reader = class_under_test(
         [], mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
     )
@@ -256,6 +303,20 @@ def test_rows_w_scalars(class_under_test, mock_client):
 
     reader = class_under_test(
         avro_blocks, mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
+    )
+    got = tuple(reader.rows(read_session))
+
+    expected = tuple(itertools.chain.from_iterable(SCALAR_BLOCKS))
+    assert got == expected
+
+
+def test_rows_w_scalars_arrow(class_under_test, mock_client):
+    arrow_schema = _bq_to_arrow_schema(SCALAR_COLUMNS)
+    read_session = _generate_arrow_read_session(arrow_schema)
+    arrow_batches = _bq_to_arrow_batches(SCALAR_BLOCKS, arrow_schema)
+
+    reader = class_under_test(
+        arrow_batches, mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
     )
     got = tuple(reader.rows(read_session))
 
@@ -427,16 +488,15 @@ def test_to_dataframe_no_pandas_raises_import_error(
         next(reader.rows(read_session).pages).to_dataframe()
 
 
-def test_to_dataframe_no_fastavro_raises_import_error(
+def test_to_dataframe_no_schema_set_raises_type_error(
     mut, class_under_test, mock_client, monkeypatch
 ):
-    monkeypatch.setattr(mut, "fastavro", None)
     reader = class_under_test(
         [], mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
     )
     read_session = bigquery_storage_v1beta1.types.ReadSession()
 
-    with pytest.raises(ImportError):
+    with pytest.raises(TypeError):
         reader.to_dataframe(read_session)
 
 
@@ -472,6 +532,26 @@ def test_to_dataframe_w_scalars(class_under_test):
     )
 
 
+def test_to_dataframe_w_scalars_arrow(class_under_test):
+    arrow_schema = _bq_to_arrow_schema(SCALAR_COLUMNS)
+    read_session = _generate_arrow_read_session(arrow_schema)
+    arrow_batches = _bq_to_arrow_batches(SCALAR_BLOCKS, arrow_schema)
+
+    reader = class_under_test(
+        arrow_batches, mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
+    )
+    got = reader.to_dataframe(read_session)
+
+    expected = pandas.DataFrame(
+        list(itertools.chain.from_iterable(SCALAR_BLOCKS)), columns=SCALAR_COLUMN_NAMES
+    )
+
+    pandas.testing.assert_frame_equal(
+        got.reset_index(drop=True),  # reset_index to ignore row labels
+        expected.reset_index(drop=True),
+    )
+
+
 def test_to_dataframe_w_dtypes(class_under_test):
     avro_schema = _bq_to_avro_schema(
         [
@@ -488,6 +568,38 @@ def test_to_dataframe_w_dtypes(class_under_test):
 
     reader = class_under_test(
         avro_blocks, mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
+    )
+    got = reader.to_dataframe(read_session, dtypes={"lilfloat": "float16"})
+
+    expected = pandas.DataFrame(
+        {
+            "bigfloat": [1.25, 2.5, 3.75],
+            "lilfloat": pandas.Series([30.5, 21.125, 11.0], dtype="float16"),
+        },
+        columns=["bigfloat", "lilfloat"],
+    )
+    pandas.testing.assert_frame_equal(
+        got.reset_index(drop=True),  # reset_index to ignore row labels
+        expected.reset_index(drop=True),
+    )
+
+
+def test_to_dataframe_w_dtypes_arrow(class_under_test):
+    arrow_schema = _bq_to_arrow_schema(
+        [
+            {"name": "bigfloat", "type": "float64"},
+            {"name": "lilfloat", "type": "float64"},
+        ]
+    )
+    read_session = _generate_arrow_read_session(arrow_schema)
+    blocks = [
+        [{"bigfloat": 1.25, "lilfloat": 30.5}, {"bigfloat": 2.5, "lilfloat": 21.125}],
+        [{"bigfloat": 3.75, "lilfloat": 11.0}],
+    ]
+    arrow_batches = _bq_to_arrow_batches(blocks, arrow_schema)
+
+    reader = class_under_test(
+        arrow_batches, mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
     )
     got = reader.to_dataframe(read_session, dtypes={"lilfloat": "float16"})
 
