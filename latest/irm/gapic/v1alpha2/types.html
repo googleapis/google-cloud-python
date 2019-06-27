@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Stackdriver Incident Response &amp; Management API Client &#8212; google-cloud 65e0512 documentation</title>
+    <title>Types for Stackdriver Incident Response &amp; Management API Client &#8212; google-cloud 2f35bec documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -68,6 +68,13 @@ ct_id}/incidents/{incident_id}/annotations/{annotation_id}”
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.irm_v1alpha2.types.Annotation.content_type">
+<code class="descname">content_type</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.Annotation.content_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Content type of the annotation, for example, ‘text/plain’ or
+‘text/markdown’. Immutable.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">author</code></dt>
 <dd><p>Field google.cloud.irm.v1alpha2.Annotation.author</p>
@@ -77,6 +84,12 @@ ct_id}/incidents/{incident_id}/annotations/{annotation_id}”
 <dt>
 <code class="descname">content</code></dt>
 <dd><p>Field google.cloud.irm.v1alpha2.Annotation.content</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">content_type</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.Annotation.content_type</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1510,6 +1523,43 @@ nil Or if Carol refuses the handover, the fields are:
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.irm_v1alpha2.types.LookupSignalRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.irm_v1alpha2.types.</code><code class="descname">LookupSignalRequest</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.LookupSignalRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request for the LookupSignal method.</p>
+<dl class="attribute">
+<dt id="google.cloud.irm_v1alpha2.types.LookupSignalRequest.alternate_id">
+<code class="descname">alternate_id</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.LookupSignalRequest.alternate_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The ID to use for lookup.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.irm_v1alpha2.types.LookupSignalRequest.cscc_finding">
+<code class="descname">cscc_finding</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.LookupSignalRequest.cscc_finding" title="Permalink to this definition">#</a></dt>
+<dd><p>Full resource name of the CSCC finding id this signal refers
+to (e.g. “organizations/abc/sources/123/findings/xyz”)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.irm_v1alpha2.types.LookupSignalRequest.stackdriver_notification_id">
+<code class="descname">stackdriver_notification_id</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.LookupSignalRequest.stackdriver_notification_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The ID from the Stackdriver Alerting notification.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">cscc_finding</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.LookupSignalRequest.cscc_finding</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">stackdriver_notification_id</code></dt>
+<dd><p>Field google.cloud.irm.v1alpha2.LookupSignalRequest.stackdriver_notification_id</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.irm_v1alpha2.types.RequestIncidentRoleHandoverRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.irm_v1alpha2.types.</code><code class="descname">RequestIncidentRoleHandoverRequest</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.RequestIncidentRoleHandoverRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request to start a role handover.</p>
@@ -1695,7 +1745,52 @@ requested incidents belong to.</p>
 <dl class="attribute">
 <dt id="google.cloud.irm_v1alpha2.types.SearchSignalsRequest.query">
 <code class="descname">query</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.SearchSignalsRequest.query" title="Permalink to this definition">#</a></dt>
-<dd><p>Query to specify which signals should be returned.</p>
+<dd><p>An expression that defines which signals to return.  Search
+atoms can be used to match certain specific fields. Otherwise,
+plain text will match text fields in the signal.  Search
+atoms:  -  <code class="docutils literal notranslate"><span class="pre">start</span></code> - (timestamp) The time the signal was
+created. -  <code class="docutils literal notranslate"><span class="pre">title</span></code> - The title of the signal. -
+<code class="docutils literal notranslate"><span class="pre">signal_state</span></code> - <code class="docutils literal notranslate"><span class="pre">open</span></code> or <code class="docutils literal notranslate"><span class="pre">closed</span></code>. State of the
+signal.    (e.g., <code class="docutils literal notranslate"><span class="pre">signal_state:open</span></code>)  Timestamp formats:
+-  yyyy-MM-dd - an absolute date, treated as a calendar-day-
+wide window.    In other words, the “&lt;” operator will match
+dates before that date,    the “&gt;” operator will match dates
+after that date, and the “:”    operator will match the entire
+day. -  yyyy-MM-ddTHH:mm - Same as above, but with minute
+resolution. -  yyyy-MM-ddTHH:mm:ss - Same as above, but with
+second resolution. -  Nd (e.g. 7d) - a relative number of days
+ago, treated as a moment in    time (as opposed to a day-wide
+span) a multiple of 24 hours ago (as    opposed to calendar
+days). In the case of daylight savings time, it    will apply
+the current timezone to both ends of the range. Note that
+exact matching (e.g. <code class="docutils literal notranslate"><span class="pre">start:7d</span></code>) is unlikely to be useful
+because    that would only match signals created precisely at
+a particular    instant in time.  The absolute timestamp
+formats (everything starting with a year) can optionally be
+followed with a UTC offset in +/-hh:mm format. Also, the ‘T’
+separating dates and times can optionally be replaced with a
+space. Note that any timestamp containing a space or colon
+will need to be quoted.  Examples:  -  <code class="docutils literal notranslate"><span class="pre">foo</span></code> - matches
+signals containing the word “foo” -  <code class="docutils literal notranslate"><span class="pre">&quot;foo</span> <span class="pre">bar&quot;</span></code> - matches
+signals containing the phrase “foo bar” -  <code class="docutils literal notranslate"><span class="pre">foo</span> <span class="pre">bar</span></code> or
+<code class="docutils literal notranslate"><span class="pre">foo</span> <span class="pre">AND</span> <span class="pre">bar</span></code> - matches signals containing the words
+“foo” and “bar” -  <code class="docutils literal notranslate"><span class="pre">foo</span> <span class="pre">-bar</span></code> or <code class="docutils literal notranslate"><span class="pre">foo</span> <span class="pre">AND</span> <span class="pre">NOT</span> <span class="pre">bar</span></code> -
+matches signals containing the    word “foo” but not the word
+“bar” -  <code class="docutils literal notranslate"><span class="pre">foo</span> <span class="pre">OR</span> <span class="pre">bar</span></code> - matches signals containing the word
+“foo” or the    word “bar” -  <code class="docutils literal notranslate"><span class="pre">start&gt;2018-11-28</span></code> - matches
+signals which started after November    11, 2018. -
+<code class="docutils literal notranslate"><span class="pre">start&lt;=2018-11-28</span></code> - matches signals which started on or
+before    November 11, 2018. -  <code class="docutils literal notranslate"><span class="pre">start:2018-11-28</span></code> - matches
+signals which started on November 11,  2018.   -
+<code class="docutils literal notranslate"><span class="pre">start&gt;&quot;2018-11-28</span> <span class="pre">01:02:03+04:00&quot;</span></code> - matches signals which
+started    after November 11, 2018 at 1:02:03 AM according to
+the UTC+04 time    zone. -  <code class="docutils literal notranslate"><span class="pre">start&gt;7d</span></code> - matches signals
+which started after the point in time    7*24 hours ago -
+<code class="docutils literal notranslate"><span class="pre">start&gt;180d</span></code> - similar to 7d, but likely to cross the
+daylight    savings time boundary, so the end time will be 1
+hour different from    “now.” -  <code class="docutils literal notranslate"><span class="pre">foo</span> <span class="pre">AND</span> <span class="pre">start&gt;90d</span> <span class="pre">AND</span>
+<span class="pre">stage&lt;resolved</span></code> - unresolved signals from    the past 90 days
+containing the word “foo”</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2085,7 +2180,10 @@ system (for example, Stackdriver Alerting).</p>
 <dl class="attribute">
 <dt id="google.cloud.irm_v1alpha2.types.Signal.content_type">
 <code class="descname">content_type</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.Signal.content_type" title="Permalink to this definition">#</a></dt>
-<dd><p>Content type string, for example, ‘text/plain’ or’text/html’.</p>
+<dd><p>Content type string. ‘text/plain’ is currently the only
+supported content type for Signals created via the API.
+Signals created by Stackdriver Alerting support ‘text/html’ as
+well. Immutable for Signals created by Stackdriver Alerting.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2286,7 +2384,8 @@ an author and a last updated timestamp.</p>
 <dl class="attribute">
 <dt id="google.cloud.irm_v1alpha2.types.Synopsis.content_type">
 <code class="descname">content_type</code><a class="headerlink" href="#google.cloud.irm_v1alpha2.types.Synopsis.content_type" title="Permalink to this definition">#</a></dt>
-<dd><p>Content type string, for example, ‘text/plain’ or ‘text/html’.</p>
+<dd><p>Content type string, for example, ‘text/plain’ or
+‘text/markdown’.</p>
 </dd></dl>
 
 <dl class="attribute">

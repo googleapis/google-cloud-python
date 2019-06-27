@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.irm_v1alpha2.gapic.incident_service_client &#8212; google-cloud 65e0512 documentation</title>
+    <title>google.cloud.irm_v1alpha2.gapic.incident_service_client &#8212; google-cloud 2f35bec documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -64,6 +64,7 @@
 <span class="kn">import</span> <span class="nn">google.api_core.grpc_helpers</span>
 <span class="kn">import</span> <span class="nn">google.api_core.page_iterator</span>
 <span class="kn">import</span> <span class="nn">google.api_core.path_template</span>
+<span class="kn">import</span> <span class="nn">google.api_core.protobuf_helpers</span>
 <span class="kn">import</span> <span class="nn">grpc</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud.irm_v1alpha2.gapic</span> <span class="k">import</span> <span class="n">enums</span>
@@ -1341,7 +1342,68 @@
 <span class="sd">        Args:</span>
 <span class="sd">            parent (str): The resource name of the hosting Stackdriver project which requested</span>
 <span class="sd">                incidents belong to.</span>
-<span class="sd">            query (str): Query to specify which signals should be returned.</span>
+<span class="sd">            query (str): An expression that defines which signals to return.</span>
+
+<span class="sd">                Search atoms can be used to match certain specific fields. Otherwise,</span>
+<span class="sd">                plain text will match text fields in the signal.</span>
+
+<span class="sd">                Search atoms:</span>
+
+<span class="sd">                -  ``start`` - (timestamp) The time the signal was created.</span>
+<span class="sd">                -  ``title`` - The title of the signal.</span>
+<span class="sd">                -  ``signal_state`` - ``open`` or ``closed``. State of the signal.</span>
+<span class="sd">                   (e.g., ``signal_state:open``)</span>
+
+<span class="sd">                Timestamp formats:</span>
+
+<span class="sd">                -  yyyy-MM-dd - an absolute date, treated as a calendar-day-wide window.</span>
+<span class="sd">                   In other words, the &quot;&lt;&quot; operator will match dates before that date,</span>
+<span class="sd">                   the &quot;&gt;&quot; operator will match dates after that date, and the &quot;:&quot;</span>
+<span class="sd">                   operator will match the entire day.</span>
+<span class="sd">                -  yyyy-MM-ddTHH:mm - Same as above, but with minute resolution.</span>
+<span class="sd">                -  yyyy-MM-ddTHH:mm:ss - Same as above, but with second resolution.</span>
+<span class="sd">                -  Nd (e.g. 7d) - a relative number of days ago, treated as a moment in</span>
+<span class="sd">                   time (as opposed to a day-wide span) a multiple of 24 hours ago (as</span>
+<span class="sd">                   opposed to calendar days). In the case of daylight savings time, it</span>
+<span class="sd">                   will apply the current timezone to both ends of the range. Note that</span>
+<span class="sd">                   exact matching (e.g. ``start:7d``) is unlikely to be useful because</span>
+<span class="sd">                   that would only match signals created precisely at a particular</span>
+<span class="sd">                   instant in time.</span>
+
+<span class="sd">                The absolute timestamp formats (everything starting with a year) can</span>
+<span class="sd">                optionally be followed with a UTC offset in +/-hh:mm format. Also, the</span>
+<span class="sd">                &#39;T&#39; separating dates and times can optionally be replaced with a space.</span>
+<span class="sd">                Note that any timestamp containing a space or colon will need to be</span>
+<span class="sd">                quoted.</span>
+
+<span class="sd">                Examples:</span>
+
+<span class="sd">                -  ``foo`` - matches signals containing the word &quot;foo&quot;</span>
+<span class="sd">                -  ``&quot;foo bar&quot;`` - matches signals containing the phrase &quot;foo bar&quot;</span>
+<span class="sd">                -  ``foo bar`` or ``foo AND bar`` - matches signals containing the words</span>
+<span class="sd">                   &quot;foo&quot; and &quot;bar&quot;</span>
+<span class="sd">                -  ``foo -bar`` or ``foo AND NOT bar`` - matches signals containing the</span>
+<span class="sd">                   word &quot;foo&quot; but not the word &quot;bar&quot;</span>
+<span class="sd">                -  ``foo OR bar`` - matches signals containing the word &quot;foo&quot; or the</span>
+<span class="sd">                   word &quot;bar&quot;</span>
+<span class="sd">                -  ``start&gt;2018-11-28`` - matches signals which started after November</span>
+<span class="sd">                   11, 2018.</span>
+<span class="sd">                -  ``start&lt;=2018-11-28`` - matches signals which started on or before</span>
+<span class="sd">                   November 11, 2018.</span>
+<span class="sd">                -  ``start:2018-11-28`` - matches signals which started on November 11,</span>
+
+<span class="sd">                   2018.</span>
+
+<span class="sd">                -  ``start&gt;&quot;2018-11-28 01:02:03+04:00&quot;`` - matches signals which started</span>
+<span class="sd">                   after November 11, 2018 at 1:02:03 AM according to the UTC+04 time</span>
+<span class="sd">                   zone.</span>
+<span class="sd">                -  ``start&gt;7d`` - matches signals which started after the point in time</span>
+<span class="sd">                   7*24 hours ago</span>
+<span class="sd">                -  ``start&gt;180d`` - similar to 7d, but likely to cross the daylight</span>
+<span class="sd">                   savings time boundary, so the end time will be 1 hour different from</span>
+<span class="sd">                   &quot;now.&quot;</span>
+<span class="sd">                -  ``foo AND start&gt;90d AND stage&lt;resolved`` - unresolved signals from</span>
+<span class="sd">                   the past 90 days containing the word &quot;foo&quot;</span>
 <span class="sd">            page_size (int): The maximum number of resources contained in the</span>
 <span class="sd">                underlying API response. If page streaming is performed per-</span>
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
@@ -1478,6 +1540,73 @@
             <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;get_signal&quot;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="IncidentServiceClient.lookup_signal"><a class="viewcode-back" href="../../../../../irm/gapic/v1alpha2/api.html#google.cloud.irm_v1alpha2.IncidentServiceClient.lookup_signal">[docs]</a>    <span class="k">def</span> <span class="nf">lookup_signal</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">cscc_finding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">stackdriver_notification_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+        <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Finds a signal by other unique IDs.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import irm_v1alpha2</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = irm_v1alpha2.IncidentServiceClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.lookup_signal()</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            cscc_finding (str): Full resource name of the CSCC finding id this signal refers to (e.g.</span>
+<span class="sd">                &quot;organizations/abc/sources/123/findings/xyz&quot;)</span>
+<span class="sd">            stackdriver_notification_id (str): The ID from the Stackdriver Alerting notification.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.irm_v1alpha2.types.Signal` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s2">&quot;lookup_signal&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s2">&quot;lookup_signal&quot;</span>
+            <span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">lookup_signal</span><span class="p">,</span>
+                <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s2">&quot;LookupSignal&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s2">&quot;LookupSignal&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Sanity check: We have some fields which are mutually exclusive;</span>
+        <span class="c1"># raise ValueError if more than one is sent.</span>
+        <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">protobuf_helpers</span><span class="o">.</span><span class="n">check_oneof</span><span class="p">(</span>
+            <span class="n">cscc_finding</span><span class="o">=</span><span class="n">cscc_finding</span><span class="p">,</span>
+            <span class="n">stackdriver_notification_id</span><span class="o">=</span><span class="n">stackdriver_notification_id</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">incidents_service_pb2</span><span class="o">.</span><span class="n">LookupSignalRequest</span><span class="p">(</span>
+            <span class="n">cscc_finding</span><span class="o">=</span><span class="n">cscc_finding</span><span class="p">,</span>
+            <span class="n">stackdriver_notification_id</span><span class="o">=</span><span class="n">stackdriver_notification_id</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;lookup_signal&quot;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
         <span class="p">)</span></div>
 

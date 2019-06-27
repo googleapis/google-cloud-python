@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.irm_v1alpha2.proto.incidents_service_pb2 &#8212; google-cloud 65e0512 documentation</title>
+    <title>google.cloud.irm_v1alpha2.proto.incidents_service_pb2 &#8212; google-cloud 2f35bec documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -52,6 +52,7 @@
 
 
 <span class="kn">from</span> <span class="nn">google.api</span> <span class="k">import</span> <span class="n">annotations_pb2</span> <span class="k">as</span> <span class="n">google_dot_api_dot_annotations__pb2</span>
+<span class="kn">from</span> <span class="nn">google.api</span> <span class="k">import</span> <span class="n">client_pb2</span> <span class="k">as</span> <span class="n">google_dot_api_dot_client__pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.irm_v1alpha2.proto</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">incidents_pb2</span> <span class="k">as</span> <span class="n">google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2</span><span class="p">,</span>
 <span class="p">)</span>
@@ -68,10 +69,11 @@
         <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">#com.google.irm.service.v1alpha2.apiP</span><span class="se">\001</span><span class="s2">Z&lt;google.golang.org/genproto/googleapis/cloud/irm/v1alpha2;irm</span><span class="se">\370\001\001</span><span class="s2">&quot;</span>
     <span class="p">),</span>
     <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span>
-        <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">7google/cloud/irm_v1alpha2/proto/incidents_service.proto</span><span class="se">\x12\x19</span><span class="s1">google.cloud.irm.v1alpha2</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a</span><span class="s1">/google/cloud/irm_v1alpha2/proto/incidents.proto</span><span class="se">\x1a\x1b</span><span class="s1">google/protobuf/empty.proto</span><span class="se">\x1a</span><span class="s1"> google/protobuf/field_mask.proto</span><span class="se">\x1a\x1f</span><span class="s1">google/protobuf/timestamp.proto&quot;^</span><span class="se">\n\x15\x43</span><span class="s1">reateIncidentRequest</span><span class="se">\x12\x35\n\x08</span><span class="s1">incident</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">#.google.cloud.irm.v1alpha2.Incident</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;&quot;</span><span class="se">\n\x12</span><span class="s1">GetIncidentRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;</span><span class="se">\x7f\n\x15</span><span class="s1">UpdateIncidentRequest</span><span class="se">\x12\x35\n\x08</span><span class="s1">incident</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">#.google.cloud.irm.v1alpha2.Incident</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x0b</span><span class="s1">update_mask</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.FieldMask&quot;T</span><span class="se">\n\x1d</span><span class="s1">SearchSimilarIncidentsRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">page_size</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x12\n\n</span><span class="s1">page_token</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;</span><span class="se">\xcd\x01\n\x1e</span><span class="s1">SearchSimilarIncidentsResponse</span><span class="se">\x12</span><span class="s1">Q</span><span class="se">\n\x07</span><span class="s1">results</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">@.google.cloud.irm.v1alpha2.SearchSimilarIncidentsResponse.Result</span><span class="se">\x12\x17\n\x0f</span><span class="s1">next_page_token</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x1a</span><span class="s1">?</span><span class="se">\n\x06</span><span class="s1">Result</span><span class="se">\x12\x35\n\x08</span><span class="s1">incident</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">#.google.cloud.irm.v1alpha2.Incident&quot;d</span><span class="se">\n\x17\x43</span><span class="s1">reateAnnotationRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x39\n\n</span><span class="s1">annotation</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.cloud.irm.v1alpha2.Annotation&quot;O</span><span class="se">\n\x16</span><span class="s1">ListAnnotationsRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">page_size</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x12\n\n</span><span class="s1">page_token</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;n</span><span class="se">\n\x17</span><span class="s1">ListAnnotationsResponse</span><span class="se">\x12</span><span class="s1">:</span><span class="se">\n\x0b\x61</span><span class="s1">nnotations</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.cloud.irm.v1alpha2.Annotation</span><span class="se">\x12\x17\n\x0f</span><span class="s1">next_page_token</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;O</span><span class="se">\n\x10\x43</span><span class="s1">reateTagRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">+</span><span class="se">\n\x03</span><span class="s1">tag</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1e</span><span class="s1">.google.cloud.irm.v1alpha2.Tag&quot; </span><span class="se">\n\x10\x44\x65</span><span class="s1">leteTagRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;H</span><span class="se">\n\x0f</span><span class="s1">ListTagsRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">page_size</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x12\n\n</span><span class="s1">page_token</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;Y</span><span class="se">\n\x10</span><span class="s1">ListTagsResponse</span><span class="se">\x12</span><span class="s1">,</span><span class="se">\n\x04</span><span class="s1">tags</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1e</span><span class="s1">.google.cloud.irm.v1alpha2.Tag</span><span class="se">\x12\x17\n\x0f</span><span class="s1">next_page_token</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;X</span><span class="se">\n\x13\x43</span><span class="s1">reateSignalRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x31\n\x06</span><span class="s1">signal</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">!.google.cloud.irm.v1alpha2.Signal&quot;</span><span class="se">\\\n\x14</span><span class="s1">SearchSignalsRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">query</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">page_size</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x12\n\n</span><span class="s1">page_token</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;d</span><span class="se">\n\x15</span><span class="s1">SearchSignalsResponse</span><span class="se">\x12\x32\n\x07</span><span class="s1">signals</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">!.google.cloud.irm.v1alpha2.Signal</span><span class="se">\x12\x17\n\x0f</span><span class="s1">next_page_token</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot; </span><span class="se">\n\x10</span><span class="s1">GetSignalRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;y</span><span class="se">\n\x13</span><span class="s1">UpdateSignalRequest</span><span class="se">\x12\x31\n\x06</span><span class="s1">signal</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">!.google.cloud.irm.v1alpha2.Signal</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x0b</span><span class="s1">update_mask</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.FieldMask&quot;q</span><span class="se">\n\x16</span><span class="s1">SearchIncidentsRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">query</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">page_size</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x12\n\n</span><span class="s1">page_token</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">time_zone</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;j</span><span class="se">\n\x17</span><span class="s1">SearchIncidentsResponse</span><span class="se">\x12\x36\n\t</span><span class="s1">incidents</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">#.google.cloud.irm.v1alpha2.Incident</span><span class="se">\x12\x17\n\x0f</span><span class="s1">next_page_token</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;</span><span class="se">\xe9\x02\n\x17\x45</span><span class="s1">scalateIncidentRequest</span><span class="se">\x12\x35\n\x08</span><span class="s1">incident</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">#.google.cloud.irm.v1alpha2.Incident</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x0b</span><span class="s1">update_mask</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.FieldMask</span><span class="se">\x12</span><span class="s1">&gt;</span><span class="se">\n\r</span><span class="s1">subscriptions</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\&#39;</span><span class="s1">.google.cloud.irm.v1alpha2.Subscription</span><span class="se">\x12</span><span class="s1">,</span><span class="se">\n\x04</span><span class="s1">tags</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1e</span><span class="s1">.google.cloud.irm.v1alpha2.Tag</span><span class="se">\x12</span><span class="s1">@</span><span class="se">\n\x05</span><span class="s1">roles</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x31</span><span class="s1">.google.cloud.irm.v1alpha2.IncidentRoleAssignment</span><span class="se">\x12\x36\n\t</span><span class="s1">artifacts</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">#.google.cloud.irm.v1alpha2.Artifact&quot;</span><span class="se">\xaf\x02\n\x18\x45</span><span class="s1">scalateIncidentResponse</span><span class="se">\x12\x35\n\x08</span><span class="s1">incident</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">#.google.cloud.irm.v1alpha2.Incident</span><span class="se">\x12</span><span class="s1">&gt;</span><span class="se">\n\r</span><span class="s1">subscriptions</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\&#39;</span><span class="s1">.google.cloud.irm.v1alpha2.Subscription</span><span class="se">\x12</span><span class="s1">,</span><span class="se">\n\x04</span><span class="s1">tags</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1e</span><span class="s1">.google.cloud.irm.v1alpha2.Tag</span><span class="se">\x12\x36\n\x05</span><span class="s1">roles</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\&#39;</span><span class="s1">.google.cloud.irm.v1alpha2.IncidentRole</span><span class="se">\x12\x36\n\t</span><span class="s1">artifacts</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">#.google.cloud.irm.v1alpha2.Artifact&quot;^</span><span class="se">\n\x15\x43</span><span class="s1">reateArtifactRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x35\n\x08\x61</span><span class="s1">rtifact</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">#.google.cloud.irm.v1alpha2.Artifact&quot;M</span><span class="se">\n\x14</span><span class="s1">ListArtifactsRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">page_size</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x12\n\n</span><span class="s1">page_token</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;h</span><span class="se">\n\x15</span><span class="s1">ListArtifactsResponse</span><span class="se">\x12\x36\n\t</span><span class="s1">artifacts</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">#.google.cloud.irm.v1alpha2.Artifact</span><span class="se">\x12\x17\n\x0f</span><span class="s1">next_page_token</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;</span><span class="se">\x7f\n\x15</span><span class="s1">UpdateArtifactRequest</span><span class="se">\x12\x35\n\x08\x61</span><span class="s1">rtifact</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">#.google.cloud.irm.v1alpha2.Artifact</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x0b</span><span class="s1">update_mask</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.FieldMask&quot;%</span><span class="se">\n\x15\x44\x65</span><span class="s1">leteArtifactRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;</span><span class="se">\x8d\x02\n\x17</span><span class="s1">SendShiftHandoffRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x12\n\n</span><span class="s1">recipients</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\t\x12\n\n\x02\x63\x63\x18\x03</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\t\x12\x0f\n\x07</span><span class="s1">subject</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x1a\n\x12</span><span class="s1">notes_content_type</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x15\n\r</span><span class="s1">notes_content</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">N</span><span class="se">\n\t</span><span class="s1">incidents</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">;.google.cloud.irm.v1alpha2.SendShiftHandoffRequest.Incident</span><span class="se">\x12\x14\n\x0c</span><span class="s1">preview_only</span><span class="se">\x18\x08</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x08\x1a\x18\n\x08</span><span class="s1">Incident</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;A</span><span class="se">\n\x18</span><span class="s1">SendShiftHandoffResponse</span><span class="se">\x12\x14\n\x0c\x63</span><span class="s1">ontent_type</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0f\n\x07\x63</span><span class="s1">ontent</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;j</span><span class="se">\n\x19\x43</span><span class="s1">reateSubscriptionRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">=</span><span class="se">\n\x0c</span><span class="s1">subscription</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\&#39;</span><span class="s1">.google.cloud.irm.v1alpha2.Subscription&quot;</span><span class="se">\x8b\x01\n\x19</span><span class="s1">UpdateSubscriptionRequest</span><span class="se">\x12</span><span class="s1">=</span><span class="se">\n\x0c</span><span class="s1">subscription</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\&#39;</span><span class="s1">.google.cloud.irm.v1alpha2.Subscription</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x0b</span><span class="s1">update_mask</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.FieldMask&quot;Q</span><span class="se">\n\x18</span><span class="s1">ListSubscriptionsRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">page_size</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x12\n\n</span><span class="s1">page_token</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;t</span><span class="se">\n\x19</span><span class="s1">ListSubscriptionsResponse</span><span class="se">\x12</span><span class="s1">&gt;</span><span class="se">\n\r</span><span class="s1">subscriptions</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\&#39;</span><span class="s1">.google.cloud.irm.v1alpha2.Subscription</span><span class="se">\x12\x17\n\x0f</span><span class="s1">next_page_token</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;)</span><span class="se">\n\x19\x44\x65</span><span class="s1">leteSubscriptionRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;</span><span class="se">\x8a\x01\n</span><span class="s1">#CreateIncidentRoleAssignmentRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">S</span><span class="se">\n\x18</span><span class="s1">incident_role_assignment</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x31</span><span class="s1">.google.cloud.irm.v1alpha2.IncidentRoleAssignment&quot;3</span><span class="se">\n</span><span class="s1">#DeleteIncidentRoleAssignmentRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;[</span><span class="se">\n</span><span class="s1">&quot;ListIncidentRoleAssignmentsRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">page_size</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x12\n\n</span><span class="s1">page_token</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;</span><span class="se">\x94\x01\n</span><span class="s1">#ListIncidentRoleAssignmentsResponse</span><span class="se">\x12</span><span class="s1">T</span><span class="se">\n\x19</span><span class="s1">incident_role_assignments</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x31</span><span class="s1">.google.cloud.irm.v1alpha2.IncidentRoleAssignment</span><span class="se">\x12\x17\n\x0f</span><span class="s1">next_page_token</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;i</span><span class="se">\n</span><span class="s1">&quot;RequestIncidentRoleHandoverRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x35\n\x0c</span><span class="s1">new_assignee</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1f</span><span class="s1">.google.cloud.irm.v1alpha2.User&quot;i</span><span class="se">\n</span><span class="s1">&quot;ConfirmIncidentRoleHandoverRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x35\n\x0c</span><span class="s1">new_assignee</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1f</span><span class="s1">.google.cloud.irm.v1alpha2.User&quot;g</span><span class="se">\n</span><span class="s1"> ForceIncidentRoleHandoverRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x35\n\x0c</span><span class="s1">new_assignee</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1f</span><span class="s1">.google.cloud.irm.v1alpha2.User&quot;h</span><span class="se">\n</span><span class="s1">!CancelIncidentRoleHandoverRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x35\n\x0c</span><span class="s1">new_assignee</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1f</span><span class="s1">.google.cloud.irm.v1alpha2.User2</span><span class="se">\xa9</span><span class="s1">-</span><span class="se">\n\x0f</span><span class="s1">IncidentService</span><span class="se">\x12\xa2\x01\n\x0e\x43</span><span class="s1">reateIncident</span><span class="se">\x12\x30</span><span class="s1">.google.cloud.irm.v1alpha2.CreateIncidentRequest</span><span class="se">\x1a</span><span class="s1">#.google.cloud.irm.v1alpha2.Incident&quot;9</span><span class="se">\x82\xd3\xe4\x93\x02\x33</span><span class="s1">&quot;</span><span class="se">\&#39;</span><span class="s1">/v1alpha2/{parent=projects/*}/incidents:</span><span class="se">\x08</span><span class="s1">incident</span><span class="se">\x12\x92\x01\n\x0b</span><span class="s1">GetIncident</span><span class="se">\x12</span><span class="s1">-.google.cloud.irm.v1alpha2.GetIncidentRequest</span><span class="se">\x1a</span><span class="s1">#.google.cloud.irm.v1alpha2.Incident&quot;/</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">)</span><span class="se">\x12\&#39;</span><span class="s1">/v1alpha2/{name=projects/*/incidents/*}</span><span class="se">\x12\xb0\x01\n\x0f</span><span class="s1">SearchIncidents</span><span class="se">\x12\x31</span><span class="s1">.google.cloud.irm.v1alpha2.SearchIncidentsRequest</span><span class="se">\x1a\x32</span><span class="s1">.google.cloud.irm.v1alpha2.SearchIncidentsResponse&quot;6</span><span class="se">\x82\xd3\xe4\x93\x02\x30\x12</span><span class="s1">./v1alpha2/{parent=projects/*}/incidents:search</span><span class="se">\x12\xab\x01\n\x0e</span><span class="s1">UpdateIncident</span><span class="se">\x12\x30</span><span class="s1">.google.cloud.irm.v1alpha2.UpdateIncidentRequest</span><span class="se">\x1a</span><span class="s1">#.google.cloud.irm.v1alpha2.Incident&quot;B</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">&lt;20/v1alpha2/{incident.name=projects/*/incidents/*}:</span><span class="se">\x08</span><span class="s1">incident</span><span class="se">\x12\x8c\x02\n\x16</span><span class="s1">SearchSimilarIncidents</span><span class="se">\x12\x38</span><span class="s1">.google.cloud.irm.v1alpha2.SearchSimilarIncidentsRequest</span><span class="se">\x1a\x39</span><span class="s1">.google.cloud.irm.v1alpha2.SearchSimilarIncidentsResponse&quot;}</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">w</span><span class="se">\x12\x35</span><span class="s1">/v1alpha2/{name=projects/*/incidents/*}:searchSimilarZ&gt;</span><span class="se">\x12</span><span class="s1">&lt;/v1alpha2/{name=projects/*/signals/*}:searchSimilarIncidents</span><span class="se">\x12\xb8\x01\n\x10\x43</span><span class="s1">reateAnnotation</span><span class="se">\x12\x32</span><span class="s1">.google.cloud.irm.v1alpha2.CreateAnnotationRequest</span><span class="se">\x1a</span><span class="s1">%.google.cloud.irm.v1alpha2.Annotation&quot;I</span><span class="se">\x82\xd3\xe4\x93\x02\x43</span><span class="s1">&quot;5/v1alpha2/{parent=projects/*/incidents/*}/annotations:</span><span class="se">\n</span><span class="s1">annotation</span><span class="se">\x12\xb7\x01\n\x0f</span><span class="s1">ListAnnotations</span><span class="se">\x12\x31</span><span class="s1">.google.cloud.irm.v1alpha2.ListAnnotationsRequest</span><span class="se">\x1a\x32</span><span class="s1">.google.cloud.irm.v1alpha2.ListAnnotationsResponse&quot;=</span><span class="se">\x82\xd3\xe4\x93\x02\x37\x12\x35</span><span class="s1">/v1alpha2/{parent=projects/*/incidents/*}/annotations</span><span class="se">\x12\x95\x01\n\t</span><span class="s1">CreateTag</span><span class="se">\x12</span><span class="s1">+.google.cloud.irm.v1alpha2.CreateTagRequest</span><span class="se">\x1a\x1e</span><span class="s1">.google.cloud.irm.v1alpha2.Tag&quot;;</span><span class="se">\x82\xd3\xe4\x93\x02\x35</span><span class="s1">&quot;./v1alpha2/{parent=projects/*/incidents/*}/tags:</span><span class="se">\x03</span><span class="s1">tag</span><span class="se">\x12\x88\x01\n\t</span><span class="s1">DeleteTag</span><span class="se">\x12</span><span class="s1">+.google.cloud.irm.v1alpha2.DeleteTagRequest</span><span class="se">\x1a\x16</span><span class="s1">.google.protobuf.Empty&quot;6</span><span class="se">\x82\xd3\xe4\x93\x02\x30</span><span class="s1">*./v1alpha2/{name=projects/*/incidents/*/tags/*}</span><span class="se">\x12\x9b\x01\n\x08</span><span class="s1">ListTags</span><span class="se">\x12</span><span class="s1">*.google.cloud.irm.v1alpha2.ListTagsRequest</span><span class="se">\x1a</span><span class="s1">+.google.cloud.irm.v1alpha2.ListTagsResponse&quot;6</span><span class="se">\x82\xd3\xe4\x93\x02\x30\x12</span><span class="s1">./v1alpha2/{parent=projects/*/incidents/*}/tags</span><span class="se">\x12\x98\x01\n\x0c\x43</span><span class="s1">reateSignal</span><span class="se">\x12</span><span class="s1">..google.cloud.irm.v1alpha2.CreateSignalRequest</span><span class="se">\x1a</span><span class="s1">!.google.cloud.irm.v1alpha2.Signal&quot;5</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">/&quot;%/v1alpha2/{parent=projects/*}/signals:</span><span class="se">\x06</span><span class="s1">signal</span><span class="se">\x12\xa8\x01\n\r</span><span class="s1">SearchSignals</span><span class="se">\x12</span><span class="s1">/.google.cloud.irm.v1alpha2.SearchSignalsRequest</span><span class="se">\x1a\x30</span><span class="s1">.google.cloud.irm.v1alpha2.SearchSignalsResponse&quot;4</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">.</span><span class="se">\x12</span><span class="s1">,/v1alpha2/{parent=projects/*}/signals:search</span><span class="se">\x12\x8a\x01\n\t</span><span class="s1">GetSignal</span><span class="se">\x12</span><span class="s1">+.google.cloud.irm.v1alpha2.GetSignalRequest</span><span class="se">\x1a</span><span class="s1">!.google.cloud.irm.v1alpha2.Signal&quot;-</span><span class="se">\x82\xd3\xe4\x93\x02\&#39;\x12</span><span class="s1">%/v1alpha2/{name=projects/*/signals/*}</span><span class="se">\x12\x9f\x01\n\x0c</span><span class="s1">UpdateSignal</span><span class="se">\x12</span><span class="s1">..google.cloud.irm.v1alpha2.UpdateSignalRequest</span><span class="se">\x1a</span><span class="s1">!.google.cloud.irm.v1alpha2.Signal&quot;&lt;</span><span class="se">\x82\xd3\xe4\x93\x02\x36\x32</span><span class="s1">,/v1alpha2/{signal.name=projects/*/signals/*}:</span><span class="se">\x06</span><span class="s1">signal</span><span class="se">\x12\xc1\x01\n\x10\x45</span><span class="s1">scalateIncident</span><span class="se">\x12\x32</span><span class="s1">.google.cloud.irm.v1alpha2.EscalateIncidentRequest</span><span class="se">\x1a\x33</span><span class="s1">.google.cloud.irm.v1alpha2.EscalateIncidentResponse&quot;D</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">&gt;&quot;9/v1alpha2/{incident.name=projects/*/incidents/*}:escalate:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xae\x01\n\x0e\x43</span><span class="s1">reateArtifact</span><span class="se">\x12\x30</span><span class="s1">.google.cloud.irm.v1alpha2.CreateArtifactRequest</span><span class="se">\x1a</span><span class="s1">#.google.cloud.irm.v1alpha2.Artifact&quot;E</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">?&quot;3/v1alpha2/{parent=projects/*/incidents/*}/artifacts:</span><span class="se">\x08\x61</span><span class="s1">rtifact</span><span class="se">\x12\xaf\x01\n\r</span><span class="s1">ListArtifacts</span><span class="se">\x12</span><span class="s1">/.google.cloud.irm.v1alpha2.ListArtifactsRequest</span><span class="se">\x1a\x30</span><span class="s1">.google.cloud.irm.v1alpha2.ListArtifactsResponse&quot;;</span><span class="se">\x82\xd3\xe4\x93\x02\x35\x12\x33</span><span class="s1">/v1alpha2/{parent=projects/*/incidents/*}/artifacts</span><span class="se">\x12\xb7\x01\n\x0e</span><span class="s1">UpdateArtifact</span><span class="se">\x12\x30</span><span class="s1">.google.cloud.irm.v1alpha2.UpdateArtifactRequest</span><span class="se">\x1a</span><span class="s1">#.google.cloud.irm.v1alpha2.Artifact&quot;N</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">H2&lt;/v1alpha2/{artifact.name=projects/*/incidents/*/artifacts/*}:</span><span class="se">\x08\x61</span><span class="s1">rtifact</span><span class="se">\x12\x97\x01\n\x0e\x44\x65</span><span class="s1">leteArtifact</span><span class="se">\x12\x30</span><span class="s1">.google.cloud.irm.v1alpha2.DeleteArtifactRequest</span><span class="se">\x1a\x16</span><span class="s1">.google.protobuf.Empty&quot;;</span><span class="se">\x82\xd3\xe4\x93\x02\x35</span><span class="s1">*3/v1alpha2/{name=projects/*/incidents/*/artifacts/*}</span><span class="se">\x12\xb7\x01\n\x10</span><span class="s1">SendShiftHandoff</span><span class="se">\x12\x32</span><span class="s1">.google.cloud.irm.v1alpha2.SendShiftHandoffRequest</span><span class="se">\x1a\x33</span><span class="s1">.google.cloud.irm.v1alpha2.SendShiftHandoffResponse&quot;:</span><span class="se">\x82\xd3\xe4\x93\x02\x34</span><span class="s1">&quot;//v1alpha2/{parent=projects/*}/shiftHandoff:send:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xc2\x01\n\x12\x43</span><span class="s1">reateSubscription</span><span class="se">\x12\x34</span><span class="s1">.google.cloud.irm.v1alpha2.CreateSubscriptionRequest</span><span class="se">\x1a\&#39;</span><span class="s1">.google.cloud.irm.v1alpha2.Subscription&quot;M</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">G&quot;7/v1alpha2/{parent=projects/*/incidents/*}/subscriptions:</span><span class="se">\x0c</span><span class="s1">subscription</span><span class="se">\x12\xcf\x01\n\x12</span><span class="s1">UpdateSubscription</span><span class="se">\x12\x34</span><span class="s1">.google.cloud.irm.v1alpha2.UpdateSubscriptionRequest</span><span class="se">\x1a\&#39;</span><span class="s1">.google.cloud.irm.v1alpha2.Subscription&quot;Z</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">T2D/v1alpha2/{subscription.name=projects/*/incidents/*/subscriptions/*}:</span><span class="se">\x0c</span><span class="s1">subscription</span><span class="se">\x12\xbf\x01\n\x11</span><span class="s1">ListSubscriptions</span><span class="se">\x12\x33</span><span class="s1">.google.cloud.irm.v1alpha2.ListSubscriptionsRequest</span><span class="se">\x1a\x34</span><span class="s1">.google.cloud.irm.v1alpha2.ListSubscriptionsResponse&quot;?</span><span class="se">\x82\xd3\xe4\x93\x02\x39\x12\x37</span><span class="s1">/v1alpha2/{parent=projects/*/incidents/*}/subscriptions</span><span class="se">\x12\xa3\x01\n\x12\x44\x65</span><span class="s1">leteSubscription</span><span class="se">\x12\x34</span><span class="s1">.google.cloud.irm.v1alpha2.DeleteSubscriptionRequest</span><span class="se">\x1a\x16</span><span class="s1">.google.protobuf.Empty&quot;?</span><span class="se">\x82\xd3\xe4\x93\x02\x39</span><span class="s1">*7/v1alpha2/{name=projects/*/incidents/*/subscriptions/*}</span><span class="se">\x12\xd7\x01\n\x1c\x43</span><span class="s1">reateIncidentRoleAssignment</span><span class="se">\x12</span><span class="s1">&gt;.google.cloud.irm.v1alpha2.CreateIncidentRoleAssignmentRequest</span><span class="se">\x1a\x31</span><span class="s1">.google.cloud.irm.v1alpha2.IncidentRoleAssignment&quot;D</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">&gt;&quot;9/v1alpha2/{parent=projects/*/incidents/*}/roleAssignments:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xb9\x01\n\x1c\x44\x65</span><span class="s1">leteIncidentRoleAssignment</span><span class="se">\x12</span><span class="s1">&gt;.google.cloud.irm.v1alpha2.DeleteIncidentRoleAssignmentRequest</span><span class="se">\x1a\x16</span><span class="s1">.google.protobuf.Empty&quot;A</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">;*9/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}</span><span class="se">\x12\xdf\x01\n\x1b</span><span class="s1">ListIncidentRoleAssignments</span><span class="se">\x12</span><span class="s1">=.google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsRequest</span><span class="se">\x1a</span><span class="s1">&gt;.google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsResponse&quot;A</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">;</span><span class="se">\x12\x39</span><span class="s1">/v1alpha2/{parent=projects/*/incidents/*}/roleAssignments</span><span class="se">\x12\xe5\x01\n\x1b</span><span class="s1">RequestIncidentRoleHandover</span><span class="se">\x12</span><span class="s1">=.google.cloud.irm.v1alpha2.RequestIncidentRoleHandoverRequest</span><span class="se">\x1a\x31</span><span class="s1">.google.cloud.irm.v1alpha2.IncidentRoleAssignment&quot;T</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">N&quot;I/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}:requestHandover:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xe5\x01\n\x1b\x43</span><span class="s1">onfirmIncidentRoleHandover</span><span class="se">\x12</span><span class="s1">=.google.cloud.irm.v1alpha2.ConfirmIncidentRoleHandoverRequest</span><span class="se">\x1a\x31</span><span class="s1">.google.cloud.irm.v1alpha2.IncidentRoleAssignment&quot;T</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">N&quot;I/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}:confirmHandover:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xdf\x01\n\x19\x46</span><span class="s1">orceIncidentRoleHandover</span><span class="se">\x12</span><span class="s1">;.google.cloud.irm.v1alpha2.ForceIncidentRoleHandoverRequest</span><span class="se">\x1a\x31</span><span class="s1">.google.cloud.irm.v1alpha2.IncidentRoleAssignment&quot;R</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">L&quot;G/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}:forceHandover:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xe2\x01\n\x1a\x43\x61</span><span class="s1">ncelIncidentRoleHandover</span><span class="se">\x12</span><span class="s1">&lt;.google.cloud.irm.v1alpha2.CancelIncidentRoleHandoverRequest</span><span class="se">\x1a\x31</span><span class="s1">.google.cloud.irm.v1alpha2.IncidentRoleAssignment&quot;S</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">M&quot;H/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}:cancelHandover:</span><span class="se">\x01</span><span class="s1">*Bh</span><span class="se">\n</span><span class="s1">#com.google.irm.service.v1alpha2.apiP</span><span class="se">\x01</span><span class="s1">Z&lt;google.golang.org/genproto/googleapis/cloud/irm/v1alpha2;irm</span><span class="se">\xf8\x01\x01\x62\x06</span><span class="s1">proto3&#39;</span>
+        <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">7google/cloud/irm_v1alpha2/proto/incidents_service.proto</span><span class="se">\x12\x19</span><span class="s1">google.cloud.irm.v1alpha2</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a\x17</span><span class="s1">google/api/client.proto</span><span class="se">\x1a</span><span class="s1">/google/cloud/irm_v1alpha2/proto/incidents.proto</span><span class="se">\x1a\x1b</span><span class="s1">google/protobuf/empty.proto</span><span class="se">\x1a</span><span class="s1"> google/protobuf/field_mask.proto</span><span class="se">\x1a\x1f</span><span class="s1">google/protobuf/timestamp.proto&quot;^</span><span class="se">\n\x15\x43</span><span class="s1">reateIncidentRequest</span><span class="se">\x12\x35\n\x08</span><span class="s1">incident</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">#.google.cloud.irm.v1alpha2.Incident</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;&quot;</span><span class="se">\n\x12</span><span class="s1">GetIncidentRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;</span><span class="se">\x7f\n\x15</span><span class="s1">UpdateIncidentRequest</span><span class="se">\x12\x35\n\x08</span><span class="s1">incident</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">#.google.cloud.irm.v1alpha2.Incident</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x0b</span><span class="s1">update_mask</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.FieldMask&quot;T</span><span class="se">\n\x1d</span><span class="s1">SearchSimilarIncidentsRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">page_size</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x12\n\n</span><span class="s1">page_token</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;</span><span class="se">\xcd\x01\n\x1e</span><span class="s1">SearchSimilarIncidentsResponse</span><span class="se">\x12</span><span class="s1">Q</span><span class="se">\n\x07</span><span class="s1">results</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">@.google.cloud.irm.v1alpha2.SearchSimilarIncidentsResponse.Result</span><span class="se">\x12\x17\n\x0f</span><span class="s1">next_page_token</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x1a</span><span class="s1">?</span><span class="se">\n\x06</span><span class="s1">Result</span><span class="se">\x12\x35\n\x08</span><span class="s1">incident</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">#.google.cloud.irm.v1alpha2.Incident&quot;d</span><span class="se">\n\x17\x43</span><span class="s1">reateAnnotationRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x39\n\n</span><span class="s1">annotation</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.cloud.irm.v1alpha2.Annotation&quot;O</span><span class="se">\n\x16</span><span class="s1">ListAnnotationsRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">page_size</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x12\n\n</span><span class="s1">page_token</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;n</span><span class="se">\n\x17</span><span class="s1">ListAnnotationsResponse</span><span class="se">\x12</span><span class="s1">:</span><span class="se">\n\x0b\x61</span><span class="s1">nnotations</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.cloud.irm.v1alpha2.Annotation</span><span class="se">\x12\x17\n\x0f</span><span class="s1">next_page_token</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;O</span><span class="se">\n\x10\x43</span><span class="s1">reateTagRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">+</span><span class="se">\n\x03</span><span class="s1">tag</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1e</span><span class="s1">.google.cloud.irm.v1alpha2.Tag&quot; </span><span class="se">\n\x10\x44\x65</span><span class="s1">leteTagRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;H</span><span class="se">\n\x0f</span><span class="s1">ListTagsRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">page_size</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x12\n\n</span><span class="s1">page_token</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;Y</span><span class="se">\n\x10</span><span class="s1">ListTagsResponse</span><span class="se">\x12</span><span class="s1">,</span><span class="se">\n\x04</span><span class="s1">tags</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1e</span><span class="s1">.google.cloud.irm.v1alpha2.Tag</span><span class="se">\x12\x17\n\x0f</span><span class="s1">next_page_token</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;X</span><span class="se">\n\x13\x43</span><span class="s1">reateSignalRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x31\n\x06</span><span class="s1">signal</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">!.google.cloud.irm.v1alpha2.Signal&quot;</span><span class="se">\\\n\x14</span><span class="s1">SearchSignalsRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">query</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">page_size</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x12\n\n</span><span class="s1">page_token</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;d</span><span class="se">\n\x15</span><span class="s1">SearchSignalsResponse</span><span class="se">\x12\x32\n\x07</span><span class="s1">signals</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">!.google.cloud.irm.v1alpha2.Signal</span><span class="se">\x12\x17\n\x0f</span><span class="s1">next_page_token</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot; </span><span class="se">\n\x10</span><span class="s1">GetSignalRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;d</span><span class="se">\n\x13</span><span class="s1">LookupSignalRequest</span><span class="se">\x12\x16\n\x0c\x63</span><span class="s1">scc_finding</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">H</span><span class="se">\x00\x12</span><span class="s1">%</span><span class="se">\n\x1b</span><span class="s1">stackdriver_notification_id</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">H</span><span class="se">\x00\x42\x0e\n\x0c\x61</span><span class="s1">lternate_id&quot;y</span><span class="se">\n\x13</span><span class="s1">UpdateSignalRequest</span><span class="se">\x12\x31\n\x06</span><span class="s1">signal</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">!.google.cloud.irm.v1alpha2.Signal</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x0b</span><span class="s1">update_mask</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.FieldMask&quot;q</span><span class="se">\n\x16</span><span class="s1">SearchIncidentsRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">query</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">page_size</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x12\n\n</span><span class="s1">page_token</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">time_zone</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;j</span><span class="se">\n\x17</span><span class="s1">SearchIncidentsResponse</span><span class="se">\x12\x36\n\t</span><span class="s1">incidents</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">#.google.cloud.irm.v1alpha2.Incident</span><span class="se">\x12\x17\n\x0f</span><span class="s1">next_page_token</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;</span><span class="se">\xe9\x02\n\x17\x45</span><span class="s1">scalateIncidentRequest</span><span class="se">\x12\x35\n\x08</span><span class="s1">incident</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">#.google.cloud.irm.v1alpha2.Incident</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x0b</span><span class="s1">update_mask</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.FieldMask</span><span class="se">\x12</span><span class="s1">&gt;</span><span class="se">\n\r</span><span class="s1">subscriptions</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\&#39;</span><span class="s1">.google.cloud.irm.v1alpha2.Subscription</span><span class="se">\x12</span><span class="s1">,</span><span class="se">\n\x04</span><span class="s1">tags</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1e</span><span class="s1">.google.cloud.irm.v1alpha2.Tag</span><span class="se">\x12</span><span class="s1">@</span><span class="se">\n\x05</span><span class="s1">roles</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x31</span><span class="s1">.google.cloud.irm.v1alpha2.IncidentRoleAssignment</span><span class="se">\x12\x36\n\t</span><span class="s1">artifacts</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">#.google.cloud.irm.v1alpha2.Artifact&quot;</span><span class="se">\xaf\x02\n\x18\x45</span><span class="s1">scalateIncidentResponse</span><span class="se">\x12\x35\n\x08</span><span class="s1">incident</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">#.google.cloud.irm.v1alpha2.Incident</span><span class="se">\x12</span><span class="s1">&gt;</span><span class="se">\n\r</span><span class="s1">subscriptions</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\&#39;</span><span class="s1">.google.cloud.irm.v1alpha2.Subscription</span><span class="se">\x12</span><span class="s1">,</span><span class="se">\n\x04</span><span class="s1">tags</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1e</span><span class="s1">.google.cloud.irm.v1alpha2.Tag</span><span class="se">\x12\x36\n\x05</span><span class="s1">roles</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\&#39;</span><span class="s1">.google.cloud.irm.v1alpha2.IncidentRole</span><span class="se">\x12\x36\n\t</span><span class="s1">artifacts</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">#.google.cloud.irm.v1alpha2.Artifact&quot;^</span><span class="se">\n\x15\x43</span><span class="s1">reateArtifactRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x35\n\x08\x61</span><span class="s1">rtifact</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">#.google.cloud.irm.v1alpha2.Artifact&quot;M</span><span class="se">\n\x14</span><span class="s1">ListArtifactsRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">page_size</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x12\n\n</span><span class="s1">page_token</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;h</span><span class="se">\n\x15</span><span class="s1">ListArtifactsResponse</span><span class="se">\x12\x36\n\t</span><span class="s1">artifacts</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">#.google.cloud.irm.v1alpha2.Artifact</span><span class="se">\x12\x17\n\x0f</span><span class="s1">next_page_token</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;</span><span class="se">\x7f\n\x15</span><span class="s1">UpdateArtifactRequest</span><span class="se">\x12\x35\n\x08\x61</span><span class="s1">rtifact</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">#.google.cloud.irm.v1alpha2.Artifact</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x0b</span><span class="s1">update_mask</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.FieldMask&quot;%</span><span class="se">\n\x15\x44\x65</span><span class="s1">leteArtifactRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;</span><span class="se">\x8d\x02\n\x17</span><span class="s1">SendShiftHandoffRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x12\n\n</span><span class="s1">recipients</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\t\x12\n\n\x02\x63\x63\x18\x03</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\t\x12\x0f\n\x07</span><span class="s1">subject</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x1a\n\x12</span><span class="s1">notes_content_type</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x15\n\r</span><span class="s1">notes_content</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">N</span><span class="se">\n\t</span><span class="s1">incidents</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">;.google.cloud.irm.v1alpha2.SendShiftHandoffRequest.Incident</span><span class="se">\x12\x14\n\x0c</span><span class="s1">preview_only</span><span class="se">\x18\x08</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x08\x1a\x18\n\x08</span><span class="s1">Incident</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;A</span><span class="se">\n\x18</span><span class="s1">SendShiftHandoffResponse</span><span class="se">\x12\x14\n\x0c\x63</span><span class="s1">ontent_type</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0f\n\x07\x63</span><span class="s1">ontent</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;j</span><span class="se">\n\x19\x43</span><span class="s1">reateSubscriptionRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">=</span><span class="se">\n\x0c</span><span class="s1">subscription</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\&#39;</span><span class="s1">.google.cloud.irm.v1alpha2.Subscription&quot;</span><span class="se">\x8b\x01\n\x19</span><span class="s1">UpdateSubscriptionRequest</span><span class="se">\x12</span><span class="s1">=</span><span class="se">\n\x0c</span><span class="s1">subscription</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\&#39;</span><span class="s1">.google.cloud.irm.v1alpha2.Subscription</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x0b</span><span class="s1">update_mask</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.FieldMask&quot;Q</span><span class="se">\n\x18</span><span class="s1">ListSubscriptionsRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">page_size</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x12\n\n</span><span class="s1">page_token</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;t</span><span class="se">\n\x19</span><span class="s1">ListSubscriptionsResponse</span><span class="se">\x12</span><span class="s1">&gt;</span><span class="se">\n\r</span><span class="s1">subscriptions</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\&#39;</span><span class="s1">.google.cloud.irm.v1alpha2.Subscription</span><span class="se">\x12\x17\n\x0f</span><span class="s1">next_page_token</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;)</span><span class="se">\n\x19\x44\x65</span><span class="s1">leteSubscriptionRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;</span><span class="se">\x8a\x01\n</span><span class="s1">#CreateIncidentRoleAssignmentRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">S</span><span class="se">\n\x18</span><span class="s1">incident_role_assignment</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x31</span><span class="s1">.google.cloud.irm.v1alpha2.IncidentRoleAssignment&quot;3</span><span class="se">\n</span><span class="s1">#DeleteIncidentRoleAssignmentRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;[</span><span class="se">\n</span><span class="s1">&quot;ListIncidentRoleAssignmentsRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">page_size</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x12\n\n</span><span class="s1">page_token</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;</span><span class="se">\x94\x01\n</span><span class="s1">#ListIncidentRoleAssignmentsResponse</span><span class="se">\x12</span><span class="s1">T</span><span class="se">\n\x19</span><span class="s1">incident_role_assignments</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x31</span><span class="s1">.google.cloud.irm.v1alpha2.IncidentRoleAssignment</span><span class="se">\x12\x17\n\x0f</span><span class="s1">next_page_token</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;i</span><span class="se">\n</span><span class="s1">&quot;RequestIncidentRoleHandoverRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x35\n\x0c</span><span class="s1">new_assignee</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1f</span><span class="s1">.google.cloud.irm.v1alpha2.User&quot;i</span><span class="se">\n</span><span class="s1">&quot;ConfirmIncidentRoleHandoverRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x35\n\x0c</span><span class="s1">new_assignee</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1f</span><span class="s1">.google.cloud.irm.v1alpha2.User&quot;g</span><span class="se">\n</span><span class="s1"> ForceIncidentRoleHandoverRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x35\n\x0c</span><span class="s1">new_assignee</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1f</span><span class="s1">.google.cloud.irm.v1alpha2.User&quot;h</span><span class="se">\n</span><span class="s1">!CancelIncidentRoleHandoverRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x35\n\x0c</span><span class="s1">new_assignee</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1f</span><span class="s1">.google.cloud.irm.v1alpha2.User2</span><span class="se">\xf7</span><span class="s1">.</span><span class="se">\n\x0f</span><span class="s1">IncidentService</span><span class="se">\x12\xa2\x01\n\x0e\x43</span><span class="s1">reateIncident</span><span class="se">\x12\x30</span><span class="s1">.google.cloud.irm.v1alpha2.CreateIncidentRequest</span><span class="se">\x1a</span><span class="s1">#.google.cloud.irm.v1alpha2.Incident&quot;9</span><span class="se">\x82\xd3\xe4\x93\x02\x33</span><span class="s1">&quot;</span><span class="se">\&#39;</span><span class="s1">/v1alpha2/{parent=projects/*}/incidents:</span><span class="se">\x08</span><span class="s1">incident</span><span class="se">\x12\x92\x01\n\x0b</span><span class="s1">GetIncident</span><span class="se">\x12</span><span class="s1">-.google.cloud.irm.v1alpha2.GetIncidentRequest</span><span class="se">\x1a</span><span class="s1">#.google.cloud.irm.v1alpha2.Incident&quot;/</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">)</span><span class="se">\x12\&#39;</span><span class="s1">/v1alpha2/{name=projects/*/incidents/*}</span><span class="se">\x12\xb0\x01\n\x0f</span><span class="s1">SearchIncidents</span><span class="se">\x12\x31</span><span class="s1">.google.cloud.irm.v1alpha2.SearchIncidentsRequest</span><span class="se">\x1a\x32</span><span class="s1">.google.cloud.irm.v1alpha2.SearchIncidentsResponse&quot;6</span><span class="se">\x82\xd3\xe4\x93\x02\x30\x12</span><span class="s1">./v1alpha2/{parent=projects/*}/incidents:search</span><span class="se">\x12\xab\x01\n\x0e</span><span class="s1">UpdateIncident</span><span class="se">\x12\x30</span><span class="s1">.google.cloud.irm.v1alpha2.UpdateIncidentRequest</span><span class="se">\x1a</span><span class="s1">#.google.cloud.irm.v1alpha2.Incident&quot;B</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">&lt;20/v1alpha2/{incident.name=projects/*/incidents/*}:</span><span class="se">\x08</span><span class="s1">incident</span><span class="se">\x12\x8c\x02\n\x16</span><span class="s1">SearchSimilarIncidents</span><span class="se">\x12\x38</span><span class="s1">.google.cloud.irm.v1alpha2.SearchSimilarIncidentsRequest</span><span class="se">\x1a\x39</span><span class="s1">.google.cloud.irm.v1alpha2.SearchSimilarIncidentsResponse&quot;}</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">w</span><span class="se">\x12\x35</span><span class="s1">/v1alpha2/{name=projects/*/incidents/*}:searchSimilarZ&gt;</span><span class="se">\x12</span><span class="s1">&lt;/v1alpha2/{name=projects/*/signals/*}:searchSimilarIncidents</span><span class="se">\x12\xb8\x01\n\x10\x43</span><span class="s1">reateAnnotation</span><span class="se">\x12\x32</span><span class="s1">.google.cloud.irm.v1alpha2.CreateAnnotationRequest</span><span class="se">\x1a</span><span class="s1">%.google.cloud.irm.v1alpha2.Annotation&quot;I</span><span class="se">\x82\xd3\xe4\x93\x02\x43</span><span class="s1">&quot;5/v1alpha2/{parent=projects/*/incidents/*}/annotations:</span><span class="se">\n</span><span class="s1">annotation</span><span class="se">\x12\xb7\x01\n\x0f</span><span class="s1">ListAnnotations</span><span class="se">\x12\x31</span><span class="s1">.google.cloud.irm.v1alpha2.ListAnnotationsRequest</span><span class="se">\x1a\x32</span><span class="s1">.google.cloud.irm.v1alpha2.ListAnnotationsResponse&quot;=</span><span class="se">\x82\xd3\xe4\x93\x02\x37\x12\x35</span><span class="s1">/v1alpha2/{parent=projects/*/incidents/*}/annotations</span><span class="se">\x12\x95\x01\n\t</span><span class="s1">CreateTag</span><span class="se">\x12</span><span class="s1">+.google.cloud.irm.v1alpha2.CreateTagRequest</span><span class="se">\x1a\x1e</span><span class="s1">.google.cloud.irm.v1alpha2.Tag&quot;;</span><span class="se">\x82\xd3\xe4\x93\x02\x35</span><span class="s1">&quot;./v1alpha2/{parent=projects/*/incidents/*}/tags:</span><span class="se">\x03</span><span class="s1">tag</span><span class="se">\x12\x88\x01\n\t</span><span class="s1">DeleteTag</span><span class="se">\x12</span><span class="s1">+.google.cloud.irm.v1alpha2.DeleteTagRequest</span><span class="se">\x1a\x16</span><span class="s1">.google.protobuf.Empty&quot;6</span><span class="se">\x82\xd3\xe4\x93\x02\x30</span><span class="s1">*./v1alpha2/{name=projects/*/incidents/*/tags/*}</span><span class="se">\x12\x9b\x01\n\x08</span><span class="s1">ListTags</span><span class="se">\x12</span><span class="s1">*.google.cloud.irm.v1alpha2.ListTagsRequest</span><span class="se">\x1a</span><span class="s1">+.google.cloud.irm.v1alpha2.ListTagsResponse&quot;6</span><span class="se">\x82\xd3\xe4\x93\x02\x30\x12</span><span class="s1">./v1alpha2/{parent=projects/*/incidents/*}/tags</span><span class="se">\x12\x98\x01\n\x0c\x43</span><span class="s1">reateSignal</span><span class="se">\x12</span><span class="s1">..google.cloud.irm.v1alpha2.CreateSignalRequest</span><span class="se">\x1a</span><span class="s1">!.google.cloud.irm.v1alpha2.Signal&quot;5</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">/&quot;%/v1alpha2/{parent=projects/*}/signals:</span><span class="se">\x06</span><span class="s1">signal</span><span class="se">\x12\xa8\x01\n\r</span><span class="s1">SearchSignals</span><span class="se">\x12</span><span class="s1">/.google.cloud.irm.v1alpha2.SearchSignalsRequest</span><span class="se">\x1a\x30</span><span class="s1">.google.cloud.irm.v1alpha2.SearchSignalsResponse&quot;4</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">.</span><span class="se">\x12</span><span class="s1">,/v1alpha2/{parent=projects/*}/signals:search</span><span class="se">\x12\x83\x01\n\x0c</span><span class="s1">LookupSignal</span><span class="se">\x12</span><span class="s1">..google.cloud.irm.v1alpha2.LookupSignalRequest</span><span class="se">\x1a</span><span class="s1">!.google.cloud.irm.v1alpha2.Signal&quot; </span><span class="se">\x82\xd3\xe4\x93\x02\x1a\x12\x18</span><span class="s1">/v1alpha2/signals:lookup</span><span class="se">\x12\x8a\x01\n\t</span><span class="s1">GetSignal</span><span class="se">\x12</span><span class="s1">+.google.cloud.irm.v1alpha2.GetSignalRequest</span><span class="se">\x1a</span><span class="s1">!.google.cloud.irm.v1alpha2.Signal&quot;-</span><span class="se">\x82\xd3\xe4\x93\x02\&#39;\x12</span><span class="s1">%/v1alpha2/{name=projects/*/signals/*}</span><span class="se">\x12\x9f\x01\n\x0c</span><span class="s1">UpdateSignal</span><span class="se">\x12</span><span class="s1">..google.cloud.irm.v1alpha2.UpdateSignalRequest</span><span class="se">\x1a</span><span class="s1">!.google.cloud.irm.v1alpha2.Signal&quot;&lt;</span><span class="se">\x82\xd3\xe4\x93\x02\x36\x32</span><span class="s1">,/v1alpha2/{signal.name=projects/*/signals/*}:</span><span class="se">\x06</span><span class="s1">signal</span><span class="se">\x12\xc1\x01\n\x10\x45</span><span class="s1">scalateIncident</span><span class="se">\x12\x32</span><span class="s1">.google.cloud.irm.v1alpha2.EscalateIncidentRequest</span><span class="se">\x1a\x33</span><span class="s1">.google.cloud.irm.v1alpha2.EscalateIncidentResponse&quot;D</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">&gt;&quot;9/v1alpha2/{incident.name=projects/*/incidents/*}:escalate:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xae\x01\n\x0e\x43</span><span class="s1">reateArtifact</span><span class="se">\x12\x30</span><span class="s1">.google.cloud.irm.v1alpha2.CreateArtifactRequest</span><span class="se">\x1a</span><span class="s1">#.google.cloud.irm.v1alpha2.Artifact&quot;E</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">?&quot;3/v1alpha2/{parent=projects/*/incidents/*}/artifacts:</span><span class="se">\x08\x61</span><span class="s1">rtifact</span><span class="se">\x12\xaf\x01\n\r</span><span class="s1">ListArtifacts</span><span class="se">\x12</span><span class="s1">/.google.cloud.irm.v1alpha2.ListArtifactsRequest</span><span class="se">\x1a\x30</span><span class="s1">.google.cloud.irm.v1alpha2.ListArtifactsResponse&quot;;</span><span class="se">\x82\xd3\xe4\x93\x02\x35\x12\x33</span><span class="s1">/v1alpha2/{parent=projects/*/incidents/*}/artifacts</span><span class="se">\x12\xb7\x01\n\x0e</span><span class="s1">UpdateArtifact</span><span class="se">\x12\x30</span><span class="s1">.google.cloud.irm.v1alpha2.UpdateArtifactRequest</span><span class="se">\x1a</span><span class="s1">#.google.cloud.irm.v1alpha2.Artifact&quot;N</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">H2&lt;/v1alpha2/{artifact.name=projects/*/incidents/*/artifacts/*}:</span><span class="se">\x08\x61</span><span class="s1">rtifact</span><span class="se">\x12\x97\x01\n\x0e\x44\x65</span><span class="s1">leteArtifact</span><span class="se">\x12\x30</span><span class="s1">.google.cloud.irm.v1alpha2.DeleteArtifactRequest</span><span class="se">\x1a\x16</span><span class="s1">.google.protobuf.Empty&quot;;</span><span class="se">\x82\xd3\xe4\x93\x02\x35</span><span class="s1">*3/v1alpha2/{name=projects/*/incidents/*/artifacts/*}</span><span class="se">\x12\xb7\x01\n\x10</span><span class="s1">SendShiftHandoff</span><span class="se">\x12\x32</span><span class="s1">.google.cloud.irm.v1alpha2.SendShiftHandoffRequest</span><span class="se">\x1a\x33</span><span class="s1">.google.cloud.irm.v1alpha2.SendShiftHandoffResponse&quot;:</span><span class="se">\x82\xd3\xe4\x93\x02\x34</span><span class="s1">&quot;//v1alpha2/{parent=projects/*}/shiftHandoff:send:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xc2\x01\n\x12\x43</span><span class="s1">reateSubscription</span><span class="se">\x12\x34</span><span class="s1">.google.cloud.irm.v1alpha2.CreateSubscriptionRequest</span><span class="se">\x1a\&#39;</span><span class="s1">.google.cloud.irm.v1alpha2.Subscription&quot;M</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">G&quot;7/v1alpha2/{parent=projects/*/incidents/*}/subscriptions:</span><span class="se">\x0c</span><span class="s1">subscription</span><span class="se">\x12\xcf\x01\n\x12</span><span class="s1">UpdateSubscription</span><span class="se">\x12\x34</span><span class="s1">.google.cloud.irm.v1alpha2.UpdateSubscriptionRequest</span><span class="se">\x1a\&#39;</span><span class="s1">.google.cloud.irm.v1alpha2.Subscription&quot;Z</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">T2D/v1alpha2/{subscription.name=projects/*/incidents/*/subscriptions/*}:</span><span class="se">\x0c</span><span class="s1">subscription</span><span class="se">\x12\xbf\x01\n\x11</span><span class="s1">ListSubscriptions</span><span class="se">\x12\x33</span><span class="s1">.google.cloud.irm.v1alpha2.ListSubscriptionsRequest</span><span class="se">\x1a\x34</span><span class="s1">.google.cloud.irm.v1alpha2.ListSubscriptionsResponse&quot;?</span><span class="se">\x82\xd3\xe4\x93\x02\x39\x12\x37</span><span class="s1">/v1alpha2/{parent=projects/*/incidents/*}/subscriptions</span><span class="se">\x12\xa3\x01\n\x12\x44\x65</span><span class="s1">leteSubscription</span><span class="se">\x12\x34</span><span class="s1">.google.cloud.irm.v1alpha2.DeleteSubscriptionRequest</span><span class="se">\x1a\x16</span><span class="s1">.google.protobuf.Empty&quot;?</span><span class="se">\x82\xd3\xe4\x93\x02\x39</span><span class="s1">*7/v1alpha2/{name=projects/*/incidents/*/subscriptions/*}</span><span class="se">\x12\xd7\x01\n\x1c\x43</span><span class="s1">reateIncidentRoleAssignment</span><span class="se">\x12</span><span class="s1">&gt;.google.cloud.irm.v1alpha2.CreateIncidentRoleAssignmentRequest</span><span class="se">\x1a\x31</span><span class="s1">.google.cloud.irm.v1alpha2.IncidentRoleAssignment&quot;D</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">&gt;&quot;9/v1alpha2/{parent=projects/*/incidents/*}/roleAssignments:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xb9\x01\n\x1c\x44\x65</span><span class="s1">leteIncidentRoleAssignment</span><span class="se">\x12</span><span class="s1">&gt;.google.cloud.irm.v1alpha2.DeleteIncidentRoleAssignmentRequest</span><span class="se">\x1a\x16</span><span class="s1">.google.protobuf.Empty&quot;A</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">;*9/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}</span><span class="se">\x12\xdf\x01\n\x1b</span><span class="s1">ListIncidentRoleAssignments</span><span class="se">\x12</span><span class="s1">=.google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsRequest</span><span class="se">\x1a</span><span class="s1">&gt;.google.cloud.irm.v1alpha2.ListIncidentRoleAssignmentsResponse&quot;A</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">;</span><span class="se">\x12\x39</span><span class="s1">/v1alpha2/{parent=projects/*/incidents/*}/roleAssignments</span><span class="se">\x12\xe5\x01\n\x1b</span><span class="s1">RequestIncidentRoleHandover</span><span class="se">\x12</span><span class="s1">=.google.cloud.irm.v1alpha2.RequestIncidentRoleHandoverRequest</span><span class="se">\x1a\x31</span><span class="s1">.google.cloud.irm.v1alpha2.IncidentRoleAssignment&quot;T</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">N&quot;I/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}:requestHandover:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xe5\x01\n\x1b\x43</span><span class="s1">onfirmIncidentRoleHandover</span><span class="se">\x12</span><span class="s1">=.google.cloud.irm.v1alpha2.ConfirmIncidentRoleHandoverRequest</span><span class="se">\x1a\x31</span><span class="s1">.google.cloud.irm.v1alpha2.IncidentRoleAssignment&quot;T</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">N&quot;I/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}:confirmHandover:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xdf\x01\n\x19\x46</span><span class="s1">orceIncidentRoleHandover</span><span class="se">\x12</span><span class="s1">;.google.cloud.irm.v1alpha2.ForceIncidentRoleHandoverRequest</span><span class="se">\x1a\x31</span><span class="s1">.google.cloud.irm.v1alpha2.IncidentRoleAssignment&quot;R</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">L&quot;G/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}:forceHandover:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xe2\x01\n\x1a\x43\x61</span><span class="s1">ncelIncidentRoleHandover</span><span class="se">\x12</span><span class="s1">&lt;.google.cloud.irm.v1alpha2.CancelIncidentRoleHandoverRequest</span><span class="se">\x1a\x31</span><span class="s1">.google.cloud.irm.v1alpha2.IncidentRoleAssignment&quot;S</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">M&quot;H/v1alpha2/{name=projects/*/incidents/*/roleAssignments/*}:cancelHandover:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x1a\x46\xca\x41\x12</span><span class="s1">irm.googleapis.com</span><span class="se">\xd2\x41</span><span class="s1">.https://www.googleapis.com/auth/cloud-platformBh</span><span class="se">\n</span><span class="s1">#com.google.irm.service.v1alpha2.apiP</span><span class="se">\x01</span><span class="s1">Z&lt;google.golang.org/genproto/googleapis/cloud/irm/v1alpha2;irm</span><span class="se">\xf8\x01\x01\x62\x06</span><span class="s1">proto3&#39;</span>
     <span class="p">),</span>
     <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span>
         <span class="n">google_dot_api_dot_annotations__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="n">google_dot_api_dot_client__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="n">google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="n">google_dot_protobuf_dot_empty__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="n">google_dot_protobuf_dot_field__mask__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
@@ -132,8 +134,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">261</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">355</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">286</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">380</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -171,8 +173,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">357</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">391</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">382</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">416</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -228,8 +230,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">393</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">520</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">418</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">545</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -303,8 +305,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">522</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">606</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">547</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">631</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -342,8 +344,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">751</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">814</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">776</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">839</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_SEARCHSIMILARINCIDENTSRESPONSE</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
@@ -398,8 +400,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">609</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">814</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">634</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">839</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -455,8 +457,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">816</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">916</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">841</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">941</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -530,8 +532,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">918</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">997</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">943</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1022</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -587,8 +589,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">999</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1109</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1134</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -644,8 +646,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1111</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1190</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1136</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1215</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -683,8 +685,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1192</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1224</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1217</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1249</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -758,8 +760,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1226</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1298</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1251</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1323</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -815,8 +817,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1300</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1389</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1325</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1414</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -872,8 +874,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1391</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1479</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1416</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1504</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -965,8 +967,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1481</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1573</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1506</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1598</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1022,8 +1024,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1575</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1675</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1600</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1700</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1061,8 +1063,73 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1677</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1709</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1702</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1734</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">_LOOKUPSIGNALREQUEST</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;LookupSignalRequest&quot;</span><span class="p">,</span>
+    <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.irm.v1alpha2.LookupSignalRequest&quot;</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+    <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;cscc_finding&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.irm.v1alpha2.LookupSignalRequest.cscc_finding&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">FieldDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;stackdriver_notification_id&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.irm.v1alpha2.LookupSignalRequest.stackdriver_notification_id&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">cpp_type</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">has_default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
+            <span class="n">message_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">enum_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_extension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">extension_scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">nested_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">enum_types</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">is_extendable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
+    <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">oneofs</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">OneofDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;alternate_id&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.irm.v1alpha2.LookupSignalRequest.alternate_id&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">fields</span><span class="o">=</span><span class="p">[],</span>
+        <span class="p">)</span>
+    <span class="p">],</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1736</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1836</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1118,8 +1185,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1711</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1832</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1838</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1959</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1229,8 +1296,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1834</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1947</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1961</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2074</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1286,8 +1353,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1949</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2055</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2076</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2182</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1415,8 +1482,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2058</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2419</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2185</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2546</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1526,8 +1593,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2422</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2725</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2549</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2852</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1583,8 +1650,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2727</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2821</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2854</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2948</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1658,8 +1725,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2823</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2900</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2950</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3027</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1715,8 +1782,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2902</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3006</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3029</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3133</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1772,8 +1839,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3008</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3135</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3135</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3262</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1811,8 +1878,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3137</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3174</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3264</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3301</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1850,8 +1917,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3422</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3446</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3549</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3573</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_SENDSHIFTHANDOFFREQUEST</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
@@ -2014,8 +2081,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3177</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3446</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3304</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3573</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -2071,8 +2138,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3448</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3513</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3575</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3640</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -2128,8 +2195,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3515</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3621</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3642</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3748</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -2185,8 +2252,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3624</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3763</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3751</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3890</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -2260,8 +2327,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3765</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3846</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3892</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3973</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -2317,8 +2384,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3848</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3964</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3975</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4091</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -2356,8 +2423,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3966</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4007</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4093</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4134</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -2413,8 +2480,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4010</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4148</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4137</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4275</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -2452,8 +2519,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4150</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4201</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4277</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4328</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -2527,8 +2594,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4203</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4294</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4330</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4421</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -2584,8 +2651,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4297</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4445</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4424</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4572</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -2641,8 +2708,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4447</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4552</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4574</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4679</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -2698,8 +2765,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4554</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4659</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4681</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4786</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -2755,8 +2822,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4661</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4764</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4788</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4891</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -2812,8 +2879,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4766</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4870</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4893</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">4997</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_CREATEINCIDENTREQUEST</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
@@ -2860,6 +2927,18 @@
 <span class="n">_SEARCHSIGNALSRESPONSE</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
     <span class="s2">&quot;signals&quot;</span>
 <span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2</span><span class="o">.</span><span class="n">_SIGNAL</span>
+<span class="n">_LOOKUPSIGNALREQUEST</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;alternate_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+    <span class="n">_LOOKUPSIGNALREQUEST</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;cscc_finding&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">_LOOKUPSIGNALREQUEST</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;cscc_finding&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_LOOKUPSIGNALREQUEST</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;alternate_id&quot;</span><span class="p">]</span>
+<span class="n">_LOOKUPSIGNALREQUEST</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;alternate_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+    <span class="n">_LOOKUPSIGNALREQUEST</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span><span class="s2">&quot;stackdriver_notification_id&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">_LOOKUPSIGNALREQUEST</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
+    <span class="s2">&quot;stackdriver_notification_id&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">containing_oneof</span> <span class="o">=</span> <span class="n">_LOOKUPSIGNALREQUEST</span><span class="o">.</span><span class="n">oneofs_by_name</span><span class="p">[</span><span class="s2">&quot;alternate_id&quot;</span><span class="p">]</span>
 <span class="n">_UPDATESIGNALREQUEST</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
     <span class="s2">&quot;signal&quot;</span>
 <span class="p">]</span><span class="o">.</span><span class="n">message_type</span> <span class="o">=</span> <span class="n">google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2</span><span class="o">.</span><span class="n">_SIGNAL</span>
@@ -3002,6 +3081,7 @@
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;SearchSignalsRequest&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_SEARCHSIGNALSREQUEST</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;SearchSignalsResponse&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_SEARCHSIGNALSRESPONSE</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;GetSignalRequest&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_GETSIGNALREQUEST</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;LookupSignalRequest&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_LOOKUPSIGNALREQUEST</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;UpdateSignalRequest&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_UPDATESIGNALREQUEST</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;SearchIncidentsRequest&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_SEARCHINCIDENTSREQUEST</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s2">&quot;SearchIncidentsResponse&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_SEARCHINCIDENTSRESPONSE</span>
@@ -3360,7 +3440,52 @@
 <span class="s2">          The resource name of the hosting Stackdriver project which</span>
 <span class="s2">          requested incidents belong to.</span>
 <span class="s2">      query:</span>
-<span class="s2">          Query to specify which signals should be returned.</span>
+<span class="s2">          An expression that defines which signals to return.  Search</span>
+<span class="s2">          atoms can be used to match certain specific fields. Otherwise,</span>
+<span class="s2">          plain text will match text fields in the signal.  Search</span>
+<span class="s2">          atoms:  -  ``start`` - (timestamp) The time the signal was</span>
+<span class="s2">          created. -  ``title`` - The title of the signal. -</span>
+<span class="s2">          ``signal_state`` - ``open`` or ``closed``. State of the</span>
+<span class="s2">          signal.    (e.g., ``signal_state:open``)  Timestamp formats:</span>
+<span class="s2">          -  yyyy-MM-dd - an absolute date, treated as a calendar-day-</span>
+<span class="s2">          wide window.    In other words, the &quot;&lt;&quot; operator will match</span>
+<span class="s2">          dates before that date,    the &quot;&gt;&quot; operator will match dates</span>
+<span class="s2">          after that date, and the &quot;:&quot;    operator will match the entire</span>
+<span class="s2">          day. -  yyyy-MM-ddTHH:mm - Same as above, but with minute</span>
+<span class="s2">          resolution. -  yyyy-MM-ddTHH:mm:ss - Same as above, but with</span>
+<span class="s2">          second resolution. -  Nd (e.g. 7d) - a relative number of days</span>
+<span class="s2">          ago, treated as a moment in    time (as opposed to a day-wide</span>
+<span class="s2">          span) a multiple of 24 hours ago (as    opposed to calendar</span>
+<span class="s2">          days). In the case of daylight savings time, it    will apply</span>
+<span class="s2">          the current timezone to both ends of the range. Note that</span>
+<span class="s2">          exact matching (e.g. ``start:7d``) is unlikely to be useful</span>
+<span class="s2">          because    that would only match signals created precisely at</span>
+<span class="s2">          a particular    instant in time.  The absolute timestamp</span>
+<span class="s2">          formats (everything starting with a year) can optionally be</span>
+<span class="s2">          followed with a UTC offset in +/-hh:mm format. Also, the &#39;T&#39;</span>
+<span class="s2">          separating dates and times can optionally be replaced with a</span>
+<span class="s2">          space. Note that any timestamp containing a space or colon</span>
+<span class="s2">          will need to be quoted.  Examples:  -  ``foo`` - matches</span>
+<span class="s2">          signals containing the word &quot;foo&quot; -  ``&quot;foo bar&quot;`` - matches</span>
+<span class="s2">          signals containing the phrase &quot;foo bar&quot; -  ``foo bar`` or</span>
+<span class="s2">          ``foo AND bar`` - matches signals containing the words</span>
+<span class="s2">          &quot;foo&quot; and &quot;bar&quot; -  ``foo -bar`` or ``foo AND NOT bar`` -</span>
+<span class="s2">          matches signals containing the    word &quot;foo&quot; but not the word</span>
+<span class="s2">          &quot;bar&quot; -  ``foo OR bar`` - matches signals containing the word</span>
+<span class="s2">          &quot;foo&quot; or the    word &quot;bar&quot; -  ``start&gt;2018-11-28`` - matches</span>
+<span class="s2">          signals which started after November    11, 2018. -</span>
+<span class="s2">          ``start&lt;=2018-11-28`` - matches signals which started on or</span>
+<span class="s2">          before    November 11, 2018. -  ``start:2018-11-28`` - matches</span>
+<span class="s2">          signals which started on November 11,  2018.   -</span>
+<span class="s2">          ``start&gt;&quot;2018-11-28 01:02:03+04:00&quot;`` - matches signals which</span>
+<span class="s2">          started    after November 11, 2018 at 1:02:03 AM according to</span>
+<span class="s2">          the UTC+04 time    zone. -  ``start&gt;7d`` - matches signals</span>
+<span class="s2">          which started after the point in time    7*24 hours ago -</span>
+<span class="s2">          ``start&gt;180d`` - similar to 7d, but likely to cross the</span>
+<span class="s2">          daylight    savings time boundary, so the end time will be 1</span>
+<span class="s2">          hour different from    &quot;now.&quot; -  ``foo AND start&gt;90d AND</span>
+<span class="s2">          stage&lt;resolved`` - unresolved signals from    the past 90 days</span>
+<span class="s2">          containing the word &quot;foo&quot;</span>
 <span class="s2">      page_size:</span>
 <span class="s2">          Maximum number of ``signals`` to return in the response.</span>
 <span class="s2">      page_token:</span>
@@ -3412,6 +3537,29 @@
     <span class="p">),</span>
 <span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">GetSignalRequest</span><span class="p">)</span>
+
+<span class="n">LookupSignalRequest</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
+    <span class="s2">&quot;LookupSignalRequest&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span>
+    <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_LOOKUPSIGNALREQUEST</span><span class="p">,</span>
+        <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.irm_v1alpha2.proto.incidents_service_pb2&quot;</span><span class="p">,</span>
+        <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Request for the LookupSignal method.</span>
+<span class="s2">  </span>
+<span class="s2">  </span>
+<span class="s2">  Attributes:</span>
+<span class="s2">      alternate_id:</span>
+<span class="s2">          Required. The ID to use for lookup.</span>
+<span class="s2">      cscc_finding:</span>
+<span class="s2">          Full resource name of the CSCC finding id this signal refers</span>
+<span class="s2">          to (e.g. &quot;organizations/abc/sources/123/findings/xyz&quot;)</span>
+<span class="s2">      stackdriver_notification_id:</span>
+<span class="s2">          The ID from the Stackdriver Alerting notification.</span>
+<span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.irm.v1alpha2.LookupSignalRequest)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterMessage</span><span class="p">(</span><span class="n">LookupSignalRequest</span><span class="p">)</span>
 
 <span class="n">UpdateSignalRequest</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span>
     <span class="s2">&quot;UpdateSignalRequest&quot;</span><span class="p">,</span>
@@ -4044,9 +4192,11 @@
     <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.irm.v1alpha2.IncidentService&quot;</span><span class="p">,</span>
     <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
     <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">4873</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">10674</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span>
+        <span class="s2">&quot;</span><span class="se">\312</span><span class="s2">A</span><span class="se">\022</span><span class="s2">irm.googleapis.com</span><span class="se">\322</span><span class="s2">A.https://www.googleapis.com/auth/cloud-platform&quot;</span>
+    <span class="p">),</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">11007</span><span class="p">,</span>
     <span class="n">methods</span><span class="o">=</span><span class="p">[</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;CreateIncident&quot;</span><span class="p">,</span>
@@ -4181,9 +4331,20 @@
             <span class="p">),</span>
         <span class="p">),</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;LookupSignal&quot;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.irm.v1alpha2.IncidentService.LookupSignal&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+            <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">input_type</span><span class="o">=</span><span class="n">_LOOKUPSIGNALREQUEST</span><span class="p">,</span>
+            <span class="n">output_type</span><span class="o">=</span><span class="n">google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2</span><span class="o">.</span><span class="n">_SIGNAL</span><span class="p">,</span>
+            <span class="n">serialized_options</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span>
+                <span class="s2">&quot;</span><span class="se">\202\323\344\223\002\032\022\030</span><span class="s2">/v1alpha2/signals:lookup&quot;</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;GetSignal&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.irm.v1alpha2.IncidentService.GetSignal&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span>
             <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">input_type</span><span class="o">=</span><span class="n">_GETSIGNALREQUEST</span><span class="p">,</span>
             <span class="n">output_type</span><span class="o">=</span><span class="n">google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2</span><span class="o">.</span><span class="n">_SIGNAL</span><span class="p">,</span>
@@ -4194,7 +4355,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;UpdateSignal&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.irm.v1alpha2.IncidentService.UpdateSignal&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
             <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">input_type</span><span class="o">=</span><span class="n">_UPDATESIGNALREQUEST</span><span class="p">,</span>
             <span class="n">output_type</span><span class="o">=</span><span class="n">google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2</span><span class="o">.</span><span class="n">_SIGNAL</span><span class="p">,</span>
@@ -4205,7 +4366,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;EscalateIncident&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.irm.v1alpha2.IncidentService.EscalateIncident&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
             <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">input_type</span><span class="o">=</span><span class="n">_ESCALATEINCIDENTREQUEST</span><span class="p">,</span>
             <span class="n">output_type</span><span class="o">=</span><span class="n">_ESCALATEINCIDENTRESPONSE</span><span class="p">,</span>
@@ -4216,7 +4377,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;CreateArtifact&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.irm.v1alpha2.IncidentService.CreateArtifact&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
             <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">input_type</span><span class="o">=</span><span class="n">_CREATEARTIFACTREQUEST</span><span class="p">,</span>
             <span class="n">output_type</span><span class="o">=</span><span class="n">google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2</span><span class="o">.</span><span class="n">_ARTIFACT</span><span class="p">,</span>
@@ -4227,7 +4388,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ListArtifacts&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.irm.v1alpha2.IncidentService.ListArtifacts&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">17</span><span class="p">,</span>
             <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">input_type</span><span class="o">=</span><span class="n">_LISTARTIFACTSREQUEST</span><span class="p">,</span>
             <span class="n">output_type</span><span class="o">=</span><span class="n">_LISTARTIFACTSRESPONSE</span><span class="p">,</span>
@@ -4238,7 +4399,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;UpdateArtifact&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.irm.v1alpha2.IncidentService.UpdateArtifact&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">17</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span>
             <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">input_type</span><span class="o">=</span><span class="n">_UPDATEARTIFACTREQUEST</span><span class="p">,</span>
             <span class="n">output_type</span><span class="o">=</span><span class="n">google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2</span><span class="o">.</span><span class="n">_ARTIFACT</span><span class="p">,</span>
@@ -4249,7 +4410,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;DeleteArtifact&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.irm.v1alpha2.IncidentService.DeleteArtifact&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">19</span><span class="p">,</span>
             <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">input_type</span><span class="o">=</span><span class="n">_DELETEARTIFACTREQUEST</span><span class="p">,</span>
             <span class="n">output_type</span><span class="o">=</span><span class="n">google_dot_protobuf_dot_empty__pb2</span><span class="o">.</span><span class="n">_EMPTY</span><span class="p">,</span>
@@ -4260,7 +4421,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;SendShiftHandoff&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.irm.v1alpha2.IncidentService.SendShiftHandoff&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">19</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
             <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">input_type</span><span class="o">=</span><span class="n">_SENDSHIFTHANDOFFREQUEST</span><span class="p">,</span>
             <span class="n">output_type</span><span class="o">=</span><span class="n">_SENDSHIFTHANDOFFRESPONSE</span><span class="p">,</span>
@@ -4271,7 +4432,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;CreateSubscription&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.irm.v1alpha2.IncidentService.CreateSubscription&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">21</span><span class="p">,</span>
             <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">input_type</span><span class="o">=</span><span class="n">_CREATESUBSCRIPTIONREQUEST</span><span class="p">,</span>
             <span class="n">output_type</span><span class="o">=</span><span class="n">google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2</span><span class="o">.</span><span class="n">_SUBSCRIPTION</span><span class="p">,</span>
@@ -4282,7 +4443,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;UpdateSubscription&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.irm.v1alpha2.IncidentService.UpdateSubscription&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">21</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span>
             <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">input_type</span><span class="o">=</span><span class="n">_UPDATESUBSCRIPTIONREQUEST</span><span class="p">,</span>
             <span class="n">output_type</span><span class="o">=</span><span class="n">google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2</span><span class="o">.</span><span class="n">_SUBSCRIPTION</span><span class="p">,</span>
@@ -4293,7 +4454,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ListSubscriptions&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.irm.v1alpha2.IncidentService.ListSubscriptions&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">23</span><span class="p">,</span>
             <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">input_type</span><span class="o">=</span><span class="n">_LISTSUBSCRIPTIONSREQUEST</span><span class="p">,</span>
             <span class="n">output_type</span><span class="o">=</span><span class="n">_LISTSUBSCRIPTIONSRESPONSE</span><span class="p">,</span>
@@ -4304,7 +4465,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;DeleteSubscription&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.irm.v1alpha2.IncidentService.DeleteSubscription&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">23</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
             <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">input_type</span><span class="o">=</span><span class="n">_DELETESUBSCRIPTIONREQUEST</span><span class="p">,</span>
             <span class="n">output_type</span><span class="o">=</span><span class="n">google_dot_protobuf_dot_empty__pb2</span><span class="o">.</span><span class="n">_EMPTY</span><span class="p">,</span>
@@ -4315,7 +4476,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;CreateIncidentRoleAssignment&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.irm.v1alpha2.IncidentService.CreateIncidentRoleAssignment&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
             <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">input_type</span><span class="o">=</span><span class="n">_CREATEINCIDENTROLEASSIGNMENTREQUEST</span><span class="p">,</span>
             <span class="n">output_type</span><span class="o">=</span><span class="n">google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2</span><span class="o">.</span><span class="n">_INCIDENTROLEASSIGNMENT</span><span class="p">,</span>
@@ -4326,7 +4487,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;DeleteIncidentRoleAssignment&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.irm.v1alpha2.IncidentService.DeleteIncidentRoleAssignment&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">26</span><span class="p">,</span>
             <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">input_type</span><span class="o">=</span><span class="n">_DELETEINCIDENTROLEASSIGNMENTREQUEST</span><span class="p">,</span>
             <span class="n">output_type</span><span class="o">=</span><span class="n">google_dot_protobuf_dot_empty__pb2</span><span class="o">.</span><span class="n">_EMPTY</span><span class="p">,</span>
@@ -4337,7 +4498,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ListIncidentRoleAssignments&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.irm.v1alpha2.IncidentService.ListIncidentRoleAssignments&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">26</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">27</span><span class="p">,</span>
             <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">input_type</span><span class="o">=</span><span class="n">_LISTINCIDENTROLEASSIGNMENTSREQUEST</span><span class="p">,</span>
             <span class="n">output_type</span><span class="o">=</span><span class="n">_LISTINCIDENTROLEASSIGNMENTSRESPONSE</span><span class="p">,</span>
@@ -4348,7 +4509,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;RequestIncidentRoleHandover&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.irm.v1alpha2.IncidentService.RequestIncidentRoleHandover&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">27</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">28</span><span class="p">,</span>
             <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">input_type</span><span class="o">=</span><span class="n">_REQUESTINCIDENTROLEHANDOVERREQUEST</span><span class="p">,</span>
             <span class="n">output_type</span><span class="o">=</span><span class="n">google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2</span><span class="o">.</span><span class="n">_INCIDENTROLEASSIGNMENT</span><span class="p">,</span>
@@ -4359,7 +4520,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ConfirmIncidentRoleHandover&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.irm.v1alpha2.IncidentService.ConfirmIncidentRoleHandover&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">28</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">29</span><span class="p">,</span>
             <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">input_type</span><span class="o">=</span><span class="n">_CONFIRMINCIDENTROLEHANDOVERREQUEST</span><span class="p">,</span>
             <span class="n">output_type</span><span class="o">=</span><span class="n">google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2</span><span class="o">.</span><span class="n">_INCIDENTROLEASSIGNMENT</span><span class="p">,</span>
@@ -4370,7 +4531,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ForceIncidentRoleHandover&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.irm.v1alpha2.IncidentService.ForceIncidentRoleHandover&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">29</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
             <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">input_type</span><span class="o">=</span><span class="n">_FORCEINCIDENTROLEHANDOVERREQUEST</span><span class="p">,</span>
             <span class="n">output_type</span><span class="o">=</span><span class="n">google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2</span><span class="o">.</span><span class="n">_INCIDENTROLEASSIGNMENT</span><span class="p">,</span>
@@ -4381,7 +4542,7 @@
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;CancelIncidentRoleHandover&quot;</span><span class="p">,</span>
             <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.irm.v1alpha2.IncidentService.CancelIncidentRoleHandover&quot;</span><span class="p">,</span>
-            <span class="n">index</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="mi">31</span><span class="p">,</span>
             <span class="n">containing_service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">input_type</span><span class="o">=</span><span class="n">_CANCELINCIDENTROLEHANDOVERREQUEST</span><span class="p">,</span>
             <span class="n">output_type</span><span class="o">=</span><span class="n">google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2</span><span class="o">.</span><span class="n">_INCIDENTROLEASSIGNMENT</span><span class="p">,</span>
