@@ -2017,7 +2017,7 @@ class StreamingFile(FileIO):
 
         The function checks whether the part that the user is trying to read has already
         been downloaded. If not, it calculates the missing part
-        then downloads and redirects it to super().read().
+        then downloads it and redirects to super().read().
 
         Args:
             size (int): (Optional) Size of the block to be read.
