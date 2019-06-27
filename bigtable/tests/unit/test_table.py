@@ -627,6 +627,33 @@ class TestTable(unittest.TestCase):
 
         self.assertEqual(result, expected_result)
 
+    def test_read_row_custom_retry(self):
+        from google.api_core import retry
+        from google.api_core.retry import if_exception_type
+        from google.cloud.bigtable import row_data
+        from google.cloud.bigtable.table import _BigtableRetryableError
+
+        credentials = _make_credentials()
+        client = self._make_client(project="project-id", credentials=credentials)
+        instance = client.instance(instance_id=self.INSTANCE_ID)
+        table = self._make_one(self.TABLE_ID, instance)
+        table.read_rows = mock.Mock(return_value=[])
+
+        custom_retry = retry.Retry(
+            predicate=if_exception_type(_BigtableRetryableError),
+            initial=1.0,
+            maximum=15.0,
+            multiplier=2.0,
+            deadline=120.0,  # 2 minutes
+        )
+        table.read_row(self.ROW_KEY, retry=custom_retry)
+        args, kwargs = table.read_rows.call_args
+        self.assertEqual(kwargs["retry"], custom_retry)
+
+        table.read_row(self.ROW_KEY)
+        args, kwargs = table.read_rows.call_args
+        self.assertEqual(kwargs["retry"], row_data.DEFAULT_RETRY_READ_ROWS)
+
     def test_read_rows(self):
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable.row_data import PartialRowsData
