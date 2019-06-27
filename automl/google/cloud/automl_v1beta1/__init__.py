@@ -18,6 +18,7 @@
 from __future__ import absolute_import
 
 from google.cloud.automl_v1beta1 import types
+from google.cloud.automl_v1beta1.helper import tables
 from google.cloud.automl_v1beta1.gapic import auto_ml_client
 from google.cloud.automl_v1beta1.gapic import enums
 from google.cloud.automl_v1beta1.gapic import prediction_service_client
