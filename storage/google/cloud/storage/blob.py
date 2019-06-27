@@ -1985,11 +1985,11 @@ class Blob(_PropertyMixin):
 class StreamingFile(FileIO):
     """File-like object, that provides streaming data.
 
-    When read() called, it checks if requested part of
-    file already downloaded. If not, it downloads chunk,
-    that enough to sutisfy read() call, and then reads itself.
+    When read() is called, it checks if the requested part of the
+    file has already been downloaded. If not, it downloads chunk
+    large enough to satisfy the read() call and then reads itself.
 
-    filename (str): Name of file, to which data will be downloaded.
+    filename (str): The name of the file to which data will be downloaded.
 
     download_url (str): The URL where the media can be accessed.
 
@@ -1999,7 +1999,7 @@ class StreamingFile(FileIO):
         The transport (with credentials) that will
         make authenticated requests.
 
-    chunk_size (int): Size of chunk to be downloaded.
+    chunk_size (int): The size of chunks to be downloaded.
     """
     def __init__(self, filename, download_url, headers, transport, chunk_size):
         super(StreamingFile, self).__init__(filename, 'wb+')
@@ -2013,17 +2013,17 @@ class StreamingFile(FileIO):
         )
 
     def read(self, size=None):
-        """Overriding read() method to organize streaming.
+        """Overriding the base class read() method to organize streaming.
 
-        Checks, if part that user trying to read is already
-        downloaded. If not, calculates missing part,
-        then downloads it, and redirects to super().read().
+        The function checks whether the part that the user is trying to read has already
+        been downloaded. If not, it calculates the missing part
+        then downloads and redirects it to super().read().
 
         Args:
-            size (int): (Optional) Size of block, that should be read.
+            size (int): (Optional) Size of the block to be read.
 
         Returns:
-            Bytes read from file.
+            Bytes read from the file.
         """
         if not self._download.finished:
             cursor_place = self.tell()
