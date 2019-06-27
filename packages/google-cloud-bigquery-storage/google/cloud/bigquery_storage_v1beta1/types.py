@@ -20,6 +20,7 @@ import sys
 
 from google.api_core.protobuf_helpers import get_messages
 
+from google.cloud.bigquery_storage_v1beta1.proto import arrow_pb2
 from google.cloud.bigquery_storage_v1beta1.proto import avro_pb2
 from google.cloud.bigquery_storage_v1beta1.proto import read_options_pb2
 from google.cloud.bigquery_storage_v1beta1.proto import storage_pb2
@@ -30,7 +31,13 @@ from google.protobuf import timestamp_pb2
 
 _shared_modules = [empty_pb2, timestamp_pb2]
 
-_local_modules = [avro_pb2, read_options_pb2, storage_pb2, table_reference_pb2]
+_local_modules = [
+    arrow_pb2,
+    avro_pb2,
+    read_options_pb2,
+    storage_pb2,
+    table_reference_pb2,
+]
 
 names = []
 
