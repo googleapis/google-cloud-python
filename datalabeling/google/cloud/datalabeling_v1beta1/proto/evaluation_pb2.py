@@ -1006,7 +1006,8 @@ EvaluationConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_EVALUATIONCONFIG,
         __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_pb2",
-        __doc__="""Attributes:
+        __doc__="""
+    Attributes:
       vertical_option:
           Vertical specific options for general metrics.
   """,
@@ -1040,7 +1041,8 @@ EvaluationMetrics = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_EVALUATIONMETRICS,
         __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_pb2",
-        __doc__="""Attributes:
+        __doc__="""
+    Attributes:
       metrics:
           Common metrics covering most genernal cases.
   """,
@@ -1055,7 +1057,8 @@ ClassificationMetrics = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_CLASSIFICATIONMETRICS,
         __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_pb2",
-        __doc__="""Attributes:
+        __doc__="""
+    Attributes:
       pr_curve:
           Precision-recall curve.
   """,
@@ -1070,7 +1073,8 @@ ObjectDetectionMetrics = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_OBJECTDETECTIONMETRICS,
         __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_pb2",
-        __doc__="""Attributes:
+        __doc__="""
+    Attributes:
       pr_curve:
           Precision-recall curve.
   """,
@@ -1089,7 +1093,8 @@ PrCurve = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_PRCURVE_CONFIDENCEMETRICSENTRY,
                 __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_pb2",
-                __doc__="""Attributes:
+                __doc__="""
+    Attributes:
         confidence_threshold:
             Threshold used for this entry, for example, IoU threshold for
             bounding box problem, or detection threshold for
@@ -1125,7 +1130,8 @@ PrCurve = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_PRCURVE,
         __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_pb2",
-        __doc__="""Attributes:
+        __doc__="""
+    Attributes:
       annotation_spec:
           PR curve against which annotation spec. Could be empty.
       area_under_curve:
@@ -1151,7 +1157,8 @@ ConfusionMatrix = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_CONFUSIONMATRIX_CONFUSIONMATRIXENTRY,
                 __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_pb2",
-                __doc__="""Attributes:
+                __doc__="""
+    Attributes:
         annotation_spec:
             The predicted annotation spec.
         item_count:

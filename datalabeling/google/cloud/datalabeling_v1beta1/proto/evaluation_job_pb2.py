@@ -900,7 +900,8 @@ EvaluationJobConfig = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_EVALUATIONJOBCONFIG,
         __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_job_pb2",
-        __doc__="""Attributes:
+        __doc__="""
+    Attributes:
       human_annotation_request_config:
           config specific to different supported human annotation use
           cases.
@@ -939,7 +940,8 @@ EvaluationJobAlertConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_EVALUATIONJOBALERTCONFIG,
         __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_job_pb2",
-        __doc__="""Attributes:
+        __doc__="""
+    Attributes:
       email:
           Required. Email of the user who will be receiving the alert.
       min_acceptable_mean_average_precision:
