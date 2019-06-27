@@ -4,6 +4,32 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## 1.1.0
+
+06-27-2019 12:32 PDT
+
+### Implementation Changes
+- Allow kwargs to be passed to create_channel (via synth). ([#8395](https://github.com/googleapis/google-cloud-python/pull/8395))
+- Add empty lines (via synth). ([#8062](https://github.com/googleapis/google-cloud-python/pull/8062))
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+
+### New Features
+- Add ability to create keys via import, add crypto algorithms (via synth).  ([#8356](https://github.com/googleapis/google-cloud-python/pull/8356))
+- Retry idempotent codes for Encyrpt, Decrypt, Asymmetric Decrypt, Asymmetric Sign (via synth). ([#7715](https://github.com/googleapis/google-cloud-python/pull/7715))
+- Add CAVIUM_V2_COMPRESSED option to KeyOperationAttestation (via synth). ([#7396](https://github.com/googleapis/google-cloud-python/pull/7396))
+
+### Documentation
+- Update docstrings. ([#7868](https://github.com/googleapis/google-cloud-python/pull/7868))
+- Update information in READMEs to indicate KMS is GA. ([#7840](https://github.com/googleapis/google-cloud-python/pull/7840))
+
+### Internal / Testing Changes
+- Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+- Add disclaimer to auto-generated template files (via synth). ([#8318](https://github.com/googleapis/google-cloud-python/pull/8318))
+- Suppress checking 'cov-fail-under' in nox default session (via synth).  ([#8245](https://github.com/googleapis/google-cloud-python/pull/8245))
+- Fix coverage in 'types.py'; blacken 'noxfile.py' / 'setup.py' (via synth). ([#8157](https://github.com/googleapis/google-cloud-python/pull/8157))
+- Add nox session `docs`, reorder methods (via synth). ([#7775](https://github.com/googleapis/google-cloud-python/pull/7775))
+- Copy lintified proto files (via synth). ([#7449](https://github.com/googleapis/google-cloud-python/pull/7449))
+
 ## 1.0.0
 
 02-13-2019 10:53 PST
