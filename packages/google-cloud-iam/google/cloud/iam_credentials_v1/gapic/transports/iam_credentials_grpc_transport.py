@@ -154,17 +154,3 @@ class IamCredentialsGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["iam_credentials_stub"].SignJwt
-
-    @property
-    def generate_identity_binding_access_token(self):
-        """Return the gRPC stub for :meth:`IAMCredentialsClient.generate_identity_binding_access_token`.
-
-        Exchange a JWT signed by third party identity provider to an OAuth 2.0
-        access token
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["iam_credentials_stub"].GenerateIdentityBindingAccessToken
