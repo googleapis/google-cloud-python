@@ -26,10 +26,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.automl.v1beta1",
     syntax="proto3",
     serialized_options=_b(
-        "\n\037com.google.cloud.automl.v1beta1B\nVideoProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1"
+        "\n\037com.google.cloud.automl.v1beta1B\nVideoProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1\352\002\036Google::Cloud::AutoML::V1beta1"
     ),
     serialized_pb=_b(
-        '\n-google/cloud/automl_v1beta1/proto/video.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x36google/cloud/automl_v1beta1/proto/classification.proto\x1a\x1cgoogle/api/annotations.proto"$\n"VideoClassificationDatasetMetadata"$\n"VideoObjectTrackingDatasetMetadata""\n VideoClassificationModelMetadata""\n VideoObjectTrackingModelMetadataB\x90\x01\n\x1f\x63om.google.cloud.automl.v1beta1B\nVideoProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1b\x06proto3'
+        '\n-google/cloud/automl_v1beta1/proto/video.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x36google/cloud/automl_v1beta1/proto/classification.proto\x1a\x1cgoogle/api/annotations.proto"$\n"VideoClassificationDatasetMetadata"$\n"VideoObjectTrackingDatasetMetadata""\n VideoClassificationModelMetadata""\n VideoObjectTrackingModelMetadataB\xb1\x01\n\x1f\x63om.google.cloud.automl.v1beta1B\nVideoProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1\xea\x02\x1eGoogle::Cloud::AutoML::V1beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_classification__pb2.DESCRIPTOR,
