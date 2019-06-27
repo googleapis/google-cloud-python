@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for IAM Service Account Credentials API Client &#8212; google-cloud dd52140 documentation</title>
+    <title>Types for IAM Service Account Credentials API Client &#8212; google-cloud 65e0512 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -231,112 +231,6 @@ this token grants access to.</p>
 <dt>
 <code class="descname">token</code></dt>
 <dd><p>Field google.iam.credentials.v1.GenerateIdTokenResponse.token</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.iam_credentials_v1.types.GenerateIdentityBindingAccessTokenRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.iam_credentials_v1.types.</code><code class="descname">GenerateIdentityBindingAccessTokenRequest</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateIdentityBindingAccessTokenRequest" title="Permalink to this definition">#</a></dt>
-<dd><dl class="attribute">
-<dt id="google.cloud.iam_credentials_v1.types.GenerateIdentityBindingAccessTokenRequest.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateIdentityBindingAccessTokenRequest.name" title="Permalink to this definition">#</a></dt>
-<dd><p>The resource name of the service account for which the
-credentials are requested, in the following format:
-<code class="docutils literal notranslate"><span class="pre">projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}</span></code>.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.iam_credentials_v1.types.GenerateIdentityBindingAccessTokenRequest.scope">
-<code class="descname">scope</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateIdentityBindingAccessTokenRequest.scope" title="Permalink to this definition">#</a></dt>
-<dd><p>Code to identify the scopes to be included in the OAuth 2.0
-access token. See
-<a class="reference external" href="https://developers.google.com/identity/protocols/googlescopes">https://developers.google.com/identity/protocols/googlescopes</a>
-for more information. At least one value required.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.iam_credentials_v1.types.GenerateIdentityBindingAccessTokenRequest.jwt">
-<code class="descname">jwt</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateIdentityBindingAccessTokenRequest.jwt" title="Permalink to this definition">#</a></dt>
-<dd><p>Required. Input token. Must be in JWT format according to
-RFC7523 (<a class="reference external" href="https://tools.ietf.org/html/rfc7523">https://tools.ietf.org/html/rfc7523</a>) and must have
-‘kid’ field in the header. Supported signing algorithms: RS256
-(RS512, ES256, ES512 coming soon). Mandatory payload fields
-(along the lines of RFC 7523, section 3): - iss: issuer of the
-token. Must provide a discovery document at $iss/.well-
-known/openid-configuration . The document needs to be
-formatted according to section 4.2 of the OpenID Connect
-Discovery 1.0 specification. - iat: Issue time in seconds
-since epoch. Must be in the past. - exp: Expiration time in
-seconds since epoch. Must be less than 48 hours after iat. We
-recommend to create tokens that last shorter than 6 hours to
-improve security unless business reasons mandate longer
-expiration times. Shorter token lifetimes are generally more
-secure since tokens that have been exfiltrated by attackers
-can be used for a shorter time. you can configure the maximum
-lifetime of the incoming token in the configuration of the
-mapper. The resulting Google token will expire within an hour
-or at “exp”, whichever is earlier. - sub: JWT subject,
-identity asserted in the JWT. - aud: Configured in the mapper
-policy. By default the service account email.  Claims from the
-incoming token can be transferred into the output token
-accoding to the mapper configuration. The outgoing claim size
-is limited. Outgoing claims size must be less than 4kB
-serialized as JSON without whitespace.  Example header: {
-“alg”: “RS256”, “kid”:
-“92a4265e14ab04d4d228a48d10d4ca31610936f8” } Example payload:
-{ “iss”: “<a class="reference external" href="https://accounts.google.com">https://accounts.google.com</a>”, “iat”: 1517963104,
-“exp”: 1517966704, “aud”:
-“<a class="reference external" href="https://iamcredentials.googleapis.com/">https://iamcredentials.googleapis.com/</a>”, “sub”:
-“113475438248934895348”, “my_claims”: { “additional_claim”:
-“value” } }</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">jwt</code></dt>
-<dd><p>Field google.iam.credentials.v1.GenerateIdentityBindingAccessTokenRequest.jwt</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">name</code></dt>
-<dd><p>Field google.iam.credentials.v1.GenerateIdentityBindingAccessTokenRequest.name</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">scope</code></dt>
-<dd><p>Field google.iam.credentials.v1.GenerateIdentityBindingAccessTokenRequest.scope</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.iam_credentials_v1.types.GenerateIdentityBindingAccessTokenResponse">
-<em class="property">class </em><code class="descclassname">google.cloud.iam_credentials_v1.types.</code><code class="descname">GenerateIdentityBindingAccessTokenResponse</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateIdentityBindingAccessTokenResponse" title="Permalink to this definition">#</a></dt>
-<dd><dl class="attribute">
-<dt id="google.cloud.iam_credentials_v1.types.GenerateIdentityBindingAccessTokenResponse.access_token">
-<code class="descname">access_token</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateIdentityBindingAccessTokenResponse.access_token" title="Permalink to this definition">#</a></dt>
-<dd><p>The OAuth 2.0 access token.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.iam_credentials_v1.types.GenerateIdentityBindingAccessTokenResponse.expire_time">
-<code class="descname">expire_time</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateIdentityBindingAccessTokenResponse.expire_time" title="Permalink to this definition">#</a></dt>
-<dd><p>Token expiration time. The expiration time is always set.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">access_token</code></dt>
-<dd><p>Field google.iam.credentials.v1.GenerateIdentityBindingAccessTokenResponse.access_token</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">expire_time</code></dt>
-<dd><p>Field google.iam.credentials.v1.GenerateIdentityBindingAccessTokenResponse.expire_time</p>
 </dd></dl>
 
 </dd></dl>
