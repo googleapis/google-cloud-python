@@ -1,4 +1,4 @@
-.. include:: /../dns/README.rst
+.. include:: README.rst
 
 Using the Library
 -----------------
@@ -10,7 +10,7 @@ Client
 configure your DNS applications.  Each instance holds both a ``project``
 and an authenticated connection to the DNS service.
 
-For an overview of authentication in ``google-cloud-python``, see :doc:`/core/auth`.
+For an overview of authentication in ``google-cloud-python``, see `Authentication <https://googleapis.dev/python/google-api-core/latest/auth.html#authentication>`_..
 
 Assuming your environment is set up as described in that document,
 create an instance of :class:`Client <google.cloud.dns.client.Client>`.
