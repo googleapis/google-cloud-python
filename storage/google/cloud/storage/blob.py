@@ -101,6 +101,8 @@ _READ_LESS_THAN_SIZE = (
 _DEFAULT_CHUNKSIZE = 104857600  # 1024 * 1024 B * 100 = 100 MB
 _MAX_MULTIPART_SIZE = 8388608  # 8 MB
 
+_EOF = (0, 2)  # end-of-file pointer for file.seek()
+
 
 class Blob(_PropertyMixin):
     """A wrapper around Cloud Storage's concept of an ``Object``.
@@ -586,15 +588,42 @@ class Blob(_PropertyMixin):
             while not download.finished:
                 download.consume_next_chunk(transport)
 
-    def download_to_file_object(self, filename, client=None, start=None, end=None):
+    def get_streaming_file(self, filename, client=None, start=None, end=None):
+        """Return streaming file connected to :class:`~google.resumable_media.requests.ChunkedDownload` of this blob.
+
+        Args:
+            filename (str): A filename to be passed to ``open``.
+
+            client (Union[ \
+                :class:`~google.cloud.storage.client.Client`, \
+                ``NoneType``, \
+            ]):
+                (Optional) The client to use. If not passed, falls back
+                to the ``client`` stored on the blob's bucket.
+
+            start (int):
+                (Optional) The first byte in a range to be downloaded.
+
+            end (int):
+                (Optional) The last byte in a range to be downloaded.
+
+        Returns
+            File-like object, that can be partially downloaded/processed.
+        """
         download_url = self._get_download_url()
         headers = _get_encryption_headers(self._encryption_key)
         headers["accept-encoding"] = "gzip"
         transport = self._get_transport(client)
 
-        stream_file = StreamingFile(filename)
-        stream_file.start_download(download_url, headers, transport, self.chunk_size, start, end, client)
-        return stream_file
+        return StreamingFile(
+            filename=filename,
+            download_url=download_url,
+            headers=headers,
+            transport=transport,
+            chunk_size=self.chunk_size,
+            start=start,
+            end=end
+        )
 
     def download_to_file(self, file_obj, client=None, start=None, end=None):
         """Download the contents of this blob into a file-like object.
@@ -1962,36 +1991,86 @@ class Blob(_PropertyMixin):
 
 
 class StreamingFile(FileIO):
-    def __init__(self, name):
-        super(StreamingFile, self).__init__(name, 'wb+')
-        self._download = None
-        self._transport = None
+    """File-like object, that provides streaming data.
 
-    def start_download(self, download_url, headers, transport, chunk_size, start, end, client):
-        print('\nstarting\n')
+    When read() called, it checks if requested part of
+    file already downloaded. If not, it downloads chunk,
+    that enough to sutisfy request and then reades itself.
+
+    filename (str): Name of file, to which data will be downloaded.
+
+    download_url (str): The URL where the media can be accessed.
+
+    headers (dict): (Optional) headers to be sent with the request(s).
+
+    transport (:class:`~google.auth.transport.requests.AuthorizedSession`):
+        The transport (with credentials) that will
+        make authenticated requests.
+
+    chunk_size (int): Size of chunk to be downloaded.
+
+    start (int): (Optional) The first byte in a range to be downloaded.
+
+    end (int): (Optional) The last byte in a range to be downloaded.
+    """
+    def __init__(self, filename, download_url, headers, transport, chunk_size, start=None, end=None):
+        super(StreamingFile, self).__init__(filename, 'wb+')
+
+        self._transport = transport
         self._download = ChunkedDownload(
             download_url,
             chunk_size,
             self,
             headers=headers,
-            start=start if start else 0,
-            end=end,
+            start=start or 0,
+            end=end
         )
-        self._transport = transport
 
-    def read(self, size=-1):
-        if size != -1:
-            self._download.chunk_size = size
+    def read(self, size=None):
+        """Overriding read() method to organize streaming.
+
+        Checks, if part that user trying to read is already
+        downloaded, and if not, calculates missing part,
+        then downloads it, and redirects to super().read().
+
+        Args:
+            size (int): (Optional) Size of block, that should be read.
+
+        Returns:
+            Bytes read from file.
+        """
+        if not self._download.finished:
+            cursor_place = self.tell()
+
+            if size is None:  # download whole file
+                self.seek(*_EOF)
+                while not self._download.finished:
+                    self._download_chunk()
+            else:  # download requested part if needed
+                can_be_read = os.fstat(self.fileno()).st_size - cursor_place
+                to_download = size - can_be_read
+
+                if to_download > 0:
+                    chunk_size = self._download.chunk_size
+                    self._download.chunk_size = to_download
+                    self.seek(*_EOF)
+                    self._download_chunk()
+                    self._download.chunk_size = chunk_size
+
+            self.seek(cursor_place, 0)
+
+        return super(StreamingFile, self).read(size)
+
+    def _download_chunk(self):
+        """Helper for downloading one chunk.
+
+        :raises: :class:`google.cloud.exceptions.NotFound`
+        """
         try:
-            readed = self._download.consume_next_chunk(self._transport).content
-            print('\nreaded: ', readed)
-            # self.flush()
+            self._download.consume_next_chunk(
+                self._transport).content
         except resumable_media.InvalidResponse as exc:
             _raise_from_invalid_response(exc)
-        self.seek(0, 0)
-        readed = super(StreamingFile, self).read()
-        print('laaa: ', readed)
-        return readed
 
 
 def _get_encryption_headers(key, source=False):
