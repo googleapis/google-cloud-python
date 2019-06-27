@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for BigQuery Storage API &#8212; google-cloud 83f0262 documentation</title>
+    <title>Client for BigQuery Storage API &#8212; google-cloud 3d32438 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -139,7 +139,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.create_read_session">
-<code class="descname">create_read_session</code><span class="sig-paren">(</span><em>table_reference</em>, <em>parent</em>, <em>table_modifiers=None</em>, <em>requested_streams=None</em>, <em>read_options=None</em>, <em>format_=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/gapic/big_query_storage_client.html#BigQueryStorageClient.create_read_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.create_read_session" title="Permalink to this definition">#</a></dt>
+<code class="descname">create_read_session</code><span class="sig-paren">(</span><em>table_reference</em>, <em>parent</em>, <em>table_modifiers=None</em>, <em>requested_streams=None</em>, <em>read_options=None</em>, <em>format_=None</em>, <em>sharding_strategy=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/gapic/big_query_storage_client.html#BigQueryStorageClient.create_read_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.create_read_session" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a new read session. A read session divides the contents of a
 BigQuery table into one or more streams, which can then be used to read
 data from the table. The read session also specifies properties of the
@@ -192,6 +192,8 @@ the maximum amount of parallelism allowed by the system.</p>
 message <a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.TableReadOptions" title="google.cloud.bigquery_storage_v1beta1.types.TableReadOptions"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReadOptions</span></code></a></p>
 </li>
 <li><strong>format</strong> (<em>DataFormat</em>) – Data output format. Currently default to Avro.</li>
+<li><strong>sharding_strategy</strong> (<em>ShardingStrategy</em>) – The strategy to use for distributing data among multiple streams. Currently
+defaults to liquid sharding.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -418,7 +420,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.split_read_stream">
-<code class="descname">split_read_stream</code><span class="sig-paren">(</span><em>original_stream</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/gapic/big_query_storage_client.html#BigQueryStorageClient.split_read_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.split_read_stream" title="Permalink to this definition">#</a></dt>
+<code class="descname">split_read_stream</code><span class="sig-paren">(</span><em>original_stream</em>, <em>fraction=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/gapic/big_query_storage_client.html#BigQueryStorageClient.split_read_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.split_read_stream" title="Permalink to this definition">#</a></dt>
 <dd><p>Splits a given read stream into two Streams. These streams are referred
 to as the primary and the residual of the split. The original stream can
 still be read from in the same manner as before. Both of the returned
@@ -450,6 +452,13 @@ completion.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.Stream" title="google.cloud.bigquery_storage_v1beta1.types.Stream"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stream</span></code></a></p>
 </li>
+<li><strong>fraction</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – A value in the range (0.0, 1.0) that specifies the fractional point at
+which the original stream should be split. The actual split point is
+evaluated on pre-filtered rows, so if a filter is provided, then there is
+no guarantee that the division of the rows between the new child streams
+will be proportional to this fractional value. Additionally, because the
+server-side unit for assigning data is collections of rows, this fraction
+will always map to to a data storage boundary on the server side.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>

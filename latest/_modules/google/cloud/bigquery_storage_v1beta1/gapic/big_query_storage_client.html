@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery_storage_v1beta1.gapic.big_query_storage_client &#8212; google-cloud 83f0262 documentation</title>
+    <title>google.cloud.bigquery_storage_v1beta1.gapic.big_query_storage_client &#8212; google-cloud 3d32438 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -222,6 +222,7 @@
         <span class="n">requested_streams</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">read_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">format_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">sharding_strategy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
         <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
         <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -277,6 +278,8 @@
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.bigquery_storage_v1beta1.types.TableReadOptions`</span>
 <span class="sd">            format_ (~google.cloud.bigquery_storage_v1beta1.types.DataFormat): Data output format. Currently default to Avro.</span>
+<span class="sd">            sharding_strategy (~google.cloud.bigquery_storage_v1beta1.types.ShardingStrategy): The strategy to use for distributing data among multiple streams. Currently</span>
+<span class="sd">                defaults to liquid sharding.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -314,6 +317,7 @@
             <span class="n">requested_streams</span><span class="o">=</span><span class="n">requested_streams</span><span class="p">,</span>
             <span class="n">read_options</span><span class="o">=</span><span class="n">read_options</span><span class="p">,</span>
             <span class="nb">format</span><span class="o">=</span><span class="n">format_</span><span class="p">,</span>
+            <span class="n">sharding_strategy</span><span class="o">=</span><span class="n">sharding_strategy</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
@@ -595,6 +599,7 @@
 <div class="viewcode-block" id="BigQueryStorageClient.split_read_stream"><a class="viewcode-back" href="../../../../../bigquery_storage/gapic/v1beta1/api.html#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.split_read_stream">[docs]</a>    <span class="k">def</span> <span class="nf">split_read_stream</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">original_stream</span><span class="p">,</span>
+        <span class="n">fraction</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
         <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
         <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -629,6 +634,13 @@
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.bigquery_storage_v1beta1.types.Stream`</span>
+<span class="sd">            fraction (float): A value in the range (0.0, 1.0) that specifies the fractional point at</span>
+<span class="sd">                which the original stream should be split. The actual split point is</span>
+<span class="sd">                evaluated on pre-filtered rows, so if a filter is provided, then there is</span>
+<span class="sd">                no guarantee that the division of the rows between the new child streams</span>
+<span class="sd">                will be proportional to this fractional value. Additionally, because the</span>
+<span class="sd">                server-side unit for assigning data is collections of rows, this fraction</span>
+<span class="sd">                will always map to to a data storage boundary on the server side.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -659,7 +671,9 @@
                 <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
             <span class="p">)</span>
 
-        <span class="n">request</span> <span class="o">=</span> <span class="n">storage_pb2</span><span class="o">.</span><span class="n">SplitReadStreamRequest</span><span class="p">(</span><span class="n">original_stream</span><span class="o">=</span><span class="n">original_stream</span><span class="p">)</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">storage_pb2</span><span class="o">.</span><span class="n">SplitReadStreamRequest</span><span class="p">(</span>
+            <span class="n">original_stream</span><span class="o">=</span><span class="n">original_stream</span><span class="p">,</span> <span class="n">fraction</span><span class="o">=</span><span class="n">fraction</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
