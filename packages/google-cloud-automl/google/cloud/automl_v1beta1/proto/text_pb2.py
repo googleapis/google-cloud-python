@@ -26,10 +26,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.automl.v1beta1",
     syntax="proto3",
     serialized_options=_b(
-        "\n\037com.google.cloud.automl.v1beta1B\tTextProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1"
+        "\n\037com.google.cloud.automl.v1beta1B\tTextProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1\352\002\036Google::Cloud::AutoML::V1beta1"
     ),
     serialized_pb=_b(
-        '\n,google/cloud/automl_v1beta1/proto/text.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x36google/cloud/automl_v1beta1/proto/classification.proto\x1a\x1cgoogle/api/annotations.proto"q\n!TextClassificationDatasetMetadata\x12L\n\x13\x63lassification_type\x18\x01 \x01(\x0e\x32/.google.cloud.automl.v1beta1.ClassificationType"!\n\x1fTextClassificationModelMetadata"\x1f\n\x1dTextExtractionDatasetMetadata"\x1d\n\x1bTextExtractionModelMetadata"5\n\x1cTextSentimentDatasetMetadata\x12\x15\n\rsentiment_max\x18\x01 \x01(\x05"\x1c\n\x1aTextSentimentModelMetadataB\x8f\x01\n\x1f\x63om.google.cloud.automl.v1beta1B\tTextProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1b\x06proto3'
+        '\n,google/cloud/automl_v1beta1/proto/text.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x36google/cloud/automl_v1beta1/proto/classification.proto\x1a\x1cgoogle/api/annotations.proto"q\n!TextClassificationDatasetMetadata\x12L\n\x13\x63lassification_type\x18\x01 \x01(\x0e\x32/.google.cloud.automl.v1beta1.ClassificationType"!\n\x1fTextClassificationModelMetadata"\x1f\n\x1dTextExtractionDatasetMetadata"\x1d\n\x1bTextExtractionModelMetadata"5\n\x1cTextSentimentDatasetMetadata\x12\x15\n\rsentiment_max\x18\x01 \x01(\x05"\x1c\n\x1aTextSentimentModelMetadataB\xb0\x01\n\x1f\x63om.google.cloud.automl.v1beta1B\tTextProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1\xea\x02\x1eGoogle::Cloud::AutoML::V1beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_classification__pb2.DESCRIPTOR,
