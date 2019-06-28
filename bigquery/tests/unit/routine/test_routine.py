@@ -274,6 +274,25 @@ def test_build_resource(object_under_test, resource, filter_fields, expected):
     assert actual_routine == expected
 
 
+def test_set_imported_libraries(object_under_test):
+    imported_libraries = ["gs://cloud-samples-data/bigquery/udfs/max-value.js"]
+    object_under_test.imported_libraries = imported_libraries
+    assert object_under_test.imported_libraries == imported_libraries
+    assert object_under_test._properties["importedLibraries"] == imported_libraries
+
+
+def test_set_imported_libraries_w_none(object_under_test):
+    object_under_test.imported_libraries = None
+    assert object_under_test.imported_libraries == []
+    assert object_under_test._properties["importedLibraries"] == []
+
+
+def test_set_return_type_w_none(object_under_test):
+    object_under_test.return_type = None
+    assert object_under_test.return_type is None
+    assert object_under_test._properties["returnType"] is None
+
+
 def test_repr(target_class):
     model = target_class("my-proj.my_dset.my_routine")
     actual_routine = repr(model)

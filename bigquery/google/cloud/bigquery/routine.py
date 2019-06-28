@@ -221,7 +221,7 @@ class Routine(object):
         else:
             resource = value
 
-        self._properties[self._PROPERTY_TO_API_FIELD["return_type"]] = resource
+        self._properties[self._PROPERTY_TO_API_FIELD["imported_libraries"]] = resource
 
     @property
     def body(self):
