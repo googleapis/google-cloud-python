@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.client &#8212; google-cloud dc4834c documentation</title>
+    <title>google.cloud.storage.client &#8212; google-cloud c737b74 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -189,6 +189,26 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_batch_stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
 
+    <span class="k">def</span> <span class="nf">_bucket_arg_to_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_or_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Helper to return given bucket or create new by name.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            bucket_or_name (Union[ \</span>
+<span class="sd">                :class:`~google.cloud.storage.bucket.Bucket`, \</span>
+<span class="sd">                 str, \</span>
+<span class="sd">            ]):</span>
+<span class="sd">                The bucket resource to pass or name to create.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            google.cloud.storage.bucket.Bucket</span>
+<span class="sd">                The newly created bucket or the given one.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bucket_or_name</span><span class="p">,</span> <span class="n">Bucket</span><span class="p">):</span>
+            <span class="n">bucket</span> <span class="o">=</span> <span class="n">bucket_or_name</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">bucket</span> <span class="o">=</span> <span class="n">Bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">bucket_or_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">bucket</span>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">current_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Currently-active batch.</span>
@@ -288,12 +308,7 @@
 <span class="sd">            &gt;&gt;&gt; bucket = client.get_bucket(bucket)  # API request.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">bucket</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bucket_or_name</span><span class="p">,</span> <span class="n">Bucket</span><span class="p">):</span>
-            <span class="n">bucket</span> <span class="o">=</span> <span class="n">bucket_or_name</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">bucket</span> <span class="o">=</span> <span class="n">Bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">bucket_or_name</span><span class="p">)</span>
+        <span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bucket_arg_to_bucket</span><span class="p">(</span><span class="n">bucket_or_name</span><span class="p">)</span>
 
         <span class="n">bucket</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">bucket</span></div>
@@ -335,7 +350,7 @@
 <span class="sd">                Optional. Whether requester pays for API requests for this</span>
 <span class="sd">                bucket and its blobs.</span>
 <span class="sd">            project (str):</span>
-<span class="sd">                Optional. the project under which the  bucket is to be created.</span>
+<span class="sd">                Optional. the project under which the bucket is to be created.</span>
 <span class="sd">                If not passed, uses the project set on the client.</span>
 
 <span class="sd">        Returns:</span>
@@ -367,12 +382,7 @@
 <span class="sd">            &gt;&gt;&gt; bucket = client.create_bucket(bucket)  # API request.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">bucket</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bucket_or_name</span><span class="p">,</span> <span class="n">Bucket</span><span class="p">):</span>
-            <span class="n">bucket</span> <span class="o">=</span> <span class="n">bucket_or_name</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">bucket</span> <span class="o">=</span> <span class="n">Bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">bucket_or_name</span><span class="p">)</span>
+        <span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bucket_arg_to_bucket</span><span class="p">(</span><span class="n">bucket_or_name</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">requester_pays</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">bucket</span><span class="o">.</span><span class="n">requester_pays</span> <span class="o">=</span> <span class="n">requester_pays</span>
@@ -429,6 +439,80 @@
             <span class="n">blob_or_uri</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="n">path</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">bucket</span><span class="p">)</span>
 
             <span class="n">blob_or_uri</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Client.list_blobs"><a class="viewcode-back" href="../../../../storage/client.html#google.cloud.storage.client.Client.list_blobs">[docs]</a>    <span class="k">def</span> <span class="nf">list_blobs</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">bucket_or_name</span><span class="p">,</span>
+        <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">delimiter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">versions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;noAcl&quot;</span><span class="p">,</span>
+        <span class="n">fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return an iterator used to find blobs in the bucket.</span>
+
+<span class="sd">        If :attr:`user_project` is set, bills the API request to that project.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            bucket_or_name (Union[ \</span>
+<span class="sd">                :class:`~google.cloud.storage.bucket.Bucket`, \</span>
+<span class="sd">                 str, \</span>
+<span class="sd">            ]):</span>
+<span class="sd">                The bucket resource to pass or name to create.</span>
+
+<span class="sd">            max_results (int):</span>
+<span class="sd">                (Optional) The maximum number of blobs in each page of results</span>
+<span class="sd">                from this request. Non-positive values are ignored. Defaults to</span>
+<span class="sd">                a sensible value set by the API.</span>
+
+<span class="sd">            page_token (str):</span>
+<span class="sd">                (Optional) If present, return the next batch of blobs, using the</span>
+<span class="sd">                value, which must correspond to the ``nextPageToken`` value</span>
+<span class="sd">                returned in the previous response.  Deprecated: use the ``pages``</span>
+<span class="sd">                property of the returned iterator instead of manually passing the</span>
+<span class="sd">                token.</span>
+
+<span class="sd">            prefix (str):</span>
+<span class="sd">                (Optional) prefix used to filter blobs.</span>
+
+<span class="sd">            delimiter (str):</span>
+<span class="sd">                (Optional) Delimiter, used with ``prefix`` to</span>
+<span class="sd">                emulate hierarchy.</span>
+
+<span class="sd">            versions (bool):</span>
+<span class="sd">                (Optional) Whether object versions should be returned</span>
+<span class="sd">                as separate blobs.</span>
+
+<span class="sd">            projection (str):</span>
+<span class="sd">                (Optional) If used, must be &#39;full&#39; or &#39;noAcl&#39;.</span>
+<span class="sd">                Defaults to ``&#39;noAcl&#39;``. Specifies the set of</span>
+<span class="sd">                properties to return.</span>
+
+<span class="sd">            fields (str):</span>
+<span class="sd">                (Optional) Selector specifying which fields to include</span>
+<span class="sd">                in a partial response. Must be a list of fields. For</span>
+<span class="sd">                example to get a partial response with just the next</span>
+<span class="sd">                page token and the name and language of each blob returned:</span>
+<span class="sd">                ``&#39;items(name,contentLanguage),nextPageToken&#39;``.</span>
+<span class="sd">                See: https://cloud.google.com/storage/docs/json_api/v1/parameters#fields</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Iterator of all :class:`~google.cloud.storage.blob.Blob`</span>
+<span class="sd">            in this bucket matching the arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bucket_arg_to_bucket</span><span class="p">(</span><span class="n">bucket_or_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">bucket</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">(</span>
+            <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
+            <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
+            <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span>
+            <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">,</span>
+            <span class="n">versions</span><span class="o">=</span><span class="n">versions</span><span class="p">,</span>
+            <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span>
+            <span class="n">fields</span><span class="o">=</span><span class="n">fields</span><span class="p">,</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Client.list_buckets"><a class="viewcode-back" href="../../../../storage/client.html#google.cloud.storage.client.Client.list_buckets">[docs]</a>    <span class="k">def</span> <span class="nf">list_buckets</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>

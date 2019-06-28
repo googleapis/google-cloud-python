@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Buckets &#8212; google-cloud dc4834c documentation</title>
+    <title>Buckets &#8212; google-cloud c737b74 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -879,6 +879,10 @@ the dict via the setter.  E.g.:</p>
 <dt id="google.cloud.storage.bucket.Bucket.list_blobs">
 <code class="descname">list_blobs</code><span class="sig-paren">(</span><em>max_results=None</em>, <em>page_token=None</em>, <em>prefix=None</em>, <em>delimiter=None</em>, <em>versions=None</em>, <em>projection='noAcl'</em>, <em>fields=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/bucket.html#Bucket.list_blobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.list_blobs" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an iterator used to find blobs in the bucket.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Direct use of this method is deprecated. Use <code class="docutils literal notranslate"><span class="pre">Client.list_blobs</span></code> instead.</p>
+</div>
 <p>If <a class="reference internal" href="#google.cloud.storage.bucket.Bucket.user_project" title="google.cloud.storage.bucket.Bucket.user_project"><code class="xref py py-attr docutils literal notranslate"><span class="pre">user_project</span></code></a> is set, bills the API request to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
