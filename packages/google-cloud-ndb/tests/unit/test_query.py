@@ -17,6 +17,9 @@ import unittest.mock
 
 import pytest
 
+from google.cloud.datastore import entity as datastore_entity
+from google.cloud.datastore import helpers
+
 from google.cloud.ndb import _datastore_api
 from google.cloud.ndb import _datastore_query
 from google.cloud.ndb import exceptions
@@ -165,6 +168,54 @@ class TestRepeatedStructuredPropertyPredicate:
         )
 
         assert predicate(model._entity_to_protobuf(entity)) is False
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test___call__legacy():
+        class SubKind(model.Model):
+            bar = model.IntegerProperty()
+            baz = model.StringProperty()
+
+        class SomeKind(model.Model):
+            foo = model.StructuredProperty(SubKind, repeated=True)
+
+        match_entity = SubKind(bar=1, baz="scoggs")
+        predicate = query_module.RepeatedStructuredPropertyPredicate(
+            "foo", ["bar", "baz"], model._entity_to_protobuf(match_entity)
+        )
+
+        ds_key = key_module.Key("SomeKind", None)._key
+        ds_entity = datastore_entity.Entity(ds_key)
+        ds_entity.update(
+            {
+                "something.else": "whocares",
+                "foo.bar": [2, 1],
+                "foo.baz": ["matic", "scoggs"],
+            }
+        )
+
+        assert predicate(helpers.entity_to_protobuf(ds_entity)) is True
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test___call__no_subentities():
+        class SubKind(model.Model):
+            bar = model.IntegerProperty()
+            baz = model.StringProperty()
+
+        class SomeKind(model.Model):
+            foo = model.StructuredProperty(SubKind, repeated=True)
+
+        match_entity = SubKind(bar=1, baz="scoggs")
+        predicate = query_module.RepeatedStructuredPropertyPredicate(
+            "foo", ["bar", "baz"], model._entity_to_protobuf(match_entity)
+        )
+
+        ds_key = key_module.Key("SomeKind", None)._key
+        ds_entity = datastore_entity.Entity(ds_key)
+        ds_entity.update({"something.else": "whocares"})
+
+        assert predicate(helpers.entity_to_protobuf(ds_entity)) is False
 
 
 class TestParameterizedThing:

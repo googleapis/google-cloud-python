@@ -242,12 +242,41 @@ class RepeatedStructuredPropertyPredicate:
         self.match_values = [entity_pb.properties[key] for key in match_keys]
 
     def __call__(self, entity_pb):
-        subentities = entity_pb.properties.get(self.name).array_value.values
-        for subentity in subentities:
-            properties = subentity.entity_value.properties
-            values = [properties.get(key) for key in self.match_keys]
-            if values == self.match_values:
-                return True
+        prop_pb = entity_pb.properties.get(self.name)
+        if prop_pb:
+            subentities = prop_pb.array_value.values
+            for subentity in subentities:
+                properties = subentity.entity_value.properties
+                values = [properties.get(key) for key in self.match_keys]
+                if values == self.match_values:
+                    return True
+
+        else:
+            # Backwards compatibility. Legacy NDB, rather than using
+            # Datastore's ability to embed subentities natively, used dotted
+            # property names.
+            prefix = self.name + "."
+            subentities = ()
+            for prop_name, prop_pb in entity_pb.properties.items():
+                if not prop_name.startswith(prefix):
+                    continue
+
+                subprop_name = prop_name.split(".", 1)[1]
+                if not subentities:
+                    subentities = [
+                        {subprop_name: value}
+                        for value in prop_pb.array_value.values
+                    ]
+                else:
+                    for subentity, value in zip(
+                        subentities, prop_pb.array_value.values
+                    ):
+                        subentity[subprop_name] = value
+
+            for subentity in subentities:
+                values = [subentity.get(key) for key in self.match_keys]
+                if values == self.match_values:
+                    return True
 
         return False
 

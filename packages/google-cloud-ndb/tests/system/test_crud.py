@@ -418,6 +418,59 @@ def test_insert_entity_with_structured_property(dispose_of):
 
 
 @pytest.mark.usefixtures("client_context")
+def test_retrieve_entity_with_legacy_structured_property(ds_entity):
+    class OtherKind(ndb.Model):
+        one = ndb.StringProperty()
+        two = ndb.StringProperty()
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StructuredProperty(OtherKind)
+
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(
+        KIND, entity_id, **{"foo": 42, "bar.one": "hi", "bar.two": "mom"}
+    )
+
+    key = ndb.Key(KIND, entity_id)
+    retrieved = key.get()
+    assert retrieved.foo == 42
+    assert retrieved.bar.one == "hi"
+    assert retrieved.bar.two == "mom"
+
+    assert isinstance(retrieved.bar, OtherKind)
+
+
+@pytest.mark.usefixtures("client_context")
+def test_retrieve_entity_with_legacy_repeated_structured_property(ds_entity):
+    class OtherKind(ndb.Model):
+        one = ndb.StringProperty()
+        two = ndb.StringProperty()
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StructuredProperty(OtherKind, repeated=True)
+
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(
+        KIND,
+        entity_id,
+        **{"foo": 42, "bar.one": ["hi", "hello"], "bar.two": ["mom", "dad"]}
+    )
+
+    key = ndb.Key(KIND, entity_id)
+    retrieved = key.get()
+    assert retrieved.foo == 42
+    assert retrieved.bar[0].one == "hi"
+    assert retrieved.bar[0].two == "mom"
+    assert retrieved.bar[1].one == "hello"
+    assert retrieved.bar[1].two == "dad"
+
+    assert isinstance(retrieved.bar[0], OtherKind)
+    assert isinstance(retrieved.bar[1], OtherKind)
+
+
+@pytest.mark.usefixtures("client_context")
 def test_insert_expando(dispose_of):
     class SomeKind(ndb.Expando):
         foo = ndb.IntegerProperty()

@@ -605,6 +605,58 @@ def test_query_structured_property(dispose_of):
 
 @pytest.mark.skip("Requires an index")
 @pytest.mark.usefixtures("client_context")
+def test_query_legacy_structured_property(ds_entity):
+    class OtherKind(ndb.Model):
+        one = ndb.StringProperty()
+        two = ndb.StringProperty()
+        three = ndb.StringProperty()
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StructuredProperty(OtherKind)
+
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(
+        KIND,
+        entity_id,
+        **{"foo": 1, "bar.one": "pish", "bar.two": "posh", "bar.three": "pash"}
+    )
+
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(
+        KIND,
+        entity_id,
+        **{"foo": 2, "bar.one": "pish", "bar.two": "posh", "bar.three": "push"}
+    )
+
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(
+        KIND,
+        entity_id,
+        **{
+            "foo": 3,
+            "bar.one": "pish",
+            "bar.two": "moppish",
+            "bar.three": "pass the peas",
+        }
+    )
+
+    eventually(SomeKind.query().fetch, _length_equals(3))
+
+    query = (
+        SomeKind.query()
+        .filter(SomeKind.bar.one == "pish", SomeKind.bar.two == "posh")
+        .order(SomeKind.foo)
+    )
+
+    results = query.fetch()
+    assert len(results) == 2
+    assert results[0].foo == 1
+    assert results[1].foo == 2
+
+
+@pytest.mark.skip("Requires an index")
+@pytest.mark.usefixtures("client_context")
 def test_query_repeated_structured_property_with_properties(dispose_of):
     class OtherKind(ndb.Model):
         one = ndb.StringProperty()
@@ -710,6 +762,70 @@ def test_query_repeated_structured_property_with_entity_twice(dispose_of):
     eventually(SomeKind.query().fetch, _length_equals(3))
     for key in keys:
         dispose_of(key._key)
+
+    query = (
+        SomeKind.query()
+        .filter(
+            SomeKind.bar == OtherKind(one="pish", two="posh"),
+            SomeKind.bar == OtherKind(two="posh", three="pash"),
+        )
+        .order(SomeKind.foo)
+    )
+
+    results = query.fetch()
+    assert len(results) == 1
+    assert results[0].foo == 1
+
+
+@pytest.mark.skip("Requires an index")
+@pytest.mark.usefixtures("client_context")
+def test_query_legacy_repeated_structured_property(ds_entity):
+    class OtherKind(ndb.Model):
+        one = ndb.StringProperty()
+        two = ndb.StringProperty()
+        three = ndb.StringProperty()
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StructuredProperty(OtherKind, repeated=True)
+
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(
+        KIND,
+        entity_id,
+        **{
+            "foo": 1,
+            "bar.one": ["pish", "bish"],
+            "bar.two": ["posh", "bosh"],
+            "bar.three": ["pash", "bash"],
+        }
+    )
+
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(
+        KIND,
+        entity_id,
+        **{
+            "foo": 2,
+            "bar.one": ["bish", "pish"],
+            "bar.two": ["bosh", "posh"],
+            "bar.three": ["bass", "pass"],
+        }
+    )
+
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(
+        KIND,
+        entity_id,
+        **{
+            "foo": 3,
+            "bar.one": ["pish", "bish"],
+            "bar.two": ["fosh", "posh"],
+            "bar.three": ["fash", "bash"],
+        }
+    )
+
+    eventually(SomeKind.query().fetch, _length_equals(3))
 
     query = (
         SomeKind.query()

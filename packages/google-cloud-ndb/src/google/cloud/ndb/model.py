@@ -514,7 +514,7 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
 
     Args:
         ds_entity (google.cloud.datastore_v1.types.Entity): An entity to be
-        deserialized.
+            deserialized.
 
     Returns:
         .Model: The deserialized entity.
@@ -523,8 +523,47 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
     entity = model_class()
     if ds_entity.key:
         entity._key = key_module.Key._from_ds_key(ds_entity.key)
+
     for name, value in ds_entity.items():
         prop = getattr(model_class, name, None)
+
+        # Backwards compatibility shim. NDB previously stored structured
+        # properties as sets of dotted name properties. Datastore now has
+        # native support for embedded entities and NDB now uses that, by
+        # default. This handles the case of reading structured properties from
+        # older NDB datastore instances.
+        if prop is None and "." in name:
+            supername, subname = name.split(".", 1)
+            structprop = getattr(model_class, supername, None)
+            if isinstance(structprop, StructuredProperty):
+                subvalue = value
+                value = structprop._get_base_value(entity)
+                if value in (None, []):  # empty list for repeated props
+                    kind = structprop._model_class._get_kind()
+                    key = key_module.Key(kind, None)
+                    if structprop._repeated:
+                        value = [
+                            _BaseValue(entity_module.Entity(key._key))
+                            for _ in subvalue
+                        ]
+                    else:
+                        value = entity_module.Entity(key._key)
+                        value = _BaseValue(value)
+
+                    structprop._store_value(entity, value)
+
+                if structprop._repeated:
+                    # Branch coverage bug,
+                    # See: https://github.com/nedbat/coveragepy/issues/817
+                    for subentity, subsubvalue in zip(  # pragma no branch
+                        value, subvalue
+                    ):
+                        subentity.b_val.update({subname: subsubvalue})
+                else:
+                    value.b_val.update({subname: subvalue})
+
+                continue
+
         if not (prop is not None and isinstance(prop, Property)):
             if value is not None and isinstance(  # pragma: no branch
                 entity, Expando
@@ -538,6 +577,7 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
                     value = _BaseValue(value)
                 setattr(entity, name, value)
             continue
+
         if value is not None:
             if prop._repeated:
                 value = [
@@ -546,6 +586,7 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
                 ]
             else:
                 value = _BaseValue(value)
+
         prop._store_value(entity, value)
 
     return entity

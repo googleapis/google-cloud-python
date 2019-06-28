@@ -4351,6 +4351,66 @@ class Test_entity_from_protobuf:
         assert entity._key.kind() == "ThisKind"
         assert entity._key.id() == 123
 
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_legacy_structured_property():
+        class OtherKind(model.Model):
+            foo = model.IntegerProperty()
+            bar = model.StringProperty()
+
+        class ThisKind(model.Model):
+            baz = model.StructuredProperty(OtherKind)
+            copacetic = model.BooleanProperty()
+
+        key = datastore.Key("ThisKind", 123, project="testing")
+        datastore_entity = datastore.Entity(key=key)
+        datastore_entity.update(
+            {
+                "baz.foo": 42,
+                "baz.bar": "himom",
+                "copacetic": True,
+                "super.fluous": "whocares?",
+            }
+        )
+        protobuf = helpers.entity_to_protobuf(datastore_entity)
+        entity = model._entity_from_protobuf(protobuf)
+        assert isinstance(entity, ThisKind)
+        assert entity.baz.foo == 42
+        assert entity.baz.bar == "himom"
+        assert entity.copacetic is True
+
+        assert not hasattr(entity, "super")
+        assert not hasattr(entity, "super.fluous")
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_legacy_repeated_structured_property():
+        class OtherKind(model.Model):
+            foo = model.IntegerProperty()
+            bar = model.StringProperty()
+
+        class ThisKind(model.Model):
+            baz = model.StructuredProperty(OtherKind, repeated=True)
+            copacetic = model.BooleanProperty()
+
+        key = datastore.Key("ThisKind", 123, project="testing")
+        datastore_entity = datastore.Entity(key=key)
+        datastore_entity.update(
+            {
+                "baz.foo": [42, 144],
+                "baz.bar": ["himom", "hellodad"],
+                "copacetic": True,
+            }
+        )
+        protobuf = helpers.entity_to_protobuf(datastore_entity)
+        entity = model._entity_from_protobuf(protobuf)
+        assert isinstance(entity, ThisKind)
+        assert entity.baz[0].foo == 42
+        assert entity.baz[0].bar == "himom"
+        assert entity.baz[1].foo == 144
+        assert entity.baz[1].bar == "hellodad"
+        assert entity.copacetic is True
+
 
 class Test_entity_to_protobuf:
     @staticmethod
