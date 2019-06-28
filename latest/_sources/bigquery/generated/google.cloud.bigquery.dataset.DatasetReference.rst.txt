@@ -20,6 +20,9 @@ google.cloud.bigquery.dataset.DatasetReference
    ~DatasetReference.model
    
    
+   ~DatasetReference.routine
+   
+   
    ~DatasetReference.table
    
    

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client &#8212; google-cloud c737b74 documentation</title>
+    <title>google.cloud.bigquery.client &#8212; google-cloud 226cdf1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -94,6 +94,8 @@
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.model</span> <span class="k">import</span> <span class="n">ModelReference</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.query</span> <span class="k">import</span> <span class="n">_QueryResults</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.retry</span> <span class="k">import</span> <span class="n">DEFAULT_RETRY</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.routine</span> <span class="k">import</span> <span class="n">Routine</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.routine</span> <span class="k">import</span> <span class="n">RoutineReference</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.schema</span> <span class="k">import</span> <span class="n">SchemaField</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_table_arg_to_table</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_table_arg_to_table_ref</span>
@@ -410,6 +412,41 @@
                 <span class="k">raise</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="Client.create_routine"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.create_routine">[docs]</a>    <span class="k">def</span> <span class="nf">create_routine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">routine</span><span class="p">,</span> <span class="n">exists_ok</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;[Beta] Create a routine via a POST request.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/routines/insert</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            routine (:class:`~google.cloud.bigquery.routine.Routine`):</span>
+<span class="sd">                A :class:`~google.cloud.bigquery.routine.Routine` to create.</span>
+<span class="sd">                The dataset that the routine belongs to must already exist.</span>
+<span class="sd">            exists_ok (bool):</span>
+<span class="sd">                Defaults to ``False``. If ``True``, ignore &quot;already exists&quot;</span>
+<span class="sd">                errors when creating the routine.</span>
+<span class="sd">            retry (google.api_core.retry.Retry):</span>
+<span class="sd">                Optional. How to retry the RPC.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            google.cloud.bigquery.routine.Routine:</span>
+<span class="sd">                A new ``Routine`` returned from the service.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">reference</span> <span class="o">=</span> <span class="n">routine</span><span class="o">.</span><span class="n">reference</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;/projects/</span><span class="si">{}</span><span class="s2">/datasets/</span><span class="si">{}</span><span class="s2">/routines&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">reference</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">reference</span><span class="o">.</span><span class="n">dataset_id</span>
+        <span class="p">)</span>
+        <span class="n">resource</span> <span class="o">=</span> <span class="n">routine</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">api_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">(</span>
+                <span class="n">retry</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">resource</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">Routine</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">Conflict</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">exists_ok</span><span class="p">:</span>
+                <span class="k">raise</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_routine</span><span class="p">(</span><span class="n">routine</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Client.create_table"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.create_table">[docs]</a>    <span class="k">def</span> <span class="nf">create_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">exists_ok</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  create a table via a PUT request</span>
 
@@ -508,6 +545,34 @@
         <span class="n">api_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">(</span><span class="n">retry</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">model_ref</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Model</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="Client.get_routine"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.get_routine">[docs]</a>    <span class="k">def</span> <span class="nf">get_routine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">routine_ref</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;[Beta] Get the routine referenced by ``routine_ref``.</span>
+
+<span class="sd">         Args:</span>
+<span class="sd">            routine_ref (Union[ \</span>
+<span class="sd">                :class:`~google.cloud.bigquery.routine.Routine`, \</span>
+<span class="sd">                :class:`~google.cloud.bigquery.routine.RoutineReference`, \</span>
+<span class="sd">                str, \</span>
+<span class="sd">            ]):</span>
+<span class="sd">                A reference to the routine to fetch from the BigQuery API. If</span>
+<span class="sd">                a string is passed in, this method attempts to create a</span>
+<span class="sd">                reference from a string using</span>
+<span class="sd">                :func:`google.cloud.bigquery.routine.RoutineReference.from_string`.</span>
+<span class="sd">            retry (:class:`google.api_core.retry.Retry`):</span>
+<span class="sd">                (Optional) How to retry the API call.</span>
+
+<span class="sd">         Returns:</span>
+<span class="sd">            google.cloud.bigquery.routine.Routine:</span>
+<span class="sd">                A ``Routine`` instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">routine_ref</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">routine_ref</span> <span class="o">=</span> <span class="n">RoutineReference</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span>
+                <span class="n">routine_ref</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span>
+            <span class="p">)</span>
+
+        <span class="n">api_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">(</span><span class="n">retry</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">routine_ref</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Routine</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Client.get_table"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.get_table">[docs]</a>    <span class="k">def</span> <span class="nf">get_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Fetch the table referenced by ``table``.</span>
 
@@ -573,7 +638,7 @@
 
 <span class="sd">        Use ``fields`` to specify which fields to update. At least one field</span>
 <span class="sd">        must be provided. If a field is listed in ``fields`` and is ``None``</span>
-<span class="sd">        in ``model``, it will be deleted.</span>
+<span class="sd">        in ``model``, the field value will be deleted.</span>
 
 <span class="sd">        If ``model.etag`` is not ``None``, the update will only succeed if</span>
 <span class="sd">        the model on the server has the same ETag. Thus reading a model with</span>
@@ -603,12 +668,58 @@
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">Model</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="Client.update_routine"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.update_routine">[docs]</a>    <span class="k">def</span> <span class="nf">update_routine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">routine</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;[Beta] Change some fields of a routine.</span>
+
+<span class="sd">        Use ``fields`` to specify which fields to update. At least one field</span>
+<span class="sd">        must be provided. If a field is listed in ``fields`` and is ``None``</span>
+<span class="sd">        in ``routine``, the field value will be deleted.</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">           During beta, partial updates are not supported. You must provide</span>
+<span class="sd">           all fields in the resource.</span>
+
+<span class="sd">        If :attr:`~google.cloud.bigquery.routine.Routine.etag` is not</span>
+<span class="sd">        ``None``, the update will only succeed if the resource on the server</span>
+<span class="sd">        has the same ETag. Thus reading a routine with</span>
+<span class="sd">        :func:`~google.cloud.bigquery.client.Client.get_routine`, changing</span>
+<span class="sd">        its fields, and then passing it to this method will ensure that the</span>
+<span class="sd">        changes will only be saved if no modifications to the resource</span>
+<span class="sd">        occurred since the read.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            routine (google.cloud.bigquery.routine.Routine): The routine to update.</span>
+<span class="sd">            fields (Sequence[str]):</span>
+<span class="sd">                The fields of ``routine`` to change, spelled as the</span>
+<span class="sd">                :class:`~google.cloud.bigquery.routine.Routine` properties</span>
+<span class="sd">                (e.g. ``type_``).</span>
+<span class="sd">            retry (google.api_core.retry.Retry):</span>
+<span class="sd">                (Optional) A description of how to retry the API call.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            google.cloud.bigquery.routine.Routine:</span>
+<span class="sd">                The routine resource returned from the API call.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">partial</span> <span class="o">=</span> <span class="n">routine</span><span class="o">.</span><span class="n">_build_resource</span><span class="p">(</span><span class="n">fields</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">routine</span><span class="o">.</span><span class="n">etag</span><span class="p">:</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;If-Match&quot;</span><span class="p">:</span> <span class="n">routine</span><span class="o">.</span><span class="n">etag</span><span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># TODO: remove when routines update supports partial requests.</span>
+        <span class="n">partial</span><span class="p">[</span><span class="s2">&quot;routineReference&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">routine</span><span class="o">.</span><span class="n">reference</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
+
+        <span class="n">api_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">(</span>
+            <span class="n">retry</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;PUT&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">routine</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">partial</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">Routine</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Client.update_table"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.update_table">[docs]</a>    <span class="k">def</span> <span class="nf">update_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Change some fields of a table.</span>
 
 <span class="sd">        Use ``fields`` to specify which fields to update. At least one field</span>
 <span class="sd">        must be provided. If a field is listed in ``fields`` and is ``None``</span>
-<span class="sd">        in ``table``, it will be deleted.</span>
+<span class="sd">        in ``table``, the field value will be deleted.</span>
 
 <span class="sd">        If ``table.etag`` is not ``None``, the update will only succeed if</span>
 <span class="sd">        the table on the server has the same ETag. Thus reading a table with</span>
@@ -690,6 +801,64 @@
             <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
             <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_model</span><span class="p">,</span>
             <span class="n">items_key</span><span class="o">=</span><span class="s2">&quot;models&quot;</span><span class="p">,</span>
+            <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
+            <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="Client.list_routines"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.list_routines">[docs]</a>    <span class="k">def</span> <span class="nf">list_routines</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;[Beta] List routines in the dataset.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/routines/list</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dataset (Union[ \</span>
+<span class="sd">                :class:`~google.cloud.bigquery.dataset.Dataset`, \</span>
+<span class="sd">                :class:`~google.cloud.bigquery.dataset.DatasetReference`, \</span>
+<span class="sd">                str, \</span>
+<span class="sd">            ]):</span>
+<span class="sd">                A reference to the dataset whose routines to list from the</span>
+<span class="sd">                BigQuery API. If a string is passed in, this method attempts</span>
+<span class="sd">                to create a dataset reference from a string using</span>
+<span class="sd">                :func:`google.cloud.bigquery.dataset.DatasetReference.from_string`.</span>
+<span class="sd">            max_results (int):</span>
+<span class="sd">                (Optional) Maximum number of routines to return. If not passed,</span>
+<span class="sd">                defaults to a value set by the API.</span>
+<span class="sd">            page_token (str):</span>
+<span class="sd">                (Optional) Token representing a cursor into the routines. If</span>
+<span class="sd">                not passed, the API will return the first page of routines. The</span>
+<span class="sd">                token marks the beginning of the iterator to be returned and</span>
+<span class="sd">                the value of the ``page_token`` can be accessed at</span>
+<span class="sd">                ``next_page_token`` of the</span>
+<span class="sd">                :class:`~google.api_core.page_iterator.HTTPIterator`.</span>
+<span class="sd">            retry (:class:`google.api_core.retry.Retry`):</span>
+<span class="sd">                (Optional) How to retry the RPC.</span>
+
+<span class="sd">         Returns:</span>
+<span class="sd">            google.api_core.page_iterator.Iterator:</span>
+<span class="sd">                Iterator of all</span>
+<span class="sd">                :class:`~google.cloud.bigquery.routine.Routine`s contained</span>
+<span class="sd">                within the requested dataset, limited by ``max_results``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="n">DatasetReference</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span>
+                <span class="n">dataset</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="p">(</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">DatasetReference</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;dataset must be a Dataset, DatasetReference, or string&quot;</span><span class="p">)</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/routines&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">HTTPIterator</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">api_request</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">,</span> <span class="n">retry</span><span class="p">),</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_routine</span><span class="p">,</span>
+            <span class="n">items_key</span><span class="o">=</span><span class="s2">&quot;routines&quot;</span><span class="p">,</span>
             <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
             <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
         <span class="p">)</span>
@@ -832,6 +1001,42 @@
 
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">(</span><span class="n">retry</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;DELETE&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">not_found_ok</span><span class="p">:</span>
+                <span class="k">raise</span></div>
+
+<div class="viewcode-block" id="Client.delete_routine"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.delete_routine">[docs]</a>    <span class="k">def</span> <span class="nf">delete_routine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">routine</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">,</span> <span class="n">not_found_ok</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;[Beta] Delete a routine.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/routines/delete</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            model (Union[ \</span>
+<span class="sd">                :class:`~google.cloud.bigquery.routine.Routine`, \</span>
+<span class="sd">                :class:`~google.cloud.bigquery.routine.RoutineReference`, \</span>
+<span class="sd">                str, \</span>
+<span class="sd">            ]):</span>
+<span class="sd">                A reference to the routine to delete. If a string is passed</span>
+<span class="sd">                in, this method attempts to create a routine reference from a</span>
+<span class="sd">                string using</span>
+<span class="sd">                :func:`google.cloud.bigquery.routine.RoutineReference.from_string`.</span>
+<span class="sd">            retry (:class:`google.api_core.retry.Retry`):</span>
+<span class="sd">                (Optional) How to retry the RPC.</span>
+<span class="sd">            not_found_ok (bool):</span>
+<span class="sd">                Defaults to ``False``. If ``True``, ignore &quot;not found&quot; errors</span>
+<span class="sd">                when deleting the routine.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">routine</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">routine</span> <span class="o">=</span> <span class="n">RoutineReference</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span>
+                <span class="n">routine</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">routine</span><span class="p">,</span> <span class="p">(</span><span class="n">Routine</span><span class="p">,</span> <span class="n">RoutineReference</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;routine must be a Routine or a RoutineReference&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">(</span><span class="n">retry</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;DELETE&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">routine</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">not_found_ok</span><span class="p">:</span>
                 <span class="k">raise</span></div>
@@ -2107,6 +2312,21 @@
 <span class="sd">        google.cloud.bigquery.model.Model: The next model in the page.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">Model</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_item_to_routine</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a JSON model to the native object.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        iterator (google.api_core.page_iterator.Iterator):</span>
+<span class="sd">            The iterator that is currently in use.</span>
+<span class="sd">        resource (dict):</span>
+<span class="sd">            An item to be converted to a routine.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        google.cloud.bigquery.routine.Routine: The next routine in the page.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Routine</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_item_to_table</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>

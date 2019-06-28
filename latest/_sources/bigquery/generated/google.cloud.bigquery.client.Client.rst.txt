@@ -20,6 +20,9 @@ google.cloud.bigquery.client.Client
    ~Client.create_dataset
    
    
+   ~Client.create_routine
+   
+   
    ~Client.create_table
    
    
@@ -30,6 +33,9 @@ google.cloud.bigquery.client.Client
    
    
    ~Client.delete_model
+   
+   
+   ~Client.delete_routine
    
    
    ~Client.delete_table
@@ -48,6 +54,9 @@ google.cloud.bigquery.client.Client
    
    
    ~Client.get_model
+   
+   
+   ~Client.get_routine
    
    
    ~Client.get_service_account_email
@@ -80,6 +89,9 @@ google.cloud.bigquery.client.Client
    ~Client.list_projects
    
    
+   ~Client.list_routines
+   
+   
    ~Client.list_rows
    
    
@@ -108,6 +120,9 @@ google.cloud.bigquery.client.Client
    
    
    ~Client.update_model
+   
+   
+   ~Client.update_routine
    
    
    ~Client.update_table

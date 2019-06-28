@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job &#8212; google-cloud c737b74 documentation</title>
+    <title>google.cloud.bigquery.job &#8212; google-cloud 226cdf1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -70,6 +70,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.query</span> <span class="k">import</span> <span class="n">StructQueryParameter</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.query</span> <span class="k">import</span> <span class="n">UDFResource</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.retry</span> <span class="k">import</span> <span class="n">DEFAULT_RETRY</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.routine</span> <span class="k">import</span> <span class="n">RoutineReference</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.schema</span> <span class="k">import</span> <span class="n">SchemaField</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_EmptyRowIterator</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">EncryptionConfiguration</span>
@@ -2703,8 +2704,21 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_job_statistics</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ddlOperationPerformed&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ddl_target_routine</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Optional[google.cloud.bigquery.routine.RoutineReference]: Return the DDL target routine, present</span>
+<span class="sd">            for CREATE/DROP FUNCTION/PROCEDURE  queries.</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/JobStatistics</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_job_statistics</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ddlTargetRoutine&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">prop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">prop</span> <span class="o">=</span> <span class="n">RoutineReference</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">prop</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">ddl_target_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Optional[TableReference]: Return the DDL target table, present</span>
+        <span class="sd">&quot;&quot;&quot;Optional[google.cloud.bigquery.table.TableReference]: Return the DDL target table, present</span>
 <span class="sd">            for CREATE/DROP TABLE/VIEW queries.</span>
 
 <span class="sd">        See:</span>

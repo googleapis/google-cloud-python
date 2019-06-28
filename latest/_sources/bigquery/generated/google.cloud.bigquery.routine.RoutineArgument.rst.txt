@@ -1,0 +1,44 @@
+google.cloud.bigquery.routine.RoutineArgument
+=============================================
+
+.. currentmodule:: google.cloud.bigquery.routine
+
+
+
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+   
+   ~RoutineArgument.from_api_repr
+   
+   
+   ~RoutineArgument.to_api_repr
+   
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~RoutineArgument.data_type
+   ~RoutineArgument.kind
+   ~RoutineArgument.mode
+   ~RoutineArgument.name
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
+.. autoclass:: RoutineArgument
+   :show-inheritance:
+   :inherited-members:
+   :members:
