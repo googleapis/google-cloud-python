@@ -70,6 +70,28 @@ def test_from_api_repr_w_unknown_fields(target_class):
     assert actual_arg._properties is resource
 
 
+def test_eq(target_class):
+    data_type = bigquery_v2.types.StandardSqlDataType(
+        type_kind=bigquery_v2.enums.StandardSqlDataType.TypeKind.INT64
+    )
+    arg = target_class(
+        name="field_name", kind="FIXED_TYPE", mode="IN", data_type=data_type
+    )
+    arg_too = target_class(
+        name="field_name", kind="FIXED_TYPE", mode="IN", data_type=data_type
+    )
+    assert arg == arg_too
+    assert not (arg != arg_too)
+
+    other_arg = target_class()
+    assert not (arg == other_arg)
+    assert arg != other_arg
+
+    notanarg = object()
+    assert not (arg == notanarg)
+    assert arg != notanarg
+
+
 def test_repr(target_class):
     arg = target_class(name="field_name", kind="FIXED_TYPE", mode="IN", data_type=None)
     actual_repr = repr(arg)
