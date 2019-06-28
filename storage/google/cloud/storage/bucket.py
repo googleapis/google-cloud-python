@@ -722,7 +722,7 @@ class Bucket(_PropertyMixin):
         """Return an iterator used to find blobs in the bucket.
 
         .. note::
-          Direct use of this method is deprecated. Use Client.list_blobs instead.
+          Direct use of this method is deprecated. Use ``Client.list_blobs`` instead.
 
         If :attr:`user_project` is set, bills the API request to that project.
 
