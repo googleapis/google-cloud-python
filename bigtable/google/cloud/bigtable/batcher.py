@@ -20,6 +20,10 @@ MAX_MUTATIONS = 100000
 MAX_ROW_BYTES = 5242880  # 5MB
 
 
+class MaxMutationsError(ValueError):
+    """The number of mutations for bulk request is too big."""
+
+
 class MutationsBatcher(object):
     """ A MutationsBatcher is used in batch cases where the number of mutations
     is large or unknown. It will store DirectRows in memory until one of the
@@ -81,7 +85,11 @@ class MutationsBatcher(object):
         """
         mutation_count = len(row._get_mutations())
         if mutation_count > MAX_MUTATIONS:
-            self.flush()
+            raise MaxMutationsError(
+                "The row key {} exceeds the number of mutations {}.".format(
+                    row.row_key, mutation_count
+                )
+            )
 
         if (self.total_mutation_count + mutation_count) >= MAX_MUTATIONS:
             self.flush()
