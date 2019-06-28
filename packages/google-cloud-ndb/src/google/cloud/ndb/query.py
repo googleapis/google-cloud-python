@@ -272,7 +272,7 @@ class Parameter(ParameterizedThing):
     """Represents a bound variable in a GQL query.
 
     ``Parameter(1)`` corresponds to a slot labeled ``:1`` in a GQL query.
-    ``Parameter('xyz')`` corresponds to a slot labeled ``:xyz``.
+    ``Parameter('something')`` corresponds to a slot labeled ``:something``.
 
     The value must be set (bound) separately.
 
@@ -993,7 +993,7 @@ class ConjunctionNode(Node):
 
         Returns:
             Node: The current node, if all nodes are already resolved.
-            Otherwise returns a modifed :class:`ConjunctionNode` with
+            Otherwise returns a modified :class:`ConjunctionNode` with
             each individual node resolved.
         """
         resolved_nodes = [node.resolve(bindings, used) for node in self._nodes]
@@ -1076,7 +1076,7 @@ class DisjunctionNode(Node):
 
         Returns:
             Node: The current node, if all nodes are already resolved.
-            Otherwise returns a modifed :class:`DisjunctionNode` with
+            Otherwise returns a modified :class:`DisjunctionNode` with
             each individual node resolved.
         """
         resolved_nodes = [node.resolve(bindings, used) for node in self._nodes]
@@ -1543,7 +1543,7 @@ class Query:
         When a query is created using gql, any bound parameters
         are created as ParameterNode instances. This method
         receives values for both positional (:1, :2, etc.) or
-        keyword (:xyz, :abc, etc.) bound parameters, then sets the
+        keyword (:something, :other, etc.) bound parameters, then sets the
         values accordingly. This mechanism allows easy reuse of a
         parameterized query, by passing the values to bind here.
 
@@ -2086,7 +2086,7 @@ class Query:
             ``len(q.fetch(limit, keys_only=True))``. We can also avoid
             marshalling NDB key objects from the returned protocol buffers, but
             this is a minor savings--most applications that use NDB will have
-            their perfomance bound by the Datastore backend, not the CPU.
+            their performance bound by the Datastore backend, not the CPU.
             Generally, any claim of performance improvement using this versus
             the equivalent call to ``fetch`` is exaggerated, at best.
 

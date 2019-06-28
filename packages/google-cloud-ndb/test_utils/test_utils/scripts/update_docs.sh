@@ -36,6 +36,17 @@ function build_docs {
     return $?
 }
 
+# Function to check spelling.
+function check_spelling {
+    sphinx-build \
+        -W -N \
+        -b spelling \
+        -d docs/_build/doctrees \
+        docs/ \
+        docs/_build/html/
+    return $?
+}
+
 # Only update docs if we are on CircleCI.
 if [[ "${CIRCLE_BRANCH}" == "master" ]] && [[ -z "${CIRCLE_PR_NUMBER}" ]]; then
     echo "Building new docs on a merged commit."
@@ -49,6 +60,7 @@ else
     echo "Not on master nor a release tag."
     echo "Building new docs for testing purposes, but not deploying."
     build_docs
+    check_spelling
     exit $?
 fi
 

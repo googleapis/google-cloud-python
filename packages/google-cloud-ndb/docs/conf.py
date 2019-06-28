@@ -17,6 +17,7 @@
 # sys.path.insert(0, os.path.abspath('.'))
 
 import google.cloud.ndb  # ``ndb`` must be installed to build the docs.
+import sphinxcontrib.spelling.filters
 
 # -- Project information -----------------------------------------------------
 
@@ -67,6 +68,7 @@ extensions = [
     "sphinx.ext.coverage",
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
+    "sphinxcontrib.spelling",
 ]
 
 # autodoc/autosummary flags
@@ -232,3 +234,7 @@ napoleon_use_admonition_for_references = False
 napoleon_use_ivar = False
 napoleon_use_param = True
 napoleon_use_rtype = True
+
+# spellcheck settings
+spelling_word_list_filename = "spelling_wordlist.txt"
+spelling_filters = [sphinxcontrib.spelling.filters.ContractionFilter]

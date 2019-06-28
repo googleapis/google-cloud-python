@@ -240,7 +240,7 @@ class Future:
         raise NotImplementedError
 
     def cancelled(self):
-        """Get whether task for this future has been cancelled.
+        """Get whether task for this future has been canceled.
 
         Returns:
             :data:`False`: Always.

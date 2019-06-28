@@ -175,7 +175,7 @@ class Key:
         >>> ndb.Key(kind2, id2, parent=parent)
         Key('Parent', 'C', 'Child', 42)
 
-    You can also construct a Key from a "url-safe" encoded string:
+    You can also construct a Key from a "urlsafe" encoded string:
 
     .. doctest:: key-constructor-urlsafe
 
@@ -219,7 +219,7 @@ class Key:
         >>> ndb.Key(kwargs)
         Key('Cheese', 'Cheddar', namespace='good')
 
-    The "url-safe" string is really a websafe-base64-encoded serialized
+    The "urlsafe" string is really a websafe-base64-encoded serialized
     ``Reference``, but it's best to think of it as just an opaque unique
     string.
 

@@ -320,7 +320,7 @@ class Context(_Context):
                 :class:`~google.cloud.ndb.key.Key` instance as a single
                 positional argument and returns an ``int`` indicating the
                 timeout, in seconds, for the key. ``0`` implies the default
-                timout. May be :data:`None`.
+                timeout. May be :data:`None`.
         """
         raise NotImplementedError
 

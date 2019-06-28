@@ -45,7 +45,7 @@ We can now create a Person entity and write it to Cloud Datastore::
     person = Person(name='Arthur Dent', age=42)
     key = person.put()
 
-The return value from put() is a Key (see the documentation for ndb/key.py),
+The return value from put() is a Key (see the documentation for ``ndb/key.py``),
 which can be used to retrieve the same entity later::
 
     person2 = key.get()
@@ -1900,7 +1900,7 @@ def _validate_key(value, entity=None):
 class ModelKey(Property):
     """Special property to store a special "key" for a :class:`Model`.
 
-    This is intended to be used as a psuedo-:class:`Property` on each
+    This is intended to be used as a pseudo-:class:`Property` on each
     :class:`Model` subclass. It is **not** intended for other usage in
     application code.
 
@@ -2777,7 +2777,7 @@ class User:
 
         Returns:
             Optional[str]: A permanent unique identifying string or
-            :data:`None`. If the email address was set explicity, this will
+            :data:`None`. If the email address was set explicitly, this will
             return :data:`None`.
         """
         return self._user_id
@@ -2935,7 +2935,7 @@ class UserProperty(Property):
             This was useful for tracking which user modifies a model instance.
         auto_current_user_add (bool): Deprecated flag. When supported, if this
             flag was set to :data:`True`, the property value would be set to
-            the urrently signed-in user he first time the model instance is
+            the currently signed-in user he first time the model instance is
             stored in the datastore, unless the property has already been
             assigned a value. This was useful for tracking which user creates
             a model instance, which may not be the same user that modifies it
@@ -4640,7 +4640,7 @@ class Model(metaclass=MetaModel):
 
         Args:
             query_string (str): The WHERE part of a GQL query (including the
-                WHERE kwyword).
+                WHERE keyword).
             args: if present, used to call bind() on the query.
             kwargs: if present, used to call bind() on the query.
 
@@ -4964,7 +4964,7 @@ class Model(metaclass=MetaModel):
                 operation.
 
         Returns:
-            tasklets.Future: Eventural result is ``tuple(key.Key)``: Keys for
+            tasklets.Future: Eventual result is ``tuple(key.Key)``: Keys for
                 the newly allocated IDs.
         """
         if max:
@@ -5423,7 +5423,7 @@ class Model(metaclass=MetaModel):
         provision for key, id, or parent are made.
 
         Arguments:
-            **kwargs: Keyword arguments corresponding to poperties of this
+            **kwargs: Keyword arguments corresponding to properties of this
                 model class.
         """
         self._set_attributes(kwargs)

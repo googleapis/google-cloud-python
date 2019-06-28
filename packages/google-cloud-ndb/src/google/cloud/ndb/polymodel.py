@@ -144,7 +144,7 @@ class PolyModel(model.Model):
     Properties that are defined in a given base class within a
     hierarchy are stored in Cloud Datastore for all subclasses only.
     So, if the Feline class had a property called `whiskers`, the Cat
-    and Panther enties would also have whiskers, but not Animal,
+    and Panther entities would also have whiskers, but not Animal,
     Canine, Dog or Wolf.
 
     Polymorphic queries:

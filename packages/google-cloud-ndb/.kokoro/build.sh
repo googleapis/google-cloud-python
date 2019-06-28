@@ -14,6 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Need enchant for spell check
+sudo apt-get update
+sudo apt-get -y install dictionaries-common aspell aspell-en \
+	                hunspell-en-us libenchant1c2a enchant
+
 set -eo pipefail
 
 cd github/python-ndb

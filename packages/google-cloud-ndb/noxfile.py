@@ -109,6 +109,7 @@ def blacken(session):
 def docs(session):
     # Install all dependencies.
     session.install("Sphinx")
+    session.install("sphinxcontrib.spelling")
     session.install(".")
     # Building the docs.
     run_args = ["bash", "test_utils/test_utils/scripts/update_docs.sh"]
@@ -119,6 +120,7 @@ def docs(session):
 def doctest(session):
     # Install all dependencies.
     session.install("Sphinx")
+    session.install("sphinxcontrib.spelling")
     session.install(".")
     # Run the script for building docs and running doctests.
     run_args = [
