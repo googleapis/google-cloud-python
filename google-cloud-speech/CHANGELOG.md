@@ -4,6 +4,34 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## 1.1.0
+
+06-27-2019 16:55 PDT
+
+### Implementation Changes
+- Allow kwargs to be passed to 'create_channel' (via synth). ([#8428](https://github.com/googleapis/google-cloud-python/pull/8428))
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+
+### New Features
+- Increase speech max received msg size to 256 MiB ([#8338](https://github.com/googleapis/google-cloud-python/pull/8338))
+- Add MP3 to Audio Encoding and add boost to Speech Context (via synth). ([#8109](https://github.com/googleapis/google-cloud-python/pull/8109))
+- Add Recognition Metadata (via synth). ([#7961](https://github.com/googleapis/google-cloud-python/pull/7961))
+
+### Documentation
+- Update to show 'google-cloud-speech' is GA. ([#8453](https://github.com/googleapis/google-cloud-python/pull/8453))
+- Tweak 'SpeechContext' docstring (via synth). ([#8223](https://github.com/googleapis/google-cloud-python/pull/8223))
+
+### Internal / Testing Changes
+- All: Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+- (Re)-blacken (via synth). ([#8446](https://github.com/googleapis/google-cloud-python/pull/8446))
+- Add disclaimer to auto-generated template files (via synth).  ([#8328](https://github.com/googleapis/google-cloud-python/pull/8328))
+- Suppress checking 'cov-fail-under' in nox default session (via synth).  ([#8252](https://github.com/googleapis/google-cloud-python/pull/8252))
+- Fix coverage in 'types.py' (via synth). ([#8164](https://github.com/googleapis/google-cloud-python/pull/8164))
+- Blacken noxfile.py, setup.py (via synth). ([#8132](https://github.com/googleapis/google-cloud-python/pull/8132))
+- Add empty lines. ([#8072](https://github.com/googleapis/google-cloud-python/pull/8072))
+- Update noxfile (via synth). ([#7836](https://github.com/googleapis/google-cloud-python/pull/7836))
+- Add nox session `docs` (via synth). ([#7782](https://github.com/googleapis/google-cloud-python/pull/7782))
+
 ## 1.0.0
 
 03-18-2019 08:05 PDT
