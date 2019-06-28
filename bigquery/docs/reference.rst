@@ -101,6 +101,16 @@ Model
     model.Model
     model.ModelReference
 
+Routine
+=======
+
+.. autosummary::
+    :toctree: generated
+
+    routine.Routine
+    routine.RoutineArgument
+    routine.RoutineReference
+
 Schema
 ======
 
