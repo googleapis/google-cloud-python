@@ -109,7 +109,8 @@ class TestBigQueryStorageClient(object):
 
     def test_read_rows(self):
         # Setup Expected Response
-        expected_response = {}
+        row_count = 1340416618
+        expected_response = {"row_count": row_count}
         expected_response = storage_pb2.ReadRowsResponse(**expected_response)
 
         # Mock the API response

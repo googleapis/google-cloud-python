@@ -415,7 +415,6 @@ def test_bigtable_delete_instance():
     )
     operation = instance.create(clusters=[cluster])
 
-
     # We want to make sure the operation completes.
     operation.result(timeout=100)
 
@@ -500,6 +499,7 @@ def test_bigtable_table_data_client():
     client = Client(admin=True)
     table_data_client = client.table_data_client
     # [END bigtable_table_data_client]
+
 
 def test_bigtable_table_admin_client():
     # [START bigtable_table_admin_client]

@@ -15,10 +15,15 @@
 import datetime
 import operator
 import os
-
 import unittest
 
 from google.api_core.exceptions import TooManyRequests
+from google.cloud.environment_vars import BIGTABLE_EMULATOR
+from test_utils.retry import RetryErrors
+from test_utils.retry import RetryResult
+from test_utils.system import EmulatorCreds
+from test_utils.system import unique_resource_id
+
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import UTC
@@ -30,14 +35,11 @@ from google.cloud.bigtable.row_filters import RowFilterChain
 from google.cloud.bigtable.row_filters import RowFilterUnion
 from google.cloud.bigtable.row_data import Cell
 from google.cloud.bigtable.row_data import PartialRowData
-from google.cloud.environment_vars import BIGTABLE_EMULATOR
 from google.cloud.bigtable.row_set import RowSet
 from google.cloud.bigtable.row_set import RowRange
-
-from test_utils.retry import RetryErrors
-from test_utils.retry import RetryResult
-from test_utils.system import EmulatorCreds
-from test_utils.system import unique_resource_id
+from google.cloud.bigtable_admin_v2.gapic import (
+    bigtable_table_admin_client_config as table_admin_config,
+)
 
 UNIQUE_SUFFIX = unique_resource_id("-")
 LOCATION_ID = "us-central1-c"
@@ -96,6 +98,13 @@ retry_429 = RetryErrors(TooManyRequests, max_tries=9)
 def setUpModule():
     from google.cloud.exceptions import GrpcRendezvous
     from google.cloud.bigtable.enums import Instance
+
+    # See: https://github.com/googleapis/google-cloud-python/issues/5928
+    interfaces = table_admin_config.config["interfaces"]
+    iface_config = interfaces["google.bigtable.admin.v2.BigtableTableAdmin"]
+    methods = iface_config["methods"]
+    create_table = methods["CreateTable"]
+    create_table["timeout_millis"] = 90000
 
     Config.IN_EMULATOR = os.getenv(BIGTABLE_EMULATOR) is not None
 

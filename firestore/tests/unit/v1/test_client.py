@@ -594,11 +594,16 @@ class Test__parse_batch_get(unittest.TestCase):
         self.assertEqual(snapshot.update_time, update_time)
 
     def test_missing(self):
+        from google.cloud.firestore_v1.document import DocumentReference
+
         ref_string = self._dummy_ref_string()
         response_pb = _make_batch_response(missing=ref_string)
-
-        snapshot = self._call_fut(response_pb, {})
+        document = DocumentReference("fizz", "bazz", client=mock.sentinel.client)
+        reference_map = {ref_string: document}
+        snapshot = self._call_fut(response_pb, reference_map)
         self.assertFalse(snapshot.exists)
+        self.assertEqual(snapshot.id, "bazz")
+        self.assertIsNone(snapshot._data)
 
     def test_unset_result_type(self):
         response_pb = _make_batch_response()

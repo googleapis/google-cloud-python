@@ -289,20 +289,6 @@ class DataLabelingServiceGrpcTransport(object):
         return self._stubs["data_labeling_service_stub"].LabelText
 
     @property
-    def label_audio(self):
-        """Return the gRPC stub for :meth:`DataLabelingServiceClient.label_audio`.
-
-        Starts a labeling task for audio. The type of audio labeling task is
-        configured by feature in the request.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["data_labeling_service_stub"].LabelAudio
-
-    @property
     def get_example(self):
         """Return the gRPC stub for :meth:`DataLabelingServiceClient.get_example`.
 
@@ -431,6 +417,142 @@ class DataLabelingServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["data_labeling_service_stub"].DeleteInstruction
+
+    @property
+    def get_evaluation(self):
+        """Return the gRPC stub for :meth:`DataLabelingServiceClient.get_evaluation`.
+
+        Gets an evaluation by resource name.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_labeling_service_stub"].GetEvaluation
+
+    @property
+    def search_evaluations(self):
+        """Return the gRPC stub for :meth:`DataLabelingServiceClient.search_evaluations`.
+
+        Searchs evaluations within a project. Supported filter: evaluation\_job,
+        evaluation\_time.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_labeling_service_stub"].SearchEvaluations
+
+    @property
+    def search_example_comparisons(self):
+        """Return the gRPC stub for :meth:`DataLabelingServiceClient.search_example_comparisons`.
+
+        Searchs example comparisons in evaluation, in format of examples
+        of both ground truth and prediction(s). It is represented as a search with
+        evaluation id.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_labeling_service_stub"].SearchExampleComparisons
+
+    @property
+    def create_evaluation_job(self):
+        """Return the gRPC stub for :meth:`DataLabelingServiceClient.create_evaluation_job`.
+
+        Creates an evaluation job.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_labeling_service_stub"].CreateEvaluationJob
+
+    @property
+    def update_evaluation_job(self):
+        """Return the gRPC stub for :meth:`DataLabelingServiceClient.update_evaluation_job`.
+
+        Updates an evaluation job.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_labeling_service_stub"].UpdateEvaluationJob
+
+    @property
+    def get_evaluation_job(self):
+        """Return the gRPC stub for :meth:`DataLabelingServiceClient.get_evaluation_job`.
+
+        Gets an evaluation job by resource name.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_labeling_service_stub"].GetEvaluationJob
+
+    @property
+    def pause_evaluation_job(self):
+        """Return the gRPC stub for :meth:`DataLabelingServiceClient.pause_evaluation_job`.
+
+        Pauses an evaluation job. Pausing a evaluation job that is already in
+        PAUSED state will be a no-op.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_labeling_service_stub"].PauseEvaluationJob
+
+    @property
+    def resume_evaluation_job(self):
+        """Return the gRPC stub for :meth:`DataLabelingServiceClient.resume_evaluation_job`.
+
+        Resumes a paused evaluation job. Deleted evaluation job can't be resumed.
+        Resuming a running evaluation job will be a no-op.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_labeling_service_stub"].ResumeEvaluationJob
+
+    @property
+    def delete_evaluation_job(self):
+        """Return the gRPC stub for :meth:`DataLabelingServiceClient.delete_evaluation_job`.
+
+        Stops and deletes an evaluation job.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_labeling_service_stub"].DeleteEvaluationJob
+
+    @property
+    def list_evaluation_jobs(self):
+        """Return the gRPC stub for :meth:`DataLabelingServiceClient.list_evaluation_jobs`.
+
+        Lists all evaluation jobs within a project with possible filters.
+        Pagination is supported.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_labeling_service_stub"].ListEvaluationJobs
 
     @property
     def delete_annotated_dataset(self):
