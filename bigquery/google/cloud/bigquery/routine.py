@@ -189,15 +189,19 @@ class Routine(object):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/routines#resource-routine
         """
         resource = self._properties.get(self._PROPERTY_TO_API_FIELD["return_type"])
+        if not resource:
+            return resource
         output = google.cloud.bigquery_v2.types.StandardSqlDataType()
         output = json_format.ParseDict(resource, output, ignore_unknown_fields=True)
         return output
 
     @return_type.setter
     def return_type(self, value):
-        self._properties[
-            self._PROPERTY_TO_API_FIELD["return_type"]
-        ] = json_format.MessageToDict(value)
+        if value:
+            resource = json_format.MessageToDict(value)
+        else:
+            resource = None
+        self._properties[self._PROPERTY_TO_API_FIELD["return_type"]] = resource
 
     @property
     def imported_libraries(self):
@@ -256,6 +260,11 @@ class Routine(object):
     def _build_resource(self, filter_fields):
         """Generate a resource for ``update``."""
         return _helpers._build_resource_from_properties(self, filter_fields)
+
+    def __repr__(self):
+        return "Routine('{}.{}.{}')".format(
+            self.project, self.dataset_id, self.routine_id
+        )
 
 
 class RoutineArgument(object):
@@ -328,15 +337,19 @@ class RoutineArgument(object):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/StandardSqlDataType
         """
         resource = self._properties.get(self._PROPERTY_TO_API_FIELD["data_type"])
+        if not resource:
+            return resource
         output = google.cloud.bigquery_v2.types.StandardSqlDataType()
         output = json_format.ParseDict(resource, output, ignore_unknown_fields=True)
         return output
 
     @data_type.setter
     def data_type(self, value):
-        self._properties[
-            self._PROPERTY_TO_API_FIELD["data_type"]
-        ] = json_format.MessageToDict(value)
+        if value:
+            resource = json_format.MessageToDict(value)
+        else:
+            resource = None
+        self._properties[self._PROPERTY_TO_API_FIELD["data_type"]] = resource
 
     @classmethod
     def from_api_repr(cls, resource):
@@ -374,7 +387,7 @@ class RoutineArgument(object):
     def __repr__(self):
         all_properties = [
             "{}={}".format(property_name, repr(getattr(self, property_name)))
-            for property_name in self._PROPERTY_TO_API_FIELD
+            for property_name in sorted(self._PROPERTY_TO_API_FIELD)
         ]
         return "RoutineArgument({})".format(", ".join(all_properties))
 

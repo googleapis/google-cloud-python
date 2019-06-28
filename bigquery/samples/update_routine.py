@@ -35,6 +35,7 @@ def main(client, routine_id):
             # Due to a limitation of the API, all fields are required, not just
             # those that have been updated.
             "arguments",
+            "language",
             "type_",
             "return_type",
         ],
