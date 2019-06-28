@@ -34,6 +34,7 @@ from google.cloud.bigquery.query import ScalarQueryParameter
 from google.cloud.bigquery.query import StructQueryParameter
 from google.cloud.bigquery.query import UDFResource
 from google.cloud.bigquery.retry import DEFAULT_RETRY
+from google.cloud.bigquery.routine import RoutineReference
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import _EmptyRowIterator
 from google.cloud.bigquery.table import EncryptionConfiguration
@@ -2667,8 +2668,21 @@ class QueryJob(_AsyncJob):
         return self._job_statistics().get("ddlOperationPerformed")
 
     @property
+    def ddl_target_routine(self):
+        """Optional[google.cloud.bigquery.routine.RoutineReference]: Return the DDL target routine, present
+            for CREATE/DROP FUNCTION/PROCEDURE  queries.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/JobStatistics
+        """
+        prop = self._job_statistics().get("ddlTargetRoutine")
+        if prop is not None:
+            prop = RoutineReference.from_api_repr(prop)
+        return prop
+
+    @property
     def ddl_target_table(self):
-        """Optional[TableReference]: Return the DDL target table, present
+        """Optional[google.cloud.bigquery.table.TableReference]: Return the DDL target table, present
             for CREATE/DROP TABLE/VIEW queries.
 
         See:
