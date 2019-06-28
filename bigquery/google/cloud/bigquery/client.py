@@ -639,6 +639,10 @@ class Client(ClientWithProject):
         must be provided. If a field is listed in ``fields`` and is ``None``
         in ``routine``, the field value will be deleted.
 
+        .. warning::
+           During beta, partial updates are not supported. You must provide
+           all fields in the resource.
+
         If :attr:`~google.cloud.bigquery.routine.Routine.etag` is not
         ``None``, the update will only succeed if the resource on the server
         has the same ETag. Thus reading a routine with

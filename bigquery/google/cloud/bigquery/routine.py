@@ -209,6 +209,17 @@ class Routine(object):
 
         The :attr:`~google.cloud.bigquery.routine.Routine.language` must
         equal ``JAVACRIPT``.
+
+        Examples:
+            Set the ``imported_libraries`` to a list of Google Cloud Storage
+            URIs.
+
+            .. code-block:: python
+
+               routine = bigquery.Routine("proj.dataset.routine_id")
+               routine.imported_libraries = [
+                   "gs://cloud-samples-data/bigquery/udfs/max-value.js",
+               ]
         """
         return self._properties.get(
             self._PROPERTY_TO_API_FIELD["imported_libraries"], []

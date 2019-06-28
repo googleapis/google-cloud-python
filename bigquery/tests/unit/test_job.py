@@ -3845,6 +3845,30 @@ class TestQueryJob(unittest.TestCase, _Base):
         query_stats["ddlOperationPerformed"] = op
         self.assertEqual(job.ddl_operation_performed, op)
 
+    def test_ddl_target_routine(self):
+        from google.cloud.bigquery.routine import RoutineReference
+
+        ref_routine = {
+            "projectId": self.PROJECT,
+            "datasetId": "ddl_ds",
+            "routineId": "targetroutine",
+        }
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+        self.assertIsNone(job.ddl_target_routine)
+
+        statistics = job._properties["statistics"] = {}
+        self.assertIsNone(job.ddl_target_routine)
+
+        query_stats = statistics["query"] = {}
+        self.assertIsNone(job.ddl_target_routine)
+
+        query_stats["ddlTargetRoutine"] = ref_routine
+        self.assertIsInstance(job.ddl_target_routine, RoutineReference)
+        self.assertEqual(job.ddl_target_routine.routine_id, "targetroutine")
+        self.assertEqual(job.ddl_target_routine.dataset_id, "ddl_ds")
+        self.assertEqual(job.ddl_target_routine.project, self.PROJECT)
+
     def test_ddl_target_table(self):
         from google.cloud.bigquery.table import TableReference
 

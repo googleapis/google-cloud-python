@@ -40,7 +40,5 @@ def main(client, routine_id):
     # Wait for the query to complete.
     query_job.result()
 
-    routine = client.get_routine(routine_id)
-    print("Created routine {}".format(routine.reference))
+    print("Created routine {}".format(query_job.ddl_target_routine))
     # [END bigquery_create_routine_ddl]
-    return routine
