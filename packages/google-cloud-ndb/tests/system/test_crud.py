@@ -150,6 +150,36 @@ def test_insert_entity(dispose_of, ds_client):
     dispose_of(key._key)
 
 
+@pytest.mark.usefixtures("client_context")
+def test_large_json_property(dispose_of, ds_client):
+    class SomeKind(ndb.Model):
+        foo = ndb.JsonProperty()
+
+    foo = {str(i): i for i in range(500)}
+    entity = SomeKind(foo=foo)
+    key = entity.put()
+
+    retrieved = key.get()
+    assert retrieved.foo == foo
+
+    dispose_of(key._key)
+
+
+@pytest.mark.usefixtures("client_context")
+def test_large_pickle_property(dispose_of, ds_client):
+    class SomeKind(ndb.Model):
+        foo = ndb.PickleProperty()
+
+    foo = {str(i): i for i in range(500)}
+    entity = SomeKind(foo=foo)
+    key = entity.put()
+
+    retrieved = key.get()
+    assert retrieved.foo == foo
+
+    dispose_of(key._key)
+
+
 def test_insert_entity_with_caching(dispose_of, client_context):
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()

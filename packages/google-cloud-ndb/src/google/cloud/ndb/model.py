@@ -616,6 +616,8 @@ def _entity_to_ds_entity(entity, set_key=True):
         google.cloud.datastore.entity.Entity: The converted entity.
     """
     data = {}
+    exclude_from_indexes = []
+
     for cls in type(entity).mro():
         if not hasattr(cls, "_properties"):
             continue
@@ -633,14 +635,21 @@ def _entity_to_ds_entity(entity, set_key=True):
                 value = value[0]
             data[prop._name] = value
 
+            if not prop._indexed:
+                exclude_from_indexes.append(prop._name)
+
     ds_entity = None
     if set_key:
         key = entity._key
         if key is None:
             key = key_module.Key(entity._get_kind(), None)
-        ds_entity = entity_module.Entity(key._key)
+        ds_entity = entity_module.Entity(
+            key._key, exclude_from_indexes=exclude_from_indexes
+        )
     else:
-        ds_entity = entity_module.Entity()
+        ds_entity = entity_module.Entity(
+            exclude_from_indexes=exclude_from_indexes
+        )
     ds_entity.update(data)
 
     return ds_entity
