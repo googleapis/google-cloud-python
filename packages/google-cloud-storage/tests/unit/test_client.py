@@ -28,6 +28,16 @@ def _make_credentials():
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
+def _make_connection(*responses):
+    import google.cloud.storage._http
+    from google.cloud.exceptions import NotFound
+
+    mock_conn = mock.create_autospec(google.cloud.storage._http.Connection)
+    mock_conn.user_agent = "testing 1.2.3"
+    mock_conn.api_request.side_effect = list(responses) + [NotFound("miss")]
+    return mock_conn
+
+
 def _make_response(status=http_client.OK, content=b"", headers={}):
     response = requests.Response()
     response.status_code = status
@@ -638,6 +648,83 @@ class TestClient(unittest.TestCase):
                 client.download_blob_to_file(
                     "http://bucket_name/path/to/object", file_obj
                 )
+
+    def test_list_blobs(self):
+        from google.cloud.storage.bucket import Bucket
+        BUCKET_NAME = "bucket-name"
+
+        credentials = _make_credentials()
+        client = self._make_one(project="PROJECT", credentials=credentials)
+        connection = _make_connection({"items": []})
+
+        with mock.patch(
+            'google.cloud.storage.client.Client._connection',
+            new_callable=mock.PropertyMock
+        ) as client_mock:
+            client_mock.return_value = connection
+
+            bucket_obj = Bucket(client, BUCKET_NAME)
+            iterator = client.list_blobs(bucket_obj)
+            blobs = list(iterator)
+
+            self.assertEqual(blobs, [])
+            connection.api_request.assert_called_once_with(
+                method="GET",
+                path="/b/%s/o" % BUCKET_NAME,
+                query_params={"projection": "noAcl"}
+            )
+
+    def test_list_blobs_w_all_arguments_and_user_project(self):
+        from google.cloud.storage.bucket import Bucket
+        BUCKET_NAME = "name"
+        USER_PROJECT = "user-project-123"
+        MAX_RESULTS = 10
+        PAGE_TOKEN = "ABCD"
+        PREFIX = "subfolder"
+        DELIMITER = "/"
+        VERSIONS = True
+        PROJECTION = "full"
+        FIELDS = "items/contentLanguage,nextPageToken"
+        EXPECTED = {
+            "maxResults": 10,
+            "pageToken": PAGE_TOKEN,
+            "prefix": PREFIX,
+            "delimiter": DELIMITER,
+            "versions": VERSIONS,
+            "projection": PROJECTION,
+            "fields": FIELDS,
+            "userProject": USER_PROJECT,
+        }
+
+        credentials = _make_credentials()
+        client = self._make_one(project=USER_PROJECT, credentials=credentials)
+        connection = _make_connection({"items": []})
+
+        with mock.patch(
+            'google.cloud.storage.client.Client._connection',
+            new_callable=mock.PropertyMock
+        ) as client_mock:
+            client_mock.return_value = connection
+
+            bucket = Bucket(client, BUCKET_NAME, user_project=USER_PROJECT)
+            iterator = client.list_blobs(
+                bucket_or_name=bucket,
+                max_results=MAX_RESULTS,
+                page_token=PAGE_TOKEN,
+                prefix=PREFIX,
+                delimiter=DELIMITER,
+                versions=VERSIONS,
+                projection=PROJECTION,
+                fields=FIELDS,
+            )
+            blobs = list(iterator)
+
+            self.assertEqual(blobs, [])
+            connection.api_request.assert_called_once_with(
+                method="GET",
+                path="/b/%s/o" % BUCKET_NAME,
+                query_params=EXPECTED
+            )
 
     def test_list_buckets_wo_project(self):
         CREDENTIALS = _make_credentials()
