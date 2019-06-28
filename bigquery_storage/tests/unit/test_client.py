@@ -41,7 +41,7 @@ def client_under_test(mock_transport):
 
     # The mock is detected as a callable. By creating a real callable here, the
     # mock can still be used to verify RPCs.
-    def transport_callable(credentials=None, default_class=None):
+    def transport_callable(credentials=None, default_class=None, address=None):
         return mock_transport
 
     return client.BigQueryStorageClient(transport=transport_callable)
@@ -50,7 +50,7 @@ def client_under_test(mock_transport):
 def test_constructor_w_client_info(mock_transport):
     from google.cloud.bigquery_storage_v1beta1 import client
 
-    def transport_callable(credentials=None, default_class=None):
+    def transport_callable(credentials=None, default_class=None, address=None):
         return mock_transport
 
     client_under_test = client.BigQueryStorageClient(
