@@ -274,6 +274,12 @@ def test_build_resource(object_under_test, resource, filter_fields, expected):
     assert actual_routine == expected
 
 
+def test_set_arguments_w_none(object_under_test):
+    object_under_test.arguments = None
+    assert object_under_test.arguments == []
+    assert object_under_test._properties["arguments"] == []
+
+
 def test_set_imported_libraries(object_under_test):
     imported_libraries = ["gs://cloud-samples-data/bigquery/udfs/max-value.js"]
     object_under_test.imported_libraries = imported_libraries

@@ -220,7 +220,6 @@ class Routine(object):
             resource = []
         else:
             resource = value
-
         self._properties[self._PROPERTY_TO_API_FIELD["imported_libraries"]] = resource
 
     @property
