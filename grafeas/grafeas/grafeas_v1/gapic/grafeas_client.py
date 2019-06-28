@@ -21,6 +21,7 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -88,7 +89,15 @@ class GrafeasClient(object):
             "projects/{project}", project=project
         )
 
-    def __init__(self, transport, client_config=None, client_info=None):
+    def __init__(
+        self,
+        transport=None,
+        channel=None,
+        credentials=None,
+        client_config=None,
+        client_info=None,
+        client_options=None,
+    ):
         """Constructor.
 
         Args:
@@ -107,6 +116,9 @@ class GrafeasClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -118,10 +130,43 @@ class GrafeasClient(object):
         else:
             client_config = grafeas_client_config.config
 
+        if channel:
+            warnings.warn(
+                "The `channel` argument is deprecated; use " "`transport` instead.",
+                PendingDeprecationWarning,
+                stacklevel=2,
+            )
+
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
-        self.transport = transport
+        if transport:
+            if callable(transport):
+                self.transport = transport(
+                    credentials=credentials,
+                    default_class=grafeas_grpc_transport.GrafeasGrpcTransport,
+                    address=api_endpoint,
+                )
+            else:
+                if credentials:
+                    raise ValueError(
+                        "Received both a transport instance and "
+                        "credentials; these are mutually exclusive."
+                    )
+                self.transport = transport
+        else:
+            self.transport = grafeas_grpc_transport.GrafeasGrpcTransport(
+                address=api_endpoint, channel=channel, credentials=credentials
+            )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
@@ -276,10 +321,10 @@ class GrafeasClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~grafeas.grafeas_v1.types.Occurrence` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~grafeas.grafeas_v1.types.Occurrence` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -865,10 +910,10 @@ class GrafeasClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~grafeas.grafeas_v1.types.Note` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~grafeas.grafeas_v1.types.Note` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1308,10 +1353,10 @@ class GrafeasClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~grafeas.grafeas_v1.types.Occurrence` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~grafeas.grafeas_v1.types.Occurrence` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
