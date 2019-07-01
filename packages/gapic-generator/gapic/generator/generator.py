@@ -40,11 +40,13 @@ class Generator:
             rendered. If this is not provided, the templates included with
             this application are used.
     """
+
     def __init__(self, opts: options.Options) -> None:
         # Create the jinja environment with which to render templates.
         self._env = jinja2.Environment(
             loader=jinja2.FileSystemLoader(searchpath=opts.templates),
             undefined=jinja2.StrictUndefined,
+            extensions=["jinja2.ext.do"],
         )
 
         # Add filters which templates require.
@@ -78,8 +80,8 @@ class Generator:
 
             # Append to the output files dictionary.
             output_files.update(self._render_template(template_name,
-                api_schema=api_schema,
-            ))
+                                                      api_schema=api_schema,
+                                                      ))
 
         # Return the CodeGeneratorResponse output.
         return CodeGeneratorResponse(file=[i for i in output_files.values()])
@@ -88,7 +90,7 @@ class Generator:
             self,
             template_name: str, *,
             api_schema: api.API,
-            ) -> Dict[str, CodeGeneratorResponse.File]:
+    ) -> Dict[str, CodeGeneratorResponse.File]:
         """Render the requested templates.
 
         Args:
@@ -119,8 +121,8 @@ class Generator:
         if '$sub' in template_name:
             for subpackage in api_schema.subpackages.values():
                 answer.update(self._render_template(template_name,
-                    api_schema=subpackage,
-                ))
+                                                    api_schema=subpackage,
+                                                    ))
             skip_subpackages = True
 
         # If this template should be rendered once per proto, iterate over
@@ -131,9 +133,9 @@ class Generator:
                         api_schema.subpackage_view):
                     continue
                 answer.update(self._get_file(template_name,
-                    api_schema=api_schema,
-                    proto=proto
-                ))
+                                             api_schema=api_schema,
+                                             proto=proto
+                                             ))
             return answer
 
         # If this template should be rendered once per service, iterate
@@ -144,9 +146,9 @@ class Generator:
                         api_schema.subpackage_view):
                     continue
                 answer.update(self._get_file(template_name,
-                    api_schema=api_schema,
-                    service=service,
-                ))
+                                             api_schema=api_schema,
+                                             service=service,
+                                             ))
             return answer
 
         # This file is not iterating over anything else; return back
@@ -155,14 +157,14 @@ class Generator:
         return answer
 
     def _get_file(self, template_name: str, *,
-            api_schema=api.API,
-            **context: Mapping):
+                  api_schema=api.API,
+                  **context: Mapping):
         """Render a template to a protobuf plugin File object."""
         # Determine the target filename.
         fn = self._get_filename(template_name,
-            api_schema=api_schema,
-            context=context,
-        )
+                                api_schema=api_schema,
+                                context=context,
+                                )
 
         # Render the file contents.
         cgr_file = CodeGeneratorResponse.File(
@@ -189,7 +191,7 @@ class Generator:
             template_name: str, *,
             api_schema: api.API,
             context: dict = None,
-            ) -> str:
+    ) -> str:
         """Return the appropriate output filename for this template.
 
         This entails running the template name through a series of

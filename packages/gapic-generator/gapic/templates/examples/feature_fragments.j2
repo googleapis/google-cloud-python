@@ -1,0 +1,134 @@
+{#
+ # Copyright (C) 2019  Google LLC
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
+ # you may not use this file except in compliance with the License.
+ # You may obtain a copy of the License at
+ #
+ #     http://www.apache.org/licenses/LICENSE-2.0
+ #
+ # Unless required by applicable law or agreed to in writing, software
+ # distributed under the License is distributed on an "AS IS" BASIS,
+ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+ #}
+
+{#
+A careful reader may comment that there is duplication of effort
+between the python verification step and the dispatch/rendering here.
+There is a little, but not enough for it to be important because
+1) Other python artifacts (client libraries, unit tests, and so forth)
+   are generated using templates, so doing the same for generated samples is consistent.
+2) Using jinja for anything requiring real logic or data structures is a bad idea.
+#}
+
+{# response handling macros #}
+
+{% macro renderPrint(elts) %}
+  {# First elment is a format string, remaining elements are the format string parameters #}
+  {# Validating that the number of format params equals #}
+  {# the number of remaining params is handled by real python code #}
+  {% with fmtStr = ('\"' + elts[0] + '\"') |replace("%s", "{}") %}
+print({{ ([fmtStr] + elts[1:])|join(', ') }})
+  {% endwith -%}
+{% endmacro %}
+
+{% macro renderComment(elts) %}
+  {# First elment is a format string, remaining elements are the format string parameters #}
+  {# Validating that the number of format params equals #}
+  {# the number of remaining params is handled by real python code #}
+  {% with fmtStr = elts[0] %}
+# {{ fmtStr|format(*elts[1:]) }}
+  {% endwith %}
+{% endmacro %}
+
+{% macro renderDefine(statement) %}
+{# Python code already verified the form, no need to check #}
+{% with lvalue, rvalue = statement.split("=") %}
+{{ lvalue }} = {{ rvalue }}
+{% endwith %}
+{% endmacro %}
+
+{% macro renderCollectionLoop(statement) %}
+for {{ statement.variable }} in {{ statement.collection }}:
+    {{ dispatchStatement(statement.body) -}}
+{% endmacro %}
+
+{% macro renderMapLoop(statement) %}
+ {# At least one of key and value exist; validated in python #}
+{% if "key" not in statement %}
+for {{ statement.value }} in {{ statement.map }}.values():
+{% elif "value" not in statement %}
+for {{ statement.key }} in {{ statement.map }}.keys():
+{% else %}
+for {{statement.key }}, {{ statement.value }} in {{ statement.map }}.items():
+{% endif %}
+    {{ dispatchStatement(statement.body) -}}
+{% endmacro %}
+
+{% macro dispatchStatement(statement) %}
+{# Each statement is a dict with a single key/value pair #}
+{% if "print" in statement %}
+{{ renderPrint(statement["print"]) -}}
+{% elif "comment" in statement %}
+{{ renderComment(statement["comment"]) -}}
+{% elif "loop" in statement %}
+  {% with loop = statement["loop"] %}
+    {% if "collection" in loop %}
+{{ renderCollectionLoop(loop) -}}
+    {% else %}
+{{ renderMapLoop(loop) -}}
+    {% endif %}
+  {% endwith %}
+{% endif %}
+{% endmacro %}
+
+{% macro renderRequestAttr(baseName, attr) %}
+{# Note: python code will have manipulated the value #}
+{# to be the correct enum from the right module, if necessary. #}
+{# Python is also responsible for verifying that each input parameter is unique,#}
+{# no parameter is a reserved keyword #}
+  {% if "input_parameter" in attr %}
+# {{ attr.input_parameter }} = "{{ attr.value }}"
+    {% if "value_is_file" in attr and attr.value_is_file %}
+with open({{ attr.input_parameter }}, "rb") as f:
+    {{ baseName }}["{{ attr.field }}"] = f.read()
+    {% else %}
+{{ baseName }}["{{ attr.field }}"] = {{ attr.input_parameter }}
+    {% endif %}
+  {% else %}
+{{ baseName }}["{{ attr.field }}"] = {{ attr.value }}
+  {% endif %}
+{% endmacro %}
+
+{% macro renderRequest(request) %}
+  {% for parameterBlock in request %}
+{{ parameterBlock.base }} = {}
+    {% for attr in parameterBlock.body %}
+{{ renderRequestAttr(parameterBlock.base, attr) }}
+    {% endfor %}
+  {% endfor %}
+{% endmacro %}
+
+{% macro renderMainBlock(methodName, requestBlock) %}
+def main():
+    import argparse
+
+    parser = argparse.ArgumentParser()
+{% with arg_list = [] %}
+{% for attr in requestBlock if "input_parameter" in attr %}
+    parser.add_argument("--{{ attr.input_parameter }}",
+                        type=str,
+                        default="{{ attr.value }}")
+{% do arg_list.append("args." + attr.input_parameter) -%}
+{% endfor %}
+    args = parser.parse_args()
+
+    sample_{{ methodName|snake_case }}({{ arg_list|join(", ") }})
+
+
+if __name__ == "__main__":
+    main()
+{% endwith %}
+{% endmacro %}

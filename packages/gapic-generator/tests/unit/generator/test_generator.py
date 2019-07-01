@@ -83,7 +83,9 @@ def test_get_response_fails_invalid_file_paths():
         lt.return_value = ['foo/bar/$service/$proto/baz.py.j2']
         with pytest.raises(ValueError) as ex:
             g.get_response(api_schema=make_api())
-        assert '$proto' in str(ex) and '$service' in str(ex)
+
+        ex_str = str(ex.value)
+        assert '$proto' in ex_str and '$service' in ex_str
 
 
 def test_get_response_enumerates_services():
@@ -163,24 +165,25 @@ def test_get_filename():
     g = make_generator()
     template_name = '$namespace/$name_$version/foo.py.j2'
     assert g._get_filename(template_name,
-        api_schema=make_api(
-            naming=make_naming(namespace=(), name='Spam', version='v2'),
-        )
-    ) == 'spam_v2/foo.py'
+                           api_schema=make_api(
+                               naming=make_naming(
+                                   namespace=(), name='Spam', version='v2'),
+                           )
+                           ) == 'spam_v2/foo.py'
 
 
 def test_get_filename_with_namespace():
     g = make_generator()
     template_name = '$namespace/$name_$version/foo.py.j2'
     assert g._get_filename(template_name,
-        api_schema=make_api(
-            naming=make_naming(
-                name='Spam',
-                namespace=('Ham', 'Bacon'),
-                version='v2',
-            ),
-        ),
-    ) == 'ham/bacon/spam_v2/foo.py'
+                           api_schema=make_api(
+                               naming=make_naming(
+                                   name='Spam',
+                                   namespace=('Ham', 'Bacon'),
+                                   version='v2',
+                               ),
+                           ),
+                           ) == 'ham/bacon/spam_v2/foo.py'
 
 
 def test_get_filename_with_service():
@@ -248,15 +251,15 @@ def make_generator(opts_str: str = '') -> generator.Generator:
 
 
 def make_proto(file_pb: descriptor_pb2.FileDescriptorProto,
-        file_to_generate: bool = True, prior_protos: Mapping = None,
-        naming: naming.Naming = None,
-        ) -> api.Proto:
+               file_to_generate: bool = True, prior_protos: Mapping = None,
+               naming: naming.Naming = None,
+               ) -> api.Proto:
     prior_protos = prior_protos or {}
     return api._ProtoBuilder(file_pb,
-        file_to_generate=file_to_generate,
-        naming=naming or make_naming(),
-        prior_protos=prior_protos,
-    ).proto
+                             file_to_generate=file_to_generate,
+                             naming=naming or make_naming(),
+                             prior_protos=prior_protos,
+                             ).proto
 
 
 def make_api(*protos, naming: naming.Naming = None, **kwargs) -> api.API:
