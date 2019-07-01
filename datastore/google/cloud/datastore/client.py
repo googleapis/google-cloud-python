@@ -560,7 +560,6 @@ class Client(ClientWithProject):
     def transaction(self, **kwargs):
         """Proxy to :class:`google.cloud.datastore.transaction.Transaction`.
 
-        :type kwargs: dict
         :param kwargs: Keyword arguments to be passed in.
         """
         return Transaction(self, **kwargs)
@@ -633,7 +632,6 @@ class Client(ClientWithProject):
             >>> query_iter.next_page_token is None
             True
 
-        :type kwargs: dict
         :param kwargs: Parameters for initializing and instance of
                        :class:`~google.cloud.datastore.query.Query`.
 
