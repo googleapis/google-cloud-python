@@ -62,6 +62,7 @@ class TestClient(unittest.TestCase):
         return_value=mock.sentinel.firestore_api,
     )
     def test__firestore_api_property(self, mock_client):
+        mock_client.SERVICE_ADDRESS = "endpoint"
         client = self._make_default_one()
         self.assertIsNone(client._firestore_api_internal)
         firestore_api = client._firestore_api

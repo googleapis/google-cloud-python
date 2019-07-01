@@ -116,7 +116,7 @@ class Client(ClientWithProject):
             # Use a custom channel.
             # We need this in order to set appropriate keepalive options.
             channel = firestore_grpc_transport.FirestoreGrpcTransport.create_channel(
-                target=self._target,
+                self._target,
                 credentials=self._credentials,
                 options={"grpc.keepalive_time_ms": 30000}.items(),
             )
