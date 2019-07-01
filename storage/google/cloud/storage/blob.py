@@ -56,6 +56,7 @@ from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
 from google.cloud.storage._signing import generate_signed_url_v2
 from google.cloud.storage._signing import generate_signed_url_v4
+from google.cloud.storage.batch import _FutureDict
 from google.cloud.storage.acl import ACL
 from google.cloud.storage.acl import ObjectACL
 
@@ -466,18 +467,24 @@ class Blob(_PropertyMixin):
         query_params["fields"] = "name"
 
         try:
-            # We intentionally pass `_target_object=None` since fields=name
-            # would limit the local properties.
+            if client.current_batch is not None:
+                target = FutureBoolResult()
+                result = target
+            else:
+                # We intentionally pass `_target_object=None` since fields=name
+                # would limit the local properties.
+                target, result = None, True
+
             client._connection.api_request(
                 method="GET",
                 path=self.path,
                 query_params=query_params,
-                _target_object=None,
+                _target_object=target,
             )
             # NOTE: This will not fail immediately in a batch. However, when
             #       Batch.finish() is called, the resulting `NotFound` will be
             #       raised.
-            return True
+            return result
         except NotFound:
             return False
 
@@ -2057,3 +2064,29 @@ def _add_query_parameters(base_url, name_value_pairs):
     query = parse_qsl(query)
     query.extend(name_value_pairs)
     return urlunsplit((scheme, netloc, path, urlencode(query), frag))
+
+
+class FutureBoolResult(object):
+    """Represents the result of future api request.
+
+    This can be used as a target object for the future request
+    (which is part of batch mechanism) to get result of this request.
+    """
+    _properties = {}
+
+    @property
+    def _is_successfull(self):
+        """Checks if binded future request have been completed without any exception."""
+        return not isinstance(self._properties, _FutureDict)
+
+    def __bool__(self):
+        return self._is_successfull
+
+    def __repr__(self):
+        return str(self._is_successfull)
+
+    def __eq__(self, other):
+        return self._is_successfull == other
+
+    def __ne__(self, other):
+        return self._is_successfull != other

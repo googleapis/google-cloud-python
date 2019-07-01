@@ -20,11 +20,43 @@ import json
 import os
 import tempfile
 import unittest
+import requests
 
 import google.cloud.storage.blob
 import mock
 import six
 from six.moves import http_client
+
+
+def _make_response(status_code=http_client.OK, content=b"", headers={}):
+    response = requests.Response()
+    response.status_code = status_code
+    response._content = content
+    response.headers = headers
+    response.request = requests.Request()
+    return response
+
+
+def _make_connection():
+    from google.cloud.storage._http import Connection
+
+    mock_conn = mock.create_autospec(Connection)
+    mock_conn.user_agent = "testing 1.2.3"
+    mock_conn._make_request.return_value = _make_response(
+        status_code=200,
+        headers={
+            "content-type": "multipart/mixed; boundary=batch_pK7JBAk73-E=_AA5eFwv4m2Q=",
+        },
+        content=b"""
+--batch_pK7JBAk73-E=_AA5eFwv4m2Q=
+HTTP/1.1 404 NotFound
+
+--batch_pK7JBAk73-E=_AA5eFwv4m2Q=
+HTTP/1.1 200 OK
+
+--batch_pK7JBAk73-E=_AA5eFwv4m2Q=--"""
+    )
+    return mock_conn
 
 
 def _make_credentials():
@@ -581,6 +613,27 @@ class Test_Blob(unittest.TestCase):
                 "_target_object": None,
             },
         )
+
+    def test_exists_miss_within_batch(self):
+        from google.cloud.storage.client import Client
+        from google.cloud.exceptions import NotFound
+
+        client = Client(credentials=_make_credentials())
+        client._base_connection = _make_connection()
+
+        bucket = _Bucket(client)
+        blob1 = self._make_one("nonesuch1", bucket=bucket)
+        blob2 = self._make_one("nonesuch2", bucket=bucket)
+
+        try:
+            with client.batch():
+                bool1 = blob1.exists()
+                bool2 = blob2.exists()
+        except NotFound:
+            pass
+
+        self.assertFalse(bool1)
+        self.assertTrue(bool2)
 
     def test_exists_hit_w_user_project(self):
         BLOB_NAME = "blob-name"
@@ -3311,6 +3364,7 @@ class _Bucket(object):
 class _Client(object):
     def __init__(self, connection):
         self._base_connection = connection
+        self.current_batch = None
 
     @property
     def _connection(self):
