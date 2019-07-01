@@ -36,8 +36,6 @@ __all__ = [
 class _LocalState(threading.local):
     """Thread local state."""
 
-    __slots__ = ("context",)
-
     def __init__(self):
         self.context = None
 

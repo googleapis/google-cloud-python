@@ -17,6 +17,7 @@ System tests for Create, Update, Delete. (CRUD)
 """
 import functools
 import operator
+import threading
 
 import pytest
 
@@ -148,6 +149,35 @@ def test_insert_entity(dispose_of, ds_client):
     assert ds_entity["bar"] == "none"
 
     dispose_of(key._key)
+
+
+def test_parallel_threads(dispose_of, namespace):
+    client = ndb.Client(namespace=namespace)
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StringProperty()
+
+    def insert(foo):
+        with client.context(cache_policy=False):
+            entity = SomeKind(foo=foo, bar="none")
+
+            key = entity.put()
+
+            retrieved = key.get()
+            assert retrieved.foo == foo
+            assert retrieved.bar == "none"
+
+            dispose_of(key._key)
+
+    thread1 = threading.Thread(target=insert, args=[42], name="one")
+    thread2 = threading.Thread(target=insert, args=[144], name="two")
+
+    thread1.start()
+    thread2.start()
+
+    thread1.join()
+    thread2.join()
 
 
 @pytest.mark.usefixtures("client_context")
