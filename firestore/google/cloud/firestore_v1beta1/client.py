@@ -23,7 +23,6 @@ In the hierarchy of API concepts
 * a :class:`~google.cloud.firestore_v1beta1.client.Client` owns a
   :class:`~google.cloud.firestore_v1beta1.document.DocumentReference`
 """
-from google.api_core import grpc_helpers
 from google.cloud.client import ClientWithProject
 
 from google.cloud.firestore_v1beta1 import _helpers
@@ -98,19 +97,16 @@ class Client(ClientWithProject):
             GAPIC client with the credentials of the current client.
         """
         if self._firestore_api_internal is None:
-            SERVICE_ADDRESS = "firestore.googleapis.com:443"
-
             # Use a custom channel.
             # We need this in order to set appropriate keepalive options.
-            channel = grpc_helpers.create_channel(
-                target=SERVICE_ADDRESS,
+            channel = firestore_grpc_transport.FirestoreGrpcTransport.create_channel(
+                target=self._target,
                 credentials=self._credentials,
-                scopes=firestore_grpc_transport.FirestoreGrpcTransport._OAUTH_SCOPES,
                 options={"grpc.keepalive_time_ms": 30000}.items(),
             )
 
             self._transport = firestore_grpc_transport.FirestoreGrpcTransport(
-                address=SERVICE_ADDRESS, channel=channel
+                address=self._target, channel=channel
             )
 
             self._firestore_api_internal = firestore_client.FirestoreClient(
@@ -118,6 +114,15 @@ class Client(ClientWithProject):
             )
 
         return self._firestore_api_internal
+
+    @property
+    def _target(self):
+        """Return the target (where the API is).
+
+        Returns:
+            str: The location of the API.
+        """
+        return firestore_client.FirestoreClient.SERVICE_ADDRESS
 
     @property
     def _database_string(self):
