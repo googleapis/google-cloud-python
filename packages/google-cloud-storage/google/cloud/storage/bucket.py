@@ -684,7 +684,6 @@ class Bucket(_PropertyMixin):
         :param generation: Optional. If present, selects a specific revision of
                            this object.
 
-        :type kwargs: dict
         :param kwargs: Keyword arguments to pass to the
                        :class:`~google.cloud.storage.blob.Blob` constructor.
 
