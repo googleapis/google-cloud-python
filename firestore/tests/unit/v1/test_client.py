@@ -65,7 +65,7 @@ class TestClient(unittest.TestCase):
 
     def test_constructor_with_emulator_host(self):
         from google.cloud.environment_vars import FIRESTORE_EMULATOR
-        import pdb;pdb.set_trace()
+        
         credentials = _make_credentials()
         emulator_host = "localhost:8081"
         with mock.patch("os.getenv") as getenv:
