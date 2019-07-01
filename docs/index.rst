@@ -24,7 +24,6 @@
   Key Management <kms/index>
   Language <language/index>
   Natural Language <language/index>
-  PubSub <pubsub/index>
   OSLogin <oslogin/index>
   PubSub <pubsub/index>
   Redis <redis/index>
