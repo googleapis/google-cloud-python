@@ -533,16 +533,16 @@ def test_dataframe_to_arrow_w_unknown_type(module_under_test):
 @pytest.mark.skipIf(pandas is None, "Requires `pandas`")
 def test_dataframe_to_parquet_without_pyarrow(module_under_test, monkeypatch):
     monkeypatch.setattr(module_under_test, "pyarrow", None)
-    with pytest.raises(ValueError) as exc:
+    with pytest.raises(ValueError) as exc_context:
         module_under_test.dataframe_to_parquet(pandas.DataFrame(), (), None)
-    assert "pyarrow is required" in str(exc)
+    assert "pyarrow is required" in str(exc_context.value)
 
 
 @pytest.mark.skipIf(pandas is None, "Requires `pandas`")
 @pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
 def test_dataframe_to_parquet_w_missing_columns(module_under_test, monkeypatch):
-    with pytest.raises(ValueError) as exc:
+    with pytest.raises(ValueError) as exc_context:
         module_under_test.dataframe_to_parquet(
             pandas.DataFrame(), (schema.SchemaField("not_found", "STRING"),), None
         )
-    assert "columns in schema must match" in str(exc)
+    assert "columns in schema must match" in str(exc_context.value)

@@ -2226,9 +2226,9 @@ class TestRowIterator(unittest.TestCase):
 
         with mock.patch.object(mut, "bigquery_storage_v1beta1", None), pytest.raises(
             ValueError
-        ) as exc:
+        ) as exc_context:
             row_iterator.to_dataframe(bqstorage_client=bqstorage_client)
-        assert mut._NO_BQSTORAGE_ERROR in str(exc)
+        assert mut._NO_BQSTORAGE_ERROR in str(exc_context.value)
 
     @unittest.skipIf(
         bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
@@ -2514,6 +2514,6 @@ def test_table_reference_to_bqstorage_raises_import_error():
     for cls in classes:
         with mock.patch.object(mut, "bigquery_storage_v1beta1", None), pytest.raises(
             ValueError
-        ) as exc:
+        ) as exc_context:
             cls.from_string("my-project.my_dataset.my_table").to_bqstorage()
-        assert mut._NO_BQSTORAGE_ERROR in str(exc)
+        assert mut._NO_BQSTORAGE_ERROR in str(exc_context.value)
