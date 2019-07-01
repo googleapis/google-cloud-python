@@ -51,6 +51,11 @@ extras = {
 all_extras = []
 
 for extra in extras:
+    if extra == "fastparquet":
+        # Skip fastparquet from "all" because it is redundant with pyarrow and
+        # creates a dependency on pre-release versions of numpy. See:
+        # https://github.com/googleapis/google-cloud-python/issues/8549
+        continue
     all_extras.extend(extras[extra])
 
 extras["all"] = all_extras
