@@ -20,6 +20,7 @@ import gzip
 import io
 import json
 import unittest
+import warnings
 
 import mock
 import requests
@@ -40,23 +41,15 @@ except (ImportError, AttributeError):  # pragma: NO COVER
 import google.api_core.exceptions
 from google.api_core.gapic_v1 import client_info
 import google.cloud._helpers
+from google.cloud import bigquery_v2
 from google.cloud.bigquery.dataset import DatasetReference
+from tests.unit.helpers import make_connection
 
 
 def _make_credentials():
     import google.auth.credentials
 
     return mock.Mock(spec=google.auth.credentials.Credentials)
-
-
-def _make_connection(*responses):
-    import google.cloud.bigquery._http
-    from google.cloud.exceptions import NotFound
-
-    mock_conn = mock.create_autospec(google.cloud.bigquery._http.Connection)
-    mock_conn.USER_AGENT = "testing 1.2.3"
-    mock_conn.api_request.side_effect = list(responses) + [NotFound("miss")]
-    return mock_conn
 
 
 def _make_list_partitons_meta_info(project, dataset_id, table_id, num_rows=0):
@@ -163,7 +156,7 @@ class TestClient(unittest.TestCase):
 
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
-        conn = client._connection = _make_connection()
+        conn = client._connection = make_connection()
 
         with self.assertRaises(NotFound):
             client._get_query_results(
@@ -185,7 +178,7 @@ class TestClient(unittest.TestCase):
 
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds, location=self.LOCATION)
-        conn = client._connection = _make_connection()
+        conn = client._connection = make_connection()
 
         with self.assertRaises(NotFound):
             client._get_query_results("nothere", None)
@@ -216,7 +209,7 @@ class TestClient(unittest.TestCase):
 
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
-        client._connection = _make_connection(data)
+        client._connection = make_connection(data)
         query_results = client._get_query_results(job_id, None)
 
         self.assertEqual(query_results.total_rows, 10)
@@ -229,7 +222,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
         email = "bq-123@bigquery-encryption.iam.gserviceaccount.com"
         resource = {"kind": "bigquery#getServiceAccountResponse", "email": email}
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
 
         service_account_email = client.get_service_account_email()
 
@@ -244,7 +237,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
         email = "bq-123@bigquery-encryption.iam.gserviceaccount.com"
         resource = {"kind": "bigquery#getServiceAccountResponse", "email": email}
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
 
         service_account_email = client.get_service_account_email(project=project)
 
@@ -278,7 +271,7 @@ class TestClient(unittest.TestCase):
         }
         creds = _make_credentials()
         client = self._make_one(PROJECT_1, creds)
-        conn = client._connection = _make_connection(DATA)
+        conn = client._connection = make_connection(DATA)
 
         iterator = client.list_projects()
         page = six.next(iterator.pages)
@@ -302,7 +295,7 @@ class TestClient(unittest.TestCase):
         DATA = {}
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
-        conn = client._connection = _make_connection(DATA)
+        conn = client._connection = make_connection(DATA)
 
         iterator = client.list_projects(max_results=3, page_token=TOKEN)
         page = six.next(iterator.pages)
@@ -350,7 +343,7 @@ class TestClient(unittest.TestCase):
         }
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
-        conn = client._connection = _make_connection(DATA)
+        conn = client._connection = make_connection(DATA)
 
         iterator = client.list_datasets()
         page = six.next(iterator.pages)
@@ -371,7 +364,7 @@ class TestClient(unittest.TestCase):
     def test_list_datasets_w_project(self):
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
-        conn = client._connection = _make_connection({})
+        conn = client._connection = make_connection({})
 
         list(client.list_datasets(project="other-project"))
 
@@ -386,7 +379,7 @@ class TestClient(unittest.TestCase):
         DATA = {}
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
-        conn = client._connection = _make_connection(DATA)
+        conn = client._connection = make_connection(DATA)
 
         iterator = client.list_datasets(
             include_all=True, filter=FILTER, max_results=3, page_token=TOKEN
@@ -442,7 +435,7 @@ class TestClient(unittest.TestCase):
             "id": "%s:%s" % (self.PROJECT, self.DS_ID),
             "datasetReference": {"projectId": self.PROJECT, "datasetId": self.DS_ID},
         }
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
         dataset_ref = client.dataset(self.DS_ID)
 
         dataset = client.get_dataset(dataset_ref)
@@ -453,31 +446,31 @@ class TestClient(unittest.TestCase):
         # Test retry.
 
         # Not a cloud API exception (missing 'errors' field).
-        client._connection = _make_connection(Exception(""), resource)
+        client._connection = make_connection(Exception(""), resource)
         with self.assertRaises(Exception):
             client.get_dataset(dataset_ref)
 
         # Zero-length errors field.
-        client._connection = _make_connection(ServerError(""), resource)
+        client._connection = make_connection(ServerError(""), resource)
         with self.assertRaises(ServerError):
             client.get_dataset(dataset_ref)
 
         # Non-retryable reason.
-        client._connection = _make_connection(
+        client._connection = make_connection(
             ServerError("", errors=[{"reason": "serious"}]), resource
         )
         with self.assertRaises(ServerError):
             client.get_dataset(dataset_ref)
 
         # Retryable reason, but retry is disabled.
-        client._connection = _make_connection(
+        client._connection = make_connection(
             ServerError("", errors=[{"reason": "backendError"}]), resource
         )
         with self.assertRaises(ServerError):
             client.get_dataset(dataset_ref, retry=None)
 
         # Retryable reason, default retry: success.
-        client._connection = _make_connection(
+        client._connection = make_connection(
             ServerError("", errors=[{"reason": "backendError"}]), resource
         )
         dataset = client.get_dataset(
@@ -497,7 +490,7 @@ class TestClient(unittest.TestCase):
         }
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        conn = client._connection = _make_connection(RESOURCE)
+        conn = client._connection = make_connection(RESOURCE)
 
         ds_ref = client.dataset(self.DS_ID)
         before = Dataset(ds_ref)
@@ -548,7 +541,7 @@ class TestClient(unittest.TestCase):
         }
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        conn = client._connection = _make_connection(RESOURCE)
+        conn = client._connection = make_connection(RESOURCE)
         entries = [
             AccessEntry("OWNER", "userByEmail", USER_EMAIL),
             AccessEntry(None, "view", VIEW),
@@ -607,7 +600,7 @@ class TestClient(unittest.TestCase):
         }
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
 
         ds_ref = client.dataset(self.DS_ID)
         before = Dataset(ds_ref)
@@ -646,7 +639,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(
             project=self.PROJECT, credentials=creds, location=self.LOCATION
         )
-        conn = client._connection = _make_connection(RESOURCE)
+        conn = client._connection = make_connection(RESOURCE)
 
         ds_ref = client.dataset(self.DS_ID)
         before = Dataset(ds_ref)
@@ -687,7 +680,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(
             project=self.PROJECT, credentials=creds, location=self.LOCATION
         )
-        conn = client._connection = _make_connection(RESOURCE)
+        conn = client._connection = make_connection(RESOURCE)
 
         ds_ref = client.dataset(self.DS_ID)
         before = Dataset(ds_ref)
@@ -726,7 +719,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(
             project=self.PROJECT, credentials=creds, location=self.LOCATION
         )
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
 
         dataset = client.create_dataset(client.dataset(self.DS_ID))
 
@@ -761,7 +754,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(
             project=self.PROJECT, credentials=creds, location=self.LOCATION
         )
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
 
         dataset = client.create_dataset("{}.{}".format(self.PROJECT, self.DS_ID))
 
@@ -796,7 +789,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(
             project=self.PROJECT, credentials=creds, location=self.LOCATION
         )
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
 
         dataset = client.create_dataset(self.DS_ID)
 
@@ -824,7 +817,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(
             project=self.PROJECT, credentials=creds, location=self.LOCATION
         )
-        client._connection = _make_connection(
+        client._connection = make_connection(
             google.api_core.exceptions.AlreadyExists("dataset already exists")
         )
 
@@ -844,7 +837,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(
             project=self.PROJECT, credentials=creds, location=self.LOCATION
         )
-        conn = client._connection = _make_connection(
+        conn = client._connection = make_connection(
             google.api_core.exceptions.AlreadyExists("dataset already exists"), resource
         )
 
@@ -874,6 +867,98 @@ class TestClient(unittest.TestCase):
             ]
         )
 
+    def test_create_routine_w_minimal_resource(self):
+        from google.cloud.bigquery.routine import Routine
+        from google.cloud.bigquery.routine import RoutineReference
+
+        creds = _make_credentials()
+        resource = {
+            "routineReference": {
+                "projectId": "test-routine-project",
+                "datasetId": "test_routines",
+                "routineId": "minimal_routine",
+            }
+        }
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        conn = client._connection = make_connection(resource)
+        full_routine_id = "test-routine-project.test_routines.minimal_routine"
+        routine = Routine(full_routine_id)
+
+        actual_routine = client.create_routine(routine)
+
+        conn.api_request.assert_called_once_with(
+            method="POST",
+            path="/projects/test-routine-project/datasets/test_routines/routines",
+            data=resource,
+        )
+        self.assertEqual(
+            actual_routine.reference, RoutineReference.from_string(full_routine_id)
+        )
+
+    def test_create_routine_w_conflict(self):
+        from google.cloud.bigquery.routine import Routine
+
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        conn = client._connection = make_connection(
+            google.api_core.exceptions.AlreadyExists("routine already exists")
+        )
+        full_routine_id = "test-routine-project.test_routines.minimal_routine"
+        routine = Routine(full_routine_id)
+
+        with pytest.raises(google.api_core.exceptions.AlreadyExists):
+            client.create_routine(routine)
+
+        resource = {
+            "routineReference": {
+                "projectId": "test-routine-project",
+                "datasetId": "test_routines",
+                "routineId": "minimal_routine",
+            }
+        }
+        conn.api_request.assert_called_once_with(
+            method="POST",
+            path="/projects/test-routine-project/datasets/test_routines/routines",
+            data=resource,
+        )
+
+    def test_create_routine_w_conflict_exists_ok(self):
+        from google.cloud.bigquery.routine import Routine
+
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        resource = {
+            "routineReference": {
+                "projectId": "test-routine-project",
+                "datasetId": "test_routines",
+                "routineId": "minimal_routine",
+            }
+        }
+        conn = client._connection = make_connection(
+            google.api_core.exceptions.AlreadyExists("routine already exists"), resource
+        )
+        full_routine_id = "test-routine-project.test_routines.minimal_routine"
+        routine = Routine(full_routine_id)
+
+        actual_routine = client.create_routine(routine, exists_ok=True)
+
+        self.assertEqual(actual_routine.project, "test-routine-project")
+        self.assertEqual(actual_routine.dataset_id, "test_routines")
+        self.assertEqual(actual_routine.routine_id, "minimal_routine")
+        conn.api_request.assert_has_calls(
+            [
+                mock.call(
+                    method="POST",
+                    path="/projects/test-routine-project/datasets/test_routines/routines",
+                    data=resource,
+                ),
+                mock.call(
+                    method="GET",
+                    path="/projects/test-routine-project/datasets/test_routines/routines/minimal_routine",
+                ),
+            ]
+        )
+
     def test_create_table_w_day_partition(self):
         from google.cloud.bigquery.table import Table
         from google.cloud.bigquery.table import TimePartitioning
@@ -882,7 +967,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         resource = self._make_table_resource()
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
         table = Table(self.TABLE_REF)
         table.time_partitioning = TimePartitioning()
 
@@ -914,7 +999,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.PROJECT, credentials=creds)
         resource = self._make_table_resource()
         resource["newAlphaProperty"] = "unreleased property"
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
         table = Table(self.TABLE_REF)
         table._properties["newAlphaProperty"] = "unreleased property"
 
@@ -944,7 +1029,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         resource = self._make_table_resource()
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
         table = Table(self.TABLE_REF)
         table.encryption_configuration = EncryptionConfiguration(
             kms_key_name=self.KMS_KEY_NAME
@@ -975,7 +1060,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         resource = self._make_table_resource()
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
         table = Table(self.TABLE_REF)
         table.time_partitioning = TimePartitioning(expiration_ms=100)
 
@@ -1031,7 +1116,7 @@ class TestClient(unittest.TestCase):
             SchemaField("full_name", "STRING", mode="REQUIRED"),
             SchemaField("age", "INTEGER", mode="REQUIRED"),
         ]
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
         table = Table(self.TABLE_REF, schema=schema)
         table.view_query = query
 
@@ -1089,7 +1174,7 @@ class TestClient(unittest.TestCase):
                 }
             }
         )
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
         table = Table(self.TABLE_REF)
         ec = ExternalConfig("CSV")
         ec.autodetect = True
@@ -1126,7 +1211,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         resource = self._make_table_resource()
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
 
         got = client.create_table(self.TABLE_REF)
 
@@ -1149,7 +1234,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         resource = self._make_table_resource()
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
 
         got = client.create_table(
             "{}.{}.{}".format(self.PROJECT, self.DS_ID, self.TABLE_ID)
@@ -1174,7 +1259,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         resource = self._make_table_resource()
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
 
         got = client.create_table("{}.{}".format(self.DS_ID, self.TABLE_ID))
 
@@ -1198,7 +1283,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(
             project=self.PROJECT, credentials=creds, location=self.LOCATION
         )
-        conn = client._connection = _make_connection(
+        conn = client._connection = make_connection(
             google.api_core.exceptions.AlreadyExists("table already exists")
         )
 
@@ -1228,7 +1313,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(
             project=self.PROJECT, credentials=creds, location=self.LOCATION
         )
-        conn = client._connection = _make_connection(
+        conn = client._connection = make_connection(
             google.api_core.exceptions.AlreadyExists("table already exists"), resource
         )
 
@@ -1274,7 +1359,7 @@ class TestClient(unittest.TestCase):
                 "modelId": self.MODEL_ID,
             }
         }
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
 
         model_ref = client.dataset(self.DS_ID).model(self.MODEL_ID)
         got = client.get_model(model_ref)
@@ -1298,13 +1383,59 @@ class TestClient(unittest.TestCase):
                 "modelId": self.MODEL_ID,
             }
         }
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
 
         model_id = "{}.{}.{}".format(self.PROJECT, self.DS_ID, self.MODEL_ID)
         got = client.get_model(model_id)
 
         conn.api_request.assert_called_once_with(method="GET", path="/%s" % path)
         self.assertEqual(got.model_id, self.MODEL_ID)
+
+    def test_get_routine(self):
+        from google.cloud.bigquery.routine import Routine
+        from google.cloud.bigquery.routine import RoutineReference
+
+        full_routine_id = "test-routine-project.test_routines.minimal_routine"
+        routines = [
+            full_routine_id,
+            Routine(full_routine_id),
+            RoutineReference.from_string(full_routine_id),
+        ]
+        for routine in routines:
+            creds = _make_credentials()
+            resource = {
+                "etag": "im-an-etag",
+                "routineReference": {
+                    "projectId": "test-routine-project",
+                    "datasetId": "test_routines",
+                    "routineId": "minimal_routine",
+                },
+                "routineType": "SCALAR_FUNCTION",
+            }
+            client = self._make_one(project=self.PROJECT, credentials=creds)
+            conn = client._connection = make_connection(resource)
+
+            actual_routine = client.get_routine(routine)
+
+            conn.api_request.assert_called_once_with(
+                method="GET",
+                path="/projects/test-routine-project/datasets/test_routines/routines/minimal_routine",
+            )
+            self.assertEqual(
+                actual_routine.reference,
+                RoutineReference.from_string(full_routine_id),
+                msg="routine={}".format(repr(routine)),
+            )
+            self.assertEqual(
+                actual_routine.etag,
+                "im-an-etag",
+                msg="routine={}".format(repr(routine)),
+            )
+            self.assertEqual(
+                actual_routine.type_,
+                "SCALAR_FUNCTION",
+                msg="routine={}".format(repr(routine)),
+            )
 
     def test_get_table(self):
         path = "projects/%s/datasets/%s/tables/%s" % (
@@ -1316,7 +1447,7 @@ class TestClient(unittest.TestCase):
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
         resource = self._make_table_resource()
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
         table = client.get_table(self.TABLE_REF)
 
         conn.api_request.assert_called_once_with(method="GET", path="/%s" % path)
@@ -1384,7 +1515,7 @@ class TestClient(unittest.TestCase):
         }
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        conn = client._connection = _make_connection(RESOURCE, RESOURCE)
+        conn = client._connection = make_connection(RESOURCE, RESOURCE)
         ds = Dataset(client.dataset(self.DS_ID))
         ds.description = DESCRIPTION
         ds.friendly_name = FRIENDLY_NAME
@@ -1431,7 +1562,7 @@ class TestClient(unittest.TestCase):
         }
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
         dataset = Dataset(client.dataset(self.DS_ID))
         dataset._properties["newAlphaProperty"] = "unreleased property"
 
@@ -1474,7 +1605,7 @@ class TestClient(unittest.TestCase):
         }
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        conn = client._connection = _make_connection(resource, resource)
+        conn = client._connection = make_connection(resource, resource)
         model_id = "{}.{}.{}".format(self.PROJECT, self.DS_ID, self.MODEL_ID)
         model = Model(model_id)
         model.description = description
@@ -1506,6 +1637,66 @@ class TestClient(unittest.TestCase):
         client.update_model(model, [])
         req = conn.api_request.call_args
         self.assertEqual(req[1]["headers"]["If-Match"], "etag")
+
+    def test_update_routine(self):
+        from google.cloud.bigquery.routine import Routine
+        from google.cloud.bigquery.routine import RoutineArgument
+
+        full_routine_id = "routines-project.test_routines.updated_routine"
+        resource = {
+            "routineReference": {
+                "projectId": "routines-project",
+                "datasetId": "test_routines",
+                "routineId": "updated_routine",
+            },
+            "routineType": "SCALAR_FUNCTION",
+            "language": "SQL",
+            "definitionBody": "x * 3",
+            "arguments": [{"name": "x", "dataType": {"typeKind": "INT64"}}],
+            "returnType": None,
+            "someNewField": "someValue",
+        }
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        conn = client._connection = make_connection(resource, resource)
+        routine = Routine(full_routine_id)
+        routine.arguments = [
+            RoutineArgument(
+                name="x",
+                data_type=bigquery_v2.types.StandardSqlDataType(
+                    type_kind=bigquery_v2.enums.StandardSqlDataType.TypeKind.INT64
+                ),
+            )
+        ]
+        routine.body = "x * 3"
+        routine.language = "SQL"
+        routine.type_ = "SCALAR_FUNCTION"
+        routine._properties["someNewField"] = "someValue"
+
+        actual_routine = client.update_routine(
+            routine,
+            ["arguments", "language", "body", "type_", "return_type", "someNewField"],
+        )
+
+        # TODO: routineReference isn't needed when the Routines API supports
+        #       partial updates.
+        sent = resource
+        conn.api_request.assert_called_once_with(
+            method="PUT",
+            data=sent,
+            path="/projects/routines-project/datasets/test_routines/routines/updated_routine",
+            headers=None,
+        )
+        self.assertEqual(actual_routine.arguments, routine.arguments)
+        self.assertEqual(actual_routine.body, routine.body)
+        self.assertEqual(actual_routine.language, routine.language)
+        self.assertEqual(actual_routine.type_, routine.type_)
+
+        # ETag becomes If-Match header.
+        routine._properties["etag"] = "im-an-etag"
+        client.update_routine(routine, [])
+        req = conn.api_request.call_args
+        self.assertEqual(req[1]["headers"]["If-Match"], "im-an-etag")
 
     def test_update_table(self):
         from google.cloud.bigquery.table import Table, SchemaField
@@ -1548,7 +1739,7 @@ class TestClient(unittest.TestCase):
         ]
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        conn = client._connection = _make_connection(resource, resource)
+        conn = client._connection = make_connection(resource, resource)
         table = Table(self.TABLE_REF, schema=schema)
         table.description = description
         table.friendly_name = title
@@ -1605,7 +1796,7 @@ class TestClient(unittest.TestCase):
         resource["newAlphaProperty"] = "unreleased property"
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
         table = Table(self.TABLE_REF)
         table._properties["newAlphaProperty"] = "unreleased property"
 
@@ -1633,7 +1824,7 @@ class TestClient(unittest.TestCase):
         resource["view"] = {"useLegacySql": True}
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
         table = Table(self.TABLE_REF)
         table.view_use_legacy_sql = True
 
@@ -1692,7 +1883,7 @@ class TestClient(unittest.TestCase):
         )
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
         table = Table(self.TABLE_REF, schema=schema)
         table.expires = exp_time
         table.view_query = query
@@ -1740,7 +1931,7 @@ class TestClient(unittest.TestCase):
         resource2 = self._make_table_resource()
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        conn = client._connection = _make_connection(resource1, resource2)
+        conn = client._connection = make_connection(resource1, resource2)
         table = client.get_table(
             # Test with string for table ID
             "{}.{}.{}".format(
@@ -1777,7 +1968,7 @@ class TestClient(unittest.TestCase):
         resource2["description"] = None
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        conn = client._connection = _make_connection(resource1, resource2)
+        conn = client._connection = make_connection(resource1, resource2)
         table = Table(self.TABLE_REF)
         table.description = description
         table.friendly_name = title
@@ -1798,7 +1989,7 @@ class TestClient(unittest.TestCase):
         path = "/projects/{}/datasets/{}/tables".format(self.PROJECT, self.DS_ID)
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        conn = client._connection = _make_connection({})
+        conn = client._connection = make_connection({})
 
         dataset = client.dataset(self.DS_ID)
         iterator = client.list_tables(dataset)
@@ -1817,7 +2008,7 @@ class TestClient(unittest.TestCase):
         path = "/projects/{}/datasets/{}/models".format(self.PROJECT, self.DS_ID)
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        conn = client._connection = _make_connection({})
+        conn = client._connection = make_connection({})
 
         dataset_id = "{}.{}".format(self.PROJECT, self.DS_ID)
         iterator = client.list_models(dataset_id)
@@ -1860,7 +2051,7 @@ class TestClient(unittest.TestCase):
 
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        conn = client._connection = _make_connection(DATA)
+        conn = client._connection = make_connection(DATA)
         dataset = client.dataset(self.DS_ID)
 
         iterator = client.list_models(dataset)
@@ -1884,6 +2075,82 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.PROJECT, credentials=creds)
         with self.assertRaises(TypeError):
             client.list_models(client.dataset(self.DS_ID).model("foo"))
+
+    def test_list_routines_empty(self):
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        conn = client._connection = make_connection({})
+
+        iterator = client.list_routines("test-routines.test_routines")
+        page = six.next(iterator.pages)
+        routines = list(page)
+        token = iterator.next_page_token
+
+        self.assertEqual(routines, [])
+        self.assertIsNone(token)
+        conn.api_request.assert_called_once_with(
+            method="GET",
+            path="/projects/test-routines/datasets/test_routines/routines",
+            query_params={},
+        )
+
+    def test_list_routines_defaults(self):
+        from google.cloud.bigquery.routine import Routine
+
+        project_id = "test-routines"
+        dataset_id = "test_routines"
+        path = "/projects/test-routines/datasets/test_routines/routines"
+        routine_1 = "routine_one"
+        routine_2 = "routine_two"
+        token = "TOKEN"
+        resource = {
+            "nextPageToken": token,
+            "routines": [
+                {
+                    "routineReference": {
+                        "routineId": routine_1,
+                        "datasetId": dataset_id,
+                        "projectId": project_id,
+                    }
+                },
+                {
+                    "routineReference": {
+                        "routineId": routine_2,
+                        "datasetId": dataset_id,
+                        "projectId": project_id,
+                    }
+                },
+            ],
+        }
+
+        creds = _make_credentials()
+        client = self._make_one(project=project_id, credentials=creds)
+        conn = client._connection = make_connection(resource)
+        dataset = client.dataset(dataset_id)
+
+        iterator = client.list_routines(dataset)
+        self.assertIs(iterator.dataset, dataset)
+        page = six.next(iterator.pages)
+        routines = list(page)
+        actual_token = iterator.next_page_token
+
+        self.assertEqual(len(routines), len(resource["routines"]))
+        for found, expected in zip(routines, resource["routines"]):
+            self.assertIsInstance(found, Routine)
+            self.assertEqual(
+                found.routine_id, expected["routineReference"]["routineId"]
+            )
+        self.assertEqual(actual_token, token)
+
+        conn.api_request.assert_called_once_with(
+            method="GET", path=path, query_params={}
+        )
+
+    def test_list_routines_wrong_type(self):
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        with self.assertRaises(TypeError):
+            client.list_routines(client.dataset(self.DS_ID).table("foo"))
 
     def test_list_tables_defaults(self):
         from google.cloud.bigquery.table import TableListItem
@@ -1920,7 +2187,7 @@ class TestClient(unittest.TestCase):
 
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        conn = client._connection = _make_connection(DATA)
+        conn = client._connection = make_connection(DATA)
         dataset = client.dataset(self.DS_ID)
 
         iterator = client.list_tables(dataset)
@@ -1974,7 +2241,7 @@ class TestClient(unittest.TestCase):
 
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        conn = client._connection = _make_connection(DATA)
+        conn = client._connection = make_connection(DATA)
         dataset = client.dataset(self.DS_ID)
 
         iterator = client.list_tables(
@@ -2016,7 +2283,7 @@ class TestClient(unittest.TestCase):
         PATH = "projects/%s/datasets/%s" % (self.PROJECT, self.DS_ID)
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        conn = client._connection = _make_connection(*([{}] * len(datasets)))
+        conn = client._connection = make_connection(*([{}] * len(datasets)))
         for arg in datasets:
             client.delete_dataset(arg)
             conn.api_request.assert_called_with(
@@ -2029,7 +2296,7 @@ class TestClient(unittest.TestCase):
         PATH = "projects/%s/datasets/%s" % (self.PROJECT, self.DS_ID)
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        conn = client._connection = _make_connection({}, {})
+        conn = client._connection = make_connection({}, {})
         ds_ref = client.dataset(self.DS_ID)
         for arg in (ds_ref, Dataset(ds_ref)):
             client.delete_dataset(arg, delete_contents=True)
@@ -2050,7 +2317,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection(
+        conn = client._connection = make_connection(
             google.api_core.exceptions.NotFound("dataset not found")
         )
 
@@ -2064,7 +2331,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection(
+        conn = client._connection = make_connection(
             google.api_core.exceptions.NotFound("dataset not found")
         )
 
@@ -2089,7 +2356,7 @@ class TestClient(unittest.TestCase):
             client.dataset(self.DS_ID).model(self.MODEL_ID),
             Model(model_id),
         )
-        conn = client._connection = _make_connection(*([{}] * len(models)))
+        conn = client._connection = make_connection(*([{}] * len(models)))
 
         for arg in models:
             client.delete_model(arg)
@@ -2108,7 +2375,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection(
+        conn = client._connection = make_connection(
             google.api_core.exceptions.NotFound("model not found")
         )
 
@@ -2124,7 +2391,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection(
+        conn = client._connection = make_connection(
             google.api_core.exceptions.NotFound("model not found")
         )
 
@@ -2133,6 +2400,67 @@ class TestClient(unittest.TestCase):
         )
 
         conn.api_request.assert_called_with(method="DELETE", path=path)
+
+    def test_delete_routine(self):
+        from google.cloud.bigquery.routine import Routine
+        from google.cloud.bigquery.routine import RoutineReference
+
+        full_routine_id = "test-routine-project.test_routines.minimal_routine"
+        routines = [
+            full_routine_id,
+            Routine(full_routine_id),
+            RoutineReference.from_string(full_routine_id),
+        ]
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = make_connection(*([{}] * len(routines)))
+
+        for routine in routines:
+            client.delete_routine(routine)
+            conn.api_request.assert_called_with(
+                method="DELETE",
+                path="/projects/test-routine-project/datasets/test_routines/routines/minimal_routine",
+            )
+
+    def test_delete_routine_w_wrong_type(self):
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        with self.assertRaises(TypeError):
+            client.delete_routine(client.dataset(self.DS_ID))
+
+    def test_delete_routine_w_not_found_ok_false(self):
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = make_connection(
+            google.api_core.exceptions.NotFound("routine not found")
+        )
+
+        with self.assertRaises(google.api_core.exceptions.NotFound):
+            client.delete_routine("routines-project.test_routines.test_routine")
+
+        conn.api_request.assert_called_with(
+            method="DELETE",
+            path="/projects/routines-project/datasets/test_routines/routines/test_routine",
+        )
+
+    def test_delete_routine_w_not_found_ok_true(self):
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = make_connection(
+            google.api_core.exceptions.NotFound("routine not found")
+        )
+
+        client.delete_routine(
+            "routines-project.test_routines.test_routine", not_found_ok=True
+        )
+
+        conn.api_request.assert_called_with(
+            method="DELETE",
+            path="/projects/routines-project/datasets/test_routines/routines/test_routine",
+        )
 
     def test_delete_table(self):
         from google.cloud.bigquery.table import Table
@@ -2154,7 +2482,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection(*([{}] * len(tables)))
+        conn = client._connection = make_connection(*([{}] * len(tables)))
 
         for arg in tables:
             client.delete_table(arg)
@@ -2173,7 +2501,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection(
+        conn = client._connection = make_connection(
             google.api_core.exceptions.NotFound("table not found")
         )
 
@@ -2189,7 +2517,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection(
+        conn = client._connection = make_connection(
             google.api_core.exceptions.NotFound("table not found")
         )
 
@@ -2215,7 +2543,7 @@ class TestClient(unittest.TestCase):
         JOB_ID = "NONESUCH"
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
-        conn = client._connection = _make_connection()
+        conn = client._connection = make_connection()
 
         with self.assertRaises(NotFound):
             client.get_job(JOB_ID, project=OTHER_PROJECT, location=self.LOCATION)
@@ -2233,7 +2561,7 @@ class TestClient(unittest.TestCase):
         JOB_ID = "NONESUCH"
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds, location=self.LOCATION)
-        conn = client._connection = _make_connection()
+        conn = client._connection = make_connection()
 
         with self.assertRaises(NotFound):
             client.get_job(JOB_ID, project=OTHER_PROJECT)
@@ -2271,7 +2599,7 @@ class TestClient(unittest.TestCase):
         }
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
-        conn = client._connection = _make_connection(ASYNC_QUERY_DATA)
+        conn = client._connection = make_connection(ASYNC_QUERY_DATA)
 
         job = client.get_job(JOB_ID)
 
@@ -2293,7 +2621,7 @@ class TestClient(unittest.TestCase):
         JOB_ID = "NONESUCH"
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
-        conn = client._connection = _make_connection()
+        conn = client._connection = make_connection()
 
         with self.assertRaises(NotFound):
             client.cancel_job(JOB_ID, project=OTHER_PROJECT, location=self.LOCATION)
@@ -2311,7 +2639,7 @@ class TestClient(unittest.TestCase):
         JOB_ID = "NONESUCH"
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds, location=self.LOCATION)
-        conn = client._connection = _make_connection()
+        conn = client._connection = make_connection()
 
         with self.assertRaises(NotFound):
             client.cancel_job(JOB_ID, project=OTHER_PROJECT)
@@ -2336,7 +2664,7 @@ class TestClient(unittest.TestCase):
         RESOURCE = {"job": QUERY_JOB_RESOURCE}
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
-        conn = client._connection = _make_connection(RESOURCE)
+        conn = client._connection = make_connection(RESOURCE)
 
         job = client.cancel_job(JOB_ID)
 
@@ -2446,7 +2774,7 @@ class TestClient(unittest.TestCase):
         }
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
-        conn = client._connection = _make_connection(DATA)
+        conn = client._connection = make_connection(DATA)
 
         iterator = client.list_jobs()
         page = six.next(iterator.pages)
@@ -2488,7 +2816,7 @@ class TestClient(unittest.TestCase):
         DATA = {"nextPageToken": TOKEN, "jobs": [LOAD_DATA]}
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
-        conn = client._connection = _make_connection(DATA)
+        conn = client._connection = make_connection(DATA)
 
         iterator = client.list_jobs()
         page = six.next(iterator.pages)
@@ -2512,7 +2840,7 @@ class TestClient(unittest.TestCase):
         TOKEN = "TOKEN"
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
-        conn = client._connection = _make_connection(DATA)
+        conn = client._connection = make_connection(DATA)
 
         iterator = client.list_jobs(
             max_results=1000, page_token=TOKEN, all_users=True, state_filter="done"
@@ -2539,7 +2867,7 @@ class TestClient(unittest.TestCase):
     def test_list_jobs_w_project(self):
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
-        conn = client._connection = _make_connection({})
+        conn = client._connection = make_connection({})
 
         list(client.list_jobs(project="other-project"))
 
@@ -2552,7 +2880,7 @@ class TestClient(unittest.TestCase):
     def test_list_jobs_w_time_filter(self):
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
-        conn = client._connection = _make_connection({})
+        conn = client._connection = make_connection({})
 
         # One millisecond after the unix epoch.
         start_time = datetime.datetime(1970, 1, 1, 0, 0, 0, 1000)
@@ -2594,7 +2922,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection(RESOURCE)
+        conn = client._connection = make_connection(RESOURCE)
         destination = client.dataset(self.DS_ID).table(DESTINATION)
 
         job = client.load_table_from_uri(SOURCE_URI, destination, job_id=JOB)
@@ -2610,7 +2938,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(list(job.source_uris), [SOURCE_URI])
         self.assertIs(job.destination, destination)
 
-        conn = client._connection = _make_connection(RESOURCE)
+        conn = client._connection = make_connection(RESOURCE)
 
         job = client.load_table_from_uri([SOURCE_URI], destination, job_id=JOB)
         self.assertIsInstance(job, LoadJob)
@@ -2643,7 +2971,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
         destination = client.dataset(self.DS_ID).table(destination_id)
 
         client.load_table_from_uri(
@@ -2685,7 +3013,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(
             project=self.PROJECT, credentials=creds, _http=http, location=self.LOCATION
         )
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
 
         client.load_table_from_uri(
             source_uri,
@@ -2731,7 +3059,7 @@ class TestClient(unittest.TestCase):
         response_headers = {"location": resumable_url}
         fake_transport = self._mock_transport(http_client.OK, response_headers)
         client = self._make_one(project=self.PROJECT, _http=fake_transport)
-        conn = client._connection = _make_connection()
+        conn = client._connection = make_connection()
 
         # Create some mock arguments and call the method under test.
         data = b"goodbye gudbi gootbee"
@@ -2752,7 +3080,7 @@ class TestClient(unittest.TestCase):
             + "/jobs?uploadType=resumable"
         )
         self.assertEqual(upload.upload_url, upload_url)
-        expected_headers = _get_upload_headers(conn.USER_AGENT)
+        expected_headers = _get_upload_headers(conn.user_agent)
         self.assertEqual(upload._headers, expected_headers)
         self.assertFalse(upload.finished)
         self.assertEqual(upload._chunk_size, _DEFAULT_CHUNKSIZE)
@@ -2797,7 +3125,7 @@ class TestClient(unittest.TestCase):
 
         fake_transport = self._mock_transport(http_client.OK, {})
         client = self._make_one(project=self.PROJECT, _http=fake_transport)
-        conn = client._connection = _make_connection()
+        conn = client._connection = make_connection()
 
         # Create some mock arguments.
         data = b"Bzzzz-zap \x00\x01\xf4"
@@ -2830,7 +3158,7 @@ class TestClient(unittest.TestCase):
             + b"\r\n"
             + b"--==0==--"
         )
-        headers = _get_upload_headers(conn.USER_AGENT)
+        headers = _get_upload_headers(conn.user_agent)
         headers["content-type"] = b'multipart/related; boundary="==0=="'
         fake_transport.request.assert_called_once_with(
             "POST", upload_url, data=payload, headers=headers
@@ -2872,7 +3200,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection(RESOURCE)
+        conn = client._connection = make_connection(RESOURCE)
         dataset = client.dataset(self.DS_ID)
         source = dataset.table(SOURCE)
         destination = dataset.table(DESTINATION)
@@ -2890,7 +3218,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(list(job.sources), [source])
         self.assertIs(job.destination, destination)
 
-        conn = client._connection = _make_connection(RESOURCE)
+        conn = client._connection = make_connection(RESOURCE)
         source2 = dataset.table(SOURCE + "2")
         job = client.copy_table([source, source2], destination, job_id=JOB)
         self.assertIsInstance(job, CopyJob)
@@ -2929,7 +3257,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
         dataset = client.dataset(self.DS_ID)
         source = dataset.table(source_id)
         destination = dataset.table(destination_id)
@@ -2979,7 +3307,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(
             project=self.PROJECT, credentials=creds, _http=http, location=self.LOCATION
         )
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
 
         client.copy_table(
             # Test with string for table IDs.
@@ -2998,7 +3326,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        client._connection = _make_connection({})
+        client._connection = make_connection({})
         sources = [
             "dataset_wo_proj.some_table",
             "other_project.other_dataset.other_table",
@@ -3043,7 +3371,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection(RESOURCE)
+        conn = client._connection = make_connection(RESOURCE)
         dataset = client.dataset(self.DS_ID)
         source = dataset.table(SOURCE)
 
@@ -3085,7 +3413,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
         dataset = client.dataset(self.DS_ID)
         source = dataset.table(source_id)
 
@@ -3128,7 +3456,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(
             project=self.PROJECT, credentials=creds, _http=http, location=self.LOCATION
         )
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
 
         client.extract_table(
             # Test with string for table ID.
@@ -3168,7 +3496,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection(RESOURCE)
+        conn = client._connection = make_connection(RESOURCE)
         dataset = client.dataset(self.DS_ID)
         source = dataset.table(SOURCE)
         job_config = ExtractJobConfig()
@@ -3212,7 +3540,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection(RESOURCE)
+        conn = client._connection = make_connection(RESOURCE)
         dataset = client.dataset(self.DS_ID)
         source = dataset.table(SOURCE)
 
@@ -3242,7 +3570,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection(RESOURCE)
+        conn = client._connection = make_connection(RESOURCE)
 
         job = client.query(QUERY)
 
@@ -3278,7 +3606,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
 
         client.query(
             query, job_id=job_id, project="other-project", location=self.LOCATION
@@ -3329,7 +3657,7 @@ class TestClient(unittest.TestCase):
             _http=http,
             default_query_job_config=default_job_config,
         )
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
 
         job_config = QueryJobConfig()
         job_config.use_query_cache = True
@@ -3381,7 +3709,7 @@ class TestClient(unittest.TestCase):
             _http=http,
             default_query_job_config=default_job_config,
         )
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
 
         job_config = QueryJobConfig()
         job_config.use_query_cache = True
@@ -3429,7 +3757,7 @@ class TestClient(unittest.TestCase):
             _http=http,
             default_query_job_config=default_job_config,
         )
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
 
         client.query(query, job_id=job_id, location=self.LOCATION)
 
@@ -3454,7 +3782,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(
             project=self.PROJECT, credentials=creds, _http=http, location=self.LOCATION
         )
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
 
         client.query(query, job_id=job_id, project="other-project")
 
@@ -3478,7 +3806,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection(resource)
+        conn = client._connection = make_connection(resource)
 
         job = client.query(query)
 
@@ -3511,7 +3839,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection(RESOURCE)
+        conn = client._connection = make_connection(RESOURCE)
         udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
         config = QueryJobConfig()
         config.udf_resources = udf_resources
@@ -3567,7 +3895,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection(RESOURCE)
+        conn = client._connection = make_connection(RESOURCE)
         query_parameters = [ScalarQueryParameter("foo", "INT64", 123)]
         config = QueryJobConfig()
         config.query_parameters = query_parameters
@@ -3636,7 +3964,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection({})
+        conn = client._connection = make_connection({})
         schema = [
             SchemaField("full_name", "STRING", mode="REQUIRED"),
             SchemaField("age", "INTEGER", mode="REQUIRED"),
@@ -3692,7 +4020,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection({})
+        conn = client._connection = make_connection({})
         schema = [
             SchemaField("full_name", "STRING", mode="REQUIRED"),
             SchemaField("age", "INTEGER", mode="REQUIRED"),
@@ -3753,7 +4081,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection({})
+        conn = client._connection = make_connection({})
         schema = [
             SchemaField("full_name", "STRING", mode="REQUIRED"),
             SchemaField("age", "INTEGER", mode="REQUIRED"),
@@ -3811,7 +4139,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection(RESPONSE)
+        conn = client._connection = make_connection(RESPONSE)
         schema = [
             SchemaField("full_name", "STRING", mode="REQUIRED"),
             SchemaField("age", "INTEGER", mode="REQUIRED"),
@@ -3872,7 +4200,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection({})
+        conn = client._connection = make_connection({})
         color = SchemaField("color", "STRING", mode="REPEATED")
         items = SchemaField("items", "INTEGER", mode="REPEATED")
         score = SchemaField("score", "INTEGER")
@@ -3965,7 +4293,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection({})
+        conn = client._connection = make_connection({})
         full_name = SchemaField("full_name", "STRING", mode="REQUIRED")
         area_code = SchemaField("area_code", "STRING", "REQUIRED")
         local_number = SchemaField("local_number", "STRING", "REQUIRED")
@@ -4057,7 +4385,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=project, credentials=creds, _http=http)
-        conn = client._connection = _make_connection({})
+        conn = client._connection = make_connection({})
         table_ref = DatasetReference(project, ds_id).table(table_id)
         schema = [
             table.SchemaField("account", "STRING"),
@@ -4107,7 +4435,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection({})
+        conn = client._connection = make_connection({})
         table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
         schema = [
             SchemaField("full_name", "STRING", mode="REQUIRED"),
@@ -4145,7 +4473,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(
             project="default-project", credentials=creds, _http=http
         )
-        conn = client._connection = _make_connection({})
+        conn = client._connection = make_connection({})
 
         with mock.patch("uuid.uuid4", side_effect=map(str, range(len(rows)))):
             errors = client.insert_rows_json("proj.dset.tbl", rows)
@@ -4179,7 +4507,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        client._connection = _make_connection(meta_info, data)
+        client._connection = make_connection(meta_info, data)
         table = Table(self.TABLE_REF)
 
         partition_list = client.list_partitions(table)
@@ -4194,7 +4522,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        client._connection = _make_connection(meta_info, {})
+        client._connection = make_connection(meta_info, {})
 
         partition_list = client.list_partitions(
             "{}.{}".format(self.DS_ID, self.TABLE_ID)
@@ -4256,7 +4584,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection(DATA, DATA)
+        conn = client._connection = make_connection(DATA, DATA)
         full_name = SchemaField("full_name", "STRING", mode="REQUIRED")
         age = SchemaField("age", "INTEGER", mode="NULLABLE")
         joined = SchemaField("joined", "TIMESTAMP", mode="NULLABLE")
@@ -4286,7 +4614,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        client._connection = _make_connection(response, response)
+        client._connection = make_connection(response, response)
 
         # Table that has no schema because it's an empty table.
         rows = client.list_rows(
@@ -4320,7 +4648,7 @@ class TestClient(unittest.TestCase):
             ({"max_results": 2}, {"maxResults": 2}),
             ({"start_index": 1, "max_results": 2}, {"startIndex": 1, "maxResults": 2}),
         ]
-        conn = client._connection = _make_connection(*len(tests) * [{}])
+        conn = client._connection = make_connection(*len(tests) * [{}])
         for i, test in enumerate(tests):
             iterator = client.list_rows(table, **test[0])
             six.next(iterator.pages)
@@ -4363,7 +4691,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection(DATA)
+        conn = client._connection = make_connection(DATA)
         color = SchemaField("color", "STRING", mode="REPEATED")
         index = SchemaField("index", "INTEGER", "REPEATED")
         score = SchemaField("score", "FLOAT", "REPEATED")
@@ -4419,7 +4747,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        conn = client._connection = _make_connection(DATA)
+        conn = client._connection = make_connection(DATA)
         full_name = SchemaField("full_name", "STRING", mode="REQUIRED")
         area_code = SchemaField("area_code", "STRING", "REQUIRED")
         local_number = SchemaField("local_number", "STRING", "REQUIRED")
@@ -4500,7 +4828,7 @@ class TestClient(unittest.TestCase):
 
         for table in schemaless_tables:
             client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-            conn = client._connection = _make_connection(table_data, rows_data)
+            conn = client._connection = make_connection(table_data, rows_data)
 
             row_iter = client.list_rows(table)
 
@@ -4518,7 +4846,9 @@ class TestClient(unittest.TestCase):
             self.assertIsNone(rows[2].age, msg=repr(table))
 
     def test_list_rows_error(self):
-        client = self._make_one()
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
 
         # neither Table nor tableReference
         with self.assertRaises(TypeError):
@@ -4972,6 +5302,96 @@ class TestClientUpload(object):
         records = [{"name": "Monty", "age": 100}, {"name": "Python", "age": 60}]
         dataframe = pandas.DataFrame(records)
         job_config = job.LoadJobConfig()
+
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
+        )
+        with load_patch as load_table_from_file:
+            client.load_table_from_dataframe(
+                dataframe, self.TABLE_REF, job_config=job_config, location=self.LOCATION
+            )
+
+        load_table_from_file.assert_called_once_with(
+            client,
+            mock.ANY,
+            self.TABLE_REF,
+            num_retries=_DEFAULT_NUM_RETRIES,
+            rewind=True,
+            job_id=mock.ANY,
+            job_id_prefix=None,
+            location=self.LOCATION,
+            project=None,
+            job_config=mock.ANY,
+        )
+
+        sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
+        assert sent_config is job_config
+        assert sent_config.source_format == job.SourceFormat.PARQUET
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_load_table_from_dataframe_w_schema_wo_pyarrow(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+        from google.cloud.bigquery import job
+        from google.cloud.bigquery.schema import SchemaField
+
+        client = self._make_client()
+        records = [{"name": "Monty", "age": 100}, {"name": "Python", "age": 60}]
+        dataframe = pandas.DataFrame(records)
+        schema = (SchemaField("name", "STRING"), SchemaField("age", "INTEGER"))
+        job_config = job.LoadJobConfig(schema=schema)
+
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
+        )
+        pyarrow_patch = mock.patch("google.cloud.bigquery.client.pyarrow", None)
+
+        with load_patch as load_table_from_file, pyarrow_patch, warnings.catch_warnings(
+            record=True
+        ) as warned:
+            client.load_table_from_dataframe(
+                dataframe, self.TABLE_REF, job_config=job_config, location=self.LOCATION
+            )
+
+        assert len(warned) == 1
+        warning = warned[0]
+        assert warning.category is PendingDeprecationWarning
+        assert "pyarrow" in str(warning)
+
+        load_table_from_file.assert_called_once_with(
+            client,
+            mock.ANY,
+            self.TABLE_REF,
+            num_retries=_DEFAULT_NUM_RETRIES,
+            rewind=True,
+            job_id=mock.ANY,
+            job_id_prefix=None,
+            location=self.LOCATION,
+            project=None,
+            job_config=mock.ANY,
+        )
+
+        sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
+        assert sent_config.source_format == job.SourceFormat.PARQUET
+        assert tuple(sent_config.schema) == schema
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_load_table_from_dataframe_w_nulls(self):
+        """Test that a DataFrame with null columns can be uploaded if a
+        BigQuery schema is specified.
+
+        See: https://github.com/googleapis/google-cloud-python/issues/7370
+        """
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+        from google.cloud.bigquery import job
+
+        client = self._make_client()
+        records = [{"name": None, "age": None}, {"name": None, "age": None}]
+        dataframe = pandas.DataFrame(records)
+        schema = [SchemaField("name", "STRING"), SchemaField("age", "INTEGER")]
+        job_config = job.LoadJobConfig(schema=schema)
 
         load_patch = mock.patch(
             "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True

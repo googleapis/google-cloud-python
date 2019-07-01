@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.privacy.dlp.v2 DlpService API."""
 
 import functools
@@ -20,6 +21,7 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -37,6 +39,7 @@ from google.cloud.dlp_v2.proto import dlp_pb2
 from google.cloud.dlp_v2.proto import dlp_pb2_grpc
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-dlp").version
 
@@ -172,6 +175,7 @@ class DlpServiceClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -202,6 +206,9 @@ class DlpServiceClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -220,6 +227,15 @@ class DlpServiceClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -228,6 +244,7 @@ class DlpServiceClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=dlp_service_grpc_transport.DlpServiceGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -238,7 +255,7 @@ class DlpServiceClient(object):
                 self.transport = transport
         else:
             self.transport = dlp_service_grpc_transport.DlpServiceGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -1055,10 +1072,10 @@ class DlpServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.dlp_v2.types.InspectTemplate` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.dlp_v2.types.InspectTemplate` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1492,10 +1509,10 @@ class DlpServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.dlp_v2.types.DeidentifyTemplate` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.dlp_v2.types.DeidentifyTemplate` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1767,10 +1784,14 @@ class DlpServiceClient(object):
                    -  ``inspected_storage`` - DATASTORE\|CLOUD\_STORAGE\|BIGQUERY
                    -  ``trigger_name`` - The resource name of the trigger that created
                       job.
+                   -  'end\_time\` - Corresponds to time the job finished.
+                   -  'start\_time\` - Corresponds to time the job finished.
 
                 -  Supported fields for risk analysis jobs:
 
                    -  ``state`` - RUNNING\|CANCELED\|FINISHED\|FAILED
+                   -  'end\_time\` - Corresponds to time the job finished.
+                   -  'start\_time\` - Corresponds to time the job finished.
 
                 -  The operator must be ``=`` or ``!=``.
 
@@ -1780,6 +1801,7 @@ class DlpServiceClient(object):
                 -  inspected\_storage = cloud\_storage OR inspected\_storage = bigquery
                 -  inspected\_storage = cloud\_storage AND (state = done OR state =
                    canceled)
+                -  end\_time > "2017-12-12T00:00:00+00:00"
 
                 The length of this field should be no more than 500 characters.
             page_size (int): The maximum number of resources contained in the
@@ -1810,10 +1832,10 @@ class DlpServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.dlp_v2.types.DlpJob` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.dlp_v2.types.DlpJob` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2175,10 +2197,10 @@ class DlpServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.dlp_v2.types.JobTrigger` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.dlp_v2.types.JobTrigger` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2846,10 +2868,10 @@ class DlpServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.dlp_v2.types.StoredInfoType` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.dlp_v2.types.StoredInfoType` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request

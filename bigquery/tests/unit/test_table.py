@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import concurrent.futures
 import itertools
 import json
 import time
@@ -22,7 +21,6 @@ import warnings
 import mock
 import pytest
 import six
-from six.moves import queue
 
 import google.api_core.exceptions
 
@@ -870,6 +868,54 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table.bad = "value"
         with self.assertRaises(ValueError):
             table._build_resource(["bad"])
+
+    def test_time_partitioning_getter(self):
+        from google.cloud.bigquery.table import TimePartitioning
+        from google.cloud.bigquery.table import TimePartitioningType
+
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+
+        table._properties["timePartitioning"] = {
+            "type": "DAY",
+            "field": "col1",
+            "expirationMs": "123456",
+            "requirePartitionFilter": False,
+        }
+        self.assertIsInstance(table.time_partitioning, TimePartitioning)
+        self.assertEqual(table.time_partitioning.type_, TimePartitioningType.DAY)
+        self.assertEqual(table.time_partitioning.field, "col1")
+        self.assertEqual(table.time_partitioning.expiration_ms, 123456)
+        self.assertFalse(table.time_partitioning.require_partition_filter)
+
+    def test_time_partitioning_getter_w_none(self):
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+
+        table._properties["timePartitioning"] = None
+        self.assertIsNone(table.time_partitioning)
+
+        del table._properties["timePartitioning"]
+        self.assertIsNone(table.time_partitioning)
+
+    def test_time_partitioning_getter_w_empty(self):
+        from google.cloud.bigquery.table import TimePartitioning
+
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+
+        # Even though there are required properties according to the API
+        # specification, sometimes time partitioning is populated as an empty
+        # object. See internal bug 131167013.
+        table._properties["timePartitioning"] = {}
+        self.assertIsInstance(table.time_partitioning, TimePartitioning)
+        self.assertIsNone(table.time_partitioning.type_)
+        self.assertIsNone(table.time_partitioning.field)
+        self.assertIsNone(table.time_partitioning.expiration_ms)
+        self.assertIsNone(table.time_partitioning.require_partition_filter)
 
     def test_time_partitioning_setter(self):
         from google.cloud.bigquery.table import TimePartitioning
@@ -1811,9 +1857,6 @@ class TestRowIterator(unittest.TestCase):
         from google.cloud.bigquery import table as mut
         from google.cloud.bigquery_storage_v1beta1 import reader
 
-        # Speed up testing.
-        mut._PROGRESS_INTERVAL = 0.01
-
         bqstorage_client = mock.create_autospec(
             bigquery_storage_v1beta1.BigQueryStorageClient
         )
@@ -1845,20 +1888,12 @@ class TestRowIterator(unittest.TestCase):
             {"colA": -1, "colB": "def", "colC": 4.0},
         ]
 
-        def blocking_to_dataframe(*args, **kwargs):
-            # Sleep for longer than the waiting interval so that we know we're
-            # only reading one page per loop at most.
-            time.sleep(2 * mut._PROGRESS_INTERVAL)
-            return pandas.DataFrame(page_items, columns=["colA", "colB", "colC"])
-
         mock_page = mock.create_autospec(reader.ReadRowsPage)
-        mock_page.to_dataframe.side_effect = blocking_to_dataframe
+        mock_page.to_dataframe.return_value = pandas.DataFrame(
+            page_items, columns=["colA", "colB", "colC"]
+        )
         mock_pages = (mock_page, mock_page, mock_page)
         type(mock_rows).pages = mock.PropertyMock(return_value=mock_pages)
-
-        # Test that full queue errors are ignored.
-        mock_queue = mock.create_autospec(mut._NoopProgressBarQueue)
-        mock_queue().put_nowait.side_effect = queue.Full
 
         schema = [
             schema.SchemaField("colA", "IGNORED"),
@@ -1875,10 +1910,7 @@ class TestRowIterator(unittest.TestCase):
             selected_fields=schema,
         )
 
-        with mock.patch.object(mut, "_NoopProgressBarQueue", mock_queue), mock.patch(
-            "concurrent.futures.wait", wraps=concurrent.futures.wait
-        ) as mock_wait:
-            got = row_iterator.to_dataframe(bqstorage_client=bqstorage_client)
+        got = row_iterator.to_dataframe(bqstorage_client=bqstorage_client)
 
         # Are the columns in the expected order?
         column_names = ["colA", "colC", "colB"]
@@ -1889,11 +1921,52 @@ class TestRowIterator(unittest.TestCase):
         total_rows = len(page_items) * total_pages
         self.assertEqual(len(got.index), total_rows)
 
-        # Make sure that this test looped through multiple progress intervals.
-        self.assertGreaterEqual(mock_wait.call_count, 2)
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(
+        bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+    )
+    def test_to_dataframe_w_bqstorage_multiple_streams_return_unique_index(self):
+        from google.cloud.bigquery import schema
+        from google.cloud.bigquery import table as mut
+        from google.cloud.bigquery_storage_v1beta1 import reader
 
-        # Make sure that this test pushed to the progress queue.
-        self.assertEqual(mock_queue().put_nowait.call_count, total_pages)
+        streams = [
+            {"name": "/projects/proj/dataset/dset/tables/tbl/streams/1234"},
+            {"name": "/projects/proj/dataset/dset/tables/tbl/streams/5678"},
+        ]
+        session = bigquery_storage_v1beta1.types.ReadSession(streams=streams)
+        session.avro_schema.schema = json.dumps({"fields": [{"name": "colA"}]})
+
+        bqstorage_client = mock.create_autospec(
+            bigquery_storage_v1beta1.BigQueryStorageClient
+        )
+        bqstorage_client.create_read_session.return_value = session
+
+        mock_rowstream = mock.create_autospec(reader.ReadRowsStream)
+        bqstorage_client.read_rows.return_value = mock_rowstream
+
+        mock_rows = mock.create_autospec(reader.ReadRowsIterable)
+        mock_rowstream.rows.return_value = mock_rows
+
+        page_data_frame = pandas.DataFrame(
+            [{"colA": 1}, {"colA": -1}], columns=["colA"]
+        )
+        mock_page = mock.create_autospec(reader.ReadRowsPage)
+        mock_page.to_dataframe.return_value = page_data_frame
+        mock_pages = (mock_page, mock_page, mock_page)
+        type(mock_rows).pages = mock.PropertyMock(return_value=mock_pages)
+
+        row_iterator = self._make_one(
+            schema=[schema.SchemaField("colA", "IGNORED")],
+            table=mut.TableReference.from_string("proj.dset.tbl"),
+        )
+        got = row_iterator.to_dataframe(bqstorage_client=bqstorage_client)
+
+        self.assertEqual(list(got), ["colA"])
+        total_pages = len(streams) * len(mock_pages)
+        total_rows = len(page_data_frame) * total_pages
+        self.assertEqual(len(got.index), total_rows)
+        self.assertTrue(got.index.is_unique)
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(
@@ -2091,6 +2164,29 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(df.age.dtype.name, "int64")
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @mock.patch(
+        "google.cloud.bigquery.table.RowIterator.pages", new_callable=mock.PropertyMock
+    )
+    def test_to_dataframe_tabledata_list_w_multiple_pages_return_unique_index(
+        self, mock_pages
+    ):
+        from google.cloud.bigquery import schema
+
+        iterator_schema = [schema.SchemaField("name", "STRING", mode="REQUIRED")]
+        pages = [[{"name": "Bengt"}], [{"name": "Sven"}]]
+
+        mock_pages.return_value = pages
+        row_iterator = self._make_one(schema=iterator_schema)
+
+        df = row_iterator.to_dataframe(bqstorage_client=None)
+
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 2)
+        self.assertEqual(list(df), ["name"])
+        self.assertEqual(df.name.dtype.name, "object")
+        self.assertTrue(df.index.is_unique)
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(
         bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
     )
@@ -2211,6 +2307,20 @@ class TestTimePartitioning(unittest.TestCase):
         self.assertEqual(time_partitioning.expiration_ms, 10000)
         self.assertTrue(time_partitioning.require_partition_filter)
 
+    def test_from_api_repr_empty(self):
+        klass = self._get_target_class()
+
+        # Even though there are required properties according to the API
+        # specification, sometimes time partitioning is populated as an empty
+        # object. See internal bug 131167013.
+        api_repr = {}
+        time_partitioning = klass.from_api_repr(api_repr)
+
+        self.assertIsNone(time_partitioning.type_)
+        self.assertIsNone(time_partitioning.field)
+        self.assertIsNone(time_partitioning.expiration_ms)
+        self.assertIsNone(time_partitioning.require_partition_filter)
+
     def test_from_api_repr_minimal(self):
         from google.cloud.bigquery.table import TimePartitioningType
 
@@ -2222,6 +2332,12 @@ class TestTimePartitioning(unittest.TestCase):
         self.assertIsNone(time_partitioning.field)
         self.assertIsNone(time_partitioning.expiration_ms)
         self.assertIsNone(time_partitioning.require_partition_filter)
+
+    def test_from_api_repr_doesnt_override_type(self):
+        klass = self._get_target_class()
+        api_repr = {"type": "HOUR"}
+        time_partitioning = klass.from_api_repr(api_repr)
+        self.assertEqual(time_partitioning.type_, "HOUR")
 
     def test_from_api_repr_explicit(self):
         from google.cloud.bigquery.table import TimePartitioningType

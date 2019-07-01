@@ -1,6 +1,1 @@
-Long-Running Operations
-=======================
-
-.. automodule:: google.api_core.operation
-  :members:
-  :show-inheritance:
+../../api_core/docs/operation.rst

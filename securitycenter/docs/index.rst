@@ -1,4 +1,4 @@
-.. include:: /../securitycenter/README.rst
+.. include:: README.rst
 
 Api Reference
 -------------
@@ -9,4 +9,13 @@ Api Reference
     gapic/v1/types
     gapic/v1beta1/api
     gapic/v1beta1/types
+
+Changelog
+----------
+
+For a list of all ``google-cloud-securitycenter`` releases:
+
+.. toctree::
+    :maxdepth: 2
+
     changelog

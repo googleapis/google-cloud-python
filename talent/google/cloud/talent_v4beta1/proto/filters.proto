@@ -18,6 +18,7 @@ syntax = "proto3";
 package google.cloud.talent.v4beta1;
 
 import "google/api/annotations.proto";
+import "google/cloud/talent/v4beta1/application.proto";
 import "google/cloud/talent/v4beta1/common.proto";
 import "google/cloud/talent/v4beta1/job.proto";
 import "google/cloud/talent/v4beta1/profile.proto";
@@ -56,11 +57,15 @@ message JobQuery {
   // If multiple values are specified, jobs are searched against the
   // companies specified.
   //
-  // The format is "projects/{project_id}/companies/{company_id}", for example,
-  // "projects/api-test-project/companies/foo".
+  // The format is
+  // "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}", for
+  // example, "projects/api-test-project/tenants/foo/companies/bar".
+  //
+  // Tenant id is optional and the default tenant is used if unspecified, for
+  // example, "projects/api-test-project/companies/bar".
   //
   // At most 20 company filters are allowed.
-  repeated string company_names = 2;
+  repeated string companies = 2;
 
   // Optional.
   //
@@ -83,7 +88,8 @@ message JobQuery {
   // Optional.
   //
   // The category filter specifies the categories of jobs to search against.
-  // See [Category][] for more information.
+  // See [JobCategory][google.cloud.talent.v4beta1.JobCategory] for more
+  // information.
   //
   // If a value isn't specified, jobs from any category are searched against.
   //
@@ -94,17 +100,21 @@ message JobQuery {
   // Optional.
   //
   //  Allows filtering jobs by commute time with different travel methods (for
-  //  example, driving or public transit). Note: This only works with [COMMUTE
-  //  MODE][Mode#COMMUTE]. When specified, [JobQuery.location_filters] is
-  //  ignored.
+  //  example, driving or public transit).
+  //
+  // Note: This only works when you specify a
+  // [CommuteMethod][google.cloud.talent.v4beta1.CommuteMethod]. In this case,
+  // [location_filters][google.cloud.talent.v4beta1.JobQuery.location_filters]
+  // is ignored.
   //
   //  Currently we don't support sorting by commute time.
   CommuteFilter commute_filter = 5;
 
   // Optional.
   //
-  // This filter specifies the exact [company display
-  // name][Company.display_name] of the jobs to search against.
+  // This filter specifies the exact company
+  // [Company.display_name][google.cloud.talent.v4beta1.Company.display_name] of
+  // the jobs to search against.
   //
   // If a value isn't specified, jobs within the search results are
   // associated with any company.
@@ -199,7 +209,7 @@ message JobQuery {
   //
   // This filter specifies a list of job names to be excluded during search.
   //
-  // At most 200 excluded job names are allowed.
+  // At most 400 excluded job names are allowed.
   repeated string excluded_jobs = 13;
 }
 
@@ -328,26 +338,14 @@ message ProfileQuery {
 
   // Optional.
   //
-  // The application outcome reason filters specify the reasons for outcome of
+  // The application outcome notes filters specify the notes for the outcome of
   // the job application.
-  repeated ApplicationOutcomeReasonFilter application_outcome_reason_filters =
-      11;
-
-  // Optional.
-  //
-  // The application last stage filters specify the last stage of job
-  // application.
-  repeated ApplicationLastStageFilter application_last_stage_filters = 12;
+  repeated ApplicationOutcomeNotesFilter application_outcome_notes_filters = 11;
 
   // Optional.
   //
   // The application job filters specify the job applied for in the application.
   repeated ApplicationJobFilter application_job_filters = 13;
-
-  // Optional.
-  //
-  // The application status filters specify the status of job application.
-  repeated ApplicationStatusFilter application_status_filters = 14;
 
   // Optional.
   //
@@ -357,9 +355,13 @@ message ProfileQuery {
   //
   // The syntax for this expression is a subset of Google SQL syntax.
   //
-  // Supported operators are: =, != where the left of the operator is a custom
-  // field key and the right of the operator is a string (surrounded by quotes)
-  // value.
+  // String custom attributes: supported operators are =, != where the left of
+  // the operator is a custom field key and the right of the operator is a
+  // string (surrounded by quotes) value.
+  //
+  // Numeric custom attributes: Supported operators are '>', '<' or '='
+  // operators where the left of the operator is a custom field key and the
+  // right of the operator is a numeric value.
   //
   // Supported functions are LOWER(<field_name>) to
   // perform case insensitive match and EMPTY(<field_name>) to filter on the
@@ -372,7 +374,7 @@ message ProfileQuery {
   //
   // Sample Query:
   // (key1 = "TEST" OR LOWER(key1)="test" OR NOT EMPTY(key1))
-  string custom_field_filter = 15;
+  string custom_attribute_filter = 15;
 }
 
 // Input only.
@@ -479,8 +481,10 @@ message CompensationFilter {
 
     // Filter by `base compensation entry's` unit and amount / range. A job
     // is a match if and only if the job contains a base CompensationEntry, and
-    // the base entry's unit matches provided [compensation_units][] and amount
-    // or range overlaps with provided [compensation_range][].
+    // the base entry's unit matches provided
+    // [CompensationUnit][google.cloud.talent.v4beta1.CompensationInfo.CompensationUnit]
+    // and amount or range overlaps with provided
+    // [CompensationRange][google.cloud.talent.v4beta1.CompensationInfo.CompensationRange].
     //
     // See
     // [CompensationInfo.CompensationEntry][google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry]
@@ -522,7 +526,8 @@ message CompensationFilter {
 
   // Optional.
   //
-  // Whether to include jobs whose compensation range is unspecified.
+  // If set to true, jobs with unspecified compensation range fields are
+  // included.
   bool include_jobs_with_unspecified_compensation_range = 4;
 }
 
@@ -608,7 +613,7 @@ message JobTitleFilter {
 message SkillFilter {
   // Required.
   //
-  // The skill name. For example, "java", "j2ee", etc.
+  // The skill name. For example, "java", "j2ee", and so on.
   string skill = 1;
 
   // Optional.
@@ -720,7 +725,7 @@ message WorkExperienceFilter {
 // Application Date Range Filter.
 //
 // The API matches profiles with
-// [JobApplication.application_date][google.cloud.talent.v4beta1.JobApplication.application_date]
+// [Application.application_date][google.cloud.talent.v4beta1.Application.application_date]
 // between start date and end date (both boundaries are inclusive). The filter
 // is ignored if both
 // [start_date][google.cloud.talent.v4beta1.ApplicationDateFilter.start_date]
@@ -742,39 +747,20 @@ message ApplicationDateFilter {
 
 // Input only.
 //
-// Outcome Reason Filter.
-message ApplicationOutcomeReasonFilter {
+// Outcome Notes Filter.
+message ApplicationOutcomeNotesFilter {
   // Required.
   //
   // User entered or selected outcome reason. The API does an exact match on the
-  // [JobApplication.outcome_reason][google.cloud.talent.v4beta1.JobApplication.outcome_reason]
+  // [Application.outcome_notes][google.cloud.talent.v4beta1.Application.outcome_notes]
   // in profiles.
-  string outcome_reason = 1;
+  string outcome_notes = 1;
 
   // Optional.
   //
   // If true, The API excludes all candidates with any
-  // [JobApplication.outcome_reason][google.cloud.talent.v4beta1.JobApplication.outcome_reason]
+  // [Application.outcome_notes][google.cloud.talent.v4beta1.Application.outcome_notes]
   // matching the outcome reason specified in the filter.
-  bool negated = 2;
-}
-
-// Input only.
-//
-// Filter on Last Stage of Application.
-message ApplicationLastStageFilter {
-  // Required.
-  //
-  // User entered or selected last stage the candidate reached in the
-  // application. The API does an exact match on the
-  // [JobApplication.last_stage][google.cloud.talent.v4beta1.JobApplication.last_stage]
-  // in profiles.
-  string last_stage = 1;
-
-  // Optional.
-  // If true, The API excludes all candidates with any
-  // [JobApplication.last_stage][google.cloud.talent.v4beta1.JobApplication.last_stage]
-  // matching the last stage specified in the filter.
   bool negated = 2;
 }
 
@@ -784,52 +770,24 @@ message ApplicationLastStageFilter {
 message ApplicationJobFilter {
   // Optional.
   //
-  // The job resource name in the application. The API does an exact match on
-  // the [Job.name][google.cloud.talent.v4beta1.Job.name] of
-  // [JobApplication.job][google.cloud.talent.v4beta1.JobApplication.job] in
-  // profiles.
-  string job_name = 1;
-
-  // Optional.
-  //
   // The job requisition id in the application. The API does an exact match on
-  // the [Job.requisistion_id][] of
-  // [JobApplication.job][google.cloud.talent.v4beta1.JobApplication.job] in
-  // profiles.
+  // the [Job.requisition_id][google.cloud.talent.v4beta1.Job.requisition_id] of
+  // [Application.job][google.cloud.talent.v4beta1.Application.job] in profiles.
   string job_requisition_id = 2;
 
   // Optional.
   //
   // The job title in the application. The API does an exact match on the
   // [Job.title][google.cloud.talent.v4beta1.Job.title] of
-  // [JobApplication.job][google.cloud.talent.v4beta1.JobApplication.job] in
-  // profiles.
+  // [Application.job][google.cloud.talent.v4beta1.Application.job] in profiles.
   string job_title = 3;
 
   // Optional.
   //
   // If true, the API excludes all profiles with any
-  // [JobApplication.job][google.cloud.talent.v4beta1.JobApplication.job]
-  // matching the filters.
+  // [Application.job][google.cloud.talent.v4beta1.Application.job] matching the
+  // filters.
   bool negated = 4;
-}
-
-// Input only.
-//
-// Filter on status of Application.
-message ApplicationStatusFilter {
-  // Required.
-  //
-  // User entered or selected application status. The API does an exact match
-  // between the application status specified in this filter and the
-  // [JobApplication.status][] in profiles.
-  JobApplication.ApplicationStatus application_status = 1;
-
-  // Optional.
-  //
-  // If true, The API excludes all candidates with any [JobApplication.status][]
-  // matching the status specified in the filter.
-  bool negated = 2;
 }
 
 // Input only.

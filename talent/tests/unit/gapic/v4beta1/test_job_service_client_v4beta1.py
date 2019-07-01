@@ -13,15 +13,20 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Unit tests."""
 
 import mock
 import pytest
 
+from google.rpc import status_pb2
+
 from google.cloud import talent_v4beta1
+from google.cloud.talent_v4beta1.proto import batch_pb2
 from google.cloud.talent_v4beta1.proto import common_pb2
 from google.cloud.talent_v4beta1.proto import job_pb2
 from google.cloud.talent_v4beta1.proto import job_service_pb2
+from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 
 
@@ -65,7 +70,7 @@ class TestJobServiceClient(object):
     def test_create_job(self):
         # Setup Expected Response
         name = "name3373707"
-        company_name = "companyName1429880077"
+        company = "company950484093"
         requisition_id = "requisitionId980224926"
         title = "title110371416"
         description = "description-1724546052"
@@ -78,7 +83,7 @@ class TestJobServiceClient(object):
         company_display_name = "companyDisplayName1982424170"
         expected_response = {
             "name": name,
-            "company_name": company_name,
+            "company": company,
             "requisition_id": requisition_id,
             "title": title,
             "description": description,
@@ -100,7 +105,7 @@ class TestJobServiceClient(object):
             client = talent_v4beta1.JobServiceClient()
 
         # Setup Request
-        parent = client.project_path("[PROJECT]")
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
         job = {}
 
         response = client.create_job(parent, job)
@@ -120,7 +125,7 @@ class TestJobServiceClient(object):
             client = talent_v4beta1.JobServiceClient()
 
         # Setup request
-        parent = client.project_path("[PROJECT]")
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
         job = {}
 
         with pytest.raises(CustomException):
@@ -129,7 +134,7 @@ class TestJobServiceClient(object):
     def test_get_job(self):
         # Setup Expected Response
         name_2 = "name2-1052831874"
-        company_name = "companyName1429880077"
+        company = "company950484093"
         requisition_id = "requisitionId980224926"
         title = "title110371416"
         description = "description-1724546052"
@@ -142,7 +147,7 @@ class TestJobServiceClient(object):
         company_display_name = "companyDisplayName1982424170"
         expected_response = {
             "name": name_2,
-            "company_name": company_name,
+            "company": company,
             "requisition_id": requisition_id,
             "title": title,
             "description": description,
@@ -164,7 +169,7 @@ class TestJobServiceClient(object):
             client = talent_v4beta1.JobServiceClient()
 
         # Setup Request
-        name = client.job_path("[PROJECT]", "[JOBS]")
+        name = client.job_path("[PROJECT]", "[TENANT]", "[JOBS]")
 
         response = client.get_job(name)
         assert expected_response == response
@@ -183,7 +188,7 @@ class TestJobServiceClient(object):
             client = talent_v4beta1.JobServiceClient()
 
         # Setup request
-        name = client.job_path("[PROJECT]", "[JOBS]")
+        name = client.job_path("[PROJECT]", "[TENANT]", "[JOBS]")
 
         with pytest.raises(CustomException):
             client.get_job(name)
@@ -191,7 +196,7 @@ class TestJobServiceClient(object):
     def test_update_job(self):
         # Setup Expected Response
         name = "name3373707"
-        company_name = "companyName1429880077"
+        company = "company950484093"
         requisition_id = "requisitionId980224926"
         title = "title110371416"
         description = "description-1724546052"
@@ -204,7 +209,7 @@ class TestJobServiceClient(object):
         company_display_name = "companyDisplayName1982424170"
         expected_response = {
             "name": name,
-            "company_name": company_name,
+            "company": company,
             "requisition_id": requisition_id,
             "title": title,
             "description": description,
@@ -258,7 +263,7 @@ class TestJobServiceClient(object):
             client = talent_v4beta1.JobServiceClient()
 
         # Setup Request
-        name = client.job_path("[PROJECT]", "[JOBS]")
+        name = client.job_path("[PROJECT]", "[TENANT]", "[JOBS]")
 
         client.delete_job(name)
 
@@ -276,7 +281,7 @@ class TestJobServiceClient(object):
             client = talent_v4beta1.JobServiceClient()
 
         # Setup request
-        name = client.job_path("[PROJECT]", "[JOBS]")
+        name = client.job_path("[PROJECT]", "[TENANT]", "[JOBS]")
 
         with pytest.raises(CustomException):
             client.delete_job(name)
@@ -297,7 +302,7 @@ class TestJobServiceClient(object):
             client = talent_v4beta1.JobServiceClient()
 
         # Setup Request
-        parent = client.project_path("[PROJECT]")
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
         filter_ = "filter-1274492040"
 
         paged_list_response = client.list_jobs(parent, filter_)
@@ -321,7 +326,7 @@ class TestJobServiceClient(object):
             client = talent_v4beta1.JobServiceClient()
 
         # Setup request
-        parent = client.project_path("[PROJECT]")
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
         filter_ = "filter-1274492040"
 
         paged_list_response = client.list_jobs(parent, filter_)
@@ -336,7 +341,7 @@ class TestJobServiceClient(object):
             client = talent_v4beta1.JobServiceClient()
 
         # Setup Request
-        parent = client.project_path("[PROJECT]")
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
         filter_ = "filter-1274492040"
 
         client.batch_delete_jobs(parent, filter_)
@@ -357,7 +362,7 @@ class TestJobServiceClient(object):
             client = talent_v4beta1.JobServiceClient()
 
         # Setup request
-        parent = client.project_path("[PROJECT]")
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
         filter_ = "filter-1274492040"
 
         with pytest.raises(CustomException):
@@ -388,7 +393,7 @@ class TestJobServiceClient(object):
             client = talent_v4beta1.JobServiceClient()
 
         # Setup Request
-        parent = client.project_path("[PROJECT]")
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
         request_metadata = {}
 
         paged_list_response = client.search_jobs(parent, request_metadata)
@@ -412,7 +417,7 @@ class TestJobServiceClient(object):
             client = talent_v4beta1.JobServiceClient()
 
         # Setup request
-        parent = client.project_path("[PROJECT]")
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
         request_metadata = {}
 
         paged_list_response = client.search_jobs(parent, request_metadata)
@@ -444,7 +449,7 @@ class TestJobServiceClient(object):
             client = talent_v4beta1.JobServiceClient()
 
         # Setup Request
-        parent = client.project_path("[PROJECT]")
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
         request_metadata = {}
 
         paged_list_response = client.search_jobs_for_alert(parent, request_metadata)
@@ -468,9 +473,117 @@ class TestJobServiceClient(object):
             client = talent_v4beta1.JobServiceClient()
 
         # Setup request
-        parent = client.project_path("[PROJECT]")
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
         request_metadata = {}
 
         paged_list_response = client.search_jobs_for_alert(parent, request_metadata)
         with pytest.raises(CustomException):
             list(paged_list_response)
+
+    def test_batch_create_jobs(self):
+        # Setup Expected Response
+        expected_response = {}
+        expected_response = batch_pb2.JobOperationResult(**expected_response)
+        operation = operations_pb2.Operation(
+            name="operations/test_batch_create_jobs", done=True
+        )
+        operation.response.Pack(expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = talent_v4beta1.JobServiceClient()
+
+        # Setup Request
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
+        jobs = []
+
+        response = client.batch_create_jobs(parent, jobs)
+        result = response.result()
+        assert expected_response == result
+
+        assert len(channel.requests) == 1
+        expected_request = job_service_pb2.BatchCreateJobsRequest(
+            parent=parent, jobs=jobs
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_batch_create_jobs_exception(self):
+        # Setup Response
+        error = status_pb2.Status()
+        operation = operations_pb2.Operation(
+            name="operations/test_batch_create_jobs_exception", done=True
+        )
+        operation.error.CopyFrom(error)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = talent_v4beta1.JobServiceClient()
+
+        # Setup Request
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
+        jobs = []
+
+        response = client.batch_create_jobs(parent, jobs)
+        exception = response.exception()
+        assert exception.errors[0] == error
+
+    def test_batch_update_jobs(self):
+        # Setup Expected Response
+        expected_response = {}
+        expected_response = batch_pb2.JobOperationResult(**expected_response)
+        operation = operations_pb2.Operation(
+            name="operations/test_batch_update_jobs", done=True
+        )
+        operation.response.Pack(expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = talent_v4beta1.JobServiceClient()
+
+        # Setup Request
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
+        jobs = []
+
+        response = client.batch_update_jobs(parent, jobs)
+        result = response.result()
+        assert expected_response == result
+
+        assert len(channel.requests) == 1
+        expected_request = job_service_pb2.BatchUpdateJobsRequest(
+            parent=parent, jobs=jobs
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_batch_update_jobs_exception(self):
+        # Setup Response
+        error = status_pb2.Status()
+        operation = operations_pb2.Operation(
+            name="operations/test_batch_update_jobs_exception", done=True
+        )
+        operation.error.CopyFrom(error)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = talent_v4beta1.JobServiceClient()
+
+        # Setup Request
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
+        jobs = []
+
+        response = client.batch_update_jobs(parent, jobs)
+        exception = response.exception()
+        assert exception.errors[0] == error

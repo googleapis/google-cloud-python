@@ -1,6 +1,6 @@
 Transforms
 ~~~~~~~~~~
 
-.. automodule:: google.cloud.firestore_v1beta1.transforms
+.. automodule:: google.cloud.firestore_v1.transforms
   :members:
   :show-inheritance:

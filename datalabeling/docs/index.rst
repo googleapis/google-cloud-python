@@ -1,4 +1,4 @@
-.. include:: /../datalabeling/README.rst
+.. include:: README.rst
 
 Api Reference
 -------------
@@ -7,4 +7,13 @@ Api Reference
 
     gapic/v1beta1/api
     gapic/v1beta1/types
-    changelog
+    
+Changelog
+---------
+
+For a list of all ``google-cloud-datalabeling`` releases:
+
+.. toctree::
+  :maxdepth: 2
+
+  changelog

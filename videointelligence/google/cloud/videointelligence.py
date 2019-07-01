@@ -14,10 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 from __future__ import absolute_import
 
 from google.cloud.videointelligence_v1 import VideoIntelligenceServiceClient
 from google.cloud.videointelligence_v1 import enums
 from google.cloud.videointelligence_v1 import types
+
 
 __all__ = ("enums", "types", "VideoIntelligenceServiceClient")

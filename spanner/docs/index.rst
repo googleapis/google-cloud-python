@@ -1,4 +1,4 @@
-.. include:: /../spanner/README.rst
+.. include:: README.rst
 
 Usage Documentation
 -------------------

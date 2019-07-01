@@ -4,6 +4,33 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## 1.11.0
+
+05-16-2019 12:27 PDT
+
+
+### Implementation Changes
+- Add routing header to method metadata (via synth). ([#7598](https://github.com/googleapis/google-cloud-python/pull/7598))
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+- Use FQDN for GCE metadata endpoint. ([#7520](https://github.com/googleapis/google-cloud-python/pull/7520))
+
+### New Features
+- Add `client_info` support to client. ([#7874](https://github.com/googleapis/google-cloud-python/pull/7874)) and ([#7901](https://github.com/googleapis/google-cloud-python/pull/7901))
+
+### Dependencies
+- Pin `google-cloud-core >= 1.0.0, < 2.0dev`. ([#7993](https://github.com/googleapis/google-cloud-python/pull/7993))
+
+### Documentation
+- Update client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+- Reformat snippet (via synth). ([#7216](https://github.com/googleapis/google-cloud-python/pull/7216))
+- Add snippet for logging a resource. ([#7212](https://github.com/googleapis/google-cloud-python/pull/7212))
+
+### Internal / Testing Changes
+- Reorder methods in file (via synth). ([#7810](https://github.com/googleapis/google-cloud-python/pull/7810))
+- Copy lintified proto files (via synth). ([#7450](https://github.com/googleapis/google-cloud-python/pull/7450))
+- Trivial gapic-generator change. ([#7230](https://github.com/googleapis/google-cloud-python/pull/7230))
+- Add protos as an artifact to library ([#7205](https://github.com/googleapis/google-cloud-python/pull/7205))
+
 ## 1.10.0
 
 01-17-2019 15:37 PST

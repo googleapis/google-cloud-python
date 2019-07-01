@@ -33,7 +33,8 @@ class TestClient(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
-    def test_constructor(self):
+    def test_ctor_wo_client_info(self):
+        from google.cloud._http import ClientInfo
         from google.cloud.resource_manager._http import Connection
 
         http = object()
@@ -42,6 +43,22 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(client._connection, Connection)
         self.assertIs(client._credentials, credentials)
         self.assertIs(client._http_internal, http)
+        self.assertIsInstance(client._connection._client_info, ClientInfo)
+
+    def test_ctor_w_client_info(self):
+        from google.cloud._http import ClientInfo
+        from google.cloud.resource_manager._http import Connection
+
+        http = object()
+        client_info = ClientInfo()
+        credentials = _make_credentials()
+        client = self._make_one(
+            credentials=credentials, _http=http, client_info=client_info
+        )
+        self.assertIsInstance(client._connection, Connection)
+        self.assertIs(client._credentials, credentials)
+        self.assertIs(client._http_internal, http)
+        self.assertIs(client._connection._client_info, client_info)
 
     def test_new_project_factory(self):
         from google.cloud.resource_manager.project import Project

@@ -4,6 +4,7 @@ config = {
             "retry_codes": {
                 "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
                 "non_idempotent": [],
+                "unary_streaming": ["UNAVAILABLE"],
             },
             "retry_params": {
                 "default": {
@@ -24,6 +25,15 @@ config = {
                     "max_rpc_timeout_millis": 120000,
                     "total_timeout_millis": 600000,
                 },
+                "read_rows": {
+                    "initial_retry_delay_millis": 100,
+                    "retry_delay_multiplier": 1.3,
+                    "max_retry_delay_millis": 60000,
+                    "initial_rpc_timeout_millis": 86400000,
+                    "rpc_timeout_multiplier": 1.0,
+                    "max_rpc_timeout_millis": 86400000,
+                    "total_timeout_millis": 86400000,
+                },
             },
             "methods": {
                 "CreateReadSession": {
@@ -33,8 +43,8 @@ config = {
                 },
                 "ReadRows": {
                     "timeout_millis": 86400000,
-                    "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
+                    "retry_codes_name": "unary_streaming",
+                    "retry_params_name": "read_rows",
                 },
                 "BatchCreateReadSessionStreams": {
                     "timeout_millis": 60000,

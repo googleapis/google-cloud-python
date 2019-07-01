@@ -2332,11 +2332,12 @@ GroupAssetsRequest = _reflection.GeneratedProtocolMessageType(
           strings.  The supported value types are:  -  string literals
           in quotes. -  integer literals without quotes. -  boolean
           literals ``true`` and ``false`` without quotes.  The following
-          field and operator combinations are supported: name \| ``=``
-          update\_time \| ``>``, ``<``, ``>=``, ``<=``
-          iam\_policy.policy\_blob \| '=', ':' resource\_properties \|
-          '=', ':', ``>``, ``<``, ``>=``, ``<=`` security\_marks \| '=',
-          ':' security\_center\_properties.resource\_name \| '=', ':'
+          field and operator combinations are supported: name \| '='
+          update\_time \| '>', '<', '>=', '<=', '=' create\_time \| '>',
+          '<', '>=', '<=', '=' iam\_policy.policy\_blob \| '=', ':'
+          resource\_properties \| '=', ':', '>', '<', '>=', '<='
+          security\_marks \| '=', ':'
+          security\_center\_properties.resource\_name \| '=', ':'
           security\_center\_properties.resource\_type \| '=', ':'
           security\_center\_properties.resource\_parent \| '=', ':'
           security\_center\_properties.resource\_project \| '=', ':'

@@ -14,12 +14,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 from __future__ import absolute_import
 import sys
 
 from google.api_core.protobuf_helpers import get_messages
 
 from google.cloud.automl_v1beta1.proto import annotation_payload_pb2
+from google.cloud.automl_v1beta1.proto import annotation_spec_pb2
 from google.cloud.automl_v1beta1.proto import classification_pb2
 from google.cloud.automl_v1beta1.proto import column_spec_pb2
 from google.cloud.automl_v1beta1.proto import data_items_pb2
@@ -54,6 +56,7 @@ from google.protobuf import struct_pb2
 from google.protobuf import timestamp_pb2
 from google.rpc import status_pb2
 
+
 _shared_modules = [
     longrunning_operations_pb2,
     any_pb2,
@@ -66,6 +69,7 @@ _shared_modules = [
 
 _local_modules = [
     annotation_payload_pb2,
+    annotation_spec_pb2,
     classification_pb2,
     column_spec_pb2,
     data_items_pb2,
@@ -96,7 +100,7 @@ _local_modules = [
 
 names = []
 
-for module in _shared_modules:
+for module in _shared_modules:  # pragma: NO COVER
     for name, message in get_messages(module).items():
         setattr(sys.modules[__name__], name, message)
         names.append(name)
@@ -105,5 +109,6 @@ for module in _local_modules:
         message.__module__ = "google.cloud.automl_v1beta1.types"
         setattr(sys.modules[__name__], name, message)
         names.append(name)
+
 
 __all__ = tuple(sorted(names))

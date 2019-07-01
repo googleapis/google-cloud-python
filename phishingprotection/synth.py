@@ -53,6 +53,12 @@ for version in versions:
         "tests/unit/gapic/v1beta1/test_phishing_protection_service_v1_beta1_client_v1beta1.py"
     )
 
+    s.replace(
+        client,
+        "google-cloud-phishingprotection",
+        "google-cloud-phishing-protection",
+    )
+
     files = [client, client_config, transport, unit_test]
     for file_ in files:
         new_name = str(file_).replace("v1_beta1_", "")

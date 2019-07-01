@@ -7,6 +7,9 @@ from google.cloud.talent_v4beta1.proto import (
 from google.cloud.talent_v4beta1.proto import (
     job_service_pb2 as google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2,
 )
+from google.longrunning import (
+    operations_pb2 as google_dot_longrunning_dot_operations__pb2,
+)
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
@@ -59,6 +62,16 @@ class JobServiceStub(object):
             "/google.cloud.talent.v4beta1.JobService/SearchJobsForAlert",
             request_serializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.SearchJobsRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.SearchJobsResponse.FromString,
+        )
+        self.BatchCreateJobs = channel.unary_unary(
+            "/google.cloud.talent.v4beta1.JobService/BatchCreateJobs",
+            request_serializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.BatchCreateJobsRequest.SerializeToString,
+            response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
+        )
+        self.BatchUpdateJobs = channel.unary_unary(
+            "/google.cloud.talent.v4beta1.JobService/BatchUpdateJobs",
+            request_serializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.BatchUpdateJobsRequest.SerializeToString,
+            response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
         )
 
 
@@ -149,6 +162,20 @@ class JobServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def BatchCreateJobs(self, request, context):
+        """Begins executing a batch create jobs operation.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def BatchUpdateJobs(self, request, context):
+        """Begins executing a batch update jobs operation.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
 
 def add_JobServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -191,6 +218,16 @@ def add_JobServiceServicer_to_server(servicer, server):
             servicer.SearchJobsForAlert,
             request_deserializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.SearchJobsRequest.FromString,
             response_serializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.SearchJobsResponse.SerializeToString,
+        ),
+        "BatchCreateJobs": grpc.unary_unary_rpc_method_handler(
+            servicer.BatchCreateJobs,
+            request_deserializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.BatchCreateJobsRequest.FromString,
+            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
+        ),
+        "BatchUpdateJobs": grpc.unary_unary_rpc_method_handler(
+            servicer.BatchUpdateJobs,
+            request_deserializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.BatchUpdateJobsRequest.FromString,
+            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(

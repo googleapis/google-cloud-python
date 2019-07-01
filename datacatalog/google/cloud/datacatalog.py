@@ -14,10 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 from __future__ import absolute_import
 
 from google.cloud.datacatalog_v1beta1 import DataCatalogClient
 from google.cloud.datacatalog_v1beta1 import enums
 from google.cloud.datacatalog_v1beta1 import types
+
 
 __all__ = ("enums", "types", "DataCatalogClient")

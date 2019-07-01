@@ -12,11 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import copy
 import re
-import mock
 from concurrent import futures
 
+import mock
 import pytest
+import six
 
 try:
     import pandas
@@ -36,8 +38,10 @@ try:
     from google.cloud import bigquery_storage_v1beta1
 except ImportError:  # pragma: NO COVER
     bigquery_storage_v1beta1 = None
+from google.cloud.bigquery import job
 from google.cloud.bigquery import table
 from google.cloud.bigquery import magics
+from tests.unit.helpers import make_connection
 
 
 pytestmark = pytest.mark.skipif(IPython is None, reason="Requires `ipython`")
@@ -59,6 +63,26 @@ def ipython_interactive(request, ipython):
     """
     with ipython.builtin_trap:
         yield ipython
+
+
+JOB_REFERENCE_RESOURCE = {"projectId": "its-a-project-eh", "jobId": "some-random-id"}
+TABLE_REFERENCE_RESOURCE = {
+    "projectId": "its-a-project-eh",
+    "datasetId": "ds",
+    "tableId": "persons",
+}
+QUERY_RESOURCE = {
+    "jobReference": JOB_REFERENCE_RESOURCE,
+    "configuration": {
+        "query": {
+            "destinationTable": TABLE_REFERENCE_RESOURCE,
+            "query": "SELECT 42 FROM `life.the_universe.and_everything`;",
+            "queryParameters": [],
+            "useLegacySql": False,
+        }
+    },
+    "status": {"state": "DONE"},
+}
 
 
 def test_context_credentials_auto_set_w_application_default_credentials():
@@ -101,6 +125,95 @@ def test_context_credentials_and_project_can_be_set_explicitly():
     assert default_mock.call_count == 0
 
 
+@pytest.mark.usefixtures("ipython_interactive")
+def test_context_connection_can_be_overriden():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context._project = None
+    magics.context._credentials = None
+
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    project = "project-123"
+    default_patch = mock.patch(
+        "google.auth.default", return_value=(credentials_mock, project)
+    )
+    job_reference = copy.deepcopy(JOB_REFERENCE_RESOURCE)
+    job_reference["projectId"] = project
+
+    query = "select * from persons"
+    resource = copy.deepcopy(QUERY_RESOURCE)
+    resource["jobReference"] = job_reference
+    resource["configuration"]["query"]["query"] = query
+    data = {"jobReference": job_reference, "totalRows": 0, "rows": []}
+
+    conn = magics.context._connection = make_connection(resource, data)
+    list_rows_patch = mock.patch(
+        "google.cloud.bigquery.client.Client.list_rows",
+        return_value=google.cloud.bigquery.table._EmptyRowIterator(),
+    )
+    with list_rows_patch as list_rows, default_patch:
+        ip.run_cell_magic("bigquery", "", query)
+
+    # Check that query actually starts the job.
+    list_rows.assert_called()
+    assert len(conn.api_request.call_args_list) == 2
+    _, req = conn.api_request.call_args_list[0]
+    assert req["method"] == "POST"
+    assert req["path"] == "/projects/{}/jobs".format(project)
+    sent = req["data"]
+    assert isinstance(sent["jobReference"]["jobId"], six.string_types)
+    sent_config = sent["configuration"]["query"]
+    assert sent_config["query"] == query
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+def test_context_no_connection():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context._project = None
+    magics.context._credentials = None
+    magics.context._connection = None
+
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    project = "project-123"
+    default_patch = mock.patch(
+        "google.auth.default", return_value=(credentials_mock, project)
+    )
+    job_reference = copy.deepcopy(JOB_REFERENCE_RESOURCE)
+    job_reference["projectId"] = project
+
+    query = "select * from persons"
+    resource = copy.deepcopy(QUERY_RESOURCE)
+    resource["jobReference"] = job_reference
+    resource["configuration"]["query"]["query"] = query
+    data = {"jobReference": job_reference, "totalRows": 0, "rows": []}
+
+    conn_mock = make_connection(resource, data, data, data)
+    conn_patch = mock.patch("google.cloud.bigquery.client.Connection", autospec=True)
+    list_rows_patch = mock.patch(
+        "google.cloud.bigquery.client.Client.list_rows",
+        return_value=google.cloud.bigquery.table._EmptyRowIterator(),
+    )
+    with conn_patch as conn, list_rows_patch as list_rows, default_patch:
+        conn.return_value = conn_mock
+        ip.run_cell_magic("bigquery", "", query)
+
+    # Check that query actually starts the job.
+    list_rows.assert_called()
+    assert len(conn_mock.api_request.call_args_list) == 2
+    _, req = conn_mock.api_request.call_args_list[0]
+    assert req["method"] == "POST"
+    assert req["path"] == "/projects/{}/jobs".format(project)
+    sent = req["data"]
+    assert isinstance(sent["jobReference"]["jobId"], six.string_types)
+    sent_config = sent["configuration"]["query"]
+    assert sent_config["query"] == query
+
+
 def test__run_query():
     magics.context._credentials = None
 
@@ -130,7 +243,8 @@ def test__run_query():
     assert updates[0] == expected_first_line
     execution_updates = updates[1:-1]
     assert len(execution_updates) == 3  # one update per API response
-    assert all(re.match("Query executing: .*s", line) for line in execution_updates)
+    for line in execution_updates:
+        assert re.match("Query executing: .*s", line)
     assert re.match("Query complete after .*s", updates[-1])
 
 
@@ -437,6 +551,131 @@ def test_bigquery_magic_without_bqstorage(monkeypatch):
         query_job_mock.to_dataframe.assert_called_once_with(bqstorage_client=None)
 
     assert isinstance(return_value, pandas.DataFrame)
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+def test_bigquery_magic_w_maximum_bytes_billed_invalid():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context._project = None
+
+    sql = "SELECT 17 AS num"
+
+    with pytest.raises(ValueError):
+        ip.run_cell_magic("bigquery", "--maximum_bytes_billed=abc", sql)
+
+
+@pytest.mark.parametrize(
+    "param_value,expected", [("987654321", "987654321"), ("None", "0")]
+)
+@pytest.mark.usefixtures("ipython_interactive")
+def test_bigquery_magic_w_maximum_bytes_billed_overrides_context(param_value, expected):
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context._project = None
+
+    # Set the default maximum bytes billed, so we know it's overridable by the param.
+    magics.context.default_query_job_config.maximum_bytes_billed = 1234567
+
+    project = "test-project"
+    job_reference = copy.deepcopy(JOB_REFERENCE_RESOURCE)
+    job_reference["projectId"] = project
+    query = "SELECT 17 AS num"
+    resource = copy.deepcopy(QUERY_RESOURCE)
+    resource["jobReference"] = job_reference
+    resource["configuration"]["query"]["query"] = query
+    data = {"jobReference": job_reference, "totalRows": 0, "rows": []}
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    default_patch = mock.patch(
+        "google.auth.default", return_value=(credentials_mock, "general-project")
+    )
+    conn = magics.context._connection = make_connection(resource, data)
+    list_rows_patch = mock.patch(
+        "google.cloud.bigquery.client.Client.list_rows",
+        return_value=google.cloud.bigquery.table._EmptyRowIterator(),
+    )
+    with list_rows_patch, default_patch:
+        ip.run_cell_magic(
+            "bigquery", "--maximum_bytes_billed={}".format(param_value), query
+        )
+
+    _, req = conn.api_request.call_args_list[0]
+    sent_config = req["data"]["configuration"]["query"]
+    assert sent_config["maximumBytesBilled"] == expected
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+def test_bigquery_magic_w_maximum_bytes_billed_w_context_inplace():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context._project = None
+
+    magics.context.default_query_job_config.maximum_bytes_billed = 1337
+
+    project = "test-project"
+    job_reference = copy.deepcopy(JOB_REFERENCE_RESOURCE)
+    job_reference["projectId"] = project
+    query = "SELECT 17 AS num"
+    resource = copy.deepcopy(QUERY_RESOURCE)
+    resource["jobReference"] = job_reference
+    resource["configuration"]["query"]["query"] = query
+    data = {"jobReference": job_reference, "totalRows": 0, "rows": []}
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    default_patch = mock.patch(
+        "google.auth.default", return_value=(credentials_mock, "general-project")
+    )
+    conn = magics.context._connection = make_connection(resource, data)
+    list_rows_patch = mock.patch(
+        "google.cloud.bigquery.client.Client.list_rows",
+        return_value=google.cloud.bigquery.table._EmptyRowIterator(),
+    )
+    with list_rows_patch, default_patch:
+        ip.run_cell_magic("bigquery", "", query)
+
+    _, req = conn.api_request.call_args_list[0]
+    sent_config = req["data"]["configuration"]["query"]
+    assert sent_config["maximumBytesBilled"] == "1337"
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+def test_bigquery_magic_w_maximum_bytes_billed_w_context_setter():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context._project = None
+
+    magics.context.default_query_job_config = job.QueryJobConfig(
+        maximum_bytes_billed=10203
+    )
+
+    project = "test-project"
+    job_reference = copy.deepcopy(JOB_REFERENCE_RESOURCE)
+    job_reference["projectId"] = project
+    query = "SELECT 17 AS num"
+    resource = copy.deepcopy(QUERY_RESOURCE)
+    resource["jobReference"] = job_reference
+    resource["configuration"]["query"]["query"] = query
+    data = {"jobReference": job_reference, "totalRows": 0, "rows": []}
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    default_patch = mock.patch(
+        "google.auth.default", return_value=(credentials_mock, "general-project")
+    )
+    conn = magics.context._connection = make_connection(resource, data)
+    list_rows_patch = mock.patch(
+        "google.cloud.bigquery.client.Client.list_rows",
+        return_value=google.cloud.bigquery.table._EmptyRowIterator(),
+    )
+    with list_rows_patch, default_patch:
+        ip.run_cell_magic("bigquery", "", query)
+
+    _, req = conn.api_request.call_args_list[0]
+    sent_config = req["data"]["configuration"]["query"]
+    assert sent_config["maximumBytesBilled"] == "10203"
 
 
 @pytest.mark.usefixtures("ipython_interactive")

@@ -1,4 +1,4 @@
-.. include:: /../tasks/README.rst
+.. include:: README.rst
 
 API Reference
 -------------
@@ -33,3 +33,13 @@ v2beta2:
     
     gapic/v2beta2/api
     gapic/v2beta2/types
+
+Changelog
+---------
+
+For a list of all `google-cloud-tasks` releases.
+
+.. toctree::
+    :maxdepth: 2
+
+    changelog

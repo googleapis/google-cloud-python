@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## 1.1.0
+
+05-14-2019 15:30 PDT
+
+### Implementation Changes
+- Remove log_sampling_ratio, add stackdriver_logging_config (via synth). ([#7950](https://github.com/googleapis/google-cloud-python/pull/7950))
+
+### Documentation
+- Update docstrings (via synth). ([#7963](https://github.com/googleapis/google-cloud-python/pull/7963))
+- Update docstrings (via synth). ([#7940](https://github.com/googleapis/google-cloud-python/pull/7940))
+
+### Internal / Testing Changes
+- Add nox session `docs`, reorder methods (via synth). ([#7783](https://github.com/googleapis/google-cloud-python/pull/7783))
+
 ## 1.0.0
 
 04-29-2019 16:35 PDT

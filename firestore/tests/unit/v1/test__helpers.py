@@ -821,6 +821,9 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.server_timestamps, [])
         self.assertEqual(inst.array_removes, {})
         self.assertEqual(inst.array_unions, {})
+        self.assertEqual(inst.increments, {})
+        self.assertEqual(inst.maximums, {})
+        self.assertEqual(inst.minimums, {})
         self.assertEqual(inst.set_fields, {})
         self.assertTrue(inst.empty_document)
         self.assertFalse(inst.has_transforms)
@@ -839,6 +842,9 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.server_timestamps, [])
         self.assertEqual(inst.array_removes, {})
         self.assertEqual(inst.array_unions, {})
+        self.assertEqual(inst.increments, {})
+        self.assertEqual(inst.maximums, {})
+        self.assertEqual(inst.minimums, {})
         self.assertEqual(inst.set_fields, {})
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
@@ -857,6 +863,9 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.server_timestamps, [])
         self.assertEqual(inst.array_removes, {})
         self.assertEqual(inst.array_unions, {})
+        self.assertEqual(inst.increments, {})
+        self.assertEqual(inst.maximums, {})
+        self.assertEqual(inst.minimums, {})
         self.assertEqual(inst.set_fields, {})
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
@@ -875,6 +884,9 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.server_timestamps, [_make_field_path("a")])
         self.assertEqual(inst.array_removes, {})
         self.assertEqual(inst.array_unions, {})
+        self.assertEqual(inst.increments, {})
+        self.assertEqual(inst.maximums, {})
+        self.assertEqual(inst.minimums, {})
         self.assertEqual(inst.set_fields, {})
         self.assertFalse(inst.empty_document)
         self.assertTrue(inst.has_transforms)
@@ -893,6 +905,9 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.server_timestamps, [_make_field_path("a", "b", "c")])
         self.assertEqual(inst.array_removes, {})
         self.assertEqual(inst.array_unions, {})
+        self.assertEqual(inst.increments, {})
+        self.assertEqual(inst.maximums, {})
+        self.assertEqual(inst.minimums, {})
         self.assertEqual(inst.set_fields, {})
         self.assertFalse(inst.empty_document)
         self.assertTrue(inst.has_transforms)
@@ -913,6 +928,9 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.server_timestamps, [])
         self.assertEqual(inst.array_removes, expected_array_removes)
         self.assertEqual(inst.array_unions, {})
+        self.assertEqual(inst.increments, {})
+        self.assertEqual(inst.maximums, {})
+        self.assertEqual(inst.minimums, {})
         self.assertEqual(inst.set_fields, {})
         self.assertFalse(inst.empty_document)
         self.assertTrue(inst.has_transforms)
@@ -933,6 +951,9 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.server_timestamps, [])
         self.assertEqual(inst.array_removes, expected_array_removes)
         self.assertEqual(inst.array_unions, {})
+        self.assertEqual(inst.increments, {})
+        self.assertEqual(inst.maximums, {})
+        self.assertEqual(inst.minimums, {})
         self.assertEqual(inst.set_fields, {})
         self.assertFalse(inst.empty_document)
         self.assertTrue(inst.has_transforms)
@@ -973,6 +994,147 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.server_timestamps, [])
         self.assertEqual(inst.array_removes, {})
         self.assertEqual(inst.array_unions, expected_array_unions)
+        self.assertEqual(inst.increments, {})
+        self.assertEqual(inst.maximums, {})
+        self.assertEqual(inst.minimums, {})
+        self.assertEqual(inst.set_fields, {})
+        self.assertFalse(inst.empty_document)
+        self.assertTrue(inst.has_transforms)
+        self.assertEqual(inst.transform_paths, [_make_field_path("a", "b", "c")])
+
+    def test_ctor_w_increment_shallow(self):
+        from google.cloud.firestore_v1.transforms import Increment
+
+        value = 1
+        document_data = {"a": Increment(value)}
+
+        inst = self._make_one(document_data)
+
+        expected_increments = {_make_field_path("a"): value}
+        self.assertEqual(inst.document_data, document_data)
+        self.assertEqual(inst.field_paths, [])
+        self.assertEqual(inst.deleted_fields, [])
+        self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.array_removes, {})
+        self.assertEqual(inst.array_unions, {})
+        self.assertEqual(inst.increments, expected_increments)
+        self.assertEqual(inst.maximums, {})
+        self.assertEqual(inst.minimums, {})
+        self.assertEqual(inst.set_fields, {})
+        self.assertFalse(inst.empty_document)
+        self.assertTrue(inst.has_transforms)
+        self.assertEqual(inst.transform_paths, [_make_field_path("a")])
+
+    def test_ctor_w_increment_nested(self):
+        from google.cloud.firestore_v1.transforms import Increment
+
+        value = 2
+        document_data = {"a": {"b": {"c": Increment(value)}}}
+
+        inst = self._make_one(document_data)
+
+        expected_increments = {_make_field_path("a", "b", "c"): value}
+        self.assertEqual(inst.document_data, document_data)
+        self.assertEqual(inst.field_paths, [])
+        self.assertEqual(inst.deleted_fields, [])
+        self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.array_removes, {})
+        self.assertEqual(inst.array_unions, {})
+        self.assertEqual(inst.increments, expected_increments)
+        self.assertEqual(inst.maximums, {})
+        self.assertEqual(inst.minimums, {})
+        self.assertEqual(inst.set_fields, {})
+        self.assertFalse(inst.empty_document)
+        self.assertTrue(inst.has_transforms)
+        self.assertEqual(inst.transform_paths, [_make_field_path("a", "b", "c")])
+
+    def test_ctor_w_maximum_shallow(self):
+        from google.cloud.firestore_v1.transforms import Maximum
+
+        value = 1
+        document_data = {"a": Maximum(value)}
+
+        inst = self._make_one(document_data)
+
+        expected_maximums = {_make_field_path("a"): value}
+        self.assertEqual(inst.document_data, document_data)
+        self.assertEqual(inst.field_paths, [])
+        self.assertEqual(inst.deleted_fields, [])
+        self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.array_removes, {})
+        self.assertEqual(inst.array_unions, {})
+        self.assertEqual(inst.increments, {})
+        self.assertEqual(inst.maximums, expected_maximums)
+        self.assertEqual(inst.minimums, {})
+        self.assertEqual(inst.set_fields, {})
+        self.assertFalse(inst.empty_document)
+        self.assertTrue(inst.has_transforms)
+        self.assertEqual(inst.transform_paths, [_make_field_path("a")])
+
+    def test_ctor_w_maximum_nested(self):
+        from google.cloud.firestore_v1.transforms import Maximum
+
+        value = 2
+        document_data = {"a": {"b": {"c": Maximum(value)}}}
+
+        inst = self._make_one(document_data)
+
+        expected_maximums = {_make_field_path("a", "b", "c"): value}
+        self.assertEqual(inst.document_data, document_data)
+        self.assertEqual(inst.field_paths, [])
+        self.assertEqual(inst.deleted_fields, [])
+        self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.array_removes, {})
+        self.assertEqual(inst.array_unions, {})
+        self.assertEqual(inst.increments, {})
+        self.assertEqual(inst.maximums, expected_maximums)
+        self.assertEqual(inst.minimums, {})
+        self.assertEqual(inst.set_fields, {})
+        self.assertFalse(inst.empty_document)
+        self.assertTrue(inst.has_transforms)
+        self.assertEqual(inst.transform_paths, [_make_field_path("a", "b", "c")])
+
+    def test_ctor_w_minimum_shallow(self):
+        from google.cloud.firestore_v1.transforms import Minimum
+
+        value = 1
+        document_data = {"a": Minimum(value)}
+
+        inst = self._make_one(document_data)
+
+        expected_minimums = {_make_field_path("a"): value}
+        self.assertEqual(inst.document_data, document_data)
+        self.assertEqual(inst.field_paths, [])
+        self.assertEqual(inst.deleted_fields, [])
+        self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.array_removes, {})
+        self.assertEqual(inst.array_unions, {})
+        self.assertEqual(inst.increments, {})
+        self.assertEqual(inst.maximums, {})
+        self.assertEqual(inst.minimums, expected_minimums)
+        self.assertEqual(inst.set_fields, {})
+        self.assertFalse(inst.empty_document)
+        self.assertTrue(inst.has_transforms)
+        self.assertEqual(inst.transform_paths, [_make_field_path("a")])
+
+    def test_ctor_w_minimum_nested(self):
+        from google.cloud.firestore_v1.transforms import Minimum
+
+        value = 2
+        document_data = {"a": {"b": {"c": Minimum(value)}}}
+
+        inst = self._make_one(document_data)
+
+        expected_minimums = {_make_field_path("a", "b", "c"): value}
+        self.assertEqual(inst.document_data, document_data)
+        self.assertEqual(inst.field_paths, [])
+        self.assertEqual(inst.deleted_fields, [])
+        self.assertEqual(inst.server_timestamps, [])
+        self.assertEqual(inst.array_removes, {})
+        self.assertEqual(inst.array_unions, {})
+        self.assertEqual(inst.increments, {})
+        self.assertEqual(inst.maximums, {})
+        self.assertEqual(inst.minimums, expected_minimums)
         self.assertEqual(inst.set_fields, {})
         self.assertFalse(inst.empty_document)
         self.assertTrue(inst.has_transforms)
@@ -990,6 +1152,9 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.server_timestamps, [])
         self.assertEqual(inst.array_removes, {})
         self.assertEqual(inst.array_unions, {})
+        self.assertEqual(inst.increments, {})
+        self.assertEqual(inst.maximums, {})
+        self.assertEqual(inst.minimums, {})
         self.assertEqual(inst.set_fields, document_data)
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
@@ -1007,6 +1172,9 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.server_timestamps, [])
         self.assertEqual(inst.array_removes, {})
         self.assertEqual(inst.array_unions, {})
+        self.assertEqual(inst.increments, {})
+        self.assertEqual(inst.maximums, {})
+        self.assertEqual(inst.minimums, {})
         self.assertEqual(inst.set_fields, document_data)
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
@@ -1049,6 +1217,9 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(inst.server_timestamps, [])
         self.assertEqual(inst.array_removes, {})
         self.assertEqual(inst.array_unions, {})
+        self.assertEqual(inst.increments, {})
+        self.assertEqual(inst.maximums, {})
+        self.assertEqual(inst.minimums, {})
         self.assertEqual(inst.set_fields, document_data)
         self.assertFalse(inst.empty_document)
         self.assertFalse(inst.has_transforms)
@@ -1182,6 +1353,144 @@ class TestDocumentExtractor(unittest.TestCase):
         self.assertEqual(transform.field_path, "a.b.c")
         added = self._array_value_to_list(transform.append_missing_elements)
         self.assertEqual(added, values)
+        self.assertFalse(transform_pb.HasField("current_document"))
+
+    def test_get_transform_pb_w_increment_int(self):
+        from google.cloud.firestore_v1.proto import write_pb2
+        from google.cloud.firestore_v1.transforms import Increment
+
+        value = 1
+        document_data = {"a": {"b": {"c": Increment(value)}}}
+        inst = self._make_one(document_data)
+        document_path = (
+            "projects/project-id/databases/(default)/" "documents/document-id"
+        )
+
+        transform_pb = inst.get_transform_pb(document_path)
+
+        self.assertIsInstance(transform_pb, write_pb2.Write)
+        self.assertEqual(transform_pb.transform.document, document_path)
+        transforms = transform_pb.transform.field_transforms
+        self.assertEqual(len(transforms), 1)
+        transform = transforms[0]
+        self.assertEqual(transform.field_path, "a.b.c")
+        added = transform.increment.integer_value
+        self.assertEqual(added, value)
+        self.assertFalse(transform_pb.HasField("current_document"))
+
+    def test_get_transform_pb_w_increment_float(self):
+        from google.cloud.firestore_v1.proto import write_pb2
+        from google.cloud.firestore_v1.transforms import Increment
+
+        value = 3.1415926
+        document_data = {"a": {"b": {"c": Increment(value)}}}
+        inst = self._make_one(document_data)
+        document_path = (
+            "projects/project-id/databases/(default)/" "documents/document-id"
+        )
+
+        transform_pb = inst.get_transform_pb(document_path)
+
+        self.assertIsInstance(transform_pb, write_pb2.Write)
+        self.assertEqual(transform_pb.transform.document, document_path)
+        transforms = transform_pb.transform.field_transforms
+        self.assertEqual(len(transforms), 1)
+        transform = transforms[0]
+        self.assertEqual(transform.field_path, "a.b.c")
+        added = transform.increment.double_value
+        self.assertEqual(added, value)
+        self.assertFalse(transform_pb.HasField("current_document"))
+
+    def test_get_transform_pb_w_maximum_int(self):
+        from google.cloud.firestore_v1.proto import write_pb2
+        from google.cloud.firestore_v1.transforms import Maximum
+
+        value = 1
+        document_data = {"a": {"b": {"c": Maximum(value)}}}
+        inst = self._make_one(document_data)
+        document_path = (
+            "projects/project-id/databases/(default)/" "documents/document-id"
+        )
+
+        transform_pb = inst.get_transform_pb(document_path)
+
+        self.assertIsInstance(transform_pb, write_pb2.Write)
+        self.assertEqual(transform_pb.transform.document, document_path)
+        transforms = transform_pb.transform.field_transforms
+        self.assertEqual(len(transforms), 1)
+        transform = transforms[0]
+        self.assertEqual(transform.field_path, "a.b.c")
+        added = transform.maximum.integer_value
+        self.assertEqual(added, value)
+        self.assertFalse(transform_pb.HasField("current_document"))
+
+    def test_get_transform_pb_w_maximum_float(self):
+        from google.cloud.firestore_v1.proto import write_pb2
+        from google.cloud.firestore_v1.transforms import Maximum
+
+        value = 3.1415926
+        document_data = {"a": {"b": {"c": Maximum(value)}}}
+        inst = self._make_one(document_data)
+        document_path = (
+            "projects/project-id/databases/(default)/" "documents/document-id"
+        )
+
+        transform_pb = inst.get_transform_pb(document_path)
+
+        self.assertIsInstance(transform_pb, write_pb2.Write)
+        self.assertEqual(transform_pb.transform.document, document_path)
+        transforms = transform_pb.transform.field_transforms
+        self.assertEqual(len(transforms), 1)
+        transform = transforms[0]
+        self.assertEqual(transform.field_path, "a.b.c")
+        added = transform.maximum.double_value
+        self.assertEqual(added, value)
+        self.assertFalse(transform_pb.HasField("current_document"))
+
+    def test_get_transform_pb_w_minimum_int(self):
+        from google.cloud.firestore_v1.proto import write_pb2
+        from google.cloud.firestore_v1.transforms import Minimum
+
+        value = 1
+        document_data = {"a": {"b": {"c": Minimum(value)}}}
+        inst = self._make_one(document_data)
+        document_path = (
+            "projects/project-id/databases/(default)/" "documents/document-id"
+        )
+
+        transform_pb = inst.get_transform_pb(document_path)
+
+        self.assertIsInstance(transform_pb, write_pb2.Write)
+        self.assertEqual(transform_pb.transform.document, document_path)
+        transforms = transform_pb.transform.field_transforms
+        self.assertEqual(len(transforms), 1)
+        transform = transforms[0]
+        self.assertEqual(transform.field_path, "a.b.c")
+        added = transform.minimum.integer_value
+        self.assertEqual(added, value)
+        self.assertFalse(transform_pb.HasField("current_document"))
+
+    def test_get_transform_pb_w_minimum_float(self):
+        from google.cloud.firestore_v1.proto import write_pb2
+        from google.cloud.firestore_v1.transforms import Minimum
+
+        value = 3.1415926
+        document_data = {"a": {"b": {"c": Minimum(value)}}}
+        inst = self._make_one(document_data)
+        document_path = (
+            "projects/project-id/databases/(default)/" "documents/document-id"
+        )
+
+        transform_pb = inst.get_transform_pb(document_path)
+
+        self.assertIsInstance(transform_pb, write_pb2.Write)
+        self.assertEqual(transform_pb.transform.document, document_path)
+        transforms = transform_pb.transform.field_transforms
+        self.assertEqual(len(transforms), 1)
+        transform = transforms[0]
+        self.assertEqual(transform.field_path, "a.b.c")
+        added = transform.minimum.double_value
+        self.assertEqual(added, value)
         self.assertFalse(transform_pb.HasField("current_document"))
 
 

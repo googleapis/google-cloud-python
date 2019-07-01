@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 import google.api_core.grpc_helpers
 
 from google.cloud.irm_v1alpha2.proto import incidents_service_pb2_grpc
@@ -70,7 +71,9 @@ class IncidentServiceGrpcTransport(object):
         }
 
     @classmethod
-    def create_channel(cls, address="irm.googleapis.com:443", credentials=None):
+    def create_channel(
+        cls, address="irm.googleapis.com:443", credentials=None, **kwargs
+    ):
         """Create and return a gRPC channel object.
 
         Args:
@@ -80,12 +83,14 @@ class IncidentServiceGrpcTransport(object):
                 credentials identify this application to the service. If
                 none are specified, the client will attempt to ascertain
                 the credentials from the environment.
+            kwargs (dict): Keyword arguments, which are passed to the
+                channel creation.
 
         Returns:
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES, **kwargs
         )
 
     @property
@@ -271,6 +276,19 @@ class IncidentServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["incident_service_stub"].GetSignal
+
+    @property
+    def lookup_signal(self):
+        """Return the gRPC stub for :meth:`IncidentServiceClient.lookup_signal`.
+
+        Finds a signal by other unique IDs.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["incident_service_stub"].LookupSignal
 
     @property
     def update_signal(self):

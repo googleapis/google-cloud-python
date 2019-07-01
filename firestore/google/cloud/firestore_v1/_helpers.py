@@ -220,12 +220,12 @@ def reference_value_to_document(reference_value, client):
 
     Args:
         reference_value (str): A document reference value.
-        client (~.firestore_v1.client.Client): A client that has
-            a document factory.
+        client (:class:`~google.cloud.firestore_v1.client.Client`):
+            A client that has a document factory.
 
     Returns:
-        ~.firestore_v1.document.DocumentReference: The document
-        corresponding to ``reference_value``.
+        :class:`~google.cloud.firestore_v1.document.DocumentReference`:
+            The document corresponding to ``reference_value``.
 
     Raises:
         ValueError: If the ``reference_value`` is not of the expected
@@ -255,8 +255,8 @@ def decode_value(value, client):
     Args:
         value (google.cloud.firestore_v1.types.Value): A
             Firestore protobuf to be decoded / parsed / converted.
-        client (~.firestore_v1.client.Client): A client that has
-            a document factory.
+        client (:class:`~google.cloud.firestore_v1.client.Client`):
+            A client that has a document factory.
 
     Returns:
         Union[NoneType, bool, int, float, datetime.datetime, \
@@ -301,8 +301,8 @@ def decode_dict(value_fields, client):
     Args:
         value_fields (google.protobuf.pyext._message.MessageMapContainer): A
             protobuf map of Firestore ``Value``-s.
-        client (~.firestore_v1.client.Client): A client that has
-            a document factory.
+        client (:class:`~google.cloud.firestore_v1.client.Client`):
+            A client that has a document factory.
 
     Returns:
         Dict[str, Union[NoneType, bool, int, float, datetime.datetime, \
@@ -404,6 +404,9 @@ class DocumentExtractor(object):
         self.server_timestamps = []
         self.array_removes = {}
         self.array_unions = {}
+        self.increments = {}
+        self.minimums = {}
+        self.maximums = {}
         self.set_fields = {}
         self.empty_document = False
 
@@ -427,6 +430,15 @@ class DocumentExtractor(object):
             elif isinstance(value, transforms.ArrayUnion):
                 self.array_unions[field_path] = value.values
 
+            elif isinstance(value, transforms.Increment):
+                self.increments[field_path] = value.value
+
+            elif isinstance(value, transforms.Maximum):
+                self.maximums[field_path] = value.value
+
+            elif isinstance(value, transforms.Minimum):
+                self.minimums[field_path] = value.value
+
             else:
                 self.field_paths.append(field_path)
                 set_field_value(self.set_fields, field_path, value)
@@ -436,12 +448,24 @@ class DocumentExtractor(object):
 
     @property
     def has_transforms(self):
-        return bool(self.server_timestamps or self.array_removes or self.array_unions)
+        return bool(
+            self.server_timestamps
+            or self.array_removes
+            or self.array_unions
+            or self.increments
+            or self.maximums
+            or self.minimums
+        )
 
     @property
     def transform_paths(self):
         return sorted(
-            self.server_timestamps + list(self.array_removes) + list(self.array_unions)
+            self.server_timestamps
+            + list(self.array_removes)
+            + list(self.array_unions)
+            + list(self.increments)
+            + list(self.maximums)
+            + list(self.minimums)
         )
 
     def _get_update_mask(self, allow_empty_mask=False):
@@ -499,6 +523,33 @@ class DocumentExtractor(object):
                     ),
                 )
                 for path, values in self.array_unions.items()
+            ]
+            + [
+                (
+                    path,
+                    write_pb2.DocumentTransform.FieldTransform(
+                        field_path=path.to_api_repr(), increment=encode_value(value)
+                    ),
+                )
+                for path, value in self.increments.items()
+            ]
+            + [
+                (
+                    path,
+                    write_pb2.DocumentTransform.FieldTransform(
+                        field_path=path.to_api_repr(), maximum=encode_value(value)
+                    ),
+                )
+                for path, value in self.maximums.items()
+            ]
+            + [
+                (
+                    path,
+                    write_pb2.DocumentTransform.FieldTransform(
+                        field_path=path.to_api_repr(), minimum=encode_value(value)
+                    ),
+                )
+                for path, value in self.minimums.items()
             ]
         )
         field_transforms = [
@@ -800,9 +851,9 @@ def pbs_for_update(document_path, field_updates, option):
         document_path (str): A fully-qualified document path.
         field_updates (dict): Field names or paths to update and values
             to update with.
-        option (optional[~.firestore_v1.client.WriteOption]): A
-           write option to make assertions / preconditions on the server
-           state of the document before applying changes.
+        option (optional[:class:`~google.cloud.firestore_v1.client.WriteOption`]):
+            A write option to make assertions / preconditions on the server
+            state of the document before applying changes.
 
     Returns:
         List[google.cloud.firestore_v1.types.Write]: One
@@ -839,9 +890,9 @@ def pb_for_delete(document_path, option):
 
     Args:
         document_path (str): A fully-qualified document path.
-        option (optional[~.firestore_v1.client.WriteOption]): A
-           write option to make assertions / preconditions on the server
-           state of the document before applying changes.
+        option (optional[:class:`~google.cloud.firestore_v1.client.WriteOption`]):
+            A write option to make assertions / preconditions on the server
+            state of the document before applying changes.
 
     Returns:
         google.cloud.firestore_v1.types.Write: A
@@ -865,9 +916,9 @@ def get_transaction_id(transaction, read_operation=True):
     """Get the transaction ID from a ``Transaction`` object.
 
     Args:
-        transaction (Optional[~.firestore_v1.transaction.\
-            Transaction]): An existing transaction that this query will
-            run in.
+        transaction (Optional[:class:`~google.cloud.firestore_v1.transaction.\
+            Transaction`]):
+            An existing transaction that this query will run in.
         read_operation (Optional[bool]): Indicates if the transaction ID
             will be used in a read operation. Defaults to :data:`True`.
 
@@ -928,7 +979,7 @@ class LastUpdateOption(WriteOption):
     """Option used to assert a "last update" condition on a write operation.
 
     This will typically be created by
-    :meth:`~.firestore_v1.client.Client.write_option`.
+    :meth:`~google.cloud.firestore_v1.client.Client.write_option`.
 
     Args:
         last_update_time (google.protobuf.timestamp_pb2.Timestamp): A
@@ -968,7 +1019,7 @@ class ExistsOption(WriteOption):
     """Option used to assert existence on a write operation.
 
     This will typically be created by
-    :meth:`~.firestore_v1.client.Client.write_option`.
+    :meth:`~google.cloud.firestore_v1.client.Client.write_option`.
 
     Args:
         exists (bool): Indicates if the document being modified

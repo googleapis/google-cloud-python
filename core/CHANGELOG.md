@@ -4,6 +4,37 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+## 1.0.2
+
+06/11/2019 15:19 PDT
+
+### Internal Changes 
+- Prevent requests from hanging on SSL handshake issue by adding a max timeout of 5 minutes. (#8207)
+
+## 1.0.1
+
+05-28-2019 11:22 PDT
+
+### Dependencies
+- Pin `grpcio < 2.0dev`. ([#8182](https://github.com/googleapis/google-cloud-python/pull/8182))
+
+## 1.0.0
+
+05-15-2019 13:09 PDT
+
+
+### Implementation Changes
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+
+### New Features
+- Refactor `client_info` support. ([#7849](https://github.com/googleapis/google-cloud-python/pull/7849))
+
+### Dependencies
+- Update dep on `api_core` >= 1.11.0. ([#7986](https://github.com/googleapis/google-cloud-python/pull/7986))
+
+### Documentation
+- Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+
 ## 0.29.1
 
 12-17-2018 16:35 PST

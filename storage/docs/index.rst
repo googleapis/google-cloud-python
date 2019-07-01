@@ -1,8 +1,8 @@
-.. include:: /../storage/README.rst
+.. include:: README.rst
 
 .. note::
 
-   Becuase the storage client uses the third-party :mod:`requests` library by
+   Because the storage client uses the third-party :mod:`requests` library by
    default, it is safe to share instances across threads.  In multiprocessing
    scenarious, best practice is to create client instances *after*
    :class:`multiprocessing.Pool` or :class:`multiprocessing.Process` invokes

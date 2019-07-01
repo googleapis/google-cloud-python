@@ -45,6 +45,7 @@ autoclass_content = "both"
 autodoc_default_flags = ["members"]
 autosummary_generate = True
 
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 
@@ -120,6 +121,7 @@ pygments_style = "sphinx"
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
+
 
 # -- Options for HTML output ----------------------------------------------
 
@@ -229,6 +231,7 @@ htmlhelp_basename = "google-cloud-dlp-doc"
 
 # -- Options for warnings ------------------------------------------------------
 
+
 suppress_warnings = [
     # Temporarily suppress this to avoid "more than one target found for
     # cross-reference" warning, which are intractable for us to avoid while in
@@ -284,6 +287,7 @@ latex_documents = [
 # If false, no module index is generated.
 # latex_domain_indices = True
 
+
 # -- Options for manual page output ---------------------------------------
 
 # One entry per manual page. List of tuples
@@ -294,6 +298,7 @@ man_pages = [
 
 # If true, show URL addresses after external links.
 # man_show_urls = False
+
 
 # -- Options for Texinfo output -------------------------------------------
 
@@ -324,6 +329,7 @@ texinfo_documents = [
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 # texinfo_no_detailmenu = False
 
+
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
     "python": ("http://python.readthedocs.org/en/latest/", None),
@@ -339,6 +345,7 @@ intersphinx_mapping = {
     "fastavro": ("https://fastavro.readthedocs.io/en/stable/", None),
     "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
 }
+
 
 # Napoleon settings
 napoleon_google_docstring = True

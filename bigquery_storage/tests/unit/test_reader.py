@@ -131,10 +131,16 @@ def _bq_to_avro_blocks(bq_blocks, avro_schema_json):
     return avro_blocks
 
 
+def _avro_blocks_w_unavailable(avro_blocks):
+    for block in avro_blocks:
+        yield block
+    raise google.api_core.exceptions.ServiceUnavailable("test: please reconnect")
+
+
 def _avro_blocks_w_deadline(avro_blocks):
     for block in avro_blocks:
         yield block
-    raise google.api_core.exceptions.DeadlineExceeded("test: please reconnect")
+    raise google.api_core.exceptions.DeadlineExceeded("test: timeout, don't reconnect")
 
 
 def _generate_read_session(avro_schema_json):
@@ -205,7 +211,7 @@ def test_rows_w_scalars(class_under_test, mock_client):
     assert got == expected
 
 
-def test_rows_w_reconnect(class_under_test, mock_client):
+def test_rows_w_timeout(class_under_test, mock_client):
     bq_columns = [{"name": "int_col", "type": "int64"}]
     avro_schema = _bq_to_avro_schema(bq_columns)
     read_session = _generate_read_session(avro_schema)
@@ -214,6 +220,40 @@ def test_rows_w_reconnect(class_under_test, mock_client):
         [{"int_col": 345}, {"int_col": 456}],
     ]
     avro_blocks_1 = _avro_blocks_w_deadline(
+        _bq_to_avro_blocks(bq_blocks_1, avro_schema)
+    )
+    bq_blocks_2 = [[{"int_col": 567}, {"int_col": 789}], [{"int_col": 890}]]
+    avro_blocks_2 = _bq_to_avro_blocks(bq_blocks_2, avro_schema)
+
+    mock_client.read_rows.return_value = avro_blocks_2
+    stream_position = bigquery_storage_v1beta1.types.StreamPosition(
+        stream={"name": "test"}
+    )
+
+    reader = class_under_test(
+        avro_blocks_1,
+        mock_client,
+        stream_position,
+        {"metadata": {"test-key": "test-value"}},
+    )
+
+    with pytest.raises(google.api_core.exceptions.DeadlineExceeded):
+        list(reader.rows(read_session))
+
+    # Don't reconnect on DeadlineException. This allows user-specified timeouts
+    # to be respected.
+    mock_client.read_rows.assert_not_called()
+
+
+def test_rows_w_reconnect(class_under_test, mock_client):
+    bq_columns = [{"name": "int_col", "type": "int64"}]
+    avro_schema = _bq_to_avro_schema(bq_columns)
+    read_session = _generate_read_session(avro_schema)
+    bq_blocks_1 = [
+        [{"int_col": 123}, {"int_col": 234}],
+        [{"int_col": 345}, {"int_col": 456}],
+    ]
+    avro_blocks_1 = _avro_blocks_w_unavailable(
         _bq_to_avro_blocks(bq_blocks_1, avro_schema)
     )
     bq_blocks_2 = [[{"int_col": 567}, {"int_col": 789}], [{"int_col": 890}]]
@@ -275,7 +315,7 @@ def test_rows_w_reconnect_by_page(class_under_test, mock_client):
     )
 
     reader = class_under_test(
-        _avro_blocks_w_deadline(avro_blocks_1),
+        _avro_blocks_w_unavailable(avro_blocks_1),
         mock_client,
         stream_position,
         {"metadata": {"test-key": "test-value"}},
@@ -436,7 +476,7 @@ def test_to_dataframe_by_page(class_under_test, mock_client):
     )
 
     reader = class_under_test(
-        _avro_blocks_w_deadline(avro_blocks_1),
+        _avro_blocks_w_unavailable(avro_blocks_1),
         mock_client,
         stream_position,
         {"metadata": {"test-key": "test-value"}},

@@ -67,6 +67,9 @@ from google.cloud.bigquery.query import ScalarQueryParameter
 from google.cloud.bigquery.query import StructQueryParameter
 from google.cloud.bigquery.query import UDFResource
 from google.cloud.bigquery.retry import DEFAULT_RETRY
+from google.cloud.bigquery.routine import Routine
+from google.cloud.bigquery.routine import RoutineArgument
+from google.cloud.bigquery.routine import RoutineReference
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import EncryptionConfiguration
 from google.cloud.bigquery.table import Table
@@ -105,6 +108,10 @@ __all__ = [
     # Models
     "Model",
     "ModelReference",
+    # Routines
+    "Routine",
+    "RoutineArgument",
+    "RoutineReference",
     # Shared helpers
     "SchemaField",
     "UDFResource",

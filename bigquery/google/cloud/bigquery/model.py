@@ -268,6 +268,9 @@ class Model(object):
             google.cloud.bigquery.model.Model: Model parsed from ``resource``.
         """
         this = cls(None)
+        # Keep a reference to the resource as a workaround to find unknown
+        # field values.
+        this._properties = resource
 
         # Convert from millis-from-epoch to timestamp well-known type.
         # TODO: Remove this hack once CL 238585470 hits prod.
@@ -279,12 +282,9 @@ class Model(object):
             start_time = datetime_helpers.from_microseconds(1e3 * float(start_time))
             training_run["startTime"] = datetime_helpers.to_rfc3339(start_time)
 
-        this._proto = json_format.ParseDict(resource, types.Model())
-        for key in six.itervalues(cls._PROPERTY_TO_API_FIELD):
-            # Leave missing keys unset. This allows us to use setdefault in the
-            # getters where we want a default value other than None.
-            if key in resource:
-                this._properties[key] = resource[key]
+        this._proto = json_format.ParseDict(
+            resource, types.Model(), ignore_unknown_fields=True
+        )
         return this
 
     def _build_resource(self, filter_fields):
@@ -304,6 +304,7 @@ class ModelReference(object):
 
     def __init__(self):
         self._proto = types.ModelReference()
+        self._properties = {}
 
     @property
     def project(self):
@@ -342,7 +343,12 @@ class ModelReference(object):
                 Model reference parsed from ``resource``.
         """
         ref = cls()
-        ref._proto = json_format.ParseDict(resource, types.ModelReference())
+        # Keep a reference to the resource as a workaround to find unknown
+        # field values.
+        ref._properties = resource
+        ref._proto = json_format.ParseDict(
+            resource, types.ModelReference(), ignore_unknown_fields=True
+        )
         return ref
 
     @classmethod

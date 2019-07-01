@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.automl.v1beta1 AutoMl API."""
 
 import functools
@@ -20,6 +21,7 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -35,6 +37,7 @@ import grpc
 from google.cloud.automl_v1beta1.gapic import auto_ml_client_config
 from google.cloud.automl_v1beta1.gapic import enums
 from google.cloud.automl_v1beta1.gapic.transports import auto_ml_grpc_transport
+from google.cloud.automl_v1beta1.proto import annotation_spec_pb2
 from google.cloud.automl_v1beta1.proto import column_spec_pb2
 from google.cloud.automl_v1beta1.proto import dataset_pb2
 from google.cloud.automl_v1beta1.proto import image_pb2
@@ -48,6 +51,7 @@ from google.cloud.automl_v1beta1.proto import table_spec_pb2
 from google.longrunning import operations_pb2 as longrunning_operations_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-automl").version
 
@@ -98,12 +102,26 @@ class AutoMlClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def location_path(cls, project, location):
-        """Return a fully-qualified location string."""
+    def annotation_spec_path(cls, project, location, dataset, annotation_spec):
+        """Return a fully-qualified annotation_spec string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}",
+            "projects/{project}/locations/{location}/datasets/{dataset}/annotationSpecs/{annotation_spec}",
             project=project,
             location=location,
+            dataset=dataset,
+            annotation_spec=annotation_spec,
+        )
+
+    @classmethod
+    def column_spec_path(cls, project, location, dataset, table_spec, column_spec):
+        """Return a fully-qualified column_spec string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}/datasets/{dataset}/tableSpecs/{table_spec}/columnSpecs/{column_spec}",
+            project=project,
+            location=location,
+            dataset=dataset,
+            table_spec=table_spec,
+            column_spec=column_spec,
         )
 
     @classmethod
@@ -114,6 +132,15 @@ class AutoMlClient(object):
             project=project,
             location=location,
             dataset=dataset,
+        )
+
+    @classmethod
+    def location_path(cls, project, location):
+        """Return a fully-qualified location string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}",
+            project=project,
+            location=location,
         )
 
     @classmethod
@@ -138,17 +165,6 @@ class AutoMlClient(object):
         )
 
     @classmethod
-    def annotation_spec_path(cls, project, location, dataset, annotation_spec):
-        """Return a fully-qualified annotation_spec string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}/datasets/{dataset}/annotationSpecs/{annotation_spec}",
-            project=project,
-            location=location,
-            dataset=dataset,
-            annotation_spec=annotation_spec,
-        )
-
-    @classmethod
     def table_spec_path(cls, project, location, dataset, table_spec):
         """Return a fully-qualified table_spec string."""
         return google.api_core.path_template.expand(
@@ -159,18 +175,6 @@ class AutoMlClient(object):
             table_spec=table_spec,
         )
 
-    @classmethod
-    def column_spec_path(cls, project, location, dataset, table_spec, column_spec):
-        """Return a fully-qualified column_spec string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}/datasets/{dataset}/tableSpecs/{table_spec}/columnSpecs/{column_spec}",
-            project=project,
-            location=location,
-            dataset=dataset,
-            table_spec=table_spec,
-            column_spec=column_spec,
-        )
-
     def __init__(
         self,
         transport=None,
@@ -178,6 +182,7 @@ class AutoMlClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -208,6 +213,9 @@ class AutoMlClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -226,6 +234,15 @@ class AutoMlClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -234,6 +251,7 @@ class AutoMlClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=auto_ml_grpc_transport.AutoMlGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -244,7 +262,7 @@ class AutoMlClient(object):
                 self.transport = transport
         else:
             self.transport = auto_ml_grpc_transport.AutoMlGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -558,10 +576,10 @@ class AutoMlClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.automl_v1beta1.types.Dataset` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.automl_v1beta1.types.Dataset` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1117,10 +1135,10 @@ class AutoMlClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.automl_v1beta1.types.Model` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.automl_v1beta1.types.Model` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1270,8 +1288,8 @@ class AutoMlClient(object):
         same parameters has no effect. Deploying with different parametrs (as
         e.g. changing
 
-        ``node_number`` ) will update the deployment without pausing the model's
-        availability.
+        ``node_number``) will reset the deployment state without pausing the
+        model's availability.
 
         Only applicable for Text Classification, Image Object Detection and
         Tables; all other domains manage deployment automatically.
@@ -1791,10 +1809,10 @@ class AutoMlClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.automl_v1beta1.types.ModelEvaluation` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.automl_v1beta1.types.ModelEvaluation` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2044,10 +2062,10 @@ class AutoMlClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.automl_v1beta1.types.TableSpec` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.automl_v1beta1.types.TableSpec` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2312,10 +2330,10 @@ class AutoMlClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.automl_v1beta1.types.ColumnSpec` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.automl_v1beta1.types.ColumnSpec` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request

@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 import google.api_core.grpc_helpers
 
 from google.cloud.vision_v1p1beta1.proto import image_annotator_pb2_grpc
@@ -71,7 +72,9 @@ class ImageAnnotatorGrpcTransport(object):
         }
 
     @classmethod
-    def create_channel(cls, address="vision.googleapis.com:443", credentials=None):
+    def create_channel(
+        cls, address="vision.googleapis.com:443", credentials=None, **kwargs
+    ):
         """Create and return a gRPC channel object.
 
         Args:
@@ -81,12 +84,14 @@ class ImageAnnotatorGrpcTransport(object):
                 credentials identify this application to the service. If
                 none are specified, the client will attempt to ascertain
                 the credentials from the environment.
+            kwargs (dict): Keyword arguments, which are passed to the
+                channel creation.
 
         Returns:
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES, **kwargs
         )
 
     @property

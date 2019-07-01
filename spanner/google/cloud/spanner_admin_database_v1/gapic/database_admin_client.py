@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.spanner.admin.database.v1 DatabaseAdmin API."""
 
 import functools
@@ -20,6 +21,7 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -42,6 +44,7 @@ from google.iam.v1 import iam_policy_pb2
 from google.iam.v1 import policy_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-spanner").version
 
@@ -83,15 +86,6 @@ class DatabaseAdminClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def instance_path(cls, project, instance):
-        """Return a fully-qualified instance string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/instances/{instance}",
-            project=project,
-            instance=instance,
-        )
-
-    @classmethod
     def database_path(cls, project, instance, database):
         """Return a fully-qualified database string."""
         return google.api_core.path_template.expand(
@@ -101,6 +95,15 @@ class DatabaseAdminClient(object):
             database=database,
         )
 
+    @classmethod
+    def instance_path(cls, project, instance):
+        """Return a fully-qualified instance string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/instances/{instance}",
+            project=project,
+            instance=instance,
+        )
+
     def __init__(
         self,
         transport=None,
@@ -108,6 +111,7 @@ class DatabaseAdminClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -138,6 +142,9 @@ class DatabaseAdminClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -156,6 +163,15 @@ class DatabaseAdminClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -164,6 +180,7 @@ class DatabaseAdminClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=database_admin_grpc_transport.DatabaseAdminGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -174,7 +191,7 @@ class DatabaseAdminClient(object):
                 self.transport = transport
         else:
             self.transport = database_admin_grpc_transport.DatabaseAdminGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -250,10 +267,10 @@ class DatabaseAdminClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.spanner_admin_database_v1.types.Database` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.spanner_admin_database_v1.types.Database` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -760,8 +777,7 @@ class DatabaseAdminClient(object):
 
         Args:
             resource (str): REQUIRED: The resource for which the policy is being specified.
-                ``resource`` is usually specified as a path. For example, a Project
-                resource is specified as ``projects/{project}``.
+                See the operation documentation for the appropriate value for this field.
             policy (Union[dict, ~google.cloud.spanner_admin_database_v1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The
                 size of the policy is limited to a few 10s of KB. An empty policy is a
                 valid policy but certain Cloud Platform services (such as Projects)
@@ -842,8 +858,7 @@ class DatabaseAdminClient(object):
 
         Args:
             resource (str): REQUIRED: The resource for which the policy is being requested.
-                ``resource`` is usually specified as a path. For example, a Project
-                resource is specified as ``projects/{project}``.
+                See the operation documentation for the appropriate value for this field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -923,8 +938,7 @@ class DatabaseAdminClient(object):
 
         Args:
             resource (str): REQUIRED: The resource for which the policy detail is being requested.
-                ``resource`` is usually specified as a path. For example, a Project
-                resource is specified as ``projects/{project}``.
+                See the operation documentation for the appropriate value for this field.
             permissions (list[str]): The set of permissions to check for the ``resource``. Permissions with
                 wildcards (such as '*' or 'storage.*') are not allowed. For more
                 information see `IAM

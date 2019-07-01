@@ -14,6 +14,8 @@
 
 """This script is used to synthesize generated parts of this library."""
 
+import re
+
 import synthtool as s
 from synthtool import gcp
 
@@ -26,10 +28,12 @@ versions = ["v1beta1"]
 # Generate automl GAPIC layer
 # ----------------------------------------------------------------------------
 for version in versions:
-    library = gapic.py_library("automl", version)
+    library = gapic.py_library("automl", version, include_protos=True)
     s.move(library / f"google/cloud/automl_{version}")
     s.move(library / f"tests/unit/gapic/{version}")
     s.move(library / f"docs/gapic/{version}")
+
+s.move(library / f"docs/conf.py")
 
 # Use the highest version library to generate import alias.
 s.move(library / "google/cloud/automl.py")
@@ -52,6 +56,37 @@ s.replace(
     "    \g<1>\g<2>\n    \g<1>\g<3>",
 )
 
+# Remove 'raw-latex' sections with sample JSON Lines files
+s.replace(
+    "google/cloud/**/io_pb2.py",
+    r"""Sample in-line
+     JSON Lines file.*?\}`\n""",
+    "\n",
+    flags=re.DOTALL,
+)
+
+# Remove 'raw-latex' sections with sample JSON Lines files
+s.replace(
+    "google/cloud/**/io_pb2.py",
+    r"""Sample
+     in-line JSON Lines file.*?\}`\n""",
+    "\n",
+    flags=re.DOTALL,
+)
+
+# Replace docstring with no summary line
+s.replace(
+"google/cloud/**/io_pb2.py",
+r"""__doc__ = \"\"\"-  For Translation: CSV file ``translation\.csv``, with each """,
+r'''__doc__ = """
+-  For Translation: CSV file ``translation.csv``, with each ''',
+flags=re.DOTALL,
+)
+
+s.replace(
+"google/cloud/**/io_pb2.py",
+r":raw-latex:`\\t `",
+r"\\\\t")
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------

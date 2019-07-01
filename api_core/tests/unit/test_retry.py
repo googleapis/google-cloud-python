@@ -41,6 +41,7 @@ def test_if_exception_type_multiple():
 def test_if_transient_error():
     assert retry.if_transient_error(exceptions.InternalServerError(""))
     assert retry.if_transient_error(exceptions.TooManyRequests(""))
+    assert retry.if_transient_error(exceptions.ServiceUnavailable(""))
     assert not retry.if_transient_error(exceptions.InvalidArgument(""))
 
 

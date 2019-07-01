@@ -238,7 +238,7 @@ class Blob(_PropertyMixin):
         else:
             bucket_name = None
 
-        return "<Blob: %s, %s>" % (bucket_name, self.name)
+        return "<Blob: %s, %s, %s>" % (bucket_name, self.name, self.generation)
 
     @property
     def path(self):
@@ -298,7 +298,7 @@ class Blob(_PropertyMixin):
         return "{storage_base_url}/{bucket_name}/{quoted_name}".format(
             storage_base_url=_API_ACCESS_ENDPOINT,
             bucket_name=self.bucket.name,
-            quoted_name=quote(self.name.encode("utf-8")),
+            quoted_name=_quote(self.name, safe=b"/~"),
         )
 
     def generate_signed_url(
@@ -416,8 +416,9 @@ class Blob(_PropertyMixin):
         elif version not in ("v2", "v4"):
             raise ValueError("'version' must be either 'v2' or 'v4'")
 
+        quoted_name = _quote(self.name, safe=b"/~")
         resource = "/{bucket_name}/{quoted_name}".format(
-            bucket_name=self.bucket.name, quoted_name=quote(self.name.encode("utf-8"))
+            bucket_name=self.bucket.name, quoted_name=quoted_name
         )
 
         if credentials is None:
@@ -1983,7 +1984,7 @@ def _get_encryption_headers(key, source=False):
     }
 
 
-def _quote(value):
+def _quote(value, safe=b"~"):
     """URL-quote a string.
 
     If the value is unicode, this method first UTF-8 encodes it as bytes and
@@ -1994,11 +1995,14 @@ def _quote(value):
     :type value: str or bytes
     :param value: The value to be URL-quoted.
 
+    :type safe: bytes
+    :param safe: Bytes *not* to be quoted.  By default, includes only ``b'~'``.
+
     :rtype: str
     :returns: The encoded value (bytes in Python 2, unicode in Python 3).
     """
     value = _to_bytes(value, encoding="utf-8")
-    return quote(value, safe="")
+    return quote(value, safe=safe)
 
 
 def _maybe_rewind(stream, rewind=False):

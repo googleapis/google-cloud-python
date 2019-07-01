@@ -3845,6 +3845,30 @@ class TestQueryJob(unittest.TestCase, _Base):
         query_stats["ddlOperationPerformed"] = op
         self.assertEqual(job.ddl_operation_performed, op)
 
+    def test_ddl_target_routine(self):
+        from google.cloud.bigquery.routine import RoutineReference
+
+        ref_routine = {
+            "projectId": self.PROJECT,
+            "datasetId": "ddl_ds",
+            "routineId": "targetroutine",
+        }
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+        self.assertIsNone(job.ddl_target_routine)
+
+        statistics = job._properties["statistics"] = {}
+        self.assertIsNone(job.ddl_target_routine)
+
+        query_stats = statistics["query"] = {}
+        self.assertIsNone(job.ddl_target_routine)
+
+        query_stats["ddlTargetRoutine"] = ref_routine
+        self.assertIsInstance(job.ddl_target_routine, RoutineReference)
+        self.assertEqual(job.ddl_target_routine.routine_id, "targetroutine")
+        self.assertEqual(job.ddl_target_routine.dataset_id, "ddl_ds")
+        self.assertEqual(job.ddl_target_routine.project, self.PROJECT)
+
     def test_ddl_target_table(self):
         from google.cloud.bigquery.table import TableReference
 
@@ -4167,6 +4191,62 @@ class TestQueryJob(unittest.TestCase, _Base):
         )
         self.assertEqual(query_request[1]["query_params"]["timeoutMs"], 900)
         self.assertEqual(reload_request[1]["method"], "GET")
+
+    def test_result_w_page_size(self):
+        # Arrange
+        query_results_resource = {
+            "jobComplete": True,
+            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
+            "schema": {"fields": [{"name": "col1", "type": "STRING"}]},
+            "totalRows": "4",
+        }
+        job_resource = self._make_resource(started=True, ended=True)
+        q_config = job_resource["configuration"]["query"]
+        q_config["destinationTable"] = {
+            "projectId": self.PROJECT,
+            "datasetId": self.DS_ID,
+            "tableId": self.TABLE_ID,
+        }
+        tabledata_resource = {
+            "totalRows": 4,
+            "pageToken": "some-page-token",
+            "rows": [
+                {"f": [{"v": "row1"}]},
+                {"f": [{"v": "row2"}]},
+                {"f": [{"v": "row3"}]},
+            ],
+        }
+        tabledata_resource_page_2 = {"totalRows": 4, "rows": [{"f": [{"v": "row4"}]}]}
+        conn = _make_connection(
+            query_results_resource, tabledata_resource, tabledata_resource_page_2
+        )
+        client = _make_client(self.PROJECT, connection=conn)
+        job = self._get_target_class().from_api_repr(job_resource, client)
+
+        # Act
+        result = job.result(page_size=3)
+
+        # Assert
+        actual_rows = list(result)
+        self.assertEqual(len(actual_rows), 4)
+
+        tabledata_path = "/projects/%s/datasets/%s/tables/%s/data" % (
+            self.PROJECT,
+            self.DS_ID,
+            self.TABLE_ID,
+        )
+        conn.api_request.assert_has_calls(
+            [
+                mock.call(
+                    method="GET", path=tabledata_path, query_params={"maxResults": 3}
+                ),
+                mock.call(
+                    method="GET",
+                    path=tabledata_path,
+                    query_params={"pageToken": "some-page-token", "maxResults": 3},
+                ),
+            ]
+        )
 
     def test_result_error(self):
         from google.cloud import exceptions

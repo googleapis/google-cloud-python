@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.bigtable.admin.v2 BigtableTableAdmin API."""
 
 import functools
@@ -20,6 +21,7 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -49,6 +51,7 @@ from google.longrunning import operations_pb2
 from google.protobuf import duration_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-bigtable").version
 
@@ -90,15 +93,6 @@ class BigtableTableAdminClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def instance_path(cls, project, instance):
-        """Return a fully-qualified instance string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/instances/{instance}",
-            project=project,
-            instance=instance,
-        )
-
-    @classmethod
     def cluster_path(cls, project, instance, cluster):
         """Return a fully-qualified cluster string."""
         return google.api_core.path_template.expand(
@@ -106,6 +100,15 @@ class BigtableTableAdminClient(object):
             project=project,
             instance=instance,
             cluster=cluster,
+        )
+
+    @classmethod
+    def instance_path(cls, project, instance):
+        """Return a fully-qualified instance string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/instances/{instance}",
+            project=project,
+            instance=instance,
         )
 
     @classmethod
@@ -136,6 +139,7 @@ class BigtableTableAdminClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -166,6 +170,9 @@ class BigtableTableAdminClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -184,6 +191,15 @@ class BigtableTableAdminClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -192,6 +208,7 @@ class BigtableTableAdminClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=bigtable_table_admin_grpc_transport.BigtableTableAdminGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -202,7 +219,7 @@ class BigtableTableAdminClient(object):
                 self.transport = transport
         else:
             self.transport = bigtable_table_admin_grpc_transport.BigtableTableAdminGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -280,11 +297,11 @@ class BigtableTableAdminClient(object):
                    ``["apple", "customer_1", "customer_2", "other"]``
                 -  Key assignment:
 
-                   -  Tablet 1 ``[, apple)                => {"a"}.``
-                   -  Tablet 2 ``[apple, customer_1)      => {"apple", "custom"}.``
+                   -  Tablet 1 ``[, apple) => {"a"}.``
+                   -  Tablet 2 ``[apple, customer_1) => {"apple", "custom"}.``
                    -  Tablet 3 ``[customer_1, customer_2) => {"customer_1"}.``
-                   -  Tablet 4 ``[customer_2, other)      => {"customer_2"}.``
-                   -  Tablet 5 ``[other, )                => {"other", "zz"}.``
+                   -  Tablet 4 ``[customer_2, other) => {"customer_2"}.``
+                   -  Tablet 5 ``[other, ) => {"other", "zz"}.``
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigtable_admin_v2.types.Split`
@@ -496,10 +513,10 @@ class BigtableTableAdminClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.bigtable_admin_v2.types.Table` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.bigtable_admin_v2.types.Table` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1280,10 +1297,10 @@ class BigtableTableAdminClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.bigtable_admin_v2.types.Snapshot` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.bigtable_admin_v2.types.Snapshot` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request

@@ -4,6 +4,37 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+## 0.21.0
+
+05-16-2019 12:58 PDT
+
+
+### Implementation Changes
+- Add routing header to method metadata (via synth).  ([#7602](https://github.com/googleapis/google-cloud-python/pull/7602))
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+
+### New Features
+- Add `client_info` support to clients. ([#7899](https://github.com/googleapis/google-cloud-python/pull/7899))
+
+### Dependencies
+- Pin `google-cloud-core >= 1.0.0, < 2.0dev`. ([#7993](https://github.com/googleapis/google-cloud-python/pull/7993))
+
+### Documentation
+- Update docstring for `page_size` (via synth). ([#7688](https://github.com/googleapis/google-cloud-python/pull/7688))
+- Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+- Pick up stub docstring fix in GAPIC generator. ([#6985](https://github.com/googleapis/google-cloud-python/pull/6985))
+
+### Internal / Testing Changes
+- Add nox session `docs`, reorder methods (via synth). ([#7783](https://github.com/googleapis/google-cloud-python/pull/7783)) and ([#7784](https://github.com/googleapis/google-cloud-python/pull/7784))
+- Copy lintified proto files (via synth). ([#7455](https://github.com/googleapis/google-cloud-python/pull/7455))
+- Add clarifying comment to blacken nox target. ([#7406](https://github.com/googleapis/google-cloud-python/pull/7406))
+- Remove unused message exports (via synth). ([#7278](https://github.com/googleapis/google-cloud-python/pull/7278))
+- Copy proto files alongside protoc versions ([#7254](https://github.com/googleapis/google-cloud-python/pull/7254))
+- Trivial gapic-generator change. ([#7236](https://github.com/googleapis/google-cloud-python/pull/7236))
+- Add protos as an artifact to library ([#7205](https://github.com/googleapis/google-cloud-python/pull/7205))
+- Update copyright headers (via synth). ([#7161](https://github.com/googleapis/google-cloud-python/pull/7161))
+- Protoc-generated serialization update. ([#7098](https://github.com/googleapis/google-cloud-python/pull/7098))
+
 ## 0.20.2
 
 12-17-2018 17:06 PST

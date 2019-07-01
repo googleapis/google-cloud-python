@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.talent.v4beta1 CompanyService API."""
 
 import functools
@@ -20,9 +21,11 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
@@ -31,11 +34,15 @@ import grpc
 from google.cloud.talent_v4beta1.gapic import company_service_client_config
 from google.cloud.talent_v4beta1.gapic import enums
 from google.cloud.talent_v4beta1.gapic.transports import company_service_grpc_transport
+from google.cloud.talent_v4beta1.proto import application_pb2
+from google.cloud.talent_v4beta1.proto import application_service_pb2
+from google.cloud.talent_v4beta1.proto import application_service_pb2_grpc
 from google.cloud.talent_v4beta1.proto import company_pb2
 from google.cloud.talent_v4beta1.proto import company_service_pb2
 from google.cloud.talent_v4beta1.proto import company_service_pb2_grpc
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-talent").version
 
@@ -71,17 +78,20 @@ class CompanyServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
+    def company_path(cls, project, tenant, company):
+        """Return a fully-qualified company string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            "projects/{project}/tenants/{tenant}/companies/{company}",
+            project=project,
+            tenant=tenant,
+            company=company,
         )
 
     @classmethod
-    def company_path(cls, project, company):
-        """Return a fully-qualified company string."""
+    def tenant_path(cls, project, tenant):
+        """Return a fully-qualified tenant string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/companies/{company}", project=project, company=company
+            "projects/{project}/tenants/{tenant}", project=project, tenant=tenant
         )
 
     def __init__(
@@ -91,6 +101,7 @@ class CompanyServiceClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -121,6 +132,9 @@ class CompanyServiceClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -139,6 +153,15 @@ class CompanyServiceClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -147,6 +170,7 @@ class CompanyServiceClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=company_service_grpc_transport.CompanyServiceGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -157,7 +181,7 @@ class CompanyServiceClient(object):
                 self.transport = transport
         else:
             self.transport = company_service_grpc_transport.CompanyServiceGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -199,7 +223,7 @@ class CompanyServiceClient(object):
             >>>
             >>> client = talent_v4beta1.CompanyServiceClient()
             >>>
-            >>> parent = client.project_path('[PROJECT]')
+            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
             >>>
             >>> # TODO: Initialize `company`:
             >>> company = {}
@@ -209,10 +233,13 @@ class CompanyServiceClient(object):
         Args:
             parent (str): Required.
 
-                Resource name of the project under which the company is created.
+                Resource name of the tenant under which the company is created.
 
-                The format is "projects/{project\_id}", for example,
-                "projects/api-test-project".
+                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
+                example, "projects/api-test-project/tenant/foo".
+
+                Tenant id is optional and a default tenant is created if unspecified,
+                for example, "projects/api-test-project".
             company (Union[dict, ~google.cloud.talent_v4beta1.types.Company]): Required.
 
                 The company to be created.
@@ -252,6 +279,19 @@ class CompanyServiceClient(object):
         request = company_service_pb2.CreateCompanyRequest(
             parent=parent, company=company
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_company"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -271,7 +311,7 @@ class CompanyServiceClient(object):
             >>>
             >>> client = talent_v4beta1.CompanyServiceClient()
             >>>
-            >>> name = client.company_path('[PROJECT]', '[COMPANY]')
+            >>> name = client.company_path('[PROJECT]', '[TENANT]', '[COMPANY]')
             >>>
             >>> response = client.get_company(name)
 
@@ -280,8 +320,12 @@ class CompanyServiceClient(object):
 
                 The resource name of the company to be retrieved.
 
-                The format is "projects/{project\_id}/companies/{company\_id}", for
-                example, "projects/api-test-project/companies/foo".
+                The format is
+                "projects/{project\_id}/tenants/{tenant\_id}/companies/{company\_id}",
+                for example, "projects/api-test-project/tenants/foo/companies/bar".
+
+                Tenant id is optional and the default tenant is used if unspecified, for
+                example, "projects/api-test-project/companies/bar".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -313,6 +357,19 @@ class CompanyServiceClient(object):
             )
 
         request = company_service_pb2.GetCompanyRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_company"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -388,6 +445,19 @@ class CompanyServiceClient(object):
         request = company_service_pb2.UpdateCompanyRequest(
             company=company, update_mask=update_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("company.name", company.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_company"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -408,7 +478,7 @@ class CompanyServiceClient(object):
             >>>
             >>> client = talent_v4beta1.CompanyServiceClient()
             >>>
-            >>> name = client.company_path('[PROJECT]', '[COMPANY]')
+            >>> name = client.company_path('[PROJECT]', '[TENANT]', '[COMPANY]')
             >>>
             >>> client.delete_company(name)
 
@@ -417,8 +487,12 @@ class CompanyServiceClient(object):
 
                 The resource name of the company to be deleted.
 
-                The format is "projects/{project\_id}/companies/{company\_id}", for
-                example, "projects/api-test-project/companies/foo".
+                The format is
+                "projects/{project\_id}/tenants/{tenant\_id}/companies/{company\_id}",
+                for example, "projects/api-test-project/tenants/foo/companies/bar".
+
+                Tenant id is optional and the default tenant is used if unspecified, for
+                example, "projects/api-test-project/companies/bar".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -447,6 +521,19 @@ class CompanyServiceClient(object):
             )
 
         request = company_service_pb2.DeleteCompanyRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_company"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -468,7 +555,7 @@ class CompanyServiceClient(object):
             >>>
             >>> client = talent_v4beta1.CompanyServiceClient()
             >>>
-            >>> parent = client.project_path('[PROJECT]')
+            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
             >>>
             >>> # Iterate over all results
             >>> for element in client.list_companies(parent):
@@ -487,10 +574,13 @@ class CompanyServiceClient(object):
         Args:
             parent (str): Required.
 
-                Resource name of the project under which the company is created.
+                Resource name of the tenant under which the company is created.
 
-                The format is "projects/{project\_id}", for example,
-                "projects/api-test-project".
+                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
+                example, "projects/api-test-project/tenant/foo".
+
+                Tenant id is optional and the default tenant is used if unspecified, for
+                example, "projects/api-test-project".
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -514,10 +604,10 @@ class CompanyServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.talent_v4beta1.types.Company` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.talent_v4beta1.types.Company` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -540,6 +630,19 @@ class CompanyServiceClient(object):
         request = company_service_pb2.ListCompaniesRequest(
             parent=parent, page_size=page_size, require_open_jobs=require_open_jobs
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(

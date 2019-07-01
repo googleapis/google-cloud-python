@@ -16,11 +16,18 @@
 
 from __future__ import absolute_import
 import os
+import shutil
 
 import nox
 
 
 LOCAL_DEPS = (os.path.join("..", "api_core"), os.path.join("..", "core"))
+
+BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
+
+if os.path.exists("samples"):
+    BLACK_PATHS.append("samples")
+
 
 @nox.session(python="3.7")
 def lint(session):
@@ -30,13 +37,7 @@ def lint(session):
     serious code quality issues.
     """
     session.install("flake8", "black", *LOCAL_DEPS)
-    session.run(
-        "black",
-        "--check",
-        "google",
-        "tests",
-        "docs",
-    )
+    session.run("black", "--check", *BLACK_PATHS)
     session.run("flake8", "google", "tests")
 
 
@@ -45,18 +46,13 @@ def blacken(session):
     """Run black.
 
     Format code to uniform standard.
-    
+
     This currently uses Python 3.6 due to the automated Kokoro run of synthtool.
     That run uses an image that doesn't have 3.6 installed. Before updating this
     check the state of the `gcp_ubuntu_config` we use for that Kokoro run.
     """
     session.install("black")
-    session.run(
-        "black",
-        "google",
-        "tests",
-        "docs",
-    )
+    session.run("black", *BLACK_PATHS)
 
 
 @nox.session(python="3.7")
@@ -127,6 +123,25 @@ def system(session):
         session.run("py.test", "--quiet", system_test_folder_path, *session.posargs)
 
 
+@nox.session(python=["2.7", "3.7"])
+def samples(session):
+    requirements_path = os.path.join("samples", "requirements.txt")
+    requirements_exists = os.path.exists(requirements_path)
+
+    # Sanity check: Only run tests if the environment variable is set.
+    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
+        session.skip("Credentials must be set via environment variable")
+
+    session.install("mock", "pytest")
+    for local_dep in LOCAL_DEPS:
+        session.install("-e", local_dep)
+    if requirements_exists:
+        session.install("-r", requirements_path)
+    session.install("-e", ".")
+
+    session.run("py.test", "--quiet", "samples", *session.posargs)
+
+
 @nox.session(python="3.7")
 def cover(session):
     """Run the final coverage report.
@@ -138,3 +153,25 @@ def cover(session):
     session.run("coverage", "report", "--show-missing", "--fail-under=79")
 
     session.run("coverage", "erase")
+
+
+@nox.session(python="3.7")
+def docs(session):
+    """Build the docs for this library."""
+
+    session.install("-e", ".")
+    session.install("sphinx", "alabaster", "recommonmark")
+
+    shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
+    session.run(
+        "sphinx-build",
+        "-W",  # warnings as errors
+        "-T",  # show full traceback on exception
+        "-N",  # no colors
+        "-b",
+        "html",
+        "-d",
+        os.path.join("docs", "_build", "doctrees", ""),
+        os.path.join("docs", ""),
+        os.path.join("docs", "_build", "html", ""),
+    )

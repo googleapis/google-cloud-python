@@ -270,6 +270,24 @@ class Test_DateTimeWithNanos(object):
         assert stamp == expected
 
     @staticmethod
+    @pytest.mark.parametrize(
+        "fractional, nanos",
+        [
+            ("12345678", 123456780),
+            ("1234567", 123456700),
+            ("123456", 123456000),
+            ("12345", 123450000),
+            ("1234", 123400000),
+            ("123", 123000000),
+            ("12", 120000000),
+            ("1", 100000000),
+        ],
+    )
+    def test_from_rfc3339_test_nanoseconds(fractional, nanos):
+        value = "2009-12-17T12:44:32.{}Z".format(fractional)
+        assert datetime_helpers.DatetimeWithNanoseconds.from_rfc3339(value).nanosecond == nanos
+
+    @staticmethod
     def test_timestamp_pb_wo_nanos_naive():
         stamp = datetime_helpers.DatetimeWithNanoseconds(
             2016, 12, 20, 21, 13, 47, 123456)

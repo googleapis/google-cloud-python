@@ -209,6 +209,6 @@ class Client(object):
 
         future = futures.StreamingPullFuture(manager)
 
-        manager.open(callback)
+        manager.open(callback=callback, on_callback_error=future.set_exception)
 
         return future

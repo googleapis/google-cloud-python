@@ -45,6 +45,7 @@ def _bad_copy(bad_request):
 
 
 retry_429 = RetryErrors(exceptions.TooManyRequests, max_tries=6)
+retry_429_harder = RetryErrors(exceptions.TooManyRequests, max_tries=10)
 retry_429_503 = RetryErrors(
     [exceptions.TooManyRequests, exceptions.ServiceUnavailable], max_tries=6
 )
@@ -53,7 +54,7 @@ retry_bad_copy = RetryErrors(exceptions.BadRequest, error_predicate=_bad_copy)
 
 def _empty_bucket(bucket):
     """Empty a bucket of all existing blobs (including multiple versions)."""
-    for blob in bucket.list_blobs(versions=True):
+    for blob in list(bucket.list_blobs(versions=True)):
         try:
             blob.delete()
         except exceptions.NotFound:
@@ -82,9 +83,8 @@ def setUpModule():
 
 
 def tearDownModule():
-    _empty_bucket(Config.TEST_BUCKET)
     errors = (exceptions.Conflict, exceptions.TooManyRequests)
-    retry = RetryErrors(errors, max_tries=9)
+    retry = RetryErrors(errors, max_tries=15)
     retry(_empty_bucket)(Config.TEST_BUCKET)
     retry(Config.TEST_BUCKET.delete)(force=True)
 
@@ -110,7 +110,7 @@ class TestStorageBuckets(unittest.TestCase):
     def tearDown(self):
         for bucket_name in self.case_buckets_to_delete:
             bucket = Config.CLIENT.bucket(bucket_name)
-            retry_429(bucket.delete)()
+            retry_429_harder(bucket.delete)()
 
     def test_create_bucket(self):
         new_bucket_name = "a-new-bucket" + unique_resource_id("-")
@@ -299,7 +299,7 @@ class TestStorageBuckets(unittest.TestCase):
             self.assertEqual(base_contents, copied_contents)
         finally:
             for blob in to_delete:
-                retry_429(blob.delete)()
+                retry_429_harder(blob.delete)()
 
     @unittest.skipUnless(USER_PROJECT, "USER_PROJECT not set in environment.")
     def test_bucket_get_blob_with_user_project(self):
@@ -551,6 +551,23 @@ class TestStorageWriteFiles(TestStorageFiles):
         base_contents = blob.download_as_string()
         copied_contents = new_blob.download_as_string()
         self.assertEqual(base_contents, copied_contents)
+
+    def test_download_blob_w_uri(self):
+        blob = self.bucket.blob("MyBuffer")
+        file_contents = b"Hello World"
+        blob.upload_from_string(file_contents)
+        self.case_blobs_to_delete.append(blob)
+
+        temp_filename = tempfile.mktemp()
+        with open(temp_filename, "wb") as file_obj:
+            Config.CLIENT.download_blob_to_file(
+                "gs://" + self.bucket.name + "/MyBuffer", file_obj
+            )
+
+        with open(temp_filename, "rb") as file_obj:
+            stored_contents = file_obj.read()
+
+        self.assertEqual(file_contents, stored_contents)
 
 
 class TestUnicode(unittest.TestCase):
@@ -1011,7 +1028,7 @@ class TestStorageCompose(TestStorageFiles):
             composed = destination.download_as_string()
             self.assertEqual(composed, SOURCE_1 + SOURCE_2)
         finally:
-            retry_429(created.delete)(force=True)
+            retry_429_harder(created.delete)(force=True)
 
 
 class TestStorageRewrite(TestStorageFiles):
@@ -1085,7 +1102,7 @@ class TestStorageRewrite(TestStorageFiles):
 
             self.assertEqual(source.download_as_string(), dest.download_as_string())
         finally:
-            retry_429(created.delete)(force=True)
+            retry_429_harder(created.delete)(force=True)
 
     @unittest.skipUnless(USER_PROJECT, "USER_PROJECT not set in environment.")
     def test_rewrite_rotate_with_user_project(self):
@@ -1115,7 +1132,7 @@ class TestStorageRewrite(TestStorageFiles):
 
             self.assertEqual(dest.download_as_string(), source_data)
         finally:
-            retry_429(created.delete)(force=True)
+            retry_429_harder(created.delete)(force=True)
 
 
 class TestStorageUpdateStorageClass(TestStorageFiles):
@@ -1185,7 +1202,7 @@ class TestStorageNotificationCRUD(unittest.TestCase):
         with Config.CLIENT.batch():
             for bucket_name in self.case_buckets_to_delete:
                 bucket = Config.CLIENT.bucket(bucket_name)
-                retry_429(bucket.delete)()
+                retry_429_harder(bucket.delete)()
 
     @staticmethod
     def event_types():
@@ -1456,7 +1473,7 @@ class TestRetentionPolicy(unittest.TestCase):
     def tearDown(self):
         for bucket_name in self.case_buckets_to_delete:
             bucket = Config.CLIENT.bucket(bucket_name)
-            retry_429(bucket.delete)()
+            retry_429_harder(bucket.delete)()
 
     def test_bucket_w_retention_period(self):
         import datetime
@@ -1628,7 +1645,7 @@ class TestIAMConfiguration(unittest.TestCase):
     def tearDown(self):
         for bucket_name in self.case_buckets_to_delete:
             bucket = Config.CLIENT.bucket(bucket_name)
-            retry_429(bucket.delete)(force=True)
+            retry_429_harder(bucket.delete)(force=True)
 
     def test_new_bucket_w_bpo(self):
         new_bucket_name = "new-w-bpo" + unique_resource_id("-")
