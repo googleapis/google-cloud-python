@@ -15,7 +15,6 @@
 """Create / interact with Google Cloud Datastore queries."""
 
 import base64
-import functools
 
 from google.api_core import page_iterator
 from google.cloud._helpers import _ensure_tuple_or_list
