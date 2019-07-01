@@ -497,4 +497,4 @@ class TestFieldPath(unittest.TestCase):
     def test_document_id(self):
         parts = "__name__"
         field_path = self._make_one(parts)
-        self.assertEqual(field_path.document_id(), "__name__")
+        self.assertEqual(field_path.document_id(), parts)
