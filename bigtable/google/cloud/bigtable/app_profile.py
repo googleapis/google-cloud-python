@@ -90,6 +90,12 @@ class AppProfile(object):
           This property will not change if ``app_profile_id`` does not, but
           the return value is not cached.
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_app_profile_name]
+            :end-before: [END bigtable_app_profile_name]
+
         The AppProfile name is of the form
             ``"projects/../instances/../app_profile/{app_profile_id}"``
 
@@ -225,7 +231,14 @@ class AppProfile(object):
         return app_profile_pb
 
     def reload(self):
-        """Reload the metadata for this cluster"""
+        """Reload the metadata for this cluster
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_reload_app_profile]
+            :end-before: [END bigtable_reload_app_profile]
+        """
 
         app_profile_pb = self.instance_admin_client.get_app_profile(self.name)
 
@@ -235,6 +248,12 @@ class AppProfile(object):
 
     def exists(self):
         """Check whether the AppProfile already exists.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_app_profile_exists]
+            :end-before: [END bigtable_app_profile_exists]
 
         :rtype: bool
         :returns: True if the AppProfile exists, else False.
@@ -256,17 +275,11 @@ class AppProfile(object):
             ``description``, ``cluster_id`` and ``allow_transactional_writes``.
             To change them before creating, reset the values via
 
-            .. code:: python
+        For example:
 
-                app_profile.app_profile_id = 'i-changed-my-mind'
-                app_profile.routing_policy_type = (
-                    google.cloud.bigtable.enums.RoutingPolicyType.SINGLE
-                )
-                app_profile.description = 'new-description'
-                app-profile.cluster_id = 'other-cluster-id'
-                app-profile.allow_transactional_writes = True
-
-            before calling :meth:`create`.
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_create_app_profile]
+            :end-before: [END bigtable_create_app_profile]
 
         :type: ignore_warnings: bool
         :param: ignore_warnings: (Optional) If true, ignore safety checks when
@@ -293,6 +306,11 @@ class AppProfile(object):
             ``cluster_id``
             ``allow_transactional_writes``
 
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_update_app_profile]
+            :end-before: [END bigtable_update_app_profile]
         """
         update_mask_pb = field_mask_pb2.FieldMask()
 
@@ -312,6 +330,12 @@ class AppProfile(object):
 
     def delete(self, ignore_warnings=None):
         """Delete this AppProfile.
+
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_delete_app_profile]
+            :end-before: [END bigtable_delete_app_profile]
 
         :type: ignore_warnings: bool
         :param: ignore_warnings: If true, ignore safety checks when deleting
