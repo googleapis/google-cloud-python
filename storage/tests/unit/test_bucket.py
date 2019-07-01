@@ -743,7 +743,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["query_params"], {"projection": "noAcl"})
 
     def test_list_blobs_objects_defaults(self):
-        NAME = "name"
+        NAME = "Name"
         connection = _Connection({"items": []})
         client = _Client(connection)
         bucket = self._make_one(client=client, name=NAME)
