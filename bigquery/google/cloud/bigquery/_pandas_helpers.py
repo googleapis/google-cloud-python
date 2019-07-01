@@ -293,6 +293,7 @@ def download_dataframe_bqstorage(
     session = bqstorage_client.create_read_session(
         table.to_bqstorage(),
         "projects/{}".format(project_id),
+        format_=bigquery_storage_v1beta1.proto.storage_pb2.DataFormat.ARROW,
         read_options=read_options,
         requested_streams=requested_streams,
     )

@@ -1444,7 +1444,7 @@ class RowIterator(HTTPIterator):
                 supplied, use the faster BigQuery Storage API to fetch rows
                 from BigQuery. This API is a billable API.
 
-                This method requires the ``fastavro`` and
+                This method requires the ``pyarrow`` and
                 ``google-cloud-bigquery-storage`` libraries.
 
                 Reading from a specific partition or snapshot is not
