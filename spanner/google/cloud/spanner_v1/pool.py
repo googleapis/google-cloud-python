@@ -112,7 +112,6 @@ class AbstractSessionPool(object):
     def session(self, **kwargs):
         """Check out a session from the pool.
 
-        :type kwargs: dict
         :param kwargs: (optional) keyword arguments, passed through to
                        the returned checkout.
 
@@ -505,7 +504,6 @@ class SessionCheckout(object):
         :class:`~google.cloud.spanner_v1.session.AbstractSessionPool`
     :param pool: Pool from which to check out a session.
 
-    :type kwargs: dict
     :param kwargs: extra keyword arguments to be passed to :meth:`pool.get`.
     """
 
