@@ -12,9 +12,9 @@ from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 class DataTransferServiceStub(object):
     """The Google BigQuery Data Transfer Service API enables BigQuery users to
-  configure the transfer of their data from other Google Products into BigQuery.
-  This service contains methods that are end user exposed. It backs up the
-  frontend.
+  configure the transfer of their data from other Google Products into
+  BigQuery. This service contains methods that are end user exposed. It backs
+  up the frontend.
   """
 
     def __init__(self, channel):
@@ -92,9 +92,9 @@ class DataTransferServiceStub(object):
 
 class DataTransferServiceServicer(object):
     """The Google BigQuery Data Transfer Service API enables BigQuery users to
-  configure the transfer of their data from other Google Products into BigQuery.
-  This service contains methods that are end user exposed. It backs up the
-  frontend.
+  configure the transfer of their data from other Google Products into
+  BigQuery. This service contains methods that are end user exposed. It backs
+  up the frontend.
   """
 
     def GetDataSource(self, request, context):

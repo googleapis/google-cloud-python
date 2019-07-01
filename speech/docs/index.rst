@@ -1,4 +1,4 @@
-.. include:: /../speech/README.rst
+.. include:: README.rst
 
 Using the Library
 -----------------

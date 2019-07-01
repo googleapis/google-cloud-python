@@ -1,4 +1,4 @@
-.. include:: /../iam/README.rst
+.. include:: README.rst
 
 API Reference
 -------------
@@ -7,3 +7,14 @@ API Reference
 
    gapic/v1/api
    gapic/v1/types
+
+
+Changelog
+---------
+
+For a list of all ``google-cloud-iam`` releases:
+
+.. toctree::
+  :maxdepth: 2
+
+  changelog

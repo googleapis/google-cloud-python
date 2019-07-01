@@ -1,4 +1,4 @@
-.. include:: /../asset/README.rst
+.. include:: README.rst
 
 Api Reference
 -------------

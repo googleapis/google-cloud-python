@@ -22,7 +22,7 @@ import setuptools
 
 name = 'google-cloud-bigtable'
 description = 'Google Cloud Bigtable API client library'
-version = '0.32.1'
+version = '0.33.0'
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
@@ -30,7 +30,7 @@ version = '0.32.1'
 release_status = 'Development Status :: 4 - Beta'
 dependencies = [
     'google-api-core[grpc] >= 1.6.0, < 2.0.0dev',
-    'google-cloud-core >= 0.29.0, < 0.30dev',
+    "google-cloud-core >= 1.0.0, < 2.0dev",
     'grpc-google-iam-v1 >= 0.11.4, < 0.12dev',
 ]
 extras = {

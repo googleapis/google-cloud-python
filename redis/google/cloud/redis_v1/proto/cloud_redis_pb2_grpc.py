@@ -23,7 +23,7 @@ class CloudRedisStub(object):
   * As such, Redis instances are resources of the form:
   `/projects/{project_id}/locations/{location_id}/instances/{instance_id}`
 
-  Note that location_id must be refering to a GCP `region`; for example:
+  Note that location_id must be referring to a GCP `region`; for example:
   * `projects/redpepper-1290/locations/us-central1/instances/my-redis`
   """
 
@@ -89,7 +89,7 @@ class CloudRedisServicer(object):
   * As such, Redis instances are resources of the form:
   `/projects/{project_id}/locations/{location_id}/instances/{instance_id}`
 
-  Note that location_id must be refering to a GCP `region`; for example:
+  Note that location_id must be referring to a GCP `region`; for example:
   * `projects/redpepper-1290/locations/us-central1/instances/my-redis`
   """
 
@@ -144,7 +144,7 @@ class CloudRedisServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def ImportInstance(self, request, context):
-        """Import a Redis RDB snapshot file from GCS into a Redis instance.
+        """Import a Redis RDB snapshot file from Cloud Storage into a Redis instance.
 
     Redis may stop serving during this operation. Instance state will be
     IMPORTING for entire operation. When complete, the instance will contain
@@ -158,7 +158,7 @@ class CloudRedisServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def ExportInstance(self, request, context):
-        """Export Redis instance data into a Redis RDB format file in GCS.
+        """Export Redis instance data into a Redis RDB format file in Cloud Storage.
 
     Redis will continue serving during this operation.
 
@@ -170,8 +170,8 @@ class CloudRedisServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def FailoverInstance(self, request, context):
-        """Failover the master role to current replica node against a specific
-    STANDARD tier redis instance.
+        """Initiates a failover of the master node to current replica node for a
+    specific STANDARD tier Cloud Memorystore for Redis instance.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")

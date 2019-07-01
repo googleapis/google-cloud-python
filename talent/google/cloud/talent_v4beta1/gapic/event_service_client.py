@@ -13,15 +13,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.talent.v4beta1 EventService API."""
 
 import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.path_template
 import grpc
@@ -29,6 +32,9 @@ import grpc
 from google.cloud.talent_v4beta1.gapic import enums
 from google.cloud.talent_v4beta1.gapic import event_service_client_config
 from google.cloud.talent_v4beta1.gapic.transports import event_service_grpc_transport
+from google.cloud.talent_v4beta1.proto import application_pb2
+from google.cloud.talent_v4beta1.proto import application_service_pb2
+from google.cloud.talent_v4beta1.proto import application_service_pb2_grpc
 from google.cloud.talent_v4beta1.proto import company_pb2
 from google.cloud.talent_v4beta1.proto import company_service_pb2
 from google.cloud.talent_v4beta1.proto import company_service_pb2_grpc
@@ -39,6 +45,7 @@ from google.cloud.talent_v4beta1.proto import event_service_pb2
 from google.cloud.talent_v4beta1.proto import event_service_pb2_grpc
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-talent").version
 
@@ -74,10 +81,10 @@ class EventServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
+    def tenant_path(cls, project, tenant):
+        """Return a fully-qualified tenant string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            "projects/{project}/tenants/{tenant}", project=project, tenant=tenant
         )
 
     def __init__(
@@ -87,6 +94,7 @@ class EventServiceClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -117,6 +125,9 @@ class EventServiceClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -135,6 +146,15 @@ class EventServiceClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -143,6 +163,7 @@ class EventServiceClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=event_service_grpc_transport.EventServiceGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -153,7 +174,7 @@ class EventServiceClient(object):
                 self.transport = transport
         else:
             self.transport = event_service_grpc_transport.EventServiceGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -201,7 +222,7 @@ class EventServiceClient(object):
             >>>
             >>> client = talent_v4beta1.EventServiceClient()
             >>>
-            >>> parent = client.project_path('[PROJECT]')
+            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
             >>>
             >>> # TODO: Initialize `client_event`:
             >>> client_event = {}
@@ -209,7 +230,15 @@ class EventServiceClient(object):
             >>> response = client.create_client_event(parent, client_event)
 
         Args:
-            parent (str): Parent project name.
+            parent (str): Required.
+
+                Resource name of the tenant under which the event is created.
+
+                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
+                example, "projects/api-test-project/tenant/foo".
+
+                Tenant id is optional and a default tenant is created if unspecified,
+                for example, "projects/api-test-project".
             client_event (Union[dict, ~google.cloud.talent_v4beta1.types.ClientEvent]): Required.
 
                 Events issued when end user interacts with customer's application that
@@ -250,6 +279,19 @@ class EventServiceClient(object):
         request = event_service_pb2.CreateClientEventRequest(
             parent=parent, client_event=client_event
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_client_event"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )

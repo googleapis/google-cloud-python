@@ -26,7 +26,8 @@ _PARTIAL_VALID_ASSIGNMENTS = ("__doc__",)
 
 def wraps(wrapped):
     """A functools.wraps helper that handles partial objects on Python 2."""
-    if isinstance(wrapped, functools.partial):
+    # https://github.com/google/pytype/issues/322
+    if isinstance(wrapped, functools.partial):  # pytype: disable=wrong-arg-types
         return six.wraps(wrapped, assigned=_PARTIAL_VALID_ASSIGNMENTS)
     else:
         return six.wraps(wrapped)

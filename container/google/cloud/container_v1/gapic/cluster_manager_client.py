@@ -13,15 +13,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.container.v1 ClusterManager API."""
 
 import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import grpc
 
@@ -31,6 +34,7 @@ from google.cloud.container_v1.gapic.transports import cluster_manager_grpc_tran
 from google.cloud.container_v1.proto import cluster_service_pb2
 from google.cloud.container_v1.proto import cluster_service_pb2_grpc
 from google.protobuf import empty_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     "google-cloud-container"
@@ -74,6 +78,7 @@ class ClusterManagerClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -104,6 +109,9 @@ class ClusterManagerClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -122,6 +130,15 @@ class ClusterManagerClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -130,6 +147,7 @@ class ClusterManagerClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=cluster_manager_grpc_transport.ClusterManagerGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -140,7 +158,7 @@ class ClusterManagerClient(object):
                 self.transport = transport
         else:
             self.transport = cluster_manager_grpc_transport.ClusterManagerGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -236,6 +254,19 @@ class ClusterManagerClient(object):
         request = cluster_service_pb2.ListClustersRequest(
             project_id=project_id, zone=zone, parent=parent
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["list_clusters"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -314,6 +345,19 @@ class ClusterManagerClient(object):
         request = cluster_service_pb2.GetClusterRequest(
             project_id=project_id, zone=zone, cluster_id=cluster_id, name=name
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_cluster"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -406,6 +450,19 @@ class ClusterManagerClient(object):
         request = cluster_service_pb2.CreateClusterRequest(
             project_id=project_id, zone=zone, cluster=cluster, parent=parent
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_cluster"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -496,6 +553,19 @@ class ClusterManagerClient(object):
             update=update,
             name=name,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_cluster"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -607,6 +677,19 @@ class ClusterManagerClient(object):
             image_type=image_type,
             name=name,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_node_pool"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -705,6 +788,19 @@ class ClusterManagerClient(object):
             autoscaling=autoscaling,
             name=name,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["set_node_pool_autoscaling"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -796,6 +892,19 @@ class ClusterManagerClient(object):
             logging_service=logging_service,
             name=name,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["set_logging_service"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -887,6 +996,19 @@ class ClusterManagerClient(object):
             monitoring_service=monitoring_service,
             name=name,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["set_monitoring_service"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -978,6 +1100,19 @@ class ClusterManagerClient(object):
             addons_config=addons_config,
             name=name,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["set_addons_config"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1071,6 +1206,19 @@ class ClusterManagerClient(object):
             locations=locations,
             name=name,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["set_locations"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1167,6 +1315,19 @@ class ClusterManagerClient(object):
             master_version=master_version,
             name=name,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_master"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1266,6 +1427,19 @@ class ClusterManagerClient(object):
             update=update,
             name=name,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["set_master_auth"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1352,6 +1526,19 @@ class ClusterManagerClient(object):
         request = cluster_service_pb2.DeleteClusterRequest(
             project_id=project_id, zone=zone, cluster_id=cluster_id, name=name
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["delete_cluster"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1425,6 +1612,19 @@ class ClusterManagerClient(object):
         request = cluster_service_pb2.ListOperationsRequest(
             project_id=project_id, zone=zone, parent=parent
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["list_operations"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1503,6 +1703,19 @@ class ClusterManagerClient(object):
         request = cluster_service_pb2.GetOperationRequest(
             project_id=project_id, zone=zone, operation_id=operation_id, name=name
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_operation"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1578,6 +1791,19 @@ class ClusterManagerClient(object):
         request = cluster_service_pb2.CancelOperationRequest(
             project_id=project_id, zone=zone, operation_id=operation_id, name=name
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["cancel_operation"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1650,6 +1876,19 @@ class ClusterManagerClient(object):
         request = cluster_service_pb2.GetServerConfigRequest(
             project_id=project_id, zone=zone, name=name
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_server_config"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1728,6 +1967,19 @@ class ClusterManagerClient(object):
         request = cluster_service_pb2.ListNodePoolsRequest(
             project_id=project_id, zone=zone, cluster_id=cluster_id, parent=parent
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["list_node_pools"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1817,6 +2069,19 @@ class ClusterManagerClient(object):
             node_pool_id=node_pool_id,
             name=name,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_node_pool"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1907,6 +2172,19 @@ class ClusterManagerClient(object):
             node_pool=node_pool,
             parent=parent,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_node_pool"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1996,6 +2274,19 @@ class ClusterManagerClient(object):
             node_pool_id=node_pool_id,
             name=name,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["delete_node_pool"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -2086,6 +2377,19 @@ class ClusterManagerClient(object):
             node_pool_id=node_pool_id,
             name=name,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["rollback_node_pool_upgrade"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -2184,6 +2488,19 @@ class ClusterManagerClient(object):
             management=management,
             name=name,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["set_node_pool_management"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -2282,6 +2599,19 @@ class ClusterManagerClient(object):
             label_fingerprint=label_fingerprint,
             name=name,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["set_labels"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -2369,6 +2699,19 @@ class ClusterManagerClient(object):
             enabled=enabled,
             name=name,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["set_legacy_abac"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -2453,6 +2796,19 @@ class ClusterManagerClient(object):
             name=name,
             rotate_credentials=rotate_credentials,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["start_i_p_rotation"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -2531,6 +2887,19 @@ class ClusterManagerClient(object):
         request = cluster_service_pb2.CompleteIPRotationRequest(
             project_id=project_id, zone=zone, cluster_id=cluster_id, name=name
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["complete_i_p_rotation"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -2626,6 +2995,19 @@ class ClusterManagerClient(object):
             node_count=node_count,
             name=name,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["set_node_pool_size"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -2717,6 +3099,19 @@ class ClusterManagerClient(object):
             network_policy=network_policy,
             name=name,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["set_network_policy"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -2806,6 +3201,19 @@ class ClusterManagerClient(object):
             maintenance_policy=maintenance_policy,
             name=name,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["set_maintenance_policy"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )

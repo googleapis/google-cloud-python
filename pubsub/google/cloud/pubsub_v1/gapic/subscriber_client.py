@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.pubsub.v1 Subscriber API."""
 
 import functools
@@ -20,9 +21,11 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
@@ -39,6 +42,7 @@ from google.protobuf import duration_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 from google.protobuf import timestamp_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-pubsub").version
 
@@ -85,22 +89,6 @@ class SubscriberClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def subscription_path(cls, project, subscription):
-        """Return a fully-qualified subscription string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/subscriptions/{subscription}",
-            project=project,
-            subscription=subscription,
-        )
-
-    @classmethod
-    def topic_path(cls, project, topic):
-        """Return a fully-qualified topic string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/topics/{topic}", project=project, topic=topic
-        )
-
-    @classmethod
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
@@ -116,6 +104,22 @@ class SubscriberClient(object):
             snapshot=snapshot,
         )
 
+    @classmethod
+    def subscription_path(cls, project, subscription):
+        """Return a fully-qualified subscription string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/subscriptions/{subscription}",
+            project=project,
+            subscription=subscription,
+        )
+
+    @classmethod
+    def topic_path(cls, project, topic):
+        """Return a fully-qualified topic string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/topics/{topic}", project=project, topic=topic
+        )
+
     def __init__(
         self,
         transport=None,
@@ -123,6 +127,7 @@ class SubscriberClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -153,6 +158,9 @@ class SubscriberClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -171,6 +179,15 @@ class SubscriberClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -179,6 +196,7 @@ class SubscriberClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=subscriber_grpc_transport.SubscriberGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -189,7 +207,7 @@ class SubscriberClient(object):
                 self.transport = transport
         else:
             self.transport = subscriber_grpc_transport.SubscriberGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -292,19 +310,13 @@ class SubscriberClient(object):
                 messages are not expunged from the subscription's backlog, even if they
                 are acknowledged, until they fall out of the
                 ``message_retention_duration`` window. This must be true if you would
-                like to Seek to a timestamp. BETA: This feature is part of a beta
-                release. This API might be changed in backward-incompatible ways and is
-                not recommended for production use. It is not subject to any SLA or
-                deprecation policy.
+                like to Seek to a timestamp.
             message_retention_duration (Union[dict, ~google.cloud.pubsub_v1.types.Duration]): How long to retain unacknowledged messages in the subscription's
                 backlog, from the moment a message is published. If
                 ``retain_acked_messages`` is true, then this also configures the
                 retention of acknowledged messages, and thus configures how far back in
                 time a ``Seek`` can be done. Defaults to 7 days. Cannot be more than 7
-                days or less than 10 minutes. BETA: This feature is part of a beta
-                release. This API might be changed in backward-incompatible ways and is
-                not recommended for production use. It is not subject to any SLA or
-                deprecation policy.
+                days or less than 10 minutes.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.Duration`
@@ -322,10 +334,7 @@ class SubscriberClient(object):
                 subscriber is successfully consuming messages from the subscription or
                 is issuing operations on the subscription. If ``expiration_policy`` is
                 not set, a *default policy* with ``ttl`` of 31 days will be used. The
-                minimum allowed value for ``expiration_policy.ttl`` is 1 day. BETA: This
-                feature is part of a beta release. This API might be changed in
-                backward-incompatible ways and is not recommended for production use. It
-                is not subject to any SLA or deprecation policy.
+                minimum allowed value for ``expiration_policy.ttl`` is 1 day.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.ExpirationPolicy`
@@ -370,6 +379,19 @@ class SubscriberClient(object):
             enable_message_ordering=enable_message_ordering,
             expiration_policy=expiration_policy,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_subscription"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -427,6 +449,19 @@ class SubscriberClient(object):
             )
 
         request = pubsub_pb2.GetSubscriptionRequest(subscription=subscription)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("subscription", subscription)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_subscription"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -499,6 +534,19 @@ class SubscriberClient(object):
         request = pubsub_pb2.UpdateSubscriptionRequest(
             subscription=subscription, update_mask=update_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("subscription.name", subscription.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_subscription"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -553,10 +601,10 @@ class SubscriberClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.pubsub_v1.types.Subscription` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.pubsub_v1.types.Subscription` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -579,6 +627,19 @@ class SubscriberClient(object):
         request = pubsub_pb2.ListSubscriptionsRequest(
             project=project, page_size=page_size
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("project", project)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -649,6 +710,19 @@ class SubscriberClient(object):
             )
 
         request = pubsub_pb2.DeleteSubscriptionRequest(subscription=subscription)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("subscription", subscription)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_subscription"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -728,6 +802,19 @@ class SubscriberClient(object):
             ack_ids=ack_ids,
             ack_deadline_seconds=ack_deadline_seconds,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("subscription", subscription)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["modify_ack_deadline"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -797,6 +884,19 @@ class SubscriberClient(object):
         request = pubsub_pb2.AcknowledgeRequest(
             subscription=subscription, ack_ids=ack_ids
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("subscription", subscription)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["acknowledge"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -869,6 +969,19 @@ class SubscriberClient(object):
             max_messages=max_messages,
             return_immediately=return_immediately,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("subscription", subscription)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["pull"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1015,6 +1128,19 @@ class SubscriberClient(object):
         request = pubsub_pb2.ModifyPushConfigRequest(
             subscription=subscription, push_config=push_config
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("subscription", subscription)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["modify_push_config"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1033,10 +1159,7 @@ class SubscriberClient(object):
         operations, which allow
         you to manage message acknowledgments in bulk. That is, you can set the
         acknowledgment state of messages in an existing subscription to the state
-        captured by a snapshot.<br><br>
-        <b>BETA:</b> This feature is part of a beta release. This API might be
-        changed in backward-incompatible ways and is not recommended for production
-        use. It is not subject to any SLA or deprecation policy.
+        captured by a snapshot.
 
         Example:
             >>> from google.cloud import pubsub_v1
@@ -1077,10 +1200,10 @@ class SubscriberClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.pubsub_v1.types.Snapshot` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.pubsub_v1.types.Snapshot` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1101,6 +1224,19 @@ class SubscriberClient(object):
             )
 
         request = pubsub_pb2.ListSnapshotsRequest(project=project, page_size=page_size)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("project", project)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -1129,15 +1265,12 @@ class SubscriberClient(object):
         Creates a snapshot from the requested subscription. Snapshots are used
         in Seek operations, which allow you to manage message acknowledgments in
         bulk. That is, you can set the acknowledgment state of messages in an
-        existing subscription to the state captured by a snapshot. BETA: This
-        feature is part of a beta release. This API might be changed in
-        backward-incompatible ways and is not recommended for production use. It
-        is not subject to any SLA or deprecation policy. If the snapshot already
-        exists, returns ``ALREADY_EXISTS``. If the requested subscription
-        doesn't exist, returns ``NOT_FOUND``. If the backlog in the subscription
-        is too old -- and the resulting snapshot would expire in less than 1
-        hour -- then ``FAILED_PRECONDITION`` is returned. See also the
-        ``Snapshot.expire_time`` field. If the name is not provided in the
+        existing subscription to the state captured by a snapshot. If the
+        snapshot already exists, returns ``ALREADY_EXISTS``. If the requested
+        subscription doesn't exist, returns ``NOT_FOUND``. If the backlog in the
+        subscription is too old -- and the resulting snapshot would expire in
+        less than 1 hour -- then ``FAILED_PRECONDITION`` is returned. See also
+        the ``Snapshot.expire_time`` field. If the name is not provided in the
         request, the server will assign a random name for this snapshot on the
         same project as the subscription, conforming to the `resource name
         format <https://cloud.google.com/pubsub/docs/admin#resource_names>`__.
@@ -1203,6 +1336,19 @@ class SubscriberClient(object):
         request = pubsub_pb2.CreateSnapshotRequest(
             name=name, subscription=subscription, labels=labels
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_snapshot"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1221,11 +1367,7 @@ class SubscriberClient(object):
         operations, which allow
         you to manage message acknowledgments in bulk. That is, you can set the
         acknowledgment state of messages in an existing subscription to the state
-        captured by a snapshot.<br><br>
-        <b>BETA:</b> This feature is part of a beta release. This API might be
-        changed in backward-incompatible ways and is not recommended for production
-        use. It is not subject to any SLA or deprecation policy.
-        Note that certain properties of a snapshot are not modifiable.
+        captured by a snapshot.
 
         Example:
             >>> from google.cloud import pubsub_v1
@@ -1284,6 +1426,19 @@ class SubscriberClient(object):
         request = pubsub_pb2.UpdateSnapshotRequest(
             snapshot=snapshot, update_mask=update_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("snapshot.name", snapshot.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_snapshot"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1302,9 +1457,6 @@ class SubscriberClient(object):
         you to manage message acknowledgments in bulk. That is, you can set the
         acknowledgment state of messages in an existing subscription to the state
         captured by a snapshot.<br><br>
-        <b>BETA:</b> This feature is part of a beta release. This API might be
-        changed in backward-incompatible ways and is not recommended for production
-        use. It is not subject to any SLA or deprecation policy.
         When the snapshot is deleted, all messages retained in the snapshot
         are immediately dropped. After a snapshot is deleted, a new one may be
         created with the same name, but the new one has no association with the old
@@ -1350,6 +1502,19 @@ class SubscriberClient(object):
             )
 
         request = pubsub_pb2.DeleteSnapshotRequest(snapshot=snapshot)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("snapshot", snapshot)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_snapshot"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1371,10 +1536,7 @@ class SubscriberClient(object):
         you to manage message acknowledgments in bulk. That is, you can set the
         acknowledgment state of messages in an existing subscription to the state
         captured by a snapshot. Note that both the subscription and the snapshot
-        must be on the same topic.<br><br>
-        <b>BETA:</b> This feature is part of a beta release. This API might be
-        changed in backward-incompatible ways and is not recommended for production
-        use. It is not subject to any SLA or deprecation policy.
+        must be on the same topic.
 
         Example:
             >>> from google.cloud import pubsub_v1
@@ -1438,6 +1600,19 @@ class SubscriberClient(object):
         request = pubsub_pb2.SeekRequest(
             subscription=subscription, time=time, snapshot=snapshot
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("subscription", subscription)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["seek"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1468,8 +1643,7 @@ class SubscriberClient(object):
 
         Args:
             resource (str): REQUIRED: The resource for which the policy is being specified.
-                ``resource`` is usually specified as a path. For example, a Project
-                resource is specified as ``projects/{project}``.
+                See the operation documentation for the appropriate value for this field.
             policy (Union[dict, ~google.cloud.pubsub_v1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The
                 size of the policy is limited to a few 10s of KB. An empty policy is a
                 valid policy but certain Cloud Platform services (such as Projects)
@@ -1508,6 +1682,19 @@ class SubscriberClient(object):
             )
 
         request = iam_policy_pb2.SetIamPolicyRequest(resource=resource, policy=policy)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("resource", resource)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["set_iam_policy"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1535,8 +1722,7 @@ class SubscriberClient(object):
 
         Args:
             resource (str): REQUIRED: The resource for which the policy is being requested.
-                ``resource`` is usually specified as a path. For example, a Project
-                resource is specified as ``projects/{project}``.
+                See the operation documentation for the appropriate value for this field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1568,6 +1754,19 @@ class SubscriberClient(object):
             )
 
         request = iam_policy_pb2.GetIamPolicyRequest(resource=resource)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("resource", resource)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_iam_policy"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1585,6 +1784,10 @@ class SubscriberClient(object):
         resource does not exist, this will return an empty set of permissions,
         not a NOT\_FOUND error.
 
+        Note: This operation is designed to be used for building
+        permission-aware UIs and command-line tools, not for authorization
+        checking. This operation may "fail open" without warning.
+
         Example:
             >>> from google.cloud import pubsub_v1
             >>>
@@ -1599,8 +1802,7 @@ class SubscriberClient(object):
 
         Args:
             resource (str): REQUIRED: The resource for which the policy detail is being requested.
-                ``resource`` is usually specified as a path. For example, a Project
-                resource is specified as ``projects/{project}``.
+                See the operation documentation for the appropriate value for this field.
             permissions (list[str]): The set of permissions to check for the ``resource``. Permissions with
                 wildcards (such as '*' or 'storage.*') are not allowed. For more
                 information see `IAM
@@ -1638,6 +1840,19 @@ class SubscriberClient(object):
         request = iam_policy_pb2.TestIamPermissionsRequest(
             resource=resource, permissions=permissions
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("resource", resource)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["test_iam_permissions"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )

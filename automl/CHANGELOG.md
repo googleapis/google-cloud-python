@@ -4,6 +4,45 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## 0.3.0
+
+06-20-2019 14:47 PDT
+
+
+### New Features
+- Add support for video object tracking (via synth). ([#8278](https://github.com/googleapis/google-cloud-python/pull/8278))
+
+### Documentation
+- Add proto files; add 'docs' session to 'nox'; update docstrings (via synth). ([#8029](https://github.com/googleapis/google-cloud-python/pull/8029))
+
+### Internal / Testing Changes
+- Suppress checking 'cov-fail-under' in nox default session (via synth). ([#8233](https://github.com/googleapis/google-cloud-python/pull/8233))
+- Fix coverage in 'types.py'. ([#8145](https://github.com/googleapis/google-cloud-python/pull/8145))
+- Blacken noxfile.py, setup.py (via synth). ([#8115](https://github.com/googleapis/google-cloud-python/pull/8115))
+- Add empty lines (via synth). ([#8048](https://github.com/googleapis/google-cloud-python/pull/8048))
+- Use alabaster theme everwhere. ([#8021](https://github.com/googleapis/google-cloud-python/pull/8021))
+- Include protos in synth. ([#8000](https://github.com/googleapis/google-cloud-python/pull/8000))
+
+## 0.2.0
+
+04-03-2019 09:16 PDT
+
+
+### Implementation Changes
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+- Sort generated classes (via synth). ([#7256](https://github.com/googleapis/google-cloud-python/pull/7256))
+- Protoc-generated serialization update. ([#7074](https://github.com/googleapis/google-cloud-python/pull/7074))
+
+### New Features
+- Video Classification, Text Extraction, Text Sentiment, Tables support. ([#7650](https://github.com/googleapis/google-cloud-python/pull/7650))
+
+### Documentation
+- Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+- AutoML: pick up stub docstring fix in GAPIC generator. ([#6964](https://github.com/googleapis/google-cloud-python/pull/6964))
+
+### Internal / Testing Changes
+- Update copyright headers
+
 ## 0.1.2
 
 12-17-2018 16:27 PST

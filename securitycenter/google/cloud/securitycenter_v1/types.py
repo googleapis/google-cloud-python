@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 from __future__ import absolute_import
 import sys
 
@@ -22,6 +23,7 @@ from google.api_core.protobuf_helpers import get_messages
 from google.cloud.securitycenter_v1.proto import asset_pb2
 from google.cloud.securitycenter_v1.proto import finding_pb2
 from google.cloud.securitycenter_v1.proto import organization_settings_pb2
+from google.cloud.securitycenter_v1.proto import run_asset_discovery_response_pb2
 from google.cloud.securitycenter_v1.proto import security_marks_pb2
 from google.cloud.securitycenter_v1.proto import securitycenter_service_pb2
 from google.cloud.securitycenter_v1.proto import source_pb2
@@ -34,6 +36,8 @@ from google.protobuf import field_mask_pb2
 from google.protobuf import struct_pb2
 from google.protobuf import timestamp_pb2
 from google.rpc import status_pb2
+from google.type import expr_pb2
+
 
 _shared_modules = [
     iam_policy_pb2,
@@ -45,12 +49,14 @@ _shared_modules = [
     struct_pb2,
     timestamp_pb2,
     status_pb2,
+    expr_pb2,
 ]
 
 _local_modules = [
     asset_pb2,
     finding_pb2,
     organization_settings_pb2,
+    run_asset_discovery_response_pb2,
     security_marks_pb2,
     securitycenter_service_pb2,
     source_pb2,
@@ -58,7 +64,7 @@ _local_modules = [
 
 names = []
 
-for module in _shared_modules:
+for module in _shared_modules:  # pragma: NO COVER
     for name, message in get_messages(module).items():
         setattr(sys.modules[__name__], name, message)
         names.append(name)
@@ -67,5 +73,6 @@ for module in _local_modules:
         message.__module__ = "google.cloud.securitycenter_v1.types"
         setattr(sys.modules[__name__], name, message)
         names.append(name)
+
 
 __all__ = tuple(sorted(names))

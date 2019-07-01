@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.securitycenter.v1beta1 SecurityCenter API."""
 
 import functools
@@ -20,9 +21,11 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.operation
 import google.api_core.operations_v1
@@ -48,6 +51,7 @@ from google.protobuf import duration_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 from google.protobuf import timestamp_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     "google-cloud-securitycenter"
@@ -85,27 +89,12 @@ class SecurityCenterClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def organization_path(cls, organization):
-        """Return a fully-qualified organization string."""
+    def asset_security_marks_path(cls, organization, asset):
+        """Return a fully-qualified asset_security_marks string."""
         return google.api_core.path_template.expand(
-            "organizations/{organization}", organization=organization
-        )
-
-    @classmethod
-    def source_path(cls, organization, source):
-        """Return a fully-qualified source string."""
-        return google.api_core.path_template.expand(
-            "organizations/{organization}/sources/{source}",
+            "organizations/{organization}/assets/{asset}/securityMarks",
             organization=organization,
-            source=source,
-        )
-
-    @classmethod
-    def organization_settings_path(cls, organization):
-        """Return a fully-qualified organization_settings string."""
-        return google.api_core.path_template.expand(
-            "organizations/{organization}/organizationSettings",
-            organization=organization,
+            asset=asset,
         )
 
     @classmethod
@@ -119,12 +108,27 @@ class SecurityCenterClient(object):
         )
 
     @classmethod
-    def asset_security_marks_path(cls, organization, asset):
-        """Return a fully-qualified asset_security_marks string."""
+    def organization_path(cls, organization):
+        """Return a fully-qualified organization string."""
         return google.api_core.path_template.expand(
-            "organizations/{organization}/assets/{asset}/securityMarks",
+            "organizations/{organization}", organization=organization
+        )
+
+    @classmethod
+    def organization_settings_path(cls, organization):
+        """Return a fully-qualified organization_settings string."""
+        return google.api_core.path_template.expand(
+            "organizations/{organization}/organizationSettings",
             organization=organization,
-            asset=asset,
+        )
+
+    @classmethod
+    def source_path(cls, organization, source):
+        """Return a fully-qualified source string."""
+        return google.api_core.path_template.expand(
+            "organizations/{organization}/sources/{source}",
+            organization=organization,
+            source=source,
         )
 
     def __init__(
@@ -134,6 +138,7 @@ class SecurityCenterClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -164,6 +169,9 @@ class SecurityCenterClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -182,6 +190,15 @@ class SecurityCenterClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -190,6 +207,7 @@ class SecurityCenterClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=security_center_grpc_transport.SecurityCenterGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -200,7 +218,7 @@ class SecurityCenterClient(object):
                 self.transport = transport
         else:
             self.transport = security_center_grpc_transport.SecurityCenterGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -290,6 +308,19 @@ class SecurityCenterClient(object):
         request = securitycenter_service_pb2.CreateSourceRequest(
             parent=parent, source=source
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_source"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -366,6 +397,19 @@ class SecurityCenterClient(object):
         request = securitycenter_service_pb2.CreateFindingRequest(
             parent=parent, finding_id=finding_id, finding=finding
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_finding"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -391,8 +435,7 @@ class SecurityCenterClient(object):
 
         Args:
             resource (str): REQUIRED: The resource for which the policy is being requested.
-                ``resource`` is usually specified as a path. For example, a Project
-                resource is specified as ``projects/{project}``.
+                See the operation documentation for the appropriate value for this field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -424,6 +467,19 @@ class SecurityCenterClient(object):
             )
 
         request = iam_policy_pb2.GetIamPolicyRequest(resource=resource)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("resource", resource)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_iam_policy"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -481,6 +537,19 @@ class SecurityCenterClient(object):
             )
 
         request = securitycenter_service_pb2.GetOrganizationSettingsRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_organization_settings"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -538,6 +607,19 @@ class SecurityCenterClient(object):
             )
 
         request = securitycenter_service_pb2.GetSourceRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_source"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -674,10 +756,10 @@ class SecurityCenterClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.securitycenter_v1beta1.types.GroupResult` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.securitycenter_v1beta1.types.GroupResult` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -705,6 +787,19 @@ class SecurityCenterClient(object):
             read_time=read_time,
             page_size=page_size,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -824,10 +919,10 @@ class SecurityCenterClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.securitycenter_v1beta1.types.GroupResult` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.securitycenter_v1beta1.types.GroupResult` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -854,6 +949,19 @@ class SecurityCenterClient(object):
             read_time=read_time,
             page_size=page_size,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -1002,10 +1110,10 @@ class SecurityCenterClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.securitycenter_v1beta1.types.ListAssetsResult` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.securitycenter_v1beta1.types.ListAssetsResult` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1034,6 +1142,19 @@ class SecurityCenterClient(object):
             field_mask=field_mask,
             page_size=page_size,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -1155,10 +1276,10 @@ class SecurityCenterClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.securitycenter_v1beta1.types.Finding` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.securitycenter_v1beta1.types.Finding` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1186,6 +1307,19 @@ class SecurityCenterClient(object):
             field_mask=field_mask,
             page_size=page_size,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -1251,10 +1385,10 @@ class SecurityCenterClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.securitycenter_v1beta1.types.Source` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.securitycenter_v1beta1.types.Source` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1277,6 +1411,19 @@ class SecurityCenterClient(object):
         request = securitycenter_service_pb2.ListSourcesRequest(
             parent=parent, page_size=page_size
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -1359,6 +1506,19 @@ class SecurityCenterClient(object):
             )
 
         request = securitycenter_service_pb2.RunAssetDiscoveryRequest(parent=parent)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         operation = self._inner_api_calls["run_asset_discovery"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1439,6 +1599,19 @@ class SecurityCenterClient(object):
         request = securitycenter_service_pb2.SetFindingStateRequest(
             name=name, state=state, start_time=start_time
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["set_finding_state"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1468,8 +1641,7 @@ class SecurityCenterClient(object):
 
         Args:
             resource (str): REQUIRED: The resource for which the policy is being specified.
-                ``resource`` is usually specified as a path. For example, a Project
-                resource is specified as ``projects/{project}``.
+                See the operation documentation for the appropriate value for this field.
             policy (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The
                 size of the policy is limited to a few 10s of KB. An empty policy is a
                 valid policy but certain Cloud Platform services (such as Projects)
@@ -1508,6 +1680,19 @@ class SecurityCenterClient(object):
             )
 
         request = iam_policy_pb2.SetIamPolicyRequest(resource=resource, policy=policy)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("resource", resource)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["set_iam_policy"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1537,8 +1722,7 @@ class SecurityCenterClient(object):
 
         Args:
             resource (str): REQUIRED: The resource for which the policy detail is being requested.
-                ``resource`` is usually specified as a path. For example, a Project
-                resource is specified as ``projects/{project}``.
+                See the operation documentation for the appropriate value for this field.
             permissions (list[str]): The set of permissions to check for the ``resource``. Permissions with
                 wildcards (such as '*' or 'storage.*') are not allowed. For more
                 information see `IAM
@@ -1576,6 +1760,19 @@ class SecurityCenterClient(object):
         request = iam_policy_pb2.TestIamPermissionsRequest(
             resource=resource, permissions=permissions
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("resource", resource)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["test_iam_permissions"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1650,6 +1847,19 @@ class SecurityCenterClient(object):
         request = securitycenter_service_pb2.UpdateFindingRequest(
             finding=finding, update_mask=update_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("finding.name", finding.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_finding"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1719,6 +1929,21 @@ class SecurityCenterClient(object):
         request = securitycenter_service_pb2.UpdateOrganizationSettingsRequest(
             organization_settings=organization_settings, update_mask=update_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [
+                ("organization_settings.name", organization_settings.name)
+            ]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_organization_settings"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1786,6 +2011,19 @@ class SecurityCenterClient(object):
         request = securitycenter_service_pb2.UpdateSourceRequest(
             source=source, update_mask=update_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("source.name", source.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_source"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1860,6 +2098,19 @@ class SecurityCenterClient(object):
             update_mask=update_mask,
             start_time=start_time,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("security_marks.name", security_marks.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_security_marks"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )

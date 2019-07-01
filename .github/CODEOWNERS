@@ -1,33 +1,52 @@
 # Code owners file.
 # This file controls who is tagged for review for any given pull request.
 
-# Chris Wilcox is the default owner for anything not explicitly
+# Bu Sun Kim is the default owner for anything not explicitly
 # taken by someone else.
-*                         @crwilcox
+*                         @busunkim96
 
-# Thea Flowers is the author of the new google.api_core library.
-api_core/*                @theacodes
-core/*                    @theacodes
-docs/core/*               @theacodes
+##################################
+# Storage and Database (SoDa) team 
+##################################
+bigtable/                   @tseaver @crwilcox @frankyn
+docs/bigtable/              @tseaver @crwilcox @frankyn
+
+datastore/                  @tseaver @crwilcox @frankyn      
+docs/datastore              @tseaver @crwilcox @frankyn 
+
+storage/                    @tseaver @crwilcox @frankyn
+docs/storage                @tseaver @crwilcox @frankyn
+
+firestore/                  @tseaver @crwilcox @frankyn
+docs/firestore/             @tseaver @crwilcox @frankyn
+
+spanner/                    @tseaver @crwilcox @frankyn
+docs/spanner                @tseaver @crwilcox @frankyn
+
+###############################
+# Analytics and ML (AniML) team
+###############################
 
 # BigQuery suite of APIs
-bigquery/*                @googleapis/api-bigquery
-bigquery_datatransfer/*   @googleapis/api-bigquery
-bigquery_storage/*        @googleapis/api-bigquery
+bigquery/                   @googleapis/api-bigquery
+docs/bigquery/              @googleapis/api-bigquery
 
-# Danny Hermes and Tres Seaver co-authored the BigTable library.
-bigtable/*                @tseaver
+bigquery_datatransfer/      @googleapis/api-bigquery
+docs/bigquery_datatransfer/ @googleapis/api-bigquery
 
-# Bill Prin is the primary maintainer of the Stackdriver libraries.
-error_reporting/*         @waprin
-monitoring/*              @waprin @supriyagarg @rimey
-logging/*                 @waprin @tseaver
+bigquery_storage/           @googleapis/api-bigquery
+docs/bigquery_storage/      @googleapis/api-bigquery
+
+# Pubsub
+pubsub/                     @anguillanneuf @plamut
+docs/pubsub                 @anguillanneuf @plamut
+
 
 # Tim Swast is the primary author of Runtime Config.
-runtimeconfig/*           @tswast
+runtimeconfig/              @tswast
+docs/runtimeconfig/         @tswast
 
-# Vikas Kedia is the product owner and Tres Seaver the author for Spanner.
-spanner/*                 @vkedia @tseaver
 
 # Doug Greiman and Angela Li are the owners of trace.
-trace/*                   @liyanhui1228 @duggelz
+trace/                      @liyanhui1228 @duggelz
+docs/trace/                 @liyanhui1228 @duggelz

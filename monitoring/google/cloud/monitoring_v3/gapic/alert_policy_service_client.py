@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.monitoring.v3 AlertPolicyService API."""
 
 import functools
@@ -20,9 +21,11 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
@@ -38,6 +41,7 @@ from google.cloud.monitoring_v3.proto import alert_service_pb2
 from google.cloud.monitoring_v3.proto import alert_service_pb2_grpc
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     "google-cloud-monitoring"
@@ -85,13 +89,6 @@ class AlertPolicyServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}", project=project
-        )
-
-    @classmethod
     def alert_policy_path(cls, project, alert_policy):
         """Return a fully-qualified alert_policy string."""
         return google.api_core.path_template.expand(
@@ -110,6 +107,13 @@ class AlertPolicyServiceClient(object):
             condition=condition,
         )
 
+    @classmethod
+    def project_path(cls, project):
+        """Return a fully-qualified project string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}", project=project
+        )
+
     def __init__(
         self,
         transport=None,
@@ -117,6 +121,7 @@ class AlertPolicyServiceClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -147,6 +152,9 @@ class AlertPolicyServiceClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -165,6 +173,15 @@ class AlertPolicyServiceClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -173,6 +190,7 @@ class AlertPolicyServiceClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=alert_policy_service_grpc_transport.AlertPolicyServiceGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -183,7 +201,7 @@ class AlertPolicyServiceClient(object):
                 self.transport = transport
         else:
             self.transport = alert_policy_service_grpc_transport.AlertPolicyServiceGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -277,10 +295,10 @@ class AlertPolicyServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.monitoring_v3.types.AlertPolicy` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.monitoring_v3.types.AlertPolicy` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -306,6 +324,19 @@ class AlertPolicyServiceClient(object):
         request = alert_service_pb2.ListAlertPoliciesRequest(
             name=name, filter=filter_, order_by=order_by, page_size=page_size
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -378,6 +409,19 @@ class AlertPolicyServiceClient(object):
             )
 
         request = alert_service_pb2.GetAlertPolicyRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_alert_policy"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -456,6 +500,19 @@ class AlertPolicyServiceClient(object):
         request = alert_service_pb2.CreateAlertPolicyRequest(
             name=name, alert_policy=alert_policy
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_alert_policy"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -516,6 +573,19 @@ class AlertPolicyServiceClient(object):
             )
 
         request = alert_service_pb2.DeleteAlertPolicyRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_alert_policy"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -613,6 +683,19 @@ class AlertPolicyServiceClient(object):
         request = alert_service_pb2.UpdateAlertPolicyRequest(
             alert_policy=alert_policy, update_mask=update_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("alert_policy.name", alert_policy.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_alert_policy"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )

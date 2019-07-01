@@ -1,4 +1,4 @@
-Python Client for BigQuery Storage API (`Alpha`_)
+Python Client for BigQuery Storage API (`Beta`_)
 =================================================
 
 `BigQuery Storage API`_:
@@ -6,10 +6,10 @@ Python Client for BigQuery Storage API (`Alpha`_)
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
-.. _BigQuery Storage API: https://cloud.google.com/bigquery
+.. _Beta: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _BigQuery Storage API: https://cloud.google.com/bigquery/docs/reference/storage/
 .. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/bigquery_storage/index.html
-.. _Product Documentation:  https://cloud.google.com/bigquery
+.. _Product Documentation: https://cloud.google.com/bigquery/docs/reference/storage/
 
 Quick Start
 -----------
@@ -23,8 +23,8 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the BigQuery Storage API.:  https://cloud.google.com/bigquerystorage
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/stable/core/auth.html
+.. _Enable the BigQuery Storage API.: https://console.cloud.google.com/apis/library/bigquerystorage.googleapis.com
+.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
 
 Installation
 ~~~~~~~~~~~~
@@ -96,5 +96,5 @@ Next Steps
 -  View this `repository’s main README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _BigQuery Storage API Product documentation:  https://cloud.google.com/bigquery
+.. _BigQuery Storage API Product documentation:  https://cloud.google.com/bigquery/docs/reference/storage/
 .. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst

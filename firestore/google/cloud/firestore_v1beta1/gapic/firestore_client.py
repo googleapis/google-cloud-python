@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.firestore.v1beta1 Firestore API."""
 
 import functools
@@ -20,9 +21,11 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
@@ -40,6 +43,7 @@ from google.cloud.firestore_v1beta1.proto import query_pb2
 from google.cloud.firestore_v1beta1.proto import write_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import timestamp_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     "google-cloud-firestore"
@@ -95,19 +99,21 @@ class FirestoreClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
+    def any_path_path(cls, project, database, document, any_path):
+        """Return a fully-qualified any_path string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/databases/{database}/documents/{document}/{any_path=**}",
+            project=project,
+            database=database,
+            document=document,
+            any_path=any_path,
+        )
+
+    @classmethod
     def database_root_path(cls, project, database):
         """Return a fully-qualified database_root string."""
         return google.api_core.path_template.expand(
             "projects/{project}/databases/{database}",
-            project=project,
-            database=database,
-        )
-
-    @classmethod
-    def document_root_path(cls, project, database):
-        """Return a fully-qualified document_root string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/databases/{database}/documents",
             project=project,
             database=database,
         )
@@ -123,14 +129,12 @@ class FirestoreClient(object):
         )
 
     @classmethod
-    def any_path_path(cls, project, database, document, any_path):
-        """Return a fully-qualified any_path string."""
+    def document_root_path(cls, project, database):
+        """Return a fully-qualified document_root string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/databases/{database}/documents/{document}/{any_path=**}",
+            "projects/{project}/databases/{database}/documents",
             project=project,
             database=database,
-            document=document,
-            any_path=any_path,
         )
 
     def __init__(
@@ -140,6 +144,7 @@ class FirestoreClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -170,6 +175,9 @@ class FirestoreClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -188,6 +196,15 @@ class FirestoreClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -196,6 +213,7 @@ class FirestoreClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=firestore_grpc_transport.FirestoreGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -206,7 +224,7 @@ class FirestoreClient(object):
                 self.transport = transport
         else:
             self.transport = firestore_grpc_transport.FirestoreGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -309,6 +327,19 @@ class FirestoreClient(object):
         request = firestore_pb2.GetDocumentRequest(
             name=name, mask=mask, transaction=transaction, read_time=read_time
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_document"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -398,10 +429,10 @@ class FirestoreClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.firestore_v1beta1.types.Document` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.firestore_v1beta1.types.Document` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -635,6 +666,19 @@ class FirestoreClient(object):
             mask=mask,
             current_document=current_document,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("document.name", document.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_document"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -697,6 +741,19 @@ class FirestoreClient(object):
         request = firestore_pb2.DeleteDocumentRequest(
             name=name, current_document=current_document
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_document"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -806,6 +863,19 @@ class FirestoreClient(object):
             new_transaction=new_transaction,
             read_time=read_time,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("database", database)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["batch_get_documents"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -871,6 +941,19 @@ class FirestoreClient(object):
         request = firestore_pb2.BeginTransactionRequest(
             database=database, options=options_
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("database", database)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["begin_transaction"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -942,6 +1025,19 @@ class FirestoreClient(object):
         request = firestore_pb2.CommitRequest(
             database=database, writes=writes, transaction=transaction
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("database", database)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["commit"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1003,6 +1099,19 @@ class FirestoreClient(object):
         request = firestore_pb2.RollbackRequest(
             database=database, transaction=transaction
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("database", database)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["rollback"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1104,6 +1213,19 @@ class FirestoreClient(object):
             new_transaction=new_transaction,
             read_time=read_time,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["run_query"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1284,10 +1406,10 @@ class FirestoreClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`str` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`str` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1310,6 +1432,19 @@ class FirestoreClient(object):
         request = firestore_pb2.ListCollectionIdsRequest(
             parent=parent, page_size=page_size
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(

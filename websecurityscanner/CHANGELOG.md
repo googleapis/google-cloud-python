@@ -4,6 +4,33 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+## 0.2.0
+
+05-15-2019 15:20 PDT
+
+
+### Implementation Changes
+- Add routing header to method metadata (via synth).  ([#7605](https://github.com/googleapis/google-cloud-python/pull/7605))
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+- Protoc-generated serialization update. ([#7101](https://github.com/googleapis/google-cloud-python/pull/7101))
+- GAPIC generation fixes. ([#7059](https://github.com/googleapis/google-cloud-python/pull/7059))
+- Pick up order-of-enum fix from GAPIC generator. ([#6882](https://github.com/googleapis/google-cloud-python/pull/6882))
+
+### New Features
+- Generate v1beta. ([#7992](https://github.com/googleapis/google-cloud-python/pull/7992))
+
+### Documentation
+- Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+- Update copyright headers
+
+### Internal / Testing Changes
+- Update noxfile (via synth). ([#7803](https://github.com/googleapis/google-cloud-python/pull/7803))
+- Fix 'docs' session in nox. ([#7788](https://github.com/googleapis/google-cloud-python/pull/7788))
+- Add nox session 'docs' (via synth). ([#7747](https://github.com/googleapis/google-cloud-python/pull/7747))
+- Copy lintified proto files (via synth). ([#7474](https://github.com/googleapis/google-cloud-python/pull/7474))
+- Add clarifying comment to blacken nox target. ([#7409](https://github.com/googleapis/google-cloud-python/pull/7409))
+- Add protos as an artifact to library ([#7205](https://github.com/googleapis/google-cloud-python/pull/7205))
+
 ## 0.1.1
 
 12-18-2018 10:45 PST

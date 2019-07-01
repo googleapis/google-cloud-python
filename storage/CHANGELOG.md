@@ -4,6 +4,59 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## 1.16.1
+
+06-04-2019 11:09 PDT
+
+
+### Dependencies
+- Don't pin `google-api-core` in libs using `google-cloud-core`. ([#8213](https://github.com/googleapis/google-cloud-python/pull/8213))
+
+### Documentation
+- Fix example in `download_blob_to_file` docstring. ([#8201](https://github.com/googleapis/google-cloud-python/pull/8201))
+- Tweak `fields` docstring further. ([#8040](https://github.com/googleapis/google-cloud-python/pull/8040))
+- Improve docs for `fields` argument to `Bucket.list_blobs`. ([#8023](https://github.com/googleapis/google-cloud-python/pull/8023))
+- Fix docs typo. ([#8027](https://github.com/googleapis/google-cloud-python/pull/8027))
+
+### Internal / Testing Changes
+- Retry harder in face of 409/429 during module teardown. ([#8113](https://github.com/googleapis/google-cloud-python/pull/8113))
+- Add more retries for 429s during teardown operations. ([#8112](https://github.com/googleapis/google-cloud-python/pull/8112))
+
+## 1.16.0
+
+05-16-2019 12:55 PDT
+
+
+### New Features
+- Update `Client.create_bucket` to take a Bucket object or string. ([#7820](https://github.com/googleapis/google-cloud-python/pull/7820))
+- Update `Client.get_bucket` to take a `Bucket` object or string. ([#7856](https://github.com/googleapis/google-cloud-python/pull/7856))
+- Add `Client.download_blob_to_file` method. ([#7949](https://github.com/googleapis/google-cloud-python/pull/7949))
+- Add `client_info` support to client / connection. ([#7872](https://github.com/googleapis/google-cloud-python/pull/7872))
+
+### Dependencies
+- Pin `google-cloud-core >= 1.0.0, < 2.0dev`. ([#7993](https://github.com/googleapis/google-cloud-python/pull/7993))
+- Pin `google-auth >= 1.2.0`. ([#7798](https://github.com/googleapis/google-cloud-python/pull/7798))
+
+## 1.15.0
+
+04-17-2019 15:37 PDT
+
+### New Features
+- Add support for V4 signed URLs ([#7460](https://github.com/googleapis/google-cloud-python/pull/7460))
+- Add generation arguments to bucket / blob methods. ([#7444](https://github.com/googleapis/google-cloud-python/pull/7444))
+
+### Implementation Changes
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+- Ensure that 'Blob.reload' passes encryption headers. ([#7441](https://github.com/googleapis/google-cloud-python/pull/7441))
+
+### Documentation
+- Update client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+
+### Internal / Testing Changes
+- Fix failing system tests ([#7714](https://github.com/googleapis/google-cloud-python/pull/7714))
+- Increase number of retries for 429 errors. ([#7484](https://github.com/googleapis/google-cloud-python/pull/7484))
+- Un-flake KMS integration tests expecting empty bucket. ([#7479](https://github.com/googleapis/google-cloud-python/pull/7479))
+
 ## 1.14.0
 
 02-06-2019 12:49 PST

@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Unit tests."""
 
 import mock
@@ -271,7 +272,7 @@ class TestCloudRedisClient(object):
         port = 3446913
         current_location_id = "currentLocationId1312712735"
         status_message = "statusMessage-239442758"
-        memory_size_gb_2 = 1493816946
+        memory_size_gb = 34199707
         authorized_network = "authorizedNetwork-1733809270"
         persistence_iam_identity = "persistenceIamIdentity1061944584"
         expected_response = {
@@ -285,7 +286,7 @@ class TestCloudRedisClient(object):
             "port": port,
             "current_location_id": current_location_id,
             "status_message": status_message,
-            "memory_size_gb": memory_size_gb_2,
+            "memory_size_gb": memory_size_gb,
             "authorized_network": authorized_network,
             "persistence_iam_identity": persistence_iam_identity,
         }
@@ -307,9 +308,8 @@ class TestCloudRedisClient(object):
         paths_element_2 = "memory_size_gb"
         paths = [paths_element, paths_element_2]
         update_mask = {"paths": paths}
-        display_name = "UpdatedDisplayName"
-        memory_size_gb = 4
-        instance = {"display_name": display_name, "memory_size_gb": memory_size_gb}
+        display_name = " instance.memory_size_gb=4"
+        instance = {"display_name": display_name}
 
         response = client.update_instance(update_mask, instance)
         result = response.result()
@@ -342,61 +342,10 @@ class TestCloudRedisClient(object):
         paths_element_2 = "memory_size_gb"
         paths = [paths_element, paths_element_2]
         update_mask = {"paths": paths}
-        display_name = "UpdatedDisplayName"
-        memory_size_gb = 4
-        instance = {"display_name": display_name, "memory_size_gb": memory_size_gb}
+        display_name = " instance.memory_size_gb=4"
+        instance = {"display_name": display_name}
 
         response = client.update_instance(update_mask, instance)
-        exception = response.exception()
-        assert exception.errors[0] == error
-
-    def test_delete_instance(self):
-        # Setup Expected Response
-        expected_response = {}
-        expected_response = empty_pb2.Empty(**expected_response)
-        operation = operations_pb2.Operation(
-            name="operations/test_delete_instance", done=True
-        )
-        operation.response.Pack(expected_response)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[operation])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = redis_v1.CloudRedisClient()
-
-        # Setup Request
-        name = client.instance_path("[PROJECT]", "[LOCATION]", "[INSTANCE]")
-
-        response = client.delete_instance(name)
-        result = response.result()
-        assert expected_response == result
-
-        assert len(channel.requests) == 1
-        expected_request = cloud_redis_pb2.DeleteInstanceRequest(name=name)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_delete_instance_exception(self):
-        # Setup Response
-        error = status_pb2.Status()
-        operation = operations_pb2.Operation(
-            name="operations/test_delete_instance_exception", done=True
-        )
-        operation.error.CopyFrom(error)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[operation])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = redis_v1.CloudRedisClient()
-
-        # Setup Request
-        name = client.instance_path("[PROJECT]", "[LOCATION]", "[INSTANCE]")
-
-        response = client.delete_instance(name)
         exception = response.exception()
         assert exception.errors[0] == error
 
@@ -644,5 +593,55 @@ class TestCloudRedisClient(object):
         )
 
         response = client.failover_instance(name, data_protection_mode)
+        exception = response.exception()
+        assert exception.errors[0] == error
+
+    def test_delete_instance(self):
+        # Setup Expected Response
+        expected_response = {}
+        expected_response = empty_pb2.Empty(**expected_response)
+        operation = operations_pb2.Operation(
+            name="operations/test_delete_instance", done=True
+        )
+        operation.response.Pack(expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = redis_v1.CloudRedisClient()
+
+        # Setup Request
+        name = client.instance_path("[PROJECT]", "[LOCATION]", "[INSTANCE]")
+
+        response = client.delete_instance(name)
+        result = response.result()
+        assert expected_response == result
+
+        assert len(channel.requests) == 1
+        expected_request = cloud_redis_pb2.DeleteInstanceRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_delete_instance_exception(self):
+        # Setup Response
+        error = status_pb2.Status()
+        operation = operations_pb2.Operation(
+            name="operations/test_delete_instance_exception", done=True
+        )
+        operation.error.CopyFrom(error)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = redis_v1.CloudRedisClient()
+
+        # Setup Request
+        name = client.instance_path("[PROJECT]", "[LOCATION]", "[INSTANCE]")
+
+        response = client.delete_instance(name)
         exception = response.exception()
         assert exception.errors[0] == error

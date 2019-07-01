@@ -60,11 +60,16 @@ from google.cloud.bigquery.job import SchemaUpdateOption
 from google.cloud.bigquery.job import SourceFormat
 from google.cloud.bigquery.job import UnknownJob
 from google.cloud.bigquery.job import WriteDisposition
+from google.cloud.bigquery.model import Model
+from google.cloud.bigquery.model import ModelReference
 from google.cloud.bigquery.query import ArrayQueryParameter
 from google.cloud.bigquery.query import ScalarQueryParameter
 from google.cloud.bigquery.query import StructQueryParameter
 from google.cloud.bigquery.query import UDFResource
 from google.cloud.bigquery.retry import DEFAULT_RETRY
+from google.cloud.bigquery.routine import Routine
+from google.cloud.bigquery.routine import RoutineArgument
+from google.cloud.bigquery.routine import RoutineReference
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import EncryptionConfiguration
 from google.cloud.bigquery.table import Table
@@ -100,6 +105,13 @@ __all__ = [
     "UnknownJob",
     "TimePartitioningType",
     "TimePartitioning",
+    # Models
+    "Model",
+    "ModelReference",
+    # Routines
+    "Routine",
+    "RoutineArgument",
+    "RoutineReference",
     # Shared helpers
     "SchemaField",
     "UDFResource",

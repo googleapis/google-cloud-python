@@ -33,7 +33,7 @@ PUBLISHED = RECEIVED + datetime.timedelta(days=1, microseconds=PUBLISHED_MICROS)
 PUBLISHED_SECONDS = datetime_helpers.to_milliseconds(PUBLISHED) // 1000
 
 
-def create_message(data, ack_id="ACKID", **attrs):
+def create_message(data, ack_id="ACKID", autolease=True, **attrs):
     with mock.patch.object(message.Message, "lease") as lease:
         with mock.patch.object(time, "time") as time_:
             time_.return_value = RECEIVED_SECONDS
@@ -48,8 +48,12 @@ def create_message(data, ack_id="ACKID", **attrs):
                 ),
                 ack_id,
                 queue.Queue(),
+                autolease=autolease,
             )
-            lease.assert_called_once_with()
+            if autolease:
+                lease.assert_called_once_with()
+            else:
+                lease.assert_not_called()
             return msg
 
 
@@ -77,6 +81,11 @@ def test_ack_id():
 def test_publish_time():
     msg = create_message(b"foo")
     assert msg.publish_time == PUBLISHED
+
+
+def test_disable_autolease_on_creation():
+    # the create_message() helper does the actual assertion
+    create_message(b"foo", autolease=False)
 
 
 def check_call_types(mock, *args, **kwargs):

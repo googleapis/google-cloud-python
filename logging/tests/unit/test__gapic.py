@@ -584,32 +584,32 @@ class Test__log_entry_mapping_to_pb(unittest.TestCase):
 
 @mock.patch("google.cloud.logging._gapic.LoggingServiceV2Client", autospec=True)
 def test_make_logging_api(gapic_client):
-    client = mock.Mock(spec=["_credentials"])
+    client = mock.Mock(spec=["_credentials", "_client_info"])
     api = _gapic.make_logging_api(client)
     assert api._client == client
     assert api._gapic_api == gapic_client.return_value
     gapic_client.assert_called_once_with(
-        credentials=client._credentials, client_info=_gapic._CLIENT_INFO
+        credentials=client._credentials, client_info=client._client_info
     )
 
 
 @mock.patch("google.cloud.logging._gapic.MetricsServiceV2Client", autospec=True)
 def test_make_metrics_api(gapic_client):
-    client = mock.Mock(spec=["_credentials"])
+    client = mock.Mock(spec=["_credentials", "_client_info"])
     api = _gapic.make_metrics_api(client)
     assert api._client == client
     assert api._gapic_api == gapic_client.return_value
     gapic_client.assert_called_once_with(
-        credentials=client._credentials, client_info=_gapic._CLIENT_INFO
+        credentials=client._credentials, client_info=client._client_info
     )
 
 
 @mock.patch("google.cloud.logging._gapic.ConfigServiceV2Client", autospec=True)
 def test_make_sinks_api(gapic_client):
-    client = mock.Mock(spec=["_credentials"])
+    client = mock.Mock(spec=["_credentials", "_client_info"])
     api = _gapic.make_sinks_api(client)
     assert api._client == client
     assert api._gapic_api == gapic_client.return_value
     gapic_client.assert_called_once_with(
-        credentials=client._credentials, client_info=_gapic._CLIENT_INFO
+        credentials=client._credentials, client_info=client._client_info
     )

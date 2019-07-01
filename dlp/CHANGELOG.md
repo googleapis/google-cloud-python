@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## 0.11.0
+
+04-15-2019 15:05 PDT
+
+
+### Implementation Changes
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+- Remove unused message exports. ([#7267](https://github.com/googleapis/google-cloud-python/pull/7267))
+- Protoc-generated serialization update. ([#7081](https://github.com/googleapis/google-cloud-python/pull/7081))
+
+### New Features
+- Add support for filtering job triggers; add CryptoDeterministicConfig; update docs/conf.py. (via synth). ([#7390](https://github.com/googleapis/google-cloud-python/pull/7390))
+
+### Documentation
+- Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+- Update copyright headers
+- Pick up stub docstring fix in GAPIC generator. ([#6969](https://github.com/googleapis/google-cloud-python/pull/6969))
+
+### Internal / Testing Changes
+- Copy in proto files. ([#7227](https://github.com/googleapis/google-cloud-python/pull/7227))
+- Add protos as an artifact to library ([#7205](https://github.com/googleapis/google-cloud-python/pull/7205))
+
 ## 0.10.0
 
 12-17-2018 18:07 PST

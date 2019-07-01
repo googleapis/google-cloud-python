@@ -15,6 +15,7 @@
 """Define API Jobs."""
 
 import copy
+import re
 import threading
 
 import six
@@ -33,6 +34,7 @@ from google.cloud.bigquery.query import ScalarQueryParameter
 from google.cloud.bigquery.query import StructQueryParameter
 from google.cloud.bigquery.query import UDFResource
 from google.cloud.bigquery.retry import DEFAULT_RETRY
+from google.cloud.bigquery.routine import RoutineReference
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import _EmptyRowIterator
 from google.cloud.bigquery.table import EncryptionConfiguration
@@ -45,6 +47,7 @@ from google.cloud.bigquery import _helpers
 _DONE_STATE = "DONE"
 _STOPPED_REASON = "stopped"
 _TIMEOUT_BUFFER_SECS = 0.1
+_CONTAINS_ORDER_BY = re.compile(r"ORDER\s+BY", re.IGNORECASE)
 
 _ERROR_REASON_TO_EXCEPTION = {
     "accessDenied": http_client.FORBIDDEN,
@@ -90,6 +93,29 @@ def _error_result_to_exception(error_result):
     return exceptions.from_http_status(
         status_code, error_result.get("message", ""), errors=[error_result]
     )
+
+
+def _contains_order_by(query):
+    """Do we need to preserve the order of the query results?
+
+    This function has known false positives, such as with ordered window
+    functions:
+
+    .. code-block:: sql
+
+       SELECT SUM(x) OVER (
+           window_name
+           PARTITION BY...
+           ORDER BY...
+           window_frame_clause)
+       FROM ...
+
+    This false positive failure case means the behavior will be correct, but
+    downloading results with the BigQuery Storage API may be slower than it
+    otherwise would. This is preferable to the false negative case, where
+    results are expected to be in order but are not (due to parallel reads).
+    """
+    return query and _CONTAINS_ORDER_BY.search(query)
 
 
 class Compression(object):
@@ -1257,8 +1283,17 @@ class LoadJob(_AsyncJob):
             job_config = LoadJobConfig()
 
         self.source_uris = source_uris
-        self.destination = destination
+        self._destination = destination
         self._configuration = job_config
+
+    @property
+    def destination(self):
+        """google.cloud.bigquery.table.TableReference: table where loaded rows are written
+
+        See:
+        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.load.destinationTable
+        """
+        return self._destination
 
     @property
     def allow_jagged_rows(self):
@@ -1370,6 +1405,24 @@ class LoadJob(_AsyncJob):
         :attr:`google.cloud.bigquery.job.LoadJobConfig.destination_encryption_configuration`.
         """
         return self._configuration.destination_encryption_configuration
+
+    @property
+    def destination_table_description(self):
+        """Union[str, None] name given to destination table.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.destinationTableProperties.description
+        """
+        return self._configuration.destination_table_description
+
+    @property
+    def destination_table_friendly_name(self):
+        """Union[str, None] name given to destination table.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.destinationTableProperties.friendlyName
+        """
+        return self._configuration.destination_table_friendly_name
 
     @property
     def time_partitioning(self):
@@ -2330,7 +2383,10 @@ class QueryJob(_AsyncJob):
         if job_config.use_legacy_sql is None:
             job_config.use_legacy_sql = False
 
-        self.query = query
+        _helpers._set_sub_prop(
+            self._properties, ["configuration", "query", "query"], query
+        )
+
         self._configuration = job_config
         self._query_results = None
         self._done_timeout = None
@@ -2396,6 +2452,17 @@ class QueryJob(_AsyncJob):
         :attr:`google.cloud.bigquery.job.QueryJobConfig.priority`.
         """
         return self._configuration.priority
+
+    @property
+    def query(self):
+        """str: The query text used in this query job.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.query
+        """
+        return _helpers._get_sub_prop(
+            self._properties, ["configuration", "query", "query"]
+        )
 
     @property
     def query_parameters(self):
@@ -2489,7 +2556,6 @@ class QueryJob(_AsyncJob):
     def _copy_configuration_properties(self, configuration):
         """Helper:  assign subclass configuration properties in cleaned."""
         self._configuration._properties = copy.deepcopy(configuration)
-        self.query = _helpers._get_sub_prop(configuration, ["query", "query"])
 
     @classmethod
     def from_api_repr(cls, resource, client):
@@ -2506,7 +2572,7 @@ class QueryJob(_AsyncJob):
         :returns: Job parsed from ``resource``.
         """
         job_id, config = cls._get_resource_config(resource)
-        query = config["query"]["query"]
+        query = _helpers._get_sub_prop(config, ["query", "query"])
         job = cls(job_id, query, client=client)
         job._set_properties(resource)
         return job
@@ -2602,8 +2668,21 @@ class QueryJob(_AsyncJob):
         return self._job_statistics().get("ddlOperationPerformed")
 
     @property
+    def ddl_target_routine(self):
+        """Optional[google.cloud.bigquery.routine.RoutineReference]: Return the DDL target routine, present
+            for CREATE/DROP FUNCTION/PROCEDURE  queries.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/JobStatistics
+        """
+        prop = self._job_statistics().get("ddlTargetRoutine")
+        if prop is not None:
+            prop = RoutineReference.from_api_repr(prop)
+        return prop
+
+    @property
     def ddl_target_table(self):
-        """Optional[TableReference]: Return the DDL target table, present
+        """Optional[google.cloud.bigquery.table.TableReference]: Return the DDL target table, present
             for CREATE/DROP TABLE/VIEW queries.
 
         See:
@@ -2767,29 +2846,33 @@ class QueryJob(_AsyncJob):
         self._done_timeout = timeout
         super(QueryJob, self)._blocking_poll(timeout=timeout)
 
-    def result(self, timeout=None, retry=DEFAULT_RETRY):
+    def result(self, timeout=None, page_size=None, retry=DEFAULT_RETRY):
         """Start the job and wait for it to complete and get the result.
 
-        :type timeout: float
-        :param timeout:
-            How long (in seconds) to wait for job to complete before raising
-            a :class:`concurrent.futures.TimeoutError`.
+        Args:
+            timeout (float):
+                How long (in seconds) to wait for job to complete before
+                raising a :class:`concurrent.futures.TimeoutError`.
+            page_size (int):
+                (Optional) The maximum number of rows in each page of results
+                from this request. Non-positive values are ignored.
+            retry (google.api_core.retry.Retry):
+                (Optional) How to retry the call that retrieves rows.
 
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the call that retrieves rows.
+        Returns:
+            google.cloud.bigquery.table.RowIterator:
+                Iterator of row data
+                :class:`~google.cloud.bigquery.table.Row`-s. During each
+                page, the iterator will have the ``total_rows`` attribute
+                set, which counts the total number of rows **in the result
+                set** (this is distinct from the total number of rows in the
+                current page: ``iterator.page.num_items``).
 
-        :rtype: :class:`~google.cloud.bigquery.table.RowIterator`
-        :returns:
-            Iterator of row data :class:`~google.cloud.bigquery.table.Row`-s.
-            During each page, the iterator will have the ``total_rows``
-            attribute set, which counts the total number of rows **in the
-            result set** (this is distinct from the total number of rows in
-            the current page: ``iterator.page.num_items``).
-
-        :raises:
-            :class:`~google.cloud.exceptions.GoogleCloudError` if the job
-            failed or :class:`concurrent.futures.TimeoutError` if the job did
-            not complete in the given timeout.
+        Raises:
+            google.cloud.exceptions.GoogleCloudError:
+                If the job failed.
+            concurrent.futures.TimeoutError:
+                If the job did not complete in the given timeout.
         """
         super(QueryJob, self).result(timeout=timeout)
         # Return an iterator instead of returning the job.
@@ -2808,7 +2891,10 @@ class QueryJob(_AsyncJob):
         schema = self._query_results.schema
         dest_table_ref = self.destination
         dest_table = Table(dest_table_ref, schema=schema)
-        return self._client.list_rows(dest_table, retry=retry)
+        dest_table._properties["numRows"] = self._query_results.total_rows
+        rows = self._client.list_rows(dest_table, page_size=page_size, retry=retry)
+        rows._preserve_order = _contains_order_by(self.query)
+        return rows
 
     def to_dataframe(self, bqstorage_client=None, dtypes=None, progress_bar_type=None):
         """Return a pandas DataFrame from a QueryJob

@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 import google.api_core.grpc_helpers
 from google.api_core import operations_v1
 
@@ -79,7 +80,9 @@ class ImageAnnotatorGrpcTransport(object):
         )
 
     @classmethod
-    def create_channel(cls, address="vision.googleapis.com:443", credentials=None):
+    def create_channel(
+        cls, address="vision.googleapis.com:443", credentials=None, **kwargs
+    ):
         """Create and return a gRPC channel object.
 
         Args:
@@ -89,12 +92,14 @@ class ImageAnnotatorGrpcTransport(object):
                 credentials identify this application to the service. If
                 none are specified, the client will attempt to ascertain
                 the credentials from the environment.
+            kwargs (dict): Keyword arguments, which are passed to the
+                channel creation.
 
         Returns:
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES, **kwargs
         )
 
     @property
@@ -118,6 +123,47 @@ class ImageAnnotatorGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["image_annotator_stub"].BatchAnnotateImages
+
+    @property
+    def batch_annotate_files(self):
+        """Return the gRPC stub for :meth:`ImageAnnotatorClient.batch_annotate_files`.
+
+        Service that performs image detection and annotation for a batch of files.
+        Now only "application/pdf", "image/tiff" and "image/gif" are supported.
+
+        This service will extract at most 5 (customers can specify which 5 in
+        AnnotateFileRequest.pages) frames (gif) or pages (pdf or tiff) from each
+        file provided and perform detection and annotation for each image
+        extracted.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["image_annotator_stub"].BatchAnnotateFiles
+
+    @property
+    def async_batch_annotate_images(self):
+        """Return the gRPC stub for :meth:`ImageAnnotatorClient.async_batch_annotate_images`.
+
+        Run asynchronous image detection and annotation for a list of images.
+
+        Progress and results can be retrieved through the
+        ``google.longrunning.Operations`` interface. ``Operation.metadata``
+        contains ``OperationMetadata`` (metadata). ``Operation.response``
+        contains ``AsyncBatchAnnotateImagesResponse`` (results).
+
+        This service will write image annotation outputs to json files in
+        customer GCS bucket, each json file containing
+        BatchAnnotateImagesResponse proto.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["image_annotator_stub"].AsyncBatchAnnotateImages
 
     @property
     def async_batch_annotate_files(self):

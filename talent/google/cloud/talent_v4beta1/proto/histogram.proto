@@ -43,7 +43,9 @@ message HistogramQuery {
 
 // Output only.
 //
-// Histogram result that matches [HistogramSpec][] specified in searches.
+// Histogram result that matches
+// [HistogramQuery][google.cloud.talent.v4beta1.HistogramQuery] specified in
+// searches.
 message HistogramQueryResult {
   // Requested histogram expression.
   string histogram_query = 1;
@@ -52,10 +54,11 @@ message HistogramQueryResult {
   // number of matching entries with corresponding value.
   //
   // The key format is:
+  //
   // * (for string histogram) string values stored in the field.
   // * (for named numeric bucket) name specified in `bucket()` function, like
   //   for `bucket(0, MAX, "non-negative")`, the key will be `non-negative`.
   // * (for anonymous numeric bucket) range formatted as `<low>-<high>`, for
-  // example, `0-1000`, `MIN-0`, and `0-MAX`.
+  //   example, `0-1000`, `MIN-0`, and `0-MAX`.
   map<string, int64> histogram = 2;
 }

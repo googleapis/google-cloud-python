@@ -92,6 +92,24 @@ Table
     table.TimePartitioning
     table.TimePartitioningType
 
+Model
+=====
+
+.. autosummary::
+    :toctree: generated
+
+    model.Model
+    model.ModelReference
+
+Routine
+=======
+
+.. autosummary::
+    :toctree: generated
+
+    routine.Routine
+    routine.RoutineArgument
+    routine.RoutineReference
 
 Schema
 ======
@@ -139,9 +157,20 @@ External Configuration
 
 
 Magics
-======================
+======
 
 .. toctree::
     :maxdepth: 2
 
     magics
+
+Additional Types
+================
+
+Protocol buffer classes for working with the Models API.
+
+.. toctree::
+    :maxdepth: 2
+
+    gapic/v2/enums
+    gapic/v2/types

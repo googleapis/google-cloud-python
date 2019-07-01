@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 import google.api_core.grpc_helpers
 import google.api_core.operations_v1
 
@@ -74,7 +75,9 @@ class CloudRedisGrpcTransport(object):
         )
 
     @classmethod
-    def create_channel(cls, address="redis.googleapis.com:443", credentials=None):
+    def create_channel(
+        cls, address="redis.googleapis.com:443", credentials=None, **kwargs
+    ):
         """Create and return a gRPC channel object.
 
         Args:
@@ -84,12 +87,14 @@ class CloudRedisGrpcTransport(object):
                 credentials identify this application to the service. If
                 none are specified, the client will attempt to ascertain
                 the credentials from the environment.
+            kwargs (dict): Keyword arguments, which are passed to the
+                channel creation.
 
         Returns:
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES, **kwargs
         )
 
     @property
@@ -108,8 +113,9 @@ class CloudRedisGrpcTransport(object):
         Lists all Redis instances owned by a project in either the specified
         location (region) or all locations.
 
-        The location should have the following format: \*
-        ``projects/{project_id}/locations/{location_id}``
+        The location should have the following format:
+
+        -  ``projects/{project_id}/locations/{location_id}``
 
         If ``location_id`` is specified as ``-`` (wildcard), then all regions
         available to the project are queried, and the results are aggregated.
@@ -177,24 +183,10 @@ class CloudRedisGrpcTransport(object):
         return self._stubs["cloud_redis_stub"].UpdateInstance
 
     @property
-    def delete_instance(self):
-        """Return the gRPC stub for :meth:`CloudRedisClient.delete_instance`.
-
-        Deletes a specific Redis instance.  Instance stops serving and data is
-        deleted.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["cloud_redis_stub"].DeleteInstance
-
-    @property
     def import_instance(self):
         """Return the gRPC stub for :meth:`CloudRedisClient.import_instance`.
 
-        Import a Redis RDB snapshot file from GCS into a Redis instance.
+        Import a Redis RDB snapshot file from Cloud Storage into a Redis instance.
 
         Redis may stop serving during this operation. Instance state will be
         IMPORTING for entire operation. When complete, the instance will contain
@@ -214,7 +206,7 @@ class CloudRedisGrpcTransport(object):
     def export_instance(self):
         """Return the gRPC stub for :meth:`CloudRedisClient.export_instance`.
 
-        Export Redis instance data into a Redis RDB format file in GCS.
+        Export Redis instance data into a Redis RDB format file in Cloud Storage.
 
         Redis will continue serving during this operation.
 
@@ -232,8 +224,8 @@ class CloudRedisGrpcTransport(object):
     def failover_instance(self):
         """Return the gRPC stub for :meth:`CloudRedisClient.failover_instance`.
 
-        Failover the master role to current replica node against a specific
-        STANDARD tier redis instance.
+        Initiates a failover of the master node to current replica node for a
+        specific STANDARD tier Cloud Memorystore for Redis instance.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -241,3 +233,17 @@ class CloudRedisGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["cloud_redis_stub"].FailoverInstance
+
+    @property
+    def delete_instance(self):
+        """Return the gRPC stub for :meth:`CloudRedisClient.delete_instance`.
+
+        Deletes a specific Redis instance.  Instance stops serving and data is
+        deleted.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["cloud_redis_stub"].DeleteInstance

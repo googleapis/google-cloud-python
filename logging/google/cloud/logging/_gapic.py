@@ -17,7 +17,6 @@ client."""
 
 import functools
 
-from google.api_core.gapic_v1 import client_info
 from google.cloud.logging_v2.gapic.config_service_v2_client import ConfigServiceV2Client
 from google.cloud.logging_v2.gapic.logging_service_v2_client import (
     LoggingServiceV2Client,
@@ -31,13 +30,9 @@ from google.cloud.logging_v2.proto.log_entry_pb2 import LogEntry
 from google.protobuf.json_format import MessageToDict
 from google.protobuf.json_format import ParseDict
 
-from google.cloud.logging import __version__
 from google.cloud.logging._helpers import entry_from_resource
 from google.cloud.logging.sink import Sink
 from google.cloud.logging.metric import Metric
-
-
-_CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
 
 
 class _LoggingAPI(object):
@@ -544,7 +539,7 @@ def make_logging_api(client):
     :returns: A metrics API instance with the proper credentials.
     """
     generated = LoggingServiceV2Client(
-        credentials=client._credentials, client_info=_CLIENT_INFO
+        credentials=client._credentials, client_info=client._client_info
     )
     return _LoggingAPI(generated, client)
 
@@ -559,7 +554,7 @@ def make_metrics_api(client):
     :returns: A metrics API instance with the proper credentials.
     """
     generated = MetricsServiceV2Client(
-        credentials=client._credentials, client_info=_CLIENT_INFO
+        credentials=client._credentials, client_info=client._client_info
     )
     return _MetricsAPI(generated, client)
 
@@ -574,6 +569,6 @@ def make_sinks_api(client):
     :returns: A metrics API instance with the proper credentials.
     """
     generated = ConfigServiceV2Client(
-        credentials=client._credentials, client_info=_CLIENT_INFO
+        credentials=client._credentials, client_info=client._client_info
     )
     return _SinksAPI(generated, client)

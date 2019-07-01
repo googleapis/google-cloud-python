@@ -127,6 +127,7 @@ class TestClient(unittest.TestCase):
         project=PROJECT,
         namespace=None,
         credentials=None,
+        client_info=None,
         _http=None,
         _use_grpc=None,
     ):
@@ -134,6 +135,7 @@ class TestClient(unittest.TestCase):
             project=project,
             namespace=namespace,
             credentials=credentials,
+            client_info=client_info,
             _http=_http,
             _use_grpc=_use_grpc,
         )
@@ -148,6 +150,7 @@ class TestClient(unittest.TestCase):
             self.assertRaises(EnvironmentError, self._make_one, None)
 
     def test_constructor_w_implicit_inputs(self):
+        from google.cloud.datastore.client import _CLIENT_INFO
         from google.cloud.datastore.client import _DATASTORE_BASE_URL
 
         other = "other"
@@ -167,6 +170,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.project, other)
         self.assertIsNone(client.namespace)
         self.assertIs(client._credentials, creds)
+        self.assertIs(client._client_info, _CLIENT_INFO)
         self.assertIsNone(client._http_internal)
         self.assertEqual(client.base_url, _DATASTORE_BASE_URL)
 
@@ -182,13 +186,19 @@ class TestClient(unittest.TestCase):
         other = "other"
         namespace = "namespace"
         creds = _make_credentials()
+        client_info = mock.Mock()
         http = object()
         client = self._make_one(
-            project=other, namespace=namespace, credentials=creds, _http=http
+            project=other,
+            namespace=namespace,
+            credentials=creds,
+            client_info=client_info,
+            _http=http,
         )
         self.assertEqual(client.project, other)
         self.assertEqual(client.namespace, namespace)
         self.assertIs(client._credentials, creds)
+        self.assertIs(client._client_info, client_info)
         self.assertIs(client._http_internal, http)
         self.assertIsNone(client.current_batch)
         self.assertEqual(list(client._batch_stack), [])
@@ -232,10 +242,29 @@ class TestClient(unittest.TestCase):
             client = self._make_one(project=project, credentials=creds, _http=http)
             self.assertEqual(client.base_url, "http://" + host)
 
+    def test_base_url_property(self):
+        alternate_url = "https://alias.example.com/"
+        project = "PROJECT"
+        creds = _make_credentials()
+        http = object()
+
+        client = self._make_one(project=project, credentials=creds, _http=http)
+        client.base_url = alternate_url
+        self.assertEqual(client.base_url, alternate_url)
+
+    def test__datastore_api_property_already_set(self):
+        client = self._make_one(
+            project="prahj-ekt", credentials=_make_credentials(), _use_grpc=True
+        )
+        already = client._datastore_api_internal = object()
+        self.assertIs(client._datastore_api, already)
+
     def test__datastore_api_property_gapic(self):
+        client_info = mock.Mock()
         client = self._make_one(
             project="prahj-ekt",
             credentials=_make_credentials(),
+            client_info=client_info,
             _http=object(),
             _use_grpc=True,
         )
@@ -247,41 +276,32 @@ class TestClient(unittest.TestCase):
         )
         with patch as make_api:
             ds_api = client._datastore_api
-            self.assertIs(ds_api, mock.sentinel.ds_api)
-            make_api.assert_called_once_with(client)
-            self.assertIs(client._datastore_api_internal, mock.sentinel.ds_api)
-            # Make sure the cached value is used.
-            self.assertEqual(make_api.call_count, 1)
-            self.assertIs(client._datastore_api, mock.sentinel.ds_api)
-            self.assertEqual(make_api.call_count, 1)
 
-    def test_base_url_property(self):
-        alternate_url = "https://alias.example.com/"
-        project = "PROJECT"
-        creds = _make_credentials()
-        http = object()
-
-        client = self._make_one(project=project, credentials=creds, _http=http)
-        client.base_url = alternate_url
-        self.assertEqual(client.base_url, alternate_url)
+        self.assertIs(ds_api, mock.sentinel.ds_api)
+        self.assertIs(client._datastore_api_internal, mock.sentinel.ds_api)
+        make_api.assert_called_once_with(client)
 
     def test__datastore_api_property_http(self):
-        from google.cloud.datastore._http import HTTPDatastoreAPI
-
+        client_info = mock.Mock()
         client = self._make_one(
             project="prahj-ekt",
             credentials=_make_credentials(),
+            client_info=client_info,
             _http=object(),
             _use_grpc=False,
         )
 
         self.assertIsNone(client._datastore_api_internal)
-        ds_api = client._datastore_api
-        self.assertIsInstance(ds_api, HTTPDatastoreAPI)
-        self.assertIs(ds_api.client, client)
-        # Make sure the cached value is used.
-        self.assertIs(client._datastore_api_internal, ds_api)
-        self.assertIs(client._datastore_api, ds_api)
+        patch = mock.patch(
+            "google.cloud.datastore.client.HTTPDatastoreAPI",
+            return_value=mock.sentinel.ds_api,
+        )
+        with patch as make_api:
+            ds_api = client._datastore_api
+
+        self.assertIs(ds_api, mock.sentinel.ds_api)
+        self.assertIs(client._datastore_api_internal, mock.sentinel.ds_api)
+        make_api.assert_called_once_with(client)
 
     def test__push_batch_and__pop_batch(self):
         creds = _make_credentials()
@@ -840,12 +860,42 @@ class TestClient(unittest.TestCase):
         # Check the IDs returned.
         self.assertEqual([key._id for key in result], list(range(num_ids)))
 
-    def test_allocate_ids_with_completed_key(self):
+    def test_allocate_ids_w_completed_key(self):
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
-        COMPLETE_KEY = _Key(self.PROJECT)
-        self.assertRaises(ValueError, client.allocate_ids, COMPLETE_KEY, 2)
+        complete_key = _Key(self.PROJECT)
+        self.assertRaises(ValueError, client.allocate_ids, complete_key, 2)
+
+    def test_reserve_ids_w_completed_key(self):
+        num_ids = 2
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds, _use_grpc=False)
+        complete_key = _Key(self.PROJECT)
+        reserve_ids = mock.Mock()
+        ds_api = mock.Mock(reserve_ids=reserve_ids, spec=["reserve_ids"])
+        client._datastore_api_internal = ds_api
+        self.assertTrue(not complete_key.is_partial)
+        client.reserve_ids(complete_key, num_ids)
+        expected_keys = [complete_key.to_protobuf()] * num_ids
+        reserve_ids.assert_called_once_with(self.PROJECT, expected_keys)
+
+    def test_reserve_ids_w_partial_key(self):
+        num_ids = 2
+        incomplete_key = _Key(self.PROJECT)
+        incomplete_key._id = None
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds)
+        with self.assertRaises(ValueError):
+            client.reserve_ids(incomplete_key, num_ids)
+
+    def test_reserve_ids_w_wrong_num_ids(self):
+        num_ids = "2"
+        complete_key = _Key(self.PROJECT)
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds)
+        with self.assertRaises(ValueError):
+            client.reserve_ids(complete_key, num_ids)
 
     def test_key_w_project(self):
         KIND = "KIND"

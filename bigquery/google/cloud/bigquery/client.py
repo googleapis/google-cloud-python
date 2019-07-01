@@ -23,10 +23,17 @@ except ImportError:  # Python 2.7
 
 import functools
 import gzip
+import io
+import json
 import os
 import tempfile
 import uuid
+import warnings
 
+try:
+    import pyarrow
+except ImportError:  # pragma: NO COVER
+    pyarrow = None
 import six
 
 from google import resumable_media
@@ -42,12 +49,18 @@ from google.cloud.client import ClientWithProject
 from google.cloud.bigquery._helpers import _record_field_to_json
 from google.cloud.bigquery._helpers import _str_or_none
 from google.cloud.bigquery._http import Connection
+from google.cloud.bigquery import _pandas_helpers
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetListItem
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery import job
+from google.cloud.bigquery.model import Model
+from google.cloud.bigquery.model import ModelReference
 from google.cloud.bigquery.query import _QueryResults
 from google.cloud.bigquery.retry import DEFAULT_RETRY
+from google.cloud.bigquery.routine import Routine
+from google.cloud.bigquery.routine import RoutineReference
+from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import _table_arg_to_table
 from google.cloud.bigquery.table import _table_arg_to_table_ref
 from google.cloud.bigquery.table import Table
@@ -123,6 +136,11 @@ class Client(ClientWithProject):
         default_query_job_config (google.cloud.bigquery.job.QueryJobConfig):
             (Optional) Default ``QueryJobConfig``.
             Will be merged into job configs passed into the ``query`` method.
+        client_info (google.api_core.client_info.ClientInfo):
+            The client info used to send a user-agent string along with API
+            requests. If ``None``, then default info will be used. Generally,
+            you only need to set this if you're developing your own library
+            or partner tool.
 
     Raises:
         google.auth.exceptions.DefaultCredentialsError:
@@ -143,11 +161,12 @@ class Client(ClientWithProject):
         _http=None,
         location=None,
         default_query_job_config=None,
+        client_info=None,
     ):
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http
         )
-        self._connection = Connection(self)
+        self._connection = Connection(self, client_info=client_info)
         self._location = location
         self._default_query_job_config = default_query_job_config
 
@@ -357,6 +376,41 @@ class Client(ClientWithProject):
                 raise
             return self.get_dataset(dataset.reference, retry=retry)
 
+    def create_routine(self, routine, exists_ok=False, retry=DEFAULT_RETRY):
+        """[Beta] Create a routine via a POST request.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/routines/insert
+
+        Args:
+            routine (:class:`~google.cloud.bigquery.routine.Routine`):
+                A :class:`~google.cloud.bigquery.routine.Routine` to create.
+                The dataset that the routine belongs to must already exist.
+            exists_ok (bool):
+                Defaults to ``False``. If ``True``, ignore "already exists"
+                errors when creating the routine.
+            retry (google.api_core.retry.Retry):
+                Optional. How to retry the RPC.
+
+        Returns:
+            google.cloud.bigquery.routine.Routine:
+                A new ``Routine`` returned from the service.
+        """
+        reference = routine.reference
+        path = "/projects/{}/datasets/{}/routines".format(
+            reference.project, reference.dataset_id
+        )
+        resource = routine.to_api_repr()
+        try:
+            api_response = self._call_api(
+                retry, method="POST", path=path, data=resource
+            )
+            return Routine.from_api_repr(api_response)
+        except google.api_core.exceptions.Conflict:
+            if not exists_ok:
+                raise
+            return self.get_routine(routine.reference, retry=retry)
+
     def create_table(self, table, exists_ok=False, retry=DEFAULT_RETRY):
         """API call:  create a table via a PUT request
 
@@ -428,6 +482,61 @@ class Client(ClientWithProject):
         api_response = self._call_api(retry, method="GET", path=dataset_ref.path)
         return Dataset.from_api_repr(api_response)
 
+    def get_model(self, model_ref, retry=DEFAULT_RETRY):
+        """[Beta] Fetch the model referenced by ``model_ref``.
+
+         Args:
+            model_ref (Union[ \
+                :class:`~google.cloud.bigquery.model.ModelReference`, \
+                str, \
+            ]):
+                A reference to the model to fetch from the BigQuery API.
+                If a string is passed in, this method attempts to create a
+                model reference from a string using
+                :func:`google.cloud.bigquery.model.ModelReference.from_string`.
+            retry (:class:`google.api_core.retry.Retry`):
+                (Optional) How to retry the RPC.
+
+         Returns:
+            google.cloud.bigquery.model.Model:
+                A ``Model`` instance.
+        """
+        if isinstance(model_ref, str):
+            model_ref = ModelReference.from_string(
+                model_ref, default_project=self.project
+            )
+
+        api_response = self._call_api(retry, method="GET", path=model_ref.path)
+        return Model.from_api_repr(api_response)
+
+    def get_routine(self, routine_ref, retry=DEFAULT_RETRY):
+        """[Beta] Get the routine referenced by ``routine_ref``.
+
+         Args:
+            routine_ref (Union[ \
+                :class:`~google.cloud.bigquery.routine.Routine`, \
+                :class:`~google.cloud.bigquery.routine.RoutineReference`, \
+                str, \
+            ]):
+                A reference to the routine to fetch from the BigQuery API. If
+                a string is passed in, this method attempts to create a
+                reference from a string using
+                :func:`google.cloud.bigquery.routine.RoutineReference.from_string`.
+            retry (:class:`google.api_core.retry.Retry`):
+                (Optional) How to retry the API call.
+
+         Returns:
+            google.cloud.bigquery.routine.Routine:
+                A ``Routine`` instance.
+        """
+        if isinstance(routine_ref, str):
+            routine_ref = RoutineReference.from_string(
+                routine_ref, default_project=self.project
+            )
+
+        api_response = self._call_api(retry, method="GET", path=routine_ref.path)
+        return Routine.from_api_repr(api_response)
+
     def get_table(self, table, retry=DEFAULT_RETRY):
         """Fetch the table referenced by ``table``.
 
@@ -488,12 +597,93 @@ class Client(ClientWithProject):
         )
         return Dataset.from_api_repr(api_response)
 
+    def update_model(self, model, fields, retry=DEFAULT_RETRY):
+        """[Beta] Change some fields of a model.
+
+        Use ``fields`` to specify which fields to update. At least one field
+        must be provided. If a field is listed in ``fields`` and is ``None``
+        in ``model``, the field value will be deleted.
+
+        If ``model.etag`` is not ``None``, the update will only succeed if
+        the model on the server has the same ETag. Thus reading a model with
+        ``get_model``, changing its fields, and then passing it to
+        ``update_model`` will ensure that the changes will only be saved if
+        no modifications to the model occurred since the read.
+
+        Args:
+            model (google.cloud.bigquery.model.Model): The model to update.
+            fields (Sequence[str]):
+                The fields of ``model`` to change, spelled as the Model
+                properties (e.g. "friendly_name").
+            retry (google.api_core.retry.Retry):
+                (Optional) A description of how to retry the API call.
+
+        Returns:
+            google.cloud.bigquery.model.Model:
+                The model resource returned from the API call.
+        """
+        partial = model._build_resource(fields)
+        if model.etag:
+            headers = {"If-Match": model.etag}
+        else:
+            headers = None
+        api_response = self._call_api(
+            retry, method="PATCH", path=model.path, data=partial, headers=headers
+        )
+        return Model.from_api_repr(api_response)
+
+    def update_routine(self, routine, fields, retry=DEFAULT_RETRY):
+        """[Beta] Change some fields of a routine.
+
+        Use ``fields`` to specify which fields to update. At least one field
+        must be provided. If a field is listed in ``fields`` and is ``None``
+        in ``routine``, the field value will be deleted.
+
+        .. warning::
+           During beta, partial updates are not supported. You must provide
+           all fields in the resource.
+
+        If :attr:`~google.cloud.bigquery.routine.Routine.etag` is not
+        ``None``, the update will only succeed if the resource on the server
+        has the same ETag. Thus reading a routine with
+        :func:`~google.cloud.bigquery.client.Client.get_routine`, changing
+        its fields, and then passing it to this method will ensure that the
+        changes will only be saved if no modifications to the resource
+        occurred since the read.
+
+        Args:
+            routine (google.cloud.bigquery.routine.Routine): The routine to update.
+            fields (Sequence[str]):
+                The fields of ``routine`` to change, spelled as the
+                :class:`~google.cloud.bigquery.routine.Routine` properties
+                (e.g. ``type_``).
+            retry (google.api_core.retry.Retry):
+                (Optional) A description of how to retry the API call.
+
+        Returns:
+            google.cloud.bigquery.routine.Routine:
+                The routine resource returned from the API call.
+        """
+        partial = routine._build_resource(fields)
+        if routine.etag:
+            headers = {"If-Match": routine.etag}
+        else:
+            headers = None
+
+        # TODO: remove when routines update supports partial requests.
+        partial["routineReference"] = routine.reference.to_api_repr()
+
+        api_response = self._call_api(
+            retry, method="PUT", path=routine.path, data=partial, headers=headers
+        )
+        return Routine.from_api_repr(api_response)
+
     def update_table(self, table, fields, retry=DEFAULT_RETRY):
         """Change some fields of a table.
 
         Use ``fields`` to specify which fields to update. At least one field
         must be provided. If a field is listed in ``fields`` and is ``None``
-        in ``table``, it will be deleted.
+        in ``table``, the field value will be deleted.
 
         If ``table.etag`` is not ``None``, the update will only succeed if
         the table on the server has the same ETag. Thus reading a table with
@@ -522,6 +712,122 @@ class Client(ClientWithProject):
             retry, method="PATCH", path=table.path, data=partial, headers=headers
         )
         return Table.from_api_repr(api_response)
+
+    def list_models(
+        self, dataset, max_results=None, page_token=None, retry=DEFAULT_RETRY
+    ):
+        """[Beta] List models in the dataset.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/models/list
+
+        Args:
+            dataset (Union[ \
+                :class:`~google.cloud.bigquery.dataset.Dataset`, \
+                :class:`~google.cloud.bigquery.dataset.DatasetReference`, \
+                str, \
+            ]):
+                A reference to the dataset whose models to list from the
+                BigQuery API. If a string is passed in, this method attempts
+                to create a dataset reference from a string using
+                :func:`google.cloud.bigquery.dataset.DatasetReference.from_string`.
+            max_results (int):
+                (Optional) Maximum number of models to return. If not passed,
+                defaults to a value set by the API.
+            page_token (str):
+                (Optional) Token representing a cursor into the models. If
+                not passed, the API will return the first page of models. The
+                token marks the beginning of the iterator to be returned and
+                the value of the ``page_token`` can be accessed at
+                ``next_page_token`` of the
+                :class:`~google.api_core.page_iterator.HTTPIterator`.
+            retry (:class:`google.api_core.retry.Retry`):
+                (Optional) How to retry the RPC.
+
+         Returns:
+            google.api_core.page_iterator.Iterator:
+                Iterator of
+                :class:`~google.cloud.bigquery.model.Model` contained
+                within the requested dataset.
+        """
+        if isinstance(dataset, str):
+            dataset = DatasetReference.from_string(
+                dataset, default_project=self.project
+            )
+
+        if not isinstance(dataset, (Dataset, DatasetReference)):
+            raise TypeError("dataset must be a Dataset, DatasetReference, or string")
+
+        path = "%s/models" % dataset.path
+        result = page_iterator.HTTPIterator(
+            client=self,
+            api_request=functools.partial(self._call_api, retry),
+            path=path,
+            item_to_value=_item_to_model,
+            items_key="models",
+            page_token=page_token,
+            max_results=max_results,
+        )
+        result.dataset = dataset
+        return result
+
+    def list_routines(
+        self, dataset, max_results=None, page_token=None, retry=DEFAULT_RETRY
+    ):
+        """[Beta] List routines in the dataset.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/routines/list
+
+        Args:
+            dataset (Union[ \
+                :class:`~google.cloud.bigquery.dataset.Dataset`, \
+                :class:`~google.cloud.bigquery.dataset.DatasetReference`, \
+                str, \
+            ]):
+                A reference to the dataset whose routines to list from the
+                BigQuery API. If a string is passed in, this method attempts
+                to create a dataset reference from a string using
+                :func:`google.cloud.bigquery.dataset.DatasetReference.from_string`.
+            max_results (int):
+                (Optional) Maximum number of routines to return. If not passed,
+                defaults to a value set by the API.
+            page_token (str):
+                (Optional) Token representing a cursor into the routines. If
+                not passed, the API will return the first page of routines. The
+                token marks the beginning of the iterator to be returned and
+                the value of the ``page_token`` can be accessed at
+                ``next_page_token`` of the
+                :class:`~google.api_core.page_iterator.HTTPIterator`.
+            retry (:class:`google.api_core.retry.Retry`):
+                (Optional) How to retry the RPC.
+
+         Returns:
+            google.api_core.page_iterator.Iterator:
+                Iterator of all
+                :class:`~google.cloud.bigquery.routine.Routine`s contained
+                within the requested dataset, limited by ``max_results``.
+        """
+        if isinstance(dataset, str):
+            dataset = DatasetReference.from_string(
+                dataset, default_project=self.project
+            )
+
+        if not isinstance(dataset, (Dataset, DatasetReference)):
+            raise TypeError("dataset must be a Dataset, DatasetReference, or string")
+
+        path = "{}/routines".format(dataset.path)
+        result = page_iterator.HTTPIterator(
+            client=self,
+            api_request=functools.partial(self._call_api, retry),
+            path=path,
+            item_to_value=_item_to_routine,
+            items_key="routines",
+            page_token=page_token,
+            max_results=max_results,
+        )
+        result.dataset = dataset
+        return result
 
     def list_tables(
         self, dataset, max_results=None, page_token=None, retry=DEFAULT_RETRY
@@ -625,6 +931,76 @@ class Client(ClientWithProject):
             self._call_api(
                 retry, method="DELETE", path=dataset.path, query_params=params
             )
+        except google.api_core.exceptions.NotFound:
+            if not not_found_ok:
+                raise
+
+    def delete_model(self, model, retry=DEFAULT_RETRY, not_found_ok=False):
+        """[Beta] Delete a model
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/models/delete
+
+        Args:
+            model (Union[ \
+                :class:`~google.cloud.bigquery.model.Model`, \
+                :class:`~google.cloud.bigquery.model.ModelReference`, \
+                str, \
+            ]):
+                A reference to the model to delete. If a string is passed in,
+                this method attempts to create a model reference from a
+                string using
+                :func:`google.cloud.bigquery.model.ModelReference.from_string`.
+            retry (:class:`google.api_core.retry.Retry`):
+                (Optional) How to retry the RPC.
+            not_found_ok (bool):
+                Defaults to ``False``. If ``True``, ignore "not found" errors
+                when deleting the model.
+        """
+        if isinstance(model, str):
+            model = ModelReference.from_string(model, default_project=self.project)
+
+        if not isinstance(model, (Model, ModelReference)):
+            raise TypeError("model must be a Model or a ModelReference")
+
+        try:
+            self._call_api(retry, method="DELETE", path=model.path)
+        except google.api_core.exceptions.NotFound:
+            if not not_found_ok:
+                raise
+
+    def delete_routine(self, routine, retry=DEFAULT_RETRY, not_found_ok=False):
+        """[Beta] Delete a routine.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/routines/delete
+
+        Args:
+            model (Union[ \
+                :class:`~google.cloud.bigquery.routine.Routine`, \
+                :class:`~google.cloud.bigquery.routine.RoutineReference`, \
+                str, \
+            ]):
+                A reference to the routine to delete. If a string is passed
+                in, this method attempts to create a routine reference from a
+                string using
+                :func:`google.cloud.bigquery.routine.RoutineReference.from_string`.
+            retry (:class:`google.api_core.retry.Retry`):
+                (Optional) How to retry the RPC.
+            not_found_ok (bool):
+                Defaults to ``False``. If ``True``, ignore "not found" errors
+                when deleting the routine.
+        """
+        if isinstance(routine, str):
+            routine = RoutineReference.from_string(
+                routine, default_project=self.project
+            )
+
+        if not isinstance(routine, (Routine, RoutineReference)):
+            raise TypeError("routine must be a Routine or a RoutineReference")
+
+        try:
+            self._call_api(retry, method="DELETE", path=routine.path)
         except google.api_core.exceptions.NotFound:
             if not not_found_ok:
                 raise
@@ -1106,8 +1482,15 @@ class Client(ClientWithProject):
             project (str, optional):
                 Project ID of the project of where to run the job. Defaults
                 to the client's project.
-            job_config (google.cloud.bigquery.job.LoadJobConfig, optional):
+            job_config (~google.cloud.bigquery.job.LoadJobConfig, optional):
                 Extra configuration options for the job.
+
+                To override the default pandas data type conversions, supply
+                a value for
+                :attr:`~google.cloud.bigquery.job.LoadJobConfig.schema` with
+                column names matching those of the dataframe. The BigQuery
+                schema is used to determine the correct data type conversion.
+                Indexes are not loaded. Requires the :mod:`pyarrow` library.
 
         Returns:
             google.cloud.bigquery.job.LoadJob: A new load job.
@@ -1131,7 +1514,20 @@ class Client(ClientWithProject):
         os.close(tmpfd)
 
         try:
-            dataframe.to_parquet(tmppath)
+            if pyarrow and job_config.schema:
+                _pandas_helpers.dataframe_to_parquet(
+                    dataframe, job_config.schema, tmppath
+                )
+            else:
+                if job_config.schema:
+                    warnings.warn(
+                        "job_config.schema is set, but not used to assist in "
+                        "identifying correct types for data serialization. "
+                        "Please install the pyarrow package.",
+                        PendingDeprecationWarning,
+                        stacklevel=2,
+                    )
+                dataframe.to_parquet(tmppath)
 
             with open(tmppath, "rb") as parquet_file:
                 return self.load_table_from_file(
@@ -1198,7 +1594,7 @@ class Client(ClientWithProject):
         """
         chunk_size = _DEFAULT_CHUNKSIZE
         transport = self._http
-        headers = _get_upload_headers(self._connection.USER_AGENT)
+        headers = _get_upload_headers(self._connection.user_agent)
         upload_url = _RESUMABLE_URL_TEMPLATE.format(project=self.project)
         # TODO: modify ResumableUpload to take a retry.Retry object
         # that it can use for the initial RPC.
@@ -1244,7 +1640,7 @@ class Client(ClientWithProject):
             msg = _READ_LESS_THAN_SIZE.format(size, len(data))
             raise ValueError(msg)
 
-        headers = _get_upload_headers(self._connection.USER_AGENT)
+        headers = _get_upload_headers(self._connection.user_agent)
 
         upload_url = _MULTIPART_URL_TEMPLATE.format(project=self.project)
         upload = MultipartUpload(upload_url, headers=headers)
@@ -1694,15 +2090,19 @@ class Client(ClientWithProject):
         Args:
             table (Union[ \
                 :class:`~google.cloud.bigquery.table.Table`, \
+                :class:`~google.cloud.bigquery.table.TableListItem`, \
                 :class:`~google.cloud.bigquery.table.TableReference`, \
                 str, \
             ]):
-                The table to list, or a reference to it.
+                The table to list, or a reference to it. When the table
+                object does not contain a schema and ``selected_fields`` is
+                not supplied, this method calls ``get_table`` to fetch the
+                table schema.
             selected_fields (Sequence[ \
                 :class:`~google.cloud.bigquery.schema.SchemaField` \
             ]):
-                The fields to return. Required if ``table`` is a
-                :class:`~google.cloud.bigquery.table.TableReference`.
+                The fields to return. If not supplied, data for all columns
+                are downloaded.
             max_results (int):
                 (Optional) maximum number of rows to return.
             page_token (str):
@@ -1741,14 +2141,11 @@ class Client(ClientWithProject):
         if selected_fields is not None:
             schema = selected_fields
 
-        # Allow listing rows of an empty table by not raising if the table exists.
-        elif len(schema) == 0 and table.created is None:
-            raise ValueError(
-                (
-                    "Could not determine schema for table '{}'. Call client.get_table() "
-                    "or pass in a list of schema fields to the selected_fields argument."
-                ).format(table)
-            )
+        # No schema, but no selected_fields. Assume the developer wants all
+        # columns, so get the table resource for them rather than failing.
+        elif len(schema) == 0:
+            table = self.get_table(table.reference, retry=retry)
+            schema = table.schema
 
         params = {}
         if selected_fields is not None:
@@ -1771,6 +2168,50 @@ class Client(ClientWithProject):
             selected_fields=selected_fields,
         )
         return row_iterator
+
+    def _schema_from_json_file_object(self, file_obj):
+        """Helper function for schema_from_json that takes a
+       file object that describes a table schema.
+
+       Returns:
+            List of schema field objects.
+        """
+        json_data = json.load(file_obj)
+        return [SchemaField.from_api_repr(field) for field in json_data]
+
+    def _schema_to_json_file_object(self, schema_list, file_obj):
+        """Helper function for schema_to_json that takes a schema list and file
+        object and writes the schema list to the file object with json.dump
+        """
+        json.dump(schema_list, file_obj, indent=2, sort_keys=True)
+
+    def schema_from_json(self, file_or_path):
+        """Takes a file object or file path that contains json that describes
+        a table schema.
+
+        Returns:
+            List of schema field objects.
+        """
+        if isinstance(file_or_path, io.IOBase):
+            return self._schema_from_json_file_object(file_or_path)
+
+        with open(file_or_path) as file_obj:
+            return self._schema_from_json_file_object(file_obj)
+
+    def schema_to_json(self, schema_list, destination):
+        """Takes a list of schema field objects.
+
+        Serializes the list of schema field objects as json to a file.
+
+        Destination is a file path or a file object.
+        """
+        json_schema_list = [f.to_api_repr() for f in schema_list]
+
+        if isinstance(destination, io.IOBase):
+            return self._schema_to_json_file_object(json_schema_list, destination)
+
+        with open(destination, mode="w") as file_obj:
+            return self._schema_to_json_file_object(json_schema_list, file_obj)
 
 
 # pylint: disable=unused-argument
@@ -1820,6 +2261,36 @@ def _item_to_job(iterator, resource):
     :returns: The next job in the page.
     """
     return iterator.client.job_from_resource(resource)
+
+
+def _item_to_model(iterator, resource):
+    """Convert a JSON model to the native object.
+
+    Args:
+        iterator (google.api_core.page_iterator.Iterator):
+            The iterator that is currently in use.
+        resource (dict):
+            An item to be converted to a model.
+
+    Returns:
+        google.cloud.bigquery.model.Model: The next model in the page.
+    """
+    return Model.from_api_repr(resource)
+
+
+def _item_to_routine(iterator, resource):
+    """Convert a JSON model to the native object.
+
+    Args:
+        iterator (google.api_core.page_iterator.Iterator):
+            The iterator that is currently in use.
+        resource (dict):
+            An item to be converted to a routine.
+
+    Returns:
+        google.cloud.bigquery.routine.Routine: The next routine in the page.
+    """
+    return Routine.from_api_repr(resource)
 
 
 def _item_to_table(iterator, resource):

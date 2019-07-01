@@ -4,6 +4,43 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## 1.5.0
+
+05-16-2019 13:05 PDT
+
+
+### Implementation Changes
+- Add routing header to method metadata, fix docstring (via synth). ([#7660](https://github.com/googleapis/google-cloud-python/pull/7660))
+
+### New Features
+- Add `client_info` support to client / connection. ([#7873](https://github.com/googleapis/google-cloud-python/pull/7873))
+
+### Dependencies
+- Pin `google-cloud-core >= 1.0.0, < 2.0dev`. ([#7993](https://github.com/googleapis/google-cloud-python/pull/7993))
+
+### Documentation
+- Add docs for v3beta1. ([#7681](https://github.com/googleapis/google-cloud-python/pull/7681))
+
+### Internal / Testing Changes
+- Harden system test against back-end changes. ([#7987](https://github.com/googleapis/google-cloud-python/pull/7987))
+- Exclude `docs/conf.py` in synth. ([#7943](https://github.com/googleapis/google-cloud-python/pull/7943))
+- Update `docs/conf.py` (via synth). ([#7837](https://github.com/googleapis/google-cloud-python/pull/7837))
+- Add nox session `docs`, reorder methods (via synth). ([#7785](https://github.com/googleapis/google-cloud-python/pull/7785))
+
+## 1.4.0
+
+04-02-2019 14:24 PDT
+
+
+### Implementation Changes
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+
+### New Features
+- Add Translate v3 ([#7637](https://github.com/googleapis/google-cloud-python/pull/7637))
+
+### Documentation
+- Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+
 ## 1.3.3
 
 12-17-2018 17:07 PST

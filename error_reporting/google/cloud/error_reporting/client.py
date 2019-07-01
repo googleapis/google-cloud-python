@@ -17,21 +17,27 @@
 import os
 import traceback
 
+import six
+
 try:
     from google.cloud.error_reporting._gapic import make_report_error_api
+except ImportError:  # pragma: NO COVER
+    from google.api_core import client_info  # noqa
+
+    _HAVE_GRPC = False
+else:
+    from google.api_core.gapic_v1 import client_info
 
     _HAVE_GRPC = True
-except ImportError:  # pragma: NO COVER
-    _HAVE_GRPC = False
 
 from google.cloud.client import ClientWithProject
+from google.cloud.error_reporting import __version__
 from google.cloud.error_reporting._logging import _ErrorReportingLoggingAPI
 from google.cloud.environment_vars import DISABLE_GRPC
 
-import six
-
 _DISABLE_GRPC = os.getenv(DISABLE_GRPC, False)
 _USE_GRPC = _HAVE_GRPC and not _DISABLE_GRPC
+_CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
 
 
 class HTTPContext(object):
@@ -128,6 +134,15 @@ class Client(ClientWithProject):
                       This parameter should be considered private, and could
                       change in the future.
 
+    :type client_info:
+        :class:`google.api_core.client_info.ClientInfo` or
+        :class:`google.api_core.gapic_v1.client_info.ClientInfo`
+    :param client_info:
+        The client info used to send a user-agent string along with API
+        requests. If ``None``, then default info will be used. Generally,
+        you only need to set this if you're developing your own library
+        or partner tool.
+
     :raises: :class:`ValueError` if the project is neither passed in nor
              set in the environment.
     """
@@ -142,6 +157,7 @@ class Client(ClientWithProject):
         _http=None,
         service=None,
         version=None,
+        client_info=_CLIENT_INFO,
         _use_grpc=None,
     ):
         super(Client, self).__init__(
@@ -151,6 +167,8 @@ class Client(ClientWithProject):
 
         self.service = service if service else self.DEFAULT_SERVICE
         self.version = version
+        self._client_info = client_info
+
         if _use_grpc is None:
             self._use_grpc = _USE_GRPC
         else:
@@ -177,7 +195,7 @@ class Client(ClientWithProject):
                 self._report_errors_api = make_report_error_api(self)
             else:
                 self._report_errors_api = _ErrorReportingLoggingAPI(
-                    self.project, self._credentials, self._http
+                    self.project, self._credentials, self._http, self._client_info
                 )
         return self._report_errors_api
 

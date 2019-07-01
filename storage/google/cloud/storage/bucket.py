@@ -33,6 +33,8 @@ from google.cloud.storage import _signing
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
 from google.cloud.storage._helpers import _validate_name
+from google.cloud.storage._signing import generate_signed_url_v2
+from google.cloud.storage._signing import generate_signed_url_v4
 from google.cloud.storage.acl import BucketACL
 from google.cloud.storage.acl import DefaultObjectACL
 from google.cloud.storage.blob import Blob
@@ -45,6 +47,7 @@ _LOCATION_SETTER_MESSAGE = (
     "valid before the bucket is created. Instead, pass the location "
     "to `Bucket.create`."
 )
+_API_ACCESS_ENDPOINT = "https://storage.googleapis.com"
 
 
 def _blobs_page_start(iterator, page, response):
@@ -718,6 +721,9 @@ class Bucket(_PropertyMixin):
     ):
         """Return an iterator used to find blobs in the bucket.
 
+        .. note::
+          Direct use of this method is deprecated. Use ``Client.list_blobs`` instead.
+
         If :attr:`user_project` is set, bills the API request to that project.
 
         :type max_results: int
@@ -751,11 +757,13 @@ class Bucket(_PropertyMixin):
                            properties to return.
 
         :type fields: str
-        :param fields: (Optional) Selector specifying which fields to include
-                       in a partial response. Must be a list of fields. For
-                       example to get a partial response with just the next
-                       page token and the language of each blob returned:
-                       ``'items/contentLanguage,nextPageToken'``.
+        :param fields:
+            (Optional) Selector specifying which fields to include
+            in a partial response. Must be a list of fields. For
+            example to get a partial response with just the next
+            page token and the name and language of each blob returned:
+            ``'items(name,contentLanguage),nextPageToken'``.
+            See: https://cloud.google.com/storage/docs/json_api/v1/parameters#fields
 
         :type client: :class:`~google.cloud.storage.client.Client`
         :param client: (Optional) The client to use.  If not passed, falls back
@@ -1969,3 +1977,109 @@ class Bucket(_PropertyMixin):
             method="POST", path=path, query_params=query_params, _target_object=self
         )
         self._set_properties(api_response)
+
+    def generate_signed_url(
+        self,
+        expiration=None,
+        api_access_endpoint=_API_ACCESS_ENDPOINT,
+        method="GET",
+        headers=None,
+        query_parameters=None,
+        client=None,
+        credentials=None,
+        version=None,
+    ):
+        """Generates a signed URL for this bucket.
+
+        .. note::
+
+            If you are on Google Compute Engine, you can't generate a signed
+            URL using GCE service account. Follow `Issue 50`_ for updates on
+            this. If you'd like to be able to generate a signed URL from GCE,
+            you can use a standard service account from a JSON file rather
+            than a GCE service account.
+
+        .. _Issue 50: https://github.com/GoogleCloudPlatform/\
+                      google-auth-library-python/issues/50
+
+        If you have a bucket that you want to allow access to for a set
+        amount of time, you can use this method to generate a URL that
+        is only valid within a certain time period.
+
+        This is particularly useful if you don't want publicly
+        accessible buckets, but don't want to require users to explicitly
+        log in.
+
+        :type expiration: Union[Integer, datetime.datetime, datetime.timedelta]
+        :param expiration: Point in time when the signed URL should expire.
+
+        :type api_access_endpoint: str
+        :param api_access_endpoint: Optional URI base.
+
+        :type method: str
+        :param method: The HTTP verb that will be used when requesting the URL.
+
+        :type headers: dict
+        :param headers:
+            (Optional) Additional HTTP headers to be included as part of the
+            signed URLs.  See:
+            https://cloud.google.com/storage/docs/xml-api/reference-headers
+            Requests using the signed URL *must* pass the specified header
+            (name and value) with each request for the URL.
+
+        :type query_parameters: dict
+        :param query_parameters:
+            (Optional) Additional query paramtersto be included as part of the
+            signed URLs.  See:
+            https://cloud.google.com/storage/docs/xml-api/reference-headers#query
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: (Optional) The client to use.  If not passed, falls back
+                       to the ``client`` stored on the blob's bucket.
+
+
+        :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
+                           :class:`NoneType`
+        :param credentials: (Optional) The OAuth2 credentials to use to sign
+                            the URL. Defaults to the credentials stored on the
+                            client used.
+
+        :type version: str
+        :param version: (Optional) The version of signed credential to create.
+                        Must be one of 'v2' | 'v4'.
+
+        :raises: :exc:`ValueError` when version is invalid.
+        :raises: :exc:`TypeError` when expiration is not a valid type.
+        :raises: :exc:`AttributeError` if credentials is not an instance
+                of :class:`google.auth.credentials.Signing`.
+
+        :rtype: str
+        :returns: A signed URL you can use to access the resource
+                  until expiration.
+        """
+        if version is None:
+            version = "v2"
+        elif version not in ("v2", "v4"):
+            raise ValueError("'version' must be either 'v2' or 'v4'")
+
+        resource = "/{bucket_name}".format(bucket_name=self.name)
+
+        if credentials is None:
+            client = self._require_client(client)
+            credentials = client._credentials
+
+        if version == "v2":
+            helper = generate_signed_url_v2
+        else:
+            helper = generate_signed_url_v4
+
+        return helper(
+            credentials,
+            resource=resource,
+            expiration=expiration,
+            api_access_endpoint=api_access_endpoint,
+            method=method.upper(),
+            headers=headers,
+            query_parameters=query_parameters,
+        )

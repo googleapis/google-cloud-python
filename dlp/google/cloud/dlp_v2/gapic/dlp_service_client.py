@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.privacy.dlp.v2 DlpService API."""
 
 import functools
@@ -20,9 +21,11 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
@@ -36,6 +39,7 @@ from google.cloud.dlp_v2.proto import dlp_pb2
 from google.cloud.dlp_v2.proto import dlp_pb2_grpc
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-dlp").version
 
@@ -81,6 +85,13 @@ class DlpServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
+    def dlp_job_path(cls, project, dlp_job):
+        """Return a fully-qualified dlp_job string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/dlpJobs/{dlp_job}", project=project, dlp_job=dlp_job
+        )
+
+    @classmethod
     def organization_path(cls, organization):
         """Return a fully-qualified organization string."""
         return google.api_core.path_template.expand(
@@ -97,21 +108,37 @@ class DlpServiceClient(object):
         )
 
     @classmethod
-    def project_deidentify_template_path(cls, project, deidentify_template):
-        """Return a fully-qualified project_deidentify_template string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/deidentifyTemplates/{deidentify_template}",
-            project=project,
-            deidentify_template=deidentify_template,
-        )
-
-    @classmethod
     def organization_inspect_template_path(cls, organization, inspect_template):
         """Return a fully-qualified organization_inspect_template string."""
         return google.api_core.path_template.expand(
             "organizations/{organization}/inspectTemplates/{inspect_template}",
             organization=organization,
             inspect_template=inspect_template,
+        )
+
+    @classmethod
+    def organization_stored_info_type_path(cls, organization, stored_info_type):
+        """Return a fully-qualified organization_stored_info_type string."""
+        return google.api_core.path_template.expand(
+            "organizations/{organization}/storedInfoTypes/{stored_info_type}",
+            organization=organization,
+            stored_info_type=stored_info_type,
+        )
+
+    @classmethod
+    def project_path(cls, project):
+        """Return a fully-qualified project string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}", project=project
+        )
+
+    @classmethod
+    def project_deidentify_template_path(cls, project, deidentify_template):
+        """Return a fully-qualified project_deidentify_template string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/deidentifyTemplates/{deidentify_template}",
+            project=project,
+            deidentify_template=deidentify_template,
         )
 
     @classmethod
@@ -133,29 +160,6 @@ class DlpServiceClient(object):
         )
 
     @classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}", project=project
-        )
-
-    @classmethod
-    def dlp_job_path(cls, project, dlp_job):
-        """Return a fully-qualified dlp_job string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/dlpJobs/{dlp_job}", project=project, dlp_job=dlp_job
-        )
-
-    @classmethod
-    def organization_stored_info_type_path(cls, organization, stored_info_type):
-        """Return a fully-qualified organization_stored_info_type string."""
-        return google.api_core.path_template.expand(
-            "organizations/{organization}/storedInfoTypes/{stored_info_type}",
-            organization=organization,
-            stored_info_type=stored_info_type,
-        )
-
-    @classmethod
     def project_stored_info_type_path(cls, project, stored_info_type):
         """Return a fully-qualified project_stored_info_type string."""
         return google.api_core.path_template.expand(
@@ -171,6 +175,7 @@ class DlpServiceClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -201,6 +206,9 @@ class DlpServiceClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -219,6 +227,15 @@ class DlpServiceClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -227,6 +244,7 @@ class DlpServiceClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=dlp_service_grpc_transport.DlpServiceGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -237,7 +255,7 @@ class DlpServiceClient(object):
                 self.transport = transport
         else:
             self.transport = dlp_service_grpc_transport.DlpServiceGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -345,6 +363,19 @@ class DlpServiceClient(object):
             item=item,
             inspect_template_name=inspect_template_name,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["inspect_content"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -432,6 +463,19 @@ class DlpServiceClient(object):
             include_findings=include_findings,
             byte_item=byte_item,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["redact_image"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -532,6 +576,19 @@ class DlpServiceClient(object):
             inspect_template_name=inspect_template_name,
             deidentify_template_name=deidentify_template_name,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["deidentify_content"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -633,6 +690,19 @@ class DlpServiceClient(object):
             inspect_template_name=inspect_template_name,
             reidentify_template_name=reidentify_template_name,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["reidentify_content"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -732,8 +802,8 @@ class DlpServiceClient(object):
                 message :class:`~google.cloud.dlp_v2.types.InspectTemplate`
             template_id (str): The template id can contain uppercase and lowercase letters, numbers,
                 and hyphens; that is, it must match the regular expression:
-                ``[a-zA-Z\\d-]+``. The maximum length is 100 characters. Can be empty to
-                allow the system to generate one.
+                ``[a-zA-Z\\d-_]+``. The maximum length is 100 characters. Can be empty
+                to allow the system to generate one.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -767,6 +837,19 @@ class DlpServiceClient(object):
         request = dlp_pb2.CreateInspectTemplateRequest(
             parent=parent, inspect_template=inspect_template, template_id=template_id
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_inspect_template"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -838,6 +921,19 @@ class DlpServiceClient(object):
         request = dlp_pb2.UpdateInspectTemplateRequest(
             name=name, inspect_template=inspect_template, update_mask=update_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_inspect_template"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -895,6 +991,19 @@ class DlpServiceClient(object):
             )
 
         request = dlp_pb2.GetInspectTemplateRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_inspect_template"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -963,10 +1072,10 @@ class DlpServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.dlp_v2.types.InspectTemplate` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.dlp_v2.types.InspectTemplate` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -989,6 +1098,19 @@ class DlpServiceClient(object):
         request = dlp_pb2.ListInspectTemplatesRequest(
             parent=parent, page_size=page_size, order_by=order_by
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -1056,6 +1178,19 @@ class DlpServiceClient(object):
             )
 
         request = dlp_pb2.DeleteInspectTemplateRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_inspect_template"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1093,8 +1228,8 @@ class DlpServiceClient(object):
                 message :class:`~google.cloud.dlp_v2.types.DeidentifyTemplate`
             template_id (str): The template id can contain uppercase and lowercase letters, numbers,
                 and hyphens; that is, it must match the regular expression:
-                ``[a-zA-Z\\d-]+``. The maximum length is 100 characters. Can be empty to
-                allow the system to generate one.
+                ``[a-zA-Z\\d-_]+``. The maximum length is 100 characters. Can be empty
+                to allow the system to generate one.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1132,6 +1267,19 @@ class DlpServiceClient(object):
             deidentify_template=deidentify_template,
             template_id=template_id,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_deidentify_template"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1206,6 +1354,19 @@ class DlpServiceClient(object):
         request = dlp_pb2.UpdateDeidentifyTemplateRequest(
             name=name, deidentify_template=deidentify_template, update_mask=update_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_deidentify_template"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1266,6 +1427,19 @@ class DlpServiceClient(object):
             )
 
         request = dlp_pb2.GetDeidentifyTemplateRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_deidentify_template"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1335,10 +1509,10 @@ class DlpServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.dlp_v2.types.DeidentifyTemplate` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.dlp_v2.types.DeidentifyTemplate` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1361,6 +1535,19 @@ class DlpServiceClient(object):
         request = dlp_pb2.ListDeidentifyTemplatesRequest(
             parent=parent, page_size=page_size, order_by=order_by
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -1431,6 +1618,19 @@ class DlpServiceClient(object):
             )
 
         request = dlp_pb2.DeleteDeidentifyTemplateRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_deidentify_template"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1473,8 +1673,8 @@ class DlpServiceClient(object):
                 message :class:`~google.cloud.dlp_v2.types.RiskAnalysisJobConfig`
             job_id (str): The job id can contain uppercase and lowercase letters, numbers, and
                 hyphens; that is, it must match the regular expression:
-                ``[a-zA-Z\\d-]+``. The maximum length is 100 characters. Can be empty to
-                allow the system to generate one.
+                ``[a-zA-Z\\d-_]+``. The maximum length is 100 characters. Can be empty
+                to allow the system to generate one.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1514,6 +1714,19 @@ class DlpServiceClient(object):
         request = dlp_pb2.CreateDlpJobRequest(
             parent=parent, inspect_job=inspect_job, risk_job=risk_job, job_id=job_id
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_dlp_job"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1571,10 +1784,14 @@ class DlpServiceClient(object):
                    -  ``inspected_storage`` - DATASTORE\|CLOUD\_STORAGE\|BIGQUERY
                    -  ``trigger_name`` - The resource name of the trigger that created
                       job.
+                   -  'end\_time\` - Corresponds to time the job finished.
+                   -  'start\_time\` - Corresponds to time the job finished.
 
                 -  Supported fields for risk analysis jobs:
 
                    -  ``state`` - RUNNING\|CANCELED\|FINISHED\|FAILED
+                   -  'end\_time\` - Corresponds to time the job finished.
+                   -  'start\_time\` - Corresponds to time the job finished.
 
                 -  The operator must be ``=`` or ``!=``.
 
@@ -1584,6 +1801,7 @@ class DlpServiceClient(object):
                 -  inspected\_storage = cloud\_storage OR inspected\_storage = bigquery
                 -  inspected\_storage = cloud\_storage AND (state = done OR state =
                    canceled)
+                -  end\_time > "2017-12-12T00:00:00+00:00"
 
                 The length of this field should be no more than 500 characters.
             page_size (int): The maximum number of resources contained in the
@@ -1614,10 +1832,10 @@ class DlpServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.dlp_v2.types.DlpJob` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.dlp_v2.types.DlpJob` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1644,6 +1862,19 @@ class DlpServiceClient(object):
             type=type_,
             order_by=order_by,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -1713,6 +1944,19 @@ class DlpServiceClient(object):
             )
 
         request = dlp_pb2.GetDlpJobRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_dlp_job"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1770,6 +2014,19 @@ class DlpServiceClient(object):
             )
 
         request = dlp_pb2.DeleteDlpJobRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_dlp_job"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1827,6 +2084,19 @@ class DlpServiceClient(object):
             )
 
         request = dlp_pb2.CancelDlpJobRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["cancel_dlp_job"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1836,6 +2106,7 @@ class DlpServiceClient(object):
         parent,
         page_size=None,
         order_by=None,
+        filter_=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -1883,9 +2154,39 @@ class DlpServiceClient(object):
 
                 -  ``create_time``: corresponds to time the JobTrigger was created.
                 -  ``update_time``: corresponds to time the JobTrigger was last updated.
+                -  ``last_run_time``: corresponds to the last time the JobTrigger ran.
                 -  ``name``: corresponds to JobTrigger's name.
                 -  ``display_name``: corresponds to JobTrigger's display name.
                 -  ``status``: corresponds to JobTrigger's status.
+            filter_ (str): Optional. Allows filtering.
+
+                Supported syntax:
+
+                -  Filter expressions are made up of one or more restrictions.
+                -  Restrictions can be combined by ``AND`` or ``OR`` logical operators.
+                   A sequence of restrictions implicitly uses ``AND``.
+                -  A restriction has the form of ``<field> <operator> <value>``.
+                -  Supported fields/values for inspect jobs:
+
+                   -  ``status`` - HEALTHY\|PAUSED\|CANCELLED
+                   -  ``inspected_storage`` - DATASTORE\|CLOUD\_STORAGE\|BIGQUERY
+                   -  'last\_run\_time\` - RFC 3339 formatted timestamp, surrounded by
+                      quotation marks. Nanoseconds are ignored.
+                   -  'error\_count' - Number of errors that have occurred while
+                      running.
+
+                -  The operator must be ``=`` or ``!=`` for status and
+                   inspected\_storage.
+
+                Examples:
+
+                -  inspected\_storage = cloud\_storage AND status = HEALTHY
+                -  inspected\_storage = cloud\_storage OR inspected\_storage = bigquery
+                -  inspected\_storage = cloud\_storage AND (state = PAUSED OR state =
+                   HEALTHY)
+                -  last\_run\_time > "2017-12-12T00:00:00+00:00"
+
+                The length of this field should be no more than 500 characters.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1896,10 +2197,10 @@ class DlpServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.dlp_v2.types.JobTrigger` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.dlp_v2.types.JobTrigger` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1920,8 +2221,21 @@ class DlpServiceClient(object):
             )
 
         request = dlp_pb2.ListJobTriggersRequest(
-            parent=parent, page_size=page_size, order_by=order_by
+            parent=parent, page_size=page_size, order_by=order_by, filter=filter_
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -1991,6 +2305,19 @@ class DlpServiceClient(object):
             )
 
         request = dlp_pb2.GetJobTriggerRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_job_trigger"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -2047,6 +2374,19 @@ class DlpServiceClient(object):
             )
 
         request = dlp_pb2.DeleteJobTriggerRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_job_trigger"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -2117,6 +2457,19 @@ class DlpServiceClient(object):
         request = dlp_pb2.UpdateJobTriggerRequest(
             name=name, job_trigger=job_trigger, update_mask=update_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_job_trigger"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -2152,8 +2505,8 @@ class DlpServiceClient(object):
                 message :class:`~google.cloud.dlp_v2.types.JobTrigger`
             trigger_id (str): The trigger id can contain uppercase and lowercase letters, numbers, and
                 hyphens; that is, it must match the regular expression:
-                ``[a-zA-Z\\d-]+``. The maximum length is 100 characters. Can be empty to
-                allow the system to generate one.
+                ``[a-zA-Z\\d-_]+``. The maximum length is 100 characters. Can be empty
+                to allow the system to generate one.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -2187,6 +2540,19 @@ class DlpServiceClient(object):
         request = dlp_pb2.CreateJobTriggerRequest(
             parent=parent, job_trigger=job_trigger, trigger_id=trigger_id
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_job_trigger"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -2223,8 +2589,8 @@ class DlpServiceClient(object):
                 message :class:`~google.cloud.dlp_v2.types.StoredInfoTypeConfig`
             stored_info_type_id (str): The storedInfoType ID can contain uppercase and lowercase letters,
                 numbers, and hyphens; that is, it must match the regular expression:
-                ``[a-zA-Z\\d-]+``. The maximum length is 100 characters. Can be empty to
-                allow the system to generate one.
+                ``[a-zA-Z\\d-_]+``. The maximum length is 100 characters. Can be empty
+                to allow the system to generate one.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -2258,6 +2624,19 @@ class DlpServiceClient(object):
         request = dlp_pb2.CreateStoredInfoTypeRequest(
             parent=parent, config=config, stored_info_type_id=stored_info_type_id
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_stored_info_type"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -2333,6 +2712,19 @@ class DlpServiceClient(object):
         request = dlp_pb2.UpdateStoredInfoTypeRequest(
             name=name, config=config, update_mask=update_mask
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_stored_info_type"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -2393,6 +2785,19 @@ class DlpServiceClient(object):
             )
 
         request = dlp_pb2.GetStoredInfoTypeRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_stored_info_type"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -2463,10 +2868,10 @@ class DlpServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.dlp_v2.types.StoredInfoType` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.dlp_v2.types.StoredInfoType` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2489,6 +2894,19 @@ class DlpServiceClient(object):
         request = dlp_pb2.ListStoredInfoTypesRequest(
             parent=parent, page_size=page_size, order_by=order_by
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -2557,6 +2975,19 @@ class DlpServiceClient(object):
             )
 
         request = dlp_pb2.DeleteStoredInfoTypeRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_stored_info_type"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )

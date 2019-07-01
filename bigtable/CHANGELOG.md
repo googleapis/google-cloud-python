@@ -4,6 +4,51 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## 0.33.0
+
+05-16-2019 11:51 PDT
+
+
+### Implementation Changes
+- Fix typos in deprecation warnings. ([#7858](https://github.com/googleapis/google-cloud-python/pull/7858))
+- Add deprecation warnings for to-be-removed features. ([#7532](https://github.com/googleapis/google-cloud-python/pull/7532))
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+- Improve `Policy` interchange w/ JSON, gRPC payloads. ([#7378](https://github.com/googleapis/google-cloud-python/pull/7378))
+
+### New Features
+- Add support for passing `client_info` to client. ([#7876](https://github.com/googleapis/google-cloud-python/pull/7876)) and ([#7898](https://github.com/googleapis/google-cloud-python/pull/7898))
+- Add `Table.mutation_timeout`, allowing override of config timeouts. ([#7424](https://github.com/googleapis/google-cloud-python/pull/7424))
+
+### Dependencies
+- Pin `google-cloud-core >= 1.0.0, < 2.0dev`. ([#7993](https://github.com/googleapis/google-cloud-python/pull/7993))
+
+### Documentation
+- Remove duplicate snippet tags for Delete cluster. ([#7860](https://github.com/googleapis/google-cloud-python/pull/7860))
+- Fix rendering of instance admin snippets. ([#7797](https://github.com/googleapis/google-cloud-python/pull/7797))
+- Avoid leaking instances from snippets. ([#7800](https://github.com/googleapis/google-cloud-python/pull/7800))
+- Fix enum reference in documentation. ([#7724](https://github.com/googleapis/google-cloud-python/pull/7724))
+- Remove duplicate snippets. ([#7528](https://github.com/googleapis/google-cloud-python/pull/7528))
+- Add snippeds for Batcher, RowData, Row Operations, AppendRow. ([#7019](https://github.com/googleapis/google-cloud-python/pull/7019))
+- Add column family snippets. ([#7014](https://github.com/googleapis/google-cloud-python/pull/7014))
+- Add Row Set snippets. ([#7016](https://github.com/googleapis/google-cloud-python/pull/7016))
+- Update client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+- Fix typos in Table docstrings. ([#7261](https://github.com/googleapis/google-cloud-python/pull/7261))
+- Update copyright headers (via synth). ([#7139](https://github.com/googleapis/google-cloud-python/pull/7139))
+- Fix linked classes in generated docstrings (via synth). ([#7060](https://github.com/googleapis/google-cloud-python/pull/7060))
+
+### Internal / Testing Changes
+- Run `instance_admin` system tests on a separate instance from `table_admin` and `data` system tests. ([#6579](https://github.com/googleapis/google-cloud-python/pull/6579))
+- Re-blacken. ([#7462](https://github.com/googleapis/google-cloud-python/pull/7462))
+- Copy lintified proto files (via synth). ([#7445](https://github.com/googleapis/google-cloud-python/pull/7445))
+- Remove unused message exports (via synth). ([#7264](https://github.com/googleapis/google-cloud-python/pull/7264))
+- Compare 0 using '!=', rather than 'is not'. ([#7312](https://github.com/googleapis/google-cloud-python/pull/7312))
+- Add protos as an artifact to library ([#7205](https://github.com/googleapis/google-cloud-python/pull/7205))
+- Protoc-generated serialization update. ([#7077](https://github.com/googleapis/google-cloud-python/pull/7077))
+- Blacken snippets. ([#7048](https://github.com/googleapis/google-cloud-python/pull/7048))
+- Bigtable client snippets ([#7020](https://github.com/googleapis/google-cloud-python/pull/7020))
+- Pick up order-of-enum fix from GAPIC generator. ([#6879](https://github.com/googleapis/google-cloud-python/pull/6879))
+- Plug systest instance leaks ([#7004](https://github.com/googleapis/google-cloud-python/pull/7004))
+
 ## 0.32.1
 
 12-17-2018 16:38 PST

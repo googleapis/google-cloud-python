@@ -42,8 +42,12 @@ service JobService {
   // up to 5 minutes.
   rpc CreateJob(CreateJobRequest) returns (Job) {
     option (google.api.http) = {
-      post: "/v4beta1/{parent=projects/*}/jobs"
+      post: "/v4beta1/{parent=projects/*/tenants/*}/jobs"
       body: "*"
+      additional_bindings {
+        post: "/v4beta1/{parent=projects/*}/jobs"
+        body: "*"
+      }
     };
   }
 
@@ -51,7 +55,8 @@ service JobService {
   // within the last 90 days.
   rpc GetJob(GetJobRequest) returns (Job) {
     option (google.api.http) = {
-      get: "/v4beta1/{name=projects/*/jobs/*}"
+      get: "/v4beta1/{name=projects/*/tenants/*/jobs/*}"
+      additional_bindings { get: "/v4beta1/{name=projects/*/jobs/*}" }
     };
   }
 
@@ -61,8 +66,12 @@ service JobService {
   // seconds, but it may take up to 5 minutes.
   rpc UpdateJob(UpdateJobRequest) returns (Job) {
     option (google.api.http) = {
-      patch: "/v4beta1/{job.name=projects/*/jobs/*}"
+      patch: "/v4beta1/{job.name=projects/*/tenants/*/jobs/*}"
       body: "*"
+      additional_bindings {
+        patch: "/v4beta1/{job.name=projects/*/jobs/*}"
+        body: "*"
+      }
     };
   }
 
@@ -72,22 +81,27 @@ service JobService {
   // up to 5 minutes.
   rpc DeleteJob(DeleteJobRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      delete: "/v4beta1/{name=projects/*/jobs/*}"
+      delete: "/v4beta1/{name=projects/*/tenants/*/jobs/*}"
+      additional_bindings { delete: "/v4beta1/{name=projects/*/jobs/*}" }
     };
   }
 
   // Lists jobs by filter.
   rpc ListJobs(ListJobsRequest) returns (ListJobsResponse) {
     option (google.api.http) = {
-      get: "/v4beta1/{parent=projects/*}/jobs"
+      get: "/v4beta1/{parent=projects/*/tenants/*}/jobs"
+      additional_bindings { get: "/v4beta1/{parent=projects/*}/jobs" }
     };
   }
 
   // Deletes a list of [Job][google.cloud.talent.v4beta1.Job]s by filter.
   rpc BatchDeleteJobs(BatchDeleteJobsRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      post: "/v4beta1/{parent=projects/*}/jobs:batchDelete"
+      post: "/v4beta1/{parent=projects/*/tenants/*}/jobs:batchDelete"
       body: "*"
+      additional_bindings {
+        post: "/v4beta1/{parent=projects/*}/jobs:batchDelete"
+      }
     };
   }
 
@@ -100,8 +114,12 @@ service JobService {
   // search against.
   rpc SearchJobs(SearchJobsRequest) returns (SearchJobsResponse) {
     option (google.api.http) = {
-      post: "/v4beta1/{parent=projects/*}/jobs:search"
+      post: "/v4beta1/{parent=projects/*/tenants/*}/jobs:search"
       body: "*"
+      additional_bindings {
+        post: "/v4beta1/{parent=projects/*}/jobs:search"
+        body: "*"
+      }
     };
   }
 
@@ -119,8 +137,38 @@ service JobService {
   // against.
   rpc SearchJobsForAlert(SearchJobsRequest) returns (SearchJobsResponse) {
     option (google.api.http) = {
-      post: "/v4beta1/{parent=projects/*}/jobs:searchForAlert"
+      post: "/v4beta1/{parent=projects/*/tenants/*}/jobs:searchForAlert"
       body: "*"
+      additional_bindings {
+        post: "/v4beta1/{parent=projects/*}/jobs:searchForAlert"
+        body: "*"
+      }
+    };
+  }
+
+  // Begins executing a batch create jobs operation.
+  rpc BatchCreateJobs(BatchCreateJobsRequest)
+      returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v4beta1/{parent=projects/*/tenants/*}/jobs:batchCreate"
+      body: "*"
+      additional_bindings {
+        post: "/v4beta1/{parent=projects/*}/jobs:batchCreate"
+        body: "*"
+      }
+    };
+  }
+
+  // Begins executing a batch update jobs operation.
+  rpc BatchUpdateJobs(BatchUpdateJobsRequest)
+      returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v4beta1/{parent=projects/*/tenants/*}/jobs:batchUpdate"
+      body: "*"
+      additional_bindings {
+        post: "/v4beta1/{parent=projects/*}/jobs:batchUpdate"
+        body: "*"
+      }
     };
   }
 }
@@ -131,10 +179,13 @@ service JobService {
 message CreateJobRequest {
   // Required.
   //
-  // The resource name of the project under which the job is created.
+  // The resource name of the tenant under which the job is created.
   //
-  // The format is "projects/{project_id}", for example,
-  // "projects/api-test-project".
+  // The format is "projects/{project_id}/tenants/{tenant_id}", for example,
+  // "projects/api-test-project/tenant/foo".
+  //
+  // Tenant id is optional and a default tenant is created if unspecified, for
+  // example, "projects/api-test-project".
   string parent = 1;
 
   // Required.
@@ -151,8 +202,12 @@ message GetJobRequest {
   //
   // The resource name of the job to retrieve.
   //
-  // The format is "projects/{project_id}/jobs/{job_id}",
-  // for example, "projects/api-test-project/jobs/1234".
+  // The format is
+  // "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}", for
+  // example, "projects/api-test-project/tenants/foo/jobs/1234".
+  //
+  // Tenant id is optional and the default tenant is used if unspecified, for
+  // example, "projects/api-test-project/jobs/1234".
   string name = 1;
 }
 
@@ -186,8 +241,12 @@ message DeleteJobRequest {
   //
   // The resource name of the job to be deleted.
   //
-  // The format is "projects/{project_id}/jobs/{job_id}",
-  // for example, "projects/api-test-project/jobs/1234".
+  // The format is
+  // "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}", for
+  // example, "projects/api-test-project/tenants/foo/jobs/1234".
+  //
+  // Tenant id is optional and the default tenant is used if unspecified, for
+  // example, "projects/api-test-project/jobs/1234".
   string name = 1;
 }
 
@@ -197,10 +256,13 @@ message DeleteJobRequest {
 message BatchDeleteJobsRequest {
   // Required.
   //
-  // The resource name of the project under which the job is created.
+  // The resource name of the tenant under which the job is created.
   //
-  // The format is "projects/{project_id}", for example,
-  // "projects/api-test-project".
+  // The format is "projects/{project_id}/tenants/{tenant_id}", for example,
+  // "projects/api-test-project/tenant/foo".
+  //
+  // Tenant id is optional and the default tenant is used if unspecified, for
+  // example, "projects/api-test-project".
   string parent = 1;
 
   // Required.
@@ -225,10 +287,13 @@ message BatchDeleteJobsRequest {
 message ListJobsRequest {
   // Required.
   //
-  // The resource name of the project under which the job is created.
+  // The resource name of the tenant under which the job is created.
   //
-  // The format is "projects/{project_id}", for example,
-  // "projects/api-test-project".
+  // The format is "projects/{project_id}/tenants/{tenant_id}", for example,
+  // "projects/api-test-project/tenant/foo".
+  //
+  // Tenant id is optional and the default tenant is used if unspecified, for
+  // example, "projects/api-test-project".
   string parent = 1;
 
   // Required.
@@ -246,11 +311,11 @@ message ListJobsRequest {
   //
   // Sample Query:
   //
-  // * companyName = "projects/api-test-project/companies/123"
-  // * companyName = "projects/api-test-project/companies/123" AND requisitionId
-  // = "req-1"
-  // * companyName = "projects/api-test-project/companies/123" AND status =
-  // "EXPIRED"
+  // * companyName = "projects/api-test-project/tenants/foo/companies/bar"
+  // * companyName = "projects/api-test-project/tenants/foo/companies/bar" AND
+  // requisitionId = "req-1"
+  // * companyName = "projects/api-test-project/tenants/foo/companies/bar" AND
+  // status = "EXPIRED"
   string filter = 2;
 
   // Optional.
@@ -281,10 +346,9 @@ message ListJobsRequest {
 }
 
 // An enum that specifies the job attributes that are returned in the
-// [MatchingJob.Job][] in
-// [SearchJobsResponse][google.cloud.talent.v4beta1.SearchJobsResponse] or
-// [Job][google.cloud.talent.v4beta1.Job] objects in
-// [ListJobsResponse][google.cloud.talent.v4beta1.ListJobsResponse].
+// [MatchingJob.job][google.cloud.talent.v4beta1.SearchJobsResponse.MatchingJob.job]
+// or [ListJobsResponse.jobs][google.cloud.talent.v4beta1.ListJobsResponse.jobs]
+// fields.
 enum JobView {
   // Default value.
   JOB_VIEW_UNSPECIFIED = 0;
@@ -298,8 +362,8 @@ enum JobView {
   // A minimal view of the job, with the following attributes:
   // [Job.name][google.cloud.talent.v4beta1.Job.name],
   // [Job.requisition_id][google.cloud.talent.v4beta1.Job.requisition_id],
-  // [Job.job_title][],
-  // [Job.company_name][google.cloud.talent.v4beta1.Job.company_name],
+  // [Job.title][google.cloud.talent.v4beta1.Job.title],
+  // [Job.company][google.cloud.talent.v4beta1.Job.company],
   // [Job.DerivedInfo.locations][google.cloud.talent.v4beta1.Job.DerivedInfo.locations],
   // [Job.language_code][google.cloud.talent.v4beta1.Job.language_code].
   JOB_VIEW_MINIMAL = 2;
@@ -307,8 +371,8 @@ enum JobView {
   // A small view of the job, with the following attributes in the search
   // results: [Job.name][google.cloud.talent.v4beta1.Job.name],
   // [Job.requisition_id][google.cloud.talent.v4beta1.Job.requisition_id],
-  // [Job.job_title][],
-  // [Job.company_name][google.cloud.talent.v4beta1.Job.company_name],
+  // [Job.title][google.cloud.talent.v4beta1.Job.title],
+  // [Job.company][google.cloud.talent.v4beta1.Job.company],
   // [Job.DerivedInfo.locations][google.cloud.talent.v4beta1.Job.DerivedInfo.locations],
   // [Job.visibility][google.cloud.talent.v4beta1.Job.visibility],
   // [Job.language_code][google.cloud.talent.v4beta1.Job.language_code],
@@ -455,10 +519,13 @@ message SearchJobsRequest {
 
   // Required.
   //
-  // The resource name of the project to search within.
+  // The resource name of the tenant to search within.
   //
-  // The format is "projects/{project_id}", for example,
-  // "projects/api-test-project".
+  // The format is "projects/{project_id}/tenants/{tenant_id}", for example,
+  // "projects/api-test-project/tenant/foo".
+  //
+  // Tenant id is optional and the default tenant is used if unspecified, for
+  // example, "projects/api-test-project".
   string parent = 1;
 
   // Optional.
@@ -537,77 +604,89 @@ message SearchJobsRequest {
   //
   // Job histogram facets:
   //
-  // * company_id: histogram by [Job.distributor_company_id][].
   // * company_display_name: histogram by
   // [Job.company_display_name][google.cloud.talent.v4beta1.Job.company_display_name].
   // * employment_type: histogram by
   // [Job.employment_types][google.cloud.talent.v4beta1.Job.employment_types],
-  // for example, "FULL_TIME", "PART_TIME".
+  // for example,
+  //   "FULL_TIME", "PART_TIME".
   // * company_size: histogram by
   // [CompanySize][google.cloud.talent.v4beta1.CompanySize], for example,
   // "SMALL", "MEDIUM", "BIG".
-  // * publish_time_in_month: histogram by the [Job.publish_time][] in months.
-  // Must specify list of numeric buckets in spec.
-  // * publish_time_in_year: histogram by the [Job.publish_time][] in years.
-  // Must specify list of numeric buckets in spec.
-  // * degree_type: histogram by the [Job.degree_type][], for example,
-  // "Bachelors", "Masters".
+  // * publish_time_in_month: histogram by the
+  // [Job.posting_publish_time][google.cloud.talent.v4beta1.Job.posting_publish_time]
+  //   in months.
+  //   Must specify list of numeric buckets in spec.
+  // * publish_time_in_year: histogram by the
+  // [Job.posting_publish_time][google.cloud.talent.v4beta1.Job.posting_publish_time]
+  //   in years.
+  //   Must specify list of numeric buckets in spec.
+  // * degree_types: histogram by the
+  // [Job.degree_types][google.cloud.talent.v4beta1.Job.degree_types], for
+  // example,
+  //   "Bachelors", "Masters".
   // * job_level: histogram by the
   // [Job.job_level][google.cloud.talent.v4beta1.Job.job_level], for example,
-  // "Entry Level".
+  // "Entry
+  //   Level".
   // * country: histogram by the country code of jobs, for example, "US", "FR".
   // * admin1: histogram by the admin1 code of jobs, which is a global
-  // placeholder referring to the state, province, or the particular term a
-  // country uses to define the geographic structure below the country level,
-  // for example, "CA", "IL".
+  //   placeholder referring to the state, province, or the particular term a
+  //   country uses to define the geographic structure below the country level,
+  //   for example, "CA", "IL".
   // * city: histogram by a combination of the "city name, admin1 code". For
-  // example,  "Mountain View, CA", "New York, NY".
+  //   example,  "Mountain View, CA", "New York, NY".
   // * admin1_country: histogram by a combination of the "admin1 code, country",
-  // for example, "CA, US", "IL, US".
+  //   for example, "CA, US", "IL, US".
   // * city_coordinate: histogram by the city center's GPS coordinates (latitude
-  // and longitude), for example, 37.4038522,-122.0987765. Since the coordinates
-  // of a city center can change, customers may need to refresh them
-  // periodically.
+  //   and longitude), for example, 37.4038522,-122.0987765. Since the
+  //   coordinates of a city center can change, customers may need to refresh
+  //   them periodically.
   // * locale: histogram by the
   // [Job.language_code][google.cloud.talent.v4beta1.Job.language_code], for
-  // example, "en-US", "fr-FR".
+  // example, "en-US",
+  //   "fr-FR".
   // * language: histogram by the language subtag of the
-  // [Job.language_code][google.cloud.talent.v4beta1.Job.language_code], for
-  // example, "en", "fr".
+  // [Job.language_code][google.cloud.talent.v4beta1.Job.language_code],
+  //   for example, "en", "fr".
   // * category: histogram by the
   // [JobCategory][google.cloud.talent.v4beta1.JobCategory], for example,
-  // "COMPUTER_AND_IT", "HEALTHCARE".
-  // * base_compensation_unit: histogram by the [CompensationUnit][] of base
-  // salary, for example, "WEEKLY", "MONTHLY".
+  //   "COMPUTER_AND_IT", "HEALTHCARE".
+  // * base_compensation_unit: histogram by the
+  //   [CompensationInfo.CompensationUnit][google.cloud.talent.v4beta1.CompensationInfo.CompensationUnit]
+  //   of base salary, for example, "WEEKLY", "MONTHLY".
   // * base_compensation: histogram by the base salary. Must specify list of
-  // numeric buckets to group results by.
+  //   numeric buckets to group results by.
   // * annualized_base_compensation: histogram by the base annualized salary.
-  // Must specify list of numeric buckets to group results by.
+  //   Must specify list of numeric buckets to group results by.
   // * annualized_total_compensation: histogram by the total annualized salary.
-  // Must specify list of numeric buckets to group results by.
+  //   Must specify list of numeric buckets to group results by.
   // * string_custom_attribute: histogram by string
   // [Job.custom_attributes][google.cloud.talent.v4beta1.Job.custom_attributes].
-  // Values can be accessed via square bracket notations like
-  // string_custom_attribute["key1"].
+  //   Values can be accessed via square bracket notations like
+  //   string_custom_attribute["key1"].
   // * numeric_custom_attribute: histogram by numeric
   // [Job.custom_attributes][google.cloud.talent.v4beta1.Job.custom_attributes].
-  // Values can be accessed via square bracket notations like
-  // numeric_custom_attribute["key1"]. Must specify list of numeric buckets to
-  // group results by.
+  //   Values can be accessed via square bracket notations like
+  //   numeric_custom_attribute["key1"]. Must specify list of numeric buckets to
+  //   group results by.
   //
   // Example expressions:
-  // * count(admin1)
-  // * count(base_compensation, [bucket(1000, 10000), bucket(10000, 100000),
-  // bucket(100000, MAX)])
-  // * count(string_custom_attribute["some-string-custom-attribute"])
-  // * count(numeric_custom_attribute["some-numeric-custom-attribute"],
-  // [bucket(MIN, 0, "negative"), bucket(0, MAX, "non-negative"])
+  //
+  // * `count(admin1)`
+  // * `count(base_compensation, [bucket(1000, 10000), bucket(10000, 100000),
+  // bucket(100000, MAX)])`
+  // * `count(string_custom_attribute["some-string-custom-attribute"])`
+  // * `count(numeric_custom_attribute["some-numeric-custom-attribute"],
+  //   [bucket(MIN, 0, "negative"), bucket(0, MAX, "non-negative"])`
   repeated HistogramQuery histogram_queries = 7;
 
   // Optional.
   //
-  // The desired job attributes returned for jobs in the
-  // search response. Defaults to [JobView.SMALL][] if no value is specified.
+  // The desired job attributes returned for jobs in the search response.
+  // Defaults to
+  // [JobView.JOB_VIEW_SMALL][google.cloud.talent.v4beta1.JobView.JOB_VIEW_SMALL]
+  // if no value is specified.
   JobView job_view = 8;
 
   // Optional.
@@ -647,51 +726,51 @@ message SearchJobsRequest {
   // Supported options are:
   //
   // * "relevance desc": By relevance descending, as determined by the API
-  // algorithms. Relevance thresholding of query results is only available
-  // with this ordering.
+  //   algorithms. Relevance thresholding of query results is only available
+  //   with this ordering.
   // * "posting`_`publish`_`time desc": By
   // [Job.posting_publish_time][google.cloud.talent.v4beta1.Job.posting_publish_time]
-  // descending.
+  //   descending.
   // * "posting`_`update`_`time desc": By
   // [Job.posting_update_time][google.cloud.talent.v4beta1.Job.posting_update_time]
-  // descending.
+  //   descending.
   // * "title": By [Job.title][google.cloud.talent.v4beta1.Job.title] ascending.
   // * "title desc": By [Job.title][google.cloud.talent.v4beta1.Job.title]
   // descending.
   // * "annualized`_`base`_`compensation": By job's
-  // [CompensationInfo.annualized_base_compensation_range][google.cloud.talent.v4beta1.CompensationInfo.annualized_base_compensation_range]
-  // ascending. Jobs whose annualized base compensation is unspecified are put
-  // at the end of search results.
+  //   [CompensationInfo.annualized_base_compensation_range][google.cloud.talent.v4beta1.CompensationInfo.annualized_base_compensation_range]
+  //   ascending. Jobs whose annualized base compensation is unspecified are put
+  //   at the end of search results.
   // * "annualized`_`base`_`compensation desc": By job's
-  // [CompensationInfo.annualized_base_compensation_range][google.cloud.talent.v4beta1.CompensationInfo.annualized_base_compensation_range]
-  // descending. Jobs whose annualized base compensation is unspecified are put
-  // at the end of search results.
+  //   [CompensationInfo.annualized_base_compensation_range][google.cloud.talent.v4beta1.CompensationInfo.annualized_base_compensation_range]
+  //   descending. Jobs whose annualized base compensation is unspecified are
+  //   put at the end of search results.
   // * "annualized`_`total`_`compensation": By job's
-  // [CompensationInfo.annualized_total_compensation_range][google.cloud.talent.v4beta1.CompensationInfo.annualized_total_compensation_range]
-  // ascending. Jobs whose annualized base compensation is unspecified are put
-  // at the end of search results.
+  //   [CompensationInfo.annualized_total_compensation_range][google.cloud.talent.v4beta1.CompensationInfo.annualized_total_compensation_range]
+  //   ascending. Jobs whose annualized base compensation is unspecified are put
+  //   at the end of search results.
   // * "annualized`_`total`_`compensation desc": By job's
-  // [CompensationInfo.annualized_total_compensation_range][google.cloud.talent.v4beta1.CompensationInfo.annualized_total_compensation_range]
-  // descending. Jobs whose annualized base compensation is unspecified are put
-  // at the end of search results.
+  //   [CompensationInfo.annualized_total_compensation_range][google.cloud.talent.v4beta1.CompensationInfo.annualized_total_compensation_range]
+  //   descending. Jobs whose annualized base compensation is unspecified are
+  //   put at the end of search results.
   // * "custom`_`ranking desc": By the relevance score adjusted to the
-  // [SearchJobsRequest.custom_ranking_info.ranking_expression][] with weight
-  // factor assigned by
-  // [SearchJobsRequest.custom_ranking_info.importance_level][] in descending
-  // order.
+  //   [SearchJobsRequest.CustomRankingInfo.ranking_expression][google.cloud.talent.v4beta1.SearchJobsRequest.CustomRankingInfo.ranking_expression]
+  //   with weight factor assigned by
+  //   [SearchJobsRequest.CustomRankingInfo.importance_level][google.cloud.talent.v4beta1.SearchJobsRequest.CustomRankingInfo.importance_level]
+  //   in descending order.
   // * "location`_`distance": By the distance between the location on jobs and
-  //  locations specified in the
-  // [SearchJobsRequest.job_query.location_filters][].
-  // When this order is selected, the
-  // [SearchJobsRequest.job_query.location_filters][] must not be empty. When
-  // a job has multiple locations, the location closest to one of the locations
-  // specified in the location filter will be used to calculate location
-  // distance. Distance is calculated by the distance between two lat/long
-  // coordinates, with a precision of 10e-4 degrees (11.3 meters).
-  // Jobs that don't have locations specified will be ranked below jobs having
-  // locations.
-  // Diversification strategy is still applied unless explicitly disabled in
-  // [SearchJobsRequest.diversification_level][google.cloud.talent.v4beta1.SearchJobsRequest.diversification_level].
+  //   locations specified in the
+  //   [JobQuery.location_filters][google.cloud.talent.v4beta1.JobQuery.location_filters].
+  //   When this order is selected, the
+  //   [JobQuery.location_filters][google.cloud.talent.v4beta1.JobQuery.location_filters]
+  //   must not be empty. When a job has multiple locations, the location
+  //   closest to one of the locations specified in the location filter will be
+  //   used to calculate location distance. Distance is calculated by the
+  //   distance between two lat/long coordinates, with a precision of 10e-4
+  //   degrees (11.3 meters). Jobs that don't have locations specified will be
+  //   ranked below jobs having locations. Diversification strategy is still
+  //   applied unless explicitly disabled in
+  //   [SearchJobsRequest.diversification_level][google.cloud.talent.v4beta1.SearchJobsRequest.diversification_level].
   string order_by = 12;
 
   // Optional.
@@ -716,10 +795,11 @@ message SearchJobsRequest {
 
   // Optional.
   //
-  // Controls whether to disable exact keyword match on [Job.job_title][],
+  // Controls whether to disable exact keyword match on
+  // [Job.title][google.cloud.talent.v4beta1.Job.title],
   // [Job.description][google.cloud.talent.v4beta1.Job.description],
   // [Job.company_display_name][google.cloud.talent.v4beta1.Job.company_display_name],
-  // [Job.locations][0],
+  // [Job.addresses][google.cloud.talent.v4beta1.Job.addresses],
   // [Job.qualifications][google.cloud.talent.v4beta1.Job.qualifications]. When
   // disable keyword match is turned off, a keyword match returns jobs that do
   // not match given category filters when there are matching keywords. For
@@ -732,10 +812,11 @@ message SearchJobsRequest {
   // location specific ontology, jobs with "cloud" keyword matches are returned
   // regardless of this flag's value.
   //
-  // Please use [Company.keyword_searchable_custom_fields][] or
-  // [Company.keyword_searchable_custom_attributes][] if company specific
-  // globally matched custom field/attribute string values is needed. Enabling
-  // keyword match improves recall of subsequent search requests.
+  // Use
+  // [Company.keyword_searchable_job_custom_attributes][google.cloud.talent.v4beta1.Company.keyword_searchable_job_custom_attributes]
+  // if company-specific globally matched custom field/attribute string values
+  // are needed. Enabling keyword match improves recall of subsequent search
+  // requests.
   //
   // Defaults to false.
   bool disable_keyword_match = 16;
@@ -758,9 +839,10 @@ message SearchJobsResponse {
     // results listing page.
     string job_summary = 2;
 
-    // Contains snippets of text from the [Job.job_title][] field most
-    // closely matching a search query's keywords, if available. The matching
-    // query keywords are enclosed in HTML bold tags.
+    // Contains snippets of text from the
+    // [Job.title][google.cloud.talent.v4beta1.Job.title] field most closely
+    // matching a search query's keywords, if available. The matching query
+    // keywords are enclosed in HTML bold tags.
     string job_title_snippet = 3;
 
     // Contains snippets of text from the
@@ -803,19 +885,23 @@ message SearchJobsResponse {
   string next_page_token = 3;
 
   // The location filters that the service applied to the specified query. If
-  // any filters are lat-lng based, the [JobLocation.location_type][] is
-  // [JobLocation.LocationType#LOCATION_TYPE_UNSPECIFIED][].
+  // any filters are lat-lng based, the
+  // [Location.location_type][google.cloud.talent.v4beta1.Location.location_type]
+  // is
+  // [Location.LocationType.LOCATION_TYPE_UNSPECIFIED][google.cloud.talent.v4beta1.Location.LocationType.LOCATION_TYPE_UNSPECIFIED].
   repeated Location location_filters = 4;
 
   // An estimation of the number of jobs that match the specified query.
   //
   // This number isn't guaranteed to be accurate. For accurate results,
-  // see [enable_precise_result_size][].
+  // see
+  // [SearchJobsRequest.require_precise_result_size][google.cloud.talent.v4beta1.SearchJobsRequest.require_precise_result_size].
   int32 estimated_total_size = 5;
 
   // The precise result count, which is available only if the client set
-  // [enable_precise_result_size][] to `true`, or if the response
-  // is the last page of results. Otherwise, the value is `-1`.
+  // [SearchJobsRequest.require_precise_result_size][google.cloud.talent.v4beta1.SearchJobsRequest.require_precise_result_size]
+  // to `true`, or if the response is the last page of results. Otherwise, the
+  // value is `-1`.
   int32 total_size = 6;
 
   // Additional information for the API invocation, such as the request
@@ -833,4 +919,62 @@ message SearchJobsResponse {
 
   // The spell checking result, and correction.
   SpellingCorrection spell_correction = 9;
+}
+
+// Request to create a batch of jobs.
+message BatchCreateJobsRequest {
+  // Required.
+  //
+  // The resource name of the tenant under which the job is created.
+  //
+  // The format is "projects/{project_id}/tenants/{tenant_id}", for example,
+  // "projects/api-test-project/tenant/foo".
+  //
+  // Tenant id is optional and a default tenant is created if unspecified, for
+  // example, "projects/api-test-project".
+  string parent = 1;
+
+  // Required.
+  //
+  // The jobs to be created.
+  repeated Job jobs = 2;
+}
+
+// Request to update a batch of jobs.
+message BatchUpdateJobsRequest {
+  // Required.
+  //
+  // The resource name of the tenant under which the job is created.
+  //
+  // The format is "projects/{project_id}/tenants/{tenant_id}", for example,
+  // "projects/api-test-project/tenant/foo".
+  //
+  // Tenant id is optional and the default tenant is used if unspecified, for
+  // example, "projects/api-test-project".
+  string parent = 1;
+
+  // Required.
+  //
+  // The jobs to be updated.
+  repeated Job jobs = 2;
+
+  // Optional but strongly recommended to be provided for the best service
+  // experience, also increase latency when checking status of batch operation.
+  //
+  // If
+  // [update_mask][google.cloud.talent.v4beta1.BatchUpdateJobsRequest.update_mask]
+  // is provided, only the specified fields in
+  // [Job][google.cloud.talent.v4beta1.Job] are updated. Otherwise all the
+  // fields are updated.
+  //
+  // A field mask to restrict the fields that are updated. Only
+  // top level fields of [Job][google.cloud.talent.v4beta1.Job] are supported.
+  //
+  // If
+  // [update_mask][google.cloud.talent.v4beta1.BatchUpdateJobsRequest.update_mask]
+  // is provided, The [Job][google.cloud.talent.v4beta1.Job] inside
+  // [JobResult][] will only contains fields that is updated, plus the Id of the
+  // Job. Otherwise,  [Job][google.cloud.talent.v4beta1.Job] will include all
+  // fields, which can yield a very large response.
+  google.protobuf.FieldMask update_mask = 3;
 }

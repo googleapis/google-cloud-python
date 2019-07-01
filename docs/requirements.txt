@@ -14,11 +14,15 @@ grpcio-gcp >= 0.2.2
 -e bigquery_storage/
 -e bigtable/
 -e container/
+-e containeranalysis/
+-e datacatalog/
+-e datalabeling/
 -e dataproc/
 -e datastore/
 -e dlp/
 -e dns/
 -e firestore/
+-e grafeas/
 -e iam/
 -e iot/
 -e irm/
@@ -43,4 +47,5 @@ grpcio-gcp >= 0.2.2
 -e translate/
 -e videointelligence/
 -e vision/
+-e webrisk/
 -e websecurityscanner/

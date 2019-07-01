@@ -14,7 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 import google.api_core.grpc_helpers
+import google.api_core.operations_v1
 
 from google.cloud.talent_v4beta1.proto import job_service_pb2_grpc
 
@@ -68,8 +70,17 @@ class JobServiceGrpcTransport(object):
         # channel and provide a basic method for each RPC.
         self._stubs = {"job_service_stub": job_service_pb2_grpc.JobServiceStub(channel)}
 
+        # Because this API includes a method that returns a
+        # long-running operation (proto: google.longrunning.Operation),
+        # instantiate an LRO client.
+        self._operations_client = google.api_core.operations_v1.OperationsClient(
+            channel
+        )
+
     @classmethod
-    def create_channel(cls, address="jobs.googleapis.com:443", credentials=None):
+    def create_channel(
+        cls, address="jobs.googleapis.com:443", credentials=None, **kwargs
+    ):
         """Create and return a gRPC channel object.
 
         Args:
@@ -79,12 +90,14 @@ class JobServiceGrpcTransport(object):
                 credentials identify this application to the service. If
                 none are specified, the client will attempt to ascertain
                 the credentials from the environment.
+            kwargs (dict): Keyword arguments, which are passed to the
+                channel creation.
 
         Returns:
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES, **kwargs
         )
 
     @property
@@ -220,3 +233,29 @@ class JobServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["job_service_stub"].SearchJobsForAlert
+
+    @property
+    def batch_create_jobs(self):
+        """Return the gRPC stub for :meth:`JobServiceClient.batch_create_jobs`.
+
+        Begins executing a batch create jobs operation.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["job_service_stub"].BatchCreateJobs
+
+    @property
+    def batch_update_jobs(self):
+        """Return the gRPC stub for :meth:`JobServiceClient.batch_update_jobs`.
+
+        Begins executing a batch update jobs operation.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["job_service_stub"].BatchUpdateJobs

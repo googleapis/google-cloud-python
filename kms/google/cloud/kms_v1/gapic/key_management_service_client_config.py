@@ -22,6 +22,11 @@ config = {
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
+                "ListImportJobs": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
                 "ListCryptoKeys": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
@@ -33,6 +38,11 @@ config = {
                     "retry_params_name": "default",
                 },
                 "GetKeyRing": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "GetImportJob": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
@@ -52,12 +62,22 @@ config = {
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
+                "CreateImportJob": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
                 "CreateCryptoKey": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "CreateCryptoKeyVersion": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "ImportCryptoKeyVersion": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
@@ -74,12 +94,12 @@ config = {
                 },
                 "Encrypt": {
                     "timeout_millis": 60000,
-                    "retry_codes_name": "non_idempotent",
+                    "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "Decrypt": {
                     "timeout_millis": 60000,
-                    "retry_codes_name": "non_idempotent",
+                    "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "UpdateCryptoKeyPrimaryVersion": {
@@ -104,12 +124,12 @@ config = {
                 },
                 "AsymmetricDecrypt": {
                     "timeout_millis": 60000,
-                    "retry_codes_name": "non_idempotent",
+                    "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "AsymmetricSign": {
                     "timeout_millis": 60000,
-                    "retry_codes_name": "non_idempotent",
+                    "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "SetIamPolicy": {

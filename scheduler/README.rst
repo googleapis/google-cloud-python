@@ -1,12 +1,19 @@
-Python Client for Cloud Scheduler API (`Alpha`_)
+Python Client for Cloud Scheduler API
 ================================================
+
+|GA| |pypi| |versions|
 
 `Cloud Scheduler API`_: Creates and manages jobs run on a regular recurring schedule.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-scheduler.svg
+   :target: https://pypi.org/project/google-cloud-scheduler/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-scheduler.svg
+   :target: https://pypi.org/project/google-cloud-scheduler/
 .. _Cloud Scheduler API: https://cloud.google.com/scheduler
 .. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/scheduler/index.html
 .. _Product Documentation:  https://cloud.google.com/scheduler

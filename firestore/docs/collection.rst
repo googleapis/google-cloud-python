@@ -1,6 +1,6 @@
 Collections
 ~~~~~~~~~~~
 
-.. automodule:: google.cloud.firestore_v1beta1.collection
+.. automodule:: google.cloud.firestore_v1.collection
   :members:
   :show-inheritance:

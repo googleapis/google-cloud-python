@@ -13,17 +13,23 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.pubsub.v1 Publisher API."""
 
+import collections
+from copy import deepcopy
 import functools
 import pkg_resources
+import six
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
 import google.api_core.path_template
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
@@ -38,7 +44,30 @@ from google.iam.v1 import policy_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
+
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-pubsub").version
+
+
+# TODO: remove conditional import after Python 2 support is dropped
+if six.PY3:
+    from collections.abc import Mapping
+else:
+    from collections import Mapping
+
+
+def _merge_dict(d1, d2):
+    # Modifies d1 in-place to take values from d2
+    # if the nested keys from d2 are present in d1.
+    # https://stackoverflow.com/a/10704003/4488789
+    for k, v2 in d2.items():
+        v1 = d1.get(k)  # returns None if v1 has no such key
+        if v1 is None:
+            raise Exception("{} is not recognized by client_config".format(k))
+        if isinstance(v1, Mapping) and isinstance(v2, Mapping):
+            _merge_dict(v1, v2)
+        else:
+            d1[k] = v2
+    return d1
 
 
 class PublisherClient(object):
@@ -82,17 +111,17 @@ class PublisherClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def topic_path(cls, project, topic):
-        """Return a fully-qualified topic string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/topics/{topic}", project=project, topic=topic
-        )
-
-    @classmethod
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
             "projects/{project}", project=project
+        )
+
+    @classmethod
+    def topic_path(cls, project, topic):
+        """Return a fully-qualified topic string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/topics/{topic}", project=project, topic=topic
         )
 
     def __init__(
@@ -102,6 +131,7 @@ class PublisherClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -125,23 +155,23 @@ class PublisherClient(object):
                 This argument is mutually exclusive with providing a
                 transport instance to ``transport``; doing so will raise
                 an exception.
-            client_config (dict): DEPRECATED. A dictionary of call options for
+            client_config (dict): A dictionary of call options for
                 each method. If not specified, the default configuration is used.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
                 The client info used to send a user-agent string along with
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
-        # Raise deprecation warnings for things we want to go away.
-        if client_config is not None:
-            warnings.warn(
-                "The `client_config` argument is deprecated.",
-                PendingDeprecationWarning,
-                stacklevel=2,
-            )
+        default_client_config = deepcopy(publisher_client_config.config)
+
+        if client_config is None:
+            client_config = default_client_config
         else:
-            client_config = publisher_client_config.config
+            client_config = _merge_dict(default_client_config, client_config)
 
         if channel:
             warnings.warn(
@@ -149,6 +179,15 @@ class PublisherClient(object):
                 PendingDeprecationWarning,
                 stacklevel=2,
             )
+
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
 
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
@@ -158,6 +197,7 @@ class PublisherClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=publisher_grpc_transport.PublisherGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -168,7 +208,7 @@ class PublisherClient(object):
                 self.transport = transport
         else:
             self.transport = publisher_grpc_transport.PublisherGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -199,6 +239,7 @@ class PublisherClient(object):
         name,
         labels=None,
         message_storage_policy=None,
+        kms_key_name=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -234,6 +275,14 @@ class PublisherClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.MessageStoragePolicy`
+            kms_key_name (str): The resource name of the Cloud KMS CryptoKey to be used to protect
+                access to messages published on this topic.
+
+                The expected format is
+                ``projects/*/locations/*/keyRings/*/cryptoKeys/*``. EXPERIMENTAL: This
+                feature is part of a closed alpha release. This API might be changed in
+                backward-incompatible ways and is not recommended for production use. It
+                is not subject to any SLA or deprecation policy.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -265,8 +314,24 @@ class PublisherClient(object):
             )
 
         request = pubsub_pb2.Topic(
-            name=name, labels=labels, message_storage_policy=message_storage_policy
+            name=name,
+            labels=labels,
+            message_storage_policy=message_storage_policy,
+            kms_key_name=kms_key_name,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["create_topic"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -341,6 +406,19 @@ class PublisherClient(object):
             )
 
         request = pubsub_pb2.UpdateTopicRequest(topic=topic, update_mask=update_mask)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("topic.name", topic.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["update_topic"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -407,6 +485,19 @@ class PublisherClient(object):
             )
 
         request = pubsub_pb2.PublishRequest(topic=topic, messages=messages)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("topic", topic)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["publish"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -464,6 +555,19 @@ class PublisherClient(object):
             )
 
         request = pubsub_pb2.GetTopicRequest(topic=topic)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("topic", topic)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_topic"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -518,10 +622,10 @@ class PublisherClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.pubsub_v1.types.Topic` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.pubsub_v1.types.Topic` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -542,6 +646,19 @@ class PublisherClient(object):
             )
 
         request = pubsub_pb2.ListTopicsRequest(project=project, page_size=page_size)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("project", project)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -607,10 +724,10 @@ class PublisherClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`str` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`str` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -633,6 +750,19 @@ class PublisherClient(object):
         request = pubsub_pb2.ListTopicSubscriptionsRequest(
             topic=topic, page_size=page_size
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("topic", topic)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
@@ -703,6 +833,19 @@ class PublisherClient(object):
             )
 
         request = pubsub_pb2.DeleteTopicRequest(topic=topic)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("topic", topic)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         self._inner_api_calls["delete_topic"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -733,8 +876,7 @@ class PublisherClient(object):
 
         Args:
             resource (str): REQUIRED: The resource for which the policy is being specified.
-                ``resource`` is usually specified as a path. For example, a Project
-                resource is specified as ``projects/{project}``.
+                See the operation documentation for the appropriate value for this field.
             policy (Union[dict, ~google.cloud.pubsub_v1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The
                 size of the policy is limited to a few 10s of KB. An empty policy is a
                 valid policy but certain Cloud Platform services (such as Projects)
@@ -773,6 +915,19 @@ class PublisherClient(object):
             )
 
         request = iam_policy_pb2.SetIamPolicyRequest(resource=resource, policy=policy)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("resource", resource)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["set_iam_policy"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -800,8 +955,7 @@ class PublisherClient(object):
 
         Args:
             resource (str): REQUIRED: The resource for which the policy is being requested.
-                ``resource`` is usually specified as a path. For example, a Project
-                resource is specified as ``projects/{project}``.
+                See the operation documentation for the appropriate value for this field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -833,6 +987,19 @@ class PublisherClient(object):
             )
 
         request = iam_policy_pb2.GetIamPolicyRequest(resource=resource)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("resource", resource)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["get_iam_policy"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -850,6 +1017,10 @@ class PublisherClient(object):
         resource does not exist, this will return an empty set of permissions,
         not a NOT\_FOUND error.
 
+        Note: This operation is designed to be used for building
+        permission-aware UIs and command-line tools, not for authorization
+        checking. This operation may "fail open" without warning.
+
         Example:
             >>> from google.cloud import pubsub_v1
             >>>
@@ -864,8 +1035,7 @@ class PublisherClient(object):
 
         Args:
             resource (str): REQUIRED: The resource for which the policy detail is being requested.
-                ``resource`` is usually specified as a path. For example, a Project
-                resource is specified as ``projects/{project}``.
+                See the operation documentation for the appropriate value for this field.
             permissions (list[str]): The set of permissions to check for the ``resource``. Permissions with
                 wildcards (such as '*' or 'storage.*') are not allowed. For more
                 information see `IAM
@@ -903,6 +1073,19 @@ class PublisherClient(object):
         request = iam_policy_pb2.TestIamPermissionsRequest(
             resource=resource, permissions=permissions
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("resource", resource)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["test_iam_permissions"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )

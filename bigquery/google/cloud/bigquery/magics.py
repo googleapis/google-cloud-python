@@ -32,6 +32,11 @@
     * ``--project <project>`` (optional, line argument):
         Project to use for running the query. Defaults to the context
         :attr:`~google.cloud.bigquery.magics.Context.project`.
+    * ``--use_bqstorage_api`` (optional, line argument):
+        Downloads the DataFrame using the BigQuery Storage API. To use this
+        option, install the ``google-cloud-bigquery-storage`` and ``fastavro``
+        packages, and `enable the BigQuery Storage API
+        <https://console.cloud.google.com/apis/library/bigquerystorage.googleapis.com>`_.
     * ``--use_legacy_sql`` (optional, line argument):
         Runs the query using Legacy SQL syntax. Defaults to Standard SQL if
         this argument not used.
@@ -134,6 +139,10 @@ try:
     from IPython.core import magic_arguments
 except ImportError:  # pragma: NO COVER
     raise ImportError("This module can only be loaded in IPython.")
+try:
+    from google.cloud import bigquery_storage_v1beta1
+except ImportError:  # pragma: NO COVER
+    bigquery_storage_v1beta1 = None
 
 import google.auth
 from google.cloud import bigquery
@@ -150,6 +159,9 @@ class Context(object):
     def __init__(self):
         self._credentials = None
         self._project = None
+        self._connection = None
+        self._use_bqstorage_api = None
+        self._default_query_job_config = bigquery.QueryJobConfig()
 
     @property
     def credentials(self):
@@ -211,6 +223,43 @@ class Context(object):
     def project(self, value):
         self._project = value
 
+    @property
+    def use_bqstorage_api(self):
+        """bool: [Beta] Set to True to use the BigQuery Storage API to
+        download query results
+
+        To use this option, install the ``google-cloud-bigquery-storage`` and
+        ``fastavro`` packages, and `enable the BigQuery Storage API
+        <https://console.cloud.google.com/apis/library/bigquerystorage.googleapis.com>`_.
+        """
+        return self._use_bqstorage_api
+
+    @use_bqstorage_api.setter
+    def use_bqstorage_api(self, value):
+        self._use_bqstorage_api = value
+
+    @property
+    def default_query_job_config(self):
+        """google.cloud.bigquery.job.QueryJobConfig: Default job
+        configuration for queries.
+
+        The context's :class:`~google.cloud.bigquery.job.QueryJobConfig` is
+        used for queries. Some properties can be overridden with arguments to
+        the magics.
+
+        Example:
+            Manually setting the default value for ``maximum_bytes_billed``
+            to 100 MB:
+
+            >>> from google.cloud.bigquery import magics
+            >>> magics.context.default_query_job_config.maximum_bytes_billed = 100000000
+        """
+        return self._default_query_job_config
+
+    @default_query_job_config.setter
+    def default_query_job_config(self, value):
+        self._default_query_job_config = value
+
 
 context = Context()
 
@@ -266,12 +315,30 @@ def _run_query(client, query, job_config=None):
     help=("Project to use for executing this query. Defaults to the context project."),
 )
 @magic_arguments.argument(
+    "--maximum_bytes_billed",
+    default=None,
+    help=(
+        "maximum_bytes_billed to use for executing this query. Defaults to "
+        "the context default_query_job_config.maximum_bytes_billed."
+    ),
+)
+@magic_arguments.argument(
     "--use_legacy_sql",
     action="store_true",
     default=False,
     help=(
         "Sets query to use Legacy SQL instead of Standard SQL. Defaults to "
         "Standard SQL if this argument is not used."
+    ),
+)
+@magic_arguments.argument(
+    "--use_bqstorage_api",
+    action="store_true",
+    default=False,
+    help=(
+        "[Beta] Use the BigQuery Storage API to download large query results. "
+        "To use this option, install the google-cloud-bigquery-storage and "
+        "fastavro packages, and enable the BigQuery Storage API."
     ),
 )
 @magic_arguments.argument(
@@ -327,17 +394,45 @@ def _cell_magic(line, query):
             )
 
     project = args.project or context.project
-    client = bigquery.Client(project=project, credentials=context.credentials)
+    client = bigquery.Client(
+        project=project,
+        credentials=context.credentials,
+        default_query_job_config=context.default_query_job_config,
+    )
+    if context._connection:
+        client._connection = context._connection
+    bqstorage_client = _make_bqstorage_client(
+        args.use_bqstorage_api or context.use_bqstorage_api, context.credentials
+    )
     job_config = bigquery.job.QueryJobConfig()
     job_config.query_parameters = params
     job_config.use_legacy_sql = args.use_legacy_sql
+
+    if args.maximum_bytes_billed == "None":
+        job_config.maximum_bytes_billed = 0
+    elif args.maximum_bytes_billed is not None:
+        value = int(args.maximum_bytes_billed)
+        job_config.maximum_bytes_billed = value
     query_job = _run_query(client, query, job_config)
 
     if not args.verbose:
         display.clear_output()
 
-    result = query_job.to_dataframe()
+    result = query_job.to_dataframe(bqstorage_client=bqstorage_client)
     if args.destination_var:
         IPython.get_ipython().push({args.destination_var: result})
     else:
         return result
+
+
+def _make_bqstorage_client(use_bqstorage_api, credentials):
+    if not use_bqstorage_api:
+        return None
+
+    if bigquery_storage_v1beta1 is None:
+        raise ImportError(
+            "Install the google-cloud-bigquery-storage and fastavro packages "
+            "to use the BigQuery Storage API."
+        )
+
+    return bigquery_storage_v1beta1.BigQueryStorageClient(credentials=credentials)

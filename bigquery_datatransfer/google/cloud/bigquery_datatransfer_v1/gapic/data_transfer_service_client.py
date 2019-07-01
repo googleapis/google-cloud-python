@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.bigquery.datatransfer.v1 DataTransferService API."""
 
 import functools
@@ -44,6 +45,7 @@ from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 from google.protobuf import timestamp_pb2
 
+
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     "google-cloud-bigquery-datatransfer"
 ).version
@@ -52,9 +54,9 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
 class DataTransferServiceClient(object):
     """
     The Google BigQuery Data Transfer Service API enables BigQuery users to
-    configure the transfer of their data from other Google Products into BigQuery.
-    This service contains methods that are end user exposed. It backs up the
-    frontend.
+    configure the transfer of their data from other Google Products into
+    BigQuery. This service contains methods that are end user exposed. It backs
+    up the frontend.
     """
 
     SERVICE_ADDRESS = "bigquerydatatransfer.googleapis.com:443"
@@ -85,15 +87,6 @@ class DataTransferServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def project_data_source_path(cls, project, data_source):
-        """Return a fully-qualified project_data_source string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/dataSources/{data_source}",
-            project=project,
-            data_source=data_source,
-        )
-
-    @classmethod
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
@@ -101,12 +94,12 @@ class DataTransferServiceClient(object):
         )
 
     @classmethod
-    def project_transfer_config_path(cls, project, transfer_config):
-        """Return a fully-qualified project_transfer_config string."""
+    def project_data_source_path(cls, project, data_source):
+        """Return a fully-qualified project_data_source string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/transferConfigs/{transfer_config}",
+            "projects/{project}/dataSources/{data_source}",
             project=project,
-            transfer_config=transfer_config,
+            data_source=data_source,
         )
 
     @classmethod
@@ -117,6 +110,15 @@ class DataTransferServiceClient(object):
             project=project,
             transfer_config=transfer_config,
             run=run,
+        )
+
+    @classmethod
+    def project_transfer_config_path(cls, project, transfer_config):
+        """Return a fully-qualified project_transfer_config string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/transferConfigs/{transfer_config}",
+            project=project,
+            transfer_config=transfer_config,
         )
 
     def __init__(
@@ -432,7 +434,7 @@ class DataTransferServiceClient(object):
                 configuration. This is required if new credentials are needed, as
                 indicated by ``CheckValidCreds``. In order to obtain
                 authorization\_code, please make a request to
-                https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client\_id=&scope=&redirect\_uri=
+                https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client\_id=&scope=<data\_source\_scopes>&redirect\_uri=<redirect\_uri>
 
                 -  client\_id should be OAuth client\_id of BigQuery DTS API for the
                    given data source returned by ListDataSources method.
@@ -536,7 +538,7 @@ class DataTransferServiceClient(object):
                 configuration. If it is provided, the transfer configuration will be
                 associated with the authorizing user. In order to obtain
                 authorization\_code, please make a request to
-                https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client\_id=&scope=&redirect\_uri=
+                https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client\_id=&scope=<data\_source\_scopes>&redirect\_uri=<redirect\_uri>
 
                 -  client\_id should be OAuth client\_id of BigQuery DTS API for the
                    given data source returned by ListDataSources method.

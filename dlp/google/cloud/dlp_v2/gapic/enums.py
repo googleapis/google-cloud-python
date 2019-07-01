@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Wrappers for protocol buffer enum types."""
 
 import enum
@@ -86,11 +87,17 @@ class FileType(enum.IntEnum):
         ocaml, md, mkd, markdown, m, ml, mli, pl, pm, php, phtml, pht, py, pyw,
         rb, rbw, rs, rc, scala, sh, sql, tex, txt, text, tsv, vcard, vcs, wml,
         xml, xsl, xsd, yml, yaml.
+      IMAGE (int): Included file extensions: bmp, gif, jpg, jpeg, jpe, png.
+      bytes\_limit\_per\_file has no effect on image files.
+      AVRO (int): Included file extensions:
+        avro
     """
 
     FILE_TYPE_UNSPECIFIED = 0
     BINARY_FILE = 1
     TEXT_FILE = 2
+    IMAGE = 3
+    AVRO = 7
 
 
 class InfoTypeSupportedBy(enum.IntEnum):
@@ -167,8 +174,8 @@ class RelationalOperator(enum.IntEnum):
 
     Attributes:
       RELATIONAL_OPERATOR_UNSPECIFIED (int)
-      EQUAL_TO (int): Equal.
-      NOT_EQUAL_TO (int): Not equal to.
+      EQUAL_TO (int): Equal. Attempts to match even with incompatible types.
+      NOT_EQUAL_TO (int): Not equal to. Attempts to match even with incompatible types.
       GREATER_THAN (int): Greater than.
       LESS_THAN (int): Less than.
       GREATER_THAN_OR_EQUALS (int): Greater than or equals.
@@ -212,8 +219,8 @@ class BigQueryOptions(object):
     class SampleMethod(enum.IntEnum):
         """
         How to sample rows if not all rows are scanned. Meaningful only when
-        used in conjunction with rows\_limit. If not specified, scanning would
-        start from the top.
+        used in conjunction with either rows\_limit or rows\_limit\_percent. If
+        not specified, scanning would start from the top.
 
         Attributes:
           SAMPLE_METHOD_UNSPECIFIED (int)
@@ -237,6 +244,7 @@ class ByteContentItem(object):
           IMAGE_PNG (int)
           IMAGE_SVG (int)
           TEXT_UTF8 (int)
+          AVRO (int)
         """
 
         BYTES_TYPE_UNSPECIFIED = 0
@@ -246,6 +254,7 @@ class ByteContentItem(object):
         IMAGE_PNG = 3
         IMAGE_SVG = 4
         TEXT_UTF8 = 5
+        AVRO = 11
 
 
 class CharsToIgnore(object):

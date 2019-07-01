@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## 1.9.0
+
+05-16-2019 12:54 PDT
+
+
+### Implementation Changes
+- Add routing header to method metadata (via synth). ([#7750](https://github.com/googleapis/google-cloud-python/pull/7750))
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+
+### New Features
+- Add `client_info` support to client. ([#7878](https://github.com/googleapis/google-cloud-python/pull/7878))
+
+### Dependencies
+- Pin `google-cloud-core >= 1.0.0, < 2.0dev`. ([#7993](https://github.com/googleapis/google-cloud-python/pull/7993))
+
+### Documentation
+- Expand API reference for snapshot / transaction. ([#7618](https://github.com/googleapis/google-cloud-python/pull/7618))
+
+### Internal / Testing Changes
+- Add nox session `docs`, remove retries for DEADLINE_EXCEEDED (via synth). ([#7781](https://github.com/googleapis/google-cloud-python/pull/7781))
+- Added matching END tags to Spanner Tests ([#7529](https://github.com/googleapis/google-cloud-python/pull/7529))
+
 ## 1.8.0
 
 03-05-2019 12:57 PST

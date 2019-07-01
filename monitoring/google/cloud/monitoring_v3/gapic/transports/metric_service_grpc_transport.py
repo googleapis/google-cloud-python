@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 import google.api_core.grpc_helpers
 
 from google.cloud.monitoring_v3.proto import metric_service_pb2_grpc
@@ -73,7 +74,9 @@ class MetricServiceGrpcTransport(object):
         }
 
     @classmethod
-    def create_channel(cls, address="monitoring.googleapis.com:443", credentials=None):
+    def create_channel(
+        cls, address="monitoring.googleapis.com:443", credentials=None, **kwargs
+    ):
         """Create and return a gRPC channel object.
 
         Args:
@@ -83,6 +86,8 @@ class MetricServiceGrpcTransport(object):
                 credentials identify this application to the service. If
                 none are specified, the client will attempt to ascertain
                 the credentials from the environment.
+            kwargs (dict): Keyword arguments, which are passed to the
+                channel creation.
 
         Returns:
             grpc.Channel: A gRPC channel object.
@@ -95,6 +100,7 @@ class MetricServiceGrpcTransport(object):
                 "grpc.max_send_message_length": -1,
                 "grpc.max_receive_message_length": -1,
             }.items(),
+            **kwargs
         )
 
     @property

@@ -22,26 +22,38 @@ import setuptools
 
 name = "google-cloud-bigquery"
 description = "Google BigQuery API client library"
-version = "1.10.0"
+version = "1.15.0"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
-    "google-api-core >= 1.6.0, < 2.0.0dev",
-    "google-cloud-core >= 0.29.0, < 0.30dev",
+    'enum34; python_version < "3.4"',
+    "google-cloud-core >= 1.0.0, < 2.0dev",
     "google-resumable-media >= 0.3.1",
+    "protobuf >= 3.6.0",
 ]
 extras = {
-    "bqstorage": "google-cloud-bigquery-storage >= 0.2.0dev1, <2.0.0dev",
-    "pandas": "pandas>=0.17.1",
+    "bqstorage": [
+        "google-cloud-bigquery-storage >= 0.4.0, <2.0.0dev",
+        "fastavro>=0.21.2",
+    ],
+    "pandas": ["pandas>=0.17.1"],
     # Exclude PyArrow dependency from Windows Python 2.7.
-    'pyarrow: platform_system != "Windows" or python_version >= "3.4"': "pyarrow>=0.4.1",
-    "tqdm": "tqdm >= 4.0.0, <5.0.0dev",
+    'pyarrow: platform_system != "Windows" or python_version >= "3.4"': [
+        "pyarrow>=0.4.1"
+    ],
+    "tqdm": ["tqdm >= 4.0.0, <5.0.0dev"],
     "fastparquet": ["fastparquet", "python-snappy"],
 }
 
+all_extras = []
+
+for extra in extras:
+    all_extras.extend(extras[extra])
+
+extras["all"] = all_extras
 
 # Setup boilerplate below this line.
 

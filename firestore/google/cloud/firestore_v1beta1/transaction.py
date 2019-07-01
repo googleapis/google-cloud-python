@@ -50,7 +50,7 @@ class Transaction(batch.WriteBatch):
             created this transaction.
         max_attempts (Optional[int]): The maximum number of attempts for
             the transaction (i.e. allowing retries). Defaults to
-            :attr:`~.firestore_v1beta1.transaction.MAX_ATTEMPTS`.
+            :attr:`~google.cloud.firestore_v1beta1.transaction.MAX_ATTEMPTS`.
         read_only (Optional[bool]): Flag indicating if the transaction
             should be read-only or should allow writes. Defaults to
             :data:`False`.
@@ -206,7 +206,7 @@ class _Transactional(object):
     """Provide a callable object to use as a transactional decorater.
 
     This is surfaced via
-    :func:`~.firestore_v1beta1.transaction.transactional`.
+    :func:`~google.cloud.firestore_v1beta1.transaction.transactional`.
 
     Args:
         to_wrap (Callable[~.firestore_v1beta1.transaction.Transaction, \
