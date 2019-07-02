@@ -3,6 +3,9 @@ Contributing
 ############
 
 #. **Please sign one of the contributor license agreements below.**
+#. ``python-ndb`` is undergoing heavy development right now, so if you plan to
+   implement a feature, please create an issue to discuss your idea first. That
+   way we can coordinate and avoid possibly duplicating ongoing work.
 #. Fork the repo, develop and test your code changes, add docs.
 #. Make sure that your commit messages clearly describe the changes.
 #. Send a pull request. (Please Read: `Faster Pull Request Reviews`_)
