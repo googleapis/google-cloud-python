@@ -36,6 +36,7 @@ from google.cloud.firestore_v1.document import DocumentReference
 from google.cloud.firestore_v1.document import DocumentSnapshot
 from google.cloud.firestore_v1.field_path import render_field_path
 from google.cloud.firestore_v1.gapic import firestore_client
+from google.cloud.firestore_v1.gapic.transports import firestore_grpc_transport
 from google.cloud.firestore_v1.transaction import Transaction
 
 
@@ -112,11 +113,32 @@ class Client(ClientWithProject):
             <The GAPIC client with the credentials of the current client.
         """
         if self._firestore_api_internal is None:
+            # Use a custom channel.
+            # We need this in order to set appropriate keepalive options.
+            channel = firestore_grpc_transport.FirestoreGrpcTransport.create_channel(
+                self._target,
+                credentials=self._credentials,
+                options={"grpc.keepalive_time_ms": 30000}.items(),
+            )
+
+            self._transport = firestore_grpc_transport.FirestoreGrpcTransport(
+                address=self._target, channel=channel
+            )
+
             self._firestore_api_internal = firestore_client.FirestoreClient(
-                credentials=self._credentials, client_info=self._client_info
+                transport=self._transport, client_info=self._client_info
             )
 
         return self._firestore_api_internal
+
+    @property
+    def _target(self):
+        """Return the target (where the API is).
+
+        Returns:
+            str: The location of the API.
+        """
+        return firestore_client.FirestoreClient.SERVICE_ADDRESS
 
     @property
     def _database_string(self):
@@ -203,7 +225,7 @@ class Client(ClientWithProject):
 
         .. code-block:: python
 
-            >>> query = firestore.collection_group('mygroup')
+            >>> query = client.collection_group('mygroup')
 
         @param {string} collectionId Identifies the collections to query over.
         Every collection or subcollection with this ID as the last segment of its
@@ -520,8 +542,9 @@ def _parse_batch_get(get_doc_response, reference_map, client):
             update_time=get_doc_response.found.update_time,
         )
     elif result_type == "missing":
+        reference = _get_reference(get_doc_response.missing, reference_map)
         snapshot = DocumentSnapshot(
-            None,
+            reference,
             None,
             exists=False,
             read_time=get_doc_response.read_time,

@@ -59,6 +59,7 @@ from google.api_core.exceptions import InternalServerError
 from google.api_core.exceptions import ServiceUnavailable
 from google.api_core.exceptions import TooManyRequests
 from google.cloud import bigquery
+from google.cloud import bigquery_v2
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.table import Table
@@ -701,6 +702,45 @@ class TestBigQuery(unittest.TestCase):
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_load_table_from_dataframe_w_required(self):
+        """Test that a DataFrame with required columns can be uploaded if a
+        BigQuery schema is specified.
+
+        See: https://github.com/googleapis/google-cloud-python/issues/8093
+        """
+        table_schema = (
+            bigquery.SchemaField("name", "STRING", mode="REQUIRED"),
+            bigquery.SchemaField("age", "INTEGER", mode="REQUIRED"),
+        )
+
+        records = [{"name": "Chip", "age": 2}, {"name": "Dale", "age": 3}]
+        dataframe = pandas.DataFrame(records)
+        job_config = bigquery.LoadJobConfig(schema=table_schema)
+        dataset_id = _make_dataset_id("bq_load_test")
+        self.temp_dataset(dataset_id)
+        table_id = "{}.{}.load_table_from_dataframe_w_required".format(
+            Config.CLIENT.project, dataset_id
+        )
+
+        # Create the table before loading so that schema mismatch errors are
+        # identified.
+        table = retry_403(Config.CLIENT.create_table)(
+            Table(table_id, schema=table_schema)
+        )
+        self.to_delete.insert(0, table)
+
+        job_config = bigquery.LoadJobConfig(schema=table_schema)
+        load_job = Config.CLIENT.load_table_from_dataframe(
+            dataframe, table_id, job_config=job_config
+        )
+        load_job.result()
+
+        table = Config.CLIENT.get_table(table)
+        self.assertEqual(tuple(table.schema), table_schema)
+        self.assertEqual(table.num_rows, 2)
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_load_table_from_dataframe_w_explicit_schema(self):
         # Schema with all scalar types.
         scalars_schema = (
@@ -1201,6 +1241,15 @@ class TestBigQuery(unittest.TestCase):
         with self.assertRaises(concurrent.futures.TimeoutError):
             # 1 second is much too short for this query.
             query_job.result(timeout=1)
+
+    def test_query_w_page_size(self):
+        page_size = 45
+        query_job = Config.CLIENT.query(
+            "SELECT word FROM `bigquery-public-data.samples.shakespeare`;",
+            job_id_prefix="test_query_w_page_size_",
+        )
+        iterator = query_job.result(page_size=page_size)
+        self.assertEqual(next(iterator.pages).num_items, page_size)
 
     def test_query_statistics(self):
         """
@@ -1815,6 +1864,40 @@ class TestBigQuery(unittest.TestCase):
         row_tuples = [r.values() for r in rows]
         expected_rows = [("Some value", record)]
         self.assertEqual(row_tuples, expected_rows)
+
+    def test_create_routine(self):
+        routine_name = "test_routine"
+        dataset = self.temp_dataset(_make_dataset_id("create_routine"))
+        float64_type = bigquery_v2.types.StandardSqlDataType(
+            type_kind=bigquery_v2.enums.StandardSqlDataType.TypeKind.FLOAT64
+        )
+        routine = bigquery.Routine(
+            dataset.routine(routine_name),
+            language="JAVASCRIPT",
+            type_="SCALAR_FUNCTION",
+            return_type=float64_type,
+            imported_libraries=["gs://cloud-samples-data/bigquery/udfs/max-value.js"],
+        )
+        routine.arguments = [
+            bigquery.RoutineArgument(
+                name="arr",
+                data_type=bigquery_v2.types.StandardSqlDataType(
+                    type_kind=bigquery_v2.enums.StandardSqlDataType.TypeKind.ARRAY,
+                    array_element_type=float64_type,
+                ),
+            )
+        ]
+        routine.body = "return maxValue(arr)"
+        query_string = "SELECT `{}`([-100.0, 3.14, 100.0, 42.0]) as max_value;".format(
+            str(routine.reference)
+        )
+
+        routine = retry_403(Config.CLIENT.create_routine)(routine)
+        query_job = retry_403(Config.CLIENT.query)(query_string)
+        rows = list(query_job.result())
+
+        assert len(rows) == 1
+        assert rows[0].max_value == 100.0
 
     def test_create_table_rows_fetch_nested_schema(self):
         table_name = "test_table"

@@ -13,12 +13,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.texttospeech.v1beta1 TextToSpeech API."""
 
 import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -32,6 +34,7 @@ from google.cloud.texttospeech_v1beta1.gapic.transports import (
 )
 from google.cloud.texttospeech_v1beta1.proto import cloud_tts_pb2
 from google.cloud.texttospeech_v1beta1.proto import cloud_tts_pb2_grpc
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     "google-cloud-texttospeech"
@@ -75,6 +78,7 @@ class TextToSpeechClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -105,6 +109,9 @@ class TextToSpeechClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -123,6 +130,15 @@ class TextToSpeechClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -131,6 +147,7 @@ class TextToSpeechClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=text_to_speech_grpc_transport.TextToSpeechGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -141,7 +158,7 @@ class TextToSpeechClient(object):
                 self.transport = transport
         else:
             self.transport = text_to_speech_grpc_transport.TextToSpeechGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:

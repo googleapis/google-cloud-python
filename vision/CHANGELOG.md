@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## 0.37.0
+
+05-30-2019 15:19 PDT
+
+### Implementation Changes
+- Add routing header to method metadata (via synth).  ([#7604](https://github.com/googleapis/google-cloud-python/pull/7604))
+
+### New Features
+- Add more categories to product search, update noxfile (via synth). ([#8170](https://github.com/googleapis/google-cloud-python/pull/8170))
+- Add batch annotation for images and files, reorder methods (via synth).  ([#7845](https://github.com/googleapis/google-cloud-python/pull/7845))
+- Vision: Add proto files for v1p4beta1
+
+### Internal / Testing Changes
+- Change docstrings (via synth). ([#7983](https://github.com/googleapis/google-cloud-python/pull/7983))
+- Add system tests for Vision Product Search. Test product set resource… ([#7913](https://github.com/googleapis/google-cloud-python/pull/7913))
+-  Update noxfile and docs configuration (via synth). ([#7839](https://github.com/googleapis/google-cloud-python/pull/7839))
+- Vision: Add nox session `docs`, reorder methods, modify samples in docstrings (via synth). ([#7787](https://github.com/googleapis/google-cloud-python/pull/7787))
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+- Copy lintified proto files (via synth). ([#7473](https://github.com/googleapis/google-cloud-python/pull/7473))
+
 ## 0.36.0
 
 02-25-2019 15:02 PST

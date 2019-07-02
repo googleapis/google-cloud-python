@@ -22,14 +22,35 @@ from google.api_core.protobuf_helpers import get_messages
 
 from google.cloud.datacatalog_v1beta1.proto import datacatalog_pb2
 from google.cloud.datacatalog_v1beta1.proto import schema_pb2
+from google.cloud.datacatalog_v1beta1.proto import search_pb2
 from google.cloud.datacatalog_v1beta1.proto import table_spec_pb2
+from google.cloud.datacatalog_v1beta1.proto import tags_pb2
 from google.cloud.datacatalog_v1beta1.proto import timestamps_pb2
+from google.iam.v1 import iam_policy_pb2
+from google.iam.v1 import policy_pb2
+from google.protobuf import empty_pb2
+from google.protobuf import field_mask_pb2
 from google.protobuf import timestamp_pb2
+from google.type import expr_pb2
 
 
-_shared_modules = [timestamp_pb2]
+_shared_modules = [
+    iam_policy_pb2,
+    policy_pb2,
+    empty_pb2,
+    field_mask_pb2,
+    timestamp_pb2,
+    expr_pb2,
+]
 
-_local_modules = [datacatalog_pb2, schema_pb2, table_spec_pb2, timestamps_pb2]
+_local_modules = [
+    datacatalog_pb2,
+    schema_pb2,
+    search_pb2,
+    table_spec_pb2,
+    tags_pb2,
+    timestamps_pb2,
+]
 
 names = []
 

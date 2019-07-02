@@ -21,6 +21,7 @@ import sys
 from google.api_core.protobuf_helpers import get_messages
 
 from google.cloud.automl_v1beta1.proto import annotation_payload_pb2
+from google.cloud.automl_v1beta1.proto import annotation_spec_pb2
 from google.cloud.automl_v1beta1.proto import classification_pb2
 from google.cloud.automl_v1beta1.proto import column_spec_pb2
 from google.cloud.automl_v1beta1.proto import data_items_pb2
@@ -68,6 +69,7 @@ _shared_modules = [
 
 _local_modules = [
     annotation_payload_pb2,
+    annotation_spec_pb2,
     classification_pb2,
     column_spec_pb2,
     data_items_pb2,

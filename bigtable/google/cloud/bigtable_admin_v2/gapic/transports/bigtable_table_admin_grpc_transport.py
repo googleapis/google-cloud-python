@@ -90,7 +90,7 @@ class BigtableTableAdminGrpcTransport(object):
 
     @classmethod
     def create_channel(
-        cls, address="bigtableadmin.googleapis.com:443", credentials=None
+        cls, address="bigtableadmin.googleapis.com:443", credentials=None, **kwargs
     ):
         """Create and return a gRPC channel object.
 
@@ -101,6 +101,8 @@ class BigtableTableAdminGrpcTransport(object):
                 credentials identify this application to the service. If
                 none are specified, the client will attempt to ascertain
                 the credentials from the environment.
+            kwargs (dict): Keyword arguments, which are passed to the
+                channel creation.
 
         Returns:
             grpc.Channel: A gRPC channel object.
@@ -113,6 +115,7 @@ class BigtableTableAdminGrpcTransport(object):
                 "grpc.max_send_message_length": -1,
                 "grpc.max_receive_message_length": -1,
             }.items(),
+            **kwargs
         )
 
     @property

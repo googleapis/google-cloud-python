@@ -45,6 +45,14 @@ s.move(
     ],
 )
 
+# Fix docstring issue for classes with no summary line
+s.replace(
+    "google/cloud/**/proto/*_pb2.py",
+    '''__doc__ = """Attributes:''',
+    '''__doc__ = """
+    Attributes:''',
+)
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------

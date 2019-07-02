@@ -684,7 +684,6 @@ class Bucket(_PropertyMixin):
         :param generation: Optional. If present, selects a specific revision of
                            this object.
 
-        :type kwargs: dict
         :param kwargs: Keyword arguments to pass to the
                        :class:`~google.cloud.storage.blob.Blob` constructor.
 
@@ -720,6 +719,9 @@ class Bucket(_PropertyMixin):
         client=None,
     ):
         """Return an iterator used to find blobs in the bucket.
+
+        .. note::
+          Direct use of this method is deprecated. Use ``Client.list_blobs`` instead.
 
         If :attr:`user_project` is set, bills the API request to that project.
 

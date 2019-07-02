@@ -44,11 +44,6 @@ class IAMCredentialsStub(object):
             request_serializer=google_dot_iam_dot_credentials_dot_v1_dot_common__pb2.SignJwtRequest.SerializeToString,
             response_deserializer=google_dot_iam_dot_credentials_dot_v1_dot_common__pb2.SignJwtResponse.FromString,
         )
-        self.GenerateIdentityBindingAccessToken = channel.unary_unary(
-            "/google.iam.credentials.v1.IAMCredentials/GenerateIdentityBindingAccessToken",
-            request_serializer=google_dot_iam_dot_credentials_dot_v1_dot_common__pb2.GenerateIdentityBindingAccessTokenRequest.SerializeToString,
-            response_deserializer=google_dot_iam_dot_credentials_dot_v1_dot_common__pb2.GenerateIdentityBindingAccessTokenResponse.FromString,
-        )
 
 
 class IAMCredentialsServicer(object):
@@ -91,14 +86,6 @@ class IAMCredentialsServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
-    def GenerateIdentityBindingAccessToken(self, request, context):
-        """Exchange a JWT signed by third party identity provider to an OAuth 2.0
-    access token
-    """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
-
 
 def add_IAMCredentialsServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -121,11 +108,6 @@ def add_IAMCredentialsServicer_to_server(servicer, server):
             servicer.SignJwt,
             request_deserializer=google_dot_iam_dot_credentials_dot_v1_dot_common__pb2.SignJwtRequest.FromString,
             response_serializer=google_dot_iam_dot_credentials_dot_v1_dot_common__pb2.SignJwtResponse.SerializeToString,
-        ),
-        "GenerateIdentityBindingAccessToken": grpc.unary_unary_rpc_method_handler(
-            servicer.GenerateIdentityBindingAccessToken,
-            request_deserializer=google_dot_iam_dot_credentials_dot_v1_dot_common__pb2.GenerateIdentityBindingAccessTokenRequest.FromString,
-            response_serializer=google_dot_iam_dot_credentials_dot_v1_dot_common__pb2.GenerateIdentityBindingAccessTokenResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(

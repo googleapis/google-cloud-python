@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import time
 import logging
 import unittest
 
@@ -243,7 +244,9 @@ class Test_Worker(unittest.TestCase):
         worker = self._make_one(_Logger(self.NAME))
 
         self._start_with_thread_patch(worker)
-        worker.enqueue(mock.Mock(), "")
+        record = mock.Mock()
+        record.created = time.time()
+        worker.enqueue(record, "")
         worker._main_thread_terminated()
 
         self.assertFalse(worker.is_alive)
@@ -253,7 +256,9 @@ class Test_Worker(unittest.TestCase):
 
         self._start_with_thread_patch(worker)
         worker._thread._terminate_on_join = False
-        worker.enqueue(mock.Mock(), "")
+        record = mock.Mock()
+        record.created = time.time()
+        worker.enqueue(record, "")
         worker._main_thread_terminated()
 
         self.assertFalse(worker.is_alive)
@@ -431,6 +436,7 @@ class _Batch(object):
         labels=None,
         trace=None,
         span_id=None,
+        timestamp=None,
     ):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
 

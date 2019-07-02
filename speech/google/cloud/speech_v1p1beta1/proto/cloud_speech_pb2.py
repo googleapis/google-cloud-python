@@ -2184,16 +2184,10 @@ RecognitionConfig = _reflection.GeneratedProtocolMessageType(
           *Optional* Set to true to use an enhanced model for speech
           recognition. If ``use_enhanced`` is set to true and the
           ``model`` field is not set, then an appropriate enhanced model
-          is chosen if: 1. project is eligible for requesting enhanced
-          models 2. an enhanced model exists for the audio  If
+          is chosen if an enhanced model exists for the audio.  If
           ``use_enhanced`` is true and an enhanced version of the
           specified model does not exist, then the speech is recognized
-          using the standard version of the specified model.  Enhanced
-          speech models require that you opt-in to data logging using
-          instructions in the `documentation </speech-to-
-          text/docs/enable-data-logging>`__. If you set ``use_enhanced``
-          to true and you have not enabled audio logging, then you will
-          receive an error.
+          using the standard version of the specified model.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.speech.v1p1beta1.RecognitionConfig)
     ),
@@ -2265,7 +2259,12 @@ SpeechContext = _reflection.GeneratedProtocolMessageType(
           specific words and phrases, for example, if specific commands
           are typically spoken by the user. This can also be used to add
           additional words to the vocabulary of the recognizer. See
-          `usage limits </speech-to-text/quotas#content>`__.
+          `usage limits </speech-to-text/quotas#content>`__.  List items
+          can also be set to classes for groups of words that represent
+          common concepts that occur in natural language. For example,
+          rather than providing phrase hints for every month of the
+          year, using the $MONTH class improves the likelihood of
+          correctly transcribing audio that includes months.
       boost:
           Hint Boost. Positive value will increase the probability that
           a specific phrase will be recognized over other similar

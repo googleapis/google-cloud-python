@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## 1.9.0
+
+06-05-2019 10:42 PDT
+
+
+### Implementation Changes
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+
+### New Features
+- Add v1 object tracking support, v1p3b1 speech transcription / logo recognition support (via synth). ([#8221](https://github.com/googleapis/google-cloud-python/pull/8221))
+
+### Documentation
+- Change input_uri for sample video (via synth). ([#7944](https://github.com/googleapis/google-cloud-python/pull/7944))
+- Fix uri to video (via synth).  ([#7862](https://github.com/googleapis/google-cloud-python/pull/7862))
+
+### Internal / Testing Changes
+- Fix coverage in 'types.py' (via synth). ([#8169](https://github.com/googleapis/google-cloud-python/pull/8169))
+- Blacken noxfile.py, setup.py (via synth). ([#8136](https://github.com/googleapis/google-cloud-python/pull/8136))
+- Harden synth replacement against template changes. ([#8104](https://github.com/googleapis/google-cloud-python/pull/8104))
+- Update noxfile (via synth). ([#7838](https://github.com/googleapis/google-cloud-python/pull/7838))
+- Add nox session `docs` (via synth). ([#7786](https://github.com/googleapis/google-cloud-python/pull/7786))
+- Update docs build configuration.  ([#7603](https://github.com/googleapis/google-cloud-python/pull/7603))
+
 ## 1.8.0
 
 03-06-2019 12:20 PST

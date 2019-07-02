@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-bigquery"
 description = "Google BigQuery API client library"
-version = "1.12.1"
+version = "1.15.0"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
@@ -30,7 +30,6 @@ version = "1.12.1"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     'enum34; python_version < "3.4"',
-    "google-api-core >= 1.6.0, < 2.0.0dev",
     "google-cloud-core >= 1.0.0, < 2.0dev",
     "google-resumable-media >= 0.3.1",
     "protobuf >= 3.6.0",
@@ -52,6 +51,11 @@ extras = {
 all_extras = []
 
 for extra in extras:
+    if extra == "fastparquet":
+        # Skip fastparquet from "all" because it is redundant with pyarrow and
+        # creates a dependency on pre-release versions of numpy. See:
+        # https://github.com/googleapis/google-cloud-python/issues/8549
+        continue
     all_extras.extend(extras[extra])
 
 extras["all"] = all_extras

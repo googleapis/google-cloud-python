@@ -4,6 +4,42 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.15.0
+
+06-14-2019 10:10 PDT
+
+### Implementation Changes
+
+- Fix bug where `load_table_from_dataframe` could not append to REQUIRED fields. ([#8230](https://github.com/googleapis/google-cloud-python/pull/8230))
+
+### New Features
+
+- Add `page_size` parameter to `QueryJob.result`. ([#8206](https://github.com/googleapis/google-cloud-python/pull/8206))
+
+## 1.14.0
+
+06-04-2019 11:11 PDT
+
+
+### New Features
+- Add `maximum_bytes_billed` argument and `context.default_query_job_config` property to magics. ([#8179](https://github.com/googleapis/google-cloud-python/pull/8179))
+
+### Dependencies
+- Don't pin `google-api-core` in libs using `google-cloud-core`. ([#8213](https://github.com/googleapis/google-cloud-python/pull/8213))
+
+## 1.13.0
+
+05-31-2019 10:22 PDT
+
+### New Features
+
+- Use `job_config.schema` for data type conversion if specified in `load_table_from_dataframe`. ([#8105](https://github.com/googleapis/google-cloud-python/pull/8105))
+
+### Internal / Testing Changes
+
+- Adds private `_connection` object to magics context. ([#8192](https://github.com/googleapis/google-cloud-python/pull/8192))
+- Fix coverage in 'types.py' (via synth). ([#8146](https://github.com/googleapis/google-cloud-python/pull/8146))
+
 ## 1.12.1
 
 05-21-2019 11:16 PDT
