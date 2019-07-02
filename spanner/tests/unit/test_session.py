@@ -1079,3 +1079,28 @@ class TestSession(unittest.TestCase):
             ]
             * 3,
         )
+
+    def test_delay_until_retry_helper(self):
+        from google.cloud.spanner_v1.session import _delay_until_retry
+
+        metadata_mock = mock.Mock()
+        metadata_mock.trailing_metadata.return_value = {}
+
+        exc_mock = mock.Mock(errors=[metadata_mock])
+
+        def _time_func():
+            return 3
+
+        # check if current time > deadline
+        with mock.patch("time.time", _time_func):
+            with self.assertRaises(Exception):
+                _delay_until_retry(exc_mock, 2, 1)
+
+        # check if delay is None
+        with mock.patch("time.time", _time_func):
+            with mock.patch(
+                'google.cloud.spanner_v1.session._get_retry_delay'
+            ) as get_retry_delay_mock:
+                get_retry_delay_mock.return_value = None
+
+                _delay_until_retry(exc_mock, 6, 1)
