@@ -379,7 +379,7 @@ class _Client(object):
         self.project = project
 
     def __eq__(self, other):
-        if not isinstance(other, self.__class__):
+        if not isinstance(other, self.__class__):  # pragma: NO COVER
             return NotImplemented
         return (
             self._connection == other._connection and
