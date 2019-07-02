@@ -2461,7 +2461,7 @@ RequestMetadata = _reflection.GeneratedProtocolMessageType(
           tenant site rely on this field being set correctly to a unique
           user ID.  The maximum number of allowed characters is 255.
       allow_missing_ids:
-          Optional.  If set to ``true``,
+          Optional. If set to ``true``,
           [domain][google.cloud.talent.v4beta1.RequestMetadata.domain], 
           [session\_id][google.cloud.talent.v4beta1.RequestMetadata.sess
           ion\_id] and [user\_id][google.cloud.talent.v4beta1.RequestMet
@@ -2473,7 +2473,7 @@ RequestMetadata = _reflection.GeneratedProtocolMessageType(
           ion\_id] and [user\_id][google.cloud.talent.v4beta1.RequestMet
           adata.user\_id] for the best service experience.
       device_info:
-          Optional.  The type of device used by the job seeker at the
+          Optional. The type of device used by the job seeker at the
           time of the call to the service.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.RequestMetadata)
@@ -2514,9 +2514,9 @@ DeviceInfo = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       device_type:
-          Optional.  Type of the device.
+          Optional. Type of the device.
       id:
-          Optional.  A device-specific ID. The ID must be a unique
+          Optional. A device-specific ID. The ID must be a unique
           identifier that distinguishes the device from other devices.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.DeviceInfo)
@@ -2555,7 +2555,7 @@ CustomAttribute = _reflection.GeneratedProtocolMessageType(
           [google.cloud.talent.v4beta1.CustomAttribute.long\_values] is
           supported.
       filterable:
-          Optional.  If the ``filterable`` flag is true, custom field
+          Optional. If the ``filterable`` flag is true, custom field
           values are searchable. If false, values are not searchable.
           Default is false.
   """,
@@ -2621,28 +2621,28 @@ CompensationInfo = _reflection.GeneratedProtocolMessageType(
     
     Attributes:
         type:
-            Optional.  Compensation type.  Default is [CompensationType.CO
-            MPENSATION\_TYPE\_UNSPECIFIED][google.cloud.talent.v4beta1.Com
-            pensationInfo.CompensationType.COMPENSATION\_TYPE\_UNSPECIFIED
-            ].
+            Optional. Compensation type.  Default is [CompensationType.COM
+            PENSATION\_TYPE\_UNSPECIFIED][google.cloud.talent.v4beta1.Comp
+            ensationInfo.CompensationType.COMPENSATION\_TYPE\_UNSPECIFIED]
+            .
         unit:
-            Optional.  Frequency of the specified amount.  Default is [Com
-            pensationUnit.COMPENSATION\_UNIT\_UNSPECIFIED][google.cloud.ta
-            lent.v4beta1.CompensationInfo.CompensationUnit.COMPENSATION\_U
-            NIT\_UNSPECIFIED].
+            Optional. Frequency of the specified amount.  Default is [Comp
+            ensationUnit.COMPENSATION\_UNIT\_UNSPECIFIED][google.cloud.tal
+            ent.v4beta1.CompensationInfo.CompensationUnit.COMPENSATION\_UN
+            IT\_UNSPECIFIED].
         compensation_amount:
             Optional.  Compensation amount. It could be a fixed amount or
             a floating range.
         amount:
-            Optional.  Compensation amount.
+            Optional. Compensation amount.
         range:
-            Optional.  Compensation range.
+            Optional. Compensation range.
         description:
-            Optional.  Compensation description. For example, could
+            Optional. Compensation description. For example, could
             indicate equity terms or provide additional context to an
             estimated bonus.
         expected_units_per_year:
-            Optional.  Expected number of units paid each year. If not
+            Optional. Expected number of units paid each year. If not
             specified, when [Job.employment\_types][google.cloud.talent.v4
             beta1.Job.employment\_types] is FULLTIME, a default value is
             inferred based on [unit][google.cloud.talent.v4beta1.Compensat
@@ -2663,12 +2663,12 @@ CompensationInfo = _reflection.GeneratedProtocolMessageType(
     
     Attributes:
         max_compensation:
-            Optional.  The maximum amount of compensation. If left empty,
+            Optional. The maximum amount of compensation. If left empty,
             the value is set to a maximal compensation value and the
             currency code is set to match the [currency
             code][google.type.Money.currency\_code] of min\_compensation.
         min_compensation:
-            Optional.  The minimum amount of compensation. If left empty,
+            Optional. The minimum amount of compensation. If left empty,
             the value is set to zero and the currency code is set to match
             the [currency code][google.type.Money.currency\_code] of
             max\_compensation.
@@ -2683,9 +2683,9 @@ CompensationInfo = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       entries:
-          Optional.  Job compensation information.  At most one entry
-          can be of type [CompensationInfo.CompensationType.BASE][google
-          .cloud.talent.v4beta1.CompensationInfo.CompensationType.BASE],
+          Optional. Job compensation information.  At most one entry can
+          be of type [CompensationInfo.CompensationType.BASE][google.clo
+          ud.talent.v4beta1.CompensationInfo.CompensationType.BASE],
           which is referred as **base compensation entry** for the job.
       annualized_base_compensation_range:
           Output only. Annualized base compensation range. Computed as
@@ -2724,18 +2724,18 @@ Certification = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       display_name:
-          Optional.  Name of license or certification.  Number of
+          Optional. Name of license or certification.  Number of
           characters allowed is 100.
       acquire_date:
-          Optional.  Acquisition date or effective date of license or
+          Optional. Acquisition date or effective date of license or
           certification.
       expire_date:
-          Optional.  Expiration date of license of certification.
+          Optional. Expiration date of license of certification.
       authority:
-          Optional.  Authority of license, such as government.  Number
-          of characters allowed is 100.
+          Optional. Authority of license, such as government.  Number of
+          characters allowed is 100.
       description:
-          Optional.  Description of license or certification.  Number of
+          Optional. Description of license or certification.  Number of
           characters allowed is 100,000.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.Certification)
@@ -2754,16 +2754,16 @@ Skill = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       display_name:
-          Optional.  Skill display name.  For example, "Java", "Python".
+          Optional. Skill display name.  For example, "Java", "Python".
           Number of characters allowed is 100.
       last_used_date:
-          Optional.  The last time this skill was used.
+          Optional. The last time this skill was used.
       level:
-          Optional.  Skill proficiency level which indicates how
+          Optional. Skill proficiency level which indicates how
           proficient the candidate is at this skill.
       context:
-          Optional.  A paragraph describes context of this skill.
-          Number of characters allowed is 100,000.
+          Optional. A paragraph describes context of this skill.  Number
+          of characters allowed is 100,000.
       skill_name_snippet:
           Output only. Skill name snippet shows how the [display\_name][
           google.cloud.talent.v4beta1.Skill.display\_name] is related to
@@ -2787,9 +2787,9 @@ Interview = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       rating:
-          Optional.  The rating on this interview.
+          Optional. The rating on this interview.
       outcome:
-          Required.  The overall decision resulting from this interview
+          Required. The overall decision resulting from this interview
           (positive, negative, nuetral).
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.Interview)

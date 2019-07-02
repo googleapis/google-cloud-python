@@ -247,15 +247,12 @@ class TenantServiceClient(object):
             >>> response = client.create_tenant(parent, tenant)
 
         Args:
-            parent (str): Required.
-
-                Resource name of the project under which the tenant is created.
+            parent (str): Required. Resource name of the project under which the tenant is
+                created.
 
                 The format is "projects/{project\_id}", for example,
                 "projects/api-test-project".
-            tenant (Union[dict, ~google.cloud.talent_v4beta1.types.Tenant]): Required.
-
-                The tenant to be created.
+            tenant (Union[dict, ~google.cloud.talent_v4beta1.types.Tenant]): Required. The tenant to be created.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.Tenant`
@@ -327,9 +324,7 @@ class TenantServiceClient(object):
             >>> response = client.get_tenant(name)
 
         Args:
-            name (str): Required.
-
-                The resource name of the tenant to be retrieved.
+            name (str): Required. The resource name of the tenant to be retrieved.
 
                 The format is "projects/{project\_id}/tenants/{tenant\_id}", for
                 example, "projects/api-test-project/tenants/foo".
@@ -403,9 +398,8 @@ class TenantServiceClient(object):
             >>> response = client.update_tenant(tenant)
 
         Args:
-            tenant (Union[dict, ~google.cloud.talent_v4beta1.types.Tenant]): Required.
-
-                The tenant resource to replace the current resource in the system.
+            tenant (Union[dict, ~google.cloud.talent_v4beta1.types.Tenant]): Required. The tenant resource to replace the current resource in the
+                system.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.Tenant`
@@ -489,9 +483,7 @@ class TenantServiceClient(object):
             >>> client.delete_tenant(name)
 
         Args:
-            name (str): Required.
-
-                The resource name of the tenant to be deleted.
+            name (str): Required. The resource name of the tenant to be deleted.
 
                 The format is "projects/{project\_id}/tenants/{tenant\_id}", for
                 example, "projects/api-test-project/tenants/foo".
@@ -573,9 +565,8 @@ class TenantServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): Required.
-
-                Resource name of the project under which the tenant is created.
+            parent (str): Required. Resource name of the project under which the tenant is
+                created.
 
                 The format is "projects/{project\_id}", for example,
                 "projects/api-test-project".
