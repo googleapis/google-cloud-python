@@ -299,16 +299,23 @@ class Test_Bucket(unittest.TestCase):
         bucket._properties = properties or {}
         return bucket
 
+    def test_ctor_w_invalid_name(self):
+        NAME = "#invalid"
+        with self.assertRaises(ValueError):
+            self._make_one(name=NAME)
+
     def test_ctor(self):
         NAME = "name"
         properties = {"key": "value"}
         bucket = self._make_one(name=NAME, properties=properties)
         self.assertEqual(bucket.name, NAME)
         self.assertEqual(bucket._properties, properties)
+        self.assertEqual(list(bucket._changes), [])
         self.assertFalse(bucket._acl.loaded)
         self.assertIs(bucket._acl.bucket, bucket)
         self.assertFalse(bucket._default_object_acl.loaded)
         self.assertIs(bucket._default_object_acl.bucket, bucket)
+        self.assertEqual(list(bucket._label_removals), [])
         self.assertIsNone(bucket.user_project)
 
     def test_ctor_w_user_project(self):
@@ -319,11 +326,13 @@ class Test_Bucket(unittest.TestCase):
         bucket = self._make_one(client, name=NAME, user_project=USER_PROJECT)
         self.assertEqual(bucket.name, NAME)
         self.assertEqual(bucket._properties, {})
-        self.assertEqual(bucket.user_project, USER_PROJECT)
+        self.assertEqual(list(bucket._changes), [])
         self.assertFalse(bucket._acl.loaded)
         self.assertIs(bucket._acl.bucket, bucket)
         self.assertFalse(bucket._default_object_acl.loaded)
         self.assertIs(bucket._default_object_acl.bucket, bucket)
+        self.assertEqual(list(bucket._label_removals), [])
+        self.assertEqual(bucket.user_project, USER_PROJECT)
 
     def test_blob_wo_keys(self):
         from google.cloud.storage.blob import Blob
@@ -1496,6 +1505,47 @@ class Test_Bucket(unittest.TestCase):
         _, _, kwargs = client._connection.api_request.mock_calls[0]
         self.assertNotIn("labels", kwargs["data"])
 
+    def test_location_type_getter_unset(self):
+        bucket = self._make_one()
+        self.assertIsNone(bucket.location_type)
+
+    def test_location_type_getter_set(self):
+        klass = self._get_target_class()
+        properties = {"locationType": klass.REGION_LOCATION_TYPE}
+        bucket = self._make_one(properties=properties)
+        self.assertEqual(bucket.location_type, klass.REGION_LOCATION_TYPE)
+
+    def test_location_type_setter_invalid(self):
+        NAME = "name"
+        bucket = self._make_one(name=NAME)
+        with self.assertRaises(ValueError):
+            bucket.location_type = "bogus"
+        self.assertFalse("locationType" in bucket._changes)
+
+    def test_location_type_setter_MULTI_REGION(self):
+        klass = self._get_target_class()
+        NAME = "name"
+        bucket = self._make_one(name=NAME)
+        bucket.location_type = klass.MULTI_REGION_LOCATION_TYPE
+        self.assertEqual(bucket.location_type, klass.MULTI_REGION_LOCATION_TYPE)
+        self.assertTrue("locationType" in bucket._changes)
+
+    def test_location_type_setter_REGION(self):
+        klass = self._get_target_class()
+        NAME = "name"
+        bucket = self._make_one(name=NAME)
+        bucket.location_type = klass.REGION_LOCATION_TYPE
+        self.assertEqual(bucket.location_type, klass.REGION_LOCATION_TYPE)
+        self.assertTrue("locationType" in bucket._changes)
+
+    def test_location_type_setter_DUAL_REGION(self):
+        klass = self._get_target_class()
+        NAME = "name"
+        bucket = self._make_one(name=NAME)
+        bucket.location_type = klass.DUAL_REGION_LOCATION_TYPE
+        self.assertEqual(bucket.location_type, klass.DUAL_REGION_LOCATION_TYPE)
+        self.assertTrue("locationType" in bucket._changes)
+
     def test_get_logging_w_prefix(self):
         NAME = "name"
         LOG_BUCKET = "logs"
@@ -1658,10 +1708,10 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(bucket.self_link, SELF_LINK)
 
     def test_storage_class_getter(self):
-        STORAGE_CLASS = "http://example.com/self/"
-        properties = {"storageClass": STORAGE_CLASS}
+        klass = self._get_target_class()
+        properties = {"storageClass": klass.NEARLINE_STORAGE_CLASS}
         bucket = self._make_one(properties=properties)
-        self.assertEqual(bucket.storage_class, STORAGE_CLASS)
+        self.assertEqual(bucket.storage_class, klass.NEARLINE_STORAGE_CLASS)
 
     def test_storage_class_setter_invalid(self):
         NAME = "name"
@@ -1671,45 +1721,56 @@ class Test_Bucket(unittest.TestCase):
         self.assertFalse("storageClass" in bucket._changes)
 
     def test_storage_class_setter_STANDARD(self):
+        klass = self._get_target_class()
         NAME = "name"
         bucket = self._make_one(name=NAME)
-        bucket.storage_class = "STANDARD"
-        self.assertEqual(bucket.storage_class, "STANDARD")
+        bucket.storage_class = klass.STANDARD_STORAGE_CLASS
+        self.assertEqual(bucket.storage_class, klass.STANDARD_STORAGE_CLASS)
         self.assertTrue("storageClass" in bucket._changes)
 
     def test_storage_class_setter_NEARLINE(self):
+        klass = self._get_target_class()
         NAME = "name"
         bucket = self._make_one(name=NAME)
-        bucket.storage_class = "NEARLINE"
-        self.assertEqual(bucket.storage_class, "NEARLINE")
+        bucket.storage_class = klass.NEARLINE_STORAGE_CLASS
+        self.assertEqual(bucket.storage_class, klass.NEARLINE_STORAGE_CLASS)
         self.assertTrue("storageClass" in bucket._changes)
 
     def test_storage_class_setter_COLDLINE(self):
+        klass = self._get_target_class()
         NAME = "name"
         bucket = self._make_one(name=NAME)
-        bucket.storage_class = "COLDLINE"
-        self.assertEqual(bucket.storage_class, "COLDLINE")
+        bucket.storage_class = klass.COLDLINE_STORAGE_CLASS
+        self.assertEqual(bucket.storage_class, klass.COLDLINE_STORAGE_CLASS)
         self.assertTrue("storageClass" in bucket._changes)
 
     def test_storage_class_setter_MULTI_REGIONAL(self):
+        klass = self._get_target_class()
         NAME = "name"
         bucket = self._make_one(name=NAME)
-        bucket.storage_class = "MULTI_REGIONAL"
-        self.assertEqual(bucket.storage_class, "MULTI_REGIONAL")
+        bucket.storage_class = klass.MULTI_REGIONAL_LEGACY_STORAGE_CLASS
+        self.assertEqual(
+            bucket.storage_class, klass.MULTI_REGIONAL_LEGACY_STORAGE_CLASS
+        )
         self.assertTrue("storageClass" in bucket._changes)
 
     def test_storage_class_setter_REGIONAL(self):
+        klass = self._get_target_class()
         NAME = "name"
         bucket = self._make_one(name=NAME)
-        bucket.storage_class = "REGIONAL"
-        self.assertEqual(bucket.storage_class, "REGIONAL")
+        bucket.storage_class = klass.REGIONAL_LEGACY_STORAGE_CLASS
+        self.assertEqual(bucket.storage_class, klass.REGIONAL_LEGACY_STORAGE_CLASS)
         self.assertTrue("storageClass" in bucket._changes)
 
     def test_storage_class_setter_DURABLE_REDUCED_AVAILABILITY(self):
+        klass = self._get_target_class()
         NAME = "name"
         bucket = self._make_one(name=NAME)
-        bucket.storage_class = "DURABLE_REDUCED_AVAILABILITY"
-        self.assertEqual(bucket.storage_class, "DURABLE_REDUCED_AVAILABILITY")
+        bucket.storage_class = klass.DURABLE_REDUCED_AVAILABILITY_LEGACY_STORAGE_CLASS
+        self.assertEqual(
+            bucket.storage_class,
+            klass.DURABLE_REDUCED_AVAILABILITY_LEGACY_STORAGE_CLASS,
+        )
         self.assertTrue("storageClass" in bucket._changes)
 
     def test_time_created(self):
