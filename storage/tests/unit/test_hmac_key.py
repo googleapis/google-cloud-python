@@ -71,7 +71,10 @@ class TestHMACKeyMetadata(unittest.TestCase):
         client = _Client()
         metadata = self._make_one(client)
         metadata._properties['accessId'] = 'ABC123'
-        self.assertEqual(hash(metadata), hash(client) + hash('ABC123'))
+        self.assertIsInstance(hash(metadata), int)
+        other = self._make_one(client)
+        metadata._properties['accessId'] = 'DEF456'
+        self.assertNotEqual(hash(metadata), hash(other))
 
     def test_access_id_getter(self):
         metadata = self._make_one()
