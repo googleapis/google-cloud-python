@@ -611,6 +611,29 @@ def test_query_stream(client, cleanup):
         assert value["b"] == 2
 
 
+def test_query_with_order_dot_key(client, cleanup):
+    db = client
+    collection_id = "collek" + unique_resource_id("-")
+    collection = db.collection(collection_id)
+    doc_ref1 = collection.document("page1")
+    cleanup(doc_ref1)
+    doc_ref2 = collection.document("page2")
+    cleanup(doc_ref2)
+    doc_ref3 = collection.document("page3")
+    cleanup(doc_ref3)
+    doc_ref1.set(
+        {"wordcount": {"page3": 130, "page2": 120, "page1": 100}, "count": 100}
+    )
+    doc_ref2.set(
+        {"wordcount": {"page3": 180, "page2": 120, "page1": 150}, "count": 150}
+    )
+    doc_ref3.set({"count": 200, "wordcount": {"page3": 50, "page2": 100, "page1": 200}})
+
+    query = collection.order_by("wordcount.page1").limit(3)
+    data = [doc.to_dict()["wordcount"]["page1"] for doc in query.stream()]
+    assert [100, 150, 200] == data
+
+
 def test_query_unary(client, cleanup):
     collection_name = "unary" + UNIQUE_RESOURCE_ID
     collection = client.collection(collection_name)

@@ -808,6 +808,16 @@ class TestQuery(unittest.TestCase):
 
         self.assertEqual(query._normalize_cursor(cursor, query._orders), ([1], True))
 
+    def test__normalize_cursor_as_dict_with_dot_key_hit(self):
+        cursor = ({"b.a": 1}, True)
+        query = self._make_one(mock.sentinel.parent).order_by("b.a", "ASCENDING")
+        self.assertEqual(query._normalize_cursor(cursor, query._orders), ([1], True))
+
+    def test__normalize_cursor_as_dict_with_inner_data_hit(self):
+        cursor = ({"b": {"a": 1}}, True)
+        query = self._make_one(mock.sentinel.parent).order_by("b.a", "ASCENDING")
+        self.assertEqual(query._normalize_cursor(cursor, query._orders), ([1], True))
+
     def test__normalize_cursor_as_snapshot_hit(self):
         values = {"b": 1}
         docref = self._make_docref("here", "doc_id")
