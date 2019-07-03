@@ -19,6 +19,7 @@ import google.api_core.grpc_helpers
 import google.api_core.operations_v1
 
 from google.cloud.videointelligence_v1.proto import video_intelligence_pb2_grpc
+from google.longrunning import operations_pb2
 
 
 class VideoIntelligenceServiceGrpcTransport(object):
@@ -71,7 +72,8 @@ class VideoIntelligenceServiceGrpcTransport(object):
         self._stubs = {
             "video_intelligence_service_stub": video_intelligence_pb2_grpc.VideoIntelligenceServiceStub(
                 channel
-            )
+            ),
+            "operations_stub": operations_pb2.OperationsStub(channel)
         }
 
         # Because this API includes a method that returns a
@@ -113,6 +115,18 @@ class VideoIntelligenceServiceGrpcTransport(object):
         """
         return self._channel
 
+    @property
+    def get_operation(self):
+        return self._operations_client.get_operation
+        
+    @property
+    def delete_operation(self):
+        return self._operations_client.delete_operation
+        
+    @property
+    def cancel_operation(self):
+        return self._operations_client.cancel_operation
+        
     @property
     def annotate_video(self):
         """Return the gRPC stub for :meth:`VideoIntelligenceServiceClient.annotate_video`.
