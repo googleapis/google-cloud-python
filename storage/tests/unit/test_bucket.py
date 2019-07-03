@@ -20,7 +20,6 @@ import mock
 
 def _make_connection(*responses):
     import google.cloud.storage._http
-    from google.cloud.exceptions import NotFound
 
     mock_conn = mock.create_autospec(google.cloud.storage._http.Connection)
     mock_conn.user_agent = "testing 1.2.3"
