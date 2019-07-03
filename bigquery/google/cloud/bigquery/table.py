@@ -1844,8 +1844,8 @@ def _rows_page_start(iterator, page, response):
     :type response: dict
     :param response: The JSON API response for a page of rows in a table.
     """
-    # Save the raw response so that it can be processed separately.
-    page._response = response
+    # Make a (lazy) copy of the page in column-oriented format for use in data
+    # science packages.
     page._columns = _tabledata_list_page_columns(iterator._schema, response)
 
     total_rows = response.get("totalRows")
