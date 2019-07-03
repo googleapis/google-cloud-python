@@ -28,7 +28,7 @@ while [ -n "$1" ]; do
       if [[ $1 == --python-gapic-* ]]; then
         PLUGIN_OPTIONS="$PLUGIN_OPTIONS,$1=$2"
         shift 2
-      else if [[ $1 == --gapic-* ]]; then
+      elif [[ $1 == --gapic-* ]]; then
         PLUGIN_OPTIONS="$PLUGIN_OPTIONS,$1=$2"
         shift 2
       else
