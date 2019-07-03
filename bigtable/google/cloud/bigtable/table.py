@@ -721,7 +721,10 @@ class _RetryableMutateRowsWorker(object):
             thread_list.append(thread)
         for thread in thread_list:
             thread.join()
-        return self.responses_statuses
+        response = []
+        for i in range(self.no_of_batches):
+            response += self.responses_statuses[i]
+        return response
 
     def async_batch_execution(self, retry=DEFAULT_RETRY):
         """send asynchronous batch for mutate row

@@ -62,7 +62,7 @@ class MutationsBatcher(object):
         self.max_row_bytes = max_row_bytes
         self.batches = []
 
-    def mutate(self, row):
+    def mutate(self, row, is_last=False):
         """ Add a row to the batch. If the current batch meets one of the size
         limits, the batch is sent synchronously.
 
@@ -101,6 +101,9 @@ class MutationsBatcher(object):
         if self.total_size >= self.max_row_bytes or len(self.rows) >= self.flush_count:
             self.flush()
 
+        if is_last:
+            self.flush()
+
     def mutate_rows(self, rows):
         """ Add a row to the batch. If the current batch meets one of the size
         limits, the batch is sent synchronously.
@@ -123,7 +126,8 @@ class MutationsBatcher(object):
                    mutations count.
         """
         for row in rows:
-            self.mutate(row)
+            is_last = rows[-1] is row
+            self.mutate(row, is_last)
 
     def flush(self):
         """ Sends the current. batch to Cloud Bigtable.
@@ -136,7 +140,6 @@ class MutationsBatcher(object):
         """
         if len(self.rows) != 0:
             self.batches.append(self.rows)
-            self.table.mutate_rows(self.rows)
             self.total_mutation_count = 0
             self.total_size = 0
             self.rows = []
