@@ -298,7 +298,7 @@ class Client(ClientWithProject):
         except NotFound:
             return None
 
-    def create_bucket(self, bucket_or_name, requester_pays=None, project=None):
+    def create_bucket(self, bucket_or_name, requester_pays=None, project=None, location=None):
         """API call: create a new bucket via a POST request.
 
         See
@@ -316,6 +316,10 @@ class Client(ClientWithProject):
             project (str):
                 Optional. the project under which the bucket is to be created.
                 If not passed, uses the project set on the client.
+            location (str):
+                Optional. The location of the bucket. If not passed,
+                the default location, US, will be used. See
+                https://cloud.google.com/storage/docs/bucket-locations
 
         Returns:
             google.cloud.storage.bucket.Bucket
@@ -348,9 +352,30 @@ class Client(ClientWithProject):
         """
         bucket = self._bucket_arg_to_bucket(bucket_or_name)
 
+        if project is None:
+            project = self.project
+
+        if project is None:
+            raise ValueError("Client project not set:  pass an explicit project.")
+
         if requester_pays is not None:
             bucket.requester_pays = requester_pays
-        bucket.create(client=self, project=project)
+
+        query_params = {"project": project}
+        properties = bucket.properties
+
+        if location is not None:
+            properties["location"] = location
+
+        api_response = self._connection.api_request(
+            method="POST",
+            path="/b",
+            query_params=query_params,
+            data=properties,
+            _target_object=bucket,
+        )
+
+        bucket._set_properties(api_response)
         return bucket
 
     def download_blob_to_file(self, blob_or_uri, file_obj, start=None, end=None):
