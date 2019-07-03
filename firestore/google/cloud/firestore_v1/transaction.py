@@ -230,7 +230,7 @@ class Transaction(batch.WriteBatch):
             return ref_or_query.stream(self._id)
         else:
             raise ValueError(
-                'Value for argument "refOrQuery" must be a DocumentReference or a Query.'
+                'Value for argument "ref_or_query" must be a DocumentReference or a Query.'
             )
 
 

@@ -343,7 +343,7 @@ class TestTransaction(unittest.TestCase):
         import types
 
         client = _make_client()
-        trans = self._make_one(client)
+        transaction = self._make_one(client)
         data1 = {"a": u"cheese"}
         data2 = {"b": True, "c": 18}
         document1 = client.document("pineapple", "lamp1")
@@ -355,37 +355,37 @@ class TestTransaction(unittest.TestCase):
 
         self._get_all_helper(client, [response1, response2])
         # Actually call get_all().
-        snapshots = trans.get_all([document1, document2])
+        snapshots = transaction.get_all([document1, document2])
         self.assertIsInstance(snapshots, types.GeneratorType)
         snapshots = list(snapshots)
-        snapshot1 = snapshots[0]
-        self.assertIsInstance(snapshot1, DocumentSnapshot)
-        self.assertIs(snapshot1._reference, document1)
-        self.assertEqual(snapshot1._data, data1)
+        snapshot0 = snapshots[0]
+        self.assertIsInstance(snapshot0, DocumentSnapshot)
+        self.assertIs(snapshot0._reference, document1)
+        self.assertEqual(snapshot0._data, data1)
 
-        snapshot2 = snapshots[1]
-        self.assertIsInstance(snapshot2, DocumentSnapshot)
-        self.assertIs(snapshot2._reference, document2)
-        self.assertEqual(snapshot2._data, data2)
+        snapshot1 = snapshots[1]
+        self.assertIsInstance(snapshot1, DocumentSnapshot)
+        self.assertIs(snapshot1._reference, document2)
+        self.assertEqual(snapshot1._data, data2)
 
     def test_get_document_ref(self):
         from google.cloud.firestore_v1.document import DocumentSnapshot
         import types
 
         client = _make_client()
-        trans = self._make_one(client)
+        transaction = self._make_one(client)
         data1 = {"a": u"cheese"}
         document1 = client.document("pineapple", "lamp1")
         document_pb1, read_time = _doc_get_info(document1._document_path, data1)
         response1 = _make_batch_response(found=document_pb1, read_time=read_time)
         self._get_all_helper(client, [response1])
-        snapshots = trans.get(document1)
+        snapshots = transaction.get(document1)
         self.assertIsInstance(snapshots, types.GeneratorType)
         snapshots = list(snapshots)
-        snapshot1 = snapshots[0]
-        self.assertIsInstance(snapshot1, DocumentSnapshot)
-        self.assertIs(snapshot1._reference, document1)
-        self.assertEqual(snapshot1._data, data1)
+        snapshot0 = snapshots[0]
+        self.assertIsInstance(snapshot0, DocumentSnapshot)
+        self.assertIs(snapshot0._reference, document1)
+        self.assertEqual(snapshot0._data, data1)
 
     def test_get_query_ref(self):
         from google.cloud.firestore_v1.document import DocumentSnapshot
@@ -397,7 +397,7 @@ class TestTransaction(unittest.TestCase):
 
         # Attach the fake GAPIC to a real client.
         client = _make_client()
-        trans = self._make_one(client)
+        transaction = self._make_one(client)
         client._firestore_api_internal = firestore_api
         parent = client.collection("declaration")
         parent_path, expected_prefix = parent._parent_info()
@@ -408,20 +408,20 @@ class TestTransaction(unittest.TestCase):
 
         # Pass the query to get method and check the response.
         query = Query(parent)
-        snapshots = trans.get(query)
+        snapshots = transaction.get(query)
         self.assertIsInstance(snapshots, types.GeneratorType)
         returned = list(snapshots)
         self.assertEqual(len(returned), 1)
-        snapshot = returned[0]
-        self.assertIsInstance(snapshot, DocumentSnapshot)
-        self.assertEqual(snapshot.reference._path, ("declaration", "burger"))
-        self.assertEqual(snapshot.to_dict(), data)
+        snapshot0 = returned[0]
+        self.assertIsInstance(snapshot0, DocumentSnapshot)
+        self.assertEqual(snapshot0.reference._path, ("declaration", "burger"))
+        self.assertEqual(snapshot0.to_dict(), data)
 
         # Verify the mock call.
         firestore_api.run_query.assert_called_once_with(
             parent_path,
             query._to_protobuf(),
-            transaction=trans._id,
+            transaction=transaction._id,
             metadata=client._rpc_metadata,
         )
 
