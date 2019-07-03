@@ -2164,19 +2164,25 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(df.age.dtype.name, "int64")
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @mock.patch(
-        "google.cloud.bigquery.table.RowIterator.pages", new_callable=mock.PropertyMock
-    )
-    def test_to_dataframe_tabledata_list_w_multiple_pages_return_unique_index(
-        self, mock_pages
-    ):
+    def test_to_dataframe_tabledata_list_w_multiple_pages_return_unique_index(self):
         from google.cloud.bigquery import schema
+        from google.cloud.bigquery import table as mut
 
         iterator_schema = [schema.SchemaField("name", "STRING", mode="REQUIRED")]
-        pages = [[{"name": "Bengt"}], [{"name": "Sven"}]]
-
-        mock_pages.return_value = pages
-        row_iterator = self._make_one(schema=iterator_schema)
+        path = "/foo"
+        api_request = mock.Mock(
+            side_effect=[
+                {"rows": [{"f": [{"v": "Bengt"}]}], "pageToken": "NEXTPAGE"},
+                {"rows": [{"f": [{"v": "Sven"}]}]},
+            ]
+        )
+        row_iterator = mut.RowIterator(
+            _mock_client(),
+            api_request,
+            path,
+            iterator_schema,
+            table=mut.Table("proj.dset.tbl"),
+        )
 
         df = row_iterator.to_dataframe(bqstorage_client=None)
 

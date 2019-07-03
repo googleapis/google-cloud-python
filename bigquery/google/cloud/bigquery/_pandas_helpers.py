@@ -14,7 +14,6 @@
 
 """Shared helper functions for connecting BigQuery and pandas."""
 
-import collections
 import concurrent.futures
 import warnings
 
@@ -144,6 +143,26 @@ def bq_to_arrow_field(bq_field):
     return None
 
 
+def bq_to_arrow_schema(bq_schema):
+    """Return the Arrow schema, corresponding to a given BigQuery schema.
+
+    Raises:
+        ValueError:
+            If the Arrow type of any column cannot be determined.
+    """
+    arrow_fields = []
+    for bq_field in bq_schema:
+        arrow_field = bq_to_arrow_field(bq_field)
+        if arrow_field is None:
+            raise ValueError(
+                "Could not dermine Arrow type for BigQuery field: {}.".format(
+                    repr(bq_field)
+                )
+            )
+        arrow_fields.append(arrow_field)
+    return pyarrow.schema(arrow_fields)
+
+
 def bq_to_arrow_array(series, bq_field):
     arrow_type = bq_to_arrow_data_type(bq_field)
     if bq_field.mode.upper() == "REPEATED":
@@ -210,13 +229,41 @@ def dataframe_to_parquet(dataframe, bq_schema, filepath):
     pyarrow.parquet.write_table(arrow_table, filepath)
 
 
+def _tabledata_list_page_to_arrow(page, column_names, arrow_types):
+    # Iterate over the page to force the API request to get the page data.
+    try:
+        next(iter(page))
+    except StopIteration:
+        pass
+
+    arrays = []
+    for column_index, arrow_type in enumerate(arrow_types):
+        arrays.append(pyarrow.array(page._columns[column_index], type=arrow_type))
+
+    return pyarrow.RecordBatch.from_arrays(arrays, column_names)
+
+
+def download_arrow_tabledata_list(pages, schema):
+    """Use tabledata.list to construct an iterable of RecordBatches."""
+    column_names = [field.name for field in schema]
+    arrow_types = [bq_to_arrow_data_type(field) for field in schema]
+
+    for page in pages:
+        yield _tabledata_list_page_to_arrow(page, column_names, arrow_types)
+
+
 def _tabledata_list_page_to_dataframe(page, column_names, dtypes):
-    columns = collections.defaultdict(list)
-    for row in page:
-        for column in column_names:
-            columns[column].append(row[column])
-    for column in dtypes:
-        columns[column] = pandas.Series(columns[column], dtype=dtypes[column])
+    # Iterate over the page to force the API request to get the page data.
+    try:
+        next(iter(page))
+    except StopIteration:
+        pass
+
+    columns = {}
+    for column_index, column_name in enumerate(column_names):
+        dtype = dtypes.get(column_name)
+        columns[column_name] = pandas.Series(page._columns[column_index], dtype=dtype)
+
     return pandas.DataFrame(columns, columns=column_names)
 
 
