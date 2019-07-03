@@ -21,10 +21,10 @@ import mock
 def _make_connection(*responses):
     import google.cloud.storage._http
 
-    mock_conn = mock.create_autospec(google.cloud.storage._http.Connection)
-    mock_conn.user_agent = "testing 1.2.3"
-    mock_conn.api_request.side_effect = list(responses)
-    return mock_conn
+    mock_connection = mock.create_autospec(google.cloud.storage._http.Connection)
+    mock_connection.user_agent = "testing 1.2.3"
+    mock_connection.api_request.side_effect = list(responses)
+    return mock_connection
 
 
 def _create_signing_credentials():

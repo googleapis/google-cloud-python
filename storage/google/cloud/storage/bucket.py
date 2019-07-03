@@ -442,8 +442,7 @@ class Bucket(_PropertyMixin):
         """Properties of the current bucket object.
 
         Returns:
-            dict
-                Bucket properties transformed to dict.
+            dict: Bucket properties transformed to dict.
         """
         properties = {key: self._properties[key] for key in self._changes}
         properties["name"] = self.name
