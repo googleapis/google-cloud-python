@@ -437,6 +437,18 @@ class Bucket(_PropertyMixin):
         """
         return self._user_project
 
+    @property
+    def properties(self):
+        """Properties of the current bucket object.
+
+        Returns:
+            dict
+                Bucket properties transformed to dict.
+        """
+        properties = {key: self._properties[key] for key in self._changes}
+        properties["name"] = self.name
+        return properties
+
     def blob(
         self,
         blob_name,
@@ -577,28 +589,7 @@ class Bucket(_PropertyMixin):
             raise ValueError("Cannot create bucket with 'user_project' set.")
 
         client = self._require_client(client)
-
-        if project is None:
-            project = client.project
-
-        if project is None:
-            raise ValueError("Client project not set:  pass an explicit project.")
-
-        query_params = {"project": project}
-        properties = {key: self._properties[key] for key in self._changes}
-        properties["name"] = self.name
-
-        if location is not None:
-            properties["location"] = location
-
-        api_response = client._connection.api_request(
-            method="POST",
-            path="/b",
-            query_params=query_params,
-            data=properties,
-            _target_object=self,
-        )
-        self._set_properties(api_response)
+        client.create_bucket(self, project=project, location=location)
 
     def patch(self, client=None):
         """Sends all changed properties in a PATCH request.
