@@ -490,9 +490,9 @@ Application = _reflection.GeneratedProtocolMessageType(
           application\_id}", for example, "projects/api-test-
           project/tenants/foo/profiles/bar/applications/baz".
       external_id:
-          Required.  Client side application identifier, used to
-          uniquely identify the application.  The maximum number of
-          allowed characters is 255.
+          Required. Client side application identifier, used to uniquely
+          identify the application.  The maximum number of allowed
+          characters is 255.
       profile:
           Output only. Resource name of the candidate of this
           application.  The format is "projects/{project\_id}/tenants/{t
@@ -510,33 +510,32 @@ Application = _reflection.GeneratedProtocolMessageType(
           y\_id}", for example, "projects/api-test-
           project/tenants/foo/companies/bar".
       application_date:
-          Optional.  The application date.
+          Optional. The application date.
       stage:
-          Required.  What is the most recent stage of the application
+          Required. What is the most recent stage of the application
           (that is, new, screen, send cv, hired, finished work)? This
           field is intentionally not comprehensive of every possible
           status, but instead, represents statuses that would be used to
           indicate to the ML models good / bad matches.
       state:
-          Optional.  The application state.
+          Optional. The application state.
       interviews:
-          Optional.  All interviews (screen, onsite, and so on)
-          conducted as part of this application (includes details such
-          as user conducting the interview, timestamp, feedback, and so
-          on).
+          Optional. All interviews (screen, onsite, and so on) conducted
+          as part of this application (includes details such as user
+          conducting the interview, timestamp, feedback, and so on).
       referral:
-          Optional.  If the candidate is referred by a employee.
+          Optional. If the candidate is referred by a employee.
       create_time:
-          Required.  Reflects the time that the application was created.
+          Required. Reflects the time that the application was created.
       update_time:
-          Optional.  The last update timestamp.
+          Optional. The last update timestamp.
       outcome_notes:
-          Optional.  Free text reason behind the recruitement outcome
+          Optional. Free text reason behind the recruitement outcome
           (for example, reason for withdraw / reject, reason for an
           unsuccessful finish, and so on).  Number of characters allowed
           is 100.
       outcome:
-          Optional.  Outcome positiveness shows how positive the outcome
+          Optional. Outcome positiveness shows how positive the outcome
           is.
       is_match:
           Output only. Indicates whether this job application is a match
