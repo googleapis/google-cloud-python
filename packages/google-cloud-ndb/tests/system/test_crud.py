@@ -544,3 +544,25 @@ def test_insert_expando(dispose_of):
     assert retrieved.expando_prop == "exp-value"
 
     dispose_of(key._key)
+
+
+@pytest.mark.usefixtures("client_context")
+def test_insert_polymodel(dispose_of):
+    class Animal(ndb.PolyModel):
+        pass
+
+    class Feline(Animal):
+        pass
+
+    class Cat(Feline):
+        pass
+
+    entity = Cat()
+    key = entity.put()
+
+    retrieved = key.get()
+
+    assert isinstance(retrieved, Animal)
+    assert isinstance(retrieved, Cat)
+
+    dispose_of(key._key)

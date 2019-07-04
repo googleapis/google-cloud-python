@@ -642,7 +642,8 @@ def _entity_to_ds_entity(entity, set_key=True):
     if set_key:
         key = entity._key
         if key is None:
-            key = key_module.Key(entity._get_kind(), None)
+            # use _class_name instead of _get_kind, to get PolyModel right
+            key = key_module.Key(entity._class_name(), None)
         ds_entity = entity_module.Entity(
             key._key, exclude_from_indexes=exclude_from_indexes
         )
@@ -1937,7 +1938,7 @@ def _validate_key(value, entity=None):
 
     if entity and type(entity) not in (Model, Expando):
         # Need to use _class_name instead of _get_kind, to be able to
-        # return the correct kind if this is a polymodel
+        # return the correct kind if this is a PolyModel
         if value.kind() != entity._class_name():
             raise KindError(
                 "Expected Key kind to be {}; received "
