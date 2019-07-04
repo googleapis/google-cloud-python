@@ -757,7 +757,7 @@ class Test_Bucket(unittest.TestCase):
 
     def test_list_blobs_w_all_arguments_and_user_project(self):
         NAME = "name"
-        USER_PROJECT = "user-project-123"
+        USER_PROJECT = "user-project-1234"
         MAX_RESULTS = 10
         PAGE_TOKEN = "ABCD"
         PREFIX = "subfolder"
