@@ -39,7 +39,6 @@ from google.cloud.firestore_v1.document import DocumentReference
 from google.cloud.firestore_v1.document import DocumentSnapshot
 from google.cloud.firestore_v1.field_path import render_field_path
 from google.cloud.firestore_v1.gapic import firestore_client
-from google.cloud.firestore_v1.gapic.transports import firestore_grpc_transport
 from google.cloud.firestore_v1.transaction import Transaction
 from google.cloud.firestore_v1.gapic.transports import firestore_grpc_transport
 from google.cloud.environment_vars import FIRESTORE_EMULATOR
