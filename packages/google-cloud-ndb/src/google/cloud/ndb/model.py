@@ -252,7 +252,7 @@ import json
 import pickle
 import zlib
 
-from google.cloud.datastore import entity as entity_module
+from google.cloud.datastore import entity as ds_entity_module
 from google.cloud.datastore import helpers
 from google.cloud.datastore_v1.proto import entity_pb2
 
@@ -543,11 +543,11 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
                     key = key_module.Key(kind, None)
                     if structprop._repeated:
                         value = [
-                            _BaseValue(entity_module.Entity(key._key))
+                            _BaseValue(ds_entity_module.Entity(key._key))
                             for _ in subvalue
                         ]
                     else:
-                        value = entity_module.Entity(key._key)
+                        value = ds_entity_module.Entity(key._key)
                         value = _BaseValue(value)
 
                     structprop._store_value(entity, value)
@@ -644,11 +644,11 @@ def _entity_to_ds_entity(entity, set_key=True):
         if key is None:
             # use _class_name instead of _get_kind, to get PolyModel right
             key = key_module.Key(entity._class_name(), None)
-        ds_entity = entity_module.Entity(
+        ds_entity = ds_entity_module.Entity(
             key._key, exclude_from_indexes=exclude_from_indexes
         )
     else:
-        ds_entity = entity_module.Entity(
+        ds_entity = ds_entity_module.Entity(
             exclude_from_indexes=exclude_from_indexes
         )
     ds_entity.update(data)
@@ -2855,7 +2855,7 @@ class User:
                 contains a user value as the field ``name``.
             name (str): The name of the field containing this user value.
         """
-        user_entity = entity_module.Entity()
+        user_entity = ds_entity_module.Entity()
         entity[name] = user_entity
         entity._meanings[name] = (_MEANING_PREDEFINED_ENTITY_USER, user_entity)
 
@@ -3320,6 +3320,36 @@ class KeyProperty(Property):
             NotImplementedError: Always. This method is deprecated.
         """
         raise exceptions.NoLongerImplementedError()
+
+    def _to_base_type(self, value):
+        """Convert a value to the "base" value type for this property.
+
+        Args:
+            value (~key.Key): The value to be converted.
+
+        Returns:
+            google.cloud.datastore.Key: The converted value.
+
+        Raises:
+            TypeError: If ``value`` is not a :class:`~key.Key`.
+        """
+        if not isinstance(value, key_module.Key):
+            raise TypeError(
+                "Cannot convert to datastore key, expected Key value; "
+                "received {}".format(value)
+            )
+        return value._key
+
+    def _from_base_type(self, value):
+        """Convert a value from the "base" value type for this property.
+
+        Args:
+            value (google.cloud.datastore.Key): The value to be converted.
+
+        Returns:
+            key.Key: The converted value.
+        """
+        return key_module.Key._from_ds_key(value)
 
 
 class BlobKeyProperty(Property):
@@ -3873,7 +3903,7 @@ class StructuredProperty(Property):
         Returns:
             The converted value with given class.
         """
-        if isinstance(value, entity_module.Entity):
+        if isinstance(value, ds_entity_module.Entity):
             value = _entity_from_ds_entity(
                 value, model_class=self._model_class
             )

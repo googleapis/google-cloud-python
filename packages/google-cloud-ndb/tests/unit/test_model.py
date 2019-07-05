@@ -20,6 +20,7 @@ import zlib
 
 from google.cloud import datastore
 from google.cloud.datastore import entity as entity_module
+from google.cloud.datastore import key as ds_key_module
 from google.cloud.datastore import helpers
 from google.cloud.datastore_v1 import types as ds_types
 from google.cloud.datastore_v1.proto import entity_pb2
@@ -2315,6 +2316,30 @@ class TestKeyProperty:
         prop = model.KeyProperty("keyp", kind="Simple")
         with pytest.raises(NotImplementedError):
             prop._db_get_value(None, None)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test__to_base_type():
+        prop = model.KeyProperty("keyp")
+        value = key_module.Key("Kynd", 123)
+        assert prop._to_base_type(value) is value._key
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test__to_base_type_wrong_type():
+        prop = model.KeyProperty("keyp")
+        value = ("Kynd", 123)
+        with pytest.raises(TypeError):
+            assert prop._to_base_type(value) is value._key
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test__from_base_type():
+        prop = model.KeyProperty("keyp")
+        ds_value = ds_key_module.Key("Kynd", 123, project="testing")
+        value = prop._from_base_type(ds_value)
+        assert value.kind() == "Kynd"
+        assert value.id() == 123
 
 
 class TestBlobKeyProperty:
