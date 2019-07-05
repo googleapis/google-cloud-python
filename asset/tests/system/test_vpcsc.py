@@ -78,7 +78,11 @@ class TestVPCServiceControl(object):
         content_type = enums.ContentType.CONTENT_TYPE_UNSPECIFIED
         read_time_window = {}
         parent_inside = "projects/" + PROJECT_INSIDE
-        delayed_inside = lambda: client.batch_get_assets_history(parent_inside, content_type, read_time_window)
+        delayed_inside = lambda: client.batch_get_assets_history(
+            parent_inside, content_type, read_time_window
+        )
         parent_outside = "projects/" + PROJECT_OUTSIDE
-        delayed_outside = lambda: client.batch_get_assets_history(parent_outside, content_type, read_time_window)
+        delayed_outside = lambda: client.batch_get_assets_history(
+            parent_outside, content_type, read_time_window
+        )
         TestVPCServiceControl._do_test(delayed_inside, delayed_outside)
