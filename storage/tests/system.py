@@ -94,6 +94,8 @@ class TestClient(unittest.TestCase):
         self.case_hmac_keys_to_delete = []
 
     def tearDown(self):
+        from google.cloud.storage.hmac_key import HMACKeyMetadata
+
         for hmac_key in self.case_hmac_keys_to_delete:
             if hmac_key.state == HMACKeyMetadata.ACTIVE_STATE:
                 hmac_key.state = HMACKeyMetadata.INACTIVE_STATE
@@ -115,8 +117,6 @@ class TestClient(unittest.TestCase):
 
     def test_hmac_key_crud(self):
         from google.cloud.storage.hmac_key import HMACKeyMetadata
-
-        #email = Config.CLIENT.get_service_account_email()
 
         credentials = Config.CLIENT._credentials
         email = credentials.service_account_email

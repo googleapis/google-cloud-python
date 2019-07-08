@@ -44,8 +44,8 @@ class HMACKeyMetadata(object):
             return NotImplemented
 
         return (
-            self._client == other._client and
-            self.access_id == other.access_id
+            self._client == other._client
+            and self.access_id == other.access_id
         )
 
     def __hash__(self):

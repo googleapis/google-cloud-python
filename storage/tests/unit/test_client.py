@@ -983,7 +983,7 @@ class TestClient(unittest.TestCase):
                 client._connection.API_VERSION,
                 "projects",
                 PROJECT,
-               "hmacKeys",
+                "hmacKeys",
             ]
         )
         http.request.assert_called_once_with(

@@ -382,8 +382,8 @@ class _Client(object):
         if not isinstance(other, self.__class__):  # pragma: NO COVER
             return NotImplemented
         return (
-            self._connection == other._connection and
-            self.project == other.project
+            self._connection == other._connection
+            and self.project == other.project
         )
 
     def __hash__(self):
