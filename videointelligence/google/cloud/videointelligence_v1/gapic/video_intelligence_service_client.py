@@ -172,9 +172,6 @@ class VideoIntelligenceServiceClient(object):
         # transport methods, wrapped with `wrap_method` to add retry,
         # timeout, and the like.
         self._inner_api_calls = {}
-        
-    def channel(self):
-        return self.transport.channel
 
     def get_operation(self, name=None):
         return self.transport.get_operation(name)
@@ -300,6 +297,4 @@ class VideoIntelligenceServiceClient(object):
             self.transport._operations_client,
             video_intelligence_pb2.AnnotateVideoResponse,
             metadata_type=video_intelligence_pb2.AnnotateVideoProgress,
-        )
-        
-        
+        )       
