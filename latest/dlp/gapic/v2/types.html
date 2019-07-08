@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Data Loss Prevention (DLP) API Client &#8212; google-cloud fa9ae98 documentation</title>
+    <title>Types for Cloud Data Loss Prevention (DLP) API Client &#8212; google-cloud 7a2f99b documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -61,6 +61,12 @@
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.dlp_v2.types.Action.publish_findings_to_cloud_data_catalog">
+<code class="descname">publish_findings_to_cloud_data_catalog</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Action.publish_findings_to_cloud_data_catalog" title="Permalink to this definition">#</a></dt>
+<dd><p>Publish findings to Cloud Datahub.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.Action.job_notification_emails">
 <code class="descname">job_notification_emails</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Action.job_notification_emails" title="Permalink to this definition">#</a></dt>
 <dd><p>Enable email notification to project owners and editors on
@@ -72,6 +78,21 @@ job’s completion/failure.</p>
 <em class="property">class </em><code class="descname">JobNotificationEmails</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Action.JobNotificationEmails" title="Permalink to this definition">#</a></dt>
 <dd><p>Enable email notification to project owners and editors on jobs’s
 completion/failure.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.dlp_v2.types.Action.PublishFindingsToCloudDataCatalog">
+<em class="property">class </em><code class="descname">PublishFindingsToCloudDataCatalog</code><a class="headerlink" href="#google.cloud.dlp_v2.types.Action.PublishFindingsToCloudDataCatalog" title="Permalink to this definition">#</a></dt>
+<dd><p>Publish findings of a DlpJob to Cloud Data Catalog. Labels summarizing
+the results of the DlpJob will be applied to the entry for the resource
+scanned in Cloud Data Catalog. Any labels previously written by another
+DlpJob will be deleted. InfoType naming patterns are strictly enforced
+when using this feature. Note that the findings will be persisted in
+Cloud Data Catalog storage and are governed by Data Catalog
+service-specific policy, see
+<a class="reference external" href="https://cloud.google.com/terms/service-terms">https://cloud.google.com/terms/service-terms</a> Only a single instance of
+this action can be specified and only allowed if all resources being
+scanned are BigQuery tables. Compatible with: Inspect</p>
 </dd></dl>
 
 <dl class="class">
@@ -136,6 +157,12 @@ specified. Compatible with: Inspect, Risk</p>
 <dt>
 <code class="descname">pub_sub</code></dt>
 <dd><p>Field google.privacy.dlp.v2.Action.pub_sub</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">publish_findings_to_cloud_data_catalog</code></dt>
+<dd><p>Field google.privacy.dlp.v2.Action.publish_findings_to_cloud_data_catalog</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2283,9 +2310,10 @@ matching.</p>
 <dl class="class">
 <dt id="google.cloud.dlp_v2.types.CustomInfoType.DetectionRule">
 <em class="property">class </em><code class="descname">DetectionRule</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CustomInfoType.DetectionRule" title="Permalink to this definition">#</a></dt>
-<dd><p>Rule for modifying a CustomInfoType to alter behavior under certain
-circumstances, depending on the specific details of the rule. Not
-supported for the <code class="docutils literal notranslate"><span class="pre">surrogate_type</span></code> custom info type.</p>
+<dd><p>Deprecated; use <code class="docutils literal notranslate"><span class="pre">InspectionRuleSet</span></code> instead. Rule for modifying a
+<code class="docutils literal notranslate"><span class="pre">CustomInfoType</span></code> to alter behavior under certain circumstances,
+depending on the specific details of the rule. Not supported for the
+<code class="docutils literal notranslate"><span class="pre">surrogate_type</span></code> custom infoType.</p>
 <dl class="attribute">
 <dt id="google.cloud.dlp_v2.types.CustomInfoType.DetectionRule.hotword_rule">
 <code class="descname">hotword_rule</code><a class="headerlink" href="#google.cloud.dlp_v2.types.CustomInfoType.DetectionRule.hotword_rule" title="Permalink to this definition">#</a></dt>
