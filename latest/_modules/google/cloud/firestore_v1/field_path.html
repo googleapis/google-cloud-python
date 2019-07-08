@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.firestore_v1.field_path &#8212; google-cloud 7a2f99b documentation</title>
+    <title>google.cloud.firestore_v1.field_path &#8212; google-cloud b504293 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -419,7 +419,16 @@
 <span class="sd">        Returns: Set[:class:`FieldPath`]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">indexes</span> <span class="o">=</span> <span class="n">six</span><span class="o">.</span><span class="n">moves</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parts</span><span class="p">))</span>
-        <span class="k">return</span> <span class="p">{</span><span class="n">FieldPath</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">parts</span><span class="p">[:</span><span class="n">index</span><span class="p">])</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">indexes</span><span class="p">}</span></div></div>
+        <span class="k">return</span> <span class="p">{</span><span class="n">FieldPath</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">parts</span><span class="p">[:</span><span class="n">index</span><span class="p">])</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">indexes</span><span class="p">}</span></div>
+
+<div class="viewcode-block" id="FieldPath.document_id"><a class="viewcode-back" href="../../../../firestore/field_path.html#google.cloud.firestore_v1.field_path.FieldPath.document_id">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">document_id</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;A special FieldPath value to refer to the ID of a document. It can be used</span>
+<span class="sd">           in queries to sort or filter by the document ID.</span>
+
+<span class="sd">        Returns: A special sentinel value to refer to the ID of a document.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;__name__&quot;</span></div></div>
 </pre></div>
 
           </div>
