@@ -942,18 +942,18 @@ Job = _reflection.GeneratedProtocolMessageType(
     
     Attributes:
         emails:
-            Optional.  Use this field to specify email address(es) to
-            which resumes or applications can be sent.  The maximum number
-            of allowed characters for each entry is 255.
+            Optional. Use this field to specify email address(es) to which
+            resumes or applications can be sent.  The maximum number of
+            allowed characters for each entry is 255.
         instruction:
-            Optional.  Use this field to provide instructions, such as
+            Optional. Use this field to provide instructions, such as
             "Mail your application to ...", that a candidate can follow to
             apply for the job.  This field accepts and sanitizes HTML
             input, and also accepts bold, italic, ordered list, and
             unordered list markup tags.  The maximum number of allowed
             characters is 3,000.
         uris:
-            Optional.  Use this URI field to direct an applicant to a
+            Optional. Use this URI field to direct an applicant to a
             website, for example to link to an online application form.
             The maximum number of allowed characters for each entry is
             2,000.
@@ -1001,10 +1001,10 @@ Job = _reflection.GeneratedProtocolMessageType(
     
     Attributes:
         disable_street_address_resolution:
-            Optional.  If set to ``true``, the service does not attempt to
+            Optional. If set to ``true``, the service does not attempt to
             resolve a more precise address for the job.
         html_sanitization:
-            Optional.  Option for job HTML content sanitization. Applied
+            Optional. Option for job HTML content sanitization. Applied
             fields are:  -  description -  applicationInfo.instruction -
             incentives -  qualifications -  responsibilities  HTML tags in
             these fields may be stripped if sanitiazation isn't disabled.
@@ -1046,14 +1046,14 @@ Job = _reflection.GeneratedProtocolMessageType(
           ition\_id][google.cloud.talent.v4beta1.Job.requisition\_id]
           since this value is unique.
       company:
-          Required.  The resource name of the company listing the job.
+          Required. The resource name of the company listing the job.
           The format is "projects/{project\_id}/tenants/{tenant\_id}/com
           panies/{company\_id}", for example, "projects/api-test-
           project/tenants/foo/companies/bar".  Tenant id is optional and
           the default tenant is used if unspecified, for example,
           "projects/api-test-project/companies/bar".
       requisition_id:
-          Required.  The requisition ID, also referred to as the posting
+          Required. The requisition ID, also referred to as the posting
           ID, is assigned by the client to identify a job. This field is
           intended to be used by clients for client identification and
           tracking of postings. A job isn't allowed to be created if
@@ -1063,19 +1063,19 @@ Job = _reflection.GeneratedProtocolMessageType(
           sition\_id][google.cloud.talent.v4beta1.Job.requisition\_id].
           The maximum number of allowed characters is 255.
       title:
-          Required.  The title of the job, such as "Software Engineer"
+          Required. The title of the job, such as "Software Engineer"
           The maximum number of allowed characters is 500.
       description:
-          Required.  The description of the job, which typically
-          includes a multi-paragraph description of the company and
-          related information. Separate fields are provided on the job
-          object for [responsibilities][google.cloud.talent.v4beta1.Job.
-          responsibilities], [qualifications][google.cloud.talent.v4beta
-          1.Job.qualifications], and other job characteristics. Use of
-          these separate job fields is recommended.  This field accepts
-          and sanitizes HTML input, and also accepts bold, italic,
-          ordered list, and unordered list markup tags.  The maximum
-          number of allowed characters is 100,000.
+          Required. The description of the job, which typically includes
+          a multi-paragraph description of the company and related
+          information. Separate fields are provided on the job object
+          for [responsibilities][google.cloud.talent.v4beta1.Job.respons
+          ibilities], [qualifications][google.cloud.talent.v4beta1.Job.q
+          ualifications], and other job characteristics. Use of these
+          separate job fields is recommended.  This field accepts and
+          sanitizes HTML input, and also accepts bold, italic, ordered
+          list, and unordered list markup tags.  The maximum number of
+          allowed characters is 100,000.
       addresses:
           Optional but strongly recommended for the best service
           experience.  Location(s) where the employer is looking to hire
@@ -1097,14 +1097,14 @@ Job = _reflection.GeneratedProtocolMessageType(
           job for better search experience.  The maximum number of
           allowed characters is 500.
       application_info:
-          Optional.  Job application information.
+          Optional. Job application information.
       job_benefits:
-          Optional.  The benefits included with the job.
+          Optional. The benefits included with the job.
       compensation_info:
-          Optional.  Job compensation information (a.k.a. "pay rate")
+          Optional. Job compensation information (a.k.a. "pay rate")
           i.e., the compensation that will paid to the employee.
       custom_attributes:
-          Optional.  A map of fields to hold both filterable and non-
+          Optional. A map of fields to hold both filterable and non-
           filterable custom job attributes that are not covered by the
           provided structured fields.  The keys of the map are strings
           up to 64 bytes and must match the pattern:
@@ -1116,24 +1116,24 @@ Job = _reflection.GeneratedProtocolMessageType(
           unfilterable ``string_values``, the maximum total size of
           ``string_values`` across all keys is 50KB.
       degree_types:
-          Optional.  The desired education degrees for the job, such as
+          Optional. The desired education degrees for the job, such as
           Bachelors, Masters.
       department:
-          Optional.  The department or functional area within the
-          company with the open position.  The maximum number of allowed
+          Optional. The department or functional area within the company
+          with the open position.  The maximum number of allowed
           characters is 255.
       employment_types:
-          Optional.  The employment type(s) of a job, for example, [full
+          Optional. The employment type(s) of a job, for example, [full
           time][google.cloud.talent.v4beta1.EmploymentType.FULL\_TIME]
           or [part
           time][google.cloud.talent.v4beta1.EmploymentType.PART\_TIME].
       incentives:
-          Optional.  A description of bonus, commission, and other
+          Optional. A description of bonus, commission, and other
           compensation incentives associated with the job not including
           salary or pay.  The maximum number of allowed characters is
           10,000.
       language_code:
-          Optional.  The language of the posting. This field is distinct
+          Optional. The language of the posting. This field is distinct
           from any requirements for fluency that are associated with the
           job.  Language codes must be in BCP-47 format, such as "en-US"
           or "sr-Latn". For more information, see `Tags for Identifying
@@ -1145,10 +1145,10 @@ Job = _reflection.GeneratedProtocolMessageType(
           [Job.description][google.cloud.talent.v4beta1.Job.description]
           is assigned, otherwise defaults to 'en\_US'.
       job_level:
-          Optional.  The experience level associated with the job, such
+          Optional. The experience level associated with the job, such
           as "Entry Level".
       promotion_value:
-          Optional.  A promotion value of the job, as determined by the
+          Optional. A promotion value of the job, as determined by the
           client. The value determines the sort order of the jobs
           returned when searching for jobs using the featured jobs
           search call, with higher promotional values being returned
@@ -1157,7 +1157,7 @@ Job = _reflection.GeneratedProtocolMessageType(
           FEATURED\_JOB\_SEARCH.  Default value is 0, and negative
           values are treated as 0.
       qualifications:
-          Optional.  A description of the qualifications required to
+          Optional. A description of the qualifications required to
           perform the job. The use of this field is recommended as an
           alternative to using the more general
           [description][google.cloud.talent.v4beta1.Job.description]
@@ -1165,7 +1165,7 @@ Job = _reflection.GeneratedProtocolMessageType(
           accepts bold, italic, ordered list, and unordered list markup
           tags.  The maximum number of allowed characters is 10,000.
       responsibilities:
-          Optional.  A description of job responsibilities. The use of
+          Optional. A description of job responsibilities. The use of
           this field is recommended as an alternative to using the more
           general
           [description][google.cloud.talent.v4beta1.Job.description]
@@ -1173,7 +1173,7 @@ Job = _reflection.GeneratedProtocolMessageType(
           accepts bold, italic, ordered list, and unordered list markup
           tags.  The maximum number of allowed characters is 10,000.
       posting_region:
-          Optional.  The job
+          Optional. The job
           [PostingRegion][google.cloud.talent.v4beta1.PostingRegion]
           (for example, state, country) throughout which the job is
           available. If this field is set, a
@@ -1187,34 +1187,34 @@ Job = _reflection.GeneratedProtocolMessageType(
           [Job.addresses][google.cloud.talent.v4beta1.Job.addresses] to
           the same location level as this field is strongly recommended.
       visibility:
-          Optional.  The visibility of the job.  Defaults to [Visibility
-          .ACCOUNT\_ONLY][google.cloud.talent.v4beta1.Visibility.ACCOUNT
-          \_ONLY] if not specified.
+          Optional. The visibility of the job.  Defaults to [Visibility.
+          ACCOUNT\_ONLY][google.cloud.talent.v4beta1.Visibility.ACCOUNT\
+          _ONLY] if not specified.
       job_start_time:
-          Optional.  The start timestamp of the job in UTC time zone.
+          Optional. The start timestamp of the job in UTC time zone.
           Typically this field is used for contracting engagements.
           Invalid timestamps are ignored.
       job_end_time:
-          Optional.  The end timestamp of the job. Typically this field
+          Optional. The end timestamp of the job. Typically this field
           is used for contracting engagements. Invalid timestamps are
           ignored.
       posting_publish_time:
-          Optional.  The timestamp this job posting was most recently
+          Optional. The timestamp this job posting was most recently
           published. The default value is the time the request arrives
           at the server. Invalid timestamps are ignored.
       posting_expire_time:
           Optional but strongly recommended for the best service
           experience.  The expiration timestamp of the job. After this
           timestamp, the job is marked as expired, and it no longer
-          appears in search results. The expired job can't be deleted or
-          listed by the
-          [DeleteJob][google.cloud.talent.v4beta1.JobService.DeleteJob]
-          and
+          appears in search results. The expired job can't be listed by
+          the
           [ListJobs][google.cloud.talent.v4beta1.JobService.ListJobs]
-          APIs, but it can be retrieved with the
+          API, but it can be retrieved with the
           [GetJob][google.cloud.talent.v4beta1.JobService.GetJob] API or
           updated with the
           [UpdateJob][google.cloud.talent.v4beta1.JobService.UpdateJob]
+          API or deleted with the
+          [DeleteJob][google.cloud.talent.v4beta1.JobService.DeleteJob]
           API. An expired job can be updated and opened again by using a
           future expiration timestamp. Updating an expired job fails if
           there is another existing open job with same
@@ -1223,25 +1223,34 @@ Job = _reflection.GeneratedProtocolMessageType(
           quisition\_id][google.cloud.talent.v4beta1.Job.requisition\_id
           ].  The expired jobs are retained in our system for 90 days.
           However, the overall expired job count cannot exceed 3 times
-          the maximum of open jobs count over the past week, otherwise
-          jobs with earlier expire time are cleaned first. Expired jobs
-          are no longer accessible after they are cleaned out.  Invalid
-          timestamps are ignored, and treated as expire time not
-          provided.  Timestamp before the instant request is made is
-          considered valid, the job will be treated as expired
-          immediately.  If this value isn't provided at the time of job
-          creation or is invalid, the job posting expires after 30 days
-          from the job's creation time. For example, if the job was
-          created on 2017/01/01 13:00AM UTC with an unspecified
-          expiration date, the job expires after 2017/01/31 13:00AM UTC.
-          If this value isn't provided on job update, it depends on the
-          field masks set by [UpdateJobRequest.update\_mask][google.clou
-          d.talent.v4beta1.UpdateJobRequest.update\_mask]. If the field
-          masks include [job\_end\_time][google.cloud.talent.v4beta1.Job
-          .job\_end\_time], or the masks are empty meaning that every
-          field is updated, the job posting expires after 30 days from
-          the job's last update time. Otherwise the expiration date
-          isn't updated.
+          the maximum number of open jobs over previous 7 days. If this
+          threshold is exceeded, expired jobs are cleaned out in order
+          of earliest expire time. Expired jobs are no longer accessible
+          after they are cleaned out.  Invalid timestamps are ignored,
+          and treated as expire time not provided.  If the timestamp is
+          before the instant request is made, the job is treated as
+          expired immediately on creation. This kind of job can not be
+          updated. And when creating a job with past timestamp, the [pos
+          ting\_publish\_time][google.cloud.talent.v4beta1.Job.posting\_
+          publish\_time] must be set before [posting\_expire\_time][goog
+          le.cloud.talent.v4beta1.Job.posting\_expire\_time]. The
+          purpose of this feature is to allow other objects, such as
+          [Application][google.cloud.talent.v4beta1.Application], to
+          refer a job that didn't exist in the system prior to becoming
+          expired. If you want to modify a job that was expired on
+          creation, delete it and create a new one.  If this value isn't
+          provided at the time of job creation or is invalid, the job
+          posting expires after 30 days from the job's creation time.
+          For example, if the job was created on 2017/01/01 13:00AM UTC
+          with an unspecified expiration date, the job expires after
+          2017/01/31 13:00AM UTC.  If this value isn't provided on job
+          update, it depends on the field masks set by [UpdateJobRequest
+          .update\_mask][google.cloud.talent.v4beta1.UpdateJobRequest.up
+          date\_mask]. If the field masks include [job\_end\_time][googl
+          e.cloud.talent.v4beta1.Job.job\_end\_time], or the masks are
+          empty meaning that every field is updated, the job posting
+          expires after 30 days from the job's last update time.
+          Otherwise the expiration date isn't updated.
       posting_create_time:
           Output only. The timestamp when this job posting was created.
       posting_update_time:
@@ -1252,7 +1261,7 @@ Job = _reflection.GeneratedProtocolMessageType(
       derived_info:
           Output only. Derived details about the job posting.
       processing_options:
-          Optional.  Options for job processing.
+          Optional. Options for job processing.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.Job)
     ),

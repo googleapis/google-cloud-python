@@ -237,17 +237,14 @@ class ApplicationServiceClient(object):
             >>> response = client.create_application(parent, application)
 
         Args:
-            parent (str): Required.
-
-                Resource name of the profile under which the application is created.
+            parent (str): Required. Resource name of the profile under which the application is
+                created.
 
                 The format is
                 "projects/{project\_id}/tenants/{tenant\_id}/profiles/{profile\_id}",
                 for example,
                 "projects/test-project/tenants/test-tenant/profiles/test-profile".
-            application (Union[dict, ~google.cloud.talent_v4beta1.types.Application]): Required.
-
-                The application to be created.
+            application (Union[dict, ~google.cloud.talent_v4beta1.types.Application]): Required. The application to be created.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.Application`
@@ -321,9 +318,7 @@ class ApplicationServiceClient(object):
             >>> response = client.get_application(name)
 
         Args:
-            name (str): Required.
-
-                The resource name of the application to be retrieved.
+            name (str): Required. The resource name of the application to be retrieved.
 
                 The format is
                 "projects/{project\_id}/tenants/{tenant\_id}/profiles/{profile\_id}/applications/{application\_id}",
@@ -399,9 +394,8 @@ class ApplicationServiceClient(object):
             >>> response = client.update_application(application)
 
         Args:
-            application (Union[dict, ~google.cloud.talent_v4beta1.types.Application]): Required.
-
-                The application resource to replace the current resource in the system.
+            application (Union[dict, ~google.cloud.talent_v4beta1.types.Application]): Required. The application resource to replace the current resource in the
+                system.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.Application`
@@ -485,9 +479,7 @@ class ApplicationServiceClient(object):
             >>> client.delete_application(name)
 
         Args:
-            name (str): Required.
-
-                The resource name of the application to be deleted.
+            name (str): Required. The resource name of the application to be deleted.
 
                 The format is
                 "projects/{project\_id}/tenants/{tenant\_id}/profiles/{profile\_id}/applications/{application\_id}",
@@ -571,9 +563,8 @@ class ApplicationServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): Required.
-
-                Resource name of the profile under which the application is created.
+            parent (str): Required. Resource name of the profile under which the application is
+                created.
 
                 The format is
                 "projects/{project\_id}/tenants/{tenant\_id}/profiles/{profile\_id}",
