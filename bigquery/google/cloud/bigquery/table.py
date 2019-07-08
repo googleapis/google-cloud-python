@@ -1466,11 +1466,8 @@ class RowIterator(HTTPIterator):
             # Indicate that the download has finished.
             progress_bar.close()
 
-        # Avoid concatting an empty list without a schema.
-        if not record_batches:
-            arrow_schema = _pandas_helpers.bq_to_arrow_schema(self._schema)
-            return pyarrow.Table.from_batches([], schema=arrow_schema)
-        return pyarrow.Table.from_batches(record_batches)
+        arrow_schema = _pandas_helpers.bq_to_arrow_schema(self._schema)
+        return pyarrow.Table.from_batches(record_batches, schema=arrow_schema)
 
     def _to_dataframe_iterable(self, bqstorage_client=None, dtypes=None):
         """Create an iterable of pandas DataFrames, to process the table as a stream.

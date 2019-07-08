@@ -2932,9 +2932,7 @@ class QueryJob(_AsyncJob):
 
         ..versionadded:: 1.17.0
         """
-        return self.result().to_arrow(
-            progress_bar_type=progress_bar_type,
-        )
+        return self.result().to_arrow(progress_bar_type=progress_bar_type)
 
     def to_dataframe(self, bqstorage_client=None, dtypes=None, progress_bar_type=None):
         """Return a pandas DataFrame from a QueryJob

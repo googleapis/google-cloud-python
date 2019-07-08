@@ -114,7 +114,7 @@ def bq_to_arrow_data_type(field):
     """
     if field.mode is not None and field.mode.upper() == "REPEATED":
         inner_type = bq_to_arrow_data_type(
-            schema.SchemaField(field.name, field.field_type)
+            schema.SchemaField(field.name, field.field_type, fields=field.fields)
         )
         if inner_type:
             return pyarrow.list_(inner_type)
@@ -154,11 +154,8 @@ def bq_to_arrow_schema(bq_schema):
     for bq_field in bq_schema:
         arrow_field = bq_to_arrow_field(bq_field)
         if arrow_field is None:
-            raise ValueError(
-                "Could not dermine Arrow type for BigQuery field: {}.".format(
-                    repr(bq_field)
-                )
-            )
+            # Auto-detect the schema if there is an unknown field type.
+            return None
         arrow_fields.append(arrow_field)
     return pyarrow.schema(arrow_fields)
 
@@ -245,7 +242,7 @@ def _tabledata_list_page_to_arrow(page, column_names, arrow_types):
 
 def download_arrow_tabledata_list(pages, schema):
     """Use tabledata.list to construct an iterable of RecordBatches."""
-    column_names = [field.name for field in schema]
+    column_names = bq_to_arrow_schema(schema) or [field.name for field in schema]
     arrow_types = [bq_to_arrow_data_type(field) for field in schema]
 
     for page in pages:
@@ -397,7 +394,7 @@ def download_dataframe_bqstorage(
                     continue
 
             # Return any remaining values after the workers finished.
-            while not worker_queue.empty():
+            while not worker_queue.empty():  # pragma: NO COVER
                 try:
                     # Include a timeout because even though the queue is
                     # non-empty, it doesn't guarantee that a subsequent call to
