@@ -1033,18 +1033,22 @@ class TestSession(unittest.TestCase):
             called_with.append((txn, args, kw))
             txn.insert(TABLE_NAME, COLUMNS, VALUES)
 
-        # retry once w/ timeout_secs=1
-        def _time(_results=[1, 1.5, 2.5]):
+        # retry several times to check backoff
+        def _time(_results=[1, 2, 4, 8]):
             return _results.pop(0)
 
         with mock.patch("time.time", _time):
             with mock.patch("time.sleep") as sleep_mock:
                 with self.assertRaises(Aborted):
-                    session.run_in_transaction(unit_of_work, timeout_secs=1)
+                    session.run_in_transaction(unit_of_work, timeout_secs=8)
 
-        sleep_mock.assert_not_called()
+        # unpacking call args into list
+        call_args = [call_[0][0] for call_ in sleep_mock.call_args_list]
+        call_args = list(map(int, call_args))
+        assert call_args == [2, 4]
+        assert sleep_mock.call_count == 2
 
-        self.assertEqual(len(called_with), 2)
+        self.assertEqual(len(called_with), 3)
         for txn, args, kw in called_with:
             self.assertIsInstance(txn, Transaction)
             self.assertIsNone(txn.committed)
@@ -1061,7 +1065,7 @@ class TestSession(unittest.TestCase):
                     metadata=[("google-cloud-resource-prefix", database.name)],
                 )
             ]
-            * 2,
+            * 3,
         )
         self.assertEqual(
             gax_api.commit.call_args_list,
@@ -1073,5 +1077,31 @@ class TestSession(unittest.TestCase):
                     metadata=[("google-cloud-resource-prefix", database.name)],
                 )
             ]
-            * 2,
+            * 3,
         )
+
+    def test_delay_helper_w_no_delay(self):
+        from google.cloud.spanner_v1.session import _delay_until_retry
+
+        metadata_mock = mock.Mock()
+        metadata_mock.trailing_metadata.return_value = {}
+
+        exc_mock = mock.Mock(errors=[metadata_mock])
+
+        def _time_func():
+            return 3
+
+        # check if current time > deadline
+        with mock.patch("time.time", _time_func):
+            with self.assertRaises(Exception):
+                _delay_until_retry(exc_mock, 2, 1)
+
+        with mock.patch("time.time", _time_func):
+            with mock.patch(
+                "google.cloud.spanner_v1.session._get_retry_delay"
+            ) as get_retry_delay_mock:
+                with mock.patch("time.sleep") as sleep_mock:
+                    get_retry_delay_mock.return_value = None
+
+                    _delay_until_retry(exc_mock, 6, 1)
+                    sleep_mock.assert_not_called()
