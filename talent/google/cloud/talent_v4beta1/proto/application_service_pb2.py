@@ -16,6 +16,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
 from google.cloud.talent_v4beta1.proto import (
     application_pb2 as google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_application__pb2,
 )
@@ -34,10 +35,11 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\027ApplicationServiceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        '\n;google/cloud/talent_v4beta1/proto/application_service.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x33google/cloud/talent_v4beta1/proto/application.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"i\n\x18\x43reateApplicationRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12=\n\x0b\x61pplication\x18\x02 \x01(\x0b\x32(.google.cloud.talent.v4beta1.Application"%\n\x15GetApplicationRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x8a\x01\n\x18UpdateApplicationRequest\x12=\n\x0b\x61pplication\x18\x01 \x01(\x0b\x32(.google.cloud.talent.v4beta1.Application\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"(\n\x18\x44\x65leteApplicationRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"P\n\x17ListApplicationsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05"\xb4\x01\n\x18ListApplicationsResponse\x12>\n\x0c\x61pplications\x18\x01 \x03(\x0b\x32(.google.cloud.talent.v4beta1.Application\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12?\n\x08metadata\x18\x03 \x01(\x0b\x32-.google.cloud.talent.v4beta1.ResponseMetadata2\xd4\x07\n\x12\x41pplicationService\x12\xbf\x01\n\x11\x43reateApplication\x12\x35.google.cloud.talent.v4beta1.CreateApplicationRequest\x1a(.google.cloud.talent.v4beta1.Application"I\x82\xd3\xe4\x93\x02\x43">/v4beta1/{parent=projects/*/tenants/*/profiles/*}/applications:\x01*\x12\xb6\x01\n\x0eGetApplication\x12\x32.google.cloud.talent.v4beta1.GetApplicationRequest\x1a(.google.cloud.talent.v4beta1.Application"F\x82\xd3\xe4\x93\x02@\x12>/v4beta1/{name=projects/*/tenants/*/profiles/*/applications/*}\x12\xcb\x01\n\x11UpdateApplication\x12\x35.google.cloud.talent.v4beta1.UpdateApplicationRequest\x1a(.google.cloud.talent.v4beta1.Application"U\x82\xd3\xe4\x93\x02O2J/v4beta1/{application.name=projects/*/tenants/*/profiles/*/applications/*}:\x01*\x12\xaa\x01\n\x11\x44\x65leteApplication\x12\x35.google.cloud.talent.v4beta1.DeleteApplicationRequest\x1a\x16.google.protobuf.Empty"F\x82\xd3\xe4\x93\x02@*>/v4beta1/{name=projects/*/tenants/*/profiles/*/applications/*}\x12\xc7\x01\n\x10ListApplications\x12\x34.google.cloud.talent.v4beta1.ListApplicationsRequest\x1a\x35.google.cloud.talent.v4beta1.ListApplicationsResponse"F\x82\xd3\xe4\x93\x02@\x12>/v4beta1/{parent=projects/*/tenants/*/profiles/*}/applicationsB\x85\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x17\x41pplicationServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
+        '\n;google/cloud/talent_v4beta1/proto/application_service.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x33google/cloud/talent_v4beta1/proto/application.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"i\n\x18\x43reateApplicationRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12=\n\x0b\x61pplication\x18\x02 \x01(\x0b\x32(.google.cloud.talent.v4beta1.Application"%\n\x15GetApplicationRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x8a\x01\n\x18UpdateApplicationRequest\x12=\n\x0b\x61pplication\x18\x01 \x01(\x0b\x32(.google.cloud.talent.v4beta1.Application\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"(\n\x18\x44\x65leteApplicationRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"P\n\x17ListApplicationsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05"\xb4\x01\n\x18ListApplicationsResponse\x12>\n\x0c\x61pplications\x18\x01 \x03(\x0b\x32(.google.cloud.talent.v4beta1.Application\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12?\n\x08metadata\x18\x03 \x01(\x0b\x32-.google.cloud.talent.v4beta1.ResponseMetadata2\xc2\x08\n\x12\x41pplicationService\x12\xbf\x01\n\x11\x43reateApplication\x12\x35.google.cloud.talent.v4beta1.CreateApplicationRequest\x1a(.google.cloud.talent.v4beta1.Application"I\x82\xd3\xe4\x93\x02\x43">/v4beta1/{parent=projects/*/tenants/*/profiles/*}/applications:\x01*\x12\xb6\x01\n\x0eGetApplication\x12\x32.google.cloud.talent.v4beta1.GetApplicationRequest\x1a(.google.cloud.talent.v4beta1.Application"F\x82\xd3\xe4\x93\x02@\x12>/v4beta1/{name=projects/*/tenants/*/profiles/*/applications/*}\x12\xcb\x01\n\x11UpdateApplication\x12\x35.google.cloud.talent.v4beta1.UpdateApplicationRequest\x1a(.google.cloud.talent.v4beta1.Application"U\x82\xd3\xe4\x93\x02O2J/v4beta1/{application.name=projects/*/tenants/*/profiles/*/applications/*}:\x01*\x12\xaa\x01\n\x11\x44\x65leteApplication\x12\x35.google.cloud.talent.v4beta1.DeleteApplicationRequest\x1a\x16.google.protobuf.Empty"F\x82\xd3\xe4\x93\x02@*>/v4beta1/{name=projects/*/tenants/*/profiles/*/applications/*}\x12\xc7\x01\n\x10ListApplications\x12\x34.google.cloud.talent.v4beta1.ListApplicationsRequest\x1a\x35.google.cloud.talent.v4beta1.ListApplicationsResponse"F\x82\xd3\xe4\x93\x02@\x12>/v4beta1/{parent=projects/*/tenants/*/profiles/*}/applications\x1al\xca\x41\x13jobs.googleapis.com\xd2\x41Shttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/jobsB\x85\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x17\x41pplicationServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
         google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_application__pb2.DESCRIPTOR,
         google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
@@ -98,8 +100,8 @@ _CREATEAPPLICATIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=286,
-    serialized_end=391,
+    serialized_start=311,
+    serialized_end=416,
 )
 
 
@@ -137,8 +139,8 @@ _GETAPPLICATIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=393,
-    serialized_end=430,
+    serialized_start=418,
+    serialized_end=455,
 )
 
 
@@ -194,8 +196,8 @@ _UPDATEAPPLICATIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=433,
-    serialized_end=571,
+    serialized_start=458,
+    serialized_end=596,
 )
 
 
@@ -233,8 +235,8 @@ _DELETEAPPLICATIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=573,
-    serialized_end=613,
+    serialized_start=598,
+    serialized_end=638,
 )
 
 
@@ -308,8 +310,8 @@ _LISTAPPLICATIONSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=615,
-    serialized_end=695,
+    serialized_start=640,
+    serialized_end=720,
 )
 
 
@@ -383,8 +385,8 @@ _LISTAPPLICATIONSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=698,
-    serialized_end=878,
+    serialized_start=723,
+    serialized_end=903,
 )
 
 _CREATEAPPLICATIONREQUEST.fields_by_name[
@@ -429,13 +431,13 @@ CreateApplicationRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          Required.  Resource name of the profile under which the
+          Required. Resource name of the profile under which the
           application is created.  The format is "projects/{project\_id}
           /tenants/{tenant\_id}/profiles/{profile\_id}", for example,
           "projects/test-project/tenants/test-tenant/profiles/test-
           profile".
       application:
-          Required.  The application to be created.
+          Required. The application to be created.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.CreateApplicationRequest)
     ),
@@ -453,7 +455,7 @@ GetApplicationRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Required.  The resource name of the application to be
+          Required. The resource name of the application to be
           retrieved.  The format is "projects/{project\_id}/tenants/{ten
           ant\_id}/profiles/{profile\_id}/applications/{application\_id}
           ", for example, "projects/test-project/tenants/test-
@@ -475,7 +477,7 @@ UpdateApplicationRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       application:
-          Required.  The application resource to replace the current
+          Required. The application resource to replace the current
           resource in the system.
       update_mask:
           Optional but strongly recommended for the best service
@@ -504,7 +506,7 @@ DeleteApplicationRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Required.  The resource name of the application to be deleted.
+          Required. The resource name of the application to be deleted.
           The format is "projects/{project\_id}/tenants/{tenant\_id}/pro
           files/{profile\_id}/applications/{application\_id}", for
           example, "projects/test-project/tenants/test-
@@ -526,16 +528,15 @@ ListApplicationsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          Required.  Resource name of the profile under which the
+          Required. Resource name of the profile under which the
           application is created.  The format is "projects/{project\_id}
           /tenants/{tenant\_id}/profiles/{profile\_id}", for example,
           "projects/test-project/tenants/test-tenant/profiles/test-
           profile".
       page_token:
-          Optional.  The starting indicator from which to return
-          results.
+          Optional. The starting indicator from which to return results.
       page_size:
-          Optional.  The maximum number of applications to be returned,
+          Optional. The maximum number of applications to be returned,
           at most 100. Default is 100 if a non-positive number is
           provided.
   """,
@@ -577,9 +578,11 @@ _APPLICATIONSERVICE = _descriptor.ServiceDescriptor(
     full_name="google.cloud.talent.v4beta1.ApplicationService",
     file=DESCRIPTOR,
     index=0,
-    serialized_options=None,
-    serialized_start=881,
-    serialized_end=1861,
+    serialized_options=_b(
+        "\312A\023jobs.googleapis.com\322AShttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/jobs"
+    ),
+    serialized_start=906,
+    serialized_end=1996,
     methods=[
         _descriptor.MethodDescriptor(
             name="CreateApplication",

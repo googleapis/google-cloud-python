@@ -384,42 +384,42 @@ Company = _reflection.GeneratedProtocolMessageType(
           optional and the default tenant is used if unspecified, for
           example, "projects/api-test-project/companies/bar".
       display_name:
-          Required.  The display name of the company, for example,
+          Required. The display name of the company, for example,
           "Google, LLC".
       external_id:
-          Required.  Client side company identifier, used to uniquely
+          Required. Client side company identifier, used to uniquely
           identify the company.  The maximum number of allowed
           characters is 255.
       size:
-          Optional.  The employer's company size.
+          Optional. The employer's company size.
       headquarters_address:
-          Optional.  The street address of the company's main
+          Optional. The street address of the company's main
           headquarters, which may be different from the job location.
           The service attempts to geolocate the provided address, and
           populates a more specific location wherever possible in [Deriv
           edInfo.headquarters\_location][google.cloud.talent.v4beta1.Com
           pany.DerivedInfo.headquarters\_location].
       hiring_agency:
-          Optional.  Set to true if it is the hiring agency that post
+          Optional. Set to true if it is the hiring agency that post
           jobs for other employers.  Defaults to false if not provided.
       eeo_text:
-          Optional.  Equal Employment Opportunity legal disclaimer text
+          Optional. Equal Employment Opportunity legal disclaimer text
           to be associated with all jobs, and typically to be displayed
           in all roles.  The maximum number of allowed characters is
           500.
       website_uri:
-          Optional.  The URI representing the company's primary web site
+          Optional. The URI representing the company's primary web site
           or home page, for example, "https://www.google.com".  The
           maximum number of allowed characters is 255.
       career_site_uri:
-          Optional.  The URI to employer's career site or careers page
-          on the employer's web site, for example,
+          Optional. The URI to employer's career site or careers page on
+          the employer's web site, for example,
           "https://careers.google.com".
       image_uri:
-          Optional.  A URI that hosts the employer's company logo.
+          Optional. A URI that hosts the employer's company logo.
       keyword_searchable_job_custom_attributes:
-          Optional.  A list of keys of filterable [Job.custom\_attribute
-          s][google.cloud.talent.v4beta1.Job.custom\_attributes], whose
+          Optional. A list of keys of filterable [Job.custom\_attributes
+          ][google.cloud.talent.v4beta1.Job.custom\_attributes], whose
           corresponding ``string_values`` are used in keyword searches.
           Jobs with ``string_values`` under these specified field keys
           are returned if any of the values match the search keyword.
