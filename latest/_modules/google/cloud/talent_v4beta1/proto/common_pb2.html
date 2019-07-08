@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.talent_v4beta1.proto.common_pb2 &#8212; google-cloud 70b4bd2 documentation</title>
+    <title>google.cloud.talent_v4beta1.proto.common_pb2 &#8212; google-cloud afc4d94 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -2497,7 +2497,7 @@
 <span class="s2">          tenant site rely on this field being set correctly to a unique</span>
 <span class="s2">          user ID.  The maximum number of allowed characters is 255.</span>
 <span class="s2">      allow_missing_ids:</span>
-<span class="s2">          Optional.  If set to ``true``,</span>
+<span class="s2">          Optional. If set to ``true``,</span>
 <span class="s2">          [domain][google.cloud.talent.v4beta1.RequestMetadata.domain], </span>
 <span class="s2">          [session\_id][google.cloud.talent.v4beta1.RequestMetadata.sess</span>
 <span class="s2">          ion\_id] and [user\_id][google.cloud.talent.v4beta1.RequestMet</span>
@@ -2509,7 +2509,7 @@
 <span class="s2">          ion\_id] and [user\_id][google.cloud.talent.v4beta1.RequestMet</span>
 <span class="s2">          adata.user\_id] for the best service experience.</span>
 <span class="s2">      device_info:</span>
-<span class="s2">          Optional.  The type of device used by the job seeker at the</span>
+<span class="s2">          Optional. The type of device used by the job seeker at the</span>
 <span class="s2">          time of the call to the service.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
         <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.RequestMetadata)</span>
@@ -2550,9 +2550,9 @@
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
 <span class="s2">      device_type:</span>
-<span class="s2">          Optional.  Type of the device.</span>
+<span class="s2">          Optional. Type of the device.</span>
 <span class="s2">      id:</span>
-<span class="s2">          Optional.  A device-specific ID. The ID must be a unique</span>
+<span class="s2">          Optional. A device-specific ID. The ID must be a unique</span>
 <span class="s2">          identifier that distinguishes the device from other devices.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
         <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.DeviceInfo)</span>
@@ -2591,7 +2591,7 @@
 <span class="s2">          [google.cloud.talent.v4beta1.CustomAttribute.long\_values] is</span>
 <span class="s2">          supported.</span>
 <span class="s2">      filterable:</span>
-<span class="s2">          Optional.  If the ``filterable`` flag is true, custom field</span>
+<span class="s2">          Optional. If the ``filterable`` flag is true, custom field</span>
 <span class="s2">          values are searchable. If false, values are not searchable.</span>
 <span class="s2">          Default is false.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
@@ -2657,28 +2657,28 @@
 <span class="s2">    </span>
 <span class="s2">    Attributes:</span>
 <span class="s2">        type:</span>
-<span class="s2">            Optional.  Compensation type.  Default is [CompensationType.CO</span>
-<span class="s2">            MPENSATION\_TYPE\_UNSPECIFIED][google.cloud.talent.v4beta1.Com</span>
-<span class="s2">            pensationInfo.CompensationType.COMPENSATION\_TYPE\_UNSPECIFIED</span>
-<span class="s2">            ].</span>
+<span class="s2">            Optional. Compensation type.  Default is [CompensationType.COM</span>
+<span class="s2">            PENSATION\_TYPE\_UNSPECIFIED][google.cloud.talent.v4beta1.Comp</span>
+<span class="s2">            ensationInfo.CompensationType.COMPENSATION\_TYPE\_UNSPECIFIED]</span>
+<span class="s2">            .</span>
 <span class="s2">        unit:</span>
-<span class="s2">            Optional.  Frequency of the specified amount.  Default is [Com</span>
-<span class="s2">            pensationUnit.COMPENSATION\_UNIT\_UNSPECIFIED][google.cloud.ta</span>
-<span class="s2">            lent.v4beta1.CompensationInfo.CompensationUnit.COMPENSATION\_U</span>
-<span class="s2">            NIT\_UNSPECIFIED].</span>
+<span class="s2">            Optional. Frequency of the specified amount.  Default is [Comp</span>
+<span class="s2">            ensationUnit.COMPENSATION\_UNIT\_UNSPECIFIED][google.cloud.tal</span>
+<span class="s2">            ent.v4beta1.CompensationInfo.CompensationUnit.COMPENSATION\_UN</span>
+<span class="s2">            IT\_UNSPECIFIED].</span>
 <span class="s2">        compensation_amount:</span>
 <span class="s2">            Optional.  Compensation amount. It could be a fixed amount or</span>
 <span class="s2">            a floating range.</span>
 <span class="s2">        amount:</span>
-<span class="s2">            Optional.  Compensation amount.</span>
+<span class="s2">            Optional. Compensation amount.</span>
 <span class="s2">        range:</span>
-<span class="s2">            Optional.  Compensation range.</span>
+<span class="s2">            Optional. Compensation range.</span>
 <span class="s2">        description:</span>
-<span class="s2">            Optional.  Compensation description. For example, could</span>
+<span class="s2">            Optional. Compensation description. For example, could</span>
 <span class="s2">            indicate equity terms or provide additional context to an</span>
 <span class="s2">            estimated bonus.</span>
 <span class="s2">        expected_units_per_year:</span>
-<span class="s2">            Optional.  Expected number of units paid each year. If not</span>
+<span class="s2">            Optional. Expected number of units paid each year. If not</span>
 <span class="s2">            specified, when [Job.employment\_types][google.cloud.talent.v4</span>
 <span class="s2">            beta1.Job.employment\_types] is FULLTIME, a default value is</span>
 <span class="s2">            inferred based on [unit][google.cloud.talent.v4beta1.Compensat</span>
@@ -2699,12 +2699,12 @@
 <span class="s2">    </span>
 <span class="s2">    Attributes:</span>
 <span class="s2">        max_compensation:</span>
-<span class="s2">            Optional.  The maximum amount of compensation. If left empty,</span>
+<span class="s2">            Optional. The maximum amount of compensation. If left empty,</span>
 <span class="s2">            the value is set to a maximal compensation value and the</span>
 <span class="s2">            currency code is set to match the [currency</span>
 <span class="s2">            code][google.type.Money.currency\_code] of min\_compensation.</span>
 <span class="s2">        min_compensation:</span>
-<span class="s2">            Optional.  The minimum amount of compensation. If left empty,</span>
+<span class="s2">            Optional. The minimum amount of compensation. If left empty,</span>
 <span class="s2">            the value is set to zero and the currency code is set to match</span>
 <span class="s2">            the [currency code][google.type.Money.currency\_code] of</span>
 <span class="s2">            max\_compensation.</span>
@@ -2719,9 +2719,9 @@
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
 <span class="s2">      entries:</span>
-<span class="s2">          Optional.  Job compensation information.  At most one entry</span>
-<span class="s2">          can be of type [CompensationInfo.CompensationType.BASE][google</span>
-<span class="s2">          .cloud.talent.v4beta1.CompensationInfo.CompensationType.BASE],</span>
+<span class="s2">          Optional. Job compensation information.  At most one entry can</span>
+<span class="s2">          be of type [CompensationInfo.CompensationType.BASE][google.clo</span>
+<span class="s2">          ud.talent.v4beta1.CompensationInfo.CompensationType.BASE],</span>
 <span class="s2">          which is referred as **base compensation entry** for the job.</span>
 <span class="s2">      annualized_base_compensation_range:</span>
 <span class="s2">          Output only. Annualized base compensation range. Computed as</span>
@@ -2760,18 +2760,18 @@
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
 <span class="s2">      display_name:</span>
-<span class="s2">          Optional.  Name of license or certification.  Number of</span>
+<span class="s2">          Optional. Name of license or certification.  Number of</span>
 <span class="s2">          characters allowed is 100.</span>
 <span class="s2">      acquire_date:</span>
-<span class="s2">          Optional.  Acquisition date or effective date of license or</span>
+<span class="s2">          Optional. Acquisition date or effective date of license or</span>
 <span class="s2">          certification.</span>
 <span class="s2">      expire_date:</span>
-<span class="s2">          Optional.  Expiration date of license of certification.</span>
+<span class="s2">          Optional. Expiration date of license of certification.</span>
 <span class="s2">      authority:</span>
-<span class="s2">          Optional.  Authority of license, such as government.  Number</span>
-<span class="s2">          of characters allowed is 100.</span>
+<span class="s2">          Optional. Authority of license, such as government.  Number of</span>
+<span class="s2">          characters allowed is 100.</span>
 <span class="s2">      description:</span>
-<span class="s2">          Optional.  Description of license or certification.  Number of</span>
+<span class="s2">          Optional. Description of license or certification.  Number of</span>
 <span class="s2">          characters allowed is 100,000.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
         <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.Certification)</span>
@@ -2790,16 +2790,16 @@
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
 <span class="s2">      display_name:</span>
-<span class="s2">          Optional.  Skill display name.  For example, &quot;Java&quot;, &quot;Python&quot;.</span>
+<span class="s2">          Optional. Skill display name.  For example, &quot;Java&quot;, &quot;Python&quot;.</span>
 <span class="s2">          Number of characters allowed is 100.</span>
 <span class="s2">      last_used_date:</span>
-<span class="s2">          Optional.  The last time this skill was used.</span>
+<span class="s2">          Optional. The last time this skill was used.</span>
 <span class="s2">      level:</span>
-<span class="s2">          Optional.  Skill proficiency level which indicates how</span>
+<span class="s2">          Optional. Skill proficiency level which indicates how</span>
 <span class="s2">          proficient the candidate is at this skill.</span>
 <span class="s2">      context:</span>
-<span class="s2">          Optional.  A paragraph describes context of this skill.</span>
-<span class="s2">          Number of characters allowed is 100,000.</span>
+<span class="s2">          Optional. A paragraph describes context of this skill.  Number</span>
+<span class="s2">          of characters allowed is 100,000.</span>
 <span class="s2">      skill_name_snippet:</span>
 <span class="s2">          Output only. Skill name snippet shows how the [display\_name][</span>
 <span class="s2">          google.cloud.talent.v4beta1.Skill.display\_name] is related to</span>
@@ -2823,9 +2823,9 @@
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
 <span class="s2">      rating:</span>
-<span class="s2">          Optional.  The rating on this interview.</span>
+<span class="s2">          Optional. The rating on this interview.</span>
 <span class="s2">      outcome:</span>
-<span class="s2">          Required.  The overall decision resulting from this interview</span>
+<span class="s2">          Required. The overall decision resulting from this interview</span>
 <span class="s2">          (positive, negative, nuetral).</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
         <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.Interview)</span>

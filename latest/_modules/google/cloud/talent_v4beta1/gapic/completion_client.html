@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.talent_v4beta1.gapic.completion_client &#8212; google-cloud 70b4bd2 documentation</title>
+    <title>google.cloud.talent_v4beta1.gapic.completion_client &#8212; google-cloud afc4d94 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -276,30 +276,22 @@
 <span class="sd">            &gt;&gt;&gt; response = client.complete_query(parent, query, page_size)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): Required.</span>
-
-<span class="sd">                Resource name of tenant the completion is performed within.</span>
+<span class="sd">            parent (str): Required. Resource name of tenant the completion is performed within.</span>
 
 <span class="sd">                The format is &quot;projects/{project\_id}/tenants/{tenant\_id}&quot;, for</span>
 <span class="sd">                example, &quot;projects/api-test-project/tenant/foo&quot;.</span>
 
 <span class="sd">                Tenant id is optional and the default tenant is used if unspecified, for</span>
 <span class="sd">                example, &quot;projects/api-test-project&quot;.</span>
-<span class="sd">            query (str): Required.</span>
-
-<span class="sd">                The query used to generate suggestions.</span>
+<span class="sd">            query (str): Required. The query used to generate suggestions.</span>
 
 <span class="sd">                The maximum number of allowed characters is 255.</span>
-<span class="sd">            page_size (int): Required.</span>
-
-<span class="sd">                Completion result count.</span>
+<span class="sd">            page_size (int): Required. Completion result count.</span>
 
 <span class="sd">                The maximum allowed page size is 10.</span>
-<span class="sd">            language_codes (list[str]): Optional.</span>
-
-<span class="sd">                The list of languages of the query. This is the BCP-47 language code,</span>
-<span class="sd">                such as &quot;en-US&quot; or &quot;sr-Latn&quot;. For more information, see `Tags for</span>
-<span class="sd">                Identifying Languages &lt;https://tools.ietf.org/html/bcp47&gt;`__.</span>
+<span class="sd">            language_codes (list[str]): Optional. The list of languages of the query. This is the BCP-47</span>
+<span class="sd">                language code, such as &quot;en-US&quot; or &quot;sr-Latn&quot;. For more information, see</span>
+<span class="sd">                `Tags for Identifying Languages &lt;https://tools.ietf.org/html/bcp47&gt;`__.</span>
 
 <span class="sd">                For ``CompletionType.JOB_TITLE`` type, only open jobs with the same</span>
 <span class="sd">                ``language_codes`` are returned.</span>
@@ -312,9 +304,7 @@
 <span class="sd">                ``language_codes`` are returned.</span>
 
 <span class="sd">                The maximum number of allowed characters is 255.</span>
-<span class="sd">            company (str): Optional.</span>
-
-<span class="sd">                If provided, restricts completion to specified company.</span>
+<span class="sd">            company (str): Optional. If provided, restricts completion to specified company.</span>
 
 <span class="sd">                The format is</span>
 <span class="sd">                &quot;projects/{project\_id}/tenants/{tenant\_id}/companies/{company\_id}&quot;,</span>
@@ -322,12 +312,10 @@
 
 <span class="sd">                Tenant id is optional and the default tenant is used if unspecified, for</span>
 <span class="sd">                example, &quot;projects/api-test-project/companies/bar&quot;.</span>
-<span class="sd">            scope (~google.cloud.talent_v4beta1.types.CompletionScope): Optional.</span>
-
-<span class="sd">                The scope of the completion. The defaults is ``CompletionScope.PUBLIC``.</span>
-<span class="sd">            type_ (~google.cloud.talent_v4beta1.types.CompletionType): Optional.</span>
-
-<span class="sd">                The completion topic. The default is ``CompletionType.COMBINED``.</span>
+<span class="sd">            scope (~google.cloud.talent_v4beta1.types.CompletionScope): Optional. The scope of the completion. The defaults is</span>
+<span class="sd">                ``CompletionScope.PUBLIC``.</span>
+<span class="sd">            type_ (~google.cloud.talent_v4beta1.types.CompletionType): Optional. The completion topic. The default is</span>
+<span class="sd">                ``CompletionType.COMBINED``.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>

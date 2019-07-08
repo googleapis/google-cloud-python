@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Cloud Talent Solution API &#8212; google-cloud 70b4bd2 documentation</title>
+    <title>Client for Cloud Talent Solution API &#8212; google-cloud afc4d94 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -107,15 +107,14 @@ should be set through client_options.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>Resource name of the profile under which the application is created.</p>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. Resource name of the profile under which the application is
+created.</p>
 <p>The format is
 “projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}”,
 for example,
 “projects/test-project/tenants/test-tenant/profiles/test-profile”.</p>
 </li>
-<li><strong>application</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Application" title="google.cloud.talent_v4beta1.types.Application"><em>Application</em></a><em>]</em>) – <p>Required.</p>
-<p>The application to be created.</p>
+<li><strong>application</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Application" title="google.cloud.talent_v4beta1.types.Application"><em>Application</em></a><em>]</em>) – <p>Required. The application to be created.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Application" title="google.cloud.talent_v4beta1.types.Application"><code class="xref py py-class docutils literal notranslate"><span class="pre">Application</span></code></a></p>
 </li>
@@ -165,8 +164,7 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The resource name of the application to be deleted.</p>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. The resource name of the application to be deleted.</p>
 <p>The format is
 “projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}/applications/{application_id}”,
 for example,
@@ -274,8 +272,7 @@ file.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The resource name of the application to be retrieved.</p>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. The resource name of the application to be retrieved.</p>
 <p>The format is
 “projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}/applications/{application_id}”,
 for example,
@@ -339,8 +336,8 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>Resource name of the profile under which the application is created.</p>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. Resource name of the profile under which the application is
+created.</p>
 <p>The format is
 “projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}”,
 for example,
@@ -407,8 +404,8 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>application</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Application" title="google.cloud.talent_v4beta1.types.Application"><em>Application</em></a><em>]</em>) – <p>Required.</p>
-<p>The application resource to replace the current resource in the system.</p>
+<li><strong>application</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Application" title="google.cloud.talent_v4beta1.types.Application"><em>Application</em></a><em>]</em>) – <p>Required. The application resource to replace the current resource in the
+system.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Application" title="google.cloud.talent_v4beta1.types.Application"><code class="xref py py-class docutils literal notranslate"><span class="pre">Application</span></code></a></p>
 </li>
@@ -518,15 +515,14 @@ should be set through client_options.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>Resource name of the tenant under which the company is created.</p>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. Resource name of the tenant under which the company is
+created.</p>
 <p>The format is “projects/{project_id}/tenants/{tenant_id}”, for
 example, “projects/api-test-project/tenant/foo”.</p>
 <p>Tenant id is optional and a default tenant is created if unspecified,
 for example, “projects/api-test-project”.</p>
 </li>
-<li><strong>company</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Company" title="google.cloud.talent_v4beta1.types.Company"><em>Company</em></a><em>]</em>) – <p>Required.</p>
-<p>The company to be created.</p>
+<li><strong>company</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Company" title="google.cloud.talent_v4beta1.types.Company"><em>Company</em></a><em>]</em>) – <p>Required. The company to be created.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Company" title="google.cloud.talent_v4beta1.types.Company"><code class="xref py py-class docutils literal notranslate"><span class="pre">Company</span></code></a></p>
 </li>
@@ -577,8 +573,7 @@ Prerequisite: The company has no jobs associated with it.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The resource name of the company to be deleted.</p>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. The resource name of the company to be deleted.</p>
 <p>The format is
 “projects/{project_id}/tenants/{tenant_id}/companies/{company_id}”,
 for example, “projects/api-test-project/tenants/foo/companies/bar”.</p>
@@ -687,8 +682,7 @@ file.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The resource name of the company to be retrieved.</p>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. The resource name of the company to be retrieved.</p>
 <p>The format is
 “projects/{project_id}/tenants/{tenant_id}/companies/{company_id}”,
 for example, “projects/api-test-project/tenants/foo/companies/bar”.</p>
@@ -753,8 +747,8 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>Resource name of the tenant under which the company is created.</p>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. Resource name of the tenant under which the company is
+created.</p>
 <p>The format is “projects/{project_id}/tenants/{tenant_id}”, for
 example, “projects/api-test-project/tenant/foo”.</p>
 <p>Tenant id is optional and the default tenant is used if unspecified, for
@@ -765,8 +759,7 @@ underlying API response. If page streaming is performed per-
 resource, this parameter does not affect the return value. If page
 streaming is performed per-page, this determines the maximum number
 of resources in a page.</li>
-<li><strong>require_open_jobs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – <p>Optional.</p>
-<p>Set to true if the companies requested must have open jobs.</p>
+<li><strong>require_open_jobs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – <p>Optional. Set to true if the companies requested must have open jobs.</p>
 <p>Defaults to false.</p>
 <p>If true, at most <code class="docutils literal notranslate"><span class="pre">page_size</span></code> of companies are fetched, among which
 only those with open jobs are returned.</p>
@@ -827,8 +820,8 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>company</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Company" title="google.cloud.talent_v4beta1.types.Company"><em>Company</em></a><em>]</em>) – <p>Required.</p>
-<p>The company resource to replace the current resource in the system.</p>
+<li><strong>company</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Company" title="google.cloud.talent_v4beta1.types.Company"><em>Company</em></a><em>]</em>) – <p>Required. The company resource to replace the current resource in the
+system.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Company" title="google.cloud.talent_v4beta1.types.Company"><code class="xref py py-class docutils literal notranslate"><span class="pre">Company</span></code></a></p>
 </li>
@@ -942,25 +935,21 @@ Intended for use by a job search auto-complete search box.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>Resource name of tenant the completion is performed within.</p>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. Resource name of tenant the completion is performed within.</p>
 <p>The format is “projects/{project_id}/tenants/{tenant_id}”, for
 example, “projects/api-test-project/tenant/foo”.</p>
 <p>Tenant id is optional and the default tenant is used if unspecified, for
 example, “projects/api-test-project”.</p>
 </li>
-<li><strong>query</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The query used to generate suggestions.</p>
+<li><strong>query</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. The query used to generate suggestions.</p>
 <p>The maximum number of allowed characters is 255.</p>
 </li>
-<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – <p>Required.</p>
-<p>Completion result count.</p>
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – <p>Required. Completion result count.</p>
 <p>The maximum allowed page size is 10.</p>
 </li>
-<li><strong>language_codes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – <p>Optional.</p>
-<p>The list of languages of the query. This is the BCP-47 language code,
-such as “en-US” or “sr-Latn”. For more information, see <a class="reference external" href="https://tools.ietf.org/html/bcp47">Tags for
-Identifying Languages</a>.</p>
+<li><strong>language_codes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – <p>Optional. The list of languages of the query. This is the BCP-47
+language code, such as “en-US” or “sr-Latn”. For more information, see
+<a class="reference external" href="https://tools.ietf.org/html/bcp47">Tags for Identifying Languages</a>.</p>
 <p>For <code class="docutils literal notranslate"><span class="pre">CompletionType.JOB_TITLE</span></code> type, only open jobs with the same
 <code class="docutils literal notranslate"><span class="pre">language_codes</span></code> are returned.</p>
 <p>For <code class="docutils literal notranslate"><span class="pre">CompletionType.COMPANY_NAME</span></code> type, only companies having open
@@ -970,20 +959,17 @@ jobs with the same <code class="docutils literal notranslate"><span class="pre">
 <code class="docutils literal notranslate"><span class="pre">language_codes</span></code> are returned.</p>
 <p>The maximum number of allowed characters is 255.</p>
 </li>
-<li><strong>company</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional.</p>
-<p>If provided, restricts completion to specified company.</p>
+<li><strong>company</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional. If provided, restricts completion to specified company.</p>
 <p>The format is
 “projects/{project_id}/tenants/{tenant_id}/companies/{company_id}”,
 for example, “projects/api-test-project/tenants/foo/companies/bar”.</p>
 <p>Tenant id is optional and the default tenant is used if unspecified, for
 example, “projects/api-test-project/companies/bar”.</p>
 </li>
-<li><strong>scope</strong> (<em>CompletionScope</em>) – <p>Optional.</p>
-<p>The scope of the completion. The defaults is <code class="docutils literal notranslate"><span class="pre">CompletionScope.PUBLIC</span></code>.</p>
-</li>
-<li><strong>type</strong> (<em>CompletionType</em>) – <p>Optional.</p>
-<p>The completion topic. The default is <code class="docutils literal notranslate"><span class="pre">CompletionType.COMBINED</span></code>.</p>
-</li>
+<li><strong>scope</strong> (<em>CompletionScope</em>) – Optional. The scope of the completion. The defaults is
+<code class="docutils literal notranslate"><span class="pre">CompletionScope.PUBLIC</span></code>.</li>
+<li><strong>type</strong> (<em>CompletionType</em>) – Optional. The completion topic. The default is
+<code class="docutils literal notranslate"><span class="pre">CompletionType.COMBINED</span></code>.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1147,16 +1133,14 @@ about self service tools.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>Resource name of the tenant under which the event is created.</p>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. Resource name of the tenant under which the event is created.</p>
 <p>The format is “projects/{project_id}/tenants/{tenant_id}”, for
 example, “projects/api-test-project/tenant/foo”.</p>
 <p>Tenant id is optional and a default tenant is created if unspecified,
 for example, “projects/api-test-project”.</p>
 </li>
-<li><strong>client_event</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.ClientEvent" title="google.cloud.talent_v4beta1.types.ClientEvent"><em>ClientEvent</em></a><em>]</em>) – <p>Required.</p>
-<p>Events issued when end user interacts with customer’s application that
-uses Cloud Talent Solution.</p>
+<li><strong>client_event</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.ClientEvent" title="google.cloud.talent_v4beta1.types.ClientEvent"><em>ClientEvent</em></a><em>]</em>) – <p>Required. Events issued when end user interacts with customer’s application
+that uses Cloud Talent Solution.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.ClientEvent" title="google.cloud.talent_v4beta1.types.ClientEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClientEvent</span></code></a></p>
 </li>
@@ -1326,15 +1310,14 @@ should be set through client_options.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The resource name of the tenant under which the job is created.</p>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. The resource name of the tenant under which the job is
+created.</p>
 <p>The format is “projects/{project_id}/tenants/{tenant_id}”, for
 example, “projects/api-test-project/tenant/foo”.</p>
 <p>Tenant id is optional and a default tenant is created if unspecified,
 for example, “projects/api-test-project”.</p>
 </li>
-<li><strong>jobs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Job" title="google.cloud.talent_v4beta1.types.Job"><em>Job</em></a><em>]</em><em>]</em>) – <p>Required.</p>
-<p>The jobs to be created.</p>
+<li><strong>jobs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Job" title="google.cloud.talent_v4beta1.types.Job"><em>Job</em></a><em>]</em><em>]</em>) – <p>Required. The jobs to be created.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Job" title="google.cloud.talent_v4beta1.types.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">Job</span></code></a></p>
 </li>
@@ -1387,15 +1370,14 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The resource name of the tenant under which the job is created.</p>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. The resource name of the tenant under which the job is
+created.</p>
 <p>The format is “projects/{project_id}/tenants/{tenant_id}”, for
 example, “projects/api-test-project/tenant/foo”.</p>
 <p>Tenant id is optional and the default tenant is used if unspecified, for
 example, “projects/api-test-project”.</p>
 </li>
-<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The filter string specifies the jobs to be deleted.</p>
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. The filter string specifies the jobs to be deleted.</p>
 <p>Supported operator: =, AND</p>
 <p>The fields eligible for filtering are:</p>
 <ul>
@@ -1460,15 +1442,14 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The resource name of the tenant under which the job is created.</p>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. The resource name of the tenant under which the job is
+created.</p>
 <p>The format is “projects/{project_id}/tenants/{tenant_id}”, for
 example, “projects/api-test-project/tenant/foo”.</p>
 <p>Tenant id is optional and the default tenant is used if unspecified, for
 example, “projects/api-test-project”.</p>
 </li>
-<li><strong>jobs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Job" title="google.cloud.talent_v4beta1.types.Job"><em>Job</em></a><em>]</em><em>]</em>) – <p>Required.</p>
-<p>The jobs to be updated.</p>
+<li><strong>jobs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Job" title="google.cloud.talent_v4beta1.types.Job"><em>Job</em></a><em>]</em><em>]</em>) – <p>Required. The jobs to be updated.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Job" title="google.cloud.talent_v4beta1.types.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">Job</span></code></a></p>
 </li>
@@ -1542,15 +1523,14 @@ up to 5 minutes.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The resource name of the tenant under which the job is created.</p>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. The resource name of the tenant under which the job is
+created.</p>
 <p>The format is “projects/{project_id}/tenants/{tenant_id}”, for
 example, “projects/api-test-project/tenant/foo”.</p>
 <p>Tenant id is optional and a default tenant is created if unspecified,
 for example, “projects/api-test-project”.</p>
 </li>
-<li><strong>job</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Job" title="google.cloud.talent_v4beta1.types.Job"><em>Job</em></a><em>]</em>) – <p>Required.</p>
-<p>The Job to be created.</p>
+<li><strong>job</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Job" title="google.cloud.talent_v4beta1.types.Job"><em>Job</em></a><em>]</em>) – <p>Required. The Job to be created.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Job" title="google.cloud.talent_v4beta1.types.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">Job</span></code></a></p>
 </li>
@@ -1602,8 +1582,7 @@ up to 5 minutes.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The resource name of the job to be deleted.</p>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. The resource name of the job to be deleted.</p>
 <p>The format is
 “projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}”, for
 example, “projects/api-test-project/tenants/foo/jobs/1234”.</p>
@@ -1713,8 +1692,7 @@ within the last 90 days.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The resource name of the job to retrieve.</p>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. The resource name of the job to retrieve.</p>
 <p>The format is
 “projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}”, for
 example, “projects/api-test-project/tenants/foo/jobs/1234”.</p>
@@ -1788,15 +1766,14 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The resource name of the tenant under which the job is created.</p>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. The resource name of the tenant under which the job is
+created.</p>
 <p>The format is “projects/{project_id}/tenants/{tenant_id}”, for
 example, “projects/api-test-project/tenant/foo”.</p>
 <p>Tenant id is optional and the default tenant is used if unspecified, for
 example, “projects/api-test-project”.</p>
 </li>
-<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The filter string specifies the jobs to be enumerated.</p>
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. The filter string specifies the jobs to be enumerated.</p>
 <p>Supported operator: =, AND</p>
 <p>The fields eligible for filtering are:</p>
 <ul>
@@ -1819,10 +1796,9 @@ underlying API response. If page streaming is performed per-
 resource, this parameter does not affect the return value. If page
 streaming is performed per-page, this determines the maximum number
 of resources in a page.</li>
-<li><strong>job_view</strong> (<em>JobView</em>) – <p>Optional.</p>
-<p>The desired job attributes returned for jobs in the search response.
-Defaults to <code class="docutils literal notranslate"><span class="pre">JobView.JOB_VIEW_FULL</span></code> if no value is specified.</p>
-</li>
+<li><strong>job_view</strong> (<em>JobView</em>) – Optional. The desired job attributes returned for jobs in the search
+response. Defaults to <code class="docutils literal notranslate"><span class="pre">JobView.JOB_VIEW_FULL</span></code> if no value is
+specified.</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -1889,46 +1865,41 @@ and only returns jobs that the caller has permission to search against.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The resource name of the tenant to search within.</p>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. The resource name of the tenant to search within.</p>
 <p>The format is “projects/{project_id}/tenants/{tenant_id}”, for
 example, “projects/api-test-project/tenant/foo”.</p>
 <p>Tenant id is optional and the default tenant is used if unspecified, for
 example, “projects/api-test-project”.</p>
 </li>
-<li><strong>request_metadata</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.RequestMetadata" title="google.cloud.talent_v4beta1.types.RequestMetadata"><em>RequestMetadata</em></a><em>]</em>) – <p>Required.</p>
-<p>The meta information collected about the job searcher, used to improve
-the search quality of the service.. The identifiers, (such as
+<li><strong>request_metadata</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.RequestMetadata" title="google.cloud.talent_v4beta1.types.RequestMetadata"><em>RequestMetadata</em></a><em>]</em>) – <p>Required. The meta information collected about the job searcher, used to
+improve the search quality of the service. The identifiers (such as
 <code class="docutils literal notranslate"><span class="pre">user_id</span></code>) are provided by users, and must be unique and consistent.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.RequestMetadata" title="google.cloud.talent_v4beta1.types.RequestMetadata"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequestMetadata</span></code></a></p>
 </li>
-<li><strong>search_mode</strong> (<em>SearchMode</em>) – <p>Optional.</p>
-<p>Mode of a search.</p>
+<li><strong>search_mode</strong> (<em>SearchMode</em>) – <p>Optional. Mode of a search.</p>
 <p>Defaults to <code class="docutils literal notranslate"><span class="pre">SearchMode.JOB_SEARCH</span></code>.</p>
 </li>
-<li><strong>job_query</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.JobQuery" title="google.cloud.talent_v4beta1.types.JobQuery"><em>JobQuery</em></a><em>]</em>) – <p>Optional.</p>
-<p>Query used to search against jobs, such as keyword, location filters, etc.</p>
+<li><strong>job_query</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.JobQuery" title="google.cloud.talent_v4beta1.types.JobQuery"><em>JobQuery</em></a><em>]</em>) – <p>Optional. Query used to search against jobs, such as keyword, location
+filters, etc.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.JobQuery" title="google.cloud.talent_v4beta1.types.JobQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">JobQuery</span></code></a></p>
 </li>
-<li><strong>enable_broadening</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – <p>Optional.</p>
-<p>Controls whether to broaden the search when it produces sparse results.
-Broadened queries append results to the end of the matching results
-list.</p>
+<li><strong>enable_broadening</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – <p>Optional. Controls whether to broaden the search when it produces sparse
+results. Broadened queries append results to the end of the matching
+results list.</p>
 <p>Defaults to false.</p>
 </li>
-<li><strong>require_precise_result_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – <p>Optional.</p>
-<p>Controls if the search job request requires the return of a precise
-count of the first 300 results. Setting this to <code class="docutils literal notranslate"><span class="pre">true</span></code> ensures
+<li><strong>require_precise_result_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – <p>Optional. Controls if the search job request requires the return of a
+precise count of the first 300 results. Setting this to <code class="docutils literal notranslate"><span class="pre">true</span></code> ensures
 consistency in the number of results per page. Best practice is to set
 this value to true if a client allows users to jump directly to a
 non-sequential search results page.</p>
 <p>Enabling this flag may adversely impact performance.</p>
 <p>Defaults to false.</p>
 </li>
-<li><strong>histogram_queries</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.HistogramQuery" title="google.cloud.talent_v4beta1.types.HistogramQuery"><em>HistogramQuery</em></a><em>]</em><em>]</em>) – <p>Optional.</p>
-<p>An expression specifies a histogram request against matching jobs.</p>
+<li><strong>histogram_queries</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.HistogramQuery" title="google.cloud.talent_v4beta1.types.HistogramQuery"><em>HistogramQuery</em></a><em>]</em><em>]</em>) – <p>Optional. An expression specifies a histogram request against matching
+jobs.</p>
 <p>Expression syntax is an aggregation function call with histogram facets
 and other options.</p>
 <p>Available aggregation function calls are:</p>
@@ -2021,14 +1992,13 @@ of numeric buckets to group results by.</li>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.HistogramQuery" title="google.cloud.talent_v4beta1.types.HistogramQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistogramQuery</span></code></a></p>
 </li>
-<li><strong>job_view</strong> (<em>JobView</em>) – <p>Optional.</p>
-<p>The desired job attributes returned for jobs in the search response.
-Defaults to <code class="docutils literal notranslate"><span class="pre">JobView.JOB_VIEW_SMALL</span></code> if no value is specified.</p>
-</li>
-<li><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – <p>Optional.</p>
-<p>An integer that specifies the current offset (that is, starting result
-location, amongst the jobs deemed by the API as relevant) in search
-results. This field is only considered if <code class="docutils literal notranslate"><span class="pre">page_token</span></code> is unset.</p>
+<li><strong>job_view</strong> (<em>JobView</em>) – Optional. The desired job attributes returned for jobs in the search
+response. Defaults to <code class="docutils literal notranslate"><span class="pre">JobView.JOB_VIEW_SMALL</span></code> if no value is
+specified.</li>
+<li><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – <p>Optional. An integer that specifies the current offset (that is,
+starting result location, amongst the jobs deemed by the API as
+relevant) in search results. This field is only considered if
+<code class="docutils literal notranslate"><span class="pre">page_token</span></code> is unset.</p>
 <p>For example, 0 means to return results starting from the first matching
 job, and 10 means to return from the 11th job. This can be used for
 pagination, (for example, pageSize = 10 and offset = 10 means to return
@@ -2039,78 +2009,79 @@ underlying API response. If page streaming is performed per-
 resource, this parameter does not affect the return value. If page
 streaming is performed per-page, this determines the maximum number
 of resources in a page.</li>
-<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional.</p>
-<p>The criteria determining how search results are sorted. Default is
-“relevance desc”.</p>
+<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional. The criteria determining how search results are sorted.
+Default is <code class="docutils literal notranslate"><span class="pre">&quot;relevance</span> <span class="pre">desc&quot;</span></code>.</p>
 <p>Supported options are:</p>
 <ul>
-<li>”relevance desc”: By relevance descending, as determined by the API
-algorithms. Relevance thresholding of query results is only available
-with this ordering.</li>
-<li>”posting``_``publish<code class="docutils literal notranslate"><span class="pre">_</span></code>time desc”: By
-<code class="docutils literal notranslate"><span class="pre">Job.posting_publish_time</span></code> descending.</li>
-<li>”posting``_``update<code class="docutils literal notranslate"><span class="pre">_</span></code>time desc”: By
-<code class="docutils literal notranslate"><span class="pre">Job.posting_update_time</span></code> descending.</li>
-<li>”title”: By <code class="docutils literal notranslate"><span class="pre">Job.title</span></code> ascending.</li>
-<li>”title desc”: By <code class="docutils literal notranslate"><span class="pre">Job.title</span></code> descending.</li>
-<li>”annualized``_``base<code class="docutils literal notranslate"><span class="pre">_</span></code>compensation”: By job’s
+<li><code class="docutils literal notranslate"><span class="pre">&quot;relevance</span> <span class="pre">desc&quot;</span></code>: By relevance descending, as determined by the
+API algorithms. Relevance thresholding of query results is only
+available with this ordering.</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;posting_publish_time</span> <span class="pre">desc&quot;</span></code>: By <code class="docutils literal notranslate"><span class="pre">Job.posting_publish_time</span></code>
+descending.</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;posting_update_time</span> <span class="pre">desc&quot;</span></code>: By <code class="docutils literal notranslate"><span class="pre">Job.posting_update_time</span></code>
+descending.</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;title&quot;</span></code>: By <code class="docutils literal notranslate"><span class="pre">Job.title</span></code> ascending.</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;title</span> <span class="pre">desc&quot;</span></code>: By <code class="docutils literal notranslate"><span class="pre">Job.title</span></code> descending.</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;annualized_base_compensation&quot;</span></code>: By job’s
 <code class="docutils literal notranslate"><span class="pre">CompensationInfo.annualized_base_compensation_range</span></code> ascending.
 Jobs whose annualized base compensation is unspecified are put at the
 end of search results.</li>
-<li>”annualized``_``base<code class="docutils literal notranslate"><span class="pre">_</span></code>compensation desc”: By job’s
+<li><code class="docutils literal notranslate"><span class="pre">&quot;annualized_base_compensation</span> <span class="pre">desc&quot;</span></code>: By job’s
 <code class="docutils literal notranslate"><span class="pre">CompensationInfo.annualized_base_compensation_range</span></code> descending.
 Jobs whose annualized base compensation is unspecified are put at the
 end of search results.</li>
-<li>”annualized``_``total<code class="docutils literal notranslate"><span class="pre">_</span></code>compensation”: By job’s
+<li><code class="docutils literal notranslate"><span class="pre">&quot;annualized_total_compensation&quot;</span></code>: By job’s
 <code class="docutils literal notranslate"><span class="pre">CompensationInfo.annualized_total_compensation_range</span></code> ascending.
 Jobs whose annualized base compensation is unspecified are put at the
 end of search results.</li>
-<li>”annualized``_``total<code class="docutils literal notranslate"><span class="pre">_</span></code>compensation desc”: By job’s
+<li><code class="docutils literal notranslate"><span class="pre">&quot;annualized_total_compensation</span> <span class="pre">desc&quot;</span></code>: By job’s
 <code class="docutils literal notranslate"><span class="pre">CompensationInfo.annualized_total_compensation_range</span></code> descending.
 Jobs whose annualized base compensation is unspecified are put at the
 end of search results.</li>
-<li>”custom``_``ranking desc”: By the relevance score adjusted to the
+<li><code class="docutils literal notranslate"><span class="pre">&quot;custom_ranking</span> <span class="pre">desc&quot;</span></code>: By the relevance score adjusted to the
 <code class="docutils literal notranslate"><span class="pre">SearchJobsRequest.CustomRankingInfo.ranking_expression</span></code> with
 weight factor assigned by
 <code class="docutils literal notranslate"><span class="pre">SearchJobsRequest.CustomRankingInfo.importance_level</span></code> in
 descending order.</li>
-<li>”location``_``distance”: By the distance between the location on
-jobs and locations specified in the <code class="docutils literal notranslate"><span class="pre">JobQuery.location_filters</span></code>.
-When this order is selected, the <code class="docutils literal notranslate"><span class="pre">JobQuery.location_filters</span></code> must
-not be empty. When a job has multiple locations, the location closest
-to one of the locations specified in the location filter will be used
-to calculate location distance. Distance is calculated by the
-distance between two lat/long coordinates, with a precision of 10e-4
-degrees (11.3 meters). Jobs that don’t have locations specified will
-be ranked below jobs having locations. Diversification strategy is
-still applied unless explicitly disabled in
-<code class="docutils literal notranslate"><span class="pre">SearchJobsRequest.diversification_level</span></code>.</li>
+<li>Location sorting: Use the special syntax to order jobs by distance:
+<code class="docutils literal notranslate"><span class="pre">&quot;distance_from('Hawaii')&quot;</span></code>: Order by distance from Hawaii.
+<code class="docutils literal notranslate"><span class="pre">&quot;distance_from(19.89,</span> <span class="pre">155.5)&quot;</span></code>: Order by distance from a
+coordinate.
+<code class="docutils literal notranslate"><span class="pre">&quot;distance_from('Hawaii'),</span> <span class="pre">distance_from('Puerto</span> <span class="pre">Rico')&quot;</span></code>: Order by
+multiple locations. See details below.
+<code class="docutils literal notranslate"><span class="pre">&quot;distance_from('Hawaii'),</span> <span class="pre">distance_from(19.89,</span> <span class="pre">155.5)&quot;</span></code>: Order by
+multiple locations. See details below. The string can have a maximum
+of 256 characters. When multiple distance centers are provided, a job
+that is close to any of the distance centers would have a high rank.
+When a job has multiple locations, the job location closest to one of
+the distance centers will be used. Jobs that don’t have locations
+will be ranked at the bottom. Distance is calculated with a precision
+of 11.3 meters (37.4 feet). Diversification strategy is still applied
+unless explicitly disabled in <code class="docutils literal notranslate"><span class="pre">diversification_level</span></code>.</li>
 </ul>
 </li>
-<li><strong>diversification_level</strong> (<em>DiversificationLevel</em>) – <p>Optional.</p>
-<p>Controls whether highly similar jobs are returned next to each other in
-the search results. Jobs are identified as highly similar based on their
-titles, job categories, and locations. Highly similar results are
-clustered so that only one representative job of the cluster is
+<li><strong>diversification_level</strong> (<em>DiversificationLevel</em>) – <p>Optional. Controls whether highly similar jobs are returned next to each
+other in the search results. Jobs are identified as highly similar based
+on their titles, job categories, and locations. Highly similar results
+are clustered so that only one representative job of the cluster is
 displayed to the job seeker higher up in the results, with the other
 jobs being displayed lower down in the results.</p>
 <p>Defaults to <code class="docutils literal notranslate"><span class="pre">DiversificationLevel.SIMPLE</span></code> if no value is specified.</p>
 </li>
-<li><strong>custom_ranking_info</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>CustomRankingInfo</em><em>]</em>) – <p>Optional.</p>
-<p>Controls over how job documents get ranked on top of existing relevance
-score (determined by API algorithm).</p>
+<li><strong>custom_ranking_info</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>CustomRankingInfo</em><em>]</em>) – <p>Optional. Controls over how job documents get ranked on top of existing
+relevance score (determined by API algorithm).</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <code class="xref py py-class docutils literal notranslate"><span class="pre">CustomRankingInfo</span></code></p>
 </li>
-<li><strong>disable_keyword_match</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – <p>Optional.</p>
-<p>Controls whether to disable exact keyword match on <code class="docutils literal notranslate"><span class="pre">Job.title</span></code>,
-<code class="docutils literal notranslate"><span class="pre">Job.description</span></code>, <code class="docutils literal notranslate"><span class="pre">Job.company_display_name</span></code>, <code class="docutils literal notranslate"><span class="pre">Job.addresses</span></code>,
-<code class="docutils literal notranslate"><span class="pre">Job.qualifications</span></code>. When disable keyword match is turned off, a
-keyword match returns jobs that do not match given category filters when
-there are matching keywords. For example, for the query “program
-manager,” a result is returned even if the job posting has the title
-“software developer,” which doesn’t fall into “program manager”
-ontology, but does have “program manager” appearing in its description.</p>
+<li><strong>disable_keyword_match</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – <p>Optional. Controls whether to disable exact keyword match on
+<code class="docutils literal notranslate"><span class="pre">Job.title</span></code>, <code class="docutils literal notranslate"><span class="pre">Job.description</span></code>, <code class="docutils literal notranslate"><span class="pre">Job.company_display_name</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Job.addresses</span></code>, <code class="docutils literal notranslate"><span class="pre">Job.qualifications</span></code>. When disable keyword match is
+turned off, a keyword match returns jobs that do not match given
+category filters when there are matching keywords. For example, for the
+query “program manager,” a result is returned even if the job posting
+has the title “software developer,” which doesn’t fall into “program
+manager” ontology, but does have “program manager” appearing in its
+description.</p>
 <p>For queries like “cloud” that don’t contain title or location specific
 ontology, jobs with “cloud” keyword matches are returned regardless of
 this flag’s value.</p>
@@ -2190,46 +2161,41 @@ and only returns jobs the caller has permission to search against.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The resource name of the tenant to search within.</p>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. The resource name of the tenant to search within.</p>
 <p>The format is “projects/{project_id}/tenants/{tenant_id}”, for
 example, “projects/api-test-project/tenant/foo”.</p>
 <p>Tenant id is optional and the default tenant is used if unspecified, for
 example, “projects/api-test-project”.</p>
 </li>
-<li><strong>request_metadata</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.RequestMetadata" title="google.cloud.talent_v4beta1.types.RequestMetadata"><em>RequestMetadata</em></a><em>]</em>) – <p>Required.</p>
-<p>The meta information collected about the job searcher, used to improve
-the search quality of the service.. The identifiers, (such as
+<li><strong>request_metadata</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.RequestMetadata" title="google.cloud.talent_v4beta1.types.RequestMetadata"><em>RequestMetadata</em></a><em>]</em>) – <p>Required. The meta information collected about the job searcher, used to
+improve the search quality of the service. The identifiers (such as
 <code class="docutils literal notranslate"><span class="pre">user_id</span></code>) are provided by users, and must be unique and consistent.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.RequestMetadata" title="google.cloud.talent_v4beta1.types.RequestMetadata"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequestMetadata</span></code></a></p>
 </li>
-<li><strong>search_mode</strong> (<em>SearchMode</em>) – <p>Optional.</p>
-<p>Mode of a search.</p>
+<li><strong>search_mode</strong> (<em>SearchMode</em>) – <p>Optional. Mode of a search.</p>
 <p>Defaults to <code class="docutils literal notranslate"><span class="pre">SearchMode.JOB_SEARCH</span></code>.</p>
 </li>
-<li><strong>job_query</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.JobQuery" title="google.cloud.talent_v4beta1.types.JobQuery"><em>JobQuery</em></a><em>]</em>) – <p>Optional.</p>
-<p>Query used to search against jobs, such as keyword, location filters, etc.</p>
+<li><strong>job_query</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.JobQuery" title="google.cloud.talent_v4beta1.types.JobQuery"><em>JobQuery</em></a><em>]</em>) – <p>Optional. Query used to search against jobs, such as keyword, location
+filters, etc.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.JobQuery" title="google.cloud.talent_v4beta1.types.JobQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">JobQuery</span></code></a></p>
 </li>
-<li><strong>enable_broadening</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – <p>Optional.</p>
-<p>Controls whether to broaden the search when it produces sparse results.
-Broadened queries append results to the end of the matching results
-list.</p>
+<li><strong>enable_broadening</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – <p>Optional. Controls whether to broaden the search when it produces sparse
+results. Broadened queries append results to the end of the matching
+results list.</p>
 <p>Defaults to false.</p>
 </li>
-<li><strong>require_precise_result_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – <p>Optional.</p>
-<p>Controls if the search job request requires the return of a precise
-count of the first 300 results. Setting this to <code class="docutils literal notranslate"><span class="pre">true</span></code> ensures
+<li><strong>require_precise_result_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – <p>Optional. Controls if the search job request requires the return of a
+precise count of the first 300 results. Setting this to <code class="docutils literal notranslate"><span class="pre">true</span></code> ensures
 consistency in the number of results per page. Best practice is to set
 this value to true if a client allows users to jump directly to a
 non-sequential search results page.</p>
 <p>Enabling this flag may adversely impact performance.</p>
 <p>Defaults to false.</p>
 </li>
-<li><strong>histogram_queries</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.HistogramQuery" title="google.cloud.talent_v4beta1.types.HistogramQuery"><em>HistogramQuery</em></a><em>]</em><em>]</em>) – <p>Optional.</p>
-<p>An expression specifies a histogram request against matching jobs.</p>
+<li><strong>histogram_queries</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.HistogramQuery" title="google.cloud.talent_v4beta1.types.HistogramQuery"><em>HistogramQuery</em></a><em>]</em><em>]</em>) – <p>Optional. An expression specifies a histogram request against matching
+jobs.</p>
 <p>Expression syntax is an aggregation function call with histogram facets
 and other options.</p>
 <p>Available aggregation function calls are:</p>
@@ -2322,14 +2288,13 @@ of numeric buckets to group results by.</li>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.HistogramQuery" title="google.cloud.talent_v4beta1.types.HistogramQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistogramQuery</span></code></a></p>
 </li>
-<li><strong>job_view</strong> (<em>JobView</em>) – <p>Optional.</p>
-<p>The desired job attributes returned for jobs in the search response.
-Defaults to <code class="docutils literal notranslate"><span class="pre">JobView.JOB_VIEW_SMALL</span></code> if no value is specified.</p>
-</li>
-<li><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – <p>Optional.</p>
-<p>An integer that specifies the current offset (that is, starting result
-location, amongst the jobs deemed by the API as relevant) in search
-results. This field is only considered if <code class="docutils literal notranslate"><span class="pre">page_token</span></code> is unset.</p>
+<li><strong>job_view</strong> (<em>JobView</em>) – Optional. The desired job attributes returned for jobs in the search
+response. Defaults to <code class="docutils literal notranslate"><span class="pre">JobView.JOB_VIEW_SMALL</span></code> if no value is
+specified.</li>
+<li><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – <p>Optional. An integer that specifies the current offset (that is,
+starting result location, amongst the jobs deemed by the API as
+relevant) in search results. This field is only considered if
+<code class="docutils literal notranslate"><span class="pre">page_token</span></code> is unset.</p>
 <p>For example, 0 means to return results starting from the first matching
 job, and 10 means to return from the 11th job. This can be used for
 pagination, (for example, pageSize = 10 and offset = 10 means to return
@@ -2340,78 +2305,79 @@ underlying API response. If page streaming is performed per-
 resource, this parameter does not affect the return value. If page
 streaming is performed per-page, this determines the maximum number
 of resources in a page.</li>
-<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional.</p>
-<p>The criteria determining how search results are sorted. Default is
-“relevance desc”.</p>
+<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional. The criteria determining how search results are sorted.
+Default is <code class="docutils literal notranslate"><span class="pre">&quot;relevance</span> <span class="pre">desc&quot;</span></code>.</p>
 <p>Supported options are:</p>
 <ul>
-<li>”relevance desc”: By relevance descending, as determined by the API
-algorithms. Relevance thresholding of query results is only available
-with this ordering.</li>
-<li>”posting``_``publish<code class="docutils literal notranslate"><span class="pre">_</span></code>time desc”: By
-<code class="docutils literal notranslate"><span class="pre">Job.posting_publish_time</span></code> descending.</li>
-<li>”posting``_``update<code class="docutils literal notranslate"><span class="pre">_</span></code>time desc”: By
-<code class="docutils literal notranslate"><span class="pre">Job.posting_update_time</span></code> descending.</li>
-<li>”title”: By <code class="docutils literal notranslate"><span class="pre">Job.title</span></code> ascending.</li>
-<li>”title desc”: By <code class="docutils literal notranslate"><span class="pre">Job.title</span></code> descending.</li>
-<li>”annualized``_``base<code class="docutils literal notranslate"><span class="pre">_</span></code>compensation”: By job’s
+<li><code class="docutils literal notranslate"><span class="pre">&quot;relevance</span> <span class="pre">desc&quot;</span></code>: By relevance descending, as determined by the
+API algorithms. Relevance thresholding of query results is only
+available with this ordering.</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;posting_publish_time</span> <span class="pre">desc&quot;</span></code>: By <code class="docutils literal notranslate"><span class="pre">Job.posting_publish_time</span></code>
+descending.</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;posting_update_time</span> <span class="pre">desc&quot;</span></code>: By <code class="docutils literal notranslate"><span class="pre">Job.posting_update_time</span></code>
+descending.</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;title&quot;</span></code>: By <code class="docutils literal notranslate"><span class="pre">Job.title</span></code> ascending.</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;title</span> <span class="pre">desc&quot;</span></code>: By <code class="docutils literal notranslate"><span class="pre">Job.title</span></code> descending.</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;annualized_base_compensation&quot;</span></code>: By job’s
 <code class="docutils literal notranslate"><span class="pre">CompensationInfo.annualized_base_compensation_range</span></code> ascending.
 Jobs whose annualized base compensation is unspecified are put at the
 end of search results.</li>
-<li>”annualized``_``base<code class="docutils literal notranslate"><span class="pre">_</span></code>compensation desc”: By job’s
+<li><code class="docutils literal notranslate"><span class="pre">&quot;annualized_base_compensation</span> <span class="pre">desc&quot;</span></code>: By job’s
 <code class="docutils literal notranslate"><span class="pre">CompensationInfo.annualized_base_compensation_range</span></code> descending.
 Jobs whose annualized base compensation is unspecified are put at the
 end of search results.</li>
-<li>”annualized``_``total<code class="docutils literal notranslate"><span class="pre">_</span></code>compensation”: By job’s
+<li><code class="docutils literal notranslate"><span class="pre">&quot;annualized_total_compensation&quot;</span></code>: By job’s
 <code class="docutils literal notranslate"><span class="pre">CompensationInfo.annualized_total_compensation_range</span></code> ascending.
 Jobs whose annualized base compensation is unspecified are put at the
 end of search results.</li>
-<li>”annualized``_``total<code class="docutils literal notranslate"><span class="pre">_</span></code>compensation desc”: By job’s
+<li><code class="docutils literal notranslate"><span class="pre">&quot;annualized_total_compensation</span> <span class="pre">desc&quot;</span></code>: By job’s
 <code class="docutils literal notranslate"><span class="pre">CompensationInfo.annualized_total_compensation_range</span></code> descending.
 Jobs whose annualized base compensation is unspecified are put at the
 end of search results.</li>
-<li>”custom``_``ranking desc”: By the relevance score adjusted to the
+<li><code class="docutils literal notranslate"><span class="pre">&quot;custom_ranking</span> <span class="pre">desc&quot;</span></code>: By the relevance score adjusted to the
 <code class="docutils literal notranslate"><span class="pre">SearchJobsRequest.CustomRankingInfo.ranking_expression</span></code> with
 weight factor assigned by
 <code class="docutils literal notranslate"><span class="pre">SearchJobsRequest.CustomRankingInfo.importance_level</span></code> in
 descending order.</li>
-<li>”location``_``distance”: By the distance between the location on
-jobs and locations specified in the <code class="docutils literal notranslate"><span class="pre">JobQuery.location_filters</span></code>.
-When this order is selected, the <code class="docutils literal notranslate"><span class="pre">JobQuery.location_filters</span></code> must
-not be empty. When a job has multiple locations, the location closest
-to one of the locations specified in the location filter will be used
-to calculate location distance. Distance is calculated by the
-distance between two lat/long coordinates, with a precision of 10e-4
-degrees (11.3 meters). Jobs that don’t have locations specified will
-be ranked below jobs having locations. Diversification strategy is
-still applied unless explicitly disabled in
-<code class="docutils literal notranslate"><span class="pre">SearchJobsRequest.diversification_level</span></code>.</li>
+<li>Location sorting: Use the special syntax to order jobs by distance:
+<code class="docutils literal notranslate"><span class="pre">&quot;distance_from('Hawaii')&quot;</span></code>: Order by distance from Hawaii.
+<code class="docutils literal notranslate"><span class="pre">&quot;distance_from(19.89,</span> <span class="pre">155.5)&quot;</span></code>: Order by distance from a
+coordinate.
+<code class="docutils literal notranslate"><span class="pre">&quot;distance_from('Hawaii'),</span> <span class="pre">distance_from('Puerto</span> <span class="pre">Rico')&quot;</span></code>: Order by
+multiple locations. See details below.
+<code class="docutils literal notranslate"><span class="pre">&quot;distance_from('Hawaii'),</span> <span class="pre">distance_from(19.89,</span> <span class="pre">155.5)&quot;</span></code>: Order by
+multiple locations. See details below. The string can have a maximum
+of 256 characters. When multiple distance centers are provided, a job
+that is close to any of the distance centers would have a high rank.
+When a job has multiple locations, the job location closest to one of
+the distance centers will be used. Jobs that don’t have locations
+will be ranked at the bottom. Distance is calculated with a precision
+of 11.3 meters (37.4 feet). Diversification strategy is still applied
+unless explicitly disabled in <code class="docutils literal notranslate"><span class="pre">diversification_level</span></code>.</li>
 </ul>
 </li>
-<li><strong>diversification_level</strong> (<em>DiversificationLevel</em>) – <p>Optional.</p>
-<p>Controls whether highly similar jobs are returned next to each other in
-the search results. Jobs are identified as highly similar based on their
-titles, job categories, and locations. Highly similar results are
-clustered so that only one representative job of the cluster is
+<li><strong>diversification_level</strong> (<em>DiversificationLevel</em>) – <p>Optional. Controls whether highly similar jobs are returned next to each
+other in the search results. Jobs are identified as highly similar based
+on their titles, job categories, and locations. Highly similar results
+are clustered so that only one representative job of the cluster is
 displayed to the job seeker higher up in the results, with the other
 jobs being displayed lower down in the results.</p>
 <p>Defaults to <code class="docutils literal notranslate"><span class="pre">DiversificationLevel.SIMPLE</span></code> if no value is specified.</p>
 </li>
-<li><strong>custom_ranking_info</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>CustomRankingInfo</em><em>]</em>) – <p>Optional.</p>
-<p>Controls over how job documents get ranked on top of existing relevance
-score (determined by API algorithm).</p>
+<li><strong>custom_ranking_info</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>CustomRankingInfo</em><em>]</em>) – <p>Optional. Controls over how job documents get ranked on top of existing
+relevance score (determined by API algorithm).</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <code class="xref py py-class docutils literal notranslate"><span class="pre">CustomRankingInfo</span></code></p>
 </li>
-<li><strong>disable_keyword_match</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – <p>Optional.</p>
-<p>Controls whether to disable exact keyword match on <code class="docutils literal notranslate"><span class="pre">Job.title</span></code>,
-<code class="docutils literal notranslate"><span class="pre">Job.description</span></code>, <code class="docutils literal notranslate"><span class="pre">Job.company_display_name</span></code>, <code class="docutils literal notranslate"><span class="pre">Job.addresses</span></code>,
-<code class="docutils literal notranslate"><span class="pre">Job.qualifications</span></code>. When disable keyword match is turned off, a
-keyword match returns jobs that do not match given category filters when
-there are matching keywords. For example, for the query “program
-manager,” a result is returned even if the job posting has the title
-“software developer,” which doesn’t fall into “program manager”
-ontology, but does have “program manager” appearing in its description.</p>
+<li><strong>disable_keyword_match</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – <p>Optional. Controls whether to disable exact keyword match on
+<code class="docutils literal notranslate"><span class="pre">Job.title</span></code>, <code class="docutils literal notranslate"><span class="pre">Job.description</span></code>, <code class="docutils literal notranslate"><span class="pre">Job.company_display_name</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Job.addresses</span></code>, <code class="docutils literal notranslate"><span class="pre">Job.qualifications</span></code>. When disable keyword match is
+turned off, a keyword match returns jobs that do not match given
+category filters when there are matching keywords. For example, for the
+query “program manager,” a result is returned even if the job posting
+has the title “software developer,” which doesn’t fall into “program
+manager” ontology, but does have “program manager” appearing in its
+description.</p>
 <p>For queries like “cloud” that don’t contain title or location specific
 ontology, jobs with “cloud” keyword matches are returned regardless of
 this flag’s value.</p>
@@ -2479,8 +2445,7 @@ seconds, but it may take up to 5 minutes.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>job</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Job" title="google.cloud.talent_v4beta1.types.Job"><em>Job</em></a><em>]</em>) – <p>Required.</p>
-<p>The Job to be updated.</p>
+<li><strong>job</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Job" title="google.cloud.talent_v4beta1.types.Job"><em>Job</em></a><em>]</em>) – <p>Required. The Job to be updated.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Job" title="google.cloud.talent_v4beta1.types.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">Job</span></code></a></p>
 </li>
@@ -2586,13 +2551,11 @@ should be set through client_options.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The name of the tenant this profile belongs to.</p>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. The name of the tenant this profile belongs to.</p>
 <p>The format is “projects/{project_id}/tenants/{tenant_id}”, for
 example, “projects/api-test-project/tenants/foo”.</p>
 </li>
-<li><strong>profile</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Profile" title="google.cloud.talent_v4beta1.types.Profile"><em>Profile</em></a><em>]</em>) – <p>Required.</p>
-<p>The profile to be created.</p>
+<li><strong>profile</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Profile" title="google.cloud.talent_v4beta1.types.Profile"><em>Profile</em></a><em>]</em>) – <p>Required. The profile to be created.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Profile" title="google.cloud.talent_v4beta1.types.Profile"><code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code></a></p>
 </li>
@@ -2644,8 +2607,7 @@ associated.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>Resource name of the profile to be deleted.</p>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. Resource name of the profile to be deleted.</p>
 <p>The format is
 “projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}”,
 for example, “projects/api-test-project/tenants/foo/profiles/bar”.</p>
@@ -2752,8 +2714,7 @@ file.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>Resource name of the profile to get.</p>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. Resource name of the profile to get.</p>
 <p>The format is
 “projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}”,
 for example, “projects/api-test-project/tenants/foo/profiles/bar”.</p>
@@ -2816,8 +2777,8 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The resource name of the tenant under which the job is created.</p>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. The resource name of the tenant under which the profile is
+created.</p>
 <p>The format is “projects/{project_id}/tenants/{tenant_id}”, for
 example, “projects/api-test-project/tenants/foo”.</p>
 </li>
@@ -2826,9 +2787,8 @@ underlying API response. If page streaming is performed per-
 resource, this parameter does not affect the return value. If page
 streaming is performed per-page, this determines the maximum number
 of resources in a page.</li>
-<li><strong>read_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.FieldMask" title="google.cloud.talent_v4beta1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>Optional.</p>
-<p>A field mask to specify the profile fields to be listed in response. All
-fields are listed if it is unset.</p>
+<li><strong>read_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.FieldMask" title="google.cloud.talent_v4beta1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>Optional. A field mask to specify the profile fields to be listed in
+response. All fields are listed if it is unset.</p>
 <p>Valid values are:</p>
 <ul>
 <li>name</li>
@@ -2874,7 +2834,7 @@ to a retryable error and retry attempts failed.</li>
 
 <dl class="method">
 <dt id="google.cloud.talent_v4beta1.ProfileServiceClient.search_profiles">
-<code class="descname">search_profiles</code><span class="sig-paren">(</span><em>parent</em>, <em>request_metadata</em>, <em>profile_query=None</em>, <em>page_size=None</em>, <em>offset=None</em>, <em>disable_spell_check=None</em>, <em>order_by=None</em>, <em>case_sensitive_sort=None</em>, <em>histogram_queries=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/talent_v4beta1/gapic/profile_service_client.html#ProfileServiceClient.search_profiles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.talent_v4beta1.ProfileServiceClient.search_profiles" title="Permalink to this definition">#</a></dt>
+<code class="descname">search_profiles</code><span class="sig-paren">(</span><em>parent</em>, <em>request_metadata</em>, <em>profile_query=None</em>, <em>page_size=None</em>, <em>offset=None</em>, <em>disable_spell_check=None</em>, <em>order_by=None</em>, <em>case_sensitive_sort=None</em>, <em>histogram_queries=None</em>, <em>result_set_id=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/talent_v4beta1/gapic/profile_service_client.html#ProfileServiceClient.search_profiles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.talent_v4beta1.ProfileServiceClient.search_profiles" title="Permalink to this definition">#</a></dt>
 <dd><p>Searches for profiles within a tenant.</p>
 <p>For example, search by raw queries “software engineer in Mountain View”
 or search by structured filters (location filter, education filter,
@@ -2910,20 +2870,18 @@ etc.).</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The resource name of the tenant to search within.</p>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. The resource name of the tenant to search within.</p>
 <p>The format is “projects/{project_id}/tenants/{tenant_id}”, for
 example, “projects/api-test-project/tenants/foo”.</p>
 </li>
-<li><strong>request_metadata</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.RequestMetadata" title="google.cloud.talent_v4beta1.types.RequestMetadata"><em>RequestMetadata</em></a><em>]</em>) – <p>Required.</p>
-<p>The meta information collected about the profile search user. This is used
-to improve the search quality of the service. These values are provided by
-users, and must be precise and consistent.</p>
+<li><strong>request_metadata</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.RequestMetadata" title="google.cloud.talent_v4beta1.types.RequestMetadata"><em>RequestMetadata</em></a><em>]</em>) – <p>Required. The meta information collected about the profile search user.
+This is used to improve the search quality of the service. These values are
+provided by users, and must be precise and consistent.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.RequestMetadata" title="google.cloud.talent_v4beta1.types.RequestMetadata"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequestMetadata</span></code></a></p>
 </li>
-<li><strong>profile_query</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.ProfileQuery" title="google.cloud.talent_v4beta1.types.ProfileQuery"><em>ProfileQuery</em></a><em>]</em>) – <p>Optional.</p>
-<p>Search query to execute. See <code class="docutils literal notranslate"><span class="pre">ProfileQuery</span></code> for more details.</p>
+<li><strong>profile_query</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.ProfileQuery" title="google.cloud.talent_v4beta1.types.ProfileQuery"><em>ProfileQuery</em></a><em>]</em>) – <p>Optional. Search query to execute. See <code class="docutils literal notranslate"><span class="pre">ProfileQuery</span></code> for more
+details.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.ProfileQuery" title="google.cloud.talent_v4beta1.types.ProfileQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProfileQuery</span></code></a></p>
 </li>
@@ -2932,24 +2890,21 @@ underlying API response. If page streaming is performed per-
 resource, this parameter does not affect the return value. If page
 streaming is performed per-page, this determines the maximum number
 of resources in a page.</li>
-<li><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – <p>Optional.</p>
-<p>An integer that specifies the current offset (that is, starting result)
-in search results. This field is only considered if <code class="docutils literal notranslate"><span class="pre">page_token</span></code> is
-unset.</p>
+<li><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – <p>Optional. An integer that specifies the current offset (that is,
+starting result) in search results. This field is only considered if
+<code class="docutils literal notranslate"><span class="pre">page_token</span></code> is unset.</p>
 <p>The maximum allowed value is 5000. Otherwise an error is thrown.</p>
 <p>For example, 0 means to search from the first profile, and 10 means to
 search from the 11th profile. This can be used for pagination, for
 example pageSize = 10 and offset = 10 means to search from the second
 page.</p>
 </li>
-<li><strong>disable_spell_check</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – <p>Optional.</p>
-<p>This flag controls the spell-check feature. If <code class="docutils literal notranslate"><span class="pre">false</span></code>, the service
-attempts to correct a misspelled query.</p>
+<li><strong>disable_spell_check</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – <p>Optional. This flag controls the spell-check feature. If <code class="docutils literal notranslate"><span class="pre">false</span></code>, the
+service attempts to correct a misspelled query.</p>
 <p>For example, “enginee” is corrected to “engineer”.</p>
 </li>
-<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional.</p>
-<p>The criteria that determines how search results are sorted. Defaults is
-“relevance desc” if no value is specified.</p>
+<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional. The criteria that determines how search results are sorted.
+Defaults is “relevance desc” if no value is specified.</p>
 <p>Supported options are:</p>
 <ul>
 <li>”relevance desc”: By descending relevance, as determined by the API
@@ -2968,14 +2923,11 @@ in ascending order.</li>
 <code class="docutils literal notranslate"><span class="pre">PersonName.PersonStructuredName.family_name</span></code> in ascending order.</li>
 </ul>
 </li>
-<li><strong>case_sensitive_sort</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – <p>Optional.</p>
-<p>When sort by field is based on alphabetical order, sort values case
-sensitively (based on ASCII) when the value is set to true. Default value
-is case in-sensitive sort (false).</p>
-</li>
-<li><strong>histogram_queries</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.HistogramQuery" title="google.cloud.talent_v4beta1.types.HistogramQuery"><em>HistogramQuery</em></a><em>]</em><em>]</em>) – <p>Optional.</p>
-<p>A list of expressions specifies histogram requests against matching
-profiles for <code class="docutils literal notranslate"><span class="pre">SearchProfilesRequest</span></code>.</p>
+<li><strong>case_sensitive_sort</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Optional. When sort by field is based on alphabetical order, sort values
+case sensitively (based on ASCII) when the value is set to true. Default
+value is case in-sensitive sort (false).</li>
+<li><strong>histogram_queries</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.HistogramQuery" title="google.cloud.talent_v4beta1.types.HistogramQuery"><em>HistogramQuery</em></a><em>]</em><em>]</em>) – <p>Optional. A list of expressions specifies histogram requests against
+matching profiles for <code class="docutils literal notranslate"><span class="pre">SearchProfilesRequest</span></code>.</p>
 <p>The expression syntax looks like a function definition with optional
 parameters.</p>
 <p>Function syntax: function_name(histogram_facet[, list of buckets])</p>
@@ -3052,6 +3004,22 @@ numeric_custom_attribute[“key1”].</li>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.HistogramQuery" title="google.cloud.talent_v4beta1.types.HistogramQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistogramQuery</span></code></a></p>
 </li>
+<li><strong>result_set_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional. An id that uniquely identifies the result set of a
+<code class="docutils literal notranslate"><span class="pre">SearchProfiles</span></code> call. The id should be retrieved from the
+<code class="docutils literal notranslate"><span class="pre">SearchProfilesResponse</span></code> message returned from a previous invocation
+of <code class="docutils literal notranslate"><span class="pre">SearchProfiles</span></code>.</p>
+<p>A result set is an ordered list of search results.</p>
+<p>If this field is not set, a new result set is computed based on the
+<code class="docutils literal notranslate"><span class="pre">profile_query</span></code>. A new <code class="docutils literal notranslate"><span class="pre">result_set_id</span></code> is returned as a handle to
+access this result set.</p>
+<p>If this field is set, the service will ignore the resource and
+<code class="docutils literal notranslate"><span class="pre">profile_query</span></code> values, and simply retrieve a page of results from the
+corresponding result set. In this case, one and only one of
+[page_token] or [offset] must be set.</p>
+<p>A typical use case is to invoke <code class="docutils literal notranslate"><span class="pre">SearchProfilesRequest</span></code> without this
+field, then use the resulting <code class="docutils literal notranslate"><span class="pre">result_set_id</span></code> in
+<code class="docutils literal notranslate"><span class="pre">SearchProfilesResponse</span></code> to page through the results.</p>
+</li>
 <li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
 be retried.</li>
@@ -3108,39 +3076,37 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>profile</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Profile" title="google.cloud.talent_v4beta1.types.Profile"><em>Profile</em></a><em>]</em>) – <p>Required.</p>
-<p>Profile to be updated.</p>
+<li><strong>profile</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Profile" title="google.cloud.talent_v4beta1.types.Profile"><em>Profile</em></a><em>]</em>) – <p>Required. Profile to be updated.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Profile" title="google.cloud.talent_v4beta1.types.Profile"><code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code></a></p>
 </li>
-<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.FieldMask" title="google.cloud.talent_v4beta1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>Optional.</p>
-<p>A field mask to specify the profile fields to update.</p>
+<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.FieldMask" title="google.cloud.talent_v4beta1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>Optional. A field mask to specify the profile fields to update.</p>
 <p>A full update is performed if it is unset.</p>
 <p>Valid values are:</p>
 <ul>
-<li>externalId</li>
+<li>external_id</li>
 <li>source</li>
 <li>uri</li>
-<li>isHirable</li>
-<li>createTime</li>
-<li>updateTime</li>
-<li>resumeHrxml</li>
-<li>personNames</li>
+<li>is_hirable</li>
+<li>create_time</li>
+<li>update_time</li>
+<li>resume</li>
+<li>person_names</li>
 <li>addresses</li>
-<li>emailAddresses</li>
-<li>phoneNumbers</li>
-<li>personalUris</li>
-<li>additionalContactInfo</li>
-<li>employmentRecords</li>
-<li>educationRecords</li>
+<li>email_addresses</li>
+<li>phone_numbers</li>
+<li>personal_uris</li>
+<li>additional_contact_info</li>
+<li>employment_records</li>
+<li>education_records</li>
 <li>skills</li>
 <li>projects</li>
 <li>publications</li>
 <li>patents</li>
 <li>certifications</li>
-<li>recruitingNotes</li>
-<li>customAttributes</li>
-<li>groupId</li>
+<li>recruiting_notes</li>
+<li>custom_attributes</li>
+<li>group_id</li>
 </ul>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.FieldMask" title="google.cloud.talent_v4beta1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
@@ -3237,13 +3203,12 @@ should be set through client_options.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>Resource name of the project under which the tenant is created.</p>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. Resource name of the project under which the tenant is
+created.</p>
 <p>The format is “projects/{project_id}”, for example,
 “projects/api-test-project”.</p>
 </li>
-<li><strong>tenant</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Tenant" title="google.cloud.talent_v4beta1.types.Tenant"><em>Tenant</em></a><em>]</em>) – <p>Required.</p>
-<p>The tenant to be created.</p>
+<li><strong>tenant</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Tenant" title="google.cloud.talent_v4beta1.types.Tenant"><em>Tenant</em></a><em>]</em>) – <p>Required. The tenant to be created.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Tenant" title="google.cloud.talent_v4beta1.types.Tenant"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tenant</span></code></a></p>
 </li>
@@ -3293,8 +3258,7 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The resource name of the tenant to be deleted.</p>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. The resource name of the tenant to be deleted.</p>
 <p>The format is “projects/{project_id}/tenants/{tenant_id}”, for
 example, “projects/api-test-project/tenants/foo”.</p>
 </li>
@@ -3400,8 +3364,7 @@ file.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The resource name of the tenant to be retrieved.</p>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. The resource name of the tenant to be retrieved.</p>
 <p>The format is “projects/{project_id}/tenants/{tenant_id}”, for
 example, “projects/api-test-project/tenants/foo”.</p>
 </li>
@@ -3463,8 +3426,8 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>Resource name of the project under which the tenant is created.</p>
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. Resource name of the project under which the tenant is
+created.</p>
 <p>The format is “projects/{project_id}”, for example,
 “projects/api-test-project”.</p>
 </li>
@@ -3535,8 +3498,8 @@ to a retryable error and retry attempts failed.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>tenant</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Tenant" title="google.cloud.talent_v4beta1.types.Tenant"><em>Tenant</em></a><em>]</em>) – <p>Required.</p>
-<p>The tenant resource to replace the current resource in the system.</p>
+<li><strong>tenant</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Tenant" title="google.cloud.talent_v4beta1.types.Tenant"><em>Tenant</em></a><em>]</em>) – <p>Required. The tenant resource to replace the current resource in the
+system.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.talent_v4beta1.types.Tenant" title="google.cloud.talent_v4beta1.types.Tenant"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tenant</span></code></a></p>
 </li>

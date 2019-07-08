@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.talent_v4beta1.proto.completion_service_pb2 &#8212; google-cloud 70b4bd2 documentation</title>
+    <title>google.cloud.talent_v4beta1.proto.completion_service_pb2 &#8212; google-cloud afc4d94 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -52,6 +52,7 @@
 
 
 <span class="kn">from</span> <span class="nn">google.api</span> <span class="k">import</span> <span class="n">annotations_pb2</span> <span class="k">as</span> <span class="n">google_dot_api_dot_annotations__pb2</span>
+<span class="kn">from</span> <span class="nn">google.api</span> <span class="k">import</span> <span class="n">client_pb2</span> <span class="k">as</span> <span class="n">google_dot_api_dot_client__pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.proto</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">common_pb2</span> <span class="k">as</span> <span class="n">google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2</span><span class="p">,</span>
 <span class="p">)</span>
@@ -65,10 +66,11 @@
         <span class="s2">&quot;</span><span class="se">\n\037</span><span class="s2">com.google.cloud.talent.v4beta1B</span><span class="se">\026</span><span class="s2">CompletionServiceProtoP</span><span class="se">\001</span><span class="s2">ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent</span><span class="se">\242\002\003</span><span class="s2">CTS&quot;</span>
     <span class="p">),</span>
     <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span>
-        <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">:google/cloud/talent_v4beta1/proto/completion_service.proto</span><span class="se">\x12\x1b</span><span class="s1">google.cloud.talent.v4beta1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a</span><span class="s1">.google/cloud/talent_v4beta1/proto/common.proto&quot;</span><span class="se">\xc2\x03\n\x14\x43</span><span class="s1">ompleteQueryRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">query</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x16\n\x0e</span><span class="s1">language_codes</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">page_size</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x0f\n\x07\x63</span><span class="s1">ompany</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">P</span><span class="se">\n\x05</span><span class="s1">scope</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32\x41</span><span class="s1">.google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionScope</span><span class="se">\x12</span><span class="s1">N</span><span class="se">\n\x04</span><span class="s1">type</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">@.google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionType&quot;K</span><span class="se">\n\x0f\x43</span><span class="s1">ompletionScope</span><span class="se">\x12</span><span class="s1"> </span><span class="se">\n\x1c\x43</span><span class="s1">OMPLETION_SCOPE_UNSPECIFIED</span><span class="se">\x10\x00\x12\n\n\x06</span><span class="s1">TENANT</span><span class="se">\x10\x01\x12\n\n\x06</span><span class="s1">PUBLIC</span><span class="se">\x10\x02</span><span class="s1">&quot;`</span><span class="se">\n\x0e\x43</span><span class="s1">ompletionType</span><span class="se">\x12\x1f\n\x1b\x43</span><span class="s1">OMPLETION_TYPE_UNSPECIFIED</span><span class="se">\x10\x00\x12\r\n\t</span><span class="s1">JOB_TITLE</span><span class="se">\x10\x01\x12\x10\n\x0c\x43</span><span class="s1">OMPANY_NAME</span><span class="se">\x10\x02\x12\x0c\n\x08\x43</span><span class="s1">OMBINED</span><span class="se">\x10\x03</span><span class="s1">&quot;</span><span class="se">\xc5\x02\n\x15\x43</span><span class="s1">ompleteQueryResponse</span><span class="se">\x12</span><span class="s1">_</span><span class="se">\n\x12\x63</span><span class="s1">ompletion_results</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x43</span><span class="s1">.google.cloud.talent.v4beta1.CompleteQueryResponse.CompletionResult</span><span class="se">\x12</span><span class="s1">?</span><span class="se">\n\x08</span><span class="s1">metadata</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">-.google.cloud.talent.v4beta1.ResponseMetadata</span><span class="se">\x1a\x89\x01\n\x10\x43</span><span class="s1">ompletionResult</span><span class="se">\x12\x12\n\n</span><span class="s1">suggestion</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">N</span><span class="se">\n\x04</span><span class="s1">type</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">@.google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionType</span><span class="se">\x12\x11\n\t</span><span class="s1">image_uri</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">2</span><span class="se">\xe7\x01\n\n</span><span class="s1">Completion</span><span class="se">\x12\xd8\x01\n\r</span><span class="s1">CompleteQuery</span><span class="se">\x12\x31</span><span class="s1">.google.cloud.talent.v4beta1.CompleteQueryRequest</span><span class="se">\x1a\x32</span><span class="s1">.google.cloud.talent.v4beta1.CompleteQueryResponse&quot;`</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">Z</span><span class="se">\x12</span><span class="s1">//v4beta1/{parent=projects/*/tenants/*}:completeZ</span><span class="se">\&#39;\x12</span><span class="s1">%/v4beta1/{parent=projects/*}:completeB</span><span class="se">\x84\x01\n\x1f\x63</span><span class="s1">om.google.cloud.talent.v4beta1B</span><span class="se">\x16\x43</span><span class="s1">ompletionServiceProtoP</span><span class="se">\x01</span><span class="s1">ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent</span><span class="se">\xa2\x02\x03\x43</span><span class="s1">TSb</span><span class="se">\x06</span><span class="s1">proto3&#39;</span>
+        <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">:google/cloud/talent_v4beta1/proto/completion_service.proto</span><span class="se">\x12\x1b</span><span class="s1">google.cloud.talent.v4beta1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a\x17</span><span class="s1">google/api/client.proto</span><span class="se">\x1a</span><span class="s1">.google/cloud/talent_v4beta1/proto/common.proto&quot;</span><span class="se">\xc2\x03\n\x14\x43</span><span class="s1">ompleteQueryRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">query</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x16\n\x0e</span><span class="s1">language_codes</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">page_size</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x0f\n\x07\x63</span><span class="s1">ompany</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">P</span><span class="se">\n\x05</span><span class="s1">scope</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32\x41</span><span class="s1">.google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionScope</span><span class="se">\x12</span><span class="s1">N</span><span class="se">\n\x04</span><span class="s1">type</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">@.google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionType&quot;K</span><span class="se">\n\x0f\x43</span><span class="s1">ompletionScope</span><span class="se">\x12</span><span class="s1"> </span><span class="se">\n\x1c\x43</span><span class="s1">OMPLETION_SCOPE_UNSPECIFIED</span><span class="se">\x10\x00\x12\n\n\x06</span><span class="s1">TENANT</span><span class="se">\x10\x01\x12\n\n\x06</span><span class="s1">PUBLIC</span><span class="se">\x10\x02</span><span class="s1">&quot;`</span><span class="se">\n\x0e\x43</span><span class="s1">ompletionType</span><span class="se">\x12\x1f\n\x1b\x43</span><span class="s1">OMPLETION_TYPE_UNSPECIFIED</span><span class="se">\x10\x00\x12\r\n\t</span><span class="s1">JOB_TITLE</span><span class="se">\x10\x01\x12\x10\n\x0c\x43</span><span class="s1">OMPANY_NAME</span><span class="se">\x10\x02\x12\x0c\n\x08\x43</span><span class="s1">OMBINED</span><span class="se">\x10\x03</span><span class="s1">&quot;</span><span class="se">\xc5\x02\n\x15\x43</span><span class="s1">ompleteQueryResponse</span><span class="se">\x12</span><span class="s1">_</span><span class="se">\n\x12\x63</span><span class="s1">ompletion_results</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x43</span><span class="s1">.google.cloud.talent.v4beta1.CompleteQueryResponse.CompletionResult</span><span class="se">\x12</span><span class="s1">?</span><span class="se">\n\x08</span><span class="s1">metadata</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">-.google.cloud.talent.v4beta1.ResponseMetadata</span><span class="se">\x1a\x89\x01\n\x10\x43</span><span class="s1">ompletionResult</span><span class="se">\x12\x12\n\n</span><span class="s1">suggestion</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">N</span><span class="se">\n\x04</span><span class="s1">type</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">@.google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionType</span><span class="se">\x12\x11\n\t</span><span class="s1">image_uri</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">2</span><span class="se">\xd5\x02\n\n</span><span class="s1">Completion</span><span class="se">\x12\xd8\x01\n\r</span><span class="s1">CompleteQuery</span><span class="se">\x12\x31</span><span class="s1">.google.cloud.talent.v4beta1.CompleteQueryRequest</span><span class="se">\x1a\x32</span><span class="s1">.google.cloud.talent.v4beta1.CompleteQueryResponse&quot;`</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">Z</span><span class="se">\x12</span><span class="s1">//v4beta1/{parent=projects/*/tenants/*}:completeZ</span><span class="se">\&#39;\x12</span><span class="s1">%/v4beta1/{parent=projects/*}:complete</span><span class="se">\x1a</span><span class="s1">l</span><span class="se">\xca\x41\x13</span><span class="s1">jobs.googleapis.com</span><span class="se">\xd2\x41</span><span class="s1">Shttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/jobsB</span><span class="se">\x84\x01\n\x1f\x63</span><span class="s1">om.google.cloud.talent.v4beta1B</span><span class="se">\x16\x43</span><span class="s1">ompletionServiceProtoP</span><span class="se">\x01</span><span class="s1">ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent</span><span class="se">\xa2\x02\x03\x43</span><span class="s1">TSb</span><span class="se">\x06</span><span class="s1">proto3&#39;</span>
     <span class="p">),</span>
     <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span>
         <span class="n">google_dot_api_dot_annotations__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="n">google_dot_api_dot_client__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="n">google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
     <span class="p">],</span>
 <span class="p">)</span>
@@ -96,8 +98,8 @@
     <span class="p">],</span>
     <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">447</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">522</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">472</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">547</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterEnumDescriptor</span><span class="p">(</span><span class="n">_COMPLETEQUERYREQUEST_COMPLETIONSCOPE</span><span class="p">)</span>
 
@@ -126,8 +128,8 @@
     <span class="p">],</span>
     <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">524</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">620</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">549</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">645</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterEnumDescriptor</span><span class="p">(</span><span class="n">_COMPLETEQUERYREQUEST_COMPLETIONTYPE</span><span class="p">)</span>
 
@@ -277,8 +279,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">170</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">620</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">195</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">645</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -352,8 +354,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">811</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">948</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">836</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">973</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_COMPLETEQUERYRESPONSE</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
@@ -408,8 +410,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">623</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">948</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">648</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">973</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_COMPLETEQUERYREQUEST</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
@@ -449,17 +451,17 @@
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
 <span class="s2">      parent:</span>
-<span class="s2">          Required.  Resource name of tenant the completion is performed</span>
+<span class="s2">          Required. Resource name of tenant the completion is performed</span>
 <span class="s2">          within.  The format is</span>
 <span class="s2">          &quot;projects/{project\_id}/tenants/{tenant\_id}&quot;, for example,</span>
 <span class="s2">          &quot;projects/api-test-project/tenant/foo&quot;.  Tenant id is optional</span>
 <span class="s2">          and the default tenant is used if unspecified, for example,</span>
 <span class="s2">          &quot;projects/api-test-project&quot;.</span>
 <span class="s2">      query:</span>
-<span class="s2">          Required.  The query used to generate suggestions.  The</span>
-<span class="s2">          maximum number of allowed characters is 255.</span>
+<span class="s2">          Required. The query used to generate suggestions.  The maximum</span>
+<span class="s2">          number of allowed characters is 255.</span>
 <span class="s2">      language_codes:</span>
-<span class="s2">          Optional.  The list of languages of the query. This is the</span>
+<span class="s2">          Optional. The list of languages of the query. This is the</span>
 <span class="s2">          BCP-47 language code, such as &quot;en-US&quot; or &quot;sr-Latn&quot;. For more</span>
 <span class="s2">          information, see `Tags for Identifying Languages</span>
 <span class="s2">          &lt;https://tools.ietf.org/html/bcp47&gt;`__.  For [CompletionType.J</span>
@@ -479,23 +481,23 @@
 <span class="s2">          eQueryRequest.language\_codes] are returned.  The maximum</span>
 <span class="s2">          number of allowed characters is 255.</span>
 <span class="s2">      page_size:</span>
-<span class="s2">          Required.  Completion result count.  The maximum allowed page</span>
+<span class="s2">          Required. Completion result count.  The maximum allowed page</span>
 <span class="s2">          size is 10.</span>
 <span class="s2">      company:</span>
-<span class="s2">          Optional.  If provided, restricts completion to specified</span>
+<span class="s2">          Optional. If provided, restricts completion to specified</span>
 <span class="s2">          company.  The format is &quot;projects/{project\_id}/tenants/{tenan</span>
 <span class="s2">          t\_id}/companies/{company\_id}&quot;, for example, &quot;projects/api-</span>
 <span class="s2">          test-project/tenants/foo/companies/bar&quot;.  Tenant id is</span>
 <span class="s2">          optional and the default tenant is used if unspecified, for</span>
 <span class="s2">          example, &quot;projects/api-test-project/companies/bar&quot;.</span>
 <span class="s2">      scope:</span>
-<span class="s2">          Optional.  The scope of the completion. The defaults is [Compl</span>
-<span class="s2">          etionScope.PUBLIC][google.cloud.talent.v4beta1.CompleteQueryRe</span>
-<span class="s2">          quest.CompletionScope.PUBLIC].</span>
+<span class="s2">          Optional. The scope of the completion. The defaults is [Comple</span>
+<span class="s2">          tionScope.PUBLIC][google.cloud.talent.v4beta1.CompleteQueryReq</span>
+<span class="s2">          uest.CompletionScope.PUBLIC].</span>
 <span class="s2">      type:</span>
-<span class="s2">          Optional.  The completion topic. The default is [CompletionTyp</span>
-<span class="s2">          e.COMBINED][google.cloud.talent.v4beta1.CompleteQueryRequest.C</span>
-<span class="s2">          ompletionType.COMBINED].</span>
+<span class="s2">          Optional. The completion topic. The default is [CompletionType</span>
+<span class="s2">          .COMBINED][google.cloud.talent.v4beta1.CompleteQueryRequest.Co</span>
+<span class="s2">          mpletionType.COMBINED].</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
         <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.CompleteQueryRequest)</span>
     <span class="p">),</span>
@@ -558,9 +560,11 @@
     <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.talent.v4beta1.Completion&quot;</span><span class="p">,</span>
     <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
     <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">951</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1182</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span>
+        <span class="s2">&quot;</span><span class="se">\312</span><span class="s2">A</span><span class="se">\023</span><span class="s2">jobs.googleapis.com</span><span class="se">\322</span><span class="s2">AShttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/jobs&quot;</span>
+    <span class="p">),</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">976</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1317</span><span class="p">,</span>
     <span class="n">methods</span><span class="o">=</span><span class="p">[</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;CompleteQuery&quot;</span><span class="p">,</span>

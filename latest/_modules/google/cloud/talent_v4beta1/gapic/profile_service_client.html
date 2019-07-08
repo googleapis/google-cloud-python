@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.talent_v4beta1.gapic.profile_service_client &#8212; google-cloud 70b4bd2 documentation</title>
+    <title>google.cloud.talent_v4beta1.gapic.profile_service_client &#8212; google-cloud afc4d94 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -296,9 +296,8 @@
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): Required.</span>
-
-<span class="sd">                The resource name of the tenant under which the job is created.</span>
+<span class="sd">            parent (str): Required. The resource name of the tenant under which the profile is</span>
+<span class="sd">                created.</span>
 
 <span class="sd">                The format is &quot;projects/{project\_id}/tenants/{tenant\_id}&quot;, for</span>
 <span class="sd">                example, &quot;projects/api-test-project/tenants/foo&quot;.</span>
@@ -307,10 +306,8 @@
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
 <span class="sd">                streaming is performed per-page, this determines the maximum number</span>
 <span class="sd">                of resources in a page.</span>
-<span class="sd">            read_mask (Union[dict, ~google.cloud.talent_v4beta1.types.FieldMask]): Optional.</span>
-
-<span class="sd">                A field mask to specify the profile fields to be listed in response. All</span>
-<span class="sd">                fields are listed if it is unset.</span>
+<span class="sd">            read_mask (Union[dict, ~google.cloud.talent_v4beta1.types.FieldMask]): Optional. A field mask to specify the profile fields to be listed in</span>
+<span class="sd">                response. All fields are listed if it is unset.</span>
 
 <span class="sd">                Valid values are:</span>
 
@@ -406,15 +403,11 @@
 <span class="sd">            &gt;&gt;&gt; response = client.create_profile(parent, profile)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): Required.</span>
-
-<span class="sd">                The name of the tenant this profile belongs to.</span>
+<span class="sd">            parent (str): Required. The name of the tenant this profile belongs to.</span>
 
 <span class="sd">                The format is &quot;projects/{project\_id}/tenants/{tenant\_id}&quot;, for</span>
 <span class="sd">                example, &quot;projects/api-test-project/tenants/foo&quot;.</span>
-<span class="sd">            profile (Union[dict, ~google.cloud.talent_v4beta1.types.Profile]): Required.</span>
-
-<span class="sd">                The profile to be created.</span>
+<span class="sd">            profile (Union[dict, ~google.cloud.talent_v4beta1.types.Profile]): Required. The profile to be created.</span>
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.talent_v4beta1.types.Profile`</span>
@@ -488,9 +481,7 @@
 <span class="sd">            &gt;&gt;&gt; response = client.get_profile(name)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            name (str): Required.</span>
-
-<span class="sd">                Resource name of the profile to get.</span>
+<span class="sd">            name (str): Required. Resource name of the profile to get.</span>
 
 <span class="sd">                The format is</span>
 <span class="sd">                &quot;projects/{project\_id}/tenants/{tenant\_id}/profiles/{profile\_id}&quot;,</span>
@@ -565,43 +556,39 @@
 <span class="sd">            &gt;&gt;&gt; response = client.update_profile(profile)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            profile (Union[dict, ~google.cloud.talent_v4beta1.types.Profile]): Required.</span>
-
-<span class="sd">                Profile to be updated.</span>
+<span class="sd">            profile (Union[dict, ~google.cloud.talent_v4beta1.types.Profile]): Required. Profile to be updated.</span>
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.talent_v4beta1.types.Profile`</span>
-<span class="sd">            update_mask (Union[dict, ~google.cloud.talent_v4beta1.types.FieldMask]): Optional.</span>
-
-<span class="sd">                A field mask to specify the profile fields to update.</span>
+<span class="sd">            update_mask (Union[dict, ~google.cloud.talent_v4beta1.types.FieldMask]): Optional. A field mask to specify the profile fields to update.</span>
 
 <span class="sd">                A full update is performed if it is unset.</span>
 
 <span class="sd">                Valid values are:</span>
 
-<span class="sd">                -  externalId</span>
+<span class="sd">                -  external\_id</span>
 <span class="sd">                -  source</span>
 <span class="sd">                -  uri</span>
-<span class="sd">                -  isHirable</span>
-<span class="sd">                -  createTime</span>
-<span class="sd">                -  updateTime</span>
-<span class="sd">                -  resumeHrxml</span>
-<span class="sd">                -  personNames</span>
+<span class="sd">                -  is\_hirable</span>
+<span class="sd">                -  create\_time</span>
+<span class="sd">                -  update\_time</span>
+<span class="sd">                -  resume</span>
+<span class="sd">                -  person\_names</span>
 <span class="sd">                -  addresses</span>
-<span class="sd">                -  emailAddresses</span>
-<span class="sd">                -  phoneNumbers</span>
-<span class="sd">                -  personalUris</span>
-<span class="sd">                -  additionalContactInfo</span>
-<span class="sd">                -  employmentRecords</span>
-<span class="sd">                -  educationRecords</span>
+<span class="sd">                -  email\_addresses</span>
+<span class="sd">                -  phone\_numbers</span>
+<span class="sd">                -  personal\_uris</span>
+<span class="sd">                -  additional\_contact\_info</span>
+<span class="sd">                -  employment\_records</span>
+<span class="sd">                -  education\_records</span>
 <span class="sd">                -  skills</span>
 <span class="sd">                -  projects</span>
 <span class="sd">                -  publications</span>
 <span class="sd">                -  patents</span>
 <span class="sd">                -  certifications</span>
-<span class="sd">                -  recruitingNotes</span>
-<span class="sd">                -  customAttributes</span>
-<span class="sd">                -  groupId</span>
+<span class="sd">                -  recruiting\_notes</span>
+<span class="sd">                -  custom\_attributes</span>
+<span class="sd">                -  group\_id</span>
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.talent_v4beta1.types.FieldMask`</span>
@@ -677,9 +664,7 @@
 <span class="sd">            &gt;&gt;&gt; client.delete_profile(name)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            name (str): Required.</span>
-
-<span class="sd">                Resource name of the profile to be deleted.</span>
+<span class="sd">            name (str): Required. Resource name of the profile to be deleted.</span>
 
 <span class="sd">                The format is</span>
 <span class="sd">                &quot;projects/{project\_id}/tenants/{tenant\_id}/profiles/{profile\_id}&quot;,</span>
@@ -740,6 +725,7 @@
         <span class="n">order_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">case_sensitive_sort</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">histogram_queries</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">result_set_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
         <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
         <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -778,23 +764,18 @@
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): Required.</span>
-
-<span class="sd">                The resource name of the tenant to search within.</span>
+<span class="sd">            parent (str): Required. The resource name of the tenant to search within.</span>
 
 <span class="sd">                The format is &quot;projects/{project\_id}/tenants/{tenant\_id}&quot;, for</span>
 <span class="sd">                example, &quot;projects/api-test-project/tenants/foo&quot;.</span>
-<span class="sd">            request_metadata (Union[dict, ~google.cloud.talent_v4beta1.types.RequestMetadata]): Required.</span>
-
-<span class="sd">                The meta information collected about the profile search user. This is used</span>
-<span class="sd">                to improve the search quality of the service. These values are provided by</span>
-<span class="sd">                users, and must be precise and consistent.</span>
+<span class="sd">            request_metadata (Union[dict, ~google.cloud.talent_v4beta1.types.RequestMetadata]): Required. The meta information collected about the profile search user.</span>
+<span class="sd">                This is used to improve the search quality of the service. These values are</span>
+<span class="sd">                provided by users, and must be precise and consistent.</span>
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.talent_v4beta1.types.RequestMetadata`</span>
-<span class="sd">            profile_query (Union[dict, ~google.cloud.talent_v4beta1.types.ProfileQuery]): Optional.</span>
-
-<span class="sd">                Search query to execute. See ``ProfileQuery`` for more details.</span>
+<span class="sd">            profile_query (Union[dict, ~google.cloud.talent_v4beta1.types.ProfileQuery]): Optional. Search query to execute. See ``ProfileQuery`` for more</span>
+<span class="sd">                details.</span>
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.talent_v4beta1.types.ProfileQuery`</span>
@@ -803,11 +784,9 @@
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
 <span class="sd">                streaming is performed per-page, this determines the maximum number</span>
 <span class="sd">                of resources in a page.</span>
-<span class="sd">            offset (int): Optional.</span>
-
-<span class="sd">                An integer that specifies the current offset (that is, starting result)</span>
-<span class="sd">                in search results. This field is only considered if ``page_token`` is</span>
-<span class="sd">                unset.</span>
+<span class="sd">            offset (int): Optional. An integer that specifies the current offset (that is,</span>
+<span class="sd">                starting result) in search results. This field is only considered if</span>
+<span class="sd">                ``page_token`` is unset.</span>
 
 <span class="sd">                The maximum allowed value is 5000. Otherwise an error is thrown.</span>
 
@@ -815,16 +794,12 @@
 <span class="sd">                search from the 11th profile. This can be used for pagination, for</span>
 <span class="sd">                example pageSize = 10 and offset = 10 means to search from the second</span>
 <span class="sd">                page.</span>
-<span class="sd">            disable_spell_check (bool): Optional.</span>
-
-<span class="sd">                This flag controls the spell-check feature. If ``false``, the service</span>
-<span class="sd">                attempts to correct a misspelled query.</span>
+<span class="sd">            disable_spell_check (bool): Optional. This flag controls the spell-check feature. If ``false``, the</span>
+<span class="sd">                service attempts to correct a misspelled query.</span>
 
 <span class="sd">                For example, &quot;enginee&quot; is corrected to &quot;engineer&quot;.</span>
-<span class="sd">            order_by (str): Optional.</span>
-
-<span class="sd">                The criteria that determines how search results are sorted. Defaults is</span>
-<span class="sd">                &quot;relevance desc&quot; if no value is specified.</span>
+<span class="sd">            order_by (str): Optional. The criteria that determines how search results are sorted.</span>
+<span class="sd">                Defaults is &quot;relevance desc&quot; if no value is specified.</span>
 
 <span class="sd">                Supported options are:</span>
 
@@ -842,15 +817,11 @@
 <span class="sd">                   in ascending order.</span>
 <span class="sd">                -  &quot;last\_name desc&quot;: Sort by</span>
 <span class="sd">                   ``PersonName.PersonStructuredName.family_name`` in ascending order.</span>
-<span class="sd">            case_sensitive_sort (bool): Optional.</span>
-
-<span class="sd">                When sort by field is based on alphabetical order, sort values case</span>
-<span class="sd">                sensitively (based on ASCII) when the value is set to true. Default value</span>
-<span class="sd">                is case in-sensitive sort (false).</span>
-<span class="sd">            histogram_queries (list[Union[dict, ~google.cloud.talent_v4beta1.types.HistogramQuery]]): Optional.</span>
-
-<span class="sd">                A list of expressions specifies histogram requests against matching</span>
-<span class="sd">                profiles for ``SearchProfilesRequest``.</span>
+<span class="sd">            case_sensitive_sort (bool): Optional. When sort by field is based on alphabetical order, sort values</span>
+<span class="sd">                case sensitively (based on ASCII) when the value is set to true. Default</span>
+<span class="sd">                value is case in-sensitive sort (false).</span>
+<span class="sd">            histogram_queries (list[Union[dict, ~google.cloud.talent_v4beta1.types.HistogramQuery]]): Optional. A list of expressions specifies histogram requests against</span>
+<span class="sd">                matching profiles for ``SearchProfilesRequest``.</span>
 
 <span class="sd">                The expression syntax looks like a function definition with optional</span>
 <span class="sd">                parameters.</span>
@@ -929,6 +900,25 @@
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.talent_v4beta1.types.HistogramQuery`</span>
+<span class="sd">            result_set_id (str): Optional. An id that uniquely identifies the result set of a</span>
+<span class="sd">                ``SearchProfiles`` call. The id should be retrieved from the</span>
+<span class="sd">                ``SearchProfilesResponse`` message returned from a previous invocation</span>
+<span class="sd">                of ``SearchProfiles``.</span>
+
+<span class="sd">                A result set is an ordered list of search results.</span>
+
+<span class="sd">                If this field is not set, a new result set is computed based on the</span>
+<span class="sd">                ``profile_query``. A new ``result_set_id`` is returned as a handle to</span>
+<span class="sd">                access this result set.</span>
+
+<span class="sd">                If this field is set, the service will ignore the resource and</span>
+<span class="sd">                ``profile_query`` values, and simply retrieve a page of results from the</span>
+<span class="sd">                corresponding result set. In this case, one and only one of</span>
+<span class="sd">                [page\_token] or [offset] must be set.</span>
+
+<span class="sd">                A typical use case is to invoke ``SearchProfilesRequest`` without this</span>
+<span class="sd">                field, then use the resulting ``result_set_id`` in</span>
+<span class="sd">                ``SearchProfilesResponse`` to page through the results.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -972,6 +962,7 @@
             <span class="n">order_by</span><span class="o">=</span><span class="n">order_by</span><span class="p">,</span>
             <span class="n">case_sensitive_sort</span><span class="o">=</span><span class="n">case_sensitive_sort</span><span class="p">,</span>
             <span class="n">histogram_queries</span><span class="o">=</span><span class="n">histogram_queries</span><span class="p">,</span>
+            <span class="n">result_set_id</span><span class="o">=</span><span class="n">result_set_id</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.talent_v4beta1.proto.job_service_pb2 &#8212; google-cloud 70b4bd2 documentation</title>
+    <title>google.cloud.talent_v4beta1.proto.job_service_pb2 &#8212; google-cloud afc4d94 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -53,6 +53,7 @@
 
 
 <span class="kn">from</span> <span class="nn">google.api</span> <span class="k">import</span> <span class="n">annotations_pb2</span> <span class="k">as</span> <span class="n">google_dot_api_dot_annotations__pb2</span>
+<span class="kn">from</span> <span class="nn">google.api</span> <span class="k">import</span> <span class="n">client_pb2</span> <span class="k">as</span> <span class="n">google_dot_api_dot_client__pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.talent_v4beta1.proto</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">batch_pb2</span> <span class="k">as</span> <span class="n">google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_batch__pb2</span><span class="p">,</span>
 <span class="p">)</span>
@@ -84,10 +85,11 @@
         <span class="s2">&quot;</span><span class="se">\n\037</span><span class="s2">com.google.cloud.talent.v4beta1B</span><span class="se">\017</span><span class="s2">JobServiceProtoP</span><span class="se">\001</span><span class="s2">ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent</span><span class="se">\242\002\003</span><span class="s2">CTS&quot;</span>
     <span class="p">),</span>
     <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span>
-        <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">3google/cloud/talent_v4beta1/proto/job_service.proto</span><span class="se">\x12\x1b</span><span class="s1">google.cloud.talent.v4beta1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a</span><span class="s1">-google/cloud/talent_v4beta1/proto/batch.proto</span><span class="se">\x1a</span><span class="s1">.google/cloud/talent_v4beta1/proto/common.proto</span><span class="se">\x1a</span><span class="s1">/google/cloud/talent_v4beta1/proto/filters.proto</span><span class="se">\x1a\x31</span><span class="s1">google/cloud/talent_v4beta1/proto/histogram.proto</span><span class="se">\x1a</span><span class="s1">+google/cloud/talent_v4beta1/proto/job.proto</span><span class="se">\x1a</span><span class="s1">#google/longrunning/operations.proto</span><span class="se">\x1a\x1e</span><span class="s1">google/protobuf/duration.proto</span><span class="se">\x1a\x1b</span><span class="s1">google/protobuf/empty.proto</span><span class="se">\x1a</span><span class="s1"> google/protobuf/field_mask.proto&quot;Q</span><span class="se">\n\x10\x43</span><span class="s1">reateJobRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">-</span><span class="se">\n\x03</span><span class="s1">job</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1"> .google.cloud.talent.v4beta1.Job&quot;</span><span class="se">\x1d\n\r</span><span class="s1">GetJobRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;r</span><span class="se">\n\x10</span><span class="s1">UpdateJobRequest</span><span class="se">\x12</span><span class="s1">-</span><span class="se">\n\x03</span><span class="s1">job</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1"> .google.cloud.talent.v4beta1.Job</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x0b</span><span class="s1">update_mask</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.FieldMask&quot; </span><span class="se">\n\x10\x44\x65</span><span class="s1">leteJobRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;8</span><span class="se">\n\x16\x42\x61</span><span class="s1">tchDeleteJobsRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0e\n\x06\x66</span><span class="s1">ilter</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;</span><span class="se">\x90\x01\n\x0f</span><span class="s1">ListJobsRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0e\n\x06\x66</span><span class="s1">ilter</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x12\n\n</span><span class="s1">page_token</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">page_size</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x36\n\x08</span><span class="s1">job_view</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">$.google.cloud.talent.v4beta1.JobView&quot;</span><span class="se">\x9c\x01\n\x10</span><span class="s1">ListJobsResponse</span><span class="se">\x12</span><span class="s1">.</span><span class="se">\n\x04</span><span class="s1">jobs</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1"> .google.cloud.talent.v4beta1.Job</span><span class="se">\x12\x17\n\x0f</span><span class="s1">next_page_token</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">?</span><span class="se">\n\x08</span><span class="s1">metadata</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">-.google.cloud.talent.v4beta1.ResponseMetadata&quot;</span><span class="se">\xa0\t\n\x11</span><span class="s1">SearchJobsRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">N</span><span class="se">\n\x0b</span><span class="s1">search_mode</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32\x39</span><span class="s1">.google.cloud.talent.v4beta1.SearchJobsRequest.SearchMode</span><span class="se">\x12\x46\n\x10</span><span class="s1">request_metadata</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">,.google.cloud.talent.v4beta1.RequestMetadata</span><span class="se">\x12\x38\n\t</span><span class="s1">job_query</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.cloud.talent.v4beta1.JobQuery</span><span class="se">\x12\x19\n\x11\x65</span><span class="s1">nable_broadening</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x08\x12</span><span class="s1">#</span><span class="se">\n\x1b</span><span class="s1">require_precise_result_size</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x08\x12\x46\n\x11</span><span class="s1">histogram_queries</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">+.google.cloud.talent.v4beta1.HistogramQuery</span><span class="se">\x12\x36\n\x08</span><span class="s1">job_view</span><span class="se">\x18\x08</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">$.google.cloud.talent.v4beta1.JobView</span><span class="se">\x12\x0e\n\x06</span><span class="s1">offset</span><span class="se">\x18\t</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x11\n\t</span><span class="s1">page_size</span><span class="se">\x18\n</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x12\n\n</span><span class="s1">page_token</span><span class="se">\x18\x0b</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x10\n\x08</span><span class="s1">order_by</span><span class="se">\x18\x0c</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x62\n\x15\x64</span><span class="s1">iversification_level</span><span class="se">\x18\r</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32\x43</span><span class="s1">.google.cloud.talent.v4beta1.SearchJobsRequest.DiversificationLevel</span><span class="se">\x12</span><span class="s1">]</span><span class="se">\n\x13\x63</span><span class="s1">ustom_ranking_info</span><span class="se">\x18\x0e</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">@.google.cloud.talent.v4beta1.SearchJobsRequest.CustomRankingInfo</span><span class="se">\x12\x1d\n\x15\x64</span><span class="s1">isable_keyword_match</span><span class="se">\x18\x10</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x08\x1a\x90\x02\n\x11\x43</span><span class="s1">ustomRankingInfo</span><span class="se">\x12</span><span class="s1">j</span><span class="se">\n\x10</span><span class="s1">importance_level</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">P.google.cloud.talent.v4beta1.SearchJobsRequest.CustomRankingInfo.ImportanceLevel</span><span class="se">\x12\x1a\n\x12</span><span class="s1">ranking_expression</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;s</span><span class="se">\n\x0f</span><span class="s1">ImportanceLevel</span><span class="se">\x12</span><span class="s1"> </span><span class="se">\n\x1c</span><span class="s1">IMPORTANCE_LEVEL_UNSPECIFIED</span><span class="se">\x10\x00\x12\x08\n\x04</span><span class="s1">NONE</span><span class="se">\x10\x01\x12\x07\n\x03</span><span class="s1">LOW</span><span class="se">\x10\x02\x12\x08\n\x04</span><span class="s1">MILD</span><span class="se">\x10\x03\x12\n\n\x06</span><span class="s1">MEDIUM</span><span class="se">\x10\x04\x12\x08\n\x04</span><span class="s1">HIGH</span><span class="se">\x10\x05\x12\x0b\n\x07\x45</span><span class="s1">XTREME</span><span class="se">\x10\x06</span><span class="s1">&quot;R</span><span class="se">\n\n</span><span class="s1">SearchMode</span><span class="se">\x12\x1b\n\x17</span><span class="s1">SEARCH_MODE_UNSPECIFIED</span><span class="se">\x10\x00\x12\x0e\n\n</span><span class="s1">JOB_SEARCH</span><span class="se">\x10\x01\x12\x17\n\x13\x46\x45\x41</span><span class="s1">TURED_JOB_SEARCH</span><span class="se">\x10\x02</span><span class="s1">&quot;W</span><span class="se">\n\x14\x44</span><span class="s1">iversificationLevel</span><span class="se">\x12</span><span class="s1">%</span><span class="se">\n</span><span class="s1">!DIVERSIFICATION_LEVEL_UNSPECIFIED</span><span class="se">\x10\x00\x12\x0c\n\x08\x44</span><span class="s1">ISABLED</span><span class="se">\x10\x01\x12\n\n\x06</span><span class="s1">SIMPLE</span><span class="se">\x10\x02</span><span class="s1">&quot;</span><span class="se">\xd7\x06\n\x12</span><span class="s1">SearchJobsResponse</span><span class="se">\x12</span><span class="s1">R</span><span class="se">\n\r</span><span class="s1">matching_jobs</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">;.google.cloud.talent.v4beta1.SearchJobsResponse.MatchingJob</span><span class="se">\x12</span><span class="s1">R</span><span class="se">\n\x17</span><span class="s1">histogram_query_results</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x31</span><span class="s1">.google.cloud.talent.v4beta1.HistogramQueryResult</span><span class="se">\x12\x17\n\x0f</span><span class="s1">next_page_token</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">?</span><span class="se">\n\x10</span><span class="s1">location_filters</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.cloud.talent.v4beta1.Location</span><span class="se">\x12\x1c\n\x14\x65</span><span class="s1">stimated_total_size</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x12\n\n</span><span class="s1">total_size</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12</span><span class="s1">?</span><span class="se">\n\x08</span><span class="s1">metadata</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">-.google.cloud.talent.v4beta1.ResponseMetadata</span><span class="se">\x12</span><span class="s1">&quot;</span><span class="se">\n\x1a\x62</span><span class="s1">roadened_query_jobs_count</span><span class="se">\x18\x08</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12</span><span class="s1">I</span><span class="se">\n\x10</span><span class="s1">spell_correction</span><span class="se">\x18\t</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">/.google.cloud.talent.v4beta1.SpellingCorrection</span><span class="se">\x1a\xdc\x01\n\x0b</span><span class="s1">MatchingJob</span><span class="se">\x12</span><span class="s1">-</span><span class="se">\n\x03</span><span class="s1">job</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1"> .google.cloud.talent.v4beta1.Job</span><span class="se">\x12\x13\n\x0b</span><span class="s1">job_summary</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x19\n\x11</span><span class="s1">job_title_snippet</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x1b\n\x13</span><span class="s1">search_text_snippet</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">Q</span><span class="se">\n\x0c\x63</span><span class="s1">ommute_info</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">;.google.cloud.talent.v4beta1.SearchJobsResponse.CommuteInfo</span><span class="se">\x1a</span><span class="s1">~</span><span class="se">\n\x0b\x43</span><span class="s1">ommuteInfo</span><span class="se">\x12</span><span class="s1">;</span><span class="se">\n\x0c</span><span class="s1">job_location</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.cloud.talent.v4beta1.Location</span><span class="se">\x12\x32\n\x0f</span><span class="s1">travel_duration</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x19</span><span class="s1">.google.protobuf.Duration&quot;X</span><span class="se">\n\x16\x42\x61</span><span class="s1">tchCreateJobsRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">.</span><span class="se">\n\x04</span><span class="s1">jobs</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1"> .google.cloud.talent.v4beta1.Job&quot;</span><span class="se">\x89\x01\n\x16\x42\x61</span><span class="s1">tchUpdateJobsRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">.</span><span class="se">\n\x04</span><span class="s1">jobs</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1"> .google.cloud.talent.v4beta1.Job</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x0b</span><span class="s1">update_mask</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.FieldMask*v</span><span class="se">\n\x07</span><span class="s1">JobView</span><span class="se">\x12\x18\n\x14</span><span class="s1">JOB_VIEW_UNSPECIFIED</span><span class="se">\x10\x00\x12\x14\n\x10</span><span class="s1">JOB_VIEW_ID_ONLY</span><span class="se">\x10\x01\x12\x14\n\x10</span><span class="s1">JOB_VIEW_MINIMAL</span><span class="se">\x10\x02\x12\x12\n\x0e</span><span class="s1">JOB_VIEW_SMALL</span><span class="se">\x10\x03\x12\x11\n\r</span><span class="s1">JOB_VIEW_FULL</span><span class="se">\x10\x04\x32\xa2\x10\n\n</span><span class="s1">JobService</span><span class="se">\x12\xbc\x01\n\t</span><span class="s1">CreateJob</span><span class="se">\x12</span><span class="s1">-.google.cloud.talent.v4beta1.CreateJobRequest</span><span class="se">\x1a</span><span class="s1"> .google.cloud.talent.v4beta1.Job&quot;^</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">X&quot;+/v4beta1/{parent=projects/*/tenants/*}/jobs:</span><span class="se">\x01</span><span class="s1">*Z&amp;&quot;!/v4beta1/{parent=projects/*}/jobs:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xb0\x01\n\x06</span><span class="s1">GetJob</span><span class="se">\x12</span><span class="s1">*.google.cloud.talent.v4beta1.GetJobRequest</span><span class="se">\x1a</span><span class="s1"> .google.cloud.talent.v4beta1.Job&quot;X</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">R</span><span class="se">\x12</span><span class="s1">+/v4beta1/{name=projects/*/tenants/*/jobs/*}Z#</span><span class="se">\x12</span><span class="s1">!/v4beta1/{name=projects/*/jobs/*}</span><span class="se">\x12\xc4\x01\n\t</span><span class="s1">UpdateJob</span><span class="se">\x12</span><span class="s1">-.google.cloud.talent.v4beta1.UpdateJobRequest</span><span class="se">\x1a</span><span class="s1"> .google.cloud.talent.v4beta1.Job&quot;f</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">`2//v4beta1/{job.name=projects/*/tenants/*/jobs/*}:</span><span class="se">\x01</span><span class="s1">*Z*2%/v4beta1/{job.name=projects/*/jobs/*}:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xac\x01\n\t</span><span class="s1">DeleteJob</span><span class="se">\x12</span><span class="s1">-.google.cloud.talent.v4beta1.DeleteJobRequest</span><span class="se">\x1a\x16</span><span class="s1">.google.protobuf.Empty&quot;X</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">R*+/v4beta1/{name=projects/*/tenants/*/jobs/*}Z#*!/v4beta1/{name=projects/*/jobs/*}</span><span class="se">\x12\xc1\x01\n\x08</span><span class="s1">ListJobs</span><span class="se">\x12</span><span class="s1">,.google.cloud.talent.v4beta1.ListJobsRequest</span><span class="se">\x1a</span><span class="s1">-.google.cloud.talent.v4beta1.ListJobsResponse&quot;X</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">R</span><span class="se">\x12</span><span class="s1">+/v4beta1/{parent=projects/*/tenants/*}/jobsZ#</span><span class="se">\x12</span><span class="s1">!/v4beta1/{parent=projects/*}/jobs</span><span class="se">\x12\xd3\x01\n\x0f\x42\x61</span><span class="s1">tchDeleteJobs</span><span class="se">\x12\x33</span><span class="s1">.google.cloud.talent.v4beta1.BatchDeleteJobsRequest</span><span class="se">\x1a\x16</span><span class="s1">.google.protobuf.Empty&quot;s</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">m&quot;7/v4beta1/{parent=projects/*/tenants/*}/jobs:batchDelete:</span><span class="se">\x01</span><span class="s1">*Z/&quot;-/v4beta1/{parent=projects/*}/jobs:batchDelete</span><span class="se">\x12\xdb\x01\n\n</span><span class="s1">SearchJobs</span><span class="se">\x12</span><span class="s1">..google.cloud.talent.v4beta1.SearchJobsRequest</span><span class="se">\x1a</span><span class="s1">/.google.cloud.talent.v4beta1.SearchJobsResponse&quot;l</span><span class="se">\x82\xd3\xe4\x93\x02\x66</span><span class="s1">&quot;2/v4beta1/{parent=projects/*/tenants/*}/jobs:search:</span><span class="se">\x01</span><span class="s1">*Z-&quot;(/v4beta1/{parent=projects/*}/jobs:search:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xf3\x01\n\x12</span><span class="s1">SearchJobsForAlert</span><span class="se">\x12</span><span class="s1">..google.cloud.talent.v4beta1.SearchJobsRequest</span><span class="se">\x1a</span><span class="s1">/.google.cloud.talent.v4beta1.SearchJobsResponse&quot;|</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">v&quot;:/v4beta1/{parent=projects/*/tenants/*}/jobs:searchForAlert:</span><span class="se">\x01</span><span class="s1">*Z5&quot;0/v4beta1/{parent=projects/*}/jobs:searchForAlert:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xdd\x01\n\x0f\x42\x61</span><span class="s1">tchCreateJobs</span><span class="se">\x12\x33</span><span class="s1">.google.cloud.talent.v4beta1.BatchCreateJobsRequest</span><span class="se">\x1a\x1d</span><span class="s1">.google.longrunning.Operation&quot;v</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">p&quot;7/v4beta1/{parent=projects/*/tenants/*}/jobs:batchCreate:</span><span class="se">\x01</span><span class="s1">*Z2&quot;-/v4beta1/{parent=projects/*}/jobs:batchCreate:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xdd\x01\n\x0f\x42\x61</span><span class="s1">tchUpdateJobs</span><span class="se">\x12\x33</span><span class="s1">.google.cloud.talent.v4beta1.BatchUpdateJobsRequest</span><span class="se">\x1a\x1d</span><span class="s1">.google.longrunning.Operation&quot;v</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">p&quot;7/v4beta1/{parent=projects/*/tenants/*}/jobs:batchUpdate:</span><span class="se">\x01</span><span class="s1">*Z2&quot;-/v4beta1/{parent=projects/*}/jobs:batchUpdate:</span><span class="se">\x01</span><span class="s1">*B}</span><span class="se">\n\x1f\x63</span><span class="s1">om.google.cloud.talent.v4beta1B</span><span class="se">\x0f</span><span class="s1">JobServiceProtoP</span><span class="se">\x01</span><span class="s1">ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent</span><span class="se">\xa2\x02\x03\x43</span><span class="s1">TSb</span><span class="se">\x06</span><span class="s1">proto3&#39;</span>
+        <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">3google/cloud/talent_v4beta1/proto/job_service.proto</span><span class="se">\x12\x1b</span><span class="s1">google.cloud.talent.v4beta1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a\x17</span><span class="s1">google/api/client.proto</span><span class="se">\x1a</span><span class="s1">-google/cloud/talent_v4beta1/proto/batch.proto</span><span class="se">\x1a</span><span class="s1">.google/cloud/talent_v4beta1/proto/common.proto</span><span class="se">\x1a</span><span class="s1">/google/cloud/talent_v4beta1/proto/filters.proto</span><span class="se">\x1a\x31</span><span class="s1">google/cloud/talent_v4beta1/proto/histogram.proto</span><span class="se">\x1a</span><span class="s1">+google/cloud/talent_v4beta1/proto/job.proto</span><span class="se">\x1a</span><span class="s1">#google/longrunning/operations.proto</span><span class="se">\x1a\x1e</span><span class="s1">google/protobuf/duration.proto</span><span class="se">\x1a\x1b</span><span class="s1">google/protobuf/empty.proto</span><span class="se">\x1a</span><span class="s1"> google/protobuf/field_mask.proto&quot;Q</span><span class="se">\n\x10\x43</span><span class="s1">reateJobRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">-</span><span class="se">\n\x03</span><span class="s1">job</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1"> .google.cloud.talent.v4beta1.Job&quot;</span><span class="se">\x1d\n\r</span><span class="s1">GetJobRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;r</span><span class="se">\n\x10</span><span class="s1">UpdateJobRequest</span><span class="se">\x12</span><span class="s1">-</span><span class="se">\n\x03</span><span class="s1">job</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1"> .google.cloud.talent.v4beta1.Job</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x0b</span><span class="s1">update_mask</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.FieldMask&quot; </span><span class="se">\n\x10\x44\x65</span><span class="s1">leteJobRequest</span><span class="se">\x12\x0c\n\x04</span><span class="s1">name</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;8</span><span class="se">\n\x16\x42\x61</span><span class="s1">tchDeleteJobsRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0e\n\x06\x66</span><span class="s1">ilter</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;</span><span class="se">\x90\x01\n\x0f</span><span class="s1">ListJobsRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0e\n\x06\x66</span><span class="s1">ilter</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x12\n\n</span><span class="s1">page_token</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x11\n\t</span><span class="s1">page_size</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x36\n\x08</span><span class="s1">job_view</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">$.google.cloud.talent.v4beta1.JobView&quot;</span><span class="se">\x9c\x01\n\x10</span><span class="s1">ListJobsResponse</span><span class="se">\x12</span><span class="s1">.</span><span class="se">\n\x04</span><span class="s1">jobs</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1"> .google.cloud.talent.v4beta1.Job</span><span class="se">\x12\x17\n\x0f</span><span class="s1">next_page_token</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">?</span><span class="se">\n\x08</span><span class="s1">metadata</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">-.google.cloud.talent.v4beta1.ResponseMetadata&quot;</span><span class="se">\xa0\t\n\x11</span><span class="s1">SearchJobsRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">N</span><span class="se">\n\x0b</span><span class="s1">search_mode</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32\x39</span><span class="s1">.google.cloud.talent.v4beta1.SearchJobsRequest.SearchMode</span><span class="se">\x12\x46\n\x10</span><span class="s1">request_metadata</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">,.google.cloud.talent.v4beta1.RequestMetadata</span><span class="se">\x12\x38\n\t</span><span class="s1">job_query</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.cloud.talent.v4beta1.JobQuery</span><span class="se">\x12\x19\n\x11\x65</span><span class="s1">nable_broadening</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x08\x12</span><span class="s1">#</span><span class="se">\n\x1b</span><span class="s1">require_precise_result_size</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x08\x12\x46\n\x11</span><span class="s1">histogram_queries</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">+.google.cloud.talent.v4beta1.HistogramQuery</span><span class="se">\x12\x36\n\x08</span><span class="s1">job_view</span><span class="se">\x18\x08</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">$.google.cloud.talent.v4beta1.JobView</span><span class="se">\x12\x0e\n\x06</span><span class="s1">offset</span><span class="se">\x18\t</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x11\n\t</span><span class="s1">page_size</span><span class="se">\x18\n</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x12\n\n</span><span class="s1">page_token</span><span class="se">\x18\x0b</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x10\n\x08</span><span class="s1">order_by</span><span class="se">\x18\x0c</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x62\n\x15\x64</span><span class="s1">iversification_level</span><span class="se">\x18\r</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32\x43</span><span class="s1">.google.cloud.talent.v4beta1.SearchJobsRequest.DiversificationLevel</span><span class="se">\x12</span><span class="s1">]</span><span class="se">\n\x13\x63</span><span class="s1">ustom_ranking_info</span><span class="se">\x18\x0e</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">@.google.cloud.talent.v4beta1.SearchJobsRequest.CustomRankingInfo</span><span class="se">\x12\x1d\n\x15\x64</span><span class="s1">isable_keyword_match</span><span class="se">\x18\x10</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x08\x1a\x90\x02\n\x11\x43</span><span class="s1">ustomRankingInfo</span><span class="se">\x12</span><span class="s1">j</span><span class="se">\n\x10</span><span class="s1">importance_level</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">P.google.cloud.talent.v4beta1.SearchJobsRequest.CustomRankingInfo.ImportanceLevel</span><span class="se">\x12\x1a\n\x12</span><span class="s1">ranking_expression</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;s</span><span class="se">\n\x0f</span><span class="s1">ImportanceLevel</span><span class="se">\x12</span><span class="s1"> </span><span class="se">\n\x1c</span><span class="s1">IMPORTANCE_LEVEL_UNSPECIFIED</span><span class="se">\x10\x00\x12\x08\n\x04</span><span class="s1">NONE</span><span class="se">\x10\x01\x12\x07\n\x03</span><span class="s1">LOW</span><span class="se">\x10\x02\x12\x08\n\x04</span><span class="s1">MILD</span><span class="se">\x10\x03\x12\n\n\x06</span><span class="s1">MEDIUM</span><span class="se">\x10\x04\x12\x08\n\x04</span><span class="s1">HIGH</span><span class="se">\x10\x05\x12\x0b\n\x07\x45</span><span class="s1">XTREME</span><span class="se">\x10\x06</span><span class="s1">&quot;R</span><span class="se">\n\n</span><span class="s1">SearchMode</span><span class="se">\x12\x1b\n\x17</span><span class="s1">SEARCH_MODE_UNSPECIFIED</span><span class="se">\x10\x00\x12\x0e\n\n</span><span class="s1">JOB_SEARCH</span><span class="se">\x10\x01\x12\x17\n\x13\x46\x45\x41</span><span class="s1">TURED_JOB_SEARCH</span><span class="se">\x10\x02</span><span class="s1">&quot;W</span><span class="se">\n\x14\x44</span><span class="s1">iversificationLevel</span><span class="se">\x12</span><span class="s1">%</span><span class="se">\n</span><span class="s1">!DIVERSIFICATION_LEVEL_UNSPECIFIED</span><span class="se">\x10\x00\x12\x0c\n\x08\x44</span><span class="s1">ISABLED</span><span class="se">\x10\x01\x12\n\n\x06</span><span class="s1">SIMPLE</span><span class="se">\x10\x02</span><span class="s1">&quot;</span><span class="se">\xd7\x06\n\x12</span><span class="s1">SearchJobsResponse</span><span class="se">\x12</span><span class="s1">R</span><span class="se">\n\r</span><span class="s1">matching_jobs</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">;.google.cloud.talent.v4beta1.SearchJobsResponse.MatchingJob</span><span class="se">\x12</span><span class="s1">R</span><span class="se">\n\x17</span><span class="s1">histogram_query_results</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x31</span><span class="s1">.google.cloud.talent.v4beta1.HistogramQueryResult</span><span class="se">\x12\x17\n\x0f</span><span class="s1">next_page_token</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">?</span><span class="se">\n\x10</span><span class="s1">location_filters</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.cloud.talent.v4beta1.Location</span><span class="se">\x12\x1c\n\x14\x65</span><span class="s1">stimated_total_size</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x12\n\n</span><span class="s1">total_size</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12</span><span class="s1">?</span><span class="se">\n\x08</span><span class="s1">metadata</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">-.google.cloud.talent.v4beta1.ResponseMetadata</span><span class="se">\x12</span><span class="s1">&quot;</span><span class="se">\n\x1a\x62</span><span class="s1">roadened_query_jobs_count</span><span class="se">\x18\x08</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12</span><span class="s1">I</span><span class="se">\n\x10</span><span class="s1">spell_correction</span><span class="se">\x18\t</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">/.google.cloud.talent.v4beta1.SpellingCorrection</span><span class="se">\x1a\xdc\x01\n\x0b</span><span class="s1">MatchingJob</span><span class="se">\x12</span><span class="s1">-</span><span class="se">\n\x03</span><span class="s1">job</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1"> .google.cloud.talent.v4beta1.Job</span><span class="se">\x12\x13\n\x0b</span><span class="s1">job_summary</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x19\n\x11</span><span class="s1">job_title_snippet</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x1b\n\x13</span><span class="s1">search_text_snippet</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">Q</span><span class="se">\n\x0c\x63</span><span class="s1">ommute_info</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">;.google.cloud.talent.v4beta1.SearchJobsResponse.CommuteInfo</span><span class="se">\x1a</span><span class="s1">~</span><span class="se">\n\x0b\x43</span><span class="s1">ommuteInfo</span><span class="se">\x12</span><span class="s1">;</span><span class="se">\n\x0c</span><span class="s1">job_location</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.cloud.talent.v4beta1.Location</span><span class="se">\x12\x32\n\x0f</span><span class="s1">travel_duration</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x19</span><span class="s1">.google.protobuf.Duration&quot;X</span><span class="se">\n\x16\x42\x61</span><span class="s1">tchCreateJobsRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">.</span><span class="se">\n\x04</span><span class="s1">jobs</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1"> .google.cloud.talent.v4beta1.Job&quot;</span><span class="se">\x89\x01\n\x16\x42\x61</span><span class="s1">tchUpdateJobsRequest</span><span class="se">\x12\x0e\n\x06</span><span class="s1">parent</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">.</span><span class="se">\n\x04</span><span class="s1">jobs</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1"> .google.cloud.talent.v4beta1.Job</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x0b</span><span class="s1">update_mask</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.FieldMask*v</span><span class="se">\n\x07</span><span class="s1">JobView</span><span class="se">\x12\x18\n\x14</span><span class="s1">JOB_VIEW_UNSPECIFIED</span><span class="se">\x10\x00\x12\x14\n\x10</span><span class="s1">JOB_VIEW_ID_ONLY</span><span class="se">\x10\x01\x12\x14\n\x10</span><span class="s1">JOB_VIEW_MINIMAL</span><span class="se">\x10\x02\x12\x12\n\x0e</span><span class="s1">JOB_VIEW_SMALL</span><span class="se">\x10\x03\x12\x11\n\r</span><span class="s1">JOB_VIEW_FULL</span><span class="se">\x10\x04\x32\x90\x11\n\n</span><span class="s1">JobService</span><span class="se">\x12\xbc\x01\n\t</span><span class="s1">CreateJob</span><span class="se">\x12</span><span class="s1">-.google.cloud.talent.v4beta1.CreateJobRequest</span><span class="se">\x1a</span><span class="s1"> .google.cloud.talent.v4beta1.Job&quot;^</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">X&quot;+/v4beta1/{parent=projects/*/tenants/*}/jobs:</span><span class="se">\x01</span><span class="s1">*Z&amp;&quot;!/v4beta1/{parent=projects/*}/jobs:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xb0\x01\n\x06</span><span class="s1">GetJob</span><span class="se">\x12</span><span class="s1">*.google.cloud.talent.v4beta1.GetJobRequest</span><span class="se">\x1a</span><span class="s1"> .google.cloud.talent.v4beta1.Job&quot;X</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">R</span><span class="se">\x12</span><span class="s1">+/v4beta1/{name=projects/*/tenants/*/jobs/*}Z#</span><span class="se">\x12</span><span class="s1">!/v4beta1/{name=projects/*/jobs/*}</span><span class="se">\x12\xc4\x01\n\t</span><span class="s1">UpdateJob</span><span class="se">\x12</span><span class="s1">-.google.cloud.talent.v4beta1.UpdateJobRequest</span><span class="se">\x1a</span><span class="s1"> .google.cloud.talent.v4beta1.Job&quot;f</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">`2//v4beta1/{job.name=projects/*/tenants/*/jobs/*}:</span><span class="se">\x01</span><span class="s1">*Z*2%/v4beta1/{job.name=projects/*/jobs/*}:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xac\x01\n\t</span><span class="s1">DeleteJob</span><span class="se">\x12</span><span class="s1">-.google.cloud.talent.v4beta1.DeleteJobRequest</span><span class="se">\x1a\x16</span><span class="s1">.google.protobuf.Empty&quot;X</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">R*+/v4beta1/{name=projects/*/tenants/*/jobs/*}Z#*!/v4beta1/{name=projects/*/jobs/*}</span><span class="se">\x12\xc1\x01\n\x08</span><span class="s1">ListJobs</span><span class="se">\x12</span><span class="s1">,.google.cloud.talent.v4beta1.ListJobsRequest</span><span class="se">\x1a</span><span class="s1">-.google.cloud.talent.v4beta1.ListJobsResponse&quot;X</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">R</span><span class="se">\x12</span><span class="s1">+/v4beta1/{parent=projects/*/tenants/*}/jobsZ#</span><span class="se">\x12</span><span class="s1">!/v4beta1/{parent=projects/*}/jobs</span><span class="se">\x12\xd3\x01\n\x0f\x42\x61</span><span class="s1">tchDeleteJobs</span><span class="se">\x12\x33</span><span class="s1">.google.cloud.talent.v4beta1.BatchDeleteJobsRequest</span><span class="se">\x1a\x16</span><span class="s1">.google.protobuf.Empty&quot;s</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">m&quot;7/v4beta1/{parent=projects/*/tenants/*}/jobs:batchDelete:</span><span class="se">\x01</span><span class="s1">*Z/&quot;-/v4beta1/{parent=projects/*}/jobs:batchDelete</span><span class="se">\x12\xdb\x01\n\n</span><span class="s1">SearchJobs</span><span class="se">\x12</span><span class="s1">..google.cloud.talent.v4beta1.SearchJobsRequest</span><span class="se">\x1a</span><span class="s1">/.google.cloud.talent.v4beta1.SearchJobsResponse&quot;l</span><span class="se">\x82\xd3\xe4\x93\x02\x66</span><span class="s1">&quot;2/v4beta1/{parent=projects/*/tenants/*}/jobs:search:</span><span class="se">\x01</span><span class="s1">*Z-&quot;(/v4beta1/{parent=projects/*}/jobs:search:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xf3\x01\n\x12</span><span class="s1">SearchJobsForAlert</span><span class="se">\x12</span><span class="s1">..google.cloud.talent.v4beta1.SearchJobsRequest</span><span class="se">\x1a</span><span class="s1">/.google.cloud.talent.v4beta1.SearchJobsResponse&quot;|</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">v&quot;:/v4beta1/{parent=projects/*/tenants/*}/jobs:searchForAlert:</span><span class="se">\x01</span><span class="s1">*Z5&quot;0/v4beta1/{parent=projects/*}/jobs:searchForAlert:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xdd\x01\n\x0f\x42\x61</span><span class="s1">tchCreateJobs</span><span class="se">\x12\x33</span><span class="s1">.google.cloud.talent.v4beta1.BatchCreateJobsRequest</span><span class="se">\x1a\x1d</span><span class="s1">.google.longrunning.Operation&quot;v</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">p&quot;7/v4beta1/{parent=projects/*/tenants/*}/jobs:batchCreate:</span><span class="se">\x01</span><span class="s1">*Z2&quot;-/v4beta1/{parent=projects/*}/jobs:batchCreate:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x12\xdd\x01\n\x0f\x42\x61</span><span class="s1">tchUpdateJobs</span><span class="se">\x12\x33</span><span class="s1">.google.cloud.talent.v4beta1.BatchUpdateJobsRequest</span><span class="se">\x1a\x1d</span><span class="s1">.google.longrunning.Operation&quot;v</span><span class="se">\x82\xd3\xe4\x93\x02</span><span class="s1">p&quot;7/v4beta1/{parent=projects/*/tenants/*}/jobs:batchUpdate:</span><span class="se">\x01</span><span class="s1">*Z2&quot;-/v4beta1/{parent=projects/*}/jobs:batchUpdate:</span><span class="se">\x01</span><span class="s1">*</span><span class="se">\x1a</span><span class="s1">l</span><span class="se">\xca\x41\x13</span><span class="s1">jobs.googleapis.com</span><span class="se">\xd2\x41</span><span class="s1">Shttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/jobsB}</span><span class="se">\n\x1f\x63</span><span class="s1">om.google.cloud.talent.v4beta1B</span><span class="se">\x0f</span><span class="s1">JobServiceProtoP</span><span class="se">\x01</span><span class="s1">ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent</span><span class="se">\xa2\x02\x03\x43</span><span class="s1">TSb</span><span class="se">\x06</span><span class="s1">proto3&#39;</span>
     <span class="p">),</span>
     <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span>
         <span class="n">google_dot_api_dot_annotations__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
+        <span class="n">google_dot_api_dot_client__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="n">google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_batch__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="n">google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
         <span class="n">google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_filters__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
@@ -136,8 +138,8 @@
     <span class="p">],</span>
     <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3389</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3507</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3414</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3532</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterEnumDescriptor</span><span class="p">(</span><span class="n">_JOBVIEW</span><span class="p">)</span>
 
@@ -183,8 +185,8 @@
     <span class="p">],</span>
     <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2011</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2126</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2036</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2151</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterEnumDescriptor</span><span class="p">(</span><span class="n">_SEARCHJOBSREQUEST_CUSTOMRANKINGINFO_IMPORTANCELEVEL</span><span class="p">)</span>
 
@@ -214,8 +216,8 @@
     <span class="p">],</span>
     <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2128</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2210</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2153</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2235</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterEnumDescriptor</span><span class="p">(</span><span class="n">_SEARCHJOBSREQUEST_SEARCHMODE</span><span class="p">)</span>
 
@@ -241,8 +243,8 @@
     <span class="p">],</span>
     <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2212</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2299</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2237</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2324</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterEnumDescriptor</span><span class="p">(</span><span class="n">_SEARCHJOBSREQUEST_DIVERSIFICATIONLEVEL</span><span class="p">)</span>
 
@@ -299,8 +301,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">486</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">567</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">511</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">592</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -338,8 +340,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">569</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">598</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">594</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">623</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -395,8 +397,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">714</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">625</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">739</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -434,8 +436,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">716</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">748</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">741</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">773</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -491,8 +493,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">750</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">806</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">775</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">831</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -602,8 +604,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">809</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">953</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">834</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">978</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -677,8 +679,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">956</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1112</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">981</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">1137</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -734,8 +736,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1854</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2126</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1879</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2151</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_SEARCHJOBSREQUEST</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
@@ -1024,8 +1026,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1115</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2299</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">1140</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">2324</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1135,8 +1137,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2809</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3029</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2834</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3054</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_SEARCHJOBSRESPONSE_COMMUTEINFO</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
@@ -1191,8 +1193,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3031</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3157</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3056</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3182</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_SEARCHJOBSRESPONSE</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
@@ -1373,8 +1375,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2302</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3157</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">2327</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3182</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1430,8 +1432,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3159</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3247</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3184</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3272</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -1505,8 +1507,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3250</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3387</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3275</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">3412</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_CREATEJOBREQUEST</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
@@ -1636,14 +1638,14 @@
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
 <span class="s2">      parent:</span>
-<span class="s2">          Required.  The resource name of the tenant under which the job</span>
+<span class="s2">          Required. The resource name of the tenant under which the job</span>
 <span class="s2">          is created.  The format is</span>
 <span class="s2">          &quot;projects/{project\_id}/tenants/{tenant\_id}&quot;, for example,</span>
 <span class="s2">          &quot;projects/api-test-project/tenant/foo&quot;.  Tenant id is optional</span>
 <span class="s2">          and a default tenant is created if unspecified, for example,</span>
 <span class="s2">          &quot;projects/api-test-project&quot;.</span>
 <span class="s2">      job:</span>
-<span class="s2">          Required.  The Job to be created.</span>
+<span class="s2">          Required. The Job to be created.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
         <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.CreateJobRequest)</span>
     <span class="p">),</span>
@@ -1663,7 +1665,7 @@
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
 <span class="s2">      name:</span>
-<span class="s2">          Required.  The resource name of the job to retrieve.  The</span>
+<span class="s2">          Required. The resource name of the job to retrieve.  The</span>
 <span class="s2">          format is</span>
 <span class="s2">          &quot;projects/{project\_id}/tenants/{tenant\_id}/jobs/{job\_id}&quot;,</span>
 <span class="s2">          for example, &quot;projects/api-test-</span>
@@ -1689,7 +1691,7 @@
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
 <span class="s2">      job:</span>
-<span class="s2">          Required.  The Job to be updated.</span>
+<span class="s2">          Required. The Job to be updated.</span>
 <span class="s2">      update_mask:</span>
 <span class="s2">          Optional but strongly recommended to be provided for the best</span>
 <span class="s2">          service experience.  If [update\_mask][google.cloud.talent.v4b</span>
@@ -1718,7 +1720,7 @@
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
 <span class="s2">      name:</span>
-<span class="s2">          Required.  The resource name of the job to be deleted.  The</span>
+<span class="s2">          Required. The resource name of the job to be deleted.  The</span>
 <span class="s2">          format is</span>
 <span class="s2">          &quot;projects/{project\_id}/tenants/{tenant\_id}/jobs/{job\_id}&quot;,</span>
 <span class="s2">          for example, &quot;projects/api-test-</span>
@@ -1744,14 +1746,14 @@
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
 <span class="s2">      parent:</span>
-<span class="s2">          Required.  The resource name of the tenant under which the job</span>
+<span class="s2">          Required. The resource name of the tenant under which the job</span>
 <span class="s2">          is created.  The format is</span>
 <span class="s2">          &quot;projects/{project\_id}/tenants/{tenant\_id}&quot;, for example,</span>
 <span class="s2">          &quot;projects/api-test-project/tenant/foo&quot;.  Tenant id is optional</span>
 <span class="s2">          and the default tenant is used if unspecified, for example,</span>
 <span class="s2">          &quot;projects/api-test-project&quot;.</span>
 <span class="s2">      filter:</span>
-<span class="s2">          Required.  The filter string specifies the jobs to be deleted.</span>
+<span class="s2">          Required. The filter string specifies the jobs to be deleted.</span>
 <span class="s2">          Supported operator: =, AND  The fields eligible for filtering</span>
 <span class="s2">          are:  -  ``companyName`` (Required) -  ``requisitionId``</span>
 <span class="s2">          (Required)  Sample Query: companyName = &quot;projects/api-test-</span>
@@ -1775,14 +1777,14 @@
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
 <span class="s2">      parent:</span>
-<span class="s2">          Required.  The resource name of the tenant under which the job</span>
+<span class="s2">          Required. The resource name of the tenant under which the job</span>
 <span class="s2">          is created.  The format is</span>
 <span class="s2">          &quot;projects/{project\_id}/tenants/{tenant\_id}&quot;, for example,</span>
 <span class="s2">          &quot;projects/api-test-project/tenant/foo&quot;.  Tenant id is optional</span>
 <span class="s2">          and the default tenant is used if unspecified, for example,</span>
 <span class="s2">          &quot;projects/api-test-project&quot;.</span>
 <span class="s2">      filter:</span>
-<span class="s2">          Required.  The filter string specifies the jobs to be</span>
+<span class="s2">          Required. The filter string specifies the jobs to be</span>
 <span class="s2">          enumerated.  Supported operator: =, AND  The fields eligible</span>
 <span class="s2">          for filtering are:  -  ``companyName`` (Required) -</span>
 <span class="s2">          ``requisitionId`` (Optional) -  ``status`` (Optional)</span>
@@ -1794,9 +1796,9 @@
 <span class="s2">          &quot;req-1&quot; -  companyName = &quot;projects/api-test-</span>
 <span class="s2">          project/tenants/foo/companies/bar&quot;    AND status = &quot;EXPIRED&quot;</span>
 <span class="s2">      page_token:</span>
-<span class="s2">          Optional.  The starting point of a query result.</span>
+<span class="s2">          Optional. The starting point of a query result.</span>
 <span class="s2">      page_size:</span>
-<span class="s2">          Optional.  The maximum number of jobs to be returned per page</span>
+<span class="s2">          Optional. The maximum number of jobs to be returned per page</span>
 <span class="s2">          of results.  If [job\_view][google.cloud.talent.v4beta1.ListJo</span>
 <span class="s2">          bsRequest.job\_view] is set to [JobView.JOB\_VIEW\_ID\_ONLY][g</span>
 <span class="s2">          oogle.cloud.talent.v4beta1.JobView.JOB\_VIEW\_ID\_ONLY], the</span>
@@ -1804,7 +1806,7 @@
 <span class="s2">          allowed page size is 100.  Default is 100 if empty or a number</span>
 <span class="s2">          &lt; 1 is specified.</span>
 <span class="s2">      job_view:</span>
-<span class="s2">          Optional.  The desired job attributes returned for jobs in the</span>
+<span class="s2">          Optional. The desired job attributes returned for jobs in the</span>
 <span class="s2">          search response. Defaults to [JobView.JOB\_VIEW\_FULL][google.</span>
 <span class="s2">          cloud.talent.v4beta1.JobView.JOB\_VIEW\_FULL] if no value is</span>
 <span class="s2">          specified.</span>
@@ -1858,14 +1860,14 @@
 <span class="s2">    </span>
 <span class="s2">    Attributes:</span>
 <span class="s2">        importance_level:</span>
-<span class="s2">            Required.  Controls over how important the score of [CustomRan</span>
-<span class="s2">            kingInfo.ranking\_expression][google.cloud.talent.v4beta1.Sear</span>
-<span class="s2">            chJobsRequest.CustomRankingInfo.ranking\_expression] gets</span>
+<span class="s2">            Required. Controls over how important the score of [CustomRank</span>
+<span class="s2">            ingInfo.ranking\_expression][google.cloud.talent.v4beta1.Searc</span>
+<span class="s2">            hJobsRequest.CustomRankingInfo.ranking\_expression] gets</span>
 <span class="s2">            applied to job&#39;s final ranking position.  An error is thrown</span>
 <span class="s2">            if not specified.</span>
 <span class="s2">        ranking_expression:</span>
-<span class="s2">            Required.  Controls over how job documents get ranked on top</span>
-<span class="s2">            of existing relevance score (determined by API algorithm). The</span>
+<span class="s2">            Required. Controls over how job documents get ranked on top of</span>
+<span class="s2">            existing relevance score (determined by API algorithm). The</span>
 <span class="s2">            product of ranking expression and relevance score is used to</span>
 <span class="s2">            determine job&#39;s final ranking position.  The syntax for this</span>
 <span class="s2">            expression is a subset of Google SQL syntax.  Supported</span>
@@ -1890,29 +1892,29 @@
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
 <span class="s2">      parent:</span>
-<span class="s2">          Required.  The resource name of the tenant to search within.</span>
+<span class="s2">          Required. The resource name of the tenant to search within.</span>
 <span class="s2">          The format is &quot;projects/{project\_id}/tenants/{tenant\_id}&quot;,</span>
 <span class="s2">          for example, &quot;projects/api-test-project/tenant/foo&quot;.  Tenant</span>
 <span class="s2">          id is optional and the default tenant is used if unspecified,</span>
 <span class="s2">          for example, &quot;projects/api-test-project&quot;.</span>
 <span class="s2">      search_mode:</span>
-<span class="s2">          Optional.  Mode of a search.  Defaults to [SearchMode.JOB\_SEA</span>
-<span class="s2">          RCH][google.cloud.talent.v4beta1.SearchJobsRequest.SearchMode.</span>
-<span class="s2">          JOB\_SEARCH].</span>
+<span class="s2">          Optional. Mode of a search.  Defaults to [SearchMode.JOB\_SEAR</span>
+<span class="s2">          CH][google.cloud.talent.v4beta1.SearchJobsRequest.SearchMode.J</span>
+<span class="s2">          OB\_SEARCH].</span>
 <span class="s2">      request_metadata:</span>
-<span class="s2">          Required.  The meta information collected about the job</span>
-<span class="s2">          searcher, used to improve the search quality of the service..</span>
-<span class="s2">          The identifiers, (such as ``user_id``) are provided by users,</span>
+<span class="s2">          Required. The meta information collected about the job</span>
+<span class="s2">          searcher, used to improve the search quality of the service.</span>
+<span class="s2">          The identifiers (such as ``user_id``) are provided by users,</span>
 <span class="s2">          and must be unique and consistent.</span>
 <span class="s2">      job_query:</span>
-<span class="s2">          Optional.  Query used to search against jobs, such as keyword,</span>
+<span class="s2">          Optional. Query used to search against jobs, such as keyword,</span>
 <span class="s2">          location filters, etc.</span>
 <span class="s2">      enable_broadening:</span>
-<span class="s2">          Optional.  Controls whether to broaden the search when it</span>
+<span class="s2">          Optional. Controls whether to broaden the search when it</span>
 <span class="s2">          produces sparse results. Broadened queries append results to</span>
 <span class="s2">          the end of the matching results list.  Defaults to false.</span>
 <span class="s2">      require_precise_result_size:</span>
-<span class="s2">          Optional.  Controls if the search job request requires the</span>
+<span class="s2">          Optional. Controls if the search job request requires the</span>
 <span class="s2">          return of a precise count of the first 300 results. Setting</span>
 <span class="s2">          this to ``true`` ensures consistency in the number of results</span>
 <span class="s2">          per page. Best practice is to set this value to true if a</span>
@@ -1920,7 +1922,7 @@
 <span class="s2">          search results page.  Enabling this flag may adversely impact</span>
 <span class="s2">          performance.  Defaults to false.</span>
 <span class="s2">      histogram_queries:</span>
-<span class="s2">          Optional.  An expression specifies a histogram request against</span>
+<span class="s2">          Optional. An expression specifies a histogram request against</span>
 <span class="s2">          matching jobs.  Expression syntax is an aggregation function</span>
 <span class="s2">          call with histogram facets and other options.  Available</span>
 <span class="s2">          aggregation function calls are: \*</span>
@@ -2008,12 +2010,12 @@
 <span class="s2">          numeric-custom-attribute&quot;],   [bucket(MIN, 0, &quot;negative&quot;),</span>
 <span class="s2">          bucket(0, MAX, &quot;non-negative&quot;])``</span>
 <span class="s2">      job_view:</span>
-<span class="s2">          Optional.  The desired job attributes returned for jobs in the</span>
+<span class="s2">          Optional. The desired job attributes returned for jobs in the</span>
 <span class="s2">          search response. Defaults to [JobView.JOB\_VIEW\_SMALL][google</span>
 <span class="s2">          .cloud.talent.v4beta1.JobView.JOB\_VIEW\_SMALL] if no value is</span>
 <span class="s2">          specified.</span>
 <span class="s2">      offset:</span>
-<span class="s2">          Optional.  An integer that specifies the current offset (that</span>
+<span class="s2">          Optional. An integer that specifies the current offset (that</span>
 <span class="s2">          is, starting result location, amongst the jobs deemed by the</span>
 <span class="s2">          API as relevant) in search results. This field is only</span>
 <span class="s2">          considered if [page\_token][google.cloud.talent.v4beta1.Search</span>
@@ -2023,76 +2025,77 @@
 <span class="s2">          pagination, (for example, pageSize = 10 and offset = 10 means</span>
 <span class="s2">          to return from the second page).</span>
 <span class="s2">      page_size:</span>
-<span class="s2">          Optional.  A limit on the number of jobs returned in the</span>
-<span class="s2">          search results. Increasing this value above the default value</span>
-<span class="s2">          of 10 can increase search response time. The value can be</span>
-<span class="s2">          between 1 and 100.</span>
+<span class="s2">          Optional. A limit on the number of jobs returned in the search</span>
+<span class="s2">          results. Increasing this value above the default value of 10</span>
+<span class="s2">          can increase search response time. The value can be between 1</span>
+<span class="s2">          and 100.</span>
 <span class="s2">      page_token:</span>
-<span class="s2">          Optional.  The token specifying the current offset within</span>
+<span class="s2">          Optional. The token specifying the current offset within</span>
 <span class="s2">          search results. See [SearchJobsResponse.next\_page\_token][goo</span>
 <span class="s2">          gle.cloud.talent.v4beta1.SearchJobsResponse.next\_page\_token]</span>
 <span class="s2">          for an explanation of how to obtain the next set of query</span>
 <span class="s2">          results.</span>
 <span class="s2">      order_by:</span>
-<span class="s2">          Optional.  The criteria determining how search results are</span>
-<span class="s2">          sorted. Default is &quot;relevance desc&quot;.  Supported options are:</span>
-<span class="s2">          -  &quot;relevance desc&quot;: By relevance descending, as determined by</span>
-<span class="s2">          the API    algorithms. Relevance thresholding of query results</span>
-<span class="s2">          is only available    with this ordering. -  &quot;posting``_``</span><span class="se">\</span>
-<span class="s2">          publish\ ``_``\ time desc&quot;: By    [Job.posting\_publish\_time]</span>
-<span class="s2">          [google.cloud.talent.v4beta1.Job.posting\_publish\_time]</span>
-<span class="s2">          descending. -  &quot;posting``_``\ update\ ``_``\ time desc&quot;: By</span>
-<span class="s2">          [Job.posting\_update\_time][google.cloud.talent.v4beta1.Job.po</span>
-<span class="s2">          sting\_update\_time]    descending. -  &quot;title&quot;: By</span>
+<span class="s2">          Optional. The criteria determining how search results are</span>
+<span class="s2">          sorted. Default is ``&quot;relevance desc&quot;``.  Supported options</span>
+<span class="s2">          are:  -  ``&quot;relevance desc&quot;``: By relevance descending, as</span>
+<span class="s2">          determined by the    API algorithms. Relevance thresholding of</span>
+<span class="s2">          query results is only    available with this ordering. -</span>
+<span class="s2">          ``&quot;posting_publish_time desc&quot;``: By    [Job.posting\_publish\_</span>
+<span class="s2">          time][google.cloud.talent.v4beta1.Job.posting\_publish\_time]</span>
+<span class="s2">          descending. -  ``&quot;posting_update_time desc&quot;``: By    [Job.post</span>
+<span class="s2">          ing\_update\_time][google.cloud.talent.v4beta1.Job.posting\_up</span>
+<span class="s2">          date\_time]    descending. -  ``&quot;title&quot;``: By</span>
 <span class="s2">          [Job.title][google.cloud.talent.v4beta1.Job.title]</span>
-<span class="s2">          ascending. -  &quot;title desc&quot;: By</span>
-<span class="s2">          [Job.title][google.cloud.talent.v4beta1.Job.title]</span>
-<span class="s2">          descending. -  &quot;annualized``_``\ base\ ``_``\ compensation&quot;:</span>
-<span class="s2">          By job&#39;s    [CompensationInfo.annualized\_base\_compensation\_</span>
-<span class="s2">          range][google.cloud.talent.v4beta1.CompensationInfo.annualized</span>
-<span class="s2">          \_base\_compensation\_range]    ascending. Jobs whose</span>
-<span class="s2">          annualized base compensation is unspecified are    put at the</span>
-<span class="s2">          end of search results. -  &quot;annualized``_``\ base\ ``_``</span><span class="se">\</span>
-<span class="s2">          compensation desc&quot;: By job&#39;s    [CompensationInfo.annualized\_</span>
-<span class="s2">          base\_compensation\_range][google.cloud.talent.v4beta1.Compens</span>
-<span class="s2">          ationInfo.annualized\_base\_compensation\_range]</span>
-<span class="s2">          descending. Jobs whose annualized base compensation is</span>
-<span class="s2">          unspecified    are put at the end of search results. -</span>
-<span class="s2">          &quot;annualized``_``\ total\ ``_``\ compensation&quot;: By job&#39;s    [Co</span>
-<span class="s2">          mpensationInfo.annualized\_total\_compensation\_range][google.</span>
-<span class="s2">          cloud.talent.v4beta1.CompensationInfo.annualized\_total\_compe</span>
-<span class="s2">          nsation\_range]    ascending. Jobs whose annualized base</span>
-<span class="s2">          compensation is unspecified are    put at the end of search</span>
-<span class="s2">          results. -  &quot;annualized``_``\ total\ ``_``\ compensation</span>
-<span class="s2">          desc&quot;: By job&#39;s    [CompensationInfo.annualized\_total\_compen</span>
-<span class="s2">          sation\_range][google.cloud.talent.v4beta1.CompensationInfo.an</span>
-<span class="s2">          nualized\_total\_compensation\_range]    descending. Jobs</span>
-<span class="s2">          whose annualized base compensation is unspecified    are put</span>
-<span class="s2">          at the end of search results. -  &quot;custom``_``\ ranking desc&quot;:</span>
-<span class="s2">          By the relevance score adjusted to the    [SearchJobsRequest.C</span>
-<span class="s2">          ustomRankingInfo.ranking\_expression][google.cloud.talent.v4be</span>
-<span class="s2">          ta1.SearchJobsRequest.CustomRankingInfo.ranking\_expression]</span>
-<span class="s2">          with weight factor assigned by    [SearchJobsRequest.CustomRan</span>
-<span class="s2">          kingInfo.importance\_level][google.cloud.talent.v4beta1.Search</span>
-<span class="s2">          JobsRequest.CustomRankingInfo.importance\_level]    in</span>
-<span class="s2">          descending order. -  &quot;location``_``\ distance&quot;: By the</span>
-<span class="s2">          distance between the location on    jobs and locations</span>
-<span class="s2">          specified in the    [JobQuery.location\_filters][google.cloud.</span>
-<span class="s2">          talent.v4beta1.JobQuery.location\_filters].    When this order</span>
-<span class="s2">          is selected, the    [JobQuery.location\_filters][google.cloud.</span>
-<span class="s2">          talent.v4beta1.JobQuery.location\_filters]    must not be</span>
-<span class="s2">          empty. When a job has multiple locations, the location</span>
-<span class="s2">          closest to one of the locations specified in the location</span>
-<span class="s2">          filter will    be used to calculate location distance.</span>
-<span class="s2">          Distance is calculated by the    distance between two lat/long</span>
-<span class="s2">          coordinates, with a precision of 10e-4    degrees (11.3</span>
-<span class="s2">          meters). Jobs that don&#39;t have locations specified will    be</span>
-<span class="s2">          ranked below jobs having locations. Diversification strategy</span>
-<span class="s2">          is    still applied unless explicitly disabled in    [SearchJo</span>
-<span class="s2">          bsRequest.diversification\_level][google.cloud.talent.v4beta1.</span>
-<span class="s2">          SearchJobsRequest.diversification\_level].</span>
+<span class="s2">          ascending. -  ``&quot;title desc&quot;``: By</span>
+<span class="s2">          [Job.title][google.cloud.talent.v4beta1.Job.title] descending.</span>
+<span class="s2">          -  ``&quot;annualized_base_compensation&quot;``: By job&#39;s    [Compensati</span>
+<span class="s2">          onInfo.annualized\_base\_compensation\_range][google.cloud.tal</span>
+<span class="s2">          ent.v4beta1.CompensationInfo.annualized\_base\_compensation\_r</span>
+<span class="s2">          ange]    ascending. Jobs whose annualized base compensation is</span>
+<span class="s2">          unspecified are    put at the end of search results. -</span>
+<span class="s2">          ``&quot;annualized_base_compensation desc&quot;``: By job&#39;s    [Compensa</span>
+<span class="s2">          tionInfo.annualized\_base\_compensation\_range][google.cloud.t</span>
+<span class="s2">          alent.v4beta1.CompensationInfo.annualized\_base\_compensation</span><span class="se">\</span>
+<span class="s2">          _range]    descending. Jobs whose annualized base compensation</span>
+<span class="s2">          is unspecified    are put at the end of search results. -</span>
+<span class="s2">          ``&quot;annualized_total_compensation&quot;``: By job&#39;s    [Compensation</span>
+<span class="s2">          Info.annualized\_total\_compensation\_range][google.cloud.tale</span>
+<span class="s2">          nt.v4beta1.CompensationInfo.annualized\_total\_compensation\_r</span>
+<span class="s2">          ange]    ascending. Jobs whose annualized base compensation is</span>
+<span class="s2">          unspecified are    put at the end of search results. -</span>
+<span class="s2">          ``&quot;annualized_total_compensation desc&quot;``: By job&#39;s    [Compens</span>
+<span class="s2">          ationInfo.annualized\_total\_compensation\_range][google.cloud</span>
+<span class="s2">          .talent.v4beta1.CompensationInfo.annualized\_total\_compensati</span>
+<span class="s2">          on\_range]    descending. Jobs whose annualized base</span>
+<span class="s2">          compensation is unspecified    are put at the end of search</span>
+<span class="s2">          results. -  ``&quot;custom_ranking desc&quot;``: By the relevance score</span>
+<span class="s2">          adjusted to the    [SearchJobsRequest.CustomRankingInfo.rankin</span>
+<span class="s2">          g\_expression][google.cloud.talent.v4beta1.SearchJobsRequest.C</span>
+<span class="s2">          ustomRankingInfo.ranking\_expression]    with weight factor</span>
+<span class="s2">          assigned by    [SearchJobsRequest.CustomRankingInfo.importance</span>
+<span class="s2">          \_level][google.cloud.talent.v4beta1.SearchJobsRequest.CustomR</span>
+<span class="s2">          ankingInfo.importance\_level]    in descending order. -</span>
+<span class="s2">          Location sorting: Use the special syntax to order jobs by</span>
+<span class="s2">          distance:    ``&quot;distance_from(&#39;Hawaii&#39;)&quot;``: Order by distance</span>
+<span class="s2">          from Hawaii.    ``&quot;distance_from(19.89, 155.5)&quot;``: Order by</span>
+<span class="s2">          distance from a    coordinate.    ``&quot;distance_from(&#39;Hawaii&#39;),</span>
+<span class="s2">          distance_from(&#39;Puerto Rico&#39;)&quot;``: Order by    multiple</span>
+<span class="s2">          locations. See details below.    ``&quot;distance_from(&#39;Hawaii&#39;),</span>
+<span class="s2">          distance_from(19.89, 155.5)&quot;``: Order by    multiple</span>
+<span class="s2">          locations. See details below. The string can have a maximum</span>
+<span class="s2">          of 256 characters. When multiple distance centers are</span>
+<span class="s2">          provided, a job    that is close to any of the distance</span>
+<span class="s2">          centers would have a high rank.    When a job has multiple</span>
+<span class="s2">          locations, the job location closest to one of    the distance</span>
+<span class="s2">          centers will be used. Jobs that don&#39;t have locations    will</span>
+<span class="s2">          be ranked at the bottom. Distance is calculated with a</span>
+<span class="s2">          precision    of 11.3 meters (37.4 feet). Diversification</span>
+<span class="s2">          strategy is still applied    unless explicitly disabled in    </span>
+<span class="s2">          [diversification\_level][google.cloud.talent.v4beta1.SearchJob</span>
+<span class="s2">          sRequest.diversification\_level].</span>
 <span class="s2">      diversification_level:</span>
-<span class="s2">          Optional.  Controls whether highly similar jobs are returned</span>
+<span class="s2">          Optional. Controls whether highly similar jobs are returned</span>
 <span class="s2">          next to each other in the search results. Jobs are identified</span>
 <span class="s2">          as highly similar based on their titles, job categories, and</span>
 <span class="s2">          locations. Highly similar results are clustered so that only</span>
@@ -2102,10 +2105,10 @@
 <span class="s2">          tionLevel.SIMPLE][google.cloud.talent.v4beta1.SearchJobsReques</span>
 <span class="s2">          t.DiversificationLevel.SIMPLE] if no value is specified.</span>
 <span class="s2">      custom_ranking_info:</span>
-<span class="s2">          Optional.  Controls over how job documents get ranked on top</span>
-<span class="s2">          of existing relevance score (determined by API algorithm).</span>
+<span class="s2">          Optional. Controls over how job documents get ranked on top of</span>
+<span class="s2">          existing relevance score (determined by API algorithm).</span>
 <span class="s2">      disable_keyword_match:</span>
-<span class="s2">          Optional.  Controls whether to disable exact keyword match on</span>
+<span class="s2">          Optional. Controls whether to disable exact keyword match on</span>
 <span class="s2">          [Job.title][google.cloud.talent.v4beta1.Job.title], [Job.descr</span>
 <span class="s2">          iption][google.cloud.talent.v4beta1.Job.description], [Job.com</span>
 <span class="s2">          pany\_display\_name][google.cloud.talent.v4beta1.Job.company\_</span>
@@ -2271,14 +2274,14 @@
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
 <span class="s2">      parent:</span>
-<span class="s2">          Required.  The resource name of the tenant under which the job</span>
+<span class="s2">          Required. The resource name of the tenant under which the job</span>
 <span class="s2">          is created.  The format is</span>
 <span class="s2">          &quot;projects/{project\_id}/tenants/{tenant\_id}&quot;, for example,</span>
 <span class="s2">          &quot;projects/api-test-project/tenant/foo&quot;.  Tenant id is optional</span>
 <span class="s2">          and a default tenant is created if unspecified, for example,</span>
 <span class="s2">          &quot;projects/api-test-project&quot;.</span>
 <span class="s2">      jobs:</span>
-<span class="s2">          Required.  The jobs to be created.</span>
+<span class="s2">          Required. The jobs to be created.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
         <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.BatchCreateJobsRequest)</span>
     <span class="p">),</span>
@@ -2296,14 +2299,14 @@
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
 <span class="s2">      parent:</span>
-<span class="s2">          Required.  The resource name of the tenant under which the job</span>
+<span class="s2">          Required. The resource name of the tenant under which the job</span>
 <span class="s2">          is created.  The format is</span>
 <span class="s2">          &quot;projects/{project\_id}/tenants/{tenant\_id}&quot;, for example,</span>
 <span class="s2">          &quot;projects/api-test-project/tenant/foo&quot;.  Tenant id is optional</span>
 <span class="s2">          and the default tenant is used if unspecified, for example,</span>
 <span class="s2">          &quot;projects/api-test-project&quot;.</span>
 <span class="s2">      jobs:</span>
-<span class="s2">          Required.  The jobs to be updated.</span>
+<span class="s2">          Required. The jobs to be updated.</span>
 <span class="s2">      update_mask:</span>
 <span class="s2">          Optional but strongly recommended to be provided for the best</span>
 <span class="s2">          service experience, also increase latency when checking status</span>
@@ -2333,9 +2336,11 @@
     <span class="n">full_name</span><span class="o">=</span><span class="s2">&quot;google.cloud.talent.v4beta1.JobService&quot;</span><span class="p">,</span>
     <span class="n">file</span><span class="o">=</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
     <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-    <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3510</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">5592</span><span class="p">,</span>
+    <span class="n">serialized_options</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span>
+        <span class="s2">&quot;</span><span class="se">\312</span><span class="s2">A</span><span class="se">\023</span><span class="s2">jobs.googleapis.com</span><span class="se">\322</span><span class="s2">AShttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/jobs&quot;</span>
+    <span class="p">),</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">3535</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">5727</span><span class="p">,</span>
     <span class="n">methods</span><span class="o">=</span><span class="p">[</span>
         <span class="n">_descriptor</span><span class="o">.</span><span class="n">MethodDescriptor</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;CreateJob&quot;</span><span class="p">,</span>

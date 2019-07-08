@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.talent_v4beta1.gapic.job_service_client &#8212; google-cloud 70b4bd2 documentation</title>
+    <title>google.cloud.talent_v4beta1.gapic.job_service_client &#8212; google-cloud afc4d94 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -295,18 +295,15 @@
 <span class="sd">            &gt;&gt;&gt; response = client.create_job(parent, job)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): Required.</span>
-
-<span class="sd">                The resource name of the tenant under which the job is created.</span>
+<span class="sd">            parent (str): Required. The resource name of the tenant under which the job is</span>
+<span class="sd">                created.</span>
 
 <span class="sd">                The format is &quot;projects/{project\_id}/tenants/{tenant\_id}&quot;, for</span>
 <span class="sd">                example, &quot;projects/api-test-project/tenant/foo&quot;.</span>
 
 <span class="sd">                Tenant id is optional and a default tenant is created if unspecified,</span>
 <span class="sd">                for example, &quot;projects/api-test-project&quot;.</span>
-<span class="sd">            job (Union[dict, ~google.cloud.talent_v4beta1.types.Job]): Required.</span>
-
-<span class="sd">                The Job to be created.</span>
+<span class="sd">            job (Union[dict, ~google.cloud.talent_v4beta1.types.Job]): Required. The Job to be created.</span>
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.talent_v4beta1.types.Job`</span>
@@ -379,9 +376,7 @@
 <span class="sd">            &gt;&gt;&gt; response = client.get_job(name)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            name (str): Required.</span>
-
-<span class="sd">                The resource name of the job to retrieve.</span>
+<span class="sd">            name (str): Required. The resource name of the job to retrieve.</span>
 
 <span class="sd">                The format is</span>
 <span class="sd">                &quot;projects/{project\_id}/tenants/{tenant\_id}/jobs/{job\_id}&quot;, for</span>
@@ -462,9 +457,7 @@
 <span class="sd">            &gt;&gt;&gt; response = client.update_job(job)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            job (Union[dict, ~google.cloud.talent_v4beta1.types.Job]): Required.</span>
-
-<span class="sd">                The Job to be updated.</span>
+<span class="sd">            job (Union[dict, ~google.cloud.talent_v4beta1.types.Job]): Required. The Job to be updated.</span>
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.talent_v4beta1.types.Job`</span>
@@ -550,9 +543,7 @@
 <span class="sd">            &gt;&gt;&gt; client.delete_job(name)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            name (str): Required.</span>
-
-<span class="sd">                The resource name of the job to be deleted.</span>
+<span class="sd">            name (str): Required. The resource name of the job to be deleted.</span>
 
 <span class="sd">                The format is</span>
 <span class="sd">                &quot;projects/{project\_id}/tenants/{tenant\_id}/jobs/{job\_id}&quot;, for</span>
@@ -643,18 +634,15 @@
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): Required.</span>
-
-<span class="sd">                The resource name of the tenant under which the job is created.</span>
+<span class="sd">            parent (str): Required. The resource name of the tenant under which the job is</span>
+<span class="sd">                created.</span>
 
 <span class="sd">                The format is &quot;projects/{project\_id}/tenants/{tenant\_id}&quot;, for</span>
 <span class="sd">                example, &quot;projects/api-test-project/tenant/foo&quot;.</span>
 
 <span class="sd">                Tenant id is optional and the default tenant is used if unspecified, for</span>
 <span class="sd">                example, &quot;projects/api-test-project&quot;.</span>
-<span class="sd">            filter_ (str): Required.</span>
-
-<span class="sd">                The filter string specifies the jobs to be enumerated.</span>
+<span class="sd">            filter_ (str): Required. The filter string specifies the jobs to be enumerated.</span>
 
 <span class="sd">                Supported operator: =, AND</span>
 
@@ -677,10 +665,9 @@
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
 <span class="sd">                streaming is performed per-page, this determines the maximum number</span>
 <span class="sd">                of resources in a page.</span>
-<span class="sd">            job_view (~google.cloud.talent_v4beta1.types.JobView): Optional.</span>
-
-<span class="sd">                The desired job attributes returned for jobs in the search response.</span>
-<span class="sd">                Defaults to ``JobView.JOB_VIEW_FULL`` if no value is specified.</span>
+<span class="sd">            job_view (~google.cloud.talent_v4beta1.types.JobView): Optional. The desired job attributes returned for jobs in the search</span>
+<span class="sd">                response. Defaults to ``JobView.JOB_VIEW_FULL`` if no value is</span>
+<span class="sd">                specified.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -769,18 +756,15 @@
 <span class="sd">            &gt;&gt;&gt; client.batch_delete_jobs(parent, filter_)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): Required.</span>
-
-<span class="sd">                The resource name of the tenant under which the job is created.</span>
+<span class="sd">            parent (str): Required. The resource name of the tenant under which the job is</span>
+<span class="sd">                created.</span>
 
 <span class="sd">                The format is &quot;projects/{project\_id}/tenants/{tenant\_id}&quot;, for</span>
 <span class="sd">                example, &quot;projects/api-test-project/tenant/foo&quot;.</span>
 
 <span class="sd">                Tenant id is optional and the default tenant is used if unspecified, for</span>
 <span class="sd">                example, &quot;projects/api-test-project&quot;.</span>
-<span class="sd">            filter_ (str): Required.</span>
-
-<span class="sd">                The filter string specifies the jobs to be deleted.</span>
+<span class="sd">            filter_ (str): Required. The filter string specifies the jobs to be deleted.</span>
 
 <span class="sd">                Supported operator: =, AND</span>
 
@@ -887,45 +871,34 @@
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): Required.</span>
-
-<span class="sd">                The resource name of the tenant to search within.</span>
+<span class="sd">            parent (str): Required. The resource name of the tenant to search within.</span>
 
 <span class="sd">                The format is &quot;projects/{project\_id}/tenants/{tenant\_id}&quot;, for</span>
 <span class="sd">                example, &quot;projects/api-test-project/tenant/foo&quot;.</span>
 
 <span class="sd">                Tenant id is optional and the default tenant is used if unspecified, for</span>
 <span class="sd">                example, &quot;projects/api-test-project&quot;.</span>
-<span class="sd">            request_metadata (Union[dict, ~google.cloud.talent_v4beta1.types.RequestMetadata]): Required.</span>
-
-<span class="sd">                The meta information collected about the job searcher, used to improve</span>
-<span class="sd">                the search quality of the service.. The identifiers, (such as</span>
+<span class="sd">            request_metadata (Union[dict, ~google.cloud.talent_v4beta1.types.RequestMetadata]): Required. The meta information collected about the job searcher, used to</span>
+<span class="sd">                improve the search quality of the service. The identifiers (such as</span>
 <span class="sd">                ``user_id``) are provided by users, and must be unique and consistent.</span>
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.talent_v4beta1.types.RequestMetadata`</span>
-<span class="sd">            search_mode (~google.cloud.talent_v4beta1.types.SearchMode): Optional.</span>
-
-<span class="sd">                Mode of a search.</span>
+<span class="sd">            search_mode (~google.cloud.talent_v4beta1.types.SearchMode): Optional. Mode of a search.</span>
 
 <span class="sd">                Defaults to ``SearchMode.JOB_SEARCH``.</span>
-<span class="sd">            job_query (Union[dict, ~google.cloud.talent_v4beta1.types.JobQuery]): Optional.</span>
-
-<span class="sd">                Query used to search against jobs, such as keyword, location filters, etc.</span>
+<span class="sd">            job_query (Union[dict, ~google.cloud.talent_v4beta1.types.JobQuery]): Optional. Query used to search against jobs, such as keyword, location</span>
+<span class="sd">                filters, etc.</span>
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.talent_v4beta1.types.JobQuery`</span>
-<span class="sd">            enable_broadening (bool): Optional.</span>
-
-<span class="sd">                Controls whether to broaden the search when it produces sparse results.</span>
-<span class="sd">                Broadened queries append results to the end of the matching results</span>
-<span class="sd">                list.</span>
+<span class="sd">            enable_broadening (bool): Optional. Controls whether to broaden the search when it produces sparse</span>
+<span class="sd">                results. Broadened queries append results to the end of the matching</span>
+<span class="sd">                results list.</span>
 
 <span class="sd">                Defaults to false.</span>
-<span class="sd">            require_precise_result_size (bool): Optional.</span>
-
-<span class="sd">                Controls if the search job request requires the return of a precise</span>
-<span class="sd">                count of the first 300 results. Setting this to ``true`` ensures</span>
+<span class="sd">            require_precise_result_size (bool): Optional. Controls if the search job request requires the return of a</span>
+<span class="sd">                precise count of the first 300 results. Setting this to ``true`` ensures</span>
 <span class="sd">                consistency in the number of results per page. Best practice is to set</span>
 <span class="sd">                this value to true if a client allows users to jump directly to a</span>
 <span class="sd">                non-sequential search results page.</span>
@@ -933,9 +906,8 @@
 <span class="sd">                Enabling this flag may adversely impact performance.</span>
 
 <span class="sd">                Defaults to false.</span>
-<span class="sd">            histogram_queries (list[Union[dict, ~google.cloud.talent_v4beta1.types.HistogramQuery]]): Optional.</span>
-
-<span class="sd">                An expression specifies a histogram request against matching jobs.</span>
+<span class="sd">            histogram_queries (list[Union[dict, ~google.cloud.talent_v4beta1.types.HistogramQuery]]): Optional. An expression specifies a histogram request against matching</span>
+<span class="sd">                jobs.</span>
 
 <span class="sd">                Expression syntax is an aggregation function call with histogram facets</span>
 <span class="sd">                and other options.</span>
@@ -1029,15 +1001,13 @@
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.talent_v4beta1.types.HistogramQuery`</span>
-<span class="sd">            job_view (~google.cloud.talent_v4beta1.types.JobView): Optional.</span>
-
-<span class="sd">                The desired job attributes returned for jobs in the search response.</span>
-<span class="sd">                Defaults to ``JobView.JOB_VIEW_SMALL`` if no value is specified.</span>
-<span class="sd">            offset (int): Optional.</span>
-
-<span class="sd">                An integer that specifies the current offset (that is, starting result</span>
-<span class="sd">                location, amongst the jobs deemed by the API as relevant) in search</span>
-<span class="sd">                results. This field is only considered if ``page_token`` is unset.</span>
+<span class="sd">            job_view (~google.cloud.talent_v4beta1.types.JobView): Optional. The desired job attributes returned for jobs in the search</span>
+<span class="sd">                response. Defaults to ``JobView.JOB_VIEW_SMALL`` if no value is</span>
+<span class="sd">                specified.</span>
+<span class="sd">            offset (int): Optional. An integer that specifies the current offset (that is,</span>
+<span class="sd">                starting result location, amongst the jobs deemed by the API as</span>
+<span class="sd">                relevant) in search results. This field is only considered if</span>
+<span class="sd">                ``page_token`` is unset.</span>
 
 <span class="sd">                For example, 0 means to return results starting from the first matching</span>
 <span class="sd">                job, and 10 means to return from the 11th job. This can be used for</span>
@@ -1048,81 +1018,78 @@
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
 <span class="sd">                streaming is performed per-page, this determines the maximum number</span>
 <span class="sd">                of resources in a page.</span>
-<span class="sd">            order_by (str): Optional.</span>
-
-<span class="sd">                The criteria determining how search results are sorted. Default is</span>
-<span class="sd">                &quot;relevance desc&quot;.</span>
+<span class="sd">            order_by (str): Optional. The criteria determining how search results are sorted.</span>
+<span class="sd">                Default is ``&quot;relevance desc&quot;``.</span>
 
 <span class="sd">                Supported options are:</span>
 
-<span class="sd">                -  &quot;relevance desc&quot;: By relevance descending, as determined by the API</span>
-<span class="sd">                   algorithms. Relevance thresholding of query results is only available</span>
-<span class="sd">                   with this ordering.</span>
-<span class="sd">                -  &quot;posting``_``\ publish\ ``_``\ time desc&quot;: By</span>
-<span class="sd">                   ``Job.posting_publish_time`` descending.</span>
-<span class="sd">                -  &quot;posting``_``\ update\ ``_``\ time desc&quot;: By</span>
-<span class="sd">                   ``Job.posting_update_time`` descending.</span>
-<span class="sd">                -  &quot;title&quot;: By ``Job.title`` ascending.</span>
-<span class="sd">                -  &quot;title desc&quot;: By ``Job.title`` descending.</span>
-<span class="sd">                -  &quot;annualized``_``\ base\ ``_``\ compensation&quot;: By job&#39;s</span>
+<span class="sd">                -  ``&quot;relevance desc&quot;``: By relevance descending, as determined by the</span>
+<span class="sd">                   API algorithms. Relevance thresholding of query results is only</span>
+<span class="sd">                   available with this ordering.</span>
+<span class="sd">                -  ``&quot;posting_publish_time desc&quot;``: By ``Job.posting_publish_time``</span>
+<span class="sd">                   descending.</span>
+<span class="sd">                -  ``&quot;posting_update_time desc&quot;``: By ``Job.posting_update_time``</span>
+<span class="sd">                   descending.</span>
+<span class="sd">                -  ``&quot;title&quot;``: By ``Job.title`` ascending.</span>
+<span class="sd">                -  ``&quot;title desc&quot;``: By ``Job.title`` descending.</span>
+<span class="sd">                -  ``&quot;annualized_base_compensation&quot;``: By job&#39;s</span>
 <span class="sd">                   ``CompensationInfo.annualized_base_compensation_range`` ascending.</span>
 <span class="sd">                   Jobs whose annualized base compensation is unspecified are put at the</span>
 <span class="sd">                   end of search results.</span>
-<span class="sd">                -  &quot;annualized``_``\ base\ ``_``\ compensation desc&quot;: By job&#39;s</span>
+<span class="sd">                -  ``&quot;annualized_base_compensation desc&quot;``: By job&#39;s</span>
 <span class="sd">                   ``CompensationInfo.annualized_base_compensation_range`` descending.</span>
 <span class="sd">                   Jobs whose annualized base compensation is unspecified are put at the</span>
 <span class="sd">                   end of search results.</span>
-<span class="sd">                -  &quot;annualized``_``\ total\ ``_``\ compensation&quot;: By job&#39;s</span>
+<span class="sd">                -  ``&quot;annualized_total_compensation&quot;``: By job&#39;s</span>
 <span class="sd">                   ``CompensationInfo.annualized_total_compensation_range`` ascending.</span>
 <span class="sd">                   Jobs whose annualized base compensation is unspecified are put at the</span>
 <span class="sd">                   end of search results.</span>
-<span class="sd">                -  &quot;annualized``_``\ total\ ``_``\ compensation desc&quot;: By job&#39;s</span>
+<span class="sd">                -  ``&quot;annualized_total_compensation desc&quot;``: By job&#39;s</span>
 <span class="sd">                   ``CompensationInfo.annualized_total_compensation_range`` descending.</span>
 <span class="sd">                   Jobs whose annualized base compensation is unspecified are put at the</span>
 <span class="sd">                   end of search results.</span>
-<span class="sd">                -  &quot;custom``_``\ ranking desc&quot;: By the relevance score adjusted to the</span>
+<span class="sd">                -  ``&quot;custom_ranking desc&quot;``: By the relevance score adjusted to the</span>
 <span class="sd">                   ``SearchJobsRequest.CustomRankingInfo.ranking_expression`` with</span>
 <span class="sd">                   weight factor assigned by</span>
 <span class="sd">                   ``SearchJobsRequest.CustomRankingInfo.importance_level`` in</span>
 <span class="sd">                   descending order.</span>
-<span class="sd">                -  &quot;location``_``\ distance&quot;: By the distance between the location on</span>
-<span class="sd">                   jobs and locations specified in the ``JobQuery.location_filters``.</span>
-<span class="sd">                   When this order is selected, the ``JobQuery.location_filters`` must</span>
-<span class="sd">                   not be empty. When a job has multiple locations, the location closest</span>
-<span class="sd">                   to one of the locations specified in the location filter will be used</span>
-<span class="sd">                   to calculate location distance. Distance is calculated by the</span>
-<span class="sd">                   distance between two lat/long coordinates, with a precision of 10e-4</span>
-<span class="sd">                   degrees (11.3 meters). Jobs that don&#39;t have locations specified will</span>
-<span class="sd">                   be ranked below jobs having locations. Diversification strategy is</span>
-<span class="sd">                   still applied unless explicitly disabled in</span>
-<span class="sd">                   ``SearchJobsRequest.diversification_level``.</span>
-<span class="sd">            diversification_level (~google.cloud.talent_v4beta1.types.DiversificationLevel): Optional.</span>
-
-<span class="sd">                Controls whether highly similar jobs are returned next to each other in</span>
-<span class="sd">                the search results. Jobs are identified as highly similar based on their</span>
-<span class="sd">                titles, job categories, and locations. Highly similar results are</span>
-<span class="sd">                clustered so that only one representative job of the cluster is</span>
+<span class="sd">                -  Location sorting: Use the special syntax to order jobs by distance:</span>
+<span class="sd">                   ``&quot;distance_from(&#39;Hawaii&#39;)&quot;``: Order by distance from Hawaii.</span>
+<span class="sd">                   ``&quot;distance_from(19.89, 155.5)&quot;``: Order by distance from a</span>
+<span class="sd">                   coordinate.</span>
+<span class="sd">                   ``&quot;distance_from(&#39;Hawaii&#39;), distance_from(&#39;Puerto Rico&#39;)&quot;``: Order by</span>
+<span class="sd">                   multiple locations. See details below.</span>
+<span class="sd">                   ``&quot;distance_from(&#39;Hawaii&#39;), distance_from(19.89, 155.5)&quot;``: Order by</span>
+<span class="sd">                   multiple locations. See details below. The string can have a maximum</span>
+<span class="sd">                   of 256 characters. When multiple distance centers are provided, a job</span>
+<span class="sd">                   that is close to any of the distance centers would have a high rank.</span>
+<span class="sd">                   When a job has multiple locations, the job location closest to one of</span>
+<span class="sd">                   the distance centers will be used. Jobs that don&#39;t have locations</span>
+<span class="sd">                   will be ranked at the bottom. Distance is calculated with a precision</span>
+<span class="sd">                   of 11.3 meters (37.4 feet). Diversification strategy is still applied</span>
+<span class="sd">                   unless explicitly disabled in ``diversification_level``.</span>
+<span class="sd">            diversification_level (~google.cloud.talent_v4beta1.types.DiversificationLevel): Optional. Controls whether highly similar jobs are returned next to each</span>
+<span class="sd">                other in the search results. Jobs are identified as highly similar based</span>
+<span class="sd">                on their titles, job categories, and locations. Highly similar results</span>
+<span class="sd">                are clustered so that only one representative job of the cluster is</span>
 <span class="sd">                displayed to the job seeker higher up in the results, with the other</span>
 <span class="sd">                jobs being displayed lower down in the results.</span>
 
 <span class="sd">                Defaults to ``DiversificationLevel.SIMPLE`` if no value is specified.</span>
-<span class="sd">            custom_ranking_info (Union[dict, ~google.cloud.talent_v4beta1.types.CustomRankingInfo]): Optional.</span>
-
-<span class="sd">                Controls over how job documents get ranked on top of existing relevance</span>
-<span class="sd">                score (determined by API algorithm).</span>
+<span class="sd">            custom_ranking_info (Union[dict, ~google.cloud.talent_v4beta1.types.CustomRankingInfo]): Optional. Controls over how job documents get ranked on top of existing</span>
+<span class="sd">                relevance score (determined by API algorithm).</span>
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.talent_v4beta1.types.CustomRankingInfo`</span>
-<span class="sd">            disable_keyword_match (bool): Optional.</span>
-
-<span class="sd">                Controls whether to disable exact keyword match on ``Job.title``,</span>
-<span class="sd">                ``Job.description``, ``Job.company_display_name``, ``Job.addresses``,</span>
-<span class="sd">                ``Job.qualifications``. When disable keyword match is turned off, a</span>
-<span class="sd">                keyword match returns jobs that do not match given category filters when</span>
-<span class="sd">                there are matching keywords. For example, for the query &quot;program</span>
-<span class="sd">                manager,&quot; a result is returned even if the job posting has the title</span>
-<span class="sd">                &quot;software developer,&quot; which doesn&#39;t fall into &quot;program manager&quot;</span>
-<span class="sd">                ontology, but does have &quot;program manager&quot; appearing in its description.</span>
+<span class="sd">            disable_keyword_match (bool): Optional. Controls whether to disable exact keyword match on</span>
+<span class="sd">                ``Job.title``, ``Job.description``, ``Job.company_display_name``,</span>
+<span class="sd">                ``Job.addresses``, ``Job.qualifications``. When disable keyword match is</span>
+<span class="sd">                turned off, a keyword match returns jobs that do not match given</span>
+<span class="sd">                category filters when there are matching keywords. For example, for the</span>
+<span class="sd">                query &quot;program manager,&quot; a result is returned even if the job posting</span>
+<span class="sd">                has the title &quot;software developer,&quot; which doesn&#39;t fall into &quot;program</span>
+<span class="sd">                manager&quot; ontology, but does have &quot;program manager&quot; appearing in its</span>
+<span class="sd">                description.</span>
 
 <span class="sd">                For queries like &quot;cloud&quot; that don&#39;t contain title or location specific</span>
 <span class="sd">                ontology, jobs with &quot;cloud&quot; keyword matches are returned regardless of</span>
@@ -1267,45 +1234,34 @@
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): Required.</span>
-
-<span class="sd">                The resource name of the tenant to search within.</span>
+<span class="sd">            parent (str): Required. The resource name of the tenant to search within.</span>
 
 <span class="sd">                The format is &quot;projects/{project\_id}/tenants/{tenant\_id}&quot;, for</span>
 <span class="sd">                example, &quot;projects/api-test-project/tenant/foo&quot;.</span>
 
 <span class="sd">                Tenant id is optional and the default tenant is used if unspecified, for</span>
 <span class="sd">                example, &quot;projects/api-test-project&quot;.</span>
-<span class="sd">            request_metadata (Union[dict, ~google.cloud.talent_v4beta1.types.RequestMetadata]): Required.</span>
-
-<span class="sd">                The meta information collected about the job searcher, used to improve</span>
-<span class="sd">                the search quality of the service.. The identifiers, (such as</span>
+<span class="sd">            request_metadata (Union[dict, ~google.cloud.talent_v4beta1.types.RequestMetadata]): Required. The meta information collected about the job searcher, used to</span>
+<span class="sd">                improve the search quality of the service. The identifiers (such as</span>
 <span class="sd">                ``user_id``) are provided by users, and must be unique and consistent.</span>
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.talent_v4beta1.types.RequestMetadata`</span>
-<span class="sd">            search_mode (~google.cloud.talent_v4beta1.types.SearchMode): Optional.</span>
-
-<span class="sd">                Mode of a search.</span>
+<span class="sd">            search_mode (~google.cloud.talent_v4beta1.types.SearchMode): Optional. Mode of a search.</span>
 
 <span class="sd">                Defaults to ``SearchMode.JOB_SEARCH``.</span>
-<span class="sd">            job_query (Union[dict, ~google.cloud.talent_v4beta1.types.JobQuery]): Optional.</span>
-
-<span class="sd">                Query used to search against jobs, such as keyword, location filters, etc.</span>
+<span class="sd">            job_query (Union[dict, ~google.cloud.talent_v4beta1.types.JobQuery]): Optional. Query used to search against jobs, such as keyword, location</span>
+<span class="sd">                filters, etc.</span>
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.talent_v4beta1.types.JobQuery`</span>
-<span class="sd">            enable_broadening (bool): Optional.</span>
-
-<span class="sd">                Controls whether to broaden the search when it produces sparse results.</span>
-<span class="sd">                Broadened queries append results to the end of the matching results</span>
-<span class="sd">                list.</span>
+<span class="sd">            enable_broadening (bool): Optional. Controls whether to broaden the search when it produces sparse</span>
+<span class="sd">                results. Broadened queries append results to the end of the matching</span>
+<span class="sd">                results list.</span>
 
 <span class="sd">                Defaults to false.</span>
-<span class="sd">            require_precise_result_size (bool): Optional.</span>
-
-<span class="sd">                Controls if the search job request requires the return of a precise</span>
-<span class="sd">                count of the first 300 results. Setting this to ``true`` ensures</span>
+<span class="sd">            require_precise_result_size (bool): Optional. Controls if the search job request requires the return of a</span>
+<span class="sd">                precise count of the first 300 results. Setting this to ``true`` ensures</span>
 <span class="sd">                consistency in the number of results per page. Best practice is to set</span>
 <span class="sd">                this value to true if a client allows users to jump directly to a</span>
 <span class="sd">                non-sequential search results page.</span>
@@ -1313,9 +1269,8 @@
 <span class="sd">                Enabling this flag may adversely impact performance.</span>
 
 <span class="sd">                Defaults to false.</span>
-<span class="sd">            histogram_queries (list[Union[dict, ~google.cloud.talent_v4beta1.types.HistogramQuery]]): Optional.</span>
-
-<span class="sd">                An expression specifies a histogram request against matching jobs.</span>
+<span class="sd">            histogram_queries (list[Union[dict, ~google.cloud.talent_v4beta1.types.HistogramQuery]]): Optional. An expression specifies a histogram request against matching</span>
+<span class="sd">                jobs.</span>
 
 <span class="sd">                Expression syntax is an aggregation function call with histogram facets</span>
 <span class="sd">                and other options.</span>
@@ -1409,15 +1364,13 @@
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.talent_v4beta1.types.HistogramQuery`</span>
-<span class="sd">            job_view (~google.cloud.talent_v4beta1.types.JobView): Optional.</span>
-
-<span class="sd">                The desired job attributes returned for jobs in the search response.</span>
-<span class="sd">                Defaults to ``JobView.JOB_VIEW_SMALL`` if no value is specified.</span>
-<span class="sd">            offset (int): Optional.</span>
-
-<span class="sd">                An integer that specifies the current offset (that is, starting result</span>
-<span class="sd">                location, amongst the jobs deemed by the API as relevant) in search</span>
-<span class="sd">                results. This field is only considered if ``page_token`` is unset.</span>
+<span class="sd">            job_view (~google.cloud.talent_v4beta1.types.JobView): Optional. The desired job attributes returned for jobs in the search</span>
+<span class="sd">                response. Defaults to ``JobView.JOB_VIEW_SMALL`` if no value is</span>
+<span class="sd">                specified.</span>
+<span class="sd">            offset (int): Optional. An integer that specifies the current offset (that is,</span>
+<span class="sd">                starting result location, amongst the jobs deemed by the API as</span>
+<span class="sd">                relevant) in search results. This field is only considered if</span>
+<span class="sd">                ``page_token`` is unset.</span>
 
 <span class="sd">                For example, 0 means to return results starting from the first matching</span>
 <span class="sd">                job, and 10 means to return from the 11th job. This can be used for</span>
@@ -1428,81 +1381,78 @@
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
 <span class="sd">                streaming is performed per-page, this determines the maximum number</span>
 <span class="sd">                of resources in a page.</span>
-<span class="sd">            order_by (str): Optional.</span>
-
-<span class="sd">                The criteria determining how search results are sorted. Default is</span>
-<span class="sd">                &quot;relevance desc&quot;.</span>
+<span class="sd">            order_by (str): Optional. The criteria determining how search results are sorted.</span>
+<span class="sd">                Default is ``&quot;relevance desc&quot;``.</span>
 
 <span class="sd">                Supported options are:</span>
 
-<span class="sd">                -  &quot;relevance desc&quot;: By relevance descending, as determined by the API</span>
-<span class="sd">                   algorithms. Relevance thresholding of query results is only available</span>
-<span class="sd">                   with this ordering.</span>
-<span class="sd">                -  &quot;posting``_``\ publish\ ``_``\ time desc&quot;: By</span>
-<span class="sd">                   ``Job.posting_publish_time`` descending.</span>
-<span class="sd">                -  &quot;posting``_``\ update\ ``_``\ time desc&quot;: By</span>
-<span class="sd">                   ``Job.posting_update_time`` descending.</span>
-<span class="sd">                -  &quot;title&quot;: By ``Job.title`` ascending.</span>
-<span class="sd">                -  &quot;title desc&quot;: By ``Job.title`` descending.</span>
-<span class="sd">                -  &quot;annualized``_``\ base\ ``_``\ compensation&quot;: By job&#39;s</span>
+<span class="sd">                -  ``&quot;relevance desc&quot;``: By relevance descending, as determined by the</span>
+<span class="sd">                   API algorithms. Relevance thresholding of query results is only</span>
+<span class="sd">                   available with this ordering.</span>
+<span class="sd">                -  ``&quot;posting_publish_time desc&quot;``: By ``Job.posting_publish_time``</span>
+<span class="sd">                   descending.</span>
+<span class="sd">                -  ``&quot;posting_update_time desc&quot;``: By ``Job.posting_update_time``</span>
+<span class="sd">                   descending.</span>
+<span class="sd">                -  ``&quot;title&quot;``: By ``Job.title`` ascending.</span>
+<span class="sd">                -  ``&quot;title desc&quot;``: By ``Job.title`` descending.</span>
+<span class="sd">                -  ``&quot;annualized_base_compensation&quot;``: By job&#39;s</span>
 <span class="sd">                   ``CompensationInfo.annualized_base_compensation_range`` ascending.</span>
 <span class="sd">                   Jobs whose annualized base compensation is unspecified are put at the</span>
 <span class="sd">                   end of search results.</span>
-<span class="sd">                -  &quot;annualized``_``\ base\ ``_``\ compensation desc&quot;: By job&#39;s</span>
+<span class="sd">                -  ``&quot;annualized_base_compensation desc&quot;``: By job&#39;s</span>
 <span class="sd">                   ``CompensationInfo.annualized_base_compensation_range`` descending.</span>
 <span class="sd">                   Jobs whose annualized base compensation is unspecified are put at the</span>
 <span class="sd">                   end of search results.</span>
-<span class="sd">                -  &quot;annualized``_``\ total\ ``_``\ compensation&quot;: By job&#39;s</span>
+<span class="sd">                -  ``&quot;annualized_total_compensation&quot;``: By job&#39;s</span>
 <span class="sd">                   ``CompensationInfo.annualized_total_compensation_range`` ascending.</span>
 <span class="sd">                   Jobs whose annualized base compensation is unspecified are put at the</span>
 <span class="sd">                   end of search results.</span>
-<span class="sd">                -  &quot;annualized``_``\ total\ ``_``\ compensation desc&quot;: By job&#39;s</span>
+<span class="sd">                -  ``&quot;annualized_total_compensation desc&quot;``: By job&#39;s</span>
 <span class="sd">                   ``CompensationInfo.annualized_total_compensation_range`` descending.</span>
 <span class="sd">                   Jobs whose annualized base compensation is unspecified are put at the</span>
 <span class="sd">                   end of search results.</span>
-<span class="sd">                -  &quot;custom``_``\ ranking desc&quot;: By the relevance score adjusted to the</span>
+<span class="sd">                -  ``&quot;custom_ranking desc&quot;``: By the relevance score adjusted to the</span>
 <span class="sd">                   ``SearchJobsRequest.CustomRankingInfo.ranking_expression`` with</span>
 <span class="sd">                   weight factor assigned by</span>
 <span class="sd">                   ``SearchJobsRequest.CustomRankingInfo.importance_level`` in</span>
 <span class="sd">                   descending order.</span>
-<span class="sd">                -  &quot;location``_``\ distance&quot;: By the distance between the location on</span>
-<span class="sd">                   jobs and locations specified in the ``JobQuery.location_filters``.</span>
-<span class="sd">                   When this order is selected, the ``JobQuery.location_filters`` must</span>
-<span class="sd">                   not be empty. When a job has multiple locations, the location closest</span>
-<span class="sd">                   to one of the locations specified in the location filter will be used</span>
-<span class="sd">                   to calculate location distance. Distance is calculated by the</span>
-<span class="sd">                   distance between two lat/long coordinates, with a precision of 10e-4</span>
-<span class="sd">                   degrees (11.3 meters). Jobs that don&#39;t have locations specified will</span>
-<span class="sd">                   be ranked below jobs having locations. Diversification strategy is</span>
-<span class="sd">                   still applied unless explicitly disabled in</span>
-<span class="sd">                   ``SearchJobsRequest.diversification_level``.</span>
-<span class="sd">            diversification_level (~google.cloud.talent_v4beta1.types.DiversificationLevel): Optional.</span>
-
-<span class="sd">                Controls whether highly similar jobs are returned next to each other in</span>
-<span class="sd">                the search results. Jobs are identified as highly similar based on their</span>
-<span class="sd">                titles, job categories, and locations. Highly similar results are</span>
-<span class="sd">                clustered so that only one representative job of the cluster is</span>
+<span class="sd">                -  Location sorting: Use the special syntax to order jobs by distance:</span>
+<span class="sd">                   ``&quot;distance_from(&#39;Hawaii&#39;)&quot;``: Order by distance from Hawaii.</span>
+<span class="sd">                   ``&quot;distance_from(19.89, 155.5)&quot;``: Order by distance from a</span>
+<span class="sd">                   coordinate.</span>
+<span class="sd">                   ``&quot;distance_from(&#39;Hawaii&#39;), distance_from(&#39;Puerto Rico&#39;)&quot;``: Order by</span>
+<span class="sd">                   multiple locations. See details below.</span>
+<span class="sd">                   ``&quot;distance_from(&#39;Hawaii&#39;), distance_from(19.89, 155.5)&quot;``: Order by</span>
+<span class="sd">                   multiple locations. See details below. The string can have a maximum</span>
+<span class="sd">                   of 256 characters. When multiple distance centers are provided, a job</span>
+<span class="sd">                   that is close to any of the distance centers would have a high rank.</span>
+<span class="sd">                   When a job has multiple locations, the job location closest to one of</span>
+<span class="sd">                   the distance centers will be used. Jobs that don&#39;t have locations</span>
+<span class="sd">                   will be ranked at the bottom. Distance is calculated with a precision</span>
+<span class="sd">                   of 11.3 meters (37.4 feet). Diversification strategy is still applied</span>
+<span class="sd">                   unless explicitly disabled in ``diversification_level``.</span>
+<span class="sd">            diversification_level (~google.cloud.talent_v4beta1.types.DiversificationLevel): Optional. Controls whether highly similar jobs are returned next to each</span>
+<span class="sd">                other in the search results. Jobs are identified as highly similar based</span>
+<span class="sd">                on their titles, job categories, and locations. Highly similar results</span>
+<span class="sd">                are clustered so that only one representative job of the cluster is</span>
 <span class="sd">                displayed to the job seeker higher up in the results, with the other</span>
 <span class="sd">                jobs being displayed lower down in the results.</span>
 
 <span class="sd">                Defaults to ``DiversificationLevel.SIMPLE`` if no value is specified.</span>
-<span class="sd">            custom_ranking_info (Union[dict, ~google.cloud.talent_v4beta1.types.CustomRankingInfo]): Optional.</span>
-
-<span class="sd">                Controls over how job documents get ranked on top of existing relevance</span>
-<span class="sd">                score (determined by API algorithm).</span>
+<span class="sd">            custom_ranking_info (Union[dict, ~google.cloud.talent_v4beta1.types.CustomRankingInfo]): Optional. Controls over how job documents get ranked on top of existing</span>
+<span class="sd">                relevance score (determined by API algorithm).</span>
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.talent_v4beta1.types.CustomRankingInfo`</span>
-<span class="sd">            disable_keyword_match (bool): Optional.</span>
-
-<span class="sd">                Controls whether to disable exact keyword match on ``Job.title``,</span>
-<span class="sd">                ``Job.description``, ``Job.company_display_name``, ``Job.addresses``,</span>
-<span class="sd">                ``Job.qualifications``. When disable keyword match is turned off, a</span>
-<span class="sd">                keyword match returns jobs that do not match given category filters when</span>
-<span class="sd">                there are matching keywords. For example, for the query &quot;program</span>
-<span class="sd">                manager,&quot; a result is returned even if the job posting has the title</span>
-<span class="sd">                &quot;software developer,&quot; which doesn&#39;t fall into &quot;program manager&quot;</span>
-<span class="sd">                ontology, but does have &quot;program manager&quot; appearing in its description.</span>
+<span class="sd">            disable_keyword_match (bool): Optional. Controls whether to disable exact keyword match on</span>
+<span class="sd">                ``Job.title``, ``Job.description``, ``Job.company_display_name``,</span>
+<span class="sd">                ``Job.addresses``, ``Job.qualifications``. When disable keyword match is</span>
+<span class="sd">                turned off, a keyword match returns jobs that do not match given</span>
+<span class="sd">                category filters when there are matching keywords. For example, for the</span>
+<span class="sd">                query &quot;program manager,&quot; a result is returned even if the job posting</span>
+<span class="sd">                has the title &quot;software developer,&quot; which doesn&#39;t fall into &quot;program</span>
+<span class="sd">                manager&quot; ontology, but does have &quot;program manager&quot; appearing in its</span>
+<span class="sd">                description.</span>
 
 <span class="sd">                For queries like &quot;cloud&quot; that don&#39;t contain title or location specific</span>
 <span class="sd">                ontology, jobs with &quot;cloud&quot; keyword matches are returned regardless of</span>
@@ -1624,18 +1574,15 @@
 <span class="sd">            &gt;&gt;&gt; metadata = response.metadata()</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): Required.</span>
-
-<span class="sd">                The resource name of the tenant under which the job is created.</span>
+<span class="sd">            parent (str): Required. The resource name of the tenant under which the job is</span>
+<span class="sd">                created.</span>
 
 <span class="sd">                The format is &quot;projects/{project\_id}/tenants/{tenant\_id}&quot;, for</span>
 <span class="sd">                example, &quot;projects/api-test-project/tenant/foo&quot;.</span>
 
 <span class="sd">                Tenant id is optional and a default tenant is created if unspecified,</span>
 <span class="sd">                for example, &quot;projects/api-test-project&quot;.</span>
-<span class="sd">            jobs (list[Union[dict, ~google.cloud.talent_v4beta1.types.Job]]): Required.</span>
-
-<span class="sd">                The jobs to be created.</span>
+<span class="sd">            jobs (list[Union[dict, ~google.cloud.talent_v4beta1.types.Job]]): Required. The jobs to be created.</span>
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.talent_v4beta1.types.Job`</span>
@@ -1727,18 +1674,15 @@
 <span class="sd">            &gt;&gt;&gt; metadata = response.metadata()</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): Required.</span>
-
-<span class="sd">                The resource name of the tenant under which the job is created.</span>
+<span class="sd">            parent (str): Required. The resource name of the tenant under which the job is</span>
+<span class="sd">                created.</span>
 
 <span class="sd">                The format is &quot;projects/{project\_id}/tenants/{tenant\_id}&quot;, for</span>
 <span class="sd">                example, &quot;projects/api-test-project/tenant/foo&quot;.</span>
 
 <span class="sd">                Tenant id is optional and the default tenant is used if unspecified, for</span>
 <span class="sd">                example, &quot;projects/api-test-project&quot;.</span>
-<span class="sd">            jobs (list[Union[dict, ~google.cloud.talent_v4beta1.types.Job]]): Required.</span>
-
-<span class="sd">                The jobs to be updated.</span>
+<span class="sd">            jobs (list[Union[dict, ~google.cloud.talent_v4beta1.types.Job]]): Required. The jobs to be updated.</span>
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.talent_v4beta1.types.Job`</span>
