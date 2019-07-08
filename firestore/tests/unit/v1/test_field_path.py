@@ -493,3 +493,8 @@ class TestFieldPath(unittest.TestCase):
         field_path = self._make_one("a", "b", "c")
         expected = set([self._make_one("a"), self._make_one("a", "b")])
         self.assertEqual(field_path.lineage(), expected)
+
+    def test_document_id(self):
+        parts = "__name__"
+        field_path = self._make_one(parts)
+        self.assertEqual(field_path.document_id(), parts)
