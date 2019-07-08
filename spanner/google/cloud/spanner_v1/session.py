@@ -26,6 +26,7 @@ from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1.batch import Batch
 from google.cloud.spanner_v1.snapshot import Snapshot
 from google.cloud.spanner_v1.transaction import Transaction
+import random
 
 # pylint: enable=ungrouped-imports
 
@@ -283,6 +284,7 @@ class Session(object):
             reraises any non-ABORT execptions raised by ``func``.
         """
         deadline = time.time() + kw.pop("timeout_secs", DEFAULT_RETRY_TIMEOUT_SECS)
+        attempts = 0
 
         while True:
             if self._transaction is None:
@@ -291,11 +293,13 @@ class Session(object):
                 txn = self._transaction
             if txn._transaction_id is None:
                 txn.begin()
+
             try:
+                attempts += 1
                 return_value = func(txn, *args, **kw)
             except Aborted as exc:
                 del self._transaction
-                _delay_until_retry(exc, deadline)
+                _delay_until_retry(exc, deadline, attempts)
                 continue
             except GoogleAPICallError:
                 del self._transaction
@@ -308,7 +312,7 @@ class Session(object):
                 txn.commit()
             except Aborted as exc:
                 del self._transaction
-                _delay_until_retry(exc, deadline)
+                _delay_until_retry(exc, deadline, attempts)
             except GoogleAPICallError:
                 del self._transaction
                 raise
@@ -320,7 +324,7 @@ class Session(object):
 #
 # Rational:  this function factors out complex shared deadline / retry
 #            handling from two `except:` clauses.
-def _delay_until_retry(exc, deadline):
+def _delay_until_retry(exc, deadline, attempts):
     """Helper for :meth:`Session.run_in_transaction`.
 
     Detect retryable abort, and impose server-supplied delay.
@@ -330,6 +334,9 @@ def _delay_until_retry(exc, deadline):
 
     :type deadline: float
     :param deadline: maximum timestamp to continue retrying the transaction.
+
+    :type attempts: int
+    :param attempts: number of call retries
     """
     cause = exc.errors[0]
 
@@ -338,7 +345,7 @@ def _delay_until_retry(exc, deadline):
     if now >= deadline:
         raise
 
-    delay = _get_retry_delay(cause)
+    delay = _get_retry_delay(cause, attempts)
     if delay is not None:
 
         if now + delay > deadline:
@@ -350,7 +357,7 @@ def _delay_until_retry(exc, deadline):
 # pylint: enable=misplaced-bare-raise
 
 
-def _get_retry_delay(cause):
+def _get_retry_delay(cause, attempts):
     """Helper for :func:`_delay_until_retry`.
 
     :type exc: :class:`grpc.Call`
@@ -358,6 +365,9 @@ def _get_retry_delay(cause):
 
     :rtype: float
     :returns: seconds to wait before retrying the transaction.
+
+    :type attempts: int
+    :param attempts: number of call retries
     """
     metadata = dict(cause.trailing_metadata())
     retry_info_pb = metadata.get("google.rpc.retryinfo-bin")
@@ -366,3 +376,5 @@ def _get_retry_delay(cause):
         retry_info.ParseFromString(retry_info_pb)
         nanos = retry_info.retry_delay.nanos
         return retry_info.retry_delay.seconds + nanos / 1.0e9
+
+    return 2 ** attempts + random.random()
