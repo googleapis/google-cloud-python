@@ -4855,11 +4855,17 @@ class Model(metaclass=MetaModel):
 
             return self._key
 
+        self._prepare_for_put()
         future = put(self)
         future.add_done_callback(self._post_put_hook)
         return future
 
     put_async = _put_async
+
+    def _prepare_for_put(self):
+        if self._properties:
+            for prop in self._properties.values():
+                prop._prepare_for_put(self)
 
     @classmethod
     def _query(

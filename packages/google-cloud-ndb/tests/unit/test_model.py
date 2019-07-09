@@ -3686,6 +3686,19 @@ class TestModel:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
+    def test__prepare_for_put():
+        class Simple(model.Model):
+            foo = model.DateTimeProperty()
+
+        entity = Simple(foo=datetime.datetime.now())
+        with unittest.mock.patch.object(
+            entity._properties["foo"], "_prepare_for_put"
+        ) as patched:
+            entity._prepare_for_put()
+            patched.assert_called_once()
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
     @unittest.mock.patch("google.cloud.ndb.model._datastore_api")
     def test__put_w_hooks(_datastore_api):
         class Simple(model.Model):

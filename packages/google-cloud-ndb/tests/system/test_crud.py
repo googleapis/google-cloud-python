@@ -15,6 +15,7 @@
 """
 System tests for Create, Update, Delete. (CRUD)
 """
+import datetime
 import functools
 import operator
 import threading
@@ -579,5 +580,23 @@ def test_insert_polymodel(dispose_of):
 
     assert isinstance(retrieved, Animal)
     assert isinstance(retrieved, Cat)
+
+    dispose_of(key._key)
+
+
+@pytest.mark.usefixtures("client_context")
+def test_insert_autonow_property(dispose_of):
+    class SomeKind(ndb.Model):
+        foo = ndb.StringProperty()
+        created_at = ndb.DateTimeProperty(indexed=True, auto_now_add=True)
+        updated_at = ndb.DateTimeProperty(indexed=True, auto_now=True)
+
+    entity = SomeKind(foo="bar")
+    key = entity.put()
+
+    retrieved = key.get()
+
+    assert isinstance(retrieved.created_at, datetime.datetime)
+    assert isinstance(retrieved.updated_at, datetime.datetime)
 
     dispose_of(key._key)
