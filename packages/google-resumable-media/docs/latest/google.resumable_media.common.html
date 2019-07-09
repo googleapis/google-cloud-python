@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.resumable_media.common module &mdash; google-resumable-media 0.3.2 documentation</title>
+  <title>google.resumable_media.common &mdash; google-resumable-media 0.3.2 documentation</title>
   
 
   
@@ -17,42 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-resumable-media 0.3.2 documentation" href="index.html"/>
-        <link rel="next" title="google.resumable_media.requests" href="google.resumable_media.requests.html"/>
-        <link rel="prev" title="google.resumable_media" href="index.html"/> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="google.resumable_media.requests" href="google.resumable_media.requests.html" />
+    <link rel="prev" title="google.resumable_media" href="index.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -91,8 +85,8 @@
             
             
               <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">google.resumable_media.common module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="google.resumable_media.requests.html"><code class="docutils literal"><span class="pre">google.resumable_media.requests</span></code></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">google.resumable_media.common</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="google.resumable_media.requests.html"><code class="docutils literal notranslate"><span class="pre">google.resumable_media.requests</span></code></a></li>
 </ul>
 
             
@@ -104,7 +98,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">google-resumable-media</a>
@@ -112,9 +106,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -137,7 +132,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>google.resumable_media.common module</li>
+      <li><code class="docutils literal notranslate"><span class="pre">google.resumable_media.common</span></code></li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -157,13 +152,13 @@
            <div itemprop="articleBody">
             
   <div class="section" id="module-google.resumable_media.common">
-<span id="google-resumable-media-common-module"></span><h1>google.resumable_media.common module<a class="headerlink" href="#module-google.resumable_media.common" title="Permalink to this headline">¶</a></h1>
+<span id="google-resumable-media-common"></span><h1><code class="docutils literal notranslate"><span class="pre">google.resumable_media.common</span></code><a class="headerlink" href="#module-google.resumable_media.common" title="Permalink to this headline">¶</a></h1>
 <p>Common utilities for Google Media Downloads and Resumable Uploads.</p>
 <p>Includes custom exception types, useful constants and shared helpers.</p>
 <dl class="exception">
 <dt id="google.resumable_media.common.DataCorruption">
 <em class="property">exception </em><code class="descclassname">google.resumable_media.common.</code><code class="descname">DataCorruption</code><span class="sig-paren">(</span><em>response</em>, <em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.common.DataCorruption" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#Exception" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#Exception" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
 <p>Error class for corrupt media transfers.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -186,7 +181,15 @@ exception class.</li>
 <dl class="attribute">
 <dt id="google.resumable_media.common.DataCorruption.response">
 <code class="descname">response</code><em class="property"> = None</em><a class="headerlink" href="#google.resumable_media.common.DataCorruption.response" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>object</em> – The HTTP response object that caused the failure.</p>
+<dd><p>The HTTP response object that caused the failure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#object" title="(in Python v3.6)">object</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -201,7 +204,7 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="exception">
 <dt id="google.resumable_media.common.InvalidResponse">
 <em class="property">exception </em><code class="descclassname">google.resumable_media.common.</code><code class="descname">InvalidResponse</code><span class="sig-paren">(</span><em>response</em>, <em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.common.InvalidResponse" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#Exception" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#Exception" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
 <p>Error class for responses which are not in the correct state.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -224,7 +227,15 @@ exception class.</li>
 <dl class="attribute">
 <dt id="google.resumable_media.common.InvalidResponse.response">
 <code class="descname">response</code><em class="property"> = None</em><a class="headerlink" href="#google.resumable_media.common.InvalidResponse.response" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>object</em> – The HTTP response object that caused the failure.</p>
+<dd><p>The HTTP response object that caused the failure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#object" title="(in Python v3.6)">object</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -239,49 +250,73 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="data">
 <dt id="google.resumable_media.common.MAX_CUMULATIVE_RETRY">
 <code class="descclassname">google.resumable_media.common.</code><code class="descname">MAX_CUMULATIVE_RETRY</code><em class="property"> = 600.0</em><a class="headerlink" href="#google.resumable_media.common.MAX_CUMULATIVE_RETRY" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>float</em> – Maximum total sleep time allowed during retry process.</p>
+<dd><p>Maximum total sleep time allowed during retry process.</p>
 <p>This is provided (10 minutes) as a default. When the cumulative sleep
 exceeds this limit, no more retries will occur.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)">float</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="data">
 <dt id="google.resumable_media.common.MAX_SLEEP">
 <code class="descclassname">google.resumable_media.common.</code><code class="descname">MAX_SLEEP</code><em class="property"> = 64.0</em><a class="headerlink" href="#google.resumable_media.common.MAX_SLEEP" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>float</em> – Maximum amount of time allowed between requests.</p>
+<dd><p>Maximum amount of time allowed between requests.</p>
 <p>Used during the retry process for sleep after a failed request.
 Chosen since it is the power of two nearest to one minute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)">float</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="data">
 <dt id="google.resumable_media.common.PERMANENT_REDIRECT">
 <code class="descclassname">google.resumable_media.common.</code><code class="descname">PERMANENT_REDIRECT</code><em class="property"> = 308</em><a class="headerlink" href="#google.resumable_media.common.PERMANENT_REDIRECT" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>int</em> – Permanent redirect status code.</p>
+<dd><p>Permanent redirect status code.</p>
 <p>It is used by Google services to indicate some (but not all) of
 a resumable upload has been completed.</p>
-<p><code class="docutils literal"><span class="pre">http.client.PERMANENT_REDIRECT</span></code> was added in Python 3.5, so
+<p><code class="docutils literal notranslate"><span class="pre">http.client.PERMANENT_REDIRECT</span></code> was added in Python 3.5, so
 can’t be used in a “general” code base.</p>
 <p>For more information, see <a class="reference external" href="https://tools.ietf.org/html/rfc7238">RFC 7238</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)">int</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="class">
 <dt id="google.resumable_media.common.RetryStrategy">
 <em class="property">class </em><code class="descclassname">google.resumable_media.common.</code><code class="descname">RetryStrategy</code><span class="sig-paren">(</span><em>max_sleep=64.0</em>, <em>max_cumulative_retry=None</em>, <em>max_retries=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.common.RetryStrategy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Configuration class for retrying failed requests.</p>
-<p>At most one of <code class="docutils literal"><span class="pre">max_cumulative_retry</span></code> and <code class="docutils literal"><span class="pre">max_retries</span></code> can be
+<p>At most one of <code class="docutils literal notranslate"><span class="pre">max_cumulative_retry</span></code> and <code class="docutils literal notranslate"><span class="pre">max_retries</span></code> can be
 specified (they are both caps on the total number of retries). If
-neither are specified, then <code class="docutils literal"><span class="pre">max_cumulative_retry</span></code> is set as
-<a class="reference internal" href="#google.resumable_media.common.MAX_CUMULATIVE_RETRY" title="google.resumable_media.common.MAX_CUMULATIVE_RETRY"><code class="xref py py-data docutils literal"><span class="pre">MAX_CUMULATIVE_RETRY</span></code></a>.</p>
+neither are specified, then <code class="docutils literal notranslate"><span class="pre">max_cumulative_retry</span></code> is set as
+<a class="reference internal" href="#google.resumable_media.common.MAX_CUMULATIVE_RETRY" title="google.resumable_media.common.MAX_CUMULATIVE_RETRY"><code class="xref py py-data docutils literal notranslate"><span class="pre">MAX_CUMULATIVE_RETRY</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>max_sleep</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> ]) – The maximum amount of time to sleep after
-a failed request. Default is <a class="reference internal" href="#google.resumable_media.common.MAX_SLEEP" title="google.resumable_media.common.MAX_SLEEP"><code class="xref py py-attr docutils literal"><span class="pre">MAX_SLEEP</span></code></a>.</li>
-<li><strong>max_cumulative_retry</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> ]) – The maximum <strong>total</strong> amount of
+<li><strong>max_sleep</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a> ]) – The maximum amount of time to sleep after
+a failed request. Default is <a class="reference internal" href="#google.resumable_media.common.MAX_SLEEP" title="google.resumable_media.common.MAX_SLEEP"><code class="xref py py-attr docutils literal notranslate"><span class="pre">MAX_SLEEP</span></code></a>.</li>
+<li><strong>max_cumulative_retry</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a> ]) – The maximum <strong>total</strong> amount of
 time to sleep during retry process.</li>
-<li><strong>max_retries</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]) – The number of retries to attempt.</li>
+<li><strong>max_retries</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a> ]) – The number of retries to attempt.</li>
 </ul>
 </td>
 </tr>
@@ -290,28 +325,52 @@ time to sleep during retry process.</li>
 <dl class="attribute">
 <dt id="google.resumable_media.common.RetryStrategy.max_sleep">
 <code class="descname">max_sleep</code><a class="headerlink" href="#google.resumable_media.common.RetryStrategy.max_sleep" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>float</em> – Maximum amount of time allowed between requests.</p>
+<dd><p>Maximum amount of time allowed between requests.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)">float</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.resumable_media.common.RetryStrategy.max_cumulative_retry">
 <code class="descname">max_cumulative_retry</code><a class="headerlink" href="#google.resumable_media.common.RetryStrategy.max_cumulative_retry" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> ]  – Maximum total sleep time
+<dd><p>Maximum total sleep time
 allowed during retry process.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a> ]</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.resumable_media.common.RetryStrategy.max_retries">
 <code class="descname">max_retries</code><a class="headerlink" href="#google.resumable_media.common.RetryStrategy.max_retries" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]  – The number retries to attempt.</p>
+<dd><p>The number retries to attempt.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a> ]</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If both of <code class="docutils literal"><span class="pre">max_cumulative_retry</span></code> and <code class="docutils literal"><span class="pre">max_retries</span></code>
-are passed.</td>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – If both of <code class="docutils literal notranslate"><span class="pre">max_cumulative_retry</span></code> and <code class="docutils literal notranslate"><span class="pre">max_retries</span></code>
+    are passed.</td>
 </tr>
 </tbody>
 </table>
@@ -347,25 +406,39 @@ allowed.</p>
 <dl class="data">
 <dt id="google.resumable_media.common.TOO_MANY_REQUESTS">
 <code class="descclassname">google.resumable_media.common.</code><code class="descname">TOO_MANY_REQUESTS</code><em class="property"> = 429</em><a class="headerlink" href="#google.resumable_media.common.TOO_MANY_REQUESTS" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>int</em> – Status code indicating rate-limiting.</p>
-<p><code class="docutils literal"><span class="pre">http.client.TOO_MANY_REQUESTS</span></code> was added in Python 3.3, so
+<dd><p>Status code indicating rate-limiting.</p>
+<p><code class="docutils literal notranslate"><span class="pre">http.client.TOO_MANY_REQUESTS</span></code> was added in Python 3.3, so
 can’t be used in a “general” code base.</p>
 <p>For more information, see <a class="reference external" href="https://tools.ietf.org/html/rfc6585#section-4">RFC 6585</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)">int</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="data">
 <dt id="google.resumable_media.common.UPLOAD_CHUNK_SIZE">
 <code class="descclassname">google.resumable_media.common.</code><code class="descname">UPLOAD_CHUNK_SIZE</code><em class="property"> = 262144</em><a class="headerlink" href="#google.resumable_media.common.UPLOAD_CHUNK_SIZE" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>int</em> – Chunks in a resumable upload must come in multiples of 256 KB.</p>
+<dd><p>Chunks in a resumable upload must come in multiples of 256 KB.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)">int</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -374,7 +447,7 @@ can’t be used in a “general” code base.</p>
         <a href="google.resumable_media.requests.html" class="btn btn-neutral float-right" title="google.resumable_media.requests" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="google.resumable_media" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="google.resumable_media" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -383,11 +456,11 @@ can’t be used in a “general” code base.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Google.
+        &copy; Copyright 2017, Google
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -400,36 +473,15 @@ can’t be used in a “general” code base.</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'0.3.2',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

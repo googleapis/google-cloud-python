@@ -17,42 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-resumable-media 0.3.2 documentation" href="index.html"/>
-        <link rel="next" title="google.resumable_media.requests.download module" href="google.resumable_media.requests.download.html"/>
-        <link rel="prev" title="google.resumable_media.common module" href="google.resumable_media.common.html"/> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="google.resumable_media.requests.download" href="google.resumable_media.requests.download.html" />
+    <link rel="prev" title="google.resumable_media.common" href="google.resumable_media.common.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -91,16 +85,16 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="google.resumable_media.common.html">google.resumable_media.common module</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal"><span class="pre">google.resumable_media.requests</span></code></a><ul>
+<li class="toctree-l1"><a class="reference internal" href="google.resumable_media.common.html"><code class="docutils literal notranslate"><span class="pre">google.resumable_media.common</span></code></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">google.resumable_media.requests</span></code></a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#authorized-transport">Authorized Transport</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#simple-downloads">Simple Downloads</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#chunked-downloads">Chunked Downloads</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#simple-uploads">Simple Uploads</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#multipart-uploads">Multipart Uploads</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#resumable-uploads">Resumable Uploads</a></li>
-<li class="toctree-l2"><a class="reference internal" href="google.resumable_media.requests.download.html">google.resumable_media.requests.download module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="google.resumable_media.requests.upload.html">google.resumable_media.requests.upload module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="google.resumable_media.requests.download.html"><code class="docutils literal notranslate"><span class="pre">google.resumable_media.requests.download</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="google.resumable_media.requests.upload.html"><code class="docutils literal notranslate"><span class="pre">google.resumable_media.requests.upload</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -114,7 +108,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">google-resumable-media</a>
@@ -122,9 +116,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -147,7 +142,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li><code class="docutils literal"><span class="pre">google.resumable_media.requests</span></code></li>
+      <li><code class="docutils literal notranslate"><span class="pre">google.resumable_media.requests</span></code></li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -167,16 +162,16 @@
            <div itemprop="articleBody">
             
   <div class="section" id="module-google.resumable_media.requests">
-<span id="google-resumable-media-requests"></span><h1><code class="docutils literal"><span class="pre">google.resumable_media.requests</span></code><a class="headerlink" href="#module-google.resumable_media.requests" title="Permalink to this headline">¶</a></h1>
-<p><code class="docutils literal"><span class="pre">requests</span></code> utilities for Google Media Downloads and Resumable Uploads.</p>
+<span id="google-resumable-media-requests"></span><h1><code class="docutils literal notranslate"><span class="pre">google.resumable_media.requests</span></code><a class="headerlink" href="#module-google.resumable_media.requests" title="Permalink to this headline">¶</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">requests</span></code> utilities for Google Media Downloads and Resumable Uploads.</p>
 <p>This sub-package assumes callers will use the <a class="reference external" href="http://docs.python-requests.org/">requests</a> library
 as transport and <a class="reference external" href="https://google-auth.readthedocs.io/">google-auth</a> for sending authenticated HTTP traffic
-with <code class="docutils literal"><span class="pre">requests</span></code>.</p>
+with <code class="docutils literal notranslate"><span class="pre">requests</span></code>.</p>
 <div class="section" id="authorized-transport">
 <h2>Authorized Transport<a class="headerlink" href="#authorized-transport" title="Permalink to this headline">¶</a></h2>
-<p>To use <code class="docutils literal"><span class="pre">google-auth</span></code> and <code class="docutils literal"><span class="pre">requests</span></code> to create an authorized transport
+<p>To use <code class="docutils literal notranslate"><span class="pre">google-auth</span></code> and <code class="docutils literal notranslate"><span class="pre">requests</span></code> to create an authorized transport
 that has read-only access to Google Cloud Storage (GCS):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">google.auth</span>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">google.auth</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">google.auth.transport.requests</span> <span class="k">as</span> <span class="nn">tr_requests</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ro_scope</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;https://www.googleapis.com/auth/devstorage.read_only&#39;</span>
@@ -192,7 +187,7 @@ that has read-only access to Google Cloud Storage (GCS):</p>
 <p>To download an object from Google Cloud Storage, construct the media URL
 for the GCS object and download it with an authorized transport that has
 access to the resource:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.resumable_media.requests</span> <span class="k">import</span> <span class="n">Download</span>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.resumable_media.requests</span> <span class="k">import</span> <span class="n">Download</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">url_template</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="sa">u</span><span class="s1">&#39;https://www.googleapis.com/download/storage/v1/b/&#39;</span>
@@ -213,8 +208,8 @@ access to the resource:</p>
 </pre></div>
 </div>
 <p>To download only a portion of the bytes in the object,
-specify <code class="docutils literal"><span class="pre">start</span></code> and <code class="docutils literal"><span class="pre">end</span></code> byte positions (both optional):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">download</span> <span class="o">=</span> <span class="n">Download</span><span class="p">(</span><span class="n">media_url</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">8191</span><span class="p">)</span>
+specify <code class="docutils literal notranslate"><span class="pre">start</span></code> and <code class="docutils literal notranslate"><span class="pre">end</span></code> byte positions (both optional):</p>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">download</span> <span class="o">=</span> <span class="n">Download</span><span class="p">(</span><span class="n">media_url</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">8191</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">download</span><span class="o">.</span><span class="n">consume</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">download</span><span class="o">.</span><span class="n">finished</span>
 <span class="go">True</span>
@@ -236,13 +231,13 @@ to download the object in chunks rather than all at once. This can be done
 to avoid dropped connections with a poor internet connection or can allow
 multiple chunks to be downloaded in parallel to speed up the total
 download.</p>
-<p>A <a class="reference internal" href="google.resumable_media.requests.download.html#google.resumable_media.requests.download.ChunkedDownload" title="google.resumable_media.requests.download.ChunkedDownload"><code class="xref py py-class docutils literal"><span class="pre">ChunkedDownload</span></code></a> uses the same media URL and authorized
-transport that a basic <a class="reference internal" href="google.resumable_media.requests.download.html#google.resumable_media.requests.download.Download" title="google.resumable_media.requests.download.Download"><code class="xref py py-class docutils literal"><span class="pre">Download</span></code></a> would use, but also
-requires a chunk size and a write-able byte <code class="docutils literal"><span class="pre">stream</span></code>. The chunk size is used
+<p>A <a class="reference internal" href="google.resumable_media.requests.download.html#google.resumable_media.requests.download.ChunkedDownload" title="google.resumable_media.requests.download.ChunkedDownload"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChunkedDownload</span></code></a> uses the same media URL and authorized
+transport that a basic <a class="reference internal" href="google.resumable_media.requests.download.html#google.resumable_media.requests.download.Download" title="google.resumable_media.requests.download.Download"><code class="xref py py-class docutils literal notranslate"><span class="pre">Download</span></code></a> would use, but also
+requires a chunk size and a write-able byte <code class="docutils literal notranslate"><span class="pre">stream</span></code>. The chunk size is used
 to determine how much of the resouce to consume with each request and the
 stream is to allow the resource to be written out (e.g. to disk) without
 having to fit in memory all at once.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.resumable_media.requests</span> <span class="k">import</span> <span class="n">ChunkedDownload</span>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.resumable_media.requests</span> <span class="k">import</span> <span class="n">ChunkedDownload</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">50</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span>  <span class="c1"># 50MB</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
@@ -275,10 +270,10 @@ having to fit in memory all at once.</p>
 <span class="go">b&#39;The beginning of the chunk...&#39;</span>
 </pre></div>
 </div>
-<p>The download will change it’s <code class="docutils literal"><span class="pre">finished</span></code> status to <a class="reference external" href="https://docs.python.org/3.6/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>
+<p>The download will change it’s <code class="docutils literal notranslate"><span class="pre">finished</span></code> status to <a class="reference external" href="https://docs.python.org/3.6/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a>
 once the final chunk is consumed. In some cases, the final chunk may
 not be the same size as the other chunks:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># The state of the download in progress.</span>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># The state of the download in progress.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">download</span><span class="o">.</span><span class="n">finished</span>
 <span class="go">False</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">download</span><span class="o">.</span><span class="n">bytes_downloaded</span>  <span class="c1"># 20 chunks at 50MB</span>
@@ -301,16 +296,16 @@ not be the same size as the other chunks:</p>
 <span class="go">True</span>
 </pre></div>
 </div>
-<p>In addition, a <a class="reference internal" href="google.resumable_media.requests.download.html#google.resumable_media.requests.download.ChunkedDownload" title="google.resumable_media.requests.download.ChunkedDownload"><code class="xref py py-class docutils literal"><span class="pre">ChunkedDownload</span></code></a> can also take optional
-<code class="docutils literal"><span class="pre">start</span></code> and <code class="docutils literal"><span class="pre">end</span></code> byte positions.</p>
+<p>In addition, a <a class="reference internal" href="google.resumable_media.requests.download.html#google.resumable_media.requests.download.ChunkedDownload" title="google.resumable_media.requests.download.ChunkedDownload"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChunkedDownload</span></code></a> can also take optional
+<code class="docutils literal notranslate"><span class="pre">start</span></code> and <code class="docutils literal notranslate"><span class="pre">end</span></code> byte positions.</p>
 </div>
 <div class="section" id="simple-uploads">
 <h2>Simple Uploads<a class="headerlink" href="#simple-uploads" title="Permalink to this headline">¶</a></h2>
 <p>Among the three supported upload classes, the simplest is
-<a class="reference internal" href="google.resumable_media.requests.upload.html#google.resumable_media.requests.upload.SimpleUpload" title="google.resumable_media.requests.upload.SimpleUpload"><code class="xref py py-class docutils literal"><span class="pre">SimpleUpload</span></code></a>. A simple upload should be used when the resource
+<a class="reference internal" href="google.resumable_media.requests.upload.html#google.resumable_media.requests.upload.SimpleUpload" title="google.resumable_media.requests.upload.SimpleUpload"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimpleUpload</span></code></a>. A simple upload should be used when the resource
 being uploaded is small and when there is no metadata (other than the name)
 associated with the resource.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.resumable_media.requests</span> <span class="k">import</span> <span class="n">SimpleUpload</span>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.resumable_media.requests</span> <span class="k">import</span> <span class="n">SimpleUpload</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">url_template</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="sa">u</span><span class="s1">&#39;https://www.googleapis.com/upload/storage/v1/b/</span><span class="si">{bucket}</span><span class="s1">/o?&#39;</span>
@@ -340,9 +335,9 @@ associated with the resource.</p>
 <span class="go">True</span>
 </pre></div>
 </div>
-<p>In the rare case that an upload fails, an <a class="reference internal" href="google.resumable_media.common.html#google.resumable_media.common.InvalidResponse" title="google.resumable_media.common.InvalidResponse"><code class="xref py py-exc docutils literal"><span class="pre">InvalidResponse</span></code></a>
+<p>In the rare case that an upload fails, an <a class="reference internal" href="google.resumable_media.common.html#google.resumable_media.common.InvalidResponse" title="google.resumable_media.common.InvalidResponse"><code class="xref py py-exc docutils literal notranslate"><span class="pre">InvalidResponse</span></code></a>
 will be raised:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">upload</span> <span class="o">=</span> <span class="n">SimpleUpload</span><span class="p">(</span><span class="n">upload_url</span><span class="p">)</span>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">upload</span> <span class="o">=</span> <span class="n">SimpleUpload</span><span class="p">(</span><span class="n">upload_url</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">error</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">upload</span><span class="o">.</span><span class="n">transmit</span><span class="p">(</span><span class="n">transport</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">content_type</span><span class="p">)</span>
@@ -360,18 +355,18 @@ will be raised:</p>
 </pre></div>
 </div>
 <p>Even in the case of failure, we see that the upload is
-<a class="reference internal" href="google.resumable_media.requests.upload.html#google.resumable_media.requests.upload.SimpleUpload.finished" title="google.resumable_media.requests.upload.SimpleUpload.finished"><code class="xref py py-attr docutils literal"><span class="pre">finished</span></code></a>, i.e. it cannot be re-used.</p>
+<a class="reference internal" href="google.resumable_media.requests.upload.html#google.resumable_media.requests.upload.SimpleUpload.finished" title="google.resumable_media.requests.upload.SimpleUpload.finished"><code class="xref py py-attr docutils literal notranslate"><span class="pre">finished</span></code></a>, i.e. it cannot be re-used.</p>
 </div>
 <div class="section" id="multipart-uploads">
 <h2>Multipart Uploads<a class="headerlink" href="#multipart-uploads" title="Permalink to this headline">¶</a></h2>
-<p>After the simple upload, the <a class="reference internal" href="google.resumable_media.requests.upload.html#google.resumable_media.requests.upload.MultipartUpload" title="google.resumable_media.requests.upload.MultipartUpload"><code class="xref py py-class docutils literal"><span class="pre">MultipartUpload</span></code></a> can be used to
+<p>After the simple upload, the <a class="reference internal" href="google.resumable_media.requests.upload.html#google.resumable_media.requests.upload.MultipartUpload" title="google.resumable_media.requests.upload.MultipartUpload"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultipartUpload</span></code></a> can be used to
 achieve essentially the same task. However, a multipart upload allows some
 metadata about the resource to be sent along as well. (This is the “multi”:
 we send a first part with the metadata and a second part with the actual
 bytes in the resource.)</p>
-<p>Usage is similar to the simple upload, but <a class="reference internal" href="google.resumable_media.requests.upload.html#google.resumable_media.requests.upload.MultipartUpload.transmit" title="google.resumable_media.requests.upload.MultipartUpload.transmit"><code class="xref py py-meth docutils literal"><span class="pre">transmit()</span></code></a>
-accepts an extra required argument: <code class="docutils literal"><span class="pre">metadata</span></code>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.resumable_media.requests</span> <span class="k">import</span> <span class="n">MultipartUpload</span>
+<p>Usage is similar to the simple upload, but <a class="reference internal" href="google.resumable_media.requests.upload.html#google.resumable_media.requests.upload.MultipartUpload.transmit" title="google.resumable_media.requests.upload.MultipartUpload.transmit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">transmit()</span></code></a>
+accepts an extra required argument: <code class="docutils literal notranslate"><span class="pre">metadata</span></code>.</p>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.resumable_media.requests</span> <span class="k">import</span> <span class="n">MultipartUpload</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">url_template</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="sa">u</span><span class="s1">&#39;https://www.googleapis.com/upload/storage/v1/b/</span><span class="si">{bucket}</span><span class="s1">/o?&#39;</span>
@@ -399,13 +394,13 @@ accepts an extra required argument: <code class="docutils literal"><span class="
 <span class="go">True</span>
 </pre></div>
 </div>
-<p>As with the simple upload, in the case of failure an <a class="reference internal" href="google.resumable_media.common.html#google.resumable_media.common.InvalidResponse" title="google.resumable_media.common.InvalidResponse"><code class="xref py py-exc docutils literal"><span class="pre">InvalidResponse</span></code></a>
-is raised, enclosing the <a class="reference internal" href="google.resumable_media.common.html#google.resumable_media.common.InvalidResponse.response" title="google.resumable_media.common.InvalidResponse.response"><code class="xref py py-attr docutils literal"><span class="pre">response</span></code></a> that caused
-the failure and the <code class="docutils literal"><span class="pre">upload</span></code> object cannot be re-used after a failure.</p>
+<p>As with the simple upload, in the case of failure an <a class="reference internal" href="google.resumable_media.common.html#google.resumable_media.common.InvalidResponse" title="google.resumable_media.common.InvalidResponse"><code class="xref py py-exc docutils literal notranslate"><span class="pre">InvalidResponse</span></code></a>
+is raised, enclosing the <a class="reference internal" href="google.resumable_media.common.html#google.resumable_media.common.InvalidResponse.response" title="google.resumable_media.common.InvalidResponse.response"><code class="xref py py-attr docutils literal notranslate"><span class="pre">response</span></code></a> that caused
+the failure and the <code class="docutils literal notranslate"><span class="pre">upload</span></code> object cannot be re-used after a failure.</p>
 </div>
 <div class="section" id="resumable-uploads">
 <h2>Resumable Uploads<a class="headerlink" href="#resumable-uploads" title="Permalink to this headline">¶</a></h2>
-<p>A <a class="reference internal" href="google.resumable_media.requests.upload.html#google.resumable_media.requests.upload.ResumableUpload" title="google.resumable_media.requests.upload.ResumableUpload"><code class="xref py py-class docutils literal"><span class="pre">ResumableUpload</span></code></a> deviates from the other two upload classes:
+<p>A <a class="reference internal" href="google.resumable_media.requests.upload.html#google.resumable_media.requests.upload.ResumableUpload" title="google.resumable_media.requests.upload.ResumableUpload"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResumableUpload</span></code></a> deviates from the other two upload classes:
 it transmits a resource over the course of multiple requests. This
 is intended to be used in cases where:</p>
 <ul class="simple">
@@ -417,14 +412,14 @@ is intended to be used in cases where:</p>
 <p>In general, a resource should be sent in a <strong>single</strong> request to avoid
 latency and reduce QPS. See <a class="reference external" href="https://cloud.google.com/storage/docs/best-practices#uploading">GCS best practices</a> for more things to
 consider when using a resumable upload.</p>
-<p>After creating a <a class="reference internal" href="google.resumable_media.requests.upload.html#google.resumable_media.requests.upload.ResumableUpload" title="google.resumable_media.requests.upload.ResumableUpload"><code class="xref py py-class docutils literal"><span class="pre">ResumableUpload</span></code></a> instance, a
+<p>After creating a <a class="reference internal" href="google.resumable_media.requests.upload.html#google.resumable_media.requests.upload.ResumableUpload" title="google.resumable_media.requests.upload.ResumableUpload"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResumableUpload</span></code></a> instance, a
 <strong>resumable upload session</strong> must be initiated to let the server know that
 a series of chunked upload requests will be coming and to obtain an
-<code class="docutils literal"><span class="pre">upload_id</span></code> for the session. In contrast to the other two upload classes,
-<a class="reference internal" href="google.resumable_media.requests.upload.html#google.resumable_media.requests.upload.ResumableUpload.initiate" title="google.resumable_media.requests.upload.ResumableUpload.initiate"><code class="xref py py-meth docutils literal"><span class="pre">initiate()</span></code></a> takes a byte <code class="docutils literal"><span class="pre">stream</span></code> as input rather
-than raw bytes as <code class="docutils literal"><span class="pre">data</span></code>. This can be a file object, a <a class="reference external" href="https://docs.python.org/3.6/library/io.html#io.BytesIO" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">BytesIO</span></code></a>
+<code class="docutils literal notranslate"><span class="pre">upload_id</span></code> for the session. In contrast to the other two upload classes,
+<a class="reference internal" href="google.resumable_media.requests.upload.html#google.resumable_media.requests.upload.ResumableUpload.initiate" title="google.resumable_media.requests.upload.ResumableUpload.initiate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">initiate()</span></code></a> takes a byte <code class="docutils literal notranslate"><span class="pre">stream</span></code> as input rather
+than raw bytes as <code class="docutils literal notranslate"><span class="pre">data</span></code>. This can be a file object, a <a class="reference external" href="https://docs.python.org/3.6/library/io.html#io.BytesIO" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">BytesIO</span></code></a>
 object or any other stream implementing the same interface.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.resumable_media.requests</span> <span class="k">import</span> <span class="n">ResumableUpload</span>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.resumable_media.requests</span> <span class="k">import</span> <span class="n">ResumableUpload</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">url_template</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="sa">u</span><span class="s1">&#39;https://www.googleapis.com/upload/storage/v1/b/</span><span class="si">{bucket}</span><span class="s1">/o?&#39;</span>
@@ -452,9 +447,9 @@ object or any other stream implementing the same interface.</p>
 <span class="go">True</span>
 </pre></div>
 </div>
-<p>Once a <a class="reference internal" href="google.resumable_media.requests.upload.html#google.resumable_media.requests.upload.ResumableUpload" title="google.resumable_media.requests.upload.ResumableUpload"><code class="xref py py-class docutils literal"><span class="pre">ResumableUpload</span></code></a> has been initiated, the resource is
+<p>Once a <a class="reference internal" href="google.resumable_media.requests.upload.html#google.resumable_media.requests.upload.ResumableUpload" title="google.resumable_media.requests.upload.ResumableUpload"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResumableUpload</span></code></a> has been initiated, the resource is
 transmitted in chunks until completion:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">response0</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">transmit_next_chunk</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">response0</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">transmit_next_chunk</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response0</span>
 <span class="go">&lt;Response [308]&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">upload</span><span class="o">.</span><span class="n">finished</span>
@@ -491,18 +486,16 @@ transmitted in chunks until completion:</p>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="google.resumable_media.requests.download.html" class="btn btn-neutral float-right" title="google.resumable_media.requests.download module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="google.resumable_media.requests.download.html" class="btn btn-neutral float-right" title="google.resumable_media.requests.download" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="google.resumable_media.common.html" class="btn btn-neutral" title="google.resumable_media.common module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="google.resumable_media.common.html" class="btn btn-neutral float-left" title="google.resumable_media.common" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -511,11 +504,11 @@ transmitted in chunks until completion:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Google.
+        &copy; Copyright 2017, Google
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -528,36 +521,15 @@ transmitted in chunks until completion:</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'0.3.2',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

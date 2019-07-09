@@ -1,5 +1,5 @@
-google\.resumable\_media\.common module
-=======================================
+``google.resumable_media.common``
+=================================
 
 .. automodule:: google.resumable_media.common
     :members:

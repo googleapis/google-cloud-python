@@ -1,5 +1,5 @@
-google\.resumable\_media\.requests\.download module
-===================================================
+``google.resumable_media.requests.download``
+============================================
 
 .. automodule:: google.resumable_media.requests.download
     :members:

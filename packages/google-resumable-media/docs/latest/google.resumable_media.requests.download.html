@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.resumable_media.requests.download module &mdash; google-resumable-media 0.3.2 documentation</title>
+  <title>google.resumable_media.requests.download &mdash; google-resumable-media 0.3.2 documentation</title>
   
 
   
@@ -17,43 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-resumable-media 0.3.2 documentation" href="index.html"/>
-        <link rel="up" title="google.resumable_media.requests" href="google.resumable_media.requests.html"/>
-        <link rel="next" title="google.resumable_media.requests.upload module" href="google.resumable_media.requests.upload.html"/>
-        <link rel="prev" title="google.resumable_media.requests" href="google.resumable_media.requests.html"/> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="google.resumable_media.requests.upload" href="google.resumable_media.requests.upload.html" />
+    <link rel="prev" title="google.resumable_media.requests" href="google.resumable_media.requests.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -92,16 +85,16 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="google.resumable_media.common.html">google.resumable_media.common module</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="google.resumable_media.requests.html"><code class="docutils literal"><span class="pre">google.resumable_media.requests</span></code></a><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="google.resumable_media.common.html"><code class="docutils literal notranslate"><span class="pre">google.resumable_media.common</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="google.resumable_media.requests.html"><code class="docutils literal notranslate"><span class="pre">google.resumable_media.requests</span></code></a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="google.resumable_media.requests.html#authorized-transport">Authorized Transport</a></li>
 <li class="toctree-l2"><a class="reference internal" href="google.resumable_media.requests.html#simple-downloads">Simple Downloads</a></li>
 <li class="toctree-l2"><a class="reference internal" href="google.resumable_media.requests.html#chunked-downloads">Chunked Downloads</a></li>
 <li class="toctree-l2"><a class="reference internal" href="google.resumable_media.requests.html#simple-uploads">Simple Uploads</a></li>
 <li class="toctree-l2"><a class="reference internal" href="google.resumable_media.requests.html#multipart-uploads">Multipart Uploads</a></li>
 <li class="toctree-l2"><a class="reference internal" href="google.resumable_media.requests.html#resumable-uploads">Resumable Uploads</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">google.resumable_media.requests.download module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="google.resumable_media.requests.upload.html">google.resumable_media.requests.upload module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">google.resumable_media.requests.download</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="google.resumable_media.requests.upload.html"><code class="docutils literal notranslate"><span class="pre">google.resumable_media.requests.upload</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -115,7 +108,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">google-resumable-media</a>
@@ -123,9 +116,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -148,9 +142,9 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-          <li><a href="google.resumable_media.requests.html"><code class="docutils literal"><span class="pre">google.resumable_media.requests</span></code></a> &raquo;</li>
+          <li><a href="google.resumable_media.requests.html"><code class="docutils literal notranslate"><span class="pre">google.resumable_media.requests</span></code></a> &raquo;</li>
         
-      <li>google.resumable_media.requests.download module</li>
+      <li><code class="docutils literal notranslate"><span class="pre">google.resumable_media.requests.download</span></code></li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -170,12 +164,12 @@
            <div itemprop="articleBody">
             
   <div class="section" id="module-google.resumable_media.requests.download">
-<span id="google-resumable-media-requests-download-module"></span><h1>google.resumable_media.requests.download module<a class="headerlink" href="#module-google.resumable_media.requests.download" title="Permalink to this headline">¶</a></h1>
+<span id="google-resumable-media-requests-download"></span><h1><code class="docutils literal notranslate"><span class="pre">google.resumable_media.requests.download</span></code><a class="headerlink" href="#module-google.resumable_media.requests.download" title="Permalink to this headline">¶</a></h1>
 <p>Support for downloading media from Google APIs.</p>
 <dl class="class">
 <dt id="google.resumable_media.requests.download.ChunkedDownload">
 <em class="property">class </em><code class="descclassname">google.resumable_media.requests.download.</code><code class="descname">ChunkedDownload</code><span class="sig-paren">(</span><em>media_url</em>, <em>chunk_size</em>, <em>stream</em>, <em>start=0</em>, <em>end=None</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.download.ChunkedDownload" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media.requests._helpers.RequestsMixin</span></code>, <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media._download.ChunkedDownload</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.resumable_media.requests._helpers.RequestsMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.resumable_media._download.ChunkedDownload</span></code></p>
 <p>Download a resource in chunks from a Google API.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -189,10 +183,10 @@ request.</li>
 will be used to concatenate chunks of the resource as they are
 downloaded.</li>
 <li><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The first byte in a range to be downloaded. If not
-provided, defaults to <code class="docutils literal"><span class="pre">0</span></code>.</li>
+provided, defaults to <code class="docutils literal notranslate"><span class="pre">0</span></code>.</li>
 <li><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The last byte in a range to be downloaded. If not
 provided, will download to the end of the media.</li>
-<li><strong>headers</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Mapping" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Mapping</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> ]  ]) – Extra headers that should
+<li><strong>headers</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Mapping" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Mapping</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a> ]  ]) – Extra headers that should
 be sent with each request, e.g. headers for data encryption
 key headers.</li>
 </ul>
@@ -203,39 +197,79 @@ key headers.</li>
 <dl class="attribute">
 <dt id="google.resumable_media.requests.download.ChunkedDownload.media_url">
 <code class="descname">media_url</code><a class="headerlink" href="#google.resumable_media.requests.download.ChunkedDownload.media_url" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> – The URL containing the media to be downloaded.</p>
+<dd><p>The URL containing the media to be downloaded.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.resumable_media.requests.download.ChunkedDownload.start">
 <code class="descname">start</code><a class="headerlink" href="#google.resumable_media.requests.download.ChunkedDownload.start" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]  – The first byte in a range to be downloaded.</p>
+<dd><p>The first byte in a range to be downloaded.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a> ]</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.resumable_media.requests.download.ChunkedDownload.end">
 <code class="descname">end</code><a class="headerlink" href="#google.resumable_media.requests.download.ChunkedDownload.end" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]  – The last byte in a range to be downloaded.</p>
+<dd><p>The last byte in a range to be downloaded.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a> ]</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.resumable_media.requests.download.ChunkedDownload.chunk_size">
 <code class="descname">chunk_size</code><a class="headerlink" href="#google.resumable_media.requests.download.ChunkedDownload.chunk_size" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>int</em> – The number of bytes to be retrieved in each request.</p>
+<dd><p>The number of bytes to be retrieved in each request.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)">int</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If <code class="docutils literal"><span class="pre">start</span></code> is negative.</td>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">start</span></code> is negative.</td>
 </tr>
 </tbody>
 </table>
 <dl class="attribute">
 <dt id="google.resumable_media.requests.download.ChunkedDownload.bytes_downloaded">
 <code class="descname">bytes_downloaded</code><a class="headerlink" href="#google.resumable_media.requests.download.ChunkedDownload.bytes_downloaded" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>int</em> – Number of bytes that have been downloaded.</p>
+<dd><p>Number of bytes that have been downloaded.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)">int</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -246,14 +280,14 @@ key headers.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>transport</strong> (<a class="reference external" href="http://docs.python-requests.org/en/stable/api/#requests.Session" title="(in Requests v2.18.4)"><em>Session</em></a>) – A <code class="docutils literal"><span class="pre">requests</span></code> object which can
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>transport</strong> (<a class="reference external" href="https://2.python-requests.org//en/stable/api/#requests.Session" title="(in Requests v2.22.0)"><em>Session</em></a>) – A <code class="docutils literal notranslate"><span class="pre">requests</span></code> object which can
 make authenticated requests.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The HTTP response returned by <code class="docutils literal"><span class="pre">transport</span></code>.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The HTTP response returned by <code class="docutils literal notranslate"><span class="pre">transport</span></code>.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://docs.python-requests.org/en/stable/api/#requests.Response" title="(in Requests v2.18.4)">Response</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://2.python-requests.org//en/stable/api/#requests.Response" title="(in Requests v2.22.0)">Response</a></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the current download has finished.</td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – If the current download has finished.</td>
 </tr>
 </tbody>
 </table>
@@ -262,20 +296,44 @@ make authenticated requests.</td>
 <dl class="attribute">
 <dt id="google.resumable_media.requests.download.ChunkedDownload.finished">
 <code class="descname">finished</code><a class="headerlink" href="#google.resumable_media.requests.download.ChunkedDownload.finished" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>bool</em> – Flag indicating if the download has completed.</p>
+<dd><p>Flag indicating if the download has completed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)">bool</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.resumable_media.requests.download.ChunkedDownload.invalid">
 <code class="descname">invalid</code><a class="headerlink" href="#google.resumable_media.requests.download.ChunkedDownload.invalid" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>bool</em> – Indicates if the download is in an invalid state.</p>
-<p>This will occur if a call to <a class="reference internal" href="#google.resumable_media.requests.download.ChunkedDownload.consume_next_chunk" title="google.resumable_media.requests.download.ChunkedDownload.consume_next_chunk"><code class="xref py py-meth docutils literal"><span class="pre">consume_next_chunk()</span></code></a> fails.</p>
+<dd><p>Indicates if the download is in an invalid state.</p>
+<p>This will occur if a call to <a class="reference internal" href="#google.resumable_media.requests.download.ChunkedDownload.consume_next_chunk" title="google.resumable_media.requests.download.ChunkedDownload.consume_next_chunk"><code class="xref py py-meth docutils literal notranslate"><span class="pre">consume_next_chunk()</span></code></a> fails.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)">bool</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.resumable_media.requests.download.ChunkedDownload.total_bytes">
 <code class="descname">total_bytes</code><a class="headerlink" href="#google.resumable_media.requests.download.ChunkedDownload.total_bytes" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]  – The total number of bytes to be downloaded.</p>
+<dd><p>The total number of bytes to be downloaded.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a> ]</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -283,11 +341,11 @@ make authenticated requests.</td>
 <dl class="class">
 <dt id="google.resumable_media.requests.download.Download">
 <em class="property">class </em><code class="descclassname">google.resumable_media.requests.download.</code><code class="descname">Download</code><span class="sig-paren">(</span><em>media_url</em>, <em>stream=None</em>, <em>start=None</em>, <em>end=None</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.download.Download" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media.requests._helpers.RequestsMixin</span></code>, <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media._download.Download</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.resumable_media.requests._helpers.RequestsMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">google.resumable_media._download.Download</span></code></p>
 <p>Helper to manage downloading a resource from a Google API.</p>
 <p>“Slices” of the resource can be retrieved by specifying a range
-with <code class="docutils literal"><span class="pre">start</span></code> and / or <code class="docutils literal"><span class="pre">end</span></code>. However, in typical usage, neither
-<code class="docutils literal"><span class="pre">start</span></code> nor <code class="docutils literal"><span class="pre">end</span></code> is expected to be provided.</p>
+with <code class="docutils literal notranslate"><span class="pre">start</span></code> and / or <code class="docutils literal notranslate"><span class="pre">end</span></code>. However, in typical usage, neither
+<code class="docutils literal notranslate"><span class="pre">start</span></code> nor <code class="docutils literal notranslate"><span class="pre">end</span></code> is expected to be provided.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -297,12 +355,12 @@ with <code class="docutils literal"><span class="pre">start</span></code> and / 
 <li><strong>stream</strong> (<em>IO</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a><em>]</em>) – A write-able stream (i.e. file-like object) that
 the downloaded resource can be written to.</li>
 <li><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The first byte in a range to be downloaded. If not
-provided, but <code class="docutils literal"><span class="pre">end</span></code> is provided, will download from the
-beginning to <code class="docutils literal"><span class="pre">end</span></code> of the media.</li>
+provided, but <code class="docutils literal notranslate"><span class="pre">end</span></code> is provided, will download from the
+beginning to <code class="docutils literal notranslate"><span class="pre">end</span></code> of the media.</li>
 <li><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The last byte in a range to be downloaded. If not
-provided, but <code class="docutils literal"><span class="pre">start</span></code> is provided, will download from the
-<code class="docutils literal"><span class="pre">start</span></code> to the end of the media.</li>
-<li><strong>headers</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Mapping" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Mapping</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> ]  ]) – Extra headers that should
+provided, but <code class="docutils literal notranslate"><span class="pre">start</span></code> is provided, will download from the
+<code class="docutils literal notranslate"><span class="pre">start</span></code> to the end of the media.</li>
+<li><strong>headers</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Mapping" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Mapping</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a> ]  ]) – Extra headers that should
 be sent with the request, e.g. headers for encrypted data.</li>
 </ul>
 </td>
@@ -312,46 +370,70 @@ be sent with the request, e.g. headers for encrypted data.</li>
 <dl class="attribute">
 <dt id="google.resumable_media.requests.download.Download.media_url">
 <code class="descname">media_url</code><a class="headerlink" href="#google.resumable_media.requests.download.Download.media_url" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> – The URL containing the media to be downloaded.</p>
+<dd><p>The URL containing the media to be downloaded.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.resumable_media.requests.download.Download.start">
 <code class="descname">start</code><a class="headerlink" href="#google.resumable_media.requests.download.Download.start" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]  – The first byte in a range to be downloaded.</p>
+<dd><p>The first byte in a range to be downloaded.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a> ]</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.resumable_media.requests.download.Download.end">
 <code class="descname">end</code><a class="headerlink" href="#google.resumable_media.requests.download.Download.end" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]  – The last byte in a range to be downloaded.</p>
+<dd><p>The last byte in a range to be downloaded.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a> ]</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.resumable_media.requests.download.Download.consume">
 <code class="descname">consume</code><span class="sig-paren">(</span><em>transport</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.download.Download.consume" title="Permalink to this definition">¶</a></dt>
 <dd><p>Consume the resource to be downloaded.</p>
-<p>If a <code class="docutils literal"><span class="pre">stream</span></code> is attached to this download, then the downloaded
+<p>If a <code class="docutils literal notranslate"><span class="pre">stream</span></code> is attached to this download, then the downloaded
 resource will be written to the stream.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>transport</strong> (<a class="reference external" href="http://docs.python-requests.org/en/stable/api/#requests.Session" title="(in Requests v2.18.4)"><em>Session</em></a>) – A <code class="docutils literal"><span class="pre">requests</span></code> object which can
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>transport</strong> (<a class="reference external" href="https://2.python-requests.org//en/stable/api/#requests.Session" title="(in Requests v2.22.0)"><em>Session</em></a>) – A <code class="docutils literal notranslate"><span class="pre">requests</span></code> object which can
 make authenticated requests.</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The HTTP response returned by <code class="docutils literal"><span class="pre">transport</span></code>.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The HTTP response returned by <code class="docutils literal notranslate"><span class="pre">transport</span></code>.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="http://docs.python-requests.org/en/stable/api/#requests.Response" title="(in Requests v2.18.4)">Response</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://2.python-requests.org//en/stable/api/#requests.Response" title="(in Requests v2.22.0)">Response</a></p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="google.resumable_media.common.html#google.resumable_media.common.DataCorruption" title="google.resumable_media.common.DataCorruption"><code class="xref py py-exc docutils literal"><span class="pre">DataCorruption</span></code></a> – If the download’s
-checksum doesn’t agree with server-computed checksum.</li>
-<li><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the current <a class="reference internal" href="#google.resumable_media.requests.download.Download" title="google.resumable_media.requests.download.Download"><code class="xref py py-class docutils literal"><span class="pre">Download</span></code></a> has already
-finished.</li>
+<li><a class="reference internal" href="google.resumable_media.common.html#google.resumable_media.common.DataCorruption" title="google.resumable_media.common.DataCorruption"><strong>DataCorruption</strong></a> – If the download’s
+    checksum doesn’t agree with server-computed checksum.</li>
+<li><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – If the current <a class="reference internal" href="#google.resumable_media.requests.download.Download" title="google.resumable_media.requests.download.Download"><code class="xref py py-class docutils literal notranslate"><span class="pre">Download</span></code></a> has already
+    finished.</li>
 </ul>
 </td>
 </tr>
@@ -362,7 +444,15 @@ finished.</li>
 <dl class="attribute">
 <dt id="google.resumable_media.requests.download.Download.finished">
 <code class="descname">finished</code><a class="headerlink" href="#google.resumable_media.requests.download.Download.finished" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>bool</em> – Flag indicating if the download has completed.</p>
+<dd><p>Flag indicating if the download has completed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)">bool</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -371,18 +461,16 @@ finished.</li>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="google.resumable_media.requests.upload.html" class="btn btn-neutral float-right" title="google.resumable_media.requests.upload module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="google.resumable_media.requests.upload.html" class="btn btn-neutral float-right" title="google.resumable_media.requests.upload" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="google.resumable_media.requests.html" class="btn btn-neutral" title="google.resumable_media.requests" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="google.resumable_media.requests.html" class="btn btn-neutral float-left" title="google.resumable_media.requests" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -391,11 +479,11 @@ finished.</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Google.
+        &copy; Copyright 2017, Google
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -408,36 +496,15 @@ finished.</li>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'0.3.2',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

@@ -1,5 +1,5 @@
-google\.resumable\_media\.requests\.upload module
-=================================================
+``google.resumable_media.requests.upload``
+==========================================
 
 .. automodule:: google.resumable_media.requests.upload
     :members:
