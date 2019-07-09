@@ -114,6 +114,18 @@ class VideoIntelligenceServiceGrpcTransport(object):
         return self._channel
 
     @property
+    def get_operation(self):
+        return self._operations_client.get_operation
+        
+    @property
+    def delete_operation(self):
+        return self._operations_client.delete_operation
+        
+    @property
+    def cancel_operation(self):
+        return self._operations_client.cancel_operation
+        
+    @property
     def annotate_video(self):
         """Return the gRPC stub for :meth:`VideoIntelligenceServiceClient.annotate_video`.
 
