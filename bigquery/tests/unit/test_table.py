@@ -1370,6 +1370,19 @@ class Test_EmptyRowIterator(unittest.TestCase):
         row_iterator = self._make_one()
         self.assertEqual(row_iterator.total_rows, 0)
 
+    @mock.patch("google.cloud.bigquery.table.pyarrow", new=None)
+    def test_to_arrow_error_if_pyarrow_is_none(self):
+        row_iterator = self._make_one()
+        with self.assertRaises(ValueError):
+            row_iterator.to_arrow()
+
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_to_arrow(self):
+        row_iterator = self._make_one()
+        tbl = row_iterator.to_arrow()
+        self.assertIsInstance(tbl, pyarrow.Table)
+        self.assertEqual(tbl.num_rows, 0)
+
     @mock.patch("google.cloud.bigquery.table.pandas", new=None)
     def test_to_dataframe_error_if_pandas_is_none(self):
         row_iterator = self._make_one()

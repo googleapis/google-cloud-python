@@ -1613,6 +1613,21 @@ class _EmptyRowIterator(object):
     pages = ()
     total_rows = 0
 
+    def to_arrow(self, progress_bar_type=None):
+        """[Beta] Create an empty class:`pyarrow.Table`.
+
+        Args:
+            progress_bar_type (Optional[str]):
+                Ignored. Added for compatibility with RowIterator.
+
+        Returns:
+            pyarrow.Table:
+                An empty :class:`pyarrow.Table`.
+        """
+        if pyarrow is None:
+            raise ValueError(_NO_PYARROW_ERROR)
+        return pyarrow.Table.from_arrays(())
+
     def to_dataframe(self, bqstorage_client=None, dtypes=None, progress_bar_type=None):
         """Create an empty dataframe.
 
