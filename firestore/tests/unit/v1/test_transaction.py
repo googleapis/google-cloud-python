@@ -427,10 +427,10 @@ class TestTransaction(unittest.TestCase):
 
     def test_get_failure(self):
         client = _make_client()
-        trans = self._make_one(client)
+        transaction = self._make_one(client)
         ref_or_query = object()
         with self.assertRaises(ValueError):
-            trans.get(ref_or_query)
+            transaction.get(ref_or_query)
 
 
 class Test_Transactional(unittest.TestCase):
