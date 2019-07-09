@@ -146,9 +146,7 @@ def bq_to_arrow_field(bq_field):
 def bq_to_arrow_schema(bq_schema):
     """Return the Arrow schema, corresponding to a given BigQuery schema.
 
-    Raises:
-        ValueError:
-            If the Arrow type of any column cannot be determined.
+    Returns None if any Arrow type cannot be determined.
     """
     arrow_fields = []
     for bq_field in bq_schema:
