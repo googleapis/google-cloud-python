@@ -1581,6 +1581,39 @@ class TestRowIterator(unittest.TestCase):
         )
 
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_to_arrow_w_nulls(self):
+        from google.cloud.bigquery.table import SchemaField
+
+        schema = [SchemaField("name", "STRING"), SchemaField("age", "INTEGER")]
+        rows = [
+            {"f": [{"v": "Donkey"}, {"v": 32}]},
+            {"f": [{"v": "Diddy"}, {"v": 29}]},
+            {"f": [{"v": "Dixie"}, {"v": None}]},
+            {"f": [{"v": None}, {"v": 111}]},
+        ]
+        path = "/foo"
+        api_request = mock.Mock(return_value={"rows": rows})
+        row_iterator = self._make_one(_mock_client(), api_request, path, schema)
+
+        tbl = row_iterator.to_arrow()
+
+        self.assertIsInstance(tbl, pyarrow.Table)
+        self.assertEqual(tbl.num_rows, 4)
+
+        # Check the schema.
+        self.assertEqual(tbl.schema[0].name, "name")
+        self.assertTrue(pyarrow.types.is_string(tbl.schema[0].type))
+        self.assertEqual(tbl.schema[1].name, "age")
+        self.assertTrue(pyarrow.types.is_int64(tbl.schema[1].type))
+
+        # Check the data.
+        tbl_data = tbl.to_pydict()
+        names = tbl_data["name"]
+        ages = tbl_data["age"]
+        self.assertEqual(names, ["Donkey", "Diddy", "Dixie", None])
+        self.assertEqual(ages, [32, 29, None, 111])
+
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_arrow_w_unknown_type(self):
         from google.cloud.bigquery.table import SchemaField
 
