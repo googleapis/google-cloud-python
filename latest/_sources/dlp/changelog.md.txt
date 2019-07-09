@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## 0.12.0
+
+07-09-2019 13:20 PDT
+
+### New Features
+- Add support for publishing findings to GCS; deprecate 'DetectionRule' message (via synth). ([#8610](https://github.com/googleapis/google-cloud-python/pull/8610))
+- Add 'client_options' support, update list method docstrings (via synth). ([#8507](https://github.com/googleapis/google-cloud-python/pull/8507))
+- Allow kwargs to be passed to create_channel; expose support for AVRO files (via synth). ([#8443](https://github.com/googleapis/google-cloud-python/pull/8443))
+
+### Internal / Testing Changes
+- Pin black version (via synth). ([#8581](https://github.com/googleapis/google-cloud-python/pull/8581))
+- Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+- Update docstrings, format protos, update noxfile (via synth).  ([#8239](https://github.com/googleapis/google-cloud-python/pull/8239))
+- Fix coverage in 'types.py' (via synth). ([#8153](https://github.com/googleapis/google-cloud-python/pull/8153))
+- Blacken noxfile.py, setup.py (via synth). ([#8121](https://github.com/googleapis/google-cloud-python/pull/8121))
+- Add empty lines (via synth). ([#8056](https://github.com/googleapis/google-cloud-python/pull/8056))
+- Add nox session `docs`, reorder methods (via synth). ([#7769](https://github.com/googleapis/google-cloud-python/pull/7769))
+
 ## 0.11.0
 
 04-15-2019 15:05 PDT
