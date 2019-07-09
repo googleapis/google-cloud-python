@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Publishing Messages &#8212; google-cloud afc4d94 documentation</title>
+    <title>Publishing Messages &#8212; google-cloud 9c33cb6 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -102,7 +102,7 @@ sufficient time has elapsed (by default, this is 0.05 seconds).</p>
 <span class="kn">from</span> <span class="nn">google.cloud.pubsub</span> <span class="kn">import</span> <span class="n">types</span>
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">PublisherClient</span><span class="p">(</span>
-    <span class="n">batch_settings</span><span class="o">=</span><span class="n">BatchSettings</span><span class="p">(</span><span class="n">max_messages</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
+    <span class="n">batch_settings</span><span class="o">=</span><span class="n">types</span><span class="o">.</span><span class="n">BatchSettings</span><span class="p">(</span><span class="n">max_messages</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
 <span class="p">)</span>
 </pre></div>
 </div>
