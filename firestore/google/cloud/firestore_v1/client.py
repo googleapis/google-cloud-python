@@ -123,11 +123,11 @@ class Client(ClientWithProject):
         if self._firestore_api_internal is None:
 
             if self._emulator_host:
-                transport = firestore_grpc_transport.FirestoreGrpcTransport(
+                self._transport = firestore_grpc_transport.FirestoreGrpcTransport(
                     address=self._emulator_host, channel=self._emulator_channel
                 )
                 self._firestore_api_internal = firestore_client.FirestoreClient(
-                    transport=transport, client_info=self._client_info
+                    transport=self._transport, client_info=self._client_info
                 )
             else:
                 # Use a custom channel.
