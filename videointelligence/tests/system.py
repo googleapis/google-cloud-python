@@ -28,8 +28,6 @@ from google.cloud import videointelligence
 from google.cloud.videointelligence_v1 import enums
 
 PROJECT_NUMBER = os.environ.get("PROJECT_NUMBER")
-PROJECT_OUTSIDE = os.environ.get("GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT")
-BUCKET_OUTSIDE = os.environ.get("GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_BUCKET")
 OUTSIDE_PROJECT_API_KEY = os.environ.get(
     "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT_API_KEY"
 )
