@@ -2082,6 +2082,9 @@ class FutureBoolResult(object):
     def __bool__(self):
         return self._is_successfull
 
+    def __nonzero__(self):
+        return self._is_successfull
+
     def __repr__(self):
         return str(self._is_successfull)
 

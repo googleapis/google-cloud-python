@@ -134,7 +134,7 @@ def blacken(session):
         "tests",
         "docs",
     )
-    
+
 @nox.session(python="3.7")
 def docs(session):
     """Build the docs for this library."""
