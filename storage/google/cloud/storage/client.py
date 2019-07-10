@@ -389,7 +389,7 @@ class Client(ClientWithProject):
 
             >>> with open('file-to-download-to') as file_obj:
             >>>     client.download_blob_to_file(
-            >>>         'gs://bucket_name/path/to/blob', file)
+            >>>         'gs://bucket_name/path/to/blob', file_obj)
 
 
         """
