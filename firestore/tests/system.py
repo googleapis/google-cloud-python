@@ -854,8 +854,8 @@ def test_batch(client, cleanup):
 
 def test_watch_document(client, cleanup):
     db = client
-    collection_ref = db.collection(u"wd-users")
-    doc_ref = collection_ref.document(u"alovelace" + unique_resource_id())
+    collection_ref = db.collection(u"wd-users" + unique_resource_id())
+    doc_ref = collection_ref.document(u"alovelace")
 
     # Initial setting
     doc_ref.set({u"first": u"Jane", u"last": u"Doe", u"born": 1900})
@@ -893,8 +893,8 @@ def test_watch_document(client, cleanup):
 
 def test_watch_collection(client, cleanup):
     db = client
-    collection_ref = db.collection(u"wc-users")
-    doc_ref = collection_ref.document(u"alovelace" + unique_resource_id())
+    collection_ref = db.collection(u"wc-users" + unique_resource_id())
+    doc_ref = collection_ref.document(u"alovelace")
 
     # Initial setting
     doc_ref.set({u"first": u"Jane", u"last": u"Doe", u"born": 1900})
@@ -930,8 +930,8 @@ def test_watch_collection(client, cleanup):
 
 def test_watch_query(client, cleanup):
     db = client
-    collection_ref = db.collection(u"wq-users")
-    doc_ref = collection_ref.document(u"alovelace" + unique_resource_id())
+    collection_ref = db.collection(u"wq-users" + unique_resource_id())
+    doc_ref = collection_ref.document(u"alovelace")
     query_ref = collection_ref.where("first", "==", u"Ada")
 
     # Initial setting
