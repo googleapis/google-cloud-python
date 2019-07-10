@@ -199,6 +199,28 @@ class Batch(object):
 
         _assign_entity_to_pb(entity_pb, entity)
 
+    def put_entity_pb(self, entity_pb):
+        if self._status != self._IN_PROGRESS:
+            raise ValueError("Batch must be in progress to put()")
+
+        if entity_pb.key is None:
+            raise ValueError("Entity must have a key")
+
+        if self.project != entity_pb.key.partition_id.project_id:
+            raise ValueError("Key must be from same project as batch")
+
+        # Key is considered partial if neither "id" nor "name" values of the key
+        # "path" field are set
+        is_key_partial = (not entity_pb.key.path or (not entity_pb.key.path[0].name and not
+                          entity_pb.key.path[0].id))
+
+        if is_key_partial:
+            insert_entity_pb = self._add_partial_key_entity_pb()
+            insert_entity_pb.CopyFrom(entity_pb)
+        else:
+            upsert_entity_pb = self._add_complete_key_entity_pb()
+            upsert_entity_pb.CopyFrom(entity_pb)
+
     def delete(self, key):
         """Remember a key to be deleted during :meth:`commit`.
 

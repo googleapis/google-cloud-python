@@ -365,6 +365,23 @@ class Client(ClientWithProject):
         if entities:
             return entities[0]
 
+        return None
+
+    def get_entity_pb(self, key, missing=None, deferred=None, transaction=None, eventual=False):
+        """Retrieve a single raw Entity Protobuf object from a datastore.
+        """
+        entity_pbs = self.get_multi_entity_pb(
+            keys=[key],
+            missing=missing,
+            deferred=deferred,
+            transaction=transaction,
+            eventual=eventual,
+        )
+        if entity_pbs:
+            return entity_pbs[0]
+
+        return None
+
     def get_multi(
         self, keys, missing=None, deferred=None, transaction=None, eventual=False
     ):
@@ -399,38 +416,17 @@ class Client(ClientWithProject):
                  which does not match our project.
         :raises: :class:`ValueError` if eventual is True and in a transaction.
         """
-        if not keys:
-            return []
+        entity_pbs = self._get_multi(keys=keys, missing=missing, deferred=deferred,
+                                     transaction=transaction, eventual=eventual)
 
-        ids = set(key.project for key in keys)
-        for current_id in ids:
-            if current_id != self.project:
-                raise ValueError("Keys do not match project")
+        entities = [helpers.entity_from_protobuf(entity_pb) for entity_pb in entity_pbs]
+        return entities
 
-        if transaction is None:
-            transaction = self.current_transaction
-
-        entity_pbs = _extended_lookup(
-            datastore_api=self._datastore_api,
-            project=self.project,
-            key_pbs=[key.to_protobuf() for key in keys],
-            eventual=eventual,
-            missing=missing,
-            deferred=deferred,
-            transaction_id=transaction and transaction.id,
-        )
-
-        if missing is not None:
-            missing[:] = [
-                helpers.entity_from_protobuf(missed_pb) for missed_pb in missing
-            ]
-
-        if deferred is not None:
-            deferred[:] = [
-                helpers.key_from_protobuf(deferred_pb) for deferred_pb in deferred
-            ]
-
-        return [helpers.entity_from_protobuf(entity_pb) for entity_pb in entity_pbs]
+    def get_multi_entity_pb(
+        self, keys, missing=None, deferred=None, transaction=None, eventual=False
+    ):
+        return self._get_multi(keys=keys, missing=missing, deferred=deferred,
+                               transaction=transaction, eventual=eventual)
 
     def put(self, entity):
         """Save an entity in the Cloud Datastore.
@@ -445,6 +441,12 @@ class Client(ClientWithProject):
         :param entity: The entity to be saved to the datastore.
         """
         self.put_multi(entities=[entity])
+
+    def put_entity_pb(self, entity_pb):
+        """
+        Save a single raw Entity Protobuf object in the Cloud Datastore.
+        """
+        self.put_multi_entity_pbs(entity_pbs=[entity_pb])
 
     def put_multi(self, entities):
         """Save entities in the Cloud Datastore.
@@ -469,6 +471,26 @@ class Client(ClientWithProject):
 
         for entity in entities:
             current.put(entity)
+
+        if not in_batch:
+            current.commit()
+
+    def put_multi_entity_pbs(self, entity_pbs):
+        """
+        Save multiple raw Entity Protobuf objects in the Cloud Datastore.
+        """
+        if not entity_pbs:
+            return
+
+        current = self.current_batch
+        in_batch = current is not None
+
+        if not in_batch:
+            current = self.batch()
+            current.begin()
+
+        for entity_pb in entity_pbs:
+            current.put_entity_pb(entity_pb)
 
         if not in_batch:
             current.commit()
@@ -675,3 +697,37 @@ class Client(ClientWithProject):
         self._datastore_api.reserve_ids(complete_key.project, complete_key_pbs)
 
         return None
+
+    def _get_multi(self, keys, missing=None, deferred=None, transaction=None, eventual=False):
+        if not keys:
+            return []
+
+        ids = set(key.project for key in keys)
+        for current_id in ids:
+            if current_id != self.project:
+                raise ValueError("Keys do not match project")
+
+        if transaction is None:
+            transaction = self.current_transaction
+
+        entity_pbs = _extended_lookup(
+            datastore_api=self._datastore_api,
+            project=self.project,
+            key_pbs=[key.to_protobuf() for key in keys],
+            eventual=eventual,
+            missing=missing,
+            deferred=deferred,
+            transaction_id=transaction and transaction.id,
+        )
+
+        if missing is not None:
+            missing[:] = [
+                helpers.entity_from_protobuf(missed_pb) for missed_pb in missing
+            ]
+
+        if deferred is not None:
+            deferred[:] = [
+                helpers.key_from_protobuf(deferred_pb) for deferred_pb in deferred
+            ]
+
+        return entity_pbs

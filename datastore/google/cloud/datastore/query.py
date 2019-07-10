@@ -392,6 +392,32 @@ class Query(object):
             eventual=eventual,
         )
 
+    def fetch_entity_pb(
+        self,
+        limit=None,
+        offset=0,
+        start_cursor=None,
+        end_cursor=None,
+        client=None,
+        eventual=False,
+    ):
+        """Execute the query, return iterator for the matching raw Entity
+        Protobuf objects.
+        """
+        if client is None:
+            client = self._client
+
+        return Iterator(
+            self,
+            client,
+            limit=limit,
+            offset=offset,
+            start_cursor=start_cursor,
+            end_cursor=end_cursor,
+            eventual=eventual,
+            item_to_value=lambda iterator, entity_pb: entity_pb
+        )
+
 
 class Iterator(page_iterator.Iterator):
     """Represent the state of a given execution of a Query.
@@ -436,10 +462,14 @@ class Iterator(page_iterator.Iterator):
         start_cursor=None,
         end_cursor=None,
         eventual=False,
+        item_to_value=None,
     ):
+        if not item_to_value:
+            item_to_value = _item_to_entity
+
         super(Iterator, self).__init__(
             client=client,
-            item_to_value=_item_to_entity,
+            item_to_value=item_to_value,
             page_token=start_cursor,
             max_results=limit,
         )
