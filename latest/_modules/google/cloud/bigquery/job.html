@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job &#8212; google-cloud 5f9c090 documentation</title>
+    <title>google.cloud.bigquery.job &#8212; google-cloud d5f5d24 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -2931,6 +2931,44 @@
         <span class="n">rows</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">list_rows</span><span class="p">(</span><span class="n">dest_table</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span>
         <span class="n">rows</span><span class="o">.</span><span class="n">_preserve_order</span> <span class="o">=</span> <span class="n">_contains_order_by</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">rows</span></div>
+
+<div class="viewcode-block" id="QueryJob.to_arrow"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.job.QueryJob.html#google.cloud.bigquery.job.QueryJob.to_arrow">[docs]</a>    <span class="k">def</span> <span class="nf">to_arrow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progress_bar_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;[Beta] Create a class:`pyarrow.Table` by loading all pages of a</span>
+<span class="sd">        table or query.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            progress_bar_type (Optional[str]):</span>
+<span class="sd">                If set, use the `tqdm &lt;https://tqdm.github.io/&gt;`_ library to</span>
+<span class="sd">                display a progress bar while the data downloads. Install the</span>
+<span class="sd">                ``tqdm`` package to use this feature.</span>
+
+<span class="sd">                Possible values of ``progress_bar_type`` include:</span>
+
+<span class="sd">                ``None``</span>
+<span class="sd">                  No progress bar.</span>
+<span class="sd">                ``&#39;tqdm&#39;``</span>
+<span class="sd">                  Use the :func:`tqdm.tqdm` function to print a progress bar</span>
+<span class="sd">                  to :data:`sys.stderr`.</span>
+<span class="sd">                ``&#39;tqdm_notebook&#39;``</span>
+<span class="sd">                  Use the :func:`tqdm.tqdm_notebook` function to display a</span>
+<span class="sd">                  progress bar as a Jupyter notebook widget.</span>
+<span class="sd">                ``&#39;tqdm_gui&#39;``</span>
+<span class="sd">                  Use the :func:`tqdm.tqdm_gui` function to display a</span>
+<span class="sd">                  progress bar as a graphical dialog box.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pyarrow.Table</span>
+<span class="sd">                A :class:`pyarrow.Table` populated with row data and column</span>
+<span class="sd">                headers from the query results. The column headers are derived</span>
+<span class="sd">                from the destination table&#39;s schema.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError:</span>
+<span class="sd">                If the :mod:`pyarrow` library cannot be imported.</span>
+
+<span class="sd">        ..versionadded:: 1.17.0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">()</span><span class="o">.</span><span class="n">to_arrow</span><span class="p">(</span><span class="n">progress_bar_type</span><span class="o">=</span><span class="n">progress_bar_type</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="QueryJob.to_dataframe"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.job.QueryJob.html#google.cloud.bigquery.job.QueryJob.to_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bqstorage_client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dtypes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progress_bar_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a pandas DataFrame from a QueryJob</span>

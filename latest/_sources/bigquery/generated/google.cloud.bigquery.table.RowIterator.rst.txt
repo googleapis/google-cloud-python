@@ -11,6 +11,9 @@ google.cloud.bigquery.table.RowIterator
 
    
    
+   ~RowIterator.to_arrow
+   
+   
    ~RowIterator.to_dataframe
    
 

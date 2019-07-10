@@ -50,6 +50,9 @@ google.cloud.bigquery.job.QueryJob
    ~QueryJob.to_api_repr
    
    
+   ~QueryJob.to_arrow
+   
+   
    ~QueryJob.to_dataframe
    
 

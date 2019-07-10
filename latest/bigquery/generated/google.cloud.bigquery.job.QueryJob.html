@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job.QueryJob &#8212; google-cloud 5f9c090 documentation</title>
+    <title>google.cloud.bigquery.job.QueryJob &#8212; google-cloud d5f5d24 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -83,7 +83,10 @@
 <tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJob.to_api_repr" title="google.cloud.bigquery.job.QueryJob.to_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_api_repr</span></code></a>()</td>
 <td>Generate a resource for <code class="xref py py-meth docutils literal notranslate"><span class="pre">_begin()</span></code>.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJob.to_dataframe" title="google.cloud.bigquery.job.QueryJob.to_dataframe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_dataframe</span></code></a>([bqstorage_client,&nbsp;dtypes,&nbsp;…])</td>
+<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJob.to_arrow" title="google.cloud.bigquery.job.QueryJob.to_arrow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_arrow</span></code></a>([progress_bar_type])</td>
+<td>[Beta] Create a class:<cite>pyarrow.Table</cite> by loading all pages of a table or query.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJob.to_dataframe" title="google.cloud.bigquery.job.QueryJob.to_dataframe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_dataframe</span></code></a>([bqstorage_client,&nbsp;dtypes,&nbsp;…])</td>
 <td>Return a pandas DataFrame from a QueryJob</td>
 </tr>
 </tbody>
@@ -1068,6 +1071,49 @@ from job statistics.</p>
 <dt id="google.cloud.bigquery.job.QueryJob.to_api_repr">
 <code class="descname">to_api_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/job.html#QueryJob.to_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.QueryJob.to_api_repr" title="Permalink to this definition">#</a></dt>
 <dd><p>Generate a resource for <code class="xref py py-meth docutils literal notranslate"><span class="pre">_begin()</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.QueryJob.to_arrow">
+<code class="descname">to_arrow</code><span class="sig-paren">(</span><em>progress_bar_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/job.html#QueryJob.to_arrow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.QueryJob.to_arrow" title="Permalink to this definition">#</a></dt>
+<dd><p>[Beta] Create a class:<cite>pyarrow.Table</cite> by loading all pages of a
+table or query.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>progress_bar_type</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – <p>If set, use the <a class="reference external" href="https://tqdm.github.io/">tqdm</a> library to
+display a progress bar while the data downloads. Install the
+<code class="docutils literal notranslate"><span class="pre">tqdm</span></code> package to use this feature.</p>
+<p>Possible values of <code class="docutils literal notranslate"><span class="pre">progress_bar_type</span></code> include:</p>
+<dl class="docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">None</span></code></dt>
+<dd>No progress bar.</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">'tqdm'</span></code></dt>
+<dd>Use the <code class="xref py py-func docutils literal notranslate"><span class="pre">tqdm.tqdm()</span></code> function to print a progress bar
+to <a class="reference external" href="https://docs.python.org/3/library/sys.html#sys.stderr" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">sys.stderr</span></code></a>.</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">'tqdm_notebook'</span></code></dt>
+<dd>Use the <code class="xref py py-func docutils literal notranslate"><span class="pre">tqdm.tqdm_notebook()</span></code> function to display a
+progress bar as a Jupyter notebook widget.</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">'tqdm_gui'</span></code></dt>
+<dd>Use the <code class="xref py py-func docutils literal notranslate"><span class="pre">tqdm.tqdm_gui()</span></code> function to display a
+progress bar as a graphical dialog box.</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>pyarrow.Table</dt>
+<dd>A <code class="xref py py-class docutils literal notranslate"><span class="pre">pyarrow.Table</span></code> populated with row data and column
+headers from the query results. The column headers are derived
+from the destination table’s schema.</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pyarrow</span></code> library cannot be imported.</td>
+</tr>
+</tbody>
+</table>
+<p>..versionadded:: 1.17.0</p>
 </dd></dl>
 
 <dl class="method">
