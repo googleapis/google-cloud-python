@@ -140,7 +140,7 @@ def _bq_to_avro_blocks(bq_blocks, avro_schema_json):
             fastavro.schemaless_writer(blockio, avro_schema, row)
 
         response = bigquery_storage_v1beta1.types.ReadRowsResponse()
-        response.avro_rows.row_count = len(block)
+        response.row_count = len(block)
         response.avro_rows.serialized_binary_rows = blockio.getvalue()
         avro_blocks.append(response)
     return avro_blocks

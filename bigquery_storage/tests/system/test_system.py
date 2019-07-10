@@ -104,7 +104,7 @@ def test_read_rows_to_dataframe_w_arrow(client, project_id):
         table_ref,
         "projects/{}".format(project_id),
         format_=bigquery_storage_v1beta1.enums.DataFormat.ARROW,
-        requested_streams=1
+        requested_streams=1,
     )
     schema_type = session.WhichOneof("schema")
     assert schema_type == "arrow_schema"
