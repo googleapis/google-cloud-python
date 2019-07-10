@@ -12,6 +12,7 @@
 
 ### Implementation Changes
 - Add missing transforms to 'google.cloud.firestore' shim. ([#8481](https://github.com/googleapis/google-cloud-python/pull/8481))
+- Preserve reference to missing documents in 'Client.get_all'. ([#8472](https://github.com/googleapis/google-cloud-python/pull/8472))
 - Add gRPC keepalive to gapic client initialization. ([#8264](https://github.com/googleapis/google-cloud-python/pull/8264))
 - Add disclaimer to auto-generated template files. ([#8314](https://github.com/googleapis/google-cloud-python/pull/8314))
 - Use correct environment variable to guard the 'system' part. ([#7912](https://github.com/googleapis/google-cloud-python/pull/7912))
@@ -22,7 +23,6 @@
 - Add 'FieldPath.documentId()'. ([#8543](https://github.com/googleapis/google-cloud-python/pull/8543))
 
 ### Documentation
-- Preserve reference to missing documents in 'Client.get_all'. ([#8472](https://github.com/googleapis/google-cloud-python/pull/8472))
 - Fix docstring example for 'Client.collection_group'. ([#8438](https://github.com/googleapis/google-cloud-python/pull/8438))
 - Normalize docstring class refs. ([#8102](https://github.com/googleapis/google-cloud-python/pull/8102))
 
@@ -32,8 +32,6 @@
 - Declare encoding as utf-8 in pb2 files (via synth). ([#8352](https://github.com/googleapis/google-cloud-python/pull/8352))
 - Suppress checking 'cov-fail-under' in nox default session (via synth).  ([#8241](https://github.com/googleapis/google-cloud-python/pull/8241))
 - Blacken noxfile.py, setup.py (via synth). ([#8123](https://github.com/googleapis/google-cloud-python/pull/8123))
-- Revert "Replace relative class refs with fully-qualifed names. ([#8039](https://github.com/googleapis/google-cloud-python/pull/8039))" ([#8095](https://github.com/googleapis/google-cloud-python/pull/8095))
-- Replace relative class refs with fully-qualifed names. ([#8039](https://github.com/googleapis/google-cloud-python/pull/8039))
 - Add empty lines (via synth). ([#8058](https://github.com/googleapis/google-cloud-python/pull/8058))
 
 ## 1.2.0
