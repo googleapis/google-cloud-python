@@ -88,6 +88,20 @@ class CompletionClient(object):
         )
 
     @classmethod
+    def company_without_tenant_path(cls, project, company):
+        """Return a fully-qualified company_without_tenant string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/companies/{company}", project=project, company=company
+        )
+
+    @classmethod
+    def project_path(cls, project):
+        """Return a fully-qualified project string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}", project=project
+        )
+
+    @classmethod
     def tenant_path(cls, project, tenant):
         """Return a fully-qualified tenant string."""
         return google.api_core.path_template.expand(
