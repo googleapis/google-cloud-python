@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.talent_v4beta1.gapic.job_service_client &#8212; google-cloud bbf866c documentation</title>
+    <title>google.cloud.talent_v4beta1.gapic.job_service_client &#8212; google-cloud f94991b documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -138,6 +138,13 @@
             <span class="n">company</span><span class="o">=</span><span class="n">company</span><span class="p">,</span>
         <span class="p">)</span></div>
 
+<div class="viewcode-block" id="JobServiceClient.company_without_tenant_path"><a class="viewcode-back" href="../../../../../talent/gapic/v4beta1/api.html#google.cloud.talent_v4beta1.JobServiceClient.company_without_tenant_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">company_without_tenant_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">company</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified company_without_tenant string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s2">&quot;projects/</span><span class="si">{project}</span><span class="s2">/companies/</span><span class="si">{company}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">company</span><span class="o">=</span><span class="n">company</span>
+        <span class="p">)</span></div>
+
 <div class="viewcode-block" id="JobServiceClient.job_path"><a class="viewcode-back" href="../../../../../talent/gapic/v4beta1/api.html#google.cloud.talent_v4beta1.JobServiceClient.job_path">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">job_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">tenant</span><span class="p">,</span> <span class="n">jobs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a fully-qualified job string.&quot;&quot;&quot;</span>
@@ -146,6 +153,20 @@
             <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
             <span class="n">tenant</span><span class="o">=</span><span class="n">tenant</span><span class="p">,</span>
             <span class="n">jobs</span><span class="o">=</span><span class="n">jobs</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="JobServiceClient.job_without_tenant_path"><a class="viewcode-back" href="../../../../../talent/gapic/v4beta1/api.html#google.cloud.talent_v4beta1.JobServiceClient.job_without_tenant_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">job_without_tenant_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">jobs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified job_without_tenant string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s2">&quot;projects/</span><span class="si">{project}</span><span class="s2">/jobs/</span><span class="si">{jobs}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">jobs</span><span class="o">=</span><span class="n">jobs</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="JobServiceClient.project_path"><a class="viewcode-back" href="../../../../../talent/gapic/v4beta1/api.html#google.cloud.talent_v4beta1.JobServiceClient.project_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">project_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified project string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s2">&quot;projects/</span><span class="si">{project}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="JobServiceClient.tenant_path"><a class="viewcode-back" href="../../../../../talent/gapic/v4beta1/api.html#google.cloud.talent_v4beta1.JobServiceClient.tenant_path">[docs]</a>    <span class="nd">@classmethod</span>
