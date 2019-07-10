@@ -120,7 +120,6 @@ def system(session):
 
     # Additional set up for VPC SC.
     env = {
-       "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT_API_KEY": "AIzaSyCgRxOwpqt-lO6FD4sIqko23wwwexA4YsM",
        "PROJECT_NUMBER": "570941833855",
        "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_IP": "10.1.1.1",
        "GOOGLE_CLOUD_TESTS_VPCSC_INSIDE_IP": "55.55.0.0",
