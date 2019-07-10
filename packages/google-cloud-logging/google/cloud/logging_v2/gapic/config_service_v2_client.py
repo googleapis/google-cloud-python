@@ -81,12 +81,83 @@ class ConfigServiceV2Client(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
+    def billing_path(cls, billing_account):
+        """Return a fully-qualified billing string."""
+        return google.api_core.path_template.expand(
+            "billingAccounts/{billing_account}", billing_account=billing_account
+        )
+
+    @classmethod
+    def billing_exclusion_path(cls, billing_account, exclusion):
+        """Return a fully-qualified billing_exclusion string."""
+        return google.api_core.path_template.expand(
+            "billingAccounts/{billing_account}/exclusions/{exclusion}",
+            billing_account=billing_account,
+            exclusion=exclusion,
+        )
+
+    @classmethod
+    def billing_sink_path(cls, billing_account, sink):
+        """Return a fully-qualified billing_sink string."""
+        return google.api_core.path_template.expand(
+            "billingAccounts/{billing_account}/sinks/{sink}",
+            billing_account=billing_account,
+            sink=sink,
+        )
+
+    @classmethod
     def exclusion_path(cls, project, exclusion):
         """Return a fully-qualified exclusion string."""
         return google.api_core.path_template.expand(
             "projects/{project}/exclusions/{exclusion}",
             project=project,
             exclusion=exclusion,
+        )
+
+    @classmethod
+    def folder_path(cls, folder):
+        """Return a fully-qualified folder string."""
+        return google.api_core.path_template.expand("folders/{folder}", folder=folder)
+
+    @classmethod
+    def folder_exclusion_path(cls, folder, exclusion):
+        """Return a fully-qualified folder_exclusion string."""
+        return google.api_core.path_template.expand(
+            "folders/{folder}/exclusions/{exclusion}",
+            folder=folder,
+            exclusion=exclusion,
+        )
+
+    @classmethod
+    def folder_sink_path(cls, folder, sink):
+        """Return a fully-qualified folder_sink string."""
+        return google.api_core.path_template.expand(
+            "folders/{folder}/sinks/{sink}", folder=folder, sink=sink
+        )
+
+    @classmethod
+    def organization_path(cls, organization):
+        """Return a fully-qualified organization string."""
+        return google.api_core.path_template.expand(
+            "organizations/{organization}", organization=organization
+        )
+
+    @classmethod
+    def organization_exclusion_path(cls, organization, exclusion):
+        """Return a fully-qualified organization_exclusion string."""
+        return google.api_core.path_template.expand(
+            "organizations/{organization}/exclusions/{exclusion}",
+            organization=organization,
+            exclusion=exclusion,
+        )
+
+    @classmethod
+    def organization_sink_path(cls, organization, sink):
+        """Return a fully-qualified organization_sink string."""
+        return google.api_core.path_template.expand(
+            "organizations/{organization}/sinks/{sink}",
+            organization=organization,
+            sink=sink,
         )
 
     @classmethod
