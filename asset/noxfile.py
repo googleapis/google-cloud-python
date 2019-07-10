@@ -120,10 +120,9 @@ def system(session):
 
     # Additional setup for VPCSC system tests
     env = {
-        "PROJECT_ID": "secure-gcp-test-project-4",
-        "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT": os.environ.get(
-            "PROJECT_ID"
-        ),
+        "PROJECT_ID": os.environ.get("PROJECT_ID"),
+        "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT": "secure-gcp-test-project-4",
+        "GOOGLE_CLOUD_TESTS_IN_VPCSC": "true",
     }
 
     # Run py.test against the system tests.
