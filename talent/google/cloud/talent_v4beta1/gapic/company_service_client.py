@@ -231,18 +231,15 @@ class CompanyServiceClient(object):
             >>> response = client.create_company(parent, company)
 
         Args:
-            parent (str): Required.
-
-                Resource name of the tenant under which the company is created.
+            parent (str): Required. Resource name of the tenant under which the company is
+                created.
 
                 The format is "projects/{project\_id}/tenants/{tenant\_id}", for
                 example, "projects/api-test-project/tenant/foo".
 
                 Tenant id is optional and a default tenant is created if unspecified,
                 for example, "projects/api-test-project".
-            company (Union[dict, ~google.cloud.talent_v4beta1.types.Company]): Required.
-
-                The company to be created.
+            company (Union[dict, ~google.cloud.talent_v4beta1.types.Company]): Required. The company to be created.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.Company`
@@ -316,9 +313,7 @@ class CompanyServiceClient(object):
             >>> response = client.get_company(name)
 
         Args:
-            name (str): Required.
-
-                The resource name of the company to be retrieved.
+            name (str): Required. The resource name of the company to be retrieved.
 
                 The format is
                 "projects/{project\_id}/tenants/{tenant\_id}/companies/{company\_id}",
@@ -396,9 +391,8 @@ class CompanyServiceClient(object):
             >>> response = client.update_company(company)
 
         Args:
-            company (Union[dict, ~google.cloud.talent_v4beta1.types.Company]): Required.
-
-                The company resource to replace the current resource in the system.
+            company (Union[dict, ~google.cloud.talent_v4beta1.types.Company]): Required. The company resource to replace the current resource in the
+                system.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.Company`
@@ -483,9 +477,7 @@ class CompanyServiceClient(object):
             >>> client.delete_company(name)
 
         Args:
-            name (str): Required.
-
-                The resource name of the company to be deleted.
+            name (str): Required. The resource name of the company to be deleted.
 
                 The format is
                 "projects/{project\_id}/tenants/{tenant\_id}/companies/{company\_id}",
@@ -572,9 +564,8 @@ class CompanyServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): Required.
-
-                Resource name of the tenant under which the company is created.
+            parent (str): Required. Resource name of the tenant under which the company is
+                created.
 
                 The format is "projects/{project\_id}/tenants/{tenant\_id}", for
                 example, "projects/api-test-project/tenant/foo".
@@ -586,9 +577,7 @@ class CompanyServiceClient(object):
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
-            require_open_jobs (bool): Optional.
-
-                Set to true if the companies requested must have open jobs.
+            require_open_jobs (bool): Optional. Set to true if the companies requested must have open jobs.
 
                 Defaults to false.
 

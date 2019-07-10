@@ -754,7 +754,7 @@ class TestStorageSignURLs(unittest.TestCase):
             cls.skipTest("Signing tests requires a service account credential")
 
         bucket_name = "gcp-signing" + unique_resource_id()
-        cls.bucket = Config.CLIENT.create_bucket(bucket_name)
+        cls.bucket = retry_429(Config.CLIENT.create_bucket)(bucket_name)
         cls.blob = cls.bucket.blob("README.txt")
         cls.blob.upload_from_string(cls.BLOB_CONTENT)
 
@@ -1683,6 +1683,7 @@ class TestIAMConfiguration(unittest.TestCase):
         with self.assertRaises(exceptions.BadRequest):
             blob_acl.save()
 
+    @unittest.skipUnless(False, "Back-end fix for BPO/UBLA expected 2019-07-12")
     def test_bpo_set_unset_preserves_acls(self):
         new_bucket_name = "bpo-acls" + unique_resource_id("-")
         self.assertRaises(
@@ -1703,6 +1704,8 @@ class TestIAMConfiguration(unittest.TestCase):
         # Set BPO
         bucket.iam_configuration.bucket_policy_only_enabled = True
         bucket.patch()
+
+        self.assertTrue(bucket.iam_configuration.bucket_policy_only_enabled)
 
         # While BPO is set, cannot get / set ACLs
         with self.assertRaises(exceptions.BadRequest):
