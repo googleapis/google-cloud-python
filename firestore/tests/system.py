@@ -59,8 +59,9 @@ def cleanup():
 
 def test_create_document(client, cleanup):
     now = datetime.datetime.utcnow().replace(tzinfo=UTC)
-    document_id = "shun" + unique_resource_id("-")
-    document = client.document("collek", document_id)
+    collection_id = "doc-create" + unique_resource_id("-")
+    document_id = "doc" + unique_resource_id("-")
+    document = client.document(collection_id, document_id)
     # Add to clean-up before API request (in case ``create()`` fails).
     cleanup(document)
 
@@ -99,8 +100,9 @@ def test_create_document(client, cleanup):
 
 
 def test_create_document_w_subcollection(client, cleanup):
-    document_id = "shun" + unique_resource_id("-")
-    document = client.document("collek", document_id)
+    collection_id = "doc-create-sub" + unique_resource_id("-")
+    document_id = "doc" + unique_resource_id("-")
+    document = client.document(collection_id, document_id)
     # Add to clean-up before API request (in case ``create()`` fails).
     cleanup(document)
 
@@ -399,9 +401,10 @@ def test_document_delete(client, cleanup):
 
 
 def test_collection_add(client, cleanup):
-    collection1 = client.collection("collek")
-    collection2 = client.collection("collek", "shun", "child")
-    collection3 = client.collection("collek", "table", "child")
+    collection_id = "coll-add" + unique_resource_id("-")
+    collection1 = client.collection(collection_id)
+    collection2 = client.collection(collection_id, "doc", "child")
+    collection3 = client.collection(collection_id, "table", "child")
     explicit_doc_id = "hula" + unique_resource_id("-")
 
     assert set(collection1.list_documents()) == set()
@@ -433,7 +436,7 @@ def test_collection_add(client, cleanup):
     assert snapshot2.update_time == update_time2
     assert document_ref2.id == explicit_doc_id
 
-    nested_ref = collection1.document("shun")
+    nested_ref = collection1.document("doc")
 
     # Auto-ID for nested collection.
     data3 = {"quux": b"\x00\x01\x02\x03"}
@@ -484,8 +487,9 @@ def test_collection_add(client, cleanup):
 
 
 def test_query_stream(client, cleanup):
+    collection_id = "qs" + unique_resource_id("-")
     sub_collection = "child" + unique_resource_id("-")
-    collection = client.collection("collek", "shun", sub_collection)
+    collection = client.collection(collection_id, "doc", sub_collection)
 
     stored = {}
     num_vals = 5

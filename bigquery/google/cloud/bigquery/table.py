@@ -34,6 +34,11 @@ except ImportError:  # pragma: NO COVER
     pandas = None
 
 try:
+    import pyarrow
+except ImportError:  # pragma: NO COVER
+    pyarrow = None
+
+try:
     import tqdm
 except ImportError:  # pragma: NO COVER
     tqdm = None
@@ -57,6 +62,10 @@ _NO_BQSTORAGE_ERROR = (
 _NO_PANDAS_ERROR = (
     "The pandas library is not installed, please install "
     "pandas to use the to_dataframe() function."
+)
+_NO_PYARROW_ERROR = (
+    "The pyarrow library is not installed, please install "
+    "pandas to use the to_arrow() function."
 )
 _NO_TQDM_ERROR = (
     "A progress bar was requested, but there was an error loading the tqdm "
@@ -1394,6 +1403,72 @@ class RowIterator(HTTPIterator):
             warnings.warn(_NO_TQDM_ERROR, UserWarning, stacklevel=3)
         return None
 
+    def _to_arrow_iterable(self):
+        """Create an iterable of arrow RecordBatches, to process the table as a stream."""
+        for record_batch in _pandas_helpers.download_arrow_tabledata_list(
+            iter(self.pages), self.schema
+        ):
+            yield record_batch
+
+    def to_arrow(self, progress_bar_type=None):
+        """[Beta] Create a class:`pyarrow.Table` by loading all pages of a
+        table or query.
+
+        Args:
+            progress_bar_type (Optional[str]):
+                If set, use the `tqdm <https://tqdm.github.io/>`_ library to
+                display a progress bar while the data downloads. Install the
+                ``tqdm`` package to use this feature.
+
+                Possible values of ``progress_bar_type`` include:
+
+                ``None``
+                  No progress bar.
+                ``'tqdm'``
+                  Use the :func:`tqdm.tqdm` function to print a progress bar
+                  to :data:`sys.stderr`.
+                ``'tqdm_notebook'``
+                  Use the :func:`tqdm.tqdm_notebook` function to display a
+                  progress bar as a Jupyter notebook widget.
+                ``'tqdm_gui'``
+                  Use the :func:`tqdm.tqdm_gui` function to display a
+                  progress bar as a graphical dialog box.
+
+        Returns:
+            pyarrow.Table
+                A :class:`pyarrow.Table` populated with row data and column
+                headers from the query results. The column headers are derived
+                from the destination table's schema.
+
+        Raises:
+            ValueError:
+                If the :mod:`pyarrow` library cannot be imported.
+
+        ..versionadded:: 1.17.0
+        """
+        if pyarrow is None:
+            raise ValueError(_NO_PYARROW_ERROR)
+
+        progress_bar = self._get_progress_bar(progress_bar_type)
+
+        record_batches = []
+        for record_batch in self._to_arrow_iterable():
+            record_batches.append(record_batch)
+
+            if progress_bar is not None:
+                # In some cases, the number of total rows is not populated
+                # until the first page of rows is fetched. Update the
+                # progress bar's total to keep an accurate count.
+                progress_bar.total = progress_bar.total or self.total_rows
+                progress_bar.update(record_batch.num_rows)
+
+        if progress_bar is not None:
+            # Indicate that the download has finished.
+            progress_bar.close()
+
+        arrow_schema = _pandas_helpers.bq_to_arrow_schema(self._schema)
+        return pyarrow.Table.from_batches(record_batches, schema=arrow_schema)
+
     def _to_dataframe_iterable(self, bqstorage_client=None, dtypes=None):
         """Create an iterable of pandas DataFrames, to process the table as a stream.
 
@@ -1537,6 +1612,21 @@ class _EmptyRowIterator(object):
     schema = ()
     pages = ()
     total_rows = 0
+
+    def to_arrow(self, progress_bar_type=None):
+        """[Beta] Create an empty class:`pyarrow.Table`.
+
+        Args:
+            progress_bar_type (Optional[str]):
+                Ignored. Added for compatibility with RowIterator.
+
+        Returns:
+            pyarrow.Table:
+                An empty :class:`pyarrow.Table`.
+        """
+        if pyarrow is None:
+            raise ValueError(_NO_PYARROW_ERROR)
+        return pyarrow.Table.from_arrays(())
 
     def to_dataframe(self, bqstorage_client=None, dtypes=None, progress_bar_type=None):
         """Create an empty dataframe.
@@ -1734,6 +1824,25 @@ def _item_to_row(iterator, resource):
     )
 
 
+def _tabledata_list_page_columns(schema, response):
+    """Make a generator of all the columns in a page from tabledata.list.
+
+    This enables creating a :class:`pandas.DataFrame` and other
+    column-oriented data structures such as :class:`pyarrow.RecordBatch`
+    """
+    columns = []
+    rows = response.get("rows", [])
+
+    def get_column_data(field_index, field):
+        for row in rows:
+            yield _helpers._field_from_json(row["f"][field_index]["v"], field)
+
+    for field_index, field in enumerate(schema):
+        columns.append(get_column_data(field_index, field))
+
+    return columns
+
+
 # pylint: disable=unused-argument
 def _rows_page_start(iterator, page, response):
     """Grab total rows when :class:`~google.cloud.iterator.Page` starts.
@@ -1747,6 +1856,10 @@ def _rows_page_start(iterator, page, response):
     :type response: dict
     :param response: The JSON API response for a page of rows in a table.
     """
+    # Make a (lazy) copy of the page in column-oriented format for use in data
+    # science packages.
+    page._columns = _tabledata_list_page_columns(iterator._schema, response)
+
     total_rows = response.get("totalRows")
     if total_rows is not None:
         total_rows = int(total_rows)
