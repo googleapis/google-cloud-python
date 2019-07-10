@@ -863,11 +863,9 @@ def test_watch_document(client, cleanup):
 
     sleep(1)
 
-    called = []
     # Setup listener
     def on_snapshot(docs, changes, read_time):
         on_snapshot.called_count += 1
-        called.append((docs, changes, read_time))
 
     on_snapshot.called_count = 0
 
