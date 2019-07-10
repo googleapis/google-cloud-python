@@ -42,7 +42,9 @@ extras = {
     "pandas": ["pandas>=0.17.1"],
     # Exclude PyArrow dependency from Windows Python 2.7.
     'pyarrow: platform_system != "Windows" or python_version >= "3.4"': [
-        "pyarrow>=0.4.1"
+        # Bad Linux release for 0.14.0.
+        # https://issues.apache.org/jira/browse/ARROW-5868
+        "pyarrow>=0.4.1, != 0.14.0"
     ],
     "tqdm": ["tqdm >= 4.0.0, <5.0.0dev"],
     "fastparquet": ["fastparquet", "python-snappy"],

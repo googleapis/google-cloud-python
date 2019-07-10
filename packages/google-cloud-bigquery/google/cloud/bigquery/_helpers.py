@@ -197,6 +197,14 @@ def _field_to_index_mapping(schema):
     return {f.name: i for i, f in enumerate(schema)}
 
 
+def _field_from_json(resource, field):
+    converter = _CELLDATA_FROM_JSON.get(field.field_type, lambda value, _: value)
+    if field.mode == "REPEATED":
+        return [converter(item["v"], field) for item in resource]
+    else:
+        return converter(resource, field)
+
+
 def _row_tuple_from_json(row, schema):
     """Convert JSON row data to row with appropriate types.
 
@@ -214,12 +222,7 @@ def _row_tuple_from_json(row, schema):
     """
     row_data = []
     for field, cell in zip(schema, row["f"]):
-        converter = _CELLDATA_FROM_JSON[field.field_type]
-        if field.mode == "REPEATED":
-            row_data.append([converter(item["v"], field) for item in cell["v"]])
-        else:
-            row_data.append(converter(cell["v"], field))
-
+        row_data.append(_field_from_json(cell["v"], field))
     return tuple(row_data)
 
 
