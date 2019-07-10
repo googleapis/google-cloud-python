@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import unittest
-
+from mock import Mock
 
 class Test__new_value_pb(unittest.TestCase):
     def _call_fut(self, entity_pb, name):
@@ -989,6 +989,23 @@ class Test__get_meaning(unittest.TestCase):
 
         result = self._call_fut(value_pb, is_list=True)
         self.assertEqual(result, [meaning1, None])
+
+
+class Test___call_api(unittest.TestCase):
+
+    def _call_fut(self, fnc_call, retry, *args, **kwargs):
+        from google.cloud.datastore.helpers import _call_api
+        return _call_api(fnc_call, retry, *args, **kwargs)
+
+    def test_call_api(self):
+        from google.cloud.datastore.retry import DEFAULT_RETRY
+        retry = DEFAULT_RETRY
+        fnc_call = Mock()
+        self._call_fut(fnc_call, retry)
+        fnc_call1 = Mock()
+        self._call_fut(fnc_call1, None)
+        self.assertEqual(fnc_call.call_count, 1)
+        self.assertEqual(fnc_call1.call_count, 1)
 
 
 class TestGeoPoint(unittest.TestCase):

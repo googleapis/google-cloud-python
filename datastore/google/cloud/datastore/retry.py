@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -51,5 +51,5 @@ Any method with a ``retry`` parameter will be retried automatically,
 with reasonable defaults. To disable retry, pass ``retry=None``.
 To modify the default retry behavior, call a ``with_XXX`` method
 on ``DEFAULT_RETRY``. For example, to change the deadline to 30 seconds,
-pass ``retry=bigquery.DEFAULT_RETRY.with_deadline(30)``.
+pass ``retry=datastore.DEFAULT_RETRY.with_deadline(30)``.
 """

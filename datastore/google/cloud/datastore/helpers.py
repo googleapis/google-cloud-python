@@ -473,11 +473,9 @@ def _set_protobuf_value(value_pb, val):
 
 
 def _call_api(fnc_call, retry, *args, **kwargs):
-
-    call = functools.partial(fnc_call, *args, **kwargs)
     if retry:
-        call = retry(call)
-    return call()
+        return retry(functools.partial(fnc_call, *args, **kwargs))()
+    return fnc_call(*args, **kwargs)
 
 
 class GeoPoint(object):

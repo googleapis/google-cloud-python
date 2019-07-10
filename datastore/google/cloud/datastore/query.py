@@ -541,7 +541,6 @@ class Iterator(page_iterator.Iterator):
             self._query.project, partition_id, read_options, query=query_pb
         )
         entity_pbs = self._process_query_results(response_pb)
-        # return page_iterator.Page(self, entity_pbs, self.item_to_value)
         return helpers._call_api(
             page_iterator.Page,
             retry,
