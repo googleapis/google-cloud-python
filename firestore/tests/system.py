@@ -978,11 +978,7 @@ def test_watch_query_order(client, cleanup):
     doc_ref4 = collection_ref.document(u"afourthlovelace" + unique_id)
     doc_ref5 = collection_ref.document(u"afifthlovelace" + unique_id)
 
-    query_ref = (
-        collection_ref
-        .where("first", "==", u"Ada" + unique_id)
-        .order_by("last")
-    )
+    query_ref = collection_ref.where("first", "==", u"Ada" + unique_id).order_by("last")
 
     # Setup listener
     def on_snapshot(docs, changes, read_time):
