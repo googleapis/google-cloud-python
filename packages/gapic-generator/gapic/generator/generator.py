@@ -24,6 +24,7 @@ from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 from gapic import utils
 from gapic.generator import formatter
 from gapic.generator import options
+from gapic.samplegen import samplegen
 from gapic.schema import api
 
 
@@ -54,6 +55,7 @@ class Generator:
         self._env.filters['snake_case'] = utils.to_snake_case
         self._env.filters['sort_lines'] = utils.sort_lines
         self._env.filters['wrap'] = utils.wrap
+        self._env.filters['coerce_response_name'] = samplegen.coerce_response_name
 
     def get_response(self, api_schema: api.API) -> CodeGeneratorResponse:
         """Return a :class:`~.CodeGeneratorResponse` for this library.
@@ -70,9 +72,14 @@ class Generator:
         """
         output_files: Dict[str, CodeGeneratorResponse.File] = OrderedDict()
 
+        # TODO: handle sample_templates specially, generate samples.
+        sample_templates, client_templates = utils.partition(
+            lambda fname: os.path.basename(fname) == samplegen.TEMPLATE_NAME,
+            self._env.loader.list_templates())
+
         # Iterate over each template and add the appropriate output files
         # based on that template.
-        for template_name in self._env.loader.list_templates():
+        for template_name in client_templates:
             # Sanity check: Skip "private" templates.
             filename = template_name.split('/')[-1]
             if filename.startswith('_') and filename != '__init__.py.j2':

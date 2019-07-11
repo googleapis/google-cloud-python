@@ -52,9 +52,9 @@ class Proto:
 
     @classmethod
     def build(cls, file_descriptor: descriptor_pb2.FileDescriptorProto,
-            file_to_generate: bool, naming: api_naming.Naming,
-            prior_protos: Mapping[str, 'Proto'] = None,
-            ) -> 'Proto':
+              file_to_generate: bool, naming: api_naming.Naming,
+              prior_protos: Mapping[str, 'Proto'] = None,
+              ) -> 'Proto':
         """Build and return a Proto instance.
 
         Args:
@@ -68,10 +68,10 @@ class Proto:
                 These are needed to look up messages in imported protos.
         """
         return _ProtoBuilder(file_descriptor,
-            file_to_generate=file_to_generate,
-            naming=naming,
-            prior_protos=prior_protos or {},
-        ).proto
+                             file_to_generate=file_to_generate,
+                             naming=naming,
+                             prior_protos=prior_protos or {},
+                             ).proto
 
     @cached_property
     def enums(self) -> Mapping[str, wrappers.EnumType]:
@@ -179,9 +179,9 @@ class API:
 
     @classmethod
     def build(cls,
-            file_descriptors: Sequence[descriptor_pb2.FileDescriptorProto],
-            package: str = '',
-            opts: options.Options = options.Options()) -> 'API':
+              file_descriptors: Sequence[descriptor_pb2.FileDescriptorProto],
+              package: str = '',
+              opts: options.Options = options.Options()) -> 'API':
         """Build the internal API schema based on the request.
 
         Args:
@@ -218,15 +218,15 @@ class API:
     def enums(self) -> Mapping[str, wrappers.EnumType]:
         """Return a map of all enums available in the API."""
         return collections.ChainMap({},
-            *[p.all_enums for p in self.protos.values()],
-        )
+                                    *[p.all_enums for p in self.protos.values()],
+                                    )
 
     @cached_property
     def messages(self) -> Mapping[str, wrappers.MessageType]:
         """Return a map of all messages available in the API."""
         return collections.ChainMap({},
-            *[p.all_messages for p in self.protos.values()],
-        )
+                                    *[p.all_messages for p in self.protos.values()],
+                                    )
 
     @cached_property
     def protos(self) -> Mapping[str, Proto]:
@@ -246,8 +246,8 @@ class API:
     def services(self) -> Mapping[str, wrappers.Service]:
         """Return a map of all services available in the API."""
         return collections.ChainMap({},
-            *[p.services for p in self.protos.values()],
-        )
+                                    *[p.services for p in self.protos.values()],
+                                    )
 
     @cached_property
     def subpackages(self) -> Mapping[str, 'API']:
@@ -265,12 +265,13 @@ class API:
         # derivative API objects returned here.
         level = len(self.subpackage_view)
         for subpkg_name in sorted({p.meta.address.subpackage[0]
-                for p in self.protos.values()
-                if len(p.meta.address.subpackage) > level and
-                p.meta.address.subpackage[:level] == self.subpackage_view}):
+                                   for p in self.protos.values()
+                                   if len(p.meta.address.subpackage) > level and
+                                   p.meta.address.subpackage[:level] == self.subpackage_view}):
             answer[subpkg_name] = dataclasses.replace(self,
-                subpackage_view=self.subpackage_view + (subpkg_name,),
-            )
+                                                      subpackage_view=self.subpackage_view +
+                                                      (subpkg_name,),
+                                                      )
         return answer
 
 
@@ -308,7 +309,7 @@ class _ProtoBuilder:
         # detail below; this code simply shifts from a list to a dict,
         # with tuples of paths as the dictionary keys.
         self.docs: Dict[Tuple[int, ...],
-                descriptor_pb2.SourceCodeInfo.Location] = {}
+                        descriptor_pb2.SourceCodeInfo.Location] = {}
         for location in file_descriptor.source_code_info.location:
             self.docs[tuple(location.path)] = location
 
@@ -388,36 +389,37 @@ class _ProtoBuilder:
         # Note: The services bind to themselves, because services get their
         # own output files.
         return dataclasses.replace(naive,
-            all_enums=collections.OrderedDict([
-                (k, v.with_context(collisions=naive.names))
-                for k, v in naive.all_enums.items()
-            ]),
-            all_messages=collections.OrderedDict([
-                (k, v.with_context(collisions=naive.names))
-                for k, v in naive.all_messages.items()
-            ]),
-            services=collections.OrderedDict([
-                (k, v.with_context(collisions=v.names))
-                for k, v in naive.services.items()
-            ]),
-            meta=naive.meta.with_context(collisions=naive.names),
-        )
+                                   all_enums=collections.OrderedDict([
+                                       (k, v.with_context(collisions=naive.names))
+                                       for k, v in naive.all_enums.items()
+                                   ]),
+                                   all_messages=collections.OrderedDict([
+                                       (k, v.with_context(collisions=naive.names))
+                                       for k, v in naive.all_messages.items()
+                                   ]),
+                                   services=collections.OrderedDict([
+                                       (k, v.with_context(collisions=v.names))
+                                       for k, v in naive.services.items()
+                                   ]),
+                                   meta=naive.meta.with_context(
+                                       collisions=naive.names),
+                                   )
 
     @cached_property
     def api_enums(self) -> Mapping[str, wrappers.EnumType]:
         return collections.ChainMap({}, self.proto_enums,
-            *[p.all_enums for p in self.prior_protos.values()],
-        )
+                                    *[p.all_enums for p in self.prior_protos.values()],
+                                    )
 
     @cached_property
     def api_messages(self) -> Mapping[str, wrappers.MessageType]:
         return collections.ChainMap({}, self.proto_messages,
-            *[p.all_messages for p in self.prior_protos.values()],
-        )
+                                    *[p.all_messages for p in self.prior_protos.values()],
+                                    )
 
     def _load_children(self,
-                children: Sequence, loader: Callable, *,
-                address: metadata.Address, path: Tuple[int, ...]) -> Mapping:
+                       children: Sequence, loader: Callable, *,
+                       address: metadata.Address, path: Tuple[int, ...]) -> Mapping:
         """Return wrapped versions of arbitrary children from a Descriptor.
 
         Args:
@@ -448,9 +450,9 @@ class _ProtoBuilder:
         return answer
 
     def _get_fields(self,
-                field_pbs: Sequence[descriptor_pb2.FieldDescriptorProto],
-                address: metadata.Address, path: Tuple[int, ...],
-                ) -> Dict[str, wrappers.Field]:
+                    field_pbs: Sequence[descriptor_pb2.FieldDescriptorProto],
+                    address: metadata.Address, path: Tuple[int, ...],
+                    ) -> Dict[str, wrappers.Field]:
         """Return a dictionary of wrapped fields for the given message.
 
         Args:
@@ -491,9 +493,9 @@ class _ProtoBuilder:
         return answer
 
     def _get_methods(self,
-            methods: Sequence[descriptor_pb2.MethodDescriptorProto],
-            address: metadata.Address, path: Tuple[int, ...],
-            ) -> Mapping[str, wrappers.Method]:
+                     methods: Sequence[descriptor_pb2.MethodDescriptorProto],
+                     address: metadata.Address, path: Tuple[int, ...],
+                     ) -> Mapping[str, wrappers.Method]:
         """Return a dictionary of wrapped methods for the given service.
 
         Args:
@@ -548,10 +550,10 @@ class _ProtoBuilder:
         return answer
 
     def _load_message(self,
-            message_pb: descriptor_pb2.DescriptorProto,
-            address: metadata.Address,
-            path: Tuple[int],
-            ) -> wrappers.MessageType:
+                      message_pb: descriptor_pb2.DescriptorProto,
+                      address: metadata.Address,
+                      path: Tuple[int],
+                      ) -> wrappers.MessageType:
         """Load message descriptions from DescriptorProtos."""
         address = address.child(message_pb.name, path)
 
@@ -603,10 +605,10 @@ class _ProtoBuilder:
         return self.proto_messages[address.proto]
 
     def _load_enum(self,
-            enum: descriptor_pb2.EnumDescriptorProto,
-            address: metadata.Address,
-            path: Tuple[int],
-            ) -> wrappers.EnumType:
+                   enum: descriptor_pb2.EnumDescriptorProto,
+                   address: metadata.Address,
+                   path: Tuple[int],
+                   ) -> wrappers.EnumType:
         """Load enum descriptions from EnumDescriptorProtos."""
         address = address.child(enum.name, path)
 
@@ -633,10 +635,10 @@ class _ProtoBuilder:
         return self.proto_enums[address.proto]
 
     def _load_service(self,
-            service: descriptor_pb2.ServiceDescriptorProto,
-            address: metadata.Address,
-            path: Tuple[int],
-            ) -> wrappers.Service:
+                      service: descriptor_pb2.ServiceDescriptorProto,
+                      address: metadata.Address,
+                      path: Tuple[int],
+                      ) -> wrappers.Service:
         """Load comments for a service and its methods."""
         address = address.child(service.name, path)
 

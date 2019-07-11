@@ -16,7 +16,8 @@ import pytest
 from collections import namedtuple
 
 import gapic.samplegen.samplegen as samplegen
-import gapic.samplegen.utils as utils
+
+from gapic.samplegen import utils
 
 # validate_response tests
 
@@ -58,7 +59,8 @@ def test_define_redefinition():
 
 def test_define_input_param():
     validator = samplegen.Validator()
-    validator.validate_and_transform_request([{"field": "squid.mantle_length",
+    validator.validate_and_transform_request(utils.CallingForm.Request,
+                                             [{"field": "squid.mantle_length",
                                                "value": "100 cm",
                                                "input_parameter": "mantle_length"}])
     validator.validate_response([{"define": "length=mantle_length"}])
@@ -66,7 +68,8 @@ def test_define_input_param():
 
 def test_define_input_param_redefinition():
     validator = samplegen.Validator()
-    validator.validate_and_transform_request([{"field": "squid.mantle_length",
+    validator.validate_and_transform_request(utils.CallingForm.Request,
+                                             [{"field": "squid.mantle_length",
                                                "value": "100 cm",
                                                "input_parameter": "mantle_length"}])
     with pytest.raises(samplegen.RedefinedVariable):
@@ -171,21 +174,6 @@ def test_loop_collection_missing_kword():
     loop = {"loop": {"collection": "$resp.molluscs",
                      "body": [{"print":
                                ["Mollusc of class: %s", "m.class"]}]}}
-    with pytest.raises(samplegen.BadLoop):
-        samplegen.Validator().validate_response([loop])
-
-
-def test_loop_collection_missing_kword2():
-    loop = {"loop": {"collection": "$resp.molluscs",
-                     "body": [{"print":
-                               ["Mollusc: %s", "m.class"]}]}}
-    with pytest.raises(samplegen.BadLoop):
-        samplegen.Validator().validate_response([loop])
-
-
-def test_loop_collection_missing_kword3():
-    loop = {"loop": {"collection": "$resp.molluscs",
-                     "variable": "r"}}
     with pytest.raises(samplegen.BadLoop):
         samplegen.Validator().validate_response([loop])
 
@@ -347,6 +335,47 @@ def test_loop_map_redefined_value():
         samplegen.Validator().validate_response(statements)
 
 
+def test_validate_write_file():
+    samplegen.Validator().validate_response(
+        [{"write_file": {"filename": ["specimen-%s", "$resp.species"],
+                         "contents": "$resp.photo"}}])
+
+
+def test_validate_write_file_fname_fmt():
+    with pytest.raises(samplegen.MismatchedFormatSpecifier):
+        samplegen.Validator().validate_response(
+            [{"write_file": {"filename": ["specimen-%s"],
+                             "contents": "$resp.photo"}}])
+
+
+def test_validate_write_file_fname_bad_var():
+    with pytest.raises(samplegen.UndefinedVariableReference):
+        samplegen.Validator().validate_response(
+            [{"write_file": {"filename": ["specimen-%s", "squid.species"],
+                             "contents": "$resp.photo"}}])
+
+
+def test_validate_write_file_missing_fname():
+    with pytest.raises(samplegen.InvalidStatement):
+        samplegen.Validator().validate_response(
+            [{"write_file": {"contents": "$resp.photo"}}]
+        )
+
+
+def test_validate_write_file_missing_contents():
+    with pytest.raises(samplegen.InvalidStatement):
+        samplegen.Validator().validate_response(
+            [{"write_file": {"filename": ["specimen-%s", "$resp.species"]}}]
+        )
+
+
+def test_validate_write_file_bad_contents_var():
+    with pytest.raises(samplegen.UndefinedVariableReference):
+        samplegen.Validator().validate_response(
+            [{"write_file": {"filename": ["specimen-%s", "$resp.species"],
+                             "contents": "squid.photo"}}])
+
+
 def test_invalid_statement():
     statement = {"print": ["Name"], "comment": ["Value"]}
     with pytest.raises(samplegen.InvalidStatement):
@@ -361,42 +390,42 @@ def test_invalid_statement2():
 
 # validate_and_transform_request tests
 def test_validate_request_basic():
-    assert samplegen.Validator().validate_and_transform_request(
-        [{"field": "squid.mantle_length",
-          "value": "100 cm"},
-         {"field": "squid.mantle_mass",
-          "value": "10 kg"}]) == [
-              samplegen.TransformedRequest("squid",
-                                           [{"field": "mantle_length",
-                                             "value": "100 cm"},
-                                            {"field": "mantle_mass",
-                                             "value": "10 kg"}])]
+    assert samplegen.Validator().validate_and_transform_request(utils.CallingForm.Request,
+                                                                [{"field": "squid.mantle_length",
+                                                                  "value": "100 cm"},
+                                                                 {"field": "squid.mantle_mass",
+                                                                  "value": "10 kg"}]) == [
+        samplegen.TransformedRequest("squid",
+                                     [{"field": "mantle_length",
+                                       "value": "100 cm"},
+                                      {"field": "mantle_mass",
+                                       "value": "10 kg"}])]
 
 
 def test_validate_request_no_field_parameter():
     with pytest.raises(samplegen.InvalidRequestSetup):
-        samplegen.Validator().validate_and_transform_request(
-            [{"squid": "humboldt"}])
+        samplegen.Validator().validate_and_transform_request(utils.CallingForm.Request,
+                                                             [{"squid": "humboldt"}])
 
 
 def test_validate_request_malformed_field_attr():
     with pytest.raises(samplegen.InvalidRequestSetup):
-        samplegen.Validator().validate_and_transform_request(
-            [{"field": "squid"}])
+        samplegen.Validator().validate_and_transform_request(utils.CallingForm.Request,
+                                                             [{"field": "squid"}])
 
 
 def test_validate_request_multiple_arguments():
-    assert samplegen.Validator().validate_and_transform_request(
-        [{"field": "squid.mantle_length",
-          "value": "100 cm",
-          "value_is_file": True},
-         {"field": "clam.shell_mass",
-          "value": "100 kg",
-          "comment": "Clams can be large"}]) == [
-              samplegen.TransformedRequest("squid",
-                                           [{"field": "mantle_length",
-                                             "value": "100 cm",
-                                             "value_is_file": True}]),
+    assert samplegen.Validator().validate_and_transform_request(utils.CallingForm.Request,
+                                                                [{"field": "squid.mantle_length",
+                                                                  "value": "100 cm",
+                                                                  "value_is_file": True},
+                                                                 {"field": "clam.shell_mass",
+                                                                  "value": "100 kg",
+                                                                  "comment": "Clams can be large"}]) == [
+        samplegen.TransformedRequest("squid",
+                                     [{"field": "mantle_length",
+                                       "value": "100 cm",
+                                       "value_is_file": True}]),
         samplegen.TransformedRequest("clam",
                                      [{"field": "shell_mass",
                                        "value": "100 kg",
@@ -405,27 +434,63 @@ def test_validate_request_multiple_arguments():
 
 def test_validate_request_reserved_request_name():
     with pytest.raises(samplegen.ReservedVariableName):
-        samplegen.Validator().validate_and_transform_request(
-            [{"field": "class.order", "value": "coleoidea"}])
+        samplegen.Validator().validate_and_transform_request(utils.CallingForm.Request,
+                                                             [{"field": "class.order", "value": "coleoidea"}])
 
 
 def test_validate_request_duplicate_input_param():
     with pytest.raises(samplegen.RedefinedVariable):
-        samplegen.Validator().validate_and_transform_request(
-            [{"field": "squid.mantle_mass",
-              "value": "10 kg",
-              "input_parameter": "mantle_mass"},
-             {"field": "clam.mantle_mass",
-              "value": "1 kg",
-              "input_parameter": "mantle_mass"}])
+        samplegen.Validator().validate_and_transform_request(utils.CallingForm.Request,
+                                                             [{"field": "squid.mantle_mass",
+                                                               "value": "10 kg",
+                                                               "input_parameter": "mantle_mass"},
+                                                              {"field": "clam.mantle_mass",
+                                                               "value": "1 kg",
+                                                               "input_parameter": "mantle_mass"}])
 
 
 def test_validate_request_reserved_input_param():
     with pytest.raises(samplegen.ReservedVariableName):
+        samplegen.Validator().validate_and_transform_request(utils.CallingForm.Request,
+                                                             [{"field": "mollusc.class",
+                                                               "value": "cephalopoda",
+                                                               "input_parameter": "class"}])
+
+
+def test_single_request_client_streaming():
+    # Each API client method really only takes one parameter:
+    # either a single protobuf message or an iterable of protobuf messages.
+    # With unary request methods, python lets us describe attributes as positional
+    # and keyword parameters, which simplifies request construction.
+    # The 'base' in the transformed request refers to an attribute, and the
+    # 'field's refer to sub-attributes.
+    # Client streaming and bidirectional streaming methods can't use this notation,
+    # and generate an exception if there is more than one 'base'.
+    with pytest.raises(samplegen.InvalidRequestSetup):
         samplegen.Validator().validate_and_transform_request(
-            [{"field": "mollusc.class",
-              "value": "cephalopoda",
-              "input_parameter": "class"}])
+            utils.CallingForm.RequestStreamingClient,
+            [{"field": "cephalopod.order",
+              "value": "cephalopoda"},
+             {"field": "gastropod.order",
+              "value": "pulmonata"}])
+
+
+def test_single_request_bidi_streaming():
+    # Each API client method really only takes one parameter:
+    # either a single protobuf message or an iterable of protobuf messages.
+    # With unary request methods, python lets us describe attributes as positional
+    # and keyword parameters, which simplifies request construction.
+    # The 'base' in the transformed request refers to an attribute, and the
+    # 'field's refer to sub-attributes.
+    # Client streaming and bidirectional streaming methods can't use this notation,
+    # and generate an exception if there is more than one 'base'.
+    with pytest.raises(samplegen.InvalidRequestSetup):
+        samplegen.Validator().validate_and_transform_request(
+            utils.CallingForm.RequestStreamingBidi,
+            [{"field": "cephalopod.order",
+              "value": "cephalopoda"},
+             {"field": "gastropod.order",
+              "value": "pulmonata"}])
 
 
 def test_validate_request_calling_form():
@@ -436,7 +501,7 @@ def test_validate_request_calling_form():
                               "server_streaming"])
 
     assert utils.CallingForm.method_default(DummyMethod(
-        True, False, False, False)) == utils.CallingForm.LongRunningRequestAsync
+        True, False, False, False)) == utils.CallingForm.LongRunningRequestPromise
 
     assert utils.CallingForm.method_default(DummyMethod(
         False, True, False, False)) == utils.CallingForm.RequestPagedAll
@@ -452,3 +517,9 @@ def test_validate_request_calling_form():
 
     assert utils.CallingForm.method_default(DummyMethod(
         False, False, True, True)) == utils.CallingForm.RequestStreamingBidi
+
+
+def test_coerce_response_name():
+    # Don't really need a test, but it shuts up code coverage.
+    assert samplegen.coerce_response_name("$resp.squid") == "response.squid"
+    assert samplegen.coerce_response_name("mollusc.squid") == "mollusc.squid"

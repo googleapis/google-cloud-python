@@ -13,15 +13,17 @@
 # limitations under the License.
 
 import itertools
+import jinja2
 import keyword
 import re
-import gapic.samplegen.utils
+
+from gapic.samplegen import utils
 
 from collections import (defaultdict, namedtuple)
-from typing import (List, Mapping, Set)
+from textwrap import dedent
+from typing import (Dict, List, Mapping, Set, Tuple)
 
 # Outstanding issues:
-# * Neither license nor copyright are defined
 # * In real sample configs, many variables are
 #   defined with an _implicit_ $resp variable.
 
@@ -29,13 +31,23 @@ MIN_SCHEMA_VERSION = (1, 2, 0)
 
 VALID_CONFIG_TYPE = 'com.google.api.codegen.SampleConfigProto'
 
-# There are a couple of other names that should be reserved
-# for sample variable assignments, e.g. 'client', but there are diminishing returns:
-# the sample config author isn't a pathological adversary, they're a normal person
-# who may make mistakes occasionally.
-RESERVED_WORDS = frozenset(itertools.chain(keyword.kwlist, dir(__builtins__)))
+# TODO: read in copyright and license from files.
+FILE_HEADER: Dict[str, str] = {"copyright": "TODO: add a copyright",
+                               "license": "TODO: add a license"}
 
-TEMPLATE_NAME = 'samplegen_template.j2'
+RESERVED_WORDS = frozenset(
+    itertools.chain(keyword.kwlist,
+                    dir(__builtins__),
+                    {"client",
+                     "f",            # parameter used in file I/O statements
+                     "operation",    # temporary used in LROs
+                     "page",         # used in paginated responses
+                     "page_result",  # used in paginated responses
+                     "response",     # basic 'response'
+                     "stream",       # used in server and bidi streaming
+                     }))
+
+TEMPLATE_NAME = "sample.py.j2"
 
 TransformedRequest = namedtuple("TransformedRequest", ["base", "body"])
 
@@ -48,15 +60,15 @@ class ReservedVariableName(SampleError):
     pass
 
 
-class SchemaVersion(SampleError):
-    pass
-
-
 class RpcMethodNotFound(SampleError):
     pass
 
 
-class InvalidConfigType(SampleError):
+class UnknownService(SampleError):
+    pass
+
+
+class InvalidConfig(SampleError):
     pass
 
 
@@ -92,6 +104,20 @@ class InvalidRequestSetup(SampleError):
     pass
 
 
+def coerce_response_name(s: str) -> str:
+    # In the sample config, the "$resp" keyword is used to refer to the
+    # item of interest as received by the corresponding calling form.
+    # For a 'regular', i.e. unary, synchronous, non-long-running method,
+    # it's the return value; for a server-streaming method, it's the iteration
+    # variable in the for loop that iterates over the return value, and for
+    # a long running promise, the user calls result on the method return value to
+    # resolve the future.
+    #
+    # The sample schema uses '$resp' as the special variable,
+    # but in the samples the 'response' variable is used instead.
+    return s.replace("$resp", "response")
+
+
 class Validator:
     """Class that validates samples.
 
@@ -113,6 +139,7 @@ class Validator:
     # TODO: this will eventually need the method name and the proto file
     # so that it can do the correct value transformation for enums.
     def validate_and_transform_request(self,
+                                       calling_form: utils.CallingForm,
                                        request: List[Mapping[str, str]]) -> List[TransformedRequest]:
         """Validates and transforms the "request" block from a sample config.
 
@@ -130,7 +157,7 @@ class Validator:
            are that "field" maps only to the second part of a dotted variable name.
            Other key/value combinations in the dict are unmodified for the time being.
 
-           Note: gRPC API methods only take one parameter (ignoring client side streaming).
+           Note: gRPC API methods only take one parameter (ignoring client-side streaming).
                  The reason that GAPIC client library API methods may take multiple parameters
                  is a workaround to provide idiomatic protobuf support within python.
                  The different 'bases' are really attributes for the singular request parameter.
@@ -174,6 +201,7 @@ class Validator:
         """
         base_param_to_attrs: Mapping[str,
                                      List[Mapping[str, str]]] = defaultdict(list)
+
         for field_assignment in request:
             field_assignment_copy = dict(field_assignment)
             input_param = field_assignment_copy.get("input_parameter")
@@ -206,6 +234,12 @@ class Validator:
             field_assignment_copy["field"] = attr
             base_param_to_attrs[base].append(field_assignment_copy)
 
+        if (calling_form in {utils.CallingForm.RequestStreamingClient,
+                             utils.CallingForm.RequestStreamingBidi} and
+                len(base_param_to_attrs) > 1):
+            raise InvalidRequestSetup(("There can be at most 1 base request in a sample"
+                                       " for a method with client side streaming"))
+
         return [TransformedRequest(base, body)
                 for base, body in base_param_to_attrs.items()]
 
@@ -221,9 +255,6 @@ class Validator:
         Args:
             response: list[dict{str:?}]: The structured data representing
                                          the sample's response.
-
-        Returns:
-            bool: True if response is valid.
 
         Raises:
             InvalidStatement: If an unexpected key is found in a statement dict
@@ -268,7 +299,7 @@ class Validator:
          number of arguments, and each argument must be a defined variable.
 
          TODO: the attributes of the variable must correspond to attributes
-               of the variable's type.        
+               of the variable's type.
 
          Raises:
              MismatchedFormatSpecifier: If the number of format string segments ("%s") in
@@ -319,6 +350,40 @@ class Validator:
         if not rval_base in self.var_defs_:
             raise UndefinedVariableReference("Reference to undefined variable: {}"
                                              .format(rval_base))
+
+    def _validate_write_file(self, body):
+        """Validate 'write_file' statements.
+
+        The body of a 'write_file' statement is a two-element dict
+        with known keys: 'filename' and 'contents'.
+        'filename' maps to a list of strings which constitute a format string
+        and variable-based rvalues defining the fields.
+        'contents' maps to a single variable-based rvalue.
+
+        Raises:
+            MismatchedFormatSpecifier: If the filename formatstring is badly formed.
+            UndefinedVariableReference: If any of the formatstring variables
+                                        or the file contents variable are undefined.
+            InvalidStatement: If either 'filename' or 'contents' are absent keys.
+        """
+
+        fname_fmt = body.get("filename")
+        if not fname_fmt:
+            raise InvalidStatement(
+                "Missing key in 'write_file' statement: 'filename'")
+
+        self._validate_format(fname_fmt)
+
+        contents_var = body.get("contents")
+        if not contents_var:
+            raise InvalidStatement(
+                "Missing key in 'write_file' statement: 'contents'")
+
+        # TODO: check the rest of the elements for valid subfield attribute
+        base = contents_var.split(".")[0]
+        if base not in self.var_defs_:
+            raise UndefinedVariableReference("Reference to undefined variable: {}"
+                                             .format(base))
 
     def _validate_loop(self, body):
         """Validates loop headers and statement bodies.
@@ -408,5 +473,41 @@ class Validator:
         "define": _validate_define,
         "print": _validate_format,
         "comment": _validate_format,
+        "write_file": _validate_write_file,
         "loop": _validate_loop,
     }
+
+
+def generate_sample(sample,
+                    env: jinja2.environment.Environment,
+                    api_schema) -> Tuple[str, jinja2.environment.TemplateStream]:
+    sample_template = env.get_template(TEMPLATE_NAME)
+
+    service_name = sample["service"]
+    service = api_schema.services.get(service_name)
+    if not service:
+        raise UnknownService("Unknown service: {}", service_name)
+
+    rpc_name = sample["rpc"]
+    rpc = service.methods.get(rpc_name)
+    if not rpc:
+        raise RpcMethodNotFound(
+            "Could not find rpc in service {}: {}".format(service_name, rpc_name))
+
+    calling_form = utils.CallingForm.method_default(rpc)
+
+    v = Validator()
+    sample["request"] = v.validate_and_transform_request(calling_form,
+                                                         sample["request"])
+    v.validate_response(sample["response"])
+
+    sample_id = sample["id"]
+    sample_fpath = sample_id + str(calling_form) + ".py"
+
+    sample["package_name"] = api_schema.naming.warehouse_package_name
+
+    return sample_fpath, sample_template.stream(fileHeader=FILE_HEADER,
+                                                sample=sample,
+                                                imports=[],
+                                                callingForm=calling_form,
+                                                callingFormEnum=utils.CallingForm)

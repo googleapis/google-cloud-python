@@ -26,12 +26,12 @@ class CallingForm(Enum):
     RequestStreamingServer = auto()
     RequestStreamingBidi = auto()
     RequestPagedAll = auto()
-    LongRunningPromise = auto()
+    LongRunningRequestPromise = auto()
 
     @classmethod
     def method_default(cls, m):
         if m.lro:
-            return cls.LongRunningRequestAsync
+            return cls.LongRunningRequestPromise
         if m.paged_result_field:
             return cls.RequestPagedAll
         if m.client_streaming:

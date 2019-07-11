@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import (Any, Callable, Iterable, List, Tuple, TypeVar)
+
 
 def empty(content: str) -> bool:
     """Return True if this file has no Python statements, False otherwise.
@@ -21,3 +23,30 @@ def empty(content: str) -> bool:
     """
     return not any([i.lstrip() and not i.lstrip().startswith('#')
                     for i in content.split('\n')])
+
+
+T = TypeVar('T')
+
+
+def partition(predicate: Callable[[T], bool],
+              iterator: Iterable[T]) -> Tuple[List[T], List[T]]:
+    """Partitions an iterable into two lists based on a predicate
+
+    Args:
+        predicate (Callable[[T], bool]) : A callable predicate on a single argument
+                                          of whatever type is in iterator.
+        iterator (Iterable(T)):           An iterable on any type.
+
+
+    Returns:
+        Tuple[List[T], List[T]]: The contents of iterator partitioned into two lists.
+                                 The first list contains the "true" elements
+                                 and the second contains the "false" elements.
+    """
+    results: Tuple[List[T], List[T]] = ([], [])
+
+    for i in iterator:
+        results[int(predicate(i))].append(i)
+
+    # Returns trueList, falseList
+    return results[1], results[0]
