@@ -46,7 +46,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.automl.v1beta1P\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1\352\002\036Google::Cloud::AutoML::V1beta1"
     ),
     serialized_pb=_b(
-        '\n.google/cloud/automl_v1beta1/proto/tables.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x36google/cloud/automl_v1beta1/proto/classification.proto\x1a\x33google/cloud/automl_v1beta1/proto/column_spec.proto\x1a\x32google/cloud/automl_v1beta1/proto/data_items.proto\x1a\x32google/cloud/automl_v1beta1/proto/data_stats.proto\x1a.google/cloud/automl_v1beta1/proto/ranges.proto\x1a\x30google/cloud/automl_v1beta1/proto/temporal.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto"\xb0\x03\n\x15TablesDatasetMetadata\x12\x1d\n\x15primary_table_spec_id\x18\x01 \x01(\t\x12\x1d\n\x15target_column_spec_id\x18\x02 \x01(\t\x12\x1d\n\x15weight_column_spec_id\x18\x03 \x01(\t\x12\x1d\n\x15ml_use_column_spec_id\x18\x04 \x01(\t\x12t\n\x1atarget_column_correlations\x18\x06 \x03(\x0b\x32P.google.cloud.automl.v1beta1.TablesDatasetMetadata.TargetColumnCorrelationsEntry\x12\x35\n\x11stats_update_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x1an\n\x1dTargetColumnCorrelationsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12<\n\x05value\x18\x02 \x01(\x0b\x32-.google.cloud.automl.v1beta1.CorrelationStats:\x02\x38\x01"\x89\x03\n\x13TablesModelMetadata\x12\x43\n\x12target_column_spec\x18\x02 \x01(\x0b\x32\'.google.cloud.automl.v1beta1.ColumnSpec\x12K\n\x1ainput_feature_column_specs\x18\x03 \x03(\x0b\x32\'.google.cloud.automl.v1beta1.ColumnSpec\x12\x1e\n\x16optimization_objective\x18\x04 \x01(\t\x12T\n\x18tables_model_column_info\x18\x05 \x03(\x0b\x32\x32.google.cloud.automl.v1beta1.TablesModelColumnInfo\x12%\n\x1dtrain_budget_milli_node_hours\x18\x06 \x01(\x03\x12#\n\x1btrain_cost_milli_node_hours\x18\x07 \x01(\x03\x12\x1e\n\x16\x64isable_early_stopping\x18\x0c \x01(\x08"\xe5\x01\n\x10TablesAnnotation\x12\r\n\x05score\x18\x01 \x01(\x02\x12\x45\n\x13prediction_interval\x18\x04 \x01(\x0b\x32(.google.cloud.automl.v1beta1.DoubleRange\x12%\n\x05value\x18\x02 \x01(\x0b\x32\x16.google.protobuf.Value\x12T\n\x18tables_model_column_info\x18\x03 \x03(\x0b\x32\x32.google.cloud.automl.v1beta1.TablesModelColumnInfo"j\n\x15TablesModelColumnInfo\x12\x18\n\x10\x63olumn_spec_name\x18\x01 \x01(\t\x12\x1b\n\x13\x63olumn_display_name\x18\x02 \x01(\t\x12\x1a\n\x12\x66\x65\x61ture_importance\x18\x03 \x01(\x02\x42\xa5\x01\n\x1f\x63om.google.cloud.automl.v1beta1P\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1\xea\x02\x1eGoogle::Cloud::AutoML::V1beta1b\x06proto3'
+        '\n.google/cloud/automl_v1beta1/proto/tables.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x36google/cloud/automl_v1beta1/proto/classification.proto\x1a\x33google/cloud/automl_v1beta1/proto/column_spec.proto\x1a\x32google/cloud/automl_v1beta1/proto/data_items.proto\x1a\x32google/cloud/automl_v1beta1/proto/data_stats.proto\x1a.google/cloud/automl_v1beta1/proto/ranges.proto\x1a\x30google/cloud/automl_v1beta1/proto/temporal.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto"\xb0\x03\n\x15TablesDatasetMetadata\x12\x1d\n\x15primary_table_spec_id\x18\x01 \x01(\t\x12\x1d\n\x15target_column_spec_id\x18\x02 \x01(\t\x12\x1d\n\x15weight_column_spec_id\x18\x03 \x01(\t\x12\x1d\n\x15ml_use_column_spec_id\x18\x04 \x01(\t\x12t\n\x1atarget_column_correlations\x18\x06 \x03(\x0b\x32P.google.cloud.automl.v1beta1.TablesDatasetMetadata.TargetColumnCorrelationsEntry\x12\x35\n\x11stats_update_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x1an\n\x1dTargetColumnCorrelationsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12<\n\x05value\x18\x02 \x01(\x0b\x32-.google.cloud.automl.v1beta1.CorrelationStats:\x02\x38\x01"\x96\x04\n\x13TablesModelMetadata\x12\x43\n\x12target_column_spec\x18\x02 \x01(\x0b\x32\'.google.cloud.automl.v1beta1.ColumnSpec\x12K\n\x1ainput_feature_column_specs\x18\x03 \x03(\x0b\x32\'.google.cloud.automl.v1beta1.ColumnSpec\x12\x1e\n\x16optimization_objective\x18\x04 \x01(\t\x12-\n#optimization_objective_recall_value\x18\x11 \x01(\x02H\x00\x12\x30\n&optimization_objective_precision_value\x18\x12 \x01(\x02H\x00\x12T\n\x18tables_model_column_info\x18\x05 \x03(\x0b\x32\x32.google.cloud.automl.v1beta1.TablesModelColumnInfo\x12%\n\x1dtrain_budget_milli_node_hours\x18\x06 \x01(\x03\x12#\n\x1btrain_cost_milli_node_hours\x18\x07 \x01(\x03\x12\x1e\n\x16\x64isable_early_stopping\x18\x0c \x01(\x08\x42*\n(additional_optimization_objective_config"\xe5\x01\n\x10TablesAnnotation\x12\r\n\x05score\x18\x01 \x01(\x02\x12\x45\n\x13prediction_interval\x18\x04 \x01(\x0b\x32(.google.cloud.automl.v1beta1.DoubleRange\x12%\n\x05value\x18\x02 \x01(\x0b\x32\x16.google.protobuf.Value\x12T\n\x18tables_model_column_info\x18\x03 \x03(\x0b\x32\x32.google.cloud.automl.v1beta1.TablesModelColumnInfo"j\n\x15TablesModelColumnInfo\x12\x18\n\x10\x63olumn_spec_name\x18\x01 \x01(\t\x12\x1b\n\x13\x63olumn_display_name\x18\x02 \x01(\t\x12\x1a\n\x12\x66\x65\x61ture_importance\x18\x03 \x01(\x02\x42\xa5\x01\n\x1f\x63om.google.cloud.automl.v1beta1P\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1\xea\x02\x1eGoogle::Cloud::AutoML::V1beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_classification__pb2.DESCRIPTOR,
@@ -309,9 +309,45 @@ _TABLESMODELMETADATA = _descriptor.Descriptor(
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
+            name="optimization_objective_recall_value",
+            full_name="google.cloud.automl.v1beta1.TablesModelMetadata.optimization_objective_recall_value",
+            index=3,
+            number=17,
+            type=2,
+            cpp_type=6,
+            label=1,
+            has_default_value=False,
+            default_value=float(0),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="optimization_objective_precision_value",
+            full_name="google.cloud.automl.v1beta1.TablesModelMetadata.optimization_objective_precision_value",
+            index=4,
+            number=18,
+            type=2,
+            cpp_type=6,
+            label=1,
+            has_default_value=False,
+            default_value=float(0),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
             name="tables_model_column_info",
             full_name="google.cloud.automl.v1beta1.TablesModelMetadata.tables_model_column_info",
-            index=3,
+            index=5,
             number=5,
             type=11,
             cpp_type=10,
@@ -329,7 +365,7 @@ _TABLESMODELMETADATA = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="train_budget_milli_node_hours",
             full_name="google.cloud.automl.v1beta1.TablesModelMetadata.train_budget_milli_node_hours",
-            index=4,
+            index=6,
             number=6,
             type=3,
             cpp_type=2,
@@ -347,7 +383,7 @@ _TABLESMODELMETADATA = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="train_cost_milli_node_hours",
             full_name="google.cloud.automl.v1beta1.TablesModelMetadata.train_cost_milli_node_hours",
-            index=5,
+            index=7,
             number=7,
             type=3,
             cpp_type=2,
@@ -365,7 +401,7 @@ _TABLESMODELMETADATA = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="disable_early_stopping",
             full_name="google.cloud.automl.v1beta1.TablesModelMetadata.disable_early_stopping",
-            index=6,
+            index=8,
             number=12,
             type=8,
             cpp_type=7,
@@ -388,9 +424,17 @@ _TABLESMODELMETADATA = _descriptor.Descriptor(
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
-    oneofs=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="additional_optimization_objective_config",
+            full_name="google.cloud.automl.v1beta1.TablesModelMetadata.additional_optimization_objective_config",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
     serialized_start=919,
-    serialized_end=1312,
+    serialized_end=1453,
 )
 
 
@@ -482,8 +526,8 @@ _TABLESANNOTATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1315,
-    serialized_end=1544,
+    serialized_start=1456,
+    serialized_end=1685,
 )
 
 
@@ -557,8 +601,8 @@ _TABLESMODELCOLUMNINFO = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1546,
-    serialized_end=1652,
+    serialized_start=1687,
+    serialized_end=1793,
 )
 
 _TABLESDATASETMETADATA_TARGETCOLUMNCORRELATIONSENTRY.fields_by_name[
@@ -588,6 +632,26 @@ _TABLESMODELMETADATA.fields_by_name[
 _TABLESMODELMETADATA.fields_by_name[
     "tables_model_column_info"
 ].message_type = _TABLESMODELCOLUMNINFO
+_TABLESMODELMETADATA.oneofs_by_name[
+    "additional_optimization_objective_config"
+].fields.append(
+    _TABLESMODELMETADATA.fields_by_name["optimization_objective_recall_value"]
+)
+_TABLESMODELMETADATA.fields_by_name[
+    "optimization_objective_recall_value"
+].containing_oneof = _TABLESMODELMETADATA.oneofs_by_name[
+    "additional_optimization_objective_config"
+]
+_TABLESMODELMETADATA.oneofs_by_name[
+    "additional_optimization_objective_config"
+].fields.append(
+    _TABLESMODELMETADATA.fields_by_name["optimization_objective_precision_value"]
+)
+_TABLESMODELMETADATA.fields_by_name[
+    "optimization_objective_precision_value"
+].containing_oneof = _TABLESMODELMETADATA.oneofs_by_name[
+    "additional_optimization_objective_config"
+]
 _TABLESANNOTATION.fields_by_name[
     "prediction_interval"
 ].message_type = (
@@ -725,7 +789,10 @@ TablesModelMetadata = _reflection.GeneratedProtocolMessageType(
           Maximize the area under the receiver operating characteristic
           (ROC) curve. "MINIMIZE\_LOG\_LOSS" - Minimize log loss.
           "MAXIMIZE\_AU\_PRC" - Maximize the area under the precision-
-          recall curve.  CLASSIFICATION\_MULTI\_CLASS :
+          recall curve. "MAXIMIZE\_PRECISION\_AT\_RECALL" - Maximize
+          precision for a specified recall value.
+          "MAXIMIZE\_RECALL\_AT\_PRECISION" - Maximize recall for a
+          specified precision value.  CLASSIFICATION\_MULTI\_CLASS :
           "MINIMIZE\_LOG\_LOSS" (default) - Minimize log loss.
           REGRESSION: "MINIMIZE\_RMSE" (default) - Minimize root-mean-
           squared error (RMSE). "MINIMIZE\_MAE" - Minimize mean-absolute
@@ -733,6 +800,18 @@ TablesModelMetadata = _reflection.GeneratedProtocolMessageType(
           log error (RMSLE).  FORECASTING: "MINIMIZE\_RMSE" (default) -
           Minimize root-mean-squared error (RMSE). "MINIMIZE\_MAE" -
           Minimize mean-absolute error (MAE).
+      additional_optimization_objective_config:
+          Additional optimization objective configuration. Required for
+          ``MAXIMIZE_PRECISION_AT_RECALL`` and
+          ``MAXIMIZE_RECALL_AT_PRECISION``, otherwise unused.
+      optimization_objective_recall_value:
+          Required when optimization\_objective is
+          "MAXIMIZE\_PRECISION\_AT\_RECALL". Must be between 0 and 1,
+          inclusive.
+      optimization_objective_precision_value:
+          Required when optimization\_objective is
+          "MAXIMIZE\_RECALL\_AT\_PRECISION". Must be between 0 and 1,
+          inclusive.
       tables_model_column_info:
           Output only. Auxiliary information for each of the
           input\_feature\_column\_specs with respect to this particular
