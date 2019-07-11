@@ -1452,21 +1452,6 @@ class Bucket(_PropertyMixin):
         """
         return self._properties.get("locationType")
 
-    @location_type.setter
-    def location_type(self, value):
-        """Set the location type for the bucket.
-
-        See https://cloud.google.com/storage/docs/storage-classes
-
-        :type value: str
-        :param value:
-            One of :attr:`MULTI_REGION_LOCATION_TYPE`,
-            :attr:`REGION_LOCATION_TYPE`, or :attr:`DUAL_REGION_LOCATION_TYPE`,
-        """
-        if value not in self._LOCATION_TYPES:
-            raise ValueError("Invalid location type: %s" % (value,))
-        self._patch_property("locationType", value)
-
     def get_logging(self):
         """Return info about access logging for this bucket.
 
