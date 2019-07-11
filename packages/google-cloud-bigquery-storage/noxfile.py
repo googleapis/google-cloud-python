@@ -37,7 +37,7 @@ def default(session):
     session.install('mock', 'pytest', 'pytest-cov')
     for local_dep in LOCAL_DEPS:
         session.install('-e', local_dep)
-    session.install('-e', '.[pandas,fastavro]')
+    session.install('-e', '.[pandas,fastavro,pyarrow]')
 
     # Run py.test against the unit tests.
     session.run(
@@ -121,7 +121,7 @@ def system(session):
     session.install('-e', os.path.join('..', 'test_utils'))
     for local_dep in LOCAL_DEPS:
         session.install('-e', local_dep)
-    session.install('-e', '.[pandas,fastavro]')
+    session.install('-e', '.[fastavro,pandas,pyarrow]')
 
     # Run py.test against the system tests.
     session.run('py.test', '--quiet', 'tests/system/')
