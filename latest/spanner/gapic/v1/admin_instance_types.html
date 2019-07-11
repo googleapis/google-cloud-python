@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Spanner Admin Instance Client Types &#8212; google-cloud 88221ec documentation</title>
+    <title>Spanner Admin Instance Client Types &#8212; google-cloud 4031007 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -55,6 +55,69 @@
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.spanner_admin_instance_v1.types.AuditConfigDelta">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_admin_instance_v1.types.</code><code class="descname">AuditConfigDelta</code><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.types.AuditConfigDelta" title="Permalink to this definition">#</a></dt>
+<dd><p>One delta entry for AuditConfig. Each individual change (only one
+exempted_member in each entry) to a AuditConfig will be a separate
+entry.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_instance_v1.types.AuditConfigDelta.action">
+<code class="descname">action</code><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.types.AuditConfigDelta.action" title="Permalink to this definition">#</a></dt>
+<dd><p>The action that was performed on an audit configuration in a
+policy. Required</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_instance_v1.types.AuditConfigDelta.service">
+<code class="descname">service</code><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.types.AuditConfigDelta.service" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies a service that was configured for Cloud Audit
+Logging. For example, <code class="docutils literal notranslate"><span class="pre">storage.googleapis.com</span></code>,
+<code class="docutils literal notranslate"><span class="pre">cloudsql.googleapis.com</span></code>. <code class="docutils literal notranslate"><span class="pre">allServices</span></code> is a special
+value that covers all services. Required</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_instance_v1.types.AuditConfigDelta.exempted_member">
+<code class="descname">exempted_member</code><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.types.AuditConfigDelta.exempted_member" title="Permalink to this definition">#</a></dt>
+<dd><p>A single identity that is exempted from “data access” audit
+logging for the <code class="docutils literal notranslate"><span class="pre">service</span></code> specified above. Follows the same
+format of Binding.members.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_instance_v1.types.AuditConfigDelta.log_type">
+<code class="descname">log_type</code><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.types.AuditConfigDelta.log_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies the log_type that was be enabled. ADMIN_ACTIVITY is
+always enabled, and cannot be configured. Required</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">action</code></dt>
+<dd><p>Field google.iam.v1.AuditConfigDelta.action</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">exempted_member</code></dt>
+<dd><p>Field google.iam.v1.AuditConfigDelta.exempted_member</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">log_type</code></dt>
+<dd><p>Field google.iam.v1.AuditConfigDelta.log_type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">service</code></dt>
+<dd><p>Field google.iam.v1.AuditConfigDelta.service</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.spanner_admin_instance_v1.types.AuditData">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_admin_instance_v1.types.</code><code class="descname">AuditData</code><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.types.AuditData" title="Permalink to this definition">#</a></dt>
 <dd><p>Audit log information specific to Cloud IAM. This message is serialized
@@ -83,8 +146,7 @@ policy.</p>
 <dt id="google.cloud.spanner_admin_instance_v1.types.Binding.role">
 <code class="descname">role</code><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.types.Binding.role" title="Permalink to this definition">#</a></dt>
 <dd><p>Role that is assigned to <code class="docutils literal notranslate"><span class="pre">members</span></code>. For example,
-<code class="docutils literal notranslate"><span class="pre">roles/viewer</span></code>, <code class="docutils literal notranslate"><span class="pre">roles/editor</span></code>, or <code class="docutils literal notranslate"><span class="pre">roles/owner</span></code>.
-Required</p>
+<code class="docutils literal notranslate"><span class="pre">roles/viewer</span></code>, <code class="docutils literal notranslate"><span class="pre">roles/editor</span></code>, or <code class="docutils literal notranslate"><span class="pre">roles/owner</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -98,14 +160,29 @@ who is on    the internet; with or without a Google account.
 represents    anyone who is authenticated with a Google
 account or a service    account.  -  <code class="docutils literal notranslate"><span class="pre">user:{emailid}</span></code>: An
 email address that represents a specific    Google account.
-For example, <code class="docutils literal notranslate"><span class="pre">alice&#64;gmail.com</span></code> or    <code class="docutils literal notranslate"><span class="pre">joe&#64;example.com</span></code>.  -
+For example, <code class="docutils literal notranslate"><span class="pre">alice&#64;gmail.com</span></code> .  -
 <code class="docutils literal notranslate"><span class="pre">serviceAccount:{emailid}</span></code>: An email address that represents
 a    service account. For example,    <code class="docutils literal notranslate"><span class="pre">my-other-</span>
 <span class="pre">app&#64;appspot.gserviceaccount.com</span></code>.  -  <code class="docutils literal notranslate"><span class="pre">group:{emailid}</span></code>: An
 email address that represents a Google group.    For example,
-<code class="docutils literal notranslate"><span class="pre">admins&#64;example.com</span></code>.  -  <code class="docutils literal notranslate"><span class="pre">domain:{domain}</span></code>: A Google Apps
-domain name that represents all    the users of that domain.
-For example, <code class="docutils literal notranslate"><span class="pre">google.com</span></code> or    <code class="docutils literal notranslate"><span class="pre">example.com</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">admins&#64;example.com</span></code>.  -  <code class="docutils literal notranslate"><span class="pre">domain:{domain}</span></code>: The G Suite
+domain (primary) that represents all    the users of that
+domain. For example, <code class="docutils literal notranslate"><span class="pre">google.com</span></code> or    <code class="docutils literal notranslate"><span class="pre">example.com</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_instance_v1.types.Binding.condition">
+<code class="descname">condition</code><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.types.Binding.condition" title="Permalink to this definition">#</a></dt>
+<dd><p>The condition that is associated with this binding. NOTE: An
+unsatisfied condition will not allow user access via current
+binding. Different bindings, including their conditions, are
+examined independently.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">condition</code></dt>
+<dd><p>Field google.iam.v1.Binding.condition</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -149,9 +226,22 @@ resource. Follows the same format of Binding.members. Required</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.spanner_admin_instance_v1.types.BindingDelta.condition">
+<code class="descname">condition</code><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.types.BindingDelta.condition" title="Permalink to this definition">#</a></dt>
+<dd><p>Unimplemented. The condition that is associated with this
+binding. This field is logged only for Cloud Audit Logging.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">action</code></dt>
 <dd><p>Field google.iam.v1.BindingDelta.action</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">condition</code></dt>
+<dd><p>Field google.iam.v1.BindingDelta.condition</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -959,9 +1049,21 @@ of the form <code class="docutils literal notranslate"><span class="pre">project
 <dt id="google.cloud.spanner_admin_instance_v1.types.GetIamPolicyRequest.resource">
 <code class="descname">resource</code><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.types.GetIamPolicyRequest.resource" title="Permalink to this definition">#</a></dt>
 <dd><p>REQUIRED: The resource for which the policy is being
-requested. <code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For
-example, a Project resource is specified as
-<code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</p>
+requested. See the operation documentation for the appropriate
+value for this field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_instance_v1.types.GetIamPolicyRequest.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.types.GetIamPolicyRequest.options" title="Permalink to this definition">#</a></dt>
+<dd><p>OPTIONAL: A <code class="docutils literal notranslate"><span class="pre">GetPolicyOptions</span></code> object for specifying options
+to <code class="docutils literal notranslate"><span class="pre">GetIamPolicy</span></code>. This field is only used by Cloud IAM.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">options</code></dt>
+<dd><p>Field google.iam.v1.GetIamPolicyRequest.options</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1701,11 +1803,11 @@ The instance’s name contains “howl”    and it has the label
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_admin_instance_v1.types.</code><code class="descname">Policy</code><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.types.Policy" title="Permalink to this definition">#</a></dt>
 <dd><p>Defines an Identity and Access Management (IAM) policy. It is used to
 specify access control policies for Cloud Platform resources.</p>
-<p>A <code class="docutils literal notranslate"><span class="pre">Policy</span></code> consists of a list of <code class="docutils literal notranslate"><span class="pre">bindings</span></code>. A <code class="docutils literal notranslate"><span class="pre">Binding</span></code> binds a
+<p>A <code class="docutils literal notranslate"><span class="pre">Policy</span></code> consists of a list of <code class="docutils literal notranslate"><span class="pre">bindings</span></code>. A <code class="docutils literal notranslate"><span class="pre">binding</span></code> binds a
 list of <code class="docutils literal notranslate"><span class="pre">members</span></code> to a <code class="docutils literal notranslate"><span class="pre">role</span></code>, where the members can be user
 accounts, Google groups, Google domains, and service accounts. A
 <code class="docutils literal notranslate"><span class="pre">role</span></code> is a named list of permissions defined by IAM.</p>
-<p><strong>Example</strong></p>
+<p><strong>JSON Example</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="s2">&quot;bindings&quot;</span><span class="p">:</span> <span class="p">[</span>
     <span class="p">{</span>
@@ -1714,7 +1816,7 @@ accounts, Google groups, Google domains, and service accounts. A
         <span class="s2">&quot;user:mike@example.com&quot;</span><span class="p">,</span>
         <span class="s2">&quot;group:admins@example.com&quot;</span><span class="p">,</span>
         <span class="s2">&quot;domain:google.com&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;serviceAccount:my-other-app@appspot.gserviceaccount.com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;serviceAccount:my-other-app@appspot.gserviceaccount.com&quot;</span>
       <span class="p">]</span>
     <span class="p">},</span>
     <span class="p">{</span>
@@ -1725,20 +1827,32 @@ accounts, Google groups, Google domains, and service accounts. A
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>For a description of IAM and its features, see the <a class="reference external" href="https://cloud.google.com/iam">IAM developer’s
+<p><strong>YAML Example</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bindings</span><span class="p">:</span>
+<span class="o">-</span> <span class="n">members</span><span class="p">:</span>
+  <span class="o">-</span> <span class="n">user</span><span class="p">:</span><span class="n">mike</span><span class="nd">@example</span><span class="o">.</span><span class="n">com</span>
+  <span class="o">-</span> <span class="n">group</span><span class="p">:</span><span class="n">admins</span><span class="nd">@example</span><span class="o">.</span><span class="n">com</span>
+  <span class="o">-</span> <span class="n">domain</span><span class="p">:</span><span class="n">google</span><span class="o">.</span><span class="n">com</span>
+  <span class="o">-</span> <span class="n">serviceAccount</span><span class="p">:</span><span class="n">my</span><span class="o">-</span><span class="n">other</span><span class="o">-</span><span class="n">app</span><span class="nd">@appspot</span><span class="o">.</span><span class="n">gserviceaccount</span><span class="o">.</span><span class="n">com</span>
+  <span class="n">role</span><span class="p">:</span> <span class="n">roles</span><span class="o">/</span><span class="n">owner</span>
+<span class="o">-</span> <span class="n">members</span><span class="p">:</span>
+  <span class="o">-</span> <span class="n">user</span><span class="p">:</span><span class="n">sean</span><span class="nd">@example</span><span class="o">.</span><span class="n">com</span>
+  <span class="n">role</span><span class="p">:</span> <span class="n">roles</span><span class="o">/</span><span class="n">viewer</span>
+</pre></div>
+</div>
+<p>For a description of IAM and its features, see the <a class="reference external" href="https://cloud.google.com/iam/docs">IAM developer’s
 guide</a>.</p>
 <dl class="attribute">
 <dt id="google.cloud.spanner_admin_instance_v1.types.Policy.version">
 <code class="descname">version</code><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.types.Policy.version" title="Permalink to this definition">#</a></dt>
-<dd><p>Version of the <code class="docutils literal notranslate"><span class="pre">Policy</span></code>. The default version is 0.</p>
+<dd><p>Deprecated.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.spanner_admin_instance_v1.types.Policy.bindings">
 <code class="descname">bindings</code><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.types.Policy.bindings" title="Permalink to this definition">#</a></dt>
-<dd><p>Associates a list of <code class="docutils literal notranslate"><span class="pre">members</span></code> to a <code class="docutils literal notranslate"><span class="pre">role</span></code>. Multiple
-<code class="docutils literal notranslate"><span class="pre">bindings</span></code> must not be specified for the same <code class="docutils literal notranslate"><span class="pre">role</span></code>.
-<code class="docutils literal notranslate"><span class="pre">bindings</span></code> with no members will result in an error.</p>
+<dd><p>Associates a list of <code class="docutils literal notranslate"><span class="pre">members</span></code> to a <code class="docutils literal notranslate"><span class="pre">role</span></code>. <code class="docutils literal notranslate"><span class="pre">bindings</span></code>
+with no members will result in an error.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1785,6 +1899,18 @@ overwritten blindly.</p>
 <dt id="google.cloud.spanner_admin_instance_v1.types.PolicyDelta.binding_deltas">
 <code class="descname">binding_deltas</code><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.types.PolicyDelta.binding_deltas" title="Permalink to this definition">#</a></dt>
 <dd><p>The delta for Bindings between two policies.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_instance_v1.types.PolicyDelta.audit_config_deltas">
+<code class="descname">audit_config_deltas</code><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.types.PolicyDelta.audit_config_deltas" title="Permalink to this definition">#</a></dt>
+<dd><p>The delta for AuditConfigs between two policies.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">audit_config_deltas</code></dt>
+<dd><p>Field google.iam.v1.PolicyDelta.audit_config_deltas</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1843,9 +1969,8 @@ overwritten blindly.</p>
 <dt id="google.cloud.spanner_admin_instance_v1.types.SetIamPolicyRequest.resource">
 <code class="descname">resource</code><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.types.SetIamPolicyRequest.resource" title="Permalink to this definition">#</a></dt>
 <dd><p>REQUIRED: The resource for which the policy is being
-specified. <code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For
-example, a Project resource is specified as
-<code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</p>
+specified. See the operation documentation for the appropriate
+value for this field.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1948,16 +2073,15 @@ Platform services (such as Projects) might reject them.</p>
 <dt id="google.cloud.spanner_admin_instance_v1.types.TestIamPermissionsRequest.resource">
 <code class="descname">resource</code><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.types.TestIamPermissionsRequest.resource" title="Permalink to this definition">#</a></dt>
 <dd><p>REQUIRED: The resource for which the policy detail is being
-requested. <code class="docutils literal notranslate"><span class="pre">resource</span></code> is usually specified as a path. For
-example, a Project resource is specified as
-<code class="docutils literal notranslate"><span class="pre">projects/{project}</span></code>.</p>
+requested. See the operation documentation for the appropriate
+value for this field.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.spanner_admin_instance_v1.types.TestIamPermissionsRequest.permissions">
 <code class="descname">permissions</code><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.types.TestIamPermissionsRequest.permissions" title="Permalink to this definition">#</a></dt>
 <dd><p>The set of permissions to check for the <code class="docutils literal notranslate"><span class="pre">resource</span></code>.
-Permissions with wildcards (such as ‘*’ or ‘storage.*’) are
+Permissions with wildcards (such as ‘*’ or ’storage.*’) are
 not allowed. For more information see <a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM Overview</a>.</p>
 </dd></dl>
 
