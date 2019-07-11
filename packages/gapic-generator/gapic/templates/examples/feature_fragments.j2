@@ -25,15 +25,15 @@ There is a little, but not enough for it to be important because
 
 {# response handling macros #}
 
-{% macro sample_header(fileHeader, sample, callingForm) %}
-{% for line in fileHeader["copyright"].split("\n") %}
+{% macro sample_header(file_header, sample, calling_form) %}
+{% for line in file_header["copyright"].split("\n") %}
 # {{ line }}
 {% endfor %}
-{% for line in fileHeader["license"].split("\n") %}
+{% for line in file_header["license"].split("\n") %}
 # {{ line }}
 {% endfor %}
 #
-# DO NOT EDIT! This is a generated sample ("{{ callingForm }}",  "{{ sample.id }}")
+# DO NOT EDIT! This is a generated sample ("{{ calling_form }}",  "{{ sample.id }}")
 #
 # To install the latest published package dependency, execute the following:
 #   pip3 install {{ sample.package_name }}
@@ -47,7 +47,7 @@ There is a little, but not enough for it to be important because
 {% endif %}
 {% endmacro %}
 
-{% macro printInputParams(requests) %}
+{% macro print_input_params(requests) %}
 {% with input_parameters = [] %}
 {% for request in requests %}
   {% for element in request.body %}
@@ -60,14 +60,14 @@ There is a little, but not enough for it to be important because
 {% endwith %}
 {% endmacro %}
 
-{% macro renderPrint(elts) %}
+{% macro render_print(elts) %}
   {# First elment is a format string, remaining elements are the format string parameters #}
   {# Validating that the number of format params equals #}
   {# the number of remaining params is handled by real python code #}
 print({{ print_string_formatting(elts)|trim }})
 {% endmacro %}
 
-{% macro renderComment(elts) %}
+{% macro render_comment(elts) %}
   {# First elment is a format string, remaining elements are the format string parameters #}
   {# Validating that the number of format params equals #}
   {# the number of remaining params is handled by real python code #}
@@ -78,19 +78,19 @@ print({{ print_string_formatting(elts)|trim }})
 {% endwith %}
 {% endmacro %}
 
-{% macro renderDefine(statement) %}
+{% macro render_define(statement) %}
 {# Python code already verified the form, no need to check #}
 {% with lvalue, rvalue = statement.split("=") %}
 {{ lvalue }} = {{ rvalue|coerce_response_name }}
 {% endwith %}
 {% endmacro %}
 
-{% macro renderCollectionLoop(statement) %}
+{% macro render_collection_loop(statement) %}
 for {{ statement.variable }} in {{ statement.collection|coerce_response_name }}:
-    {{ dispatchStatement(statement.body) -}}
+    {{ dispatch_statement(statement.body) -}}
 {% endmacro %}
 
-{% macro renderMapLoop(statement) %}
+{% macro render_map_loop(statement) %}
  {# At least one of key and value exist; validated in python #}
 {% if "key" not in statement %}
 for {{ statement.value }} in {{ statement.map|coerce_response_name }}.values():
@@ -99,7 +99,7 @@ for {{ statement.key }} in {{ statement.map|coerce_response_name }}.keys():
 {% else %}
 for {{statement.key }}, {{ statement.value }} in {{ statement.map|coerce_response_name }}.items():
 {% endif %}
-    {{ dispatchStatement(statement.body) -}}
+    {{ dispatch_statement(statement.body) -}}
 {% endmacro %}
 
 {% macro render_write_file(statement) %}
@@ -110,18 +110,18 @@ with open({{ print_string_formatting(statement["filename"])|trim }}, "wb") as f:
   {% endwith %}
 {% endmacro %}
 
-{% macro dispatchStatement(statement) %}
+{% macro dispatch_statement(statement) %}
 {# Each statement is a dict with a single key/value pair #}
 {% if "print" in statement %}
-{{ renderPrint(statement["print"]) -}}
+{{ render_print(statement["print"]) -}}
 {% elif "comment" in statement %}
-{{ renderComment(statement["comment"]) -}}
+{{ render_comment(statement["comment"]) -}}
 {% elif "loop" in statement %}
   {% with loop = statement["loop"] %}
     {% if "collection" in loop %}
-{{ renderCollectionLoop(loop) -}}
+{{ render_collection_loop(loop) -}}
     {% else %}
-{{ renderMapLoop(loop) -}}
+{{ render_map_loop(loop) -}}
     {% endif %}
   {% endwith %}
 {% elif "write_file" in statement %}
@@ -129,7 +129,7 @@ with open({{ print_string_formatting(statement["filename"])|trim }}, "wb") as f:
 {% endif %}
 {% endmacro %}
 
-{% macro renderRequestAttr(baseName, attr) %}
+{% macro render_request_attr(base_name, attr) %}
 {# Note: python code will have manipulated the value #}
 {# to be the correct enum from the right module, if necessary. #}
 {# Python is also responsible for verifying that each input parameter is unique,#}
@@ -138,28 +138,28 @@ with open({{ print_string_formatting(statement["filename"])|trim }}, "wb") as f:
 # {{ attr.input_parameter }} = "{{ attr.value }}"
     {% if "value_is_file" in attr and attr.value_is_file %}
 with open({{ attr.input_parameter }}, "rb") as f:
-    {{ baseName }}["{{ attr.field }}"] = f.read()
+    {{ base_name }}["{{ attr.field }}"] = f.read()
     {% else %}
-{{ baseName }}["{{ attr.field }}"] = {{ attr.input_parameter }}
+{{ base_name }}["{{ attr.field }}"] = {{ attr.input_parameter }}
     {% endif %}
   {% else %}
-{{ baseName }}["{{ attr.field }}"] = {{ attr.value }}
+{{ base_name }}["{{ attr.field }}"] = {{ attr.value }}
   {% endif %}
 {% endmacro %}
 
-{% macro renderRequest(request) %}
-  {% for parameterBlock in request %}
-{{ parameterBlock.base }} = {}
-    {% for attr in parameterBlock.body %}
-{{ renderRequestAttr(parameterBlock.base, attr) }}
+{% macro render_request(request) %}
+  {% for parameter_block in request %}
+{{ parameter_block.base }} = {}
+    {% for attr in parameter_block.body %}
+{{ render_request_attr(parameter_block.base, attr) }}
     {% endfor %}
   {% endfor %}
 {% endmacro %}
 
-{% macro renderMethodCall(sample, callingForm, callingFormEnum) %}
+{% macro render_method_call(sample, calling_form, calling_form_enum) %}
 {# Note: this doesn't deal with enums or unions #}
-{% if callingForm not in [callingFormEnum.RequestStreamingBidi,
-callingFormEnum.RequestStreamingClient] %}
+{% if calling_form not in [calling_form_enum.RequestStreamingBidi,
+calling_form_enum.RequestStreamingClient] %}
 client.{{ sample.rpc|snake_case }}({{ sample.request|map(attribute="base")|join(", ") }})
 {% else %}
 {# TODO: set up client streaming once some questions are answered #}
@@ -169,55 +169,55 @@ client.{{ sample.rpc|snake_case }}([{{ sample.request|map(attribute="base")|join
 
 {# Setting up the method invocation is the responsibility of the caller: #}
 {# it's just easier to set up client side streaming and other things from outside this macro. #}
-{% macro renderCallingForm(methodInvocationText, callingForm, callingFormEnum, responseStatements ) %}
-{% if callingForm == callingFormEnum.Request %}
-response = {{ methodInvocationText }}
-{% for statement in responseStatements %}
-{{ dispatchStatement(statement ) }}
+{% macro render_calling_form(method_invocation_text, calling_form, calling_form_enum, response_statements ) %}
+{% if calling_form == calling_form_enum.Request %}
+response = {{ method_invocation_text }}
+{% for statement in response_statements %}
+{{ dispatch_statement(statement ) }}
 {% endfor %}
-{% elif callingForm == callingFormEnum.RequestPagedAll %}
-page_result = {{ methodInvocationText }}
+{% elif calling_form == calling_form_enum.RequestPagedAll %}
+page_result = {{ method_invocation_text }}
 for response in page_result:
-  {% for statement in responseStatements %}
-    {{ dispatchStatement(statement ) }}
+  {% for statement in response_statements %}
+    {{ dispatch_statement(statement ) }}
   {% endfor %}
-{% elif callingForm == callingFormEnum.RequestPaged %}
-page_result = {{ methodInvocationText }}
+{% elif calling_form == calling_form_enum.RequestPaged %}
+page_result = {{ method_invocation_text }}
 for page in page_result.pages():
     for response in page:
-  {% for statement in responseStatements %}
-        {{ dispatchStatement(statement ) }}
+  {% for statement in response_statements %}
+        {{ dispatch_statement(statement ) }}
   {% endfor %}
-{% elif callingForm in [callingFormEnum.RequestStreamingServer,
-                        callingFormEnum.RequestStreamingBidi] %}
-stream = {{ methodInvocationText }}
+{% elif calling_form in [calling_form_enum.RequestStreamingServer,
+                        calling_form_enum.RequestStreamingBidi] %}
+stream = {{ method_invocation_text }}
 for response in stream:
-  {% for statement in responseStatements %}
-    {{ dispatchStatement(statement ) }}
+  {% for statement in response_statements %}
+    {{ dispatch_statement(statement ) }}
   {% endfor %}
-{% elif callingForm == callingFormEnum.LongRunningRequestPromise %}
-operation = {{ methodInvocationText }}
+{% elif calling_form == calling_form_enum.LongRunningRequestPromise %}
+operation = {{ method_invocation_text }}
 
 print("Waiting for operation to complete...")
 
 response = operation.result()
-{% for statement in responseStatements %}
-{{ dispatchStatement(statement ) }}
+{% for statement in response_statements %}
+{{ dispatch_statement(statement ) }}
 {% endfor %}
 {% endif %}
 {% endmacro %}
 
-{% macro renderMethodName(methodName) %}
-{{ methodName|snake_case -}}
+{% macro render_method_name(method_name) %}
+{{ method_name|snake_case -}}
 {% endmacro %}
 
-{% macro renderMainBlock(methodName, requestBlock) %}
+{% macro render_main_block(method_name, request_block) %}
 def main():
     import argparse
 
     parser = argparse.ArgumentParser()
 {% with arg_list = [] %}
-{% for attr in requestBlock if "input_parameter" in attr %}
+{% for attr in request_block if "input_parameter" in attr %}
     parser.add_argument("--{{ attr.input_parameter }}",
                         type=str,
                         default="{{ attr.value }}")
@@ -225,10 +225,11 @@ def main():
 {% endfor %}
     args = parser.parse_args()
 
-    sample_{{ renderMethodName(methodName) }}({{ arg_list|join(", ") }})
+    sample_{{ render_method_name(method_name) }}({{ arg_list|join(", ") }})
 
 
 if __name__ == "__main__":
     main()
 {% endwith %}
 {% endmacro %}
+<br>

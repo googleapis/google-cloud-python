@@ -506,8 +506,8 @@ def generate_sample(sample,
 
     sample["package_name"] = api_schema.naming.warehouse_package_name
 
-    return sample_fpath, sample_template.stream(fileHeader=FILE_HEADER,
+    return sample_fpath, sample_template.stream(file_header=FILE_HEADER,
                                                 sample=sample,
                                                 imports=[],
-                                                callingForm=calling_form,
-                                                callingFormEnum=utils.CallingForm)
+                                                calling_form=calling_form,
+                                                calling_form_enum=utils.CallingForm)

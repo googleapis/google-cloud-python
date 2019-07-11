@@ -21,27 +21,27 @@
 {# Note: this sample template is WILDLY INACCURATE AND INCOMPLETE #}
 {# It does not correctly enums, unions, top level attributes, or various other things #}
 {% import "feature_fragments.j2" as frags %}
-{{ frags.sample_header(fileHeader, sample, callingForm) }}
+{{ frags.sample_header(file_header, sample, calling_form) }}
 
 # [START {{ sample.id }}]
 {# python code is responsible for all transformations: all we do here is render #}
-{% for importStatement in imports %}
-{{ importStatement }}
+{% for import_statement in imports %}
+{{ import_statement }}
 {% endfor %}
 
 {# also need calling form #}
-def sample_{{ frags.renderMethodName(sample.rpc) }}({{ frags.printInputParams(sample.request) }}):
+def sample_{{ frags.render_method_name(sample.rpc) }}({{ frags.print_input_params(sample.request) }}):
     """{{ sample.description }}"""
 
     client = {{ sample.service.split(".")[-3:-1]|
                 map("lower")|
                 join("_") }}.{{ sample.service.split(".")[-1] }}Client()
 
-    {{ frags.renderRequest(sample.request)|indent }}
-{% with methodCall = frags.renderMethodCall(sample, callingForm, callingFormEnum) %}
-    {{ frags.renderCallingForm(methodCall, callingForm, callingFormEnum, sample.response)|indent -}}
+    {{ frags.render_request(sample.request)|indent }}
+{% with method_call = frags.render_method_call(sample, calling_form, calling_form_enum) %}
+    {{ frags.render_calling_form(method_call, calling_form, calling_form_enum, sample.response)|indent -}}
 {% endwith %}
 
 # [END {{ sample.id }}]
 
-{{ frags.renderMainBlock(sample.rpc, sample.request) }}
+{{ frags.render_main_block(sample.rpc, sample.request) }}
