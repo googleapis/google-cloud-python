@@ -213,8 +213,9 @@ class Watch(object):
 
         self._rpc = ResumableBidiRpc(
             self._api.transport.listen,
-            initial_request=initial_request,
             should_recover=_should_recover,
+            should_terminate=_should_terminate,
+            initial_request=initial_request,
             metadata=self._firestore._rpc_metadata,
         )
 
