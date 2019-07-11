@@ -1978,12 +1978,6 @@ class TestBigQuery(unittest.TestCase):
                 fields=[
                     SF("nested_string", "STRING", mode="NULLABLE"),
                     SF("nested_repeated", "INTEGER", mode="REPEATED"),
-                    SF(
-                        "nested_record",
-                        "RECORD",
-                        mode="NULLABLE",
-                        fields=[SF("nested_nested_string", "STRING", mode="NULLABLE")],
-                    ),
                 ],
             ),
             SF("float_col", "FLOAT", mode="NULLABLE"),
@@ -1991,7 +1985,6 @@ class TestBigQuery(unittest.TestCase):
         record = {
             "nested_string": "another string value",
             "nested_repeated": [0, 1, 2],
-            "nested_record": {"nested_nested_string": "some deep insight"},
         }
         to_insert = [
             {
@@ -2028,9 +2021,12 @@ class TestBigQuery(unittest.TestCase):
         self.assertTrue(pyarrow.types.is_string(tbl.schema.field_by_name("string_col").type))
         record_col = tbl.schema.field_by_name("record_col").type
         self.assertTrue(pyarrow.types.is_struct(record_col))
-        self.assertEqual(record_col.num_children, 3)
-        self.assertTrue(pyarrow.types.is_string(record_col[0].type))
+        self.assertEqual(record_col.num_children, 2)
         self.assertEqual(record_col[0].name, "nested_string")
+        self.assertTrue(pyarrow.types.is_string(record_col[0].type))
+        self.assertEqual(record_col[1].name, "nested_repeated")
+        self.assertTrue(pyarrow.types.is_list(record_col[1].type))
+        self.assertTrue(pyarrow.types.is_int64(record_col[1].type.value_type))
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_nested_table_to_dataframe(self):
