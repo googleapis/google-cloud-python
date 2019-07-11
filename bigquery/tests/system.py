@@ -1982,16 +1982,9 @@ class TestBigQuery(unittest.TestCase):
             ),
             SF("float_col", "FLOAT", mode="NULLABLE"),
         ]
-        record = {
-            "nested_string": "another string value",
-            "nested_repeated": [0, 1, 2],
-        }
+        record = {"nested_string": "another string value", "nested_repeated": [0, 1, 2]}
         to_insert = [
-            {
-                "string_col": "Some value",
-                "record_col": record,
-                "float_col": 3.14,
-            }
+            {"string_col": "Some value", "record_col": record, "float_col": 3.14}
         ]
         rows = [json.dumps(row) for row in to_insert]
         body = six.BytesIO("{}\n".format("\n".join(rows)).encode("ascii"))
@@ -2017,8 +2010,12 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(tbl.num_rows, 1)
         self.assertEqual(tbl.num_columns, 3)
         # Columns may not appear in the requested order.
-        self.assertTrue(pyarrow.types.is_float64(tbl.schema.field_by_name("float_col").type))
-        self.assertTrue(pyarrow.types.is_string(tbl.schema.field_by_name("string_col").type))
+        self.assertTrue(
+            pyarrow.types.is_float64(tbl.schema.field_by_name("float_col").type)
+        )
+        self.assertTrue(
+            pyarrow.types.is_string(tbl.schema.field_by_name("string_col").type)
+        )
         record_col = tbl.schema.field_by_name("record_col").type
         self.assertTrue(pyarrow.types.is_struct(record_col))
         self.assertEqual(record_col.num_children, 2)
