@@ -110,6 +110,25 @@ class Test_document_watch_comparator(unittest.TestCase):
         self.assertRaises(AssertionError, self._callFUT, 1, 2)
 
 
+class Test_should_recover(unittest.TestCase):
+    def _callFUT(self, exception):
+        from google.cloud.firestore_v1.watch import _should_recover
+
+        return _should_recover(exception)
+
+    def test_w_unavailable(self):
+        from google.api_core.exceptions import ServiceUnavailable
+
+        exception = ServiceUnavailable("testing")
+
+        self.assertTrue(self._callFUT(exception))
+
+    def test_w_non_recoverable(self):
+        exception = ValueError("testing")
+
+        self.assertFalse(self._callFUT(exception))
+
+
 class TestWatch(unittest.TestCase):
     def _makeOne(
         self,
