@@ -407,9 +407,27 @@ class TestResumableBidiRpc(object):
         assert bidi_rpc._rpc_metadata == metadata
         assert isinstance(bidi_rpc._reopen_throttle, bidi._Throttle)
 
+    def test_done_callbacks_terminate(self):
+        start_rpc = mock.Mock()
+        should_recover = mock.Mock(spec=["__call__"], return_value=True)
+        should_terminate = mock.Mock(spec=["__call__"], return_value=True)
+        bidi_rpc = bidi.ResumableBidiRpc(
+            start_rpc, should_recover, should_terminate=should_terminate
+        )
+        callback = mock.Mock(spec=["__call__"])
+
+        bidi_rpc.add_done_callback(callback)
+        bidi_rpc._on_call_done(mock.sentinel.future)
+
+        should_terminate.assert_called_once_with(mock.sentinel.future)
+        should_recover.assert_not_called()
+        callback.assert_called_once_with(mock.sentinel.future)
+        assert not bidi_rpc.is_active
+
     def test_done_callbacks_recoverable(self):
         start_rpc = mock.create_autospec(grpc.StreamStreamMultiCallable, instance=True)
-        bidi_rpc = bidi.ResumableBidiRpc(start_rpc, lambda _: True)
+        should_recover = mock.Mock(spec=["__call__"], return_value=True)
+        bidi_rpc = bidi.ResumableBidiRpc(start_rpc, should_recover)
         callback = mock.Mock(spec=["__call__"])
 
         bidi_rpc.add_done_callback(callback)
@@ -417,16 +435,21 @@ class TestResumableBidiRpc(object):
 
         callback.assert_not_called()
         start_rpc.assert_called_once()
+        should_recover.assert_called_once_with(mock.sentinel.future)
         assert bidi_rpc.is_active
 
     def test_done_callbacks_non_recoverable(self):
-        bidi_rpc = bidi.ResumableBidiRpc(None, lambda _: False)
+        start_rpc = mock.create_autospec(grpc.StreamStreamMultiCallable, instance=True)
+        should_recover = mock.Mock(spec=["__call__"], return_value=False)
+        bidi_rpc = bidi.ResumableBidiRpc(start_rpc, should_recover)
         callback = mock.Mock(spec=["__call__"])
 
         bidi_rpc.add_done_callback(callback)
         bidi_rpc._on_call_done(mock.sentinel.future)
 
         callback.assert_called_once_with(mock.sentinel.future)
+        should_recover.assert_called_once_with(mock.sentinel.future)
+        assert not bidi_rpc.is_active
 
     def test_send_recover(self):
         error = ValueError()

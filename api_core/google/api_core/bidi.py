@@ -443,7 +443,9 @@ class ResumableBidiRpc(BidiRpc):
         # error, not for errors that we can recover from. Note that grpc's
         # "future" here is also a grpc.RpcError.
         with self._operational_lock:
-            if not self._should_recover(future):
+            if self._should_terminate(future):
+                self._finalize(future)
+            elif not self._should_recover(future):
                 self._finalize(future)
             else:
                 _LOGGER.debug("Re-opening stream from gRPC callback.")
