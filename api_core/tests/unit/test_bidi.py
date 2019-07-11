@@ -370,12 +370,42 @@ class CallStub(object):
 
 
 class TestResumableBidiRpc(object):
-    def test_initial_state(self):
-        callback = mock.Mock()
-        callback.return_value = True
-        bidi_rpc = bidi.ResumableBidiRpc(None, callback)
+    def test_ctor_defaults(self):
+        start_rpc = mock.Mock()
+        should_recover = mock.Mock()
+        bidi_rpc = bidi.ResumableBidiRpc(start_rpc, should_recover)
 
         assert bidi_rpc.is_active is False
+        assert bidi_rpc._finalized is False
+        assert bidi_rpc._start_rpc is start_rpc
+        assert bidi_rpc._should_recover is should_recover
+        assert bidi_rpc._should_terminate is bidi._never_terminate
+        assert bidi_rpc._initial_request is None
+        assert bidi_rpc._rpc_metadata is None
+        assert bidi_rpc._reopen_throttle is None
+
+    def test_ctor_explicit(self):
+        start_rpc = mock.Mock()
+        should_recover = mock.Mock()
+        should_terminate = mock.Mock()
+        initial_request = mock.Mock()
+        metadata = {"x-foo": "bar"}
+        bidi_rpc = bidi.ResumableBidiRpc(
+            start_rpc,
+            should_recover,
+            should_terminate=should_terminate,
+            initial_request=initial_request,
+            metadata=metadata,
+            throttle_reopen=True,
+        )
+
+        assert bidi_rpc.is_active is False
+        assert bidi_rpc._finalized is False
+        assert bidi_rpc._should_recover is should_recover
+        assert bidi_rpc._should_terminate is should_terminate
+        assert bidi_rpc._initial_request is initial_request
+        assert bidi_rpc._rpc_metadata == metadata
+        assert isinstance(bidi_rpc._reopen_throttle, bidi._Throttle)
 
     def test_done_callbacks_recoverable(self):
         start_rpc = mock.create_autospec(grpc.StreamStreamMultiCallable, instance=True)

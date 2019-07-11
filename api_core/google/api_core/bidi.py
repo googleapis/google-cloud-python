@@ -349,6 +349,11 @@ class BidiRpc(object):
         return self._request_queue.qsize()
 
 
+def _never_terminate(future_or_error):
+    """By default, no errors cause BiDi termination."""
+    return False
+
+
 class ResumableBidiRpc(BidiRpc):
     """A :class:`BidiRpc` that can automatically resume the stream on errors.
 
@@ -391,6 +396,9 @@ class ResumableBidiRpc(BidiRpc):
         should_recover (Callable[[Exception], bool]): A function that returns
             True if the stream should be recovered. This will be called
             whenever an error is encountered on the stream.
+        should_terminate (Callable[[Exception], bool]): A function that returns
+            True if the stream should be terminated. This will be called
+            whenever an error is encountered on the stream.
         metadata Sequence[Tuple(str, str)]: RPC metadata to include in
             the request.
         throttle_reopen (bool): If ``True``, throttling will be applied to
@@ -401,12 +409,14 @@ class ResumableBidiRpc(BidiRpc):
         self,
         start_rpc,
         should_recover,
+        should_terminate=_never_terminate,
         initial_request=None,
         metadata=None,
         throttle_reopen=False,
     ):
         super(ResumableBidiRpc, self).__init__(start_rpc, initial_request, metadata)
         self._should_recover = should_recover
+        self._should_terminate = should_terminate
         self._operational_lock = threading.RLock()
         self._finalized = False
         self._finalize_lock = threading.Lock()
