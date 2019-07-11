@@ -88,6 +88,20 @@ class CompletionClient(object):
         )
 
     @classmethod
+    def company_without_tenant_path(cls, project, company):
+        """Return a fully-qualified company_without_tenant string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/companies/{company}", project=project, company=company
+        )
+
+    @classmethod
+    def project_path(cls, project):
+        """Return a fully-qualified project string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}", project=project
+        )
+
+    @classmethod
     def tenant_path(cls, project, tenant):
         """Return a fully-qualified tenant string."""
         return google.api_core.path_template.expand(
@@ -240,30 +254,22 @@ class CompletionClient(object):
             >>> response = client.complete_query(parent, query, page_size)
 
         Args:
-            parent (str): Required.
-
-                Resource name of tenant the completion is performed within.
+            parent (str): Required. Resource name of tenant the completion is performed within.
 
                 The format is "projects/{project\_id}/tenants/{tenant\_id}", for
                 example, "projects/api-test-project/tenant/foo".
 
                 Tenant id is optional and the default tenant is used if unspecified, for
                 example, "projects/api-test-project".
-            query (str): Required.
-
-                The query used to generate suggestions.
+            query (str): Required. The query used to generate suggestions.
 
                 The maximum number of allowed characters is 255.
-            page_size (int): Required.
-
-                Completion result count.
+            page_size (int): Required. Completion result count.
 
                 The maximum allowed page size is 10.
-            language_codes (list[str]): Optional.
-
-                The list of languages of the query. This is the BCP-47 language code,
-                such as "en-US" or "sr-Latn". For more information, see `Tags for
-                Identifying Languages <https://tools.ietf.org/html/bcp47>`__.
+            language_codes (list[str]): Optional. The list of languages of the query. This is the BCP-47
+                language code, such as "en-US" or "sr-Latn". For more information, see
+                `Tags for Identifying Languages <https://tools.ietf.org/html/bcp47>`__.
 
                 For ``CompletionType.JOB_TITLE`` type, only open jobs with the same
                 ``language_codes`` are returned.
@@ -276,9 +282,7 @@ class CompletionClient(object):
                 ``language_codes`` are returned.
 
                 The maximum number of allowed characters is 255.
-            company (str): Optional.
-
-                If provided, restricts completion to specified company.
+            company (str): Optional. If provided, restricts completion to specified company.
 
                 The format is
                 "projects/{project\_id}/tenants/{tenant\_id}/companies/{company\_id}",
@@ -286,12 +290,10 @@ class CompletionClient(object):
 
                 Tenant id is optional and the default tenant is used if unspecified, for
                 example, "projects/api-test-project/companies/bar".
-            scope (~google.cloud.talent_v4beta1.types.CompletionScope): Optional.
-
-                The scope of the completion. The defaults is ``CompletionScope.PUBLIC``.
-            type_ (~google.cloud.talent_v4beta1.types.CompletionType): Optional.
-
-                The completion topic. The default is ``CompletionType.COMBINED``.
+            scope (~google.cloud.talent_v4beta1.types.CompletionScope): Optional. The scope of the completion. The defaults is
+                ``CompletionScope.PUBLIC``.
+            type_ (~google.cloud.talent_v4beta1.types.CompletionType): Optional. The completion topic. The default is
+                ``CompletionType.COMBINED``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.

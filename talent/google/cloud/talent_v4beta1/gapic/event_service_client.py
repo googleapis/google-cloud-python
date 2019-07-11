@@ -81,6 +81,13 @@ class EventServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
+    def project_path(cls, project):
+        """Return a fully-qualified project string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}", project=project
+        )
+
+    @classmethod
     def tenant_path(cls, project, tenant):
         """Return a fully-qualified tenant string."""
         return google.api_core.path_template.expand(
@@ -230,19 +237,15 @@ class EventServiceClient(object):
             >>> response = client.create_client_event(parent, client_event)
 
         Args:
-            parent (str): Required.
-
-                Resource name of the tenant under which the event is created.
+            parent (str): Required. Resource name of the tenant under which the event is created.
 
                 The format is "projects/{project\_id}/tenants/{tenant\_id}", for
                 example, "projects/api-test-project/tenant/foo".
 
                 Tenant id is optional and a default tenant is created if unspecified,
                 for example, "projects/api-test-project".
-            client_event (Union[dict, ~google.cloud.talent_v4beta1.types.ClientEvent]): Required.
-
-                Events issued when end user interacts with customer's application that
-                uses Cloud Talent Solution.
+            client_event (Union[dict, ~google.cloud.talent_v4beta1.types.ClientEvent]): Required. Events issued when end user interacts with customer's application
+                that uses Cloud Talent Solution.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.ClientEvent`

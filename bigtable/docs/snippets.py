@@ -44,6 +44,8 @@ from google.cloud.bigtable import enums
 UNIQUE_SUFFIX = unique_resource_id("-")
 INSTANCE_ID = "snippet-tests" + UNIQUE_SUFFIX
 CLUSTER_ID = "clus-1-" + UNIQUE_SUFFIX
+APP_PROFILE_ID = "app-prof" + UNIQUE_SUFFIX
+ROUTING_POLICY_TYPE = enums.RoutingPolicyType.ANY
 LOCATION_ID = "us-central1-f"
 ALT_LOCATION_ID = "us-central1-a"
 PRODUCTION = enums.Instance.Type.PRODUCTION
@@ -167,19 +169,22 @@ def test_bigtable_create_additional_cluster():
         retry_429(cluster.delete)()
 
 
-def test_bigtable_create_app_profile():
+def test_bigtable_create_reload_delete_app_profile():
+    import re
+
     # [START bigtable_create_app_profile]
     from google.cloud.bigtable import Client
+    from google.cloud.bigtable import enums
+
+    routing_policy_type = enums.RoutingPolicyType.ANY
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
 
-    app_profile_id = "app-prof-" + UNIQUE_SUFFIX
     description = "routing policy-multy"
-    routing_policy_type = enums.RoutingPolicyType.ANY
 
     app_profile = instance.app_profile(
-        app_profile_id=app_profile_id,
+        app_profile_id=APP_PROFILE_ID,
         routing_policy_type=routing_policy_type,
         description=description,
         cluster_id=CLUSTER_ID,
@@ -188,10 +193,70 @@ def test_bigtable_create_app_profile():
     app_profile = app_profile.create(ignore_warnings=True)
     # [END bigtable_create_app_profile]
 
-    try:
-        assert app_profile.exists()
-    finally:
-        retry_429(app_profile.delete)(ignore_warnings=True)
+    # [START bigtable_app_profile_name]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    app_profile = instance.app_profile(APP_PROFILE_ID)
+
+    app_profile_name = app_profile.name
+    # [END bigtable_app_profile_name]
+    _profile_name_re = re.compile(
+        r"^projects/(?P<project>[^/]+)/"
+        r"instances/(?P<instance>[^/]+)/"
+        r"appProfiles/(?P<appprofile_id>"
+        r"[_a-zA-Z0-9][-_.a-zA-Z0-9]*)$"
+    )
+    assert _profile_name_re.match(app_profile_name)
+
+    # [START bigtable_app_profile_exists]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    app_profile = instance.app_profile(APP_PROFILE_ID)
+
+    app_profile_exists = app_profile.exists()
+    # [END bigtable_app_profile_exists]
+    assert app_profile_exists
+
+    # [START bigtable_reload_app_profile]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    app_profile = instance.app_profile(APP_PROFILE_ID)
+
+    app_profile.reload()
+    # [END bigtable_reload_app_profile]
+    assert app_profile.routing_policy_type == ROUTING_POLICY_TYPE
+
+    # [START bigtable_update_app_profile]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    app_profile = instance.app_profile(APP_PROFILE_ID)
+    app_profile.reload()
+
+    description = "My new app profile"
+    app_profile.description = description
+    app_profile.update()
+    # [END bigtable_update_app_profile]
+    assert app_profile.description == description
+
+    # [START bigtable_delete_app_profile]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    app_profile = instance.app_profile(APP_PROFILE_ID)
+    app_profile.reload()
+
+    app_profile.delete(ignore_warnings=True)
+    # [END bigtable_delete_app_profile]
+    assert not app_profile.exists()
 
 
 def test_bigtable_list_instances():

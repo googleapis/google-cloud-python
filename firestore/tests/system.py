@@ -50,19 +50,20 @@ def client():
 
 @pytest.fixture
 def cleanup():
-    to_delete = []
-    yield to_delete.append
+    operations = []
+    yield operations.append
 
-    for document in to_delete:
-        document.delete()
+    for operation in operations:
+        operation()
 
 
 def test_create_document(client, cleanup):
     now = datetime.datetime.utcnow().replace(tzinfo=UTC)
-    document_id = "shun" + unique_resource_id("-")
-    document = client.document("collek", document_id)
+    collection_id = "doc-create" + unique_resource_id("-")
+    document_id = "doc" + unique_resource_id("-")
+    document = client.document(collection_id, document_id)
     # Add to clean-up before API request (in case ``create()`` fails).
-    cleanup(document)
+    cleanup(document.delete)
 
     data = {
         "now": firestore.SERVER_TIMESTAMP,
@@ -99,10 +100,11 @@ def test_create_document(client, cleanup):
 
 
 def test_create_document_w_subcollection(client, cleanup):
-    document_id = "shun" + unique_resource_id("-")
-    document = client.document("collek", document_id)
+    collection_id = "doc-create-sub" + unique_resource_id("-")
+    document_id = "doc" + unique_resource_id("-")
+    document = client.document(collection_id, document_id)
     # Add to clean-up before API request (in case ``create()`` fails).
-    cleanup(document)
+    cleanup(document.delete)
 
     data = {"now": firestore.SERVER_TIMESTAMP}
     document.create(data)
@@ -112,7 +114,7 @@ def test_create_document_w_subcollection(client, cleanup):
     for child_id in child_ids:
         subcollection = document.collection(child_id)
         _, subdoc = subcollection.add({"foo": "bar"})
-        cleanup(subdoc)
+        cleanup(subdoc.delete)
 
     children = document.collections()
     assert sorted(child.id for child in children) == sorted(child_ids)
@@ -122,7 +124,7 @@ def test_cannot_use_foreign_key(client, cleanup):
     document_id = "cannot" + unique_resource_id("-")
     document = client.document("foreign-key", document_id)
     # Add to clean-up before API request (in case ``create()`` fails).
-    cleanup(document)
+    cleanup(document.delete)
 
     other_client = firestore.Client(
         project="other-prahj", credentials=client._credentials, database="dee-bee"
@@ -139,7 +141,7 @@ def assert_timestamp_less(timestamp_pb1, timestamp_pb2):
     assert dt_val1 < dt_val2
 
 
-def test_no_document(client, cleanup):
+def test_no_document(client):
     document_id = "no_document" + unique_resource_id("-")
     document = client.document("abcde", document_id)
     snapshot = document.get()
@@ -150,7 +152,7 @@ def test_document_set(client, cleanup):
     document_id = "for-set" + unique_resource_id("-")
     document = client.document("i-did-it", document_id)
     # Add to clean-up before API request (in case ``set()`` fails).
-    cleanup(document)
+    cleanup(document.delete)
 
     # 0. Make sure the document doesn't exist yet
     snapshot = document.get()
@@ -179,7 +181,7 @@ def test_document_integer_field(client, cleanup):
     document_id = "for-set" + unique_resource_id("-")
     document = client.document("i-did-it", document_id)
     # Add to clean-up before API request (in case ``set()`` fails).
-    cleanup(document)
+    cleanup(document.delete)
 
     data1 = {"1a": {"2b": "3c", "ab": "5e"}, "6f": {"7g": "8h", "cd": "0j"}}
     document.create(data1)
@@ -195,7 +197,7 @@ def test_document_set_merge(client, cleanup):
     document_id = "for-set" + unique_resource_id("-")
     document = client.document("i-did-it", document_id)
     # Add to clean-up before API request (in case ``set()`` fails).
-    cleanup(document)
+    cleanup(document.delete)
 
     # 0. Make sure the document doesn't exist yet
     snapshot = document.get()
@@ -227,7 +229,7 @@ def test_document_set_w_int_field(client, cleanup):
     document_id = "set-int-key" + unique_resource_id("-")
     document = client.document("i-did-it", document_id)
     # Add to clean-up before API request (in case ``set()`` fails).
-    cleanup(document)
+    cleanup(document.delete)
 
     # 0. Make sure the document doesn't exist yet
     snapshot = document.get()
@@ -251,7 +253,7 @@ def test_document_update_w_int_field(client, cleanup):
     document_id = "update-int-key" + unique_resource_id("-")
     document = client.document("i-did-it", document_id)
     # Add to clean-up before API request (in case ``set()`` fails).
-    cleanup(document)
+    cleanup(document.delete)
 
     # 0. Make sure the document doesn't exist yet
     snapshot = document.get()
@@ -276,7 +278,7 @@ def test_update_document(client, cleanup):
     document_id = "for-update" + unique_resource_id("-")
     document = client.document("made", document_id)
     # Add to clean-up before API request (in case ``create()`` fails).
-    cleanup(document)
+    cleanup(document.delete)
 
     # 0. Try to update before the document exists.
     with pytest.raises(NotFound) as exc_info:
@@ -346,7 +348,7 @@ def test_document_get(client, cleanup):
     document_id = "for-get" + unique_resource_id("-")
     document = client.document("created", document_id)
     # Add to clean-up before API request (in case ``create()`` fails).
-    cleanup(document)
+    cleanup(document.delete)
 
     # First make sure it doesn't exist.
     assert not document.get().exists
@@ -370,7 +372,7 @@ def test_document_delete(client, cleanup):
     document_id = "deleted" + unique_resource_id("-")
     document = client.document("here-to-be", document_id)
     # Add to clean-up before API request (in case ``create()`` fails).
-    cleanup(document)
+    cleanup(document.delete)
     document.create({"not": "much"})
 
     # 1. Call ``delete()`` with invalid (in the past) "last timestamp" option.
@@ -399,9 +401,10 @@ def test_document_delete(client, cleanup):
 
 
 def test_collection_add(client, cleanup):
-    collection1 = client.collection("collek")
-    collection2 = client.collection("collek", "shun", "child")
-    collection3 = client.collection("collek", "table", "child")
+    collection_id = "coll-add" + unique_resource_id("-")
+    collection1 = client.collection(collection_id)
+    collection2 = client.collection(collection_id, "doc", "child")
+    collection3 = client.collection(collection_id, "table", "child")
     explicit_doc_id = "hula" + unique_resource_id("-")
 
     assert set(collection1.list_documents()) == set()
@@ -411,7 +414,7 @@ def test_collection_add(client, cleanup):
     # Auto-ID at top-level.
     data1 = {"foo": "bar"}
     update_time1, document_ref1 = collection1.add(data1)
-    cleanup(document_ref1)
+    cleanup(document_ref1.delete)
     assert set(collection1.list_documents()) == {document_ref1}
     assert set(collection2.list_documents()) == set()
     assert set(collection3.list_documents()) == set()
@@ -423,7 +426,7 @@ def test_collection_add(client, cleanup):
     # Explicit ID at top-level.
     data2 = {"baz": 999}
     update_time2, document_ref2 = collection1.add(data2, document_id=explicit_doc_id)
-    cleanup(document_ref2)
+    cleanup(document_ref2.delete)
     assert set(collection1.list_documents()) == {document_ref1, document_ref2}
     assert set(collection2.list_documents()) == set()
     assert set(collection3.list_documents()) == set()
@@ -433,12 +436,12 @@ def test_collection_add(client, cleanup):
     assert snapshot2.update_time == update_time2
     assert document_ref2.id == explicit_doc_id
 
-    nested_ref = collection1.document("shun")
+    nested_ref = collection1.document("doc")
 
     # Auto-ID for nested collection.
     data3 = {"quux": b"\x00\x01\x02\x03"}
     update_time3, document_ref3 = collection2.add(data3)
-    cleanup(document_ref3)
+    cleanup(document_ref3.delete)
     assert set(collection1.list_documents()) == {
         document_ref1,
         document_ref2,
@@ -454,7 +457,7 @@ def test_collection_add(client, cleanup):
     # Explicit for nested collection.
     data4 = {"kazaam": None, "bad": False}
     update_time4, document_ref4 = collection2.add(data4, document_id=explicit_doc_id)
-    cleanup(document_ref4)
+    cleanup(document_ref4.delete)
     assert set(collection1.list_documents()) == {
         document_ref1,
         document_ref2,
@@ -471,7 +474,7 @@ def test_collection_add(client, cleanup):
     # Exercise "missing" document (no doc, but subcollection).
     data5 = {"bam": 123, "folyk": False}
     update_time5, document_ref5 = collection3.add(data5)
-    cleanup(document_ref5)
+    cleanup(document_ref5.delete)
     missing_ref = collection1.document("table")
     assert set(collection1.list_documents()) == {
         document_ref1,
@@ -484,8 +487,9 @@ def test_collection_add(client, cleanup):
 
 
 def test_query_stream(client, cleanup):
+    collection_id = "qs" + unique_resource_id("-")
     sub_collection = "child" + unique_resource_id("-")
-    collection = client.collection("collek", "shun", sub_collection)
+    collection = client.collection(collection_id, "doc", sub_collection)
 
     stored = {}
     num_vals = 5
@@ -499,7 +503,7 @@ def test_query_stream(client, cleanup):
             }
             _, doc_ref = collection.add(document_data)
             # Add to clean-up.
-            cleanup(doc_ref)
+            cleanup(doc_ref.delete)
             stored[doc_ref.id] = document_data
 
     # 0. Limit to snapshots where ``a==1``.
@@ -608,12 +612,12 @@ def test_query_unary(client, cleanup):
 
     _, document0 = collection.add({field_name: None})
     # Add to clean-up.
-    cleanup(document0)
+    cleanup(document0.delete)
 
     nan_val = float("nan")
     _, document1 = collection.add({field_name: nan_val})
     # Add to clean-up.
-    cleanup(document1)
+    cleanup(document1.delete)
 
     # 0. Query for null.
     query0 = collection.where(field_name, "==", None)
@@ -634,7 +638,7 @@ def test_query_unary(client, cleanup):
     assert math.isnan(data1[field_name])
 
 
-def test_collection_group_queries(client, cleanup):
+def test_collection_group_queries(client):
     collection_group = "b" + unique_resource_id("-")
 
     doc_paths = [
@@ -665,7 +669,7 @@ def test_collection_group_queries(client, cleanup):
     assert found == expected
 
 
-def test_collection_group_queries_startat_endat(client, cleanup):
+def test_collection_group_queries_startat_endat(client):
     collection_group = "b" + unique_resource_id("-")
 
     doc_paths = [
@@ -706,7 +710,7 @@ def test_collection_group_queries_startat_endat(client, cleanup):
     assert found == set(["cg-doc2"])
 
 
-def test_collection_group_queries_filters(client, cleanup):
+def test_collection_group_queries_filters(client):
     collection_group = "b" + unique_resource_id("-")
 
     doc_paths = [
@@ -729,8 +733,12 @@ def test_collection_group_queries_filters(client, cleanup):
 
     query = (
         client.collection_group(collection_group)
-        .where("__name__", ">=", client.document("a/b"))
-        .where("__name__", "<=", client.document("a/b0"))
+        .where(
+            firestore.field_path.FieldPath.document_id(), ">=", client.document("a/b")
+        )
+        .where(
+            firestore.field_path.FieldPath.document_id(), "<=", client.document("a/b0")
+        )
     )
     snapshots = list(query.stream())
     found = set(snapshot.id for snapshot in snapshots)
@@ -738,9 +746,13 @@ def test_collection_group_queries_filters(client, cleanup):
 
     query = (
         client.collection_group(collection_group)
-        .where("__name__", ">", client.document("a/b"))
         .where(
-            "__name__", "<", client.document("a/b/{}/cg-doc3".format(collection_group))
+            firestore.field_path.FieldPath.document_id(), ">", client.document("a/b")
+        )
+        .where(
+            firestore.field_path.FieldPath.document_id(),
+            "<",
+            client.document("a/b/{}/cg-doc3".format(collection_group)),
         )
     )
     snapshots = list(query.stream())
@@ -755,8 +767,8 @@ def test_get_all(client, cleanup):
     document2 = client.document(collection_name, "b")
     document3 = client.document(collection_name, "c")
     # Add to clean-up before API requests (in case ``create()`` fails).
-    cleanup(document1)
-    cleanup(document3)
+    cleanup(document1.delete)
+    cleanup(document3.delete)
 
     data1 = {"a": {"b": 2, "c": 3}, "d": 4, "e": 0}
     write_result1 = document1.create(data1)
@@ -806,9 +818,9 @@ def test_batch(client, cleanup):
     document2 = client.document(collection_name, "mno")
     document3 = client.document(collection_name, "xyz")
     # Add to clean-up before API request (in case ``create()`` fails).
-    cleanup(document1)
-    cleanup(document2)
-    cleanup(document3)
+    cleanup(document1.delete)
+    cleanup(document2.delete)
+    cleanup(document3.delete)
 
     data2 = {"some": {"deep": "stuff", "and": "here"}, "water": 100.0}
     document2.create(data2)
@@ -846,10 +858,12 @@ def test_batch(client, cleanup):
 
 def test_watch_document(client, cleanup):
     db = client
-    doc_ref = db.collection(u"users").document(u"alovelace" + unique_resource_id())
+    collection_ref = db.collection(u"wd-users" + unique_resource_id())
+    doc_ref = collection_ref.document(u"alovelace")
 
     # Initial setting
     doc_ref.set({u"first": u"Jane", u"last": u"Doe", u"born": 1900})
+    cleanup(doc_ref.delete)
 
     sleep(1)
 
@@ -859,7 +873,8 @@ def test_watch_document(client, cleanup):
 
     on_snapshot.called_count = 0
 
-    doc_ref.on_snapshot(on_snapshot)
+    watch = doc_ref.on_snapshot(on_snapshot)
+    cleanup(watch.unsubscribe)
 
     # Alter document
     doc_ref.set({u"first": u"Ada", u"last": u"Lovelace", u"born": 1815})
@@ -867,24 +882,25 @@ def test_watch_document(client, cleanup):
     sleep(1)
 
     for _ in range(10):
-        if on_snapshot.called_count == 1:
-            return
+        if on_snapshot.called_count > 0:
+            break
         sleep(1)
 
-    if on_snapshot.called_count != 1:
+    if on_snapshot.called_count not in (1, 2):
         raise AssertionError(
-            "Failed to get exactly one document change: count: "
+            "Failed to get one or two document changes: count: "
             + str(on_snapshot.called_count)
         )
 
 
 def test_watch_collection(client, cleanup):
     db = client
-    doc_ref = db.collection(u"users").document(u"alovelace" + unique_resource_id())
-    collection_ref = db.collection(u"users")
+    collection_ref = db.collection(u"wc-users" + unique_resource_id())
+    doc_ref = collection_ref.document(u"alovelace")
 
     # Initial setting
     doc_ref.set({u"first": u"Jane", u"last": u"Doe", u"born": 1900})
+    cleanup(doc_ref.delete)
 
     # Setup listener
     def on_snapshot(docs, changes, read_time):
@@ -895,7 +911,8 @@ def test_watch_collection(client, cleanup):
     on_snapshot.called_count = 0
     on_snapshot.born = 0
 
-    collection_ref.on_snapshot(on_snapshot)
+    watch = collection_ref.on_snapshot(on_snapshot)
+    cleanup(watch.unsubscribe)
 
     # delay here so initial on_snapshot occurs and isn't combined with set
     sleep(1)
@@ -915,11 +932,13 @@ def test_watch_collection(client, cleanup):
 
 def test_watch_query(client, cleanup):
     db = client
-    doc_ref = db.collection(u"users").document(u"alovelace" + unique_resource_id())
-    query_ref = db.collection(u"users").where("first", "==", u"Ada")
+    collection_ref = db.collection(u"wq-users" + unique_resource_id())
+    doc_ref = collection_ref.document(u"alovelace")
+    query_ref = collection_ref.where("first", "==", u"Ada")
 
     # Initial setting
     doc_ref.set({u"first": u"Jane", u"last": u"Doe", u"born": 1900})
+    cleanup(doc_ref.delete)
 
     sleep(1)
 
@@ -928,12 +947,13 @@ def test_watch_query(client, cleanup):
         on_snapshot.called_count += 1
 
         # A snapshot should return the same thing as if a query ran now.
-        query_ran = db.collection(u"users").where("first", "==", u"Ada").stream()
+        query_ran = collection_ref.where("first", "==", u"Ada").stream()
         assert len(docs) == len([i for i in query_ran])
 
     on_snapshot.called_count = 0
 
-    query_ref.on_snapshot(on_snapshot)
+    watch = query_ref.on_snapshot(on_snapshot)
+    cleanup(watch.unsubscribe)
 
     # Alter document
     doc_ref.set({u"first": u"Ada", u"last": u"Lovelace", u"born": 1815})
@@ -953,17 +973,14 @@ def test_watch_query(client, cleanup):
 def test_watch_query_order(client, cleanup):
     db = client
     unique_id = unique_resource_id()
-    doc_ref1 = db.collection(u"users").document(u"alovelace" + unique_id)
-    doc_ref2 = db.collection(u"users").document(u"asecondlovelace" + unique_id)
-    doc_ref3 = db.collection(u"users").document(u"athirdlovelace" + unique_id)
-    doc_ref4 = db.collection(u"users").document(u"afourthlovelace" + unique_id)
-    doc_ref5 = db.collection(u"users").document(u"afifthlovelace" + unique_id)
+    collection_ref = db.collection(u"users")
+    doc_ref1 = collection_ref.document(u"alovelace" + unique_id)
+    doc_ref2 = collection_ref.document(u"asecondlovelace" + unique_id)
+    doc_ref3 = collection_ref.document(u"athirdlovelace" + unique_id)
+    doc_ref4 = collection_ref.document(u"afourthlovelace" + unique_id)
+    doc_ref5 = collection_ref.document(u"afifthlovelace" + unique_id)
 
-    query_ref = (
-        db.collection(u"users")
-        .where("first", "==", u"Ada" + unique_id)
-        .order_by("last")
-    )
+    query_ref = collection_ref.where("first", "==", u"Ada" + unique_id).order_by("last")
 
     # Setup listener
     def on_snapshot(docs, changes, read_time):
@@ -991,21 +1008,27 @@ def test_watch_query_order(client, cleanup):
     on_snapshot.called_count = 0
     on_snapshot.last_doc_count = 0
     on_snapshot.failed = None
-    query_ref.on_snapshot(on_snapshot)
+    watch = query_ref.on_snapshot(on_snapshot)
+    cleanup(watch.unsubscribe)
 
     sleep(1)
 
     doc_ref1.set({u"first": u"Ada" + unique_id, u"last": u"Lovelace", u"born": 1815})
+    cleanup(doc_ref1.delete)
     doc_ref2.set(
         {u"first": u"Ada" + unique_id, u"last": u"SecondLovelace", u"born": 1815}
     )
+    cleanup(doc_ref2.delete)
     doc_ref3.set(
         {u"first": u"Ada" + unique_id, u"last": u"ThirdLovelace", u"born": 1815}
     )
+    cleanup(doc_ref3.delete)
     doc_ref4.set(
         {u"first": u"Ada" + unique_id, u"last": u"FourthLovelace", u"born": 1815}
     )
+    cleanup(doc_ref4.delete)
     doc_ref5.set({u"first": u"Ada" + unique_id, u"last": u"lovelace", u"born": 1815})
+    cleanup(doc_ref5.delete)
 
     for _ in range(10):
         if on_snapshot.last_doc_count == 5:

@@ -92,7 +92,6 @@ class Key(object):
     :param path_args: May represent a partial (odd length) or full (even
                       length) key path.
 
-    :type kwargs: dict
     :param kwargs: Keyword arguments to be passed in.
 
     Accepted keyword arguments are
