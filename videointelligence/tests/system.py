@@ -14,16 +14,12 @@
 
 """System tests for VideoIntelligence API."""
 
-import grpc
-import io
 import json
 import os
 import requests
 import time
 import unittest
 
-import google.api_core.exceptions
-from google.cloud import exceptions
 from google.cloud import videointelligence
 from google.cloud.videointelligence_v1 import enums
 
