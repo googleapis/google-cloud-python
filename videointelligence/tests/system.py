@@ -53,7 +53,8 @@ class TestVideoIntelligenceClient(VideoIntelligenceSystemTestBase):
         )
 
         # Wait for the operation to complete.
-        lro_timeout_seconds = 60
+        # Long timeout value warranted due to https://github.com/grpc/grpc/issues/19173
+        lro_timeout_seconds = 180
         start_time = time.time()
         cnt = 0
         while not response.done() and (time.time() - start_time) < lro_timeout_seconds:
