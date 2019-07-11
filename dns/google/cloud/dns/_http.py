@@ -35,7 +35,7 @@ class Connection(_http.JSONConnection):
         self._client_info.gapic_version = __version__
         self._client_info.client_library_version = __version__
 
-    API_BASE_URL = "https://www.googleapis.com"
+    API_BASE_URL = "https://dns.googleapis.com"
     """The base of the API call URL."""
 
     API_VERSION = "v1"
