@@ -1406,7 +1406,6 @@ class RowIterator(HTTPIterator):
     def _to_arrow_iterable(self, bqstorage_client=None):
         """Create an iterable of arrow RecordBatches, to process the table as a stream."""
         if bqstorage_client is not None:
-            column_names = [field.name for field in self._schema]
             try:
                 # Iterate over the stream so that read errors are raised (and
                 # the method can then fallback to tabledata.list).
@@ -1414,7 +1413,6 @@ class RowIterator(HTTPIterator):
                     self._project,
                     self._table,
                     bqstorage_client,
-                    column_names,
                     preserve_order=self._preserve_order,
                     selected_fields=self._selected_fields,
                 ):
@@ -1506,8 +1504,13 @@ class RowIterator(HTTPIterator):
             # Indicate that the download has finished.
             progress_bar.close()
 
-        arrow_schema = _pandas_helpers.bq_to_arrow_schema(self._schema)
-        return pyarrow.Table.from_batches(record_batches, schema=arrow_schema)
+        if record_batches:
+            return pyarrow.Table.from_batches(record_batches)
+        else:
+            # No records, use schema based on BigQuery schema.
+            arrow_schema = _pandas_helpers.bq_to_arrow_schema(self._schema)
+            return pyarrow.Table.from_batches(record_batches, schema=arrow_schema)
+
 
     def _to_dataframe_iterable(self, bqstorage_client=None, dtypes=None):
         """Create an iterable of pandas DataFrames, to process the table as a stream.
