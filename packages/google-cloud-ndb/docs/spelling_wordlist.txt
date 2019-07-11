@@ -6,6 +6,7 @@ Appengine
 appengine
 Args
 args
+async
 auth
 backend
 Blobstore
@@ -16,6 +17,7 @@ builtin
 composable
 Datastore
 datastore
+deserialize
 deserialized
 Dict
 Django
@@ -62,10 +64,12 @@ prefetch
 protobuf
 proxied
 QueryOptions
+reimplemented
 RequestHandler
 runtime
 schemas
 stackable
+StringProperty
 subattribute
 subclassed
 subclasses
@@ -80,6 +84,7 @@ tasklet
 Tasklets
 tasklets
 timestamp
+toplevel
 Transactionally
 unary
 unicode
@@ -89,6 +94,7 @@ unpickling
 urlsafe
 username
 UTF
+utils
 webapp
 websafe
 validator

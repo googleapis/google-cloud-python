@@ -142,15 +142,12 @@ with context as client.context():
   strings (entity_pb2.Value.string_value). At read time, a `StringProperty`
   will accept either a string or blob value, so compatibility is maintained
   with legacy databases.
--  Instances of google.appengine.datastore.datastore_query.Order have been
-  replaced by a simple list of field names for ordering.
--  The QueryOptions class from google.cloud.ndb.query, has been reimplemented,
+- The QueryOptions class from google.cloud.ndb.query, has been reimplemented,
   since google.appengine.datastore.datastore_rpc.Configuration is no longer
   available. It still uses the same signature, but does not support original
   Configuration methods.
--  Because google.appengine.datastore.datastore_query.Order is no longer
-  available, the `order` parameter for the query.Query constructor has been
-  replaced by a list or tuple.
+- Because google.appengine.datastore.datastore_query.Order is no longer
+  available, the ndb.query.PropertyOrder class has been created to replace it.
 - Transaction propagation is no longer supported. This was a feature of the
   older Datastore RPC library which is no longer used. Starting a new
   transaction when a transaction is already in progress in the current context

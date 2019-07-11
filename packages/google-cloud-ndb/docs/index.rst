@@ -19,6 +19,7 @@
    blobstore
    metadata
    stats
+   migrating
 
 This is a Python 3 version of the `ndb` client library for use with
 `Google Cloud Datastore <https://cloud.google.com/datastore>`_.
