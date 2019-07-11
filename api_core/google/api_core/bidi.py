@@ -508,6 +508,12 @@ class ResumableBidiRpc(BidiRpc):
                 with self._operational_lock:
                     _LOGGER.debug("Call to retryable %r caused %s.", method, exc)
 
+                    if self._should_terminate(exc):
+                        self.close()
+                        _LOGGER.debug("Terminating %r due to %s.", method, exc)
+                        self._finalize(exc)
+                        break
+
                     if not self._should_recover(exc):
                         self.close()
                         _LOGGER.debug("Not retrying %r due to %s.", method, exc)
