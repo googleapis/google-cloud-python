@@ -367,6 +367,15 @@ class ReadRowsPage(object):
     # Alias needed for Python 2/3 support.
     __next__ = next
 
+    def to_arrow(self):
+        """Create an :class:`pyarrow.RecordBatch` of rows in the page.
+
+        Returns:
+            pyarrow.RecordBatch:
+                Rows from the message, as an Arrow record batch.
+        """
+        return self._stream_parser.to_arrow(self._message)
+
     def to_dataframe(self, dtypes=None):
         """Create a :class:`pandas.DataFrame` of rows in the page.
 

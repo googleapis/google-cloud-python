@@ -146,7 +146,7 @@ def _bq_to_avro_blocks(bq_blocks, avro_schema_json):
     return avro_blocks
 
 
-def _bq_to_arrow_batches(bq_blocks, arrow_schema):
+def _bq_to_arrow_batch_objects(bq_blocks, arrow_schema):
     arrow_batches = []
     for block in bq_blocks:
         arrays = []
@@ -158,8 +158,13 @@ def _bq_to_arrow_batches(bq_blocks, arrow_schema):
                     size=len(block),
                 )
             )
-        record_batch = pyarrow.RecordBatch.from_arrays(arrays, arrow_schema)
+        arrow_batches.append(pyarrow.RecordBatch.from_arrays(arrays, arrow_schema))
+    return arrow_batches
 
+
+def _bq_to_arrow_batches(bq_blocks, arrow_schema):
+    arrow_batches = []
+    for record_batch in _bq_to_arrow_batch_objects(bq_blocks, arrow_schema):
         response = bigquery_storage_v1beta1.types.ReadRowsResponse()
         response.arrow_record_batch.serialized_record_batch = (
             record_batch.serialize().to_pybytes()
@@ -464,6 +469,41 @@ def test_rows_w_reconnect_by_page(class_under_test, mock_client):
     assert tuple(page_4) == tuple(bq_blocks_2[1])
     assert page_4.num_items == 1
     assert page_4.remaining == 0
+
+
+def test_to_arrow_no_pyarrow_raises_import_error(
+    mut, class_under_test, mock_client, monkeypatch
+):
+    monkeypatch.setattr(mut, "pyarrow", None)
+    arrow_schema = _bq_to_arrow_schema(SCALAR_COLUMNS)
+    read_session = _generate_arrow_read_session(arrow_schema)
+    arrow_batches = _bq_to_arrow_batches(SCALAR_BLOCKS, arrow_schema)
+    reader = class_under_test(
+        arrow_batches, mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
+    )
+
+    with pytest.raises(ImportError):
+        reader.to_arrow(read_session)
+
+    with pytest.raises(ImportError):
+        reader.rows(read_session).to_arrow()
+
+    with pytest.raises(ImportError):
+        next(reader.rows(read_session).pages).to_arrow()
+
+
+def test_to_arrow_w_scalars_arrow(class_under_test):
+    arrow_schema = _bq_to_arrow_schema(SCALAR_COLUMNS)
+    read_session = _generate_arrow_read_session(arrow_schema)
+    arrow_batches = _bq_to_arrow_batches(SCALAR_BLOCKS, arrow_schema)
+    reader = class_under_test(
+        arrow_batches, mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
+    )
+    actual_table = reader.to_arrow(read_session)
+    expected_table = pyarrow.Table.from_batches(
+        _bq_to_arrow_batch_objects(SCALAR_BLOCKS, arrow_schema)
+    )
+    assert actual_table == expected_table
 
 
 def test_to_dataframe_no_pandas_raises_import_error(
