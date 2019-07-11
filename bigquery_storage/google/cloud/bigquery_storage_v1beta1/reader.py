@@ -43,11 +43,13 @@ from google.cloud.bigquery_storage_v1beta1 import types
 
 _STREAM_RESUMPTION_EXCEPTIONS = (google.api_core.exceptions.ServiceUnavailable,)
 
-_AVRO_BYTES_OPERATION = "parse ReadRowResponse messages with Avro bytes"
-_ARROW_BYTES_OPERATION = "parse ReadRowResponse messages with Arrow bytes"
-_FASTAVRO_REQUIRED = "fastavro is required to {operation}."
+_FASTAVRO_REQUIRED = (
+    "fastavro is required to parse ReadRowResponse messages with Avro bytes."
+)
 _PANDAS_REQUIRED = "pandas is required to create a DataFrame"
-_PYARROW_REQUIRED = "pyarrow is required to {operation}."
+_PYARROW_REQUIRED = (
+    "pyarrow is required to parse ReadRowResponse messages with Arrow bytes."
+)
 
 
 class ReadRowsStream(object):
@@ -540,9 +542,7 @@ class _AvroStreamParser(_StreamParser):
 class _ArrowStreamParser(_StreamParser):
     def __init__(self, read_session):
         if pyarrow is None:
-            raise ImportError(
-                _PYARROW_REQUIRED.format(operation=_ARROW_BYTES_OPERATION)
-            )
+            raise ImportError(_PYARROW_REQUIRED)
 
         self._read_session = read_session
         self._schema = None
