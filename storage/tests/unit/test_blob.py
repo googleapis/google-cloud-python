@@ -635,7 +635,8 @@ class Test_Blob(unittest.TestCase):
         self.assertFalse(bool1)
         self.assertTrue(bool2)
         self.assertEqual(str(bool1), 'False')
-        self.assertTrue(bool1 != True)
+        self.assertTrue(bool1 != True)  # noqa: E712
+        self.assertTrue(bool1 == False)  # noqa: E712
 
     def test_exists_hit_w_user_project(self):
         BLOB_NAME = "blob-name"
