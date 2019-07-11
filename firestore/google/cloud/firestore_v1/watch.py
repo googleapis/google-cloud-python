@@ -58,6 +58,7 @@ GRPC_STATUS_CODE = {
 }
 _RPC_ERROR_THREAD_NAME = "Thread-OnRpcTerminated"
 _RECOVERABLE_STREAM_EXCEPTIONS = (exceptions.ServiceUnavailable,)
+_TERMINATING_STREAM_EXCEPTIONS = (exceptions.Cancelled,)
 
 DocTreeEntry = collections.namedtuple("DocTreeEntry", ["value", "index"])
 
@@ -150,6 +151,11 @@ def document_watch_comparator(doc1, doc2):
 def _should_recover(exception):
     wrapped = _maybe_wrap_exception(exception)
     return isinstance(wrapped, _RECOVERABLE_STREAM_EXCEPTIONS)
+
+
+def _should_terminate(exception):
+    wrapped = _maybe_wrap_exception(exception)
+    return isinstance(wrapped, _TERMINATING_STREAM_EXCEPTIONS)
 
 
 class Watch(object):

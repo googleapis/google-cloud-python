@@ -129,6 +129,25 @@ class Test_should_recover(unittest.TestCase):
         self.assertFalse(self._callFUT(exception))
 
 
+class Test_should_terminate(unittest.TestCase):
+    def _callFUT(self, exception):
+        from google.cloud.firestore_v1.watch import _should_terminate
+
+        return _should_terminate(exception)
+
+    def test_w_unavailable(self):
+        from google.api_core.exceptions import Cancelled
+
+        exception = Cancelled("testing")
+
+        self.assertTrue(self._callFUT(exception))
+
+    def test_w_non_recoverable(self):
+        exception = ValueError("testing")
+
+        self.assertFalse(self._callFUT(exception))
+
+
 class TestWatch(unittest.TestCase):
     def _makeOne(
         self,
