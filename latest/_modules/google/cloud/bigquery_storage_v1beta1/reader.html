@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery_storage_v1beta1.reader &#8212; google-cloud aba3216 documentation</title>
+    <title>google.cloud.bigquery_storage_v1beta1.reader &#8212; google-cloud c5a7cd2 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -63,16 +63,29 @@
     <span class="kn">import</span> <span class="nn">pandas</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: NO COVER</span>
     <span class="n">pandas</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">pyarrow</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: NO COVER</span>
+    <span class="n">pyarrow</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="kn">import</span> <span class="nn">six</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">pyarrow</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: NO COVER</span>
+    <span class="n">pyarrow</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery_storage_v1beta1</span> <span class="k">import</span> <span class="n">types</span>
 
 
 <span class="n">_STREAM_RESUMPTION_EXCEPTIONS</span> <span class="o">=</span> <span class="p">(</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ServiceUnavailable</span><span class="p">,)</span>
+
 <span class="n">_FASTAVRO_REQUIRED</span> <span class="o">=</span> <span class="p">(</span>
     <span class="s2">&quot;fastavro is required to parse ReadRowResponse messages with Avro bytes.&quot;</span>
 <span class="p">)</span>
 <span class="n">_PANDAS_REQUIRED</span> <span class="o">=</span> <span class="s2">&quot;pandas is required to create a DataFrame&quot;</span>
+<span class="n">_PYARROW_REQUIRED</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;pyarrow is required to parse ReadRowResponse messages with Arrow bytes.&quot;</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="ReadRowsStream"><a class="viewcode-back" href="../../../../bigquery_storage/gapic/v1beta1/reader.html#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream">[docs]</a><span class="k">class</span> <span class="nc">ReadRowsStream</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -149,7 +162,7 @@
         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrapped</span><span class="p">:</span>
-                    <span class="n">rowcount</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">avro_rows</span><span class="o">.</span><span class="n">row_count</span>
+                    <span class="n">rowcount</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">row_count</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_position</span><span class="o">.</span><span class="n">offset</span> <span class="o">+=</span> <span class="n">rowcount</span>
                     <span class="k">yield</span> <span class="n">message</span>
 
@@ -188,10 +201,27 @@
 <span class="sd">            Iterable[Mapping]:</span>
 <span class="sd">                A sequence of rows, represented as dictionaries.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">fastavro</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="n">_FASTAVRO_REQUIRED</span><span class="p">)</span>
-
         <span class="k">return</span> <span class="n">ReadRowsIterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">read_session</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ReadRowsStream.to_arrow"><a class="viewcode-back" href="../../../../bigquery_storage/gapic/v1beta1/reader.html#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream.to_arrow">[docs]</a>    <span class="k">def</span> <span class="nf">to_arrow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">read_session</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a :class:`pyarrow.Table` of all rows in the stream.</span>
+
+<span class="sd">        This method requires the pyarrow library and a stream using the Arrow</span>
+<span class="sd">        format.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            read_session ( \</span>
+<span class="sd">                ~google.cloud.bigquery_storage_v1beta1.types.ReadSession \</span>
+<span class="sd">            ):</span>
+<span class="sd">                The read session associated with this read rows stream. This</span>
+<span class="sd">                contains the schema, which is required to parse the data</span>
+<span class="sd">                messages.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pyarrow.Table:</span>
+<span class="sd">                A table of all rows in the stream.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="p">(</span><span class="n">read_session</span><span class="p">)</span><span class="o">.</span><span class="n">to_arrow</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="ReadRowsStream.to_dataframe"><a class="viewcode-back" href="../../../../bigquery_storage/gapic/v1beta1/reader.html#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream.to_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">read_session</span><span class="p">,</span> <span class="n">dtypes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a :class:`pandas.DataFrame` of all rows in the stream.</span>
@@ -222,8 +252,6 @@
 <span class="sd">            pandas.DataFrame:</span>
 <span class="sd">                A data frame of all rows in the stream.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">fastavro</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="n">_FASTAVRO_REQUIRED</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">pandas</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="n">_PANDAS_REQUIRED</span><span class="p">)</span>
 
@@ -248,6 +276,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span> <span class="o">=</span> <span class="n">reader</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_read_session</span> <span class="o">=</span> <span class="n">read_session</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stream_parser</span> <span class="o">=</span> <span class="n">_StreamParser</span><span class="o">.</span><span class="n">from_read_session</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_session</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">total_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -267,16 +296,30 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Each page is an iterator of rows. But also has num_items, remaining,</span>
         <span class="c1"># and to_dataframe.</span>
-        <span class="n">stream_parser</span> <span class="o">=</span> <span class="n">_StreamParser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_session</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">status</span>
-            <span class="k">yield</span> <span class="n">ReadRowsPage</span><span class="p">(</span><span class="n">stream_parser</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">ReadRowsPage</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_stream_parser</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Iterator for each row in all pages.&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">row</span>
+
+<div class="viewcode-block" id="ReadRowsIterable.to_arrow"><a class="viewcode-back" href="../../../../bigquery_storage/gapic/v1beta1/reader.html#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsIterable.to_arrow">[docs]</a>    <span class="k">def</span> <span class="nf">to_arrow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a :class:`pyarrow.Table` of all rows in the stream.</span>
+
+<span class="sd">        This method requires the pyarrow library and a stream using the Arrow</span>
+<span class="sd">        format.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pyarrow.Table:</span>
+<span class="sd">                A table of all rows in the stream.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">record_batches</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
+            <span class="n">record_batches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">to_arrow</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">pyarrow</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">from_batches</span><span class="p">(</span><span class="n">record_batches</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ReadRowsIterable.to_dataframe"><a class="viewcode-back" href="../../../../bigquery_storage/gapic/v1beta1/reader.html#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsIterable.to_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtypes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a :class:`pandas.DataFrame` of all rows in the stream.</span>
@@ -327,8 +370,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_stream_parser</span> <span class="o">=</span> <span class="n">stream_parser</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_message</span> <span class="o">=</span> <span class="n">message</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_iter_rows</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_num_items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_message</span><span class="o">.</span><span class="n">avro_rows</span><span class="o">.</span><span class="n">row_count</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_remaining</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_message</span><span class="o">.</span><span class="n">avro_rows</span><span class="o">.</span><span class="n">row_count</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_message</span><span class="o">.</span><span class="n">row_count</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_remaining</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_message</span><span class="o">.</span><span class="n">row_count</span>
 
     <span class="k">def</span> <span class="nf">_parse_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parse rows from the message only once.&quot;&quot;&quot;</span>
@@ -362,6 +405,15 @@
     <span class="c1"># Alias needed for Python 2/3 support.</span>
     <span class="fm">__next__</span> <span class="o">=</span> <span class="nb">next</span>
 
+<div class="viewcode-block" id="ReadRowsPage.to_arrow"><a class="viewcode-back" href="../../../../bigquery_storage/gapic/v1beta1/reader.html#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsPage.to_arrow">[docs]</a>    <span class="k">def</span> <span class="nf">to_arrow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create an :class:`pyarrow.RecordBatch` of rows in the page.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pyarrow.RecordBatch:</span>
+<span class="sd">                Rows from the message, as an Arrow record batch.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stream_parser</span><span class="o">.</span><span class="n">to_arrow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_message</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="ReadRowsPage.to_dataframe"><a class="viewcode-back" href="../../../../bigquery_storage/gapic/v1beta1/reader.html#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsPage.to_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtypes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a :class:`pandas.DataFrame` of rows in the page.</span>
 
@@ -391,20 +443,60 @@
 
 
 <span class="k">class</span> <span class="nc">_StreamParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_arrow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">dtypes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented.&quot;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_read_session</span><span class="p">(</span><span class="n">read_session</span><span class="p">):</span>
+        <span class="n">schema_type</span> <span class="o">=</span> <span class="n">read_session</span><span class="o">.</span><span class="n">WhichOneof</span><span class="p">(</span><span class="s2">&quot;schema&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">schema_type</span> <span class="o">==</span> <span class="s2">&quot;avro_schema&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_AvroStreamParser</span><span class="p">(</span><span class="n">read_session</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">schema_type</span> <span class="o">==</span> <span class="s2">&quot;arrow_schema&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_ArrowStreamParser</span><span class="p">(</span><span class="n">read_session</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;Unsupported schema type in read_session: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">schema_type</span><span class="p">)</span>
+            <span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">_AvroStreamParser</span><span class="p">(</span><span class="n">_StreamParser</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Helper to parse Avro messages into useful representations.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">read_session</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct a _StreamParser.</span>
+        <span class="sd">&quot;&quot;&quot;Construct an _AvroStreamParser.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            read_session (google.cloud.bigquery_storage_v1beta1.types.ReadSession):</span>
 <span class="sd">                A read session. This is required because it contains the schema</span>
 <span class="sd">                used in the stream messages.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">fastavro</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="n">_FASTAVRO_REQUIRED</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_read_session</span> <span class="o">=</span> <span class="n">read_session</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_avro_schema_json</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_fastavro_schema</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_column_names</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">to_arrow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create an :class:`pyarrow.RecordBatch` of rows in the page.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            message (google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse):</span>
+<span class="sd">                Protocol buffer from the read rows stream, to convert into an</span>
+<span class="sd">                Arrow record batch.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pyarrow.RecordBatch:</span>
+<span class="sd">                Rows from the message, as an Arrow record batch.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;to_arrow not implemented for Avro streams.&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">dtypes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a :class:`pandas.DataFrame` of rows in the page.</span>
@@ -481,6 +573,56 @@
                 <span class="k">yield</span> <span class="n">fastavro</span><span class="o">.</span><span class="n">schemaless_reader</span><span class="p">(</span><span class="n">messageio</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fastavro_schema</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
                 <span class="k">break</span>  <span class="c1"># Finished with message</span>
+
+
+<span class="k">class</span> <span class="nc">_ArrowStreamParser</span><span class="p">(</span><span class="n">_StreamParser</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">read_session</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">pyarrow</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="n">_PYARROW_REQUIRED</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_read_session</span> <span class="o">=</span> <span class="n">read_session</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">to_arrow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_arrow_message</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="n">record_batch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_arrow_message</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+        <span class="c1"># Iterate through each column simultaneously, and make a dict from the</span>
+        <span class="c1"># row values</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">record_batch</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_column_names</span><span class="p">,</span> <span class="n">row</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">dtypes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">record_batch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_arrow_message</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">dtypes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">dtypes</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">df</span> <span class="o">=</span> <span class="n">record_batch</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">dtypes</span><span class="p">:</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtypes</span><span class="p">[</span><span class="n">column</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">df</span>
+
+    <span class="k">def</span> <span class="nf">_parse_arrow_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parse_arrow_schema</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">pyarrow</span><span class="o">.</span><span class="n">read_record_batch</span><span class="p">(</span>
+            <span class="n">pyarrow</span><span class="o">.</span><span class="n">py_buffer</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">arrow_record_batch</span><span class="o">.</span><span class="n">serialized_record_batch</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_parse_arrow_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span> <span class="o">=</span> <span class="n">pyarrow</span><span class="o">.</span><span class="n">read_schema</span><span class="p">(</span>
+            <span class="n">pyarrow</span><span class="o">.</span><span class="n">py_buffer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_session</span><span class="o">.</span><span class="n">arrow_schema</span><span class="o">.</span><span class="n">serialized_schema</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_column_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">]</span>
 
 
 <span class="k">def</span> <span class="nf">_copy_stream_position</span><span class="p">(</span><span class="n">position</span><span class="p">):</span>
