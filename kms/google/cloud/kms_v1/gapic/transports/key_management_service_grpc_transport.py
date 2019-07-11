@@ -18,7 +18,7 @@
 import google.api_core.grpc_helpers
 
 from google.cloud.kms_v1.proto import service_pb2_grpc
-from google.iam.v1 import iam_policy_pb2
+from google.iam.v1 import iam_policy_pb2_grpc as iam_policy_pb2
 
 
 class KeyManagementServiceGrpcTransport(object):
