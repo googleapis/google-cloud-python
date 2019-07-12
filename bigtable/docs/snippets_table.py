@@ -412,6 +412,88 @@ def test_bigtable_table_row():
     table.truncate(timeout=300)
 
 
+def test_bigtable_table_append_row():
+    # [START bigtable_table_append_row]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    row_keys = [b"row_key_1", b"row_key_2"]
+    row1_obj = table.append_row(row_keys[0])
+    row2_obj = table.append_row(row_keys[1])
+    # [END bigtable_table_append_row]
+
+    row1_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, CELL_VAL1)
+    row1_obj.commit()
+    row2_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, CELL_VAL1)
+    row2_obj.commit()
+
+    actual_rows_keys = []
+    for row in table.read_rows():
+        actual_rows_keys.append(row.row_key)
+
+    assert actual_rows_keys == row_keys
+
+    table.truncate(timeout=300)
+
+
+def test_bigtable_table_direct_row():
+    # [START bigtable_table_direct_row]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    row_keys = [b"row_key_1", b"row_key_2"]
+    row1_obj = table.direct_row(row_keys[0])
+    row2_obj = table.direct_row(row_keys[1])
+    # [END bigtable_table_direct_row]
+
+    row1_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, CELL_VAL1)
+    row1_obj.commit()
+    row2_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, CELL_VAL1)
+    row2_obj.commit()
+
+    actual_rows_keys = []
+    for row in table.read_rows():
+        actual_rows_keys.append(row.row_key)
+
+    assert actual_rows_keys == row_keys
+
+    table.truncate(timeout=300)
+
+
+def test_bigtable_table_conditional_row():
+    # [START bigtable_table_conditional_row]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table(TABLE_ID)
+
+    row_keys = [b"row_key_1", b"row_key_2"]
+    filter_ = object()
+    row1_obj = table.conditional_row(row_keys[0], filter_=filter_)
+    row2_obj = table.conditional_row(row_keys[1], filter_=filter_)
+    # [END bigtable_table_conditional_row]
+
+    row1_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, CELL_VAL1)
+    row1_obj.commit()
+    row2_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, CELL_VAL1)
+    row2_obj.commit()
+
+    actual_rows_keys = []
+    for row in table.read_rows():
+        actual_rows_keys.append(row.row_key)
+
+    assert actual_rows_keys == row_keys
+
+    table.truncate(timeout=300)
+
+
 def test_bigtable_column_family_name():
     # [START bigtable_column_family_name]
     from google.cloud.bigtable import Client
