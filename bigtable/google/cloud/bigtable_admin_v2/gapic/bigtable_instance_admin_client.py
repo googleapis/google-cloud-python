@@ -42,6 +42,7 @@ from google.cloud.bigtable_admin_v2.proto import bigtable_instance_admin_pb2
 from google.cloud.bigtable_admin_v2.proto import bigtable_instance_admin_pb2_grpc
 from google.cloud.bigtable_admin_v2.proto import instance_pb2
 from google.iam.v1 import iam_policy_pb2
+from google.iam.v1 import options_pb2
 from google.iam.v1 import policy_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
@@ -1641,6 +1642,7 @@ class BigtableInstanceAdminClient(object):
     def get_iam_policy(
         self,
         resource,
+        options_=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -1661,6 +1663,11 @@ class BigtableInstanceAdminClient(object):
         Args:
             resource (str): REQUIRED: The resource for which the policy is being requested.
                 See the operation documentation for the appropriate value for this field.
+            options_ (Union[dict, ~google.cloud.bigtable_admin_v2.types.GetPolicyOptions]): OPTIONAL: A ``GetPolicyOptions`` object for specifying options to
+                ``GetIamPolicy``. This field is only used by Cloud IAM.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.bigtable_admin_v2.types.GetPolicyOptions`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1691,7 +1698,9 @@ class BigtableInstanceAdminClient(object):
                 client_info=self._client_info,
             )
 
-        request = iam_policy_pb2.GetIamPolicyRequest(resource=resource)
+        request = iam_policy_pb2.GetIamPolicyRequest(
+            resource=resource, options=options_
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
