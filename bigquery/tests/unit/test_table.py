@@ -1721,7 +1721,6 @@ class TestRowIterator(unittest.TestCase):
             {"name": "/projects/proj/dataset/dset/tables/tbl/streams/5678"},
         ]
         session = bigquery_storage_v1beta1.types.ReadSession(streams=streams)
-        session = bigquery_storage_v1beta1.types.ReadSession()
         arrow_schema = pyarrow.schema(
             [
                 pyarrow.field("colA", pyarrow.int64()),
@@ -1738,6 +1737,8 @@ class TestRowIterator(unittest.TestCase):
 
         mock_rows = mock.create_autospec(reader.ReadRowsIterable)
         mock_rowstream.rows.return_value = mock_rows
+        expected_num_rows = 2
+        expected_num_columns = 3
         page_items = [
             pyarrow.array([1, -1]),
             pyarrow.array([2.0, 4.0]),
@@ -1769,14 +1770,14 @@ class TestRowIterator(unittest.TestCase):
         actual_tbl = row_iterator.to_arrow(bqstorage_client=bqstorage_client)
 
         # Are the columns in the expected order?
-        self.assertEqual(actual_tbl.num_columns, 3)
+        self.assertEqual(actual_tbl.num_columns, expected_num_columns)
         self.assertEqual(actual_tbl.schema[0].name, "colA")
         self.assertEqual(actual_tbl.schema[1].name, "colC")
         self.assertEqual(actual_tbl.schema[2].name, "colB")
 
         # Have expected number of rows?
         total_pages = len(streams) * len(mock_pages)
-        total_rows = len(page_items) * total_pages
+        total_rows = expected_num_rows * total_pages
         self.assertEqual(actual_tbl.num_rows, total_rows)
 
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
