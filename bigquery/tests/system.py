@@ -39,6 +39,7 @@ except ImportError:  # pragma: NO COVER
     pandas = None
 try:
     import pyarrow
+    import pyarrow.types
 except ImportError:  # pragma: NO COVER
     pyarrow = None
 try:
@@ -1958,6 +1959,71 @@ class TestBigQuery(unittest.TestCase):
 
     def _fetch_dataframe(self, query):
         return Config.CLIENT.query(query).result().to_dataframe()
+
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    @unittest.skipIf(
+        bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+    )
+    def test_nested_table_to_arrow(self):
+        from google.cloud.bigquery.job import SourceFormat
+        from google.cloud.bigquery.job import WriteDisposition
+
+        SF = bigquery.SchemaField
+        schema = [
+            SF("string_col", "STRING", mode="NULLABLE"),
+            SF(
+                "record_col",
+                "RECORD",
+                mode="NULLABLE",
+                fields=[
+                    SF("nested_string", "STRING", mode="NULLABLE"),
+                    SF("nested_repeated", "INTEGER", mode="REPEATED"),
+                ],
+            ),
+            SF("float_col", "FLOAT", mode="NULLABLE"),
+        ]
+        record = {"nested_string": "another string value", "nested_repeated": [0, 1, 2]}
+        to_insert = [
+            {"string_col": "Some value", "record_col": record, "float_col": 3.14}
+        ]
+        rows = [json.dumps(row) for row in to_insert]
+        body = six.BytesIO("{}\n".format("\n".join(rows)).encode("ascii"))
+        table_id = "test_table"
+        dataset = self.temp_dataset(_make_dataset_id("nested_df"))
+        table = dataset.table(table_id)
+        self.to_delete.insert(0, table)
+        job_config = bigquery.LoadJobConfig()
+        job_config.write_disposition = WriteDisposition.WRITE_TRUNCATE
+        job_config.source_format = SourceFormat.NEWLINE_DELIMITED_JSON
+        job_config.schema = schema
+        # Load a table using a local JSON file from memory.
+        Config.CLIENT.load_table_from_file(body, table, job_config=job_config).result()
+        bqstorage_client = bigquery_storage_v1beta1.BigQueryStorageClient(
+            credentials=Config.CLIENT._credentials
+        )
+
+        tbl = Config.CLIENT.list_rows(table, selected_fields=schema).to_arrow(
+            bqstorage_client=bqstorage_client
+        )
+
+        self.assertIsInstance(tbl, pyarrow.Table)
+        self.assertEqual(tbl.num_rows, 1)
+        self.assertEqual(tbl.num_columns, 3)
+        # Columns may not appear in the requested order.
+        self.assertTrue(
+            pyarrow.types.is_float64(tbl.schema.field_by_name("float_col").type)
+        )
+        self.assertTrue(
+            pyarrow.types.is_string(tbl.schema.field_by_name("string_col").type)
+        )
+        record_col = tbl.schema.field_by_name("record_col").type
+        self.assertTrue(pyarrow.types.is_struct(record_col))
+        self.assertEqual(record_col.num_children, 2)
+        self.assertEqual(record_col[0].name, "nested_string")
+        self.assertTrue(pyarrow.types.is_string(record_col[0].type))
+        self.assertEqual(record_col[1].name, "nested_repeated")
+        self.assertTrue(pyarrow.types.is_list(record_col[1].type))
+        self.assertTrue(pyarrow.types.is_int64(record_col[1].type.value_type))
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_nested_table_to_dataframe(self):

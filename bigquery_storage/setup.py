@@ -31,7 +31,7 @@ dependencies = [
 extras = {
     'pandas': 'pandas>=0.17.1',
     'fastavro': 'fastavro>=0.21.2',
-    'pyarrow': 'pyarrow>=0.13.0',
+    'pyarrow': 'pyarrow>=0.13.0, != 0.14.0',
 }
 
 package_root = os.path.abspath(os.path.dirname(__file__))

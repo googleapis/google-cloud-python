@@ -18,6 +18,7 @@ from __future__ import absolute_import
 
 import copy
 import datetime
+import functools
 import operator
 import warnings
 
@@ -1403,14 +1404,52 @@ class RowIterator(HTTPIterator):
             warnings.warn(_NO_TQDM_ERROR, UserWarning, stacklevel=3)
         return None
 
-    def _to_arrow_iterable(self):
-        """Create an iterable of arrow RecordBatches, to process the table as a stream."""
-        for record_batch in _pandas_helpers.download_arrow_tabledata_list(
-            iter(self.pages), self.schema
-        ):
-            yield record_batch
+    def _to_page_iterable(
+        self, bqstorage_download, tabledata_list_download, bqstorage_client=None
+    ):
+        if bqstorage_client is not None:
+            try:
+                # Iterate over the stream so that read errors are raised (and
+                # the method can then fallback to tabledata.list).
+                for item in bqstorage_download():
+                    yield item
+                return
+            except google.api_core.exceptions.Forbidden:
+                # Don't hide errors such as insufficient permissions to create
+                # a read session, or the API is not enabled. Both of those are
+                # clearly problems if the developer has explicitly asked for
+                # BigQuery Storage API support.
+                raise
+            except google.api_core.exceptions.GoogleAPICallError:
+                # There is a known issue with reading from small anonymous
+                # query results tables, so some errors are expected. Rather
+                # than throw those errors, try reading the DataFrame again, but
+                # with the tabledata.list API.
+                pass
 
-    def to_arrow(self, progress_bar_type=None):
+        for item in tabledata_list_download():
+            yield item
+
+    def _to_arrow_iterable(self, bqstorage_client=None):
+        """Create an iterable of arrow RecordBatches, to process the table as a stream."""
+        bqstorage_download = functools.partial(
+            _pandas_helpers.download_arrow_bqstorage,
+            self._project,
+            self._table,
+            bqstorage_client,
+            preserve_order=self._preserve_order,
+            selected_fields=self._selected_fields,
+        )
+        tabledata_list_download = functools.partial(
+            _pandas_helpers.download_arrow_tabledata_list, iter(self.pages), self.schema
+        )
+        return self._to_page_iterable(
+            bqstorage_download,
+            tabledata_list_download,
+            bqstorage_client=bqstorage_client,
+        )
+
+    def to_arrow(self, progress_bar_type=None, bqstorage_client=None):
         """[Beta] Create a class:`pyarrow.Table` by loading all pages of a
         table or query.
 
@@ -1433,6 +1472,18 @@ class RowIterator(HTTPIterator):
                 ``'tqdm_gui'``
                   Use the :func:`tqdm.tqdm_gui` function to display a
                   progress bar as a graphical dialog box.
+            bqstorage_client ( \
+                google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient \
+            ):
+                **Beta Feature** Optional. A BigQuery Storage API client. If
+                supplied, use the faster BigQuery Storage API to fetch rows
+                from BigQuery. This API is a billable API.
+
+                This method requires the ``pyarrow`` and
+                ``google-cloud-bigquery-storage`` libraries.
+
+                Reading from a specific partition or snapshot is not
+                currently supported by this method.
 
         Returns:
             pyarrow.Table
@@ -1452,7 +1503,7 @@ class RowIterator(HTTPIterator):
         progress_bar = self._get_progress_bar(progress_bar_type)
 
         record_batches = []
-        for record_batch in self._to_arrow_iterable():
+        for record_batch in self._to_arrow_iterable(bqstorage_client=bqstorage_client):
             record_batches.append(record_batch)
 
             if progress_bar is not None:
@@ -1466,47 +1517,40 @@ class RowIterator(HTTPIterator):
             # Indicate that the download has finished.
             progress_bar.close()
 
-        arrow_schema = _pandas_helpers.bq_to_arrow_schema(self._schema)
-        return pyarrow.Table.from_batches(record_batches, schema=arrow_schema)
+        if record_batches:
+            return pyarrow.Table.from_batches(record_batches)
+        else:
+            # No records, use schema based on BigQuery schema.
+            arrow_schema = _pandas_helpers.bq_to_arrow_schema(self._schema)
+            return pyarrow.Table.from_batches(record_batches, schema=arrow_schema)
 
     def _to_dataframe_iterable(self, bqstorage_client=None, dtypes=None):
         """Create an iterable of pandas DataFrames, to process the table as a stream.
 
         See ``to_dataframe`` for argument descriptions.
         """
-        if bqstorage_client is not None:
-            column_names = [field.name for field in self._schema]
-            try:
-                # Iterate over the stream so that read errors are raised (and
-                # the method can then fallback to tabledata.list).
-                for frame in _pandas_helpers.download_dataframe_bqstorage(
-                    self._project,
-                    self._table,
-                    bqstorage_client,
-                    column_names,
-                    dtypes,
-                    preserve_order=self._preserve_order,
-                    selected_fields=self._selected_fields,
-                ):
-                    yield frame
-                return
-            except google.api_core.exceptions.Forbidden:
-                # Don't hide errors such as insufficient permissions to create
-                # a read session, or the API is not enabled. Both of those are
-                # clearly problems if the developer has explicitly asked for
-                # BigQuery Storage API support.
-                raise
-            except google.api_core.exceptions.GoogleAPICallError:
-                # There is a known issue with reading from small anonymous
-                # query results tables, so some errors are expected. Rather
-                # than throw those errors, try reading the DataFrame again, but
-                # with the tabledata.list API.
-                pass
-
-        for frame in _pandas_helpers.download_dataframe_tabledata_list(
-            iter(self.pages), self.schema, dtypes
-        ):
-            yield frame
+        column_names = [field.name for field in self._schema]
+        bqstorage_download = functools.partial(
+            _pandas_helpers.download_dataframe_bqstorage,
+            self._project,
+            self._table,
+            bqstorage_client,
+            column_names,
+            dtypes,
+            preserve_order=self._preserve_order,
+            selected_fields=self._selected_fields,
+        )
+        tabledata_list_download = functools.partial(
+            _pandas_helpers.download_dataframe_tabledata_list,
+            iter(self.pages),
+            self.schema,
+            dtypes,
+        )
+        return self._to_page_iterable(
+            bqstorage_download,
+            tabledata_list_download,
+            bqstorage_client=bqstorage_client,
+        )
 
     def to_dataframe(self, bqstorage_client=None, dtypes=None, progress_bar_type=None):
         """Create a pandas DataFrame by loading all pages of a query.
@@ -1519,7 +1563,7 @@ class RowIterator(HTTPIterator):
                 supplied, use the faster BigQuery Storage API to fetch rows
                 from BigQuery. This API is a billable API.
 
-                This method requires the ``fastavro`` and
+                This method requires the ``pyarrow`` and
                 ``google-cloud-bigquery-storage`` libraries.
 
                 Reading from a specific partition or snapshot is not
