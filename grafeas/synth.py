@@ -98,7 +98,7 @@ s.replace(
     "grafeas/**/grafeas_client.py",
     r"""    def __init__\(self, transport=None, channel=None, credentials=None,
             client_config=None, client_info=None, client_options=None\):""",
-    "    def __init__(self, transport, client_config=None, client_info=None, client_options=None):",
+    "    def __init__(self, transport, client_config=None, client_info=None):",
 )
 
 s.replace(
