@@ -17,7 +17,7 @@ import os
 
 import pytest
 
-import quickstart
+from .. import quickstart
 
 
 def now_millis():
