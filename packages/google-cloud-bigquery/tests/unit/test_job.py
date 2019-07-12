@@ -4897,6 +4897,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         bqstorage_client.create_read_session.assert_called_once_with(
             mock.ANY,
             "projects/{}".format(self.PROJECT),
+            format_=bigquery_storage_v1beta1.enums.DataFormat.ARROW,
             read_options=mock.ANY,
             # Use default number of streams for best performance.
             requested_streams=0,
@@ -5340,6 +5341,7 @@ def test_to_dataframe_bqstorage_preserve_order(query):
     bqstorage_client.create_read_session.assert_called_once_with(
         mock.ANY,
         "projects/test-project",
+        format_=bigquery_storage_v1beta1.enums.DataFormat.ARROW,
         read_options=mock.ANY,
         # Use a single stream to preserve row order.
         requested_streams=1,
