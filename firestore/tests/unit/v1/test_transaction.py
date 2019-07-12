@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import unittest
-import datetime
 import mock
 
 
@@ -329,101 +328,34 @@ class TestTransaction(unittest.TestCase):
             metadata=client._rpc_metadata,
         )
 
-    def _get_all_helper(self, client, document_pbs):
-        # Create a minimal fake GAPIC with a dummy response.
-        firestore_api = mock.Mock(spec=["batch_get_documents"])
-        response_iterator = iter(document_pbs)
-        firestore_api.batch_get_documents.return_value = response_iterator
-
-        # Attach the fake GAPIC to a real client.
-        client._firestore_api_internal = firestore_api
-
     def test_get_all(self):
-        from google.cloud.firestore_v1.document import DocumentSnapshot
-        import types
-
-        client = _make_client()
+        client = mock.Mock(spec=["get_all"])
         transaction = self._make_one(client)
-        data1 = {"a": u"cheese"}
-        data2 = {"b": True, "c": 18}
-        document1 = client.document("pineapple", "lamp1")
-        document2 = client.document("pineapple", "lamp2")
-        document_pb1, read_time = _doc_get_info(document1._document_path, data1)
-        document_pb2, read_time = _doc_get_info(document2._document_path, data2)
-        response1 = _make_batch_response(found=document_pb1, read_time=read_time)
-        response2 = _make_batch_response(found=document_pb2, read_time=read_time)
-
-        self._get_all_helper(client, [response1, response2])
-        # Actually call get_all().
-        snapshots = transaction.get_all([document1, document2])
-        self.assertIsInstance(snapshots, types.GeneratorType)
-        snapshots = list(snapshots)
-        snapshot0 = snapshots[0]
-        self.assertIsInstance(snapshot0, DocumentSnapshot)
-        self.assertIs(snapshot0._reference, document1)
-        self.assertEqual(snapshot0._data, data1)
-
-        snapshot1 = snapshots[1]
-        self.assertIsInstance(snapshot1, DocumentSnapshot)
-        self.assertIs(snapshot1._reference, document2)
-        self.assertEqual(snapshot1._data, data2)
+        ref1, ref2 = mock.Mock(), mock.Mock()
+        result = transaction.get_all([ref1, ref2])
+        client.get_all.assert_called_once_with([ref1, ref2], transaction=transaction.id)
+        self.assertIs(result, client.get_all.return_value)
 
     def test_get_document_ref(self):
-        from google.cloud.firestore_v1.document import DocumentSnapshot
-        import types
+        from google.cloud.firestore_v1.document import DocumentReference
 
-        client = _make_client()
+        client = mock.Mock(spec=["get_all"])
         transaction = self._make_one(client)
-        data1 = {"a": u"cheese"}
-        document1 = client.document("pineapple", "lamp1")
-        document_pb1, read_time = _doc_get_info(document1._document_path, data1)
-        response1 = _make_batch_response(found=document_pb1, read_time=read_time)
-        self._get_all_helper(client, [response1])
-        snapshots = transaction.get(document1)
-        self.assertIsInstance(snapshots, types.GeneratorType)
-        snapshots = list(snapshots)
-        snapshot0 = snapshots[0]
-        self.assertIsInstance(snapshot0, DocumentSnapshot)
-        self.assertIs(snapshot0._reference, document1)
-        self.assertEqual(snapshot0._data, data1)
+        ref = DocumentReference("documents", "doc-id")
+        result = transaction.get(ref)
+        client.get_all.assert_called_once_with([ref], transaction=transaction.id)
+        self.assertIs(result, client.get_all.return_value)
 
-    def test_get_query_ref(self):
-        from google.cloud.firestore_v1.document import DocumentSnapshot
+    def test_get_w_query(self):
         from google.cloud.firestore_v1.query import Query
-        import types
 
-        # Create a minimal fake GAPIC.
-        firestore_api = mock.Mock(spec=["run_query"])
-
-        # Attach the fake GAPIC to a real client.
-        client = _make_client()
+        client = mock.Mock(spec=[])
         transaction = self._make_one(client)
-        client._firestore_api_internal = firestore_api
-        parent = client.collection("declaration")
-        parent_path, expected_prefix = parent._parent_info()
-        name = "{}/burger".format(expected_prefix)
-        data = {"lettuce": b"\xee\x87"}
-        response_pb = _make_query_response(name=name, data=data)
-        firestore_api.run_query.return_value = iter([response_pb])
-
-        # Pass the query to get method and check the response.
-        query = Query(parent)
-        snapshots = transaction.get(query)
-        self.assertIsInstance(snapshots, types.GeneratorType)
-        returned = list(snapshots)
-        self.assertEqual(len(returned), 1)
-        snapshot0 = returned[0]
-        self.assertIsInstance(snapshot0, DocumentSnapshot)
-        self.assertEqual(snapshot0.reference._path, ("declaration", "burger"))
-        self.assertEqual(snapshot0.to_dict(), data)
-
-        # Verify the mock call.
-        firestore_api.run_query.assert_called_once_with(
-            parent_path,
-            query._to_protobuf(),
-            transaction=transaction._id,
-            metadata=client._rpc_metadata,
-        )
+        query = Query(parent=mock.Mock(spec=[]))
+        query.stream = mock.MagicMock()
+        result = transaction.get(query)
+        query.stream.assert_called_once_with(transaction=transaction.id)
+        self.assertIs(result, query.stream.return_value)
 
     def test_get_failure(self):
         client = _make_client()
@@ -1086,56 +1018,3 @@ def _make_transaction(txn_id, **txn_kwargs):
     client._firestore_api_internal = firestore_api
 
     return Transaction(client, **txn_kwargs)
-
-
-def _make_batch_response(**kwargs):
-    from google.cloud.firestore_v1.proto import firestore_pb2
-
-    return firestore_pb2.BatchGetDocumentsResponse(**kwargs)
-
-
-def _doc_get_info(ref_string, values):
-    from google.cloud.firestore_v1.proto import document_pb2
-    from google.cloud._helpers import _datetime_to_pb_timestamp
-    from google.cloud.firestore_v1 import _helpers
-
-    now = datetime.datetime.utcnow()
-    read_time = _datetime_to_pb_timestamp(now)
-    delta = datetime.timedelta(seconds=100)
-    update_time = _datetime_to_pb_timestamp(now - delta)
-    create_time = _datetime_to_pb_timestamp(now - 2 * delta)
-
-    document_pb = document_pb2.Document(
-        name=ref_string,
-        fields=_helpers.encode_dict(values),
-        create_time=create_time,
-        update_time=update_time,
-    )
-
-    return document_pb, read_time
-
-
-def _make_query_response(**kwargs):
-    # kwargs supported are ``skipped_results``, ``name`` and ``data``
-    from google.cloud.firestore_v1.proto import document_pb2
-    from google.cloud.firestore_v1.proto import firestore_pb2
-    from google.cloud._helpers import _datetime_to_pb_timestamp
-    from google.cloud.firestore_v1 import _helpers
-
-    now = datetime.datetime.utcnow()
-    read_time = _datetime_to_pb_timestamp(now)
-    kwargs["read_time"] = read_time
-
-    name = kwargs.pop("name", None)
-    data = kwargs.pop("data", None)
-
-    document_pb = document_pb2.Document(name=name, fields=_helpers.encode_dict(data))
-    delta = datetime.timedelta(seconds=100)
-    update_time = _datetime_to_pb_timestamp(now - delta)
-    create_time = _datetime_to_pb_timestamp(now - 2 * delta)
-    document_pb.update_time.CopyFrom(update_time)
-    document_pb.create_time.CopyFrom(create_time)
-
-    kwargs["document"] = document_pb
-
-    return firestore_pb2.RunQueryResponse(**kwargs)

@@ -227,7 +227,7 @@ class Transaction(batch.WriteBatch):
         if isinstance(ref_or_query, DocumentReference):
             return self._client.get_all([ref_or_query], transaction=self._id)
         elif isinstance(ref_or_query, Query):
-            return ref_or_query.stream(self._id)
+            return ref_or_query.stream(transaction=self._id)
         else:
             raise ValueError(
                 'Value for argument "ref_or_query" must be a DocumentReference or a Query.'
