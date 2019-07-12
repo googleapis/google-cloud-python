@@ -21,7 +21,6 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
-import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -108,9 +107,6 @@ class GrafeasClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
-            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
-                Client options used to set user options on the client. API Endpoint
-                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:

@@ -124,6 +124,18 @@ s.replace(
     "",
 )
 
+# Remove client_options
+# api_endpoint is currently the only option and doesn't make sense for Grafeas.
+s.replace("grafeas/**/grafeas_client.py", "import google.api_core.client_options\n", "")
+s.replace(
+    "grafeas/**/grafeas_client.py",
+    r"""            client_options \(Union\[dict, google\.api_core\.client_options\.ClientOptions\]\):
+                Client options used to set user options on the client\. API Endpoint
+                should be set through client_options\.
+        \"\"\"""",
+    "        \"\"\""
+)
+
 s.replace(
     "grafeas/**/grafeas_client.py",
     r"""if channel:
