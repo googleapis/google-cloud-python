@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.securitycenter_v1beta1.gapic.security_center_client &#8212; google-cloud 8dbfe73 documentation</title>
+    <title>google.cloud.securitycenter_v1beta1.gapic.security_center_client &#8212; google-cloud 751a79c documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -81,6 +81,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.securitycenter_v1beta1.proto</span> <span class="k">import</span> <span class="n">securitycenter_service_pb2_grpc</span>
 <span class="kn">from</span> <span class="nn">google.cloud.securitycenter_v1beta1.proto</span> <span class="k">import</span> <span class="n">source_pb2</span>
 <span class="kn">from</span> <span class="nn">google.iam.v1</span> <span class="k">import</span> <span class="n">iam_policy_pb2</span>
+<span class="kn">from</span> <span class="nn">google.iam.v1</span> <span class="k">import</span> <span class="n">options_pb2</span>
 <span class="kn">from</span> <span class="nn">google.iam.v1</span> <span class="k">import</span> <span class="n">policy_pb2</span>
 <span class="kn">from</span> <span class="nn">google.longrunning</span> <span class="k">import</span> <span class="n">operations_pb2</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">duration_pb2</span>
@@ -138,6 +139,16 @@
         <span class="sd">&quot;&quot;&quot;Return a fully-qualified finding string.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
             <span class="s2">&quot;organizations/</span><span class="si">{organization}</span><span class="s2">/sources/</span><span class="si">{source}</span><span class="s2">/findings/</span><span class="si">{finding}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">organization</span><span class="o">=</span><span class="n">organization</span><span class="p">,</span>
+            <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
+            <span class="n">finding</span><span class="o">=</span><span class="n">finding</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="SecurityCenterClient.finding_security_marks_path"><a class="viewcode-back" href="../../../../../securitycenter/gapic/v1beta1/api.html#google.cloud.securitycenter_v1beta1.SecurityCenterClient.finding_security_marks_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">finding_security_marks_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">organization</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">finding</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified finding_security_marks string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s2">&quot;organizations/</span><span class="si">{organization}</span><span class="s2">/sources/</span><span class="si">{source}</span><span class="s2">/findings/</span><span class="si">{finding}</span><span class="s2">/securityMarks&quot;</span><span class="p">,</span>
             <span class="n">organization</span><span class="o">=</span><span class="n">organization</span><span class="p">,</span>
             <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
             <span class="n">finding</span><span class="o">=</span><span class="n">finding</span><span class="p">,</span>
@@ -453,6 +464,7 @@
 <div class="viewcode-block" id="SecurityCenterClient.get_iam_policy"><a class="viewcode-back" href="../../../../../securitycenter/gapic/v1beta1/api.html#google.cloud.securitycenter_v1beta1.SecurityCenterClient.get_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">get_iam_policy</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">resource</span><span class="p">,</span>
+        <span class="n">options_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
         <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
         <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -472,6 +484,11 @@
 <span class="sd">        Args:</span>
 <span class="sd">            resource (str): REQUIRED: The resource for which the policy is being requested.</span>
 <span class="sd">                See the operation documentation for the appropriate value for this field.</span>
+<span class="sd">            options_ (Union[dict, ~google.cloud.securitycenter_v1beta1.types.GetPolicyOptions]): OPTIONAL: A ``GetPolicyOptions`` object for specifying options to</span>
+<span class="sd">                ``GetIamPolicy``. This field is only used by Cloud IAM.</span>
+
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.securitycenter_v1beta1.types.GetPolicyOptions`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -502,7 +519,9 @@
                 <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
             <span class="p">)</span>
 
-        <span class="n">request</span> <span class="o">=</span> <span class="n">iam_policy_pb2</span><span class="o">.</span><span class="n">GetIamPolicyRequest</span><span class="p">(</span><span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">)</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">iam_policy_pb2</span><span class="o">.</span><span class="n">GetIamPolicyRequest</span><span class="p">(</span>
+            <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options_</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
