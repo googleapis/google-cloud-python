@@ -28,7 +28,6 @@ class Feature(enum.IntEnum):
       LABEL_DETECTION (int): Label detection. Detect objects, such as dog or flower.
       SHOT_CHANGE_DETECTION (int): Shot change detection.
       EXPLICIT_CONTENT_DETECTION (int): Explicit content detection.
-      FACE_DETECTION (int): Human face detection and tracking.
       SPEECH_TRANSCRIPTION (int): Speech transcription.
       TEXT_DETECTION (int): OCR text detection and tracking.
       OBJECT_TRACKING (int): Object detection and tracking.
@@ -38,7 +37,6 @@ class Feature(enum.IntEnum):
     LABEL_DETECTION = 1
     SHOT_CHANGE_DETECTION = 2
     EXPLICIT_CONTENT_DETECTION = 3
-    FACE_DETECTION = 4
     SPEECH_TRANSCRIPTION = 6
     TEXT_DETECTION = 7
     OBJECT_TRACKING = 9
