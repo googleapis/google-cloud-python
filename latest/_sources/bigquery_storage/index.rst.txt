@@ -12,7 +12,7 @@ API Reference
 Example Usage
 -------------
 
-.. literalinclude:: quickstart.py
+.. literalinclude:: samples/quickstart.py
    :language: python
    :dedent: 4
    :start-after: [START bigquerystorage_quickstart]
