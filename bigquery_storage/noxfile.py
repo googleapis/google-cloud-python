@@ -70,6 +70,7 @@ def default(session):
     for local_dep in LOCAL_DEPS:
         session.install("-e", local_dep)
     session.install("-e", ".")
+    session.install("-e", ".[fastavro,pandas,pyarrow]")
 
     # Run py.test against the unit tests.
     session.run(
@@ -116,9 +117,7 @@ def system(session):
     for local_dep in LOCAL_DEPS:
         session.install("-e", local_dep)
     session.install("-e", "../test_utils/")
-    session.install("-e", "fastavro")
-    session.install("-e", "pandas")
-    session.install("-e", "pyarrow != 0.14.0")
+    session.install("-e", ".[fastavro,pandas,pyarrow]")
     session.install("-e", ".")
 
     # Run py.test against the system tests.
