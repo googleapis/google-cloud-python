@@ -90,13 +90,7 @@ class GrafeasClient(object):
         )
 
     def __init__(
-        self,
-        transport=None,
-        channel=None,
-        credentials=None,
-        client_config=None,
-        client_info=None,
-        client_options=None,
+        self, transport, client_config=None, client_info=None, client_options=None
     ):
         """Constructor.
 
@@ -130,43 +124,10 @@ class GrafeasClient(object):
         else:
             client_config = grafeas_client_config.config
 
-        if channel:
-            warnings.warn(
-                "The `channel` argument is deprecated; use " "`transport` instead.",
-                PendingDeprecationWarning,
-                stacklevel=2,
-            )
-
-        api_endpoint = self.SERVICE_ADDRESS
-        if client_options:
-            if type(client_options) == dict:
-                client_options = google.api_core.client_options.from_dict(
-                    client_options
-                )
-            if client_options.api_endpoint:
-                api_endpoint = client_options.api_endpoint
-
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
-        if transport:
-            if callable(transport):
-                self.transport = transport(
-                    credentials=credentials,
-                    default_class=grafeas_grpc_transport.GrafeasGrpcTransport,
-                    address=api_endpoint,
-                )
-            else:
-                if credentials:
-                    raise ValueError(
-                        "Received both a transport instance and "
-                        "credentials; these are mutually exclusive."
-                    )
-                self.transport = transport
-        else:
-            self.transport = grafeas_grpc_transport.GrafeasGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
-            )
+        self.transport = transport
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(

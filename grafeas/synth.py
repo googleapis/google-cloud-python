@@ -97,8 +97,8 @@ s.replace(
 s.replace(
     "grafeas/**/grafeas_client.py",
     r"""    def __init__\(self, transport=None, channel=None, credentials=None,
-            client_config=None, client_info=None\):""",
-    "    def __init__(self, transport, client_config=None, client_info=None):",
+            client_config=None, client_info=None, client_options=None\):""",
+    "    def __init__(self, transport, client_config=None, client_info=None, client_options=None):",
 )
 
 s.replace(
@@ -131,6 +131,13 @@ s.replace(
                           '`transport` instead\.',
                           PendingDeprecationWarning, stacklevel=2\)
 
+        api_endpoint = self\.SERVICE_ADDRESS
+        if client_options:
+            if type\(client_options\) == dict:
+                client_options = google\.api_core\.client_options\.from_dict\(client_options\)
+            if client_options\.api_endpoint:
+                api_endpoint = client_options\.api_endpoint
+
         \# Instantiate the transport\.
         \# The transport is responsible for handling serialization and
         \# deserialization and actually sending data to the service\.
@@ -139,6 +146,7 @@ s.replace(
                 self\.transport = transport\(
                     credentials=credentials,
                     default_class=grafeas_grpc_transport\.GrafeasGrpcTransport,
+                    address=api_endpoint,
                 \)
             else:
                 if credentials:
@@ -149,7 +157,7 @@ s.replace(
                 self\.transport = transport
         else:
             self\.transport = grafeas_grpc_transport\.GrafeasGrpcTransport\(
-                address=self\.SERVICE_ADDRESS,
+                address=api_endpoint,
                 channel=channel,
                 credentials=credentials,
             \)""",
