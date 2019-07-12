@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.bucket &#8212; google-cloud 0a173ac documentation</title>
+    <title>google.cloud.storage.bucket &#8212; google-cloud 36c2f30 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -422,20 +422,78 @@
 <span class="sd">    This is used in Bucket.delete() and Bucket.make_public().</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">STANDARD_STORAGE_CLASS</span> <span class="o">=</span> <span class="s2">&quot;STANDARD&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Storage class for objects accessed more than once per month.&quot;&quot;&quot;</span>
+
+    <span class="n">NEARLINE_STORAGE_CLASS</span> <span class="o">=</span> <span class="s2">&quot;NEARLINE&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Storage class for objects accessed at most once per month.&quot;&quot;&quot;</span>
+
+    <span class="n">COLDLINE_STORAGE_CLASS</span> <span class="o">=</span> <span class="s2">&quot;COLDLINE&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Storage class for objects accessed at most once per year.&quot;&quot;&quot;</span>
+
+    <span class="n">MULTI_REGIONAL_LEGACY_STORAGE_CLASS</span> <span class="o">=</span> <span class="s2">&quot;MULTI_REGIONAL&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Legacy storage class.</span>
+
+<span class="sd">    Alias for :attr:`STANDARD_STORAGE_CLASS`.</span>
+
+<span class="sd">    Implies :attr:`MULTI_REGION_LOCATION_TYPE` for :attr:`location_type`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">REGIONAL_LEGACY_STORAGE_CLASS</span> <span class="o">=</span> <span class="s2">&quot;REGIONAL&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Legacy storage class.</span>
+
+<span class="sd">    Alias for :attr:`STANDARD_STORAGE_CLASS`.</span>
+
+<span class="sd">    Implies :attr:`REGION_LOCATION_TYPE` for :attr:`location_type`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">DURABLE_REDUCED_AVAILABILITY_LEGACY_STORAGE_CLASS</span> <span class="o">=</span> <span class="s2">&quot;DURABLE_REDUCED_AVAILABILITY&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Legacy storage class.</span>
+
+<span class="sd">    Similar to :attr:`NEARLINE_STORAGE_CLASS`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">_STORAGE_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;MULTI_REGIONAL&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;REGIONAL&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;NEARLINE&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;COLDLINE&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;STANDARD&quot;</span><span class="p">,</span>  <span class="c1"># alias for MULTI_REGIONAL/REGIONAL, based on location</span>
-        <span class="s2">&quot;DURABLE_REDUCED_AVAILABILITY&quot;</span><span class="p">,</span>  <span class="c1"># deprecated</span>
+        <span class="n">STANDARD_STORAGE_CLASS</span><span class="p">,</span>
+        <span class="n">NEARLINE_STORAGE_CLASS</span><span class="p">,</span>
+        <span class="n">COLDLINE_STORAGE_CLASS</span><span class="p">,</span>
+        <span class="n">MULTI_REGIONAL_LEGACY_STORAGE_CLASS</span><span class="p">,</span>  <span class="c1"># deprecated</span>
+        <span class="n">REGIONAL_LEGACY_STORAGE_CLASS</span><span class="p">,</span>  <span class="c1"># deprecated</span>
+        <span class="n">DURABLE_REDUCED_AVAILABILITY_LEGACY_STORAGE_CLASS</span><span class="p">,</span>  <span class="c1"># deprecated</span>
     <span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;Allowed values for :attr:`storage_class`.</span>
+
+<span class="sd">    Default value is :attr:`STANDARD_STORAGE_CLASS`.</span>
 
 <span class="sd">    See</span>
 <span class="sd">    https://cloud.google.com/storage/docs/json_api/v1/buckets#storageClass</span>
 <span class="sd">    https://cloud.google.com/storage/docs/storage-classes</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">MULTI_REGION_LOCATION_TYPE</span> <span class="o">=</span> <span class="s2">&quot;multi-region&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Location type: data will be replicated across regions in a multi-region.</span>
+
+<span class="sd">    Provides highest availability across largest area.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">REGION_LOCATION_TYPE</span> <span class="o">=</span> <span class="s2">&quot;region&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Location type: data will be stored within a single region.</span>
+
+<span class="sd">    Provides lowest latency within a single region.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">DUAL_REGION_LOCATION_TYPE</span> <span class="o">=</span> <span class="s2">&quot;dual-region&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Location type: data will be stored within two primary regions.</span>
+
+<span class="sd">    Provides high availability and low latency across two regions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_LOCATION_TYPES</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">MULTI_REGION_LOCATION_TYPE</span><span class="p">,</span>
+        <span class="n">REGION_LOCATION_TYPE</span><span class="p">,</span>
+        <span class="n">DUAL_REGION_LOCATION_TYPE</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Allowed values for :attr:`location_type`.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">user_project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">_validate_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
@@ -1413,6 +1471,23 @@
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">_LOCATION_SETTER_MESSAGE</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_location</span> <span class="o">=</span> <span class="n">value</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">location_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retrieve or set the location type for the bucket.</span>
+
+<span class="sd">        See https://cloud.google.com/storage/docs/storage-classes</span>
+
+<span class="sd">        :setter: Set the location type for this bucket.</span>
+<span class="sd">        :getter: Gets the the location type for this bucket.</span>
+
+<span class="sd">        :rtype: str or ``NoneType``</span>
+<span class="sd">        :returns:</span>
+<span class="sd">            If set, one of :attr:`MULTI_REGION_LOCATION_TYPE`,</span>
+<span class="sd">            :attr:`REGION_LOCATION_TYPE`, or :attr:`DUAL_REGION_LOCATION_TYPE`,</span>
+<span class="sd">            else ``None``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;locationType&quot;</span><span class="p">)</span>
+
 <div class="viewcode-block" id="Bucket.get_logging"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.get_logging">[docs]</a>    <span class="k">def</span> <span class="nf">get_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return info about access logging for this bucket.</span>
 
@@ -1569,9 +1644,14 @@
 <span class="sd">        :getter: Gets the the storage class for this bucket.</span>
 
 <span class="sd">        :rtype: str or ``NoneType``</span>
-<span class="sd">        :returns: If set, one of &quot;MULTI_REGIONAL&quot;, &quot;REGIONAL&quot;,</span>
-<span class="sd">                  &quot;NEARLINE&quot;, &quot;COLDLINE&quot;, &quot;STANDARD&quot;, or</span>
-<span class="sd">                  &quot;DURABLE_REDUCED_AVAILABILITY&quot;, else ``None``.</span>
+<span class="sd">        :returns:</span>
+<span class="sd">            If set, one of :attr:`NEARLINE_STORAGE_CLASS`,</span>
+<span class="sd">            :attr:`COLDLINE_STORAGE_CLASS`, :attr:`STANDARD_STORAGE_CLASS`,</span>
+<span class="sd">            :attr:`MULTI_REGIONAL_LEGACY_STORAGE_CLASS`,</span>
+<span class="sd">            :attr:`REGIONAL_LEGACY_STORAGE_CLASS`,</span>
+<span class="sd">            or</span>
+<span class="sd">            :attr:`DURABLE_REDUCED_AVAILABILITY_LEGACY_STORAGE_CLASS`,</span>
+<span class="sd">            else ``None``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;storageClass&quot;</span><span class="p">)</span>
 
@@ -1582,8 +1662,13 @@
 <span class="sd">        See https://cloud.google.com/storage/docs/storage-classes</span>
 
 <span class="sd">        :type value: str</span>
-<span class="sd">        :param value: one of &quot;MULTI_REGIONAL&quot;, &quot;REGIONAL&quot;, &quot;NEARLINE&quot;,</span>
-<span class="sd">                      &quot;COLDLINE&quot;, &quot;STANDARD&quot;, or &quot;DURABLE_REDUCED_AVAILABILITY&quot;</span>
+<span class="sd">        :param value:</span>
+<span class="sd">            One of :attr:`NEARLINE_STORAGE_CLASS`,</span>
+<span class="sd">            :attr:`COLDLINE_STORAGE_CLASS`, :attr:`STANDARD_STORAGE_CLASS`,</span>
+<span class="sd">            :attr:`MULTI_REGIONAL_LEGACY_STORAGE_CLASS`,</span>
+<span class="sd">            :attr:`REGIONAL_LEGACY_STORAGE_CLASS`,</span>
+<span class="sd">            or</span>
+<span class="sd">            :attr:`DURABLE_REDUCED_AVAILABILITY_LEGACY_STORAGE_CLASS`,</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_STORAGE_CLASSES</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid storage class: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">value</span><span class="p">,))</span>
