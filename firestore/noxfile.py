@@ -146,6 +146,8 @@ def docs(session):
     session.install("sphinx", "alabaster", "recommonmark")
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
+    for local_dep in LOCAL_DEPS:
+        session.install("-e", local_dep)
     session.run(
         "sphinx-build",
         "-W",  # warnings as errors
