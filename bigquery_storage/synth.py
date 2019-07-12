@@ -18,7 +18,7 @@ import synthtool as s
 from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
-
+common = gcp.CommonTemplates()
 version = "v1beta1"
 
 library = gapic.py_library(
@@ -129,5 +129,11 @@ s.replace(
     "google.api_core.grpc_helpers.create_channel(  # pragma: no cover",
 )
 # END: Ignore lint and coverage
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = common.py_library(unit_cov_level=79, cov_level=79, samples_test=True, system_test_dependencies=["fastavro", "pandas", "pyarrow != 0.14.0"])
+s.move(templated_files)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
