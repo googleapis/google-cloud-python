@@ -21,6 +21,7 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -28,6 +29,7 @@ import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
+import google.api_core.protobuf_helpers
 import grpc
 
 from google.cloud.irm_v1alpha2.gapic import enums
@@ -153,6 +155,7 @@ class IncidentServiceClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -183,6 +186,9 @@ class IncidentServiceClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -201,6 +207,15 @@ class IncidentServiceClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -209,6 +224,7 @@ class IncidentServiceClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=incident_service_grpc_transport.IncidentServiceGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -219,7 +235,7 @@ class IncidentServiceClient(object):
                 self.transport = transport
         else:
             self.transport = incident_service_grpc_transport.IncidentServiceGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -514,10 +530,10 @@ class IncidentServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.irm_v1alpha2.types.Incident` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.irm_v1alpha2.types.Incident` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -700,10 +716,10 @@ class IncidentServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.irm_v1alpha2.types.Result` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.irm_v1alpha2.types.Result` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -886,10 +902,10 @@ class IncidentServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.irm_v1alpha2.types.Annotation` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.irm_v1alpha2.types.Annotation` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1134,10 +1150,10 @@ class IncidentServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.irm_v1alpha2.types.Tag` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.irm_v1alpha2.types.Tag` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1305,7 +1321,68 @@ class IncidentServiceClient(object):
         Args:
             parent (str): The resource name of the hosting Stackdriver project which requested
                 incidents belong to.
-            query (str): Query to specify which signals should be returned.
+            query (str): An expression that defines which signals to return.
+
+                Search atoms can be used to match certain specific fields. Otherwise,
+                plain text will match text fields in the signal.
+
+                Search atoms:
+
+                -  ``start`` - (timestamp) The time the signal was created.
+                -  ``title`` - The title of the signal.
+                -  ``signal_state`` - ``open`` or ``closed``. State of the signal.
+                   (e.g., ``signal_state:open``)
+
+                Timestamp formats:
+
+                -  yyyy-MM-dd - an absolute date, treated as a calendar-day-wide window.
+                   In other words, the "<" operator will match dates before that date,
+                   the ">" operator will match dates after that date, and the ":"
+                   operator will match the entire day.
+                -  yyyy-MM-ddTHH:mm - Same as above, but with minute resolution.
+                -  yyyy-MM-ddTHH:mm:ss - Same as above, but with second resolution.
+                -  Nd (e.g. 7d) - a relative number of days ago, treated as a moment in
+                   time (as opposed to a day-wide span) a multiple of 24 hours ago (as
+                   opposed to calendar days). In the case of daylight savings time, it
+                   will apply the current timezone to both ends of the range. Note that
+                   exact matching (e.g. ``start:7d``) is unlikely to be useful because
+                   that would only match signals created precisely at a particular
+                   instant in time.
+
+                The absolute timestamp formats (everything starting with a year) can
+                optionally be followed with a UTC offset in +/-hh:mm format. Also, the
+                'T' separating dates and times can optionally be replaced with a space.
+                Note that any timestamp containing a space or colon will need to be
+                quoted.
+
+                Examples:
+
+                -  ``foo`` - matches signals containing the word "foo"
+                -  ``"foo bar"`` - matches signals containing the phrase "foo bar"
+                -  ``foo bar`` or ``foo AND bar`` - matches signals containing the words
+                   "foo" and "bar"
+                -  ``foo -bar`` or ``foo AND NOT bar`` - matches signals containing the
+                   word "foo" but not the word "bar"
+                -  ``foo OR bar`` - matches signals containing the word "foo" or the
+                   word "bar"
+                -  ``start>2018-11-28`` - matches signals which started after November
+                   11, 2018.
+                -  ``start<=2018-11-28`` - matches signals which started on or before
+                   November 11, 2018.
+                -  ``start:2018-11-28`` - matches signals which started on November 11,
+
+                   2018.
+
+                -  ``start>"2018-11-28 01:02:03+04:00"`` - matches signals which started
+                   after November 11, 2018 at 1:02:03 AM according to the UTC+04 time
+                   zone.
+                -  ``start>7d`` - matches signals which started after the point in time
+                   7*24 hours ago
+                -  ``start>180d`` - similar to 7d, but likely to cross the daylight
+                   savings time boundary, so the end time will be 1 hour different from
+                   "now."
+                -  ``foo AND start>90d AND stage<resolved`` - unresolved signals from
+                   the past 90 days containing the word "foo"
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -1321,10 +1398,10 @@ class IncidentServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.irm_v1alpha2.types.Signal` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.irm_v1alpha2.types.Signal` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1442,6 +1519,73 @@ class IncidentServiceClient(object):
             metadata.append(routing_metadata)
 
         return self._inner_api_calls["get_signal"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def lookup_signal(
+        self,
+        cscc_finding=None,
+        stackdriver_notification_id=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Finds a signal by other unique IDs.
+
+        Example:
+            >>> from google.cloud import irm_v1alpha2
+            >>>
+            >>> client = irm_v1alpha2.IncidentServiceClient()
+            >>>
+            >>> response = client.lookup_signal()
+
+        Args:
+            cscc_finding (str): Full resource name of the CSCC finding id this signal refers to (e.g.
+                "organizations/abc/sources/123/findings/xyz")
+            stackdriver_notification_id (str): The ID from the Stackdriver Alerting notification.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.irm_v1alpha2.types.Signal` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "lookup_signal" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "lookup_signal"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.lookup_signal,
+                default_retry=self._method_configs["LookupSignal"].retry,
+                default_timeout=self._method_configs["LookupSignal"].timeout,
+                client_info=self._client_info,
+            )
+
+        # Sanity check: We have some fields which are mutually exclusive;
+        # raise ValueError if more than one is sent.
+        google.api_core.protobuf_helpers.check_oneof(
+            cscc_finding=cscc_finding,
+            stackdriver_notification_id=stackdriver_notification_id,
+        )
+
+        request = incidents_service_pb2.LookupSignalRequest(
+            cscc_finding=cscc_finding,
+            stackdriver_notification_id=stackdriver_notification_id,
+        )
+        return self._inner_api_calls["lookup_signal"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
@@ -1763,10 +1907,10 @@ class IncidentServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.irm_v1alpha2.types.Artifact` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.irm_v1alpha2.types.Artifact` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2280,10 +2424,10 @@ class IncidentServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.irm_v1alpha2.types.Subscription` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.irm_v1alpha2.types.Subscription` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2608,10 +2752,10 @@ class IncidentServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.irm_v1alpha2.types.IncidentRoleAssignment` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.irm_v1alpha2.types.IncidentRoleAssignment` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request

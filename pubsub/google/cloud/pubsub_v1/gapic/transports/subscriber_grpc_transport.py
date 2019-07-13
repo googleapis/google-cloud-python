@@ -18,7 +18,7 @@
 import google.api_core.grpc_helpers
 
 from google.cloud.pubsub_v1.proto import pubsub_pb2_grpc
-from google.iam.v1 import iam_policy_pb2
+from google.iam.v1 import iam_policy_pb2_grpc as iam_policy_pb2
 
 
 class SubscriberGrpcTransport(object):
@@ -74,7 +74,9 @@ class SubscriberGrpcTransport(object):
         }
 
     @classmethod
-    def create_channel(cls, address="pubsub.googleapis.com:443", credentials=None):
+    def create_channel(
+        cls, address="pubsub.googleapis.com:443", credentials=None, **kwargs
+    ):
         """Create and return a gRPC channel object.
 
         Args:
@@ -84,12 +86,14 @@ class SubscriberGrpcTransport(object):
                 credentials identify this application to the service. If
                 none are specified, the client will attempt to ascertain
                 the credentials from the environment.
+            kwargs (dict): Keyword arguments, which are passed to the
+                channel creation.
 
         Returns:
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES, **kwargs
         )
 
     @property

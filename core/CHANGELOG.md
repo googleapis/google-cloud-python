@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+## 1.0.2
+
+06/11/2019 15:19 PDT
+
+### Internal Changes 
+- Prevent requests from hanging on SSL handshake issue by adding a max timeout of 5 minutes. (#8207)
+
 ## 1.0.1
 
 05-28-2019 11:22 PDT

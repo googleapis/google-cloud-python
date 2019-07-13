@@ -273,10 +273,10 @@ def test__make_bqstorage_client_true_raises_import_error(monkeypatch):
         google.auth.credentials.Credentials, instance=True
     )
 
-    with pytest.raises(ImportError) as exc:
+    with pytest.raises(ImportError) as exc_context:
         magics._make_bqstorage_client(True, credentials_mock)
 
-    assert "google-cloud-bigquery-storage" in str(exc)
+    assert "google-cloud-bigquery-storage" in str(exc_context.value)
 
 
 @pytest.mark.usefixtures("ipython_interactive")

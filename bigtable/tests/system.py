@@ -15,10 +15,15 @@
 import datetime
 import operator
 import os
-
 import unittest
 
 from google.api_core.exceptions import TooManyRequests
+from google.cloud.environment_vars import BIGTABLE_EMULATOR
+from test_utils.retry import RetryErrors
+from test_utils.retry import RetryResult
+from test_utils.system import EmulatorCreds
+from test_utils.system import unique_resource_id
+
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import UTC
@@ -30,18 +35,16 @@ from google.cloud.bigtable.row_filters import RowFilterChain
 from google.cloud.bigtable.row_filters import RowFilterUnion
 from google.cloud.bigtable.row_data import Cell
 from google.cloud.bigtable.row_data import PartialRowData
-from google.cloud.environment_vars import BIGTABLE_EMULATOR
 from google.cloud.bigtable.row_set import RowSet
 from google.cloud.bigtable.row_set import RowRange
+from google.cloud.bigtable_admin_v2.gapic import (
+    bigtable_table_admin_client_config as table_admin_config,
+)
 
-from test_utils.retry import RetryErrors
-from test_utils.retry import RetryResult
-from test_utils.system import EmulatorCreds
-from test_utils.system import unique_resource_id
-
+UNIQUE_SUFFIX = unique_resource_id("-")
 LOCATION_ID = "us-central1-c"
-INSTANCE_ID = "g-c-p" + unique_resource_id("-")
-INSTANCE_ID_DATA = "g-c-p-d" + unique_resource_id("-")
+INSTANCE_ID = "g-c-p" + UNIQUE_SUFFIX
+INSTANCE_ID_DATA = "g-c-p-d" + UNIQUE_SUFFIX
 TABLE_ID = "google-cloud-python-test-table"
 CLUSTER_ID = INSTANCE_ID + "-cluster"
 CLUSTER_ID_DATA = INSTANCE_ID_DATA + "-cluster"
@@ -96,6 +99,13 @@ def setUpModule():
     from google.cloud.exceptions import GrpcRendezvous
     from google.cloud.bigtable.enums import Instance
 
+    # See: https://github.com/googleapis/google-cloud-python/issues/5928
+    interfaces = table_admin_config.config["interfaces"]
+    iface_config = interfaces["google.bigtable.admin.v2.BigtableTableAdmin"]
+    methods = iface_config["methods"]
+    create_table = methods["CreateTable"]
+    create_table["timeout_millis"] = 90000
+
     Config.IN_EMULATOR = os.getenv(BIGTABLE_EMULATOR) is not None
 
     if Config.IN_EMULATOR:
@@ -125,10 +135,10 @@ def setUpModule():
         EXISTING_INSTANCES[:] = instances
 
         # After listing, create the test instances.
-        created_op = Config.INSTANCE.create(clusters=[Config.CLUSTER])
-        created_op.result(timeout=10)
-        created_op = Config.INSTANCE_DATA.create(clusters=[Config.CLUSTER_DATA])
-        created_op.result(timeout=10)
+        admin_op = Config.INSTANCE.create(clusters=[Config.CLUSTER])
+        admin_op.result(timeout=10)
+        data_op = Config.INSTANCE_DATA.create(clusters=[Config.CLUSTER_DATA])
+        data_op.result(timeout=10)
 
 
 def tearDownModule():
@@ -140,7 +150,7 @@ def tearDownModule():
 class TestInstanceAdminAPI(unittest.TestCase):
     def setUp(self):
         if Config.IN_EMULATOR:
-            self.skipTest("Instance Admin API not supported in Bigtable emulator")
+            self.skipTest("Instance Admin API not supported in emulator")
         self.instances_to_delete = []
 
     def tearDown(self):
@@ -172,7 +182,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
     def test_create_instance_defaults(self):
         from google.cloud.bigtable import enums
 
-        ALT_INSTANCE_ID = "ndef" + unique_resource_id("-")
+        ALT_INSTANCE_ID = "ndef" + UNIQUE_SUFFIX
         instance = Config.CLIENT.instance(ALT_INSTANCE_ID, labels=LABELS)
         ALT_CLUSTER_ID = ALT_INSTANCE_ID + "-cluster"
         cluster = instance.cluster(
@@ -200,9 +210,8 @@ class TestInstanceAdminAPI(unittest.TestCase):
         from google.cloud.bigtable import enums
 
         _DEVELOPMENT = enums.Instance.Type.DEVELOPMENT
-        _STATE = enums.Instance.State.READY
 
-        ALT_INSTANCE_ID = "new" + unique_resource_id("-")
+        ALT_INSTANCE_ID = "new" + UNIQUE_SUFFIX
         instance = Config.CLIENT.instance(
             ALT_INSTANCE_ID, instance_type=_DEVELOPMENT, labels=LABELS
         )
@@ -224,7 +233,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertEqual(instance.display_name, instance_alt.display_name)
         self.assertEqual(instance.type_, instance_alt.type_)
         self.assertEqual(instance_alt.labels, LABELS)
-        self.assertEqual(_STATE, instance_alt.state)
+        self.assertEqual(instance_alt.state, enums.Instance.State.READY)
 
     def test_cluster_exists(self):
         NONEXISTING_CLUSTER_ID = "cluster-id"
@@ -246,7 +255,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         from google.cloud.bigtable.table import ClusterState
 
         _PRODUCTION = enums.Instance.Type.PRODUCTION
-        ALT_INSTANCE_ID = "dif" + unique_resource_id("-")
+        ALT_INSTANCE_ID = "dif" + UNIQUE_SUFFIX
         instance = Config.CLIENT.instance(
             ALT_INSTANCE_ID, instance_type=_PRODUCTION, labels=LABELS
         )
@@ -273,7 +282,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.instances_to_delete.append(instance)
 
         # We want to make sure the operation completes.
-        operation.result(timeout=10)
+        operation.result(timeout=30)
 
         # Create a new instance instance and make sure it is the same.
         instance_alt = Config.CLIENT.instance(ALT_INSTANCE_ID)
@@ -466,11 +475,12 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
         _DEVELOPMENT = Instance.Type.DEVELOPMENT
         _PRODUCTION = Instance.Type.PRODUCTION
-        ALT_INSTANCE_ID = "ndif" + unique_resource_id("-")
+        ALT_INSTANCE_ID = "ndif" + UNIQUE_SUFFIX
         instance = Config.CLIENT.instance(
             ALT_INSTANCE_ID, instance_type=_DEVELOPMENT, labels=LABELS
         )
         operation = instance.create(location_id=LOCATION_ID, serve_nodes=None)
+
         # Make sure this instance gets deleted after the test case.
         self.instances_to_delete.append(instance)
 
@@ -530,7 +540,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         operation = cluster_2.create()
 
         # We want to make sure the operation completes.
-        operation.result(timeout=10)
+        operation.result(timeout=30)
 
         # Create a new object instance, reload  and make sure it is the same.
         alt_cluster = Config.INSTANCE.cluster(ALT_CLUSTER_ID)
@@ -610,7 +620,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         )
 
         operation = app_profile.update(ignore_warnings)
-        operation.result(timeout=10)
+        operation.result(timeout=30)
 
         alt_app_profile = instance.app_profile(app_profile_id)
         alt_app_profile.reload()

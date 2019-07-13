@@ -34,6 +34,7 @@ from google.cloud.bigquery.query import ScalarQueryParameter
 from google.cloud.bigquery.query import StructQueryParameter
 from google.cloud.bigquery.query import UDFResource
 from google.cloud.bigquery.retry import DEFAULT_RETRY
+from google.cloud.bigquery.routine import RoutineReference
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import _EmptyRowIterator
 from google.cloud.bigquery.table import EncryptionConfiguration
@@ -2667,8 +2668,21 @@ class QueryJob(_AsyncJob):
         return self._job_statistics().get("ddlOperationPerformed")
 
     @property
+    def ddl_target_routine(self):
+        """Optional[google.cloud.bigquery.routine.RoutineReference]: Return the DDL target routine, present
+            for CREATE/DROP FUNCTION/PROCEDURE  queries.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/JobStatistics
+        """
+        prop = self._job_statistics().get("ddlTargetRoutine")
+        if prop is not None:
+            prop = RoutineReference.from_api_repr(prop)
+        return prop
+
+    @property
     def ddl_target_table(self):
-        """Optional[TableReference]: Return the DDL target table, present
+        """Optional[google.cloud.bigquery.table.TableReference]: Return the DDL target table, present
             for CREATE/DROP TABLE/VIEW queries.
 
         See:
@@ -2881,6 +2895,44 @@ class QueryJob(_AsyncJob):
         rows = self._client.list_rows(dest_table, page_size=page_size, retry=retry)
         rows._preserve_order = _contains_order_by(self.query)
         return rows
+
+    def to_arrow(self, progress_bar_type=None):
+        """[Beta] Create a class:`pyarrow.Table` by loading all pages of a
+        table or query.
+
+        Args:
+            progress_bar_type (Optional[str]):
+                If set, use the `tqdm <https://tqdm.github.io/>`_ library to
+                display a progress bar while the data downloads. Install the
+                ``tqdm`` package to use this feature.
+
+                Possible values of ``progress_bar_type`` include:
+
+                ``None``
+                  No progress bar.
+                ``'tqdm'``
+                  Use the :func:`tqdm.tqdm` function to print a progress bar
+                  to :data:`sys.stderr`.
+                ``'tqdm_notebook'``
+                  Use the :func:`tqdm.tqdm_notebook` function to display a
+                  progress bar as a Jupyter notebook widget.
+                ``'tqdm_gui'``
+                  Use the :func:`tqdm.tqdm_gui` function to display a
+                  progress bar as a graphical dialog box.
+
+        Returns:
+            pyarrow.Table
+                A :class:`pyarrow.Table` populated with row data and column
+                headers from the query results. The column headers are derived
+                from the destination table's schema.
+
+        Raises:
+            ValueError:
+                If the :mod:`pyarrow` library cannot be imported.
+
+        ..versionadded:: 1.17.0
+        """
+        return self.result().to_arrow(progress_bar_type=progress_bar_type)
 
     def to_dataframe(self, bqstorage_client=None, dtypes=None, progress_bar_type=None):
         """Return a pandas DataFrame from a QueryJob

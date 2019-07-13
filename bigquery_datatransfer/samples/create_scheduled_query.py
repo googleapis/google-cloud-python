@@ -46,12 +46,12 @@ def sample_create_transfer_config(project_id, dataset_id, authorization_code="")
 
     # Use standard SQL syntax for the query.
     query_string = """
-SELECT
-  CURRENT_TIMESTAMP() as current_time,
-  @run_time as intended_run_time,
-  @run_date as intended_run_date,
-  17 as some_integer
-"""
+    SELECT
+      CURRENT_TIMESTAMP() as current_time,
+      @run_time as intended_run_time,
+      @run_date as intended_run_date,
+      17 as some_integer
+    """
 
     parent = client.project_path(project_id)
 

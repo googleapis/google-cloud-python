@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ versions = ["v1p1beta1", "v1"]
 # Generate speech GAPIC layer
 # ----------------------------------------------------------------------------
 for version in versions:
-    library = gapic.py_library("speech", version, include_protos=True,)
+    library = gapic.py_library("speech", version, include_protos=True)
 
     # Don't move over __init__.py, as we modify it to make the generated client
     # use helpers.py.
@@ -42,10 +42,6 @@ for version in versions:
 # Use the highest version library to generate documentation import alias.
 s.move(library / "google/cloud/speech.py")
 
-# Issues exist where python files should define the source encoding
-# https://github.com/googleapis/gapic-generator/issues/2097
-s.replace("**/proto/*_pb2.py", r"(^.*$\n)*", r"# -*- coding: utf-8 -*-\n\g<0>")
-
 
 # Fix tests to use the direct gapic client instead of the wrapped helper
 # client.
@@ -53,6 +49,15 @@ s.replace(
     "tests/unit/**/test*client*.py",
     r"from google\.cloud import speech_(.+?)$",
     r"from google.cloud.speech_\1.gapic import speech_client as speech_\1",
+)
+
+# Set the maximum received message size to 256 MiB, the default of 4 MiB is
+# often insufficient in practice.
+s.replace(
+    "google/cloud/speech_v1/gapic/transports/speech_grpc_transport.py",
+    "^(\s+)scopes=cls\._OAUTH_SCOPES,",
+    "\g<1>scopes=cls._OAUTH_SCOPES,\n"
+    "\g<1>options={\"grpc.max_receive_message_length\": 256 * 1024 * 1024}.items(),"
 )
 
 # ----------------------------------------------------------------------------

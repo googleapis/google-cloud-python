@@ -1,4 +1,4 @@
-.. include:: /../bigtable/README.rst
+.. include:: README.rst
 
 
 Using the API

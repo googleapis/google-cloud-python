@@ -22,6 +22,7 @@ import pytest
 from google.rpc import status_pb2
 
 from google.cloud import automl_v1beta1
+from google.cloud.automl_v1beta1.proto import annotation_spec_pb2
 from google.cloud.automl_v1beta1.proto import column_spec_pb2
 from google.cloud.automl_v1beta1.proto import dataset_pb2
 from google.cloud.automl_v1beta1.proto import io_pb2
@@ -931,7 +932,7 @@ class TestAutoMlClient(object):
             "display_name": display_name,
             "example_count": example_count,
         }
-        expected_response = dataset_pb2.AnnotationSpec(**expected_response)
+        expected_response = annotation_spec_pb2.AnnotationSpec(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
