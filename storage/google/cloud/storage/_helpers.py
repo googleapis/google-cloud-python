@@ -52,6 +52,8 @@ class _PropertyMixin(object):
                  number or letter.
     """
 
+    retries = 4  # number of retries on connection failure
+
     def __init__(self, name=None):
         self.name = name
         self._properties = {}
@@ -117,18 +119,32 @@ class _PropertyMixin(object):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current object.
         """
+        import time
+        import random
+
         client = self._require_client(client)
         query_params = self._query_params
         # Pass only '?projection=noAcl' here because 'acl' and related
         # are handled via custom endpoints.
         query_params["projection"] = "noAcl"
-        api_response = client._connection.api_request(
-            method="GET",
-            path=self.path,
-            query_params=query_params,
-            headers=self._encryption_headers(),
-            _target_object=self,
-        )
+
+        for retry in range(self.retries):
+            try:
+                time.sleep(min(random.random() + 2 ** (retry - 1), 32))
+                api_response = client._connection.api_request(
+                    method="GET",
+                    path=self.path,
+                    query_params=query_params,
+                    headers=self._encryption_headers(),
+                    _target_object=self,
+                )
+                break
+            except ConnectionError:
+                if retry == self.retries - 1:
+                    raise ConnectionError
+                else:
+                    pass
+
         self._set_properties(api_response)
 
     def _patch_property(self, name, value):
