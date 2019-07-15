@@ -36,7 +36,7 @@ from google.cloud.pubsub_v1 import types
 from test_utils.system import unique_resource_id
 
 
-RUNNING_IN_VPCSC = os.getenv('GOOGLE_CLOUD_TESTS_IN_VPCSC', '').lower() == 'true'
+RUNNING_IN_VPCSC = os.getenv("GOOGLE_CLOUD_TESTS_IN_VPCSC", "").lower() == "true"
 
 
 @pytest.fixture(scope=u"module")
@@ -302,7 +302,7 @@ def test_listing_topic_subscriptions(publisher, subscriber, project, cleanup):
     assert subscriptions == {subscription_paths[0], subscription_paths[2]}
 
 
-@unittest.skipIf(RUNNING_IN_VPCSC, 'Test is not VPCSC compatible.')
+@unittest.skipIf(RUNNING_IN_VPCSC, "Test is not VPCSC compatible.")
 def test_managing_topic_iam_policy(publisher, topic_path, cleanup):
     cleanup.append((publisher.delete_topic, topic_path))
 
@@ -329,7 +329,7 @@ def test_managing_topic_iam_policy(publisher, topic_path, cleanup):
     assert bindings[1].members == ["group:cloud-logs@google.com"]
 
 
-@unittest.skipIf(RUNNING_IN_VPCSC, 'Test is not VPCSC compatible.')
+@unittest.skipIf(RUNNING_IN_VPCSC, "Test is not VPCSC compatible.")
 def test_managing_subscription_iam_policy(
     publisher, subscriber, topic_path, subscription_path, cleanup
 ):
