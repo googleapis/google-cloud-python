@@ -1,4 +1,4 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2019, Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,8 +17,10 @@ from __future__ import absolute_import
 import datetime
 import itertools
 import operator as op
+import os
 import threading
 import time
+import unittest
 
 import mock
 import pytest
@@ -32,6 +34,9 @@ from google.cloud.pubsub_v1 import types
 
 
 from test_utils.system import unique_resource_id
+
+
+RUNNING_IN_VPCSC = os.getenv('GOOGLE_CLOUD_TESTS_IN_VPCSC', '').lower() == 'true'
 
 
 @pytest.fixture(scope=u"module")
@@ -297,6 +302,7 @@ def test_listing_topic_subscriptions(publisher, subscriber, project, cleanup):
     assert subscriptions == {subscription_paths[0], subscription_paths[2]}
 
 
+@unittest.skipIf(RUNNING_IN_VPCSC, 'Test is not VPCSC compatible.')
 def test_managing_topic_iam_policy(publisher, topic_path, cleanup):
     cleanup.append((publisher.delete_topic, topic_path))
 
@@ -323,6 +329,7 @@ def test_managing_topic_iam_policy(publisher, topic_path, cleanup):
     assert bindings[1].members == ["group:cloud-logs@google.com"]
 
 
+@unittest.skipIf(RUNNING_IN_VPCSC, 'Test is not VPCSC compatible.')
 def test_managing_subscription_iam_policy(
     publisher, subscriber, topic_path, subscription_path, cleanup
 ):
