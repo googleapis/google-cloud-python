@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Transactions &#8212; google-cloud 8b69072 documentation</title>
+    <title>Transactions &#8212; google-cloud 49e7ce3 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -131,6 +131,40 @@ applied.</p>
 state of the document before applying changes.</li>
 </ul>
 </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.firestore_v1.transaction.Transaction.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>ref_or_query</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1/transaction.html#Transaction.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1.transaction.Transaction.get" title="Permalink to this definition">#</a></dt>
+<dd><p>Retrieve a document or a query result from the database.
+:param ref_or_query The document references or query object to return.:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Yields:</th><td class="field-body"><em>.DocumentSnapshot</em> – The next document snapshot that fulfills the
+query, or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> if the document does not exist.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.firestore_v1.transaction.Transaction.get_all">
+<code class="descname">get_all</code><span class="sig-paren">(</span><em>references</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1/transaction.html#Transaction.get_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1.transaction.Transaction.get_all" title="Permalink to this definition">#</a></dt>
+<dd><p>Retrieves multiple documents from Firestore.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>references</strong> (<em>List</em><em>[</em><a class="reference internal" href="document.html#google.cloud.firestore_v1.document.DocumentReference" title="google.cloud.firestore_v1.document.DocumentReference"><em>DocumentReference</em></a><em>, </em><em>..</em><em>]</em>) – Iterable of document
+references to be retrieved.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Yields:</th><td class="field-body"><em>.DocumentSnapshot</em> – The next document snapshot that fulfills the
+query, or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> if the document does not exist.</td>
 </tr>
 </tbody>
 </table>
