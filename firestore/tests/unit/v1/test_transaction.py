@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import unittest
-
 import mock
 
 
@@ -328,6 +327,42 @@ class TestTransaction(unittest.TestCase):
             transaction=txn_id,
             metadata=client._rpc_metadata,
         )
+
+    def test_get_all(self):
+        client = mock.Mock(spec=["get_all"])
+        transaction = self._make_one(client)
+        ref1, ref2 = mock.Mock(), mock.Mock()
+        result = transaction.get_all([ref1, ref2])
+        client.get_all.assert_called_once_with([ref1, ref2], transaction=transaction.id)
+        self.assertIs(result, client.get_all.return_value)
+
+    def test_get_document_ref(self):
+        from google.cloud.firestore_v1.document import DocumentReference
+
+        client = mock.Mock(spec=["get_all"])
+        transaction = self._make_one(client)
+        ref = DocumentReference("documents", "doc-id")
+        result = transaction.get(ref)
+        client.get_all.assert_called_once_with([ref], transaction=transaction.id)
+        self.assertIs(result, client.get_all.return_value)
+
+    def test_get_w_query(self):
+        from google.cloud.firestore_v1.query import Query
+
+        client = mock.Mock(spec=[])
+        transaction = self._make_one(client)
+        query = Query(parent=mock.Mock(spec=[]))
+        query.stream = mock.MagicMock()
+        result = transaction.get(query)
+        query.stream.assert_called_once_with(transaction=transaction.id)
+        self.assertIs(result, query.stream.return_value)
+
+    def test_get_failure(self):
+        client = _make_client()
+        transaction = self._make_one(client)
+        ref_or_query = object()
+        with self.assertRaises(ValueError):
+            transaction.get(ref_or_query)
 
 
 class Test_Transactional(unittest.TestCase):
