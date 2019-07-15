@@ -600,3 +600,14 @@ def test_insert_autonow_property(dispose_of):
     assert isinstance(retrieved.updated_at, datetime.datetime)
 
     dispose_of(key._key)
+
+
+@pytest.mark.usefixtures("client_context")
+def test_uninitialized_property(dispose_of):
+    class SomeKind(ndb.Model):
+        foo = ndb.StringProperty(required=True)
+
+    entity = SomeKind()
+
+    with pytest.raises(ndb.exceptions.BadValueError):
+        entity.put()

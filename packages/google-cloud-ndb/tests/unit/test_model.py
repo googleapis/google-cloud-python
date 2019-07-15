@@ -4542,6 +4542,17 @@ class Test_entity_to_protobuf:
         assert pickle.loads(e_values[1].blob_value) == dill
         assert "__key__" not in entity_pb.properties
 
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_uninitialized_property():
+        class ThisKind(model.Model):
+            foo = model.StringProperty(required=True)
+
+        entity = ThisKind()
+
+        with pytest.raises(exceptions.BadValueError):
+            model._entity_to_protobuf(entity)
+
 
 class TestExpando:
     @staticmethod

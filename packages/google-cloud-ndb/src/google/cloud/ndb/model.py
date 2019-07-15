@@ -614,8 +614,12 @@ def _entity_to_ds_entity(entity, set_key=True):
 
     Returns:
         google.cloud.datastore.entity.Entity: The converted entity.
+
+    Raises:
+        ndb.exceptions.BadValueError: If entity has uninitialized properties.
     """
     data = {}
+    uninitialized = []
     exclude_from_indexes = []
 
     for cls in type(entity).mro():
@@ -630,6 +634,9 @@ def _entity_to_ds_entity(entity, set_key=True):
             ):
                 continue
 
+            if not prop._is_initialized(entity):
+                uninitialized.append(prop._name)
+
             value = prop._get_base_value_unwrapped_as_list(entity)
             if not prop._repeated:
                 value = value[0]
@@ -637,6 +644,12 @@ def _entity_to_ds_entity(entity, set_key=True):
 
             if not prop._indexed:
                 exclude_from_indexes.append(prop._name)
+
+    if uninitialized:
+        names = ", ".join(uninitialized)
+        raise exceptions.BadValueError(
+            "Entity has uninitialized properties: {}".format(names)
+        )
 
     ds_entity = None
     if set_key:
