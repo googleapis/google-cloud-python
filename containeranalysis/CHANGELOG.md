@@ -4,12 +4,9 @@
 
 07-12-2019 16:56 PDT
 
-
-### Implementation Changes
-- Add 'options_' argument to clients' 'get_iam_policy'; pin black version (via synth). ([#8653](https://github.com/googleapis/google-cloud-python/pull/8653))
-
 ### New Features
 - Add 'client_options' support (via synth). ([#8502](https://github.com/googleapis/google-cloud-python/pull/8502))
+- Add 'options_' argument to clients' 'get_iam_policy'; pin black version (via synth). ([#8653](https://github.com/googleapis/google-cloud-python/pull/8653))
 
 ### Dependencies
 - Update pin for 'grpc-google-iam-v1' to 0.12.3+. ([#8647](https://github.com/googleapis/google-cloud-python/pull/8647))
