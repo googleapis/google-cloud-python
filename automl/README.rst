@@ -104,3 +104,21 @@ Next Steps
    API to see other available methods on the client.
 -  Read the `Product documentation`_ to learn
    more about the product and see How-to Guides.
+
+Making & Testing Local Changes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you want to make changes to this library, here is how to set up your
+development environment:
+
+1. Make sure you have `virtualenv`_ installed and activated as shown above.
+2. Run the following one-time setup (it will be persisted in your virtualenv):
+
+.. code-block:: console
+
+    pip install -r ../docs/requirements.txt
+    pip install -U mock pytest
+
+3. To test any changes you've made, run `pytest` in this directory.
+   
+

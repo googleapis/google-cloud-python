@@ -18,10 +18,10 @@
 from __future__ import absolute_import
 
 from google.cloud.automl_v1beta1 import types
-from google.cloud.automl_v1beta1.helper import tables
 from google.cloud.automl_v1beta1.gapic import auto_ml_client
 from google.cloud.automl_v1beta1.gapic import enums
 from google.cloud.automl_v1beta1.gapic import prediction_service_client
+from google.cloud.automl_v1beta1.tables import tables_client
 
 
 class AutoMlClient(auto_ml_client.AutoMlClient):
@@ -34,4 +34,9 @@ class PredictionServiceClient(prediction_service_client.PredictionServiceClient)
     enums = enums
 
 
-__all__ = ("enums", "types", "AutoMlClient", "PredictionServiceClient")
+class TablesClient(tables_client.TablesClient):
+    __doc__ = tables_client.TablesClient.__doc__
+
+
+__all__ = ("enums", "types", "AutoMlClient", "PredictionServiceClient",
+        "TablesClient")

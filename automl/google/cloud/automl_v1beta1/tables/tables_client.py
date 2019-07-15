@@ -1,10 +1,12 @@
-# Copyright 2019 Google Inc. All Rights Reserved.
+# -*- coding: utf-8 -*-
+#
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,53 +14,99 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""A helper for the google.cloud.automl_v1beta1 AutoML Tables API"""
+"""A tables helper for the google.cloud.automl_v1beta1 AutoML API"""
 
+import pkg_resources
+
+from google.api_core.gapic_v1 import client_info
+from google.api_core import exceptions
+from google.cloud import automl_v1beta1
 from google.cloud.automl_v1beta1.proto import data_types_pb2
 
-class ClientHelper(object):
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-automl").version
+
+class TablesClient(object):
     """
-    AutoML Server API helper.
+    AutoML Tables API helper.
 
     This is intended to simplify usage of the auto-generated python client,
     in particular for the `AutoML Tables product
     <https://cloud.google.com/automl-tables/>`_.
     """
-    def __init__(self, client=None, prediction_client=None, project=None,
-            region='us-central1'):
+    def __init__(self, project=None, region='us-central1', client=None,
+            prediction_client=None, **kwargs):
         """Constructor.
 
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
-            ...     prediction_client=automl_v1beta1.PredictionServiceClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
 
         Args:
-            client (Optional[google.cloud.automl.v1beta1.AutoMlClient]): An
-                initialized AutoMLClient instance. This parameter is optional;
-                however, if you expect to make CRUD operations on either
-                models or datasets, this parameter needs to be set.
-                Additionally, if you want to make online predictions without
-                supplying a column schema, this client is during prediction.
-            prediction_client (Optional[google.cloud.automl.v1beta1.PredictionServiceClient]):
-                An initialized PredicitonServiceClient instance. This parameter
-                is optional; however, if you expect to make predictions, this
-                parameter needs to be set.
             project (Optional[string]): The project all future calls will
                 default to. Most methods take `project` as an optional
                 parameter, and can override your choice of `project` supplied
                 here.
-            region (Optional[string]): The reigon all future calls will
+            region (Optional[string]): The region all future calls will
                 default to. Most methods take `region` as an optional
                 parameter, and can override your choice of `region` supplied
                 here. Note, only `us-central1` is supported to-date.
+            transport (Union[~.AutoMlGrpcTransport, Callable[[~.Credentials, type], ~.AutoMlGrpcTransport]):
+                A transport instance, responsible for actually making the API
+                calls.  The default transport uses the gRPC protocol.  This
+                argument may also be a callable which returns a transport
+                instance. Callables will be sent the credentials as the first
+                argument and the default transport class as the second
+                argument.
+            channel (grpc.Channel): DEPRECATED. A ``Channel`` instance
+                through which to make calls. This argument is mutually exclusive
+                with ``credentials``; providing both will raise an exception.
+            credentials (google.auth.credentials.Credentials): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
+                This argument is mutually exclusive with providing a
+                transport instance to ``transport``; doing so will raise
+                an exception.
+            client_config (dict): DEPRECATED. A dictionary of call options for
+                each method. If not specified, the default configuration is used.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
-        self.client = client
-        self.prediction_client = prediction_client
+        version = _GAPIC_LIBRARY_VERSION
+        user_agent = 'automl-tables-wrapper/{}'.format(version)
+
+        client_info_ = kwargs.get('client_info')
+        if client_info_ is None:
+            client_info_ = client_info.ClientInfo(
+                    user_agent=user_agent,
+                    gapic_version=version
+            )
+        else:
+            client_info_.user_agent = user_agent
+            client_info_.gapic_version = version
+
+        if client is None:
+            self.client = automl_v1beta1.AutoMlClient(client_info=client_info_,
+                    **kwargs)
+        else:
+            self.client = client
+
+        if prediction_client is None:
+            self.prediction_client = automl_v1beta1.PredictionServiceClient(
+                    client_info=client_info_,
+                    **kwargs
+            )
+        else:
+            self.prediction_client = prediction_client
+
         self.project = project
         self.region = region
 
@@ -79,6 +127,55 @@ class ClientHelper(object):
 
         return self.client.location_path(project, region)
 
+    # the returned metadata object doesn't allow for updating fields, so
+    # we need to manually copy user-updated fields over
+    def __update_metadata(self, metadata, k, v):
+        new_metadata = {}
+        new_metadata['ml_use_column_spec_id'] = metadata.ml_use_column_spec_id
+        new_metadata['weight_column_spec_id'] = metadata.weight_column_spec_id
+        new_metadata['target_column_spec_id'] = metadata.target_column_spec_id
+        new_metadata[k] = v
+
+        return new_metadata
+
+    def __dataset_from_args(self, dataset=None, dataset_display_name=None,
+            dataset_name=None, project=None, region=None):
+        if (dataset is None
+                and dataset_display_name is None
+                and dataset_name is None):
+            raise ValueError('One of \'dataset\', \'dataset_name\' or '
+                    '\'dataset_display_name\' must be set.')
+        # we prefer to make a live call here in the case that the
+        # dataset object is out-of-date
+        if dataset is not None:
+            dataset_name = dataset.name
+
+        return self.get_dataset(
+                dataset_display_name=dataset_display_name,
+                dataset_name=dataset_name,
+                project=project,
+                region=region
+        )
+
+    def __model_from_args(self, model=None, model_display_name=None,
+            model_name=None, project=None, region=None):
+        if (model is None
+                and model_display_name is None
+                and model_name is None):
+            raise ValueError('One of \'model\', \'model_name\' or '
+                    '\'model_display_name\' must be set.')
+        # we prefer to make a live call here in the case that the
+        # model object is out-of-date
+        if model is not None:
+            model_name = model.name
+
+        return self.get_model(
+                model_display_name=model_display_name,
+                model_name=model_name,
+                project=project,
+                region=region
+        )
+
     def __dataset_name_from_args(self, dataset=None, dataset_display_name=None,
             dataset_name=None, project=None, region=None):
         if (dataset is None
@@ -94,7 +191,15 @@ class ClientHelper(object):
                         project=project,
                         region=region
                 )
+
             dataset_name = dataset.name
+        else:
+            # we do this to force a NotFound error when needed
+            self.get_dataset(
+                    dataset_name=dataset_name,
+                    project=project,
+                    region=region
+            )
         return dataset_name
 
     def __model_name_from_args(self, model=None, model_display_name=None,
@@ -108,39 +213,64 @@ class ClientHelper(object):
         if model_name is None:
             if model is None:
                 model = self.get_model(
-                        model_display_name=dataset_display_name,
+                        model_display_name=model_display_name,
                         project=project,
                         region=region
                 )
             model_name = model.name
+        else:
+            # we do this to force a NotFound error when needed
+            self.get_model(
+                    model_name=model_name,
+                    project=project,
+                    region=region
+            )
         return model_name
 
     def __column_spec_name_from_args(self, dataset=None, dataset_display_name=None,
             dataset_name=None, table_spec_name=None, table_spec_index=0,
             column_spec_name=None, column_spec_display_name=None,
             project=None, region=None):
-        if column_spec_name is None:
-            if column_spec_display_name is None:
-                raise ValueError('Either supply \'column_spec_name\' or '
-                        '\'column_spec_display_name\' for the column to update')
-            column_specs = {s.display_name: s for s in
-                    self.list_column_specs(dataset=dataset,
-                        dataset_display_name=dataset_display_name,
-                        dataset_name=dataset_name,
-                        table_spec_name=table_spec_name,
-                        table_spec_index=table_spec_index,
-                        project=project,
-                        region=region)
-            }
+        column_specs = self.list_column_specs(dataset=dataset,
+                dataset_display_name=dataset_display_name,
+                dataset_name=dataset_name,
+                table_spec_name=table_spec_name,
+                table_spec_index=table_spec_index,
+                project=project,
+                region=region)
+        if column_spec_display_name is not None:
+            column_specs = {s.display_name: s for s in column_specs}
+            if column_specs.get(column_spec_display_name) is None:
+                raise exceptions.NotFound('No column with ' +
+                        'column_spec_display_name: \'{}\' found'.format(
+                            column_spec_display_name
+                        ))
             column_spec_name = column_specs[column_spec_display_name].name
+        elif column_spec_name is not None:
+            column_specs = {s.name: s for s in column_specs}
+            if column_specs.get(column_spec_name) is None:
+                raise exceptions.NotFound('No column with ' +
+                        'column_spec_name: \'{}\' found'.format(
+                            column_spec_name
+                        ))
+        else:
+            raise ValueError('Either supply \'column_spec_name\' or '
+                    '\'column_spec_display_name\' for the column to update')
+
         return column_spec_name
 
-    ## TODO(lwander): what other type codes are there?
-    ## https://github.com/googleapis/google-cloud-python/blob/master/automl/google/cloud/automl_v1beta1/proto/data_types_pb2.py#L87-L92
     def __type_code_to_value_type(self, type_code):
         if type_code == data_types_pb2.FLOAT64:
             return 'number_value'
-        if type_code == data_types_pb2.CATEGORY:
+        elif type_code == data_types_pb2.TIMESTAMP:
+            return 'string_value'
+        elif type_code == data_types_pb2.STRING:
+            return 'string_value'
+        elif type_code == data_types_pb2.ARRAY:
+            return 'list_value'
+        elif type_code == data_types_pb2.STRUCT:
+            return 'struct_value'
+        elif type_code == data_types_pb2.CATEGORY:
             return 'string_value'
         else:
             raise ValueError('Unknown type_code: {}'.format(type_code))
@@ -151,8 +281,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> ds = client.list_datasets()
@@ -196,8 +328,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> d = client.get_dataset(dataset_display_name='my_dataset')
@@ -224,7 +358,8 @@ class ClientHelper(object):
                 must be provided.
 
         Returns:
-            A :class:`~google.cloud.automl_v1beta1.types.Dataset` instance.
+            A :class:`~google.cloud.automl_v1beta1.types.Dataset` instance if
+            found, `None` otherwise.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -238,12 +373,17 @@ class ClientHelper(object):
                     '\'dataset_display_name\' must be set.')
 
         if dataset_name is not None:
-            return client.get_dataset(dataset_name)
+            return self.client.get_dataset(dataset_name)
 
-        return next(d for d in self.list_datasets(project, region)
-                if d.display_name == dataset_display_name)
+        result = next((d for d in self.list_datasets(project, region)
+                if d.display_name == dataset_display_name), None)
 
-    ## TODO(lwander): is metadata needed here?
+        if result is None:
+            raise exceptions.NotFound(('Dataset with display_name: \'{}\' ' +
+                'not found').format(dataset_display_name))
+
+        return result
+
     def create_dataset(self, dataset_display_name, metadata={}, project=None,
             region=None):
         """Create a dataset. Keep in mind, importing data is a separate step.
@@ -251,8 +391,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> d = client.create_dataset(dataset_display_name='my_dataset')
@@ -296,8 +438,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> op = client.delete_dataset(dataset_display_name='my_dataset')
@@ -338,15 +482,18 @@ class ClientHelper(object):
                 to a retryable error and retry attempts failed.
             ValueError: If required parameters are missing.
         """
-        dataset_name = self.__dataset_name_from_args(dataset=dataset,
-                dataset_name=dataset_name,
-                dataset_display_name=dataset_display_name,
-                project=project,
-                region=region)
+        try:
+            dataset_name = self.__dataset_name_from_args(dataset=dataset,
+                    dataset_name=dataset_name,
+                    dataset_display_name=dataset_display_name,
+                    project=project,
+                    region=region)
+        # delete is idempotent
+        except exceptions.NotFound:
+            return None
 
         return self.client.delete_dataset(dataset_name)
 
-    ## TODO(lwander): why multiple input GCS files? why not bq?
     def import_data(self, dataset=None, dataset_display_name=None,
             dataset_name=None, gcs_input_uris=None,
             bigquery_input_uri=None, project=None, region=None):
@@ -355,8 +502,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> d = client.create_dataset(dataset_display_name='my_dataset')
@@ -444,8 +593,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> for s in client.list_table_specs(dataset_display_name='my_dataset')
@@ -505,8 +656,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> for s in client.list_column_specs(dataset_display_name='my_dataset')
@@ -585,8 +738,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> client.update_column_specs(dataset_display_name='my_dataset',
@@ -663,6 +818,8 @@ class ClientHelper(object):
 
         # type code must always be set
         if type_code is None:
+            # this index is safe, we would have already thrown a NotFound
+            # had the column_spec_name not existed
             type_code = {s.name: s for s in self.list_column_specs(
                     dataset=dataset,
                     dataset_display_name=dataset_display_name,
@@ -695,8 +852,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> client.set_target_column(dataset_display_name='my_dataset',
@@ -774,17 +933,19 @@ class ClientHelper(object):
         )
         column_spec_id = column_spec_name.rsplit('/', 1)[-1]
 
-        dataset_name = self.__dataset_name_from_args(dataset=dataset,
+        dataset = self.__dataset_from_args(dataset=dataset,
                 dataset_name=dataset_name,
                 dataset_display_name=dataset_display_name,
                 project=project,
                 region=region)
+        metadata = dataset.tables_dataset_metadata
+        metadata = self.__update_metadata(metadata,
+                'target_column_spec_id',
+                column_spec_id)
 
         request = {
-                'name': dataset_name,
-                'tables_dataset_metadata': {
-                    'target_column_spec_id': column_spec_id
-                }
+                'name': dataset.name,
+                'tables_dataset_metadata': metadata,
         }
 
         return self.client.update_dataset(request)
@@ -798,8 +959,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> client.set_weight_column(dataset_display_name='my_dataset',
@@ -877,17 +1040,19 @@ class ClientHelper(object):
         )
         column_spec_id = column_spec_name.rsplit('/', 1)[-1]
 
-        dataset_name = self.__dataset_name_from_args(dataset=dataset,
+        dataset = self.__dataset_from_args(dataset=dataset,
                 dataset_name=dataset_name,
                 dataset_display_name=dataset_display_name,
                 project=project,
                 region=region)
+        metadata = dataset.tables_dataset_metadata
+        metadata = self.__update_metadata(metadata,
+                'weight_column_spec_id',
+                column_spec_id)
 
         request = {
-                'name': dataset_name,
-                'tables_dataset_metadata': {
-                    'weight_column_spec_id': column_spec_id
-                }
+                'name': dataset.name,
+                'tables_dataset_metadata': metadata,
         }
 
         return self.client.update_dataset(request)
@@ -902,8 +1067,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> client.set_test_train_column(dataset_display_name='my_dataset',
@@ -981,17 +1148,17 @@ class ClientHelper(object):
         )
         column_spec_id = column_spec_name.rsplit('/', 1)[-1]
 
-        dataset_name = self.__dataset_name_from_args(dataset=dataset,
+        dataset = self.__dataset_from_args(dataset=dataset,
                 dataset_name=dataset_name,
                 dataset_display_name=dataset_display_name,
                 project=project,
                 region=region)
+        metadata = dataset.tables_dataset_metadata
+        metadata = self.__update_metadata(metadata, 'ml_use_column_spec_id', column_spec_id)
 
         request = {
-                'name': dataset_name,
-                'tables_dataset_metadata': {
-                    'ml_use_column_spec_id': column_spec_id
-                }
+                'name': dataset.name,
+                'tables_dataset_metadata': metadata,
         }
 
         return self.client.update_dataset(request)
@@ -1002,8 +1169,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> ms = client.list_models()
@@ -1043,20 +1212,25 @@ class ClientHelper(object):
     def create_model(self, model_display_name, dataset=None,
             dataset_display_name=None, dataset_name=None,
             train_budget_milli_node_hours=None, project=None,
-            region=None, input_feature_column_specs_included=None, input_feature_column_specs_excluded=None):
-    	"""Create a model. This will train your model on the given dataset.
+            region=None, model_metadata={},
+            include_column_spec_names=None,
+            exclude_column_spec_names=None):
+        """Create a model. This will train your model on the given dataset.
 
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> m = client.create_model('my_model', dataset_display_name='my_dataset')
             >>>
             >>> m.result() # blocks on result
             >>>
+
         Args:
             project (Optional[string]):
                 If you have initialized the client with a value for `project`
@@ -1084,12 +1258,14 @@ class ClientHelper(object):
                 The `Dataset` instance you want to train your model on. This
                 must be supplied if `dataset_display_name` or `dataset_name`
                 are not supplied.
-            input_feature_column_specs_included(Optional[string]):
-            	The list of the names of the columns you want to include to train 
-            	your model on.
-            input_feature_column_specs_excluded(Optional[string]):
-            	The list of the names of the columns you want to exclude and 
-            	not train your model on.
+            model_metadata (Optional[Dict]):
+                Optional model metadata to supply to the client.
+            include_column_spec_names(Optional[string]):
+                The list of the names of the columns you want to include to train
+                your model on.
+            exclude_column_spec_names(Optional[string]):
+                The list of the names of the columns you want to exclude and
+                not train your model on.
         Returns:
             A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
             instance.
@@ -1100,59 +1276,55 @@ class ClientHelper(object):
                 to a retryable error and retry attempts failed.
             ValueError: If required parameters are missing.
         """
-        if train_budget_milli_node_hours is None:
+        if (train_budget_milli_node_hours is None or
+                train_budget_milli_node_hours < 1000 or
+                train_budget_milli_node_hours > 72000):
             raise ValueError('\'train_budget_milli_node_hours\' must be a '
                     'value between 1,000 and 72,000 inclusive')
 
-        if input_feature_column_specs_excluded not in [None, []] and input_feature_column_specs_included not in [None, []]:
-            raise ValueError('\'cannot set both input_feature_column_specs_excluded\' and '
-                    '\'input_feature_column_specs_included\'')
-
+        if (exclude_column_spec_names not in [None, []] and
+                include_column_spec_names not in [None, []]):
+            raise ValueError('Cannot set both '
+                    '\'exclude_column_spec_names\' and '
+                    '\'include_column_spec_names\'')
 
         dataset_name = self.__dataset_name_from_args(dataset=dataset,
-                dataset_name=dataset_name,
-                dataset_display_name=dataset_display_name,
-                project=project,
-                region=region)
-        tables_model_metadata = {
-                'train_budget_milli_node_hours': train_budget_milli_node_hours
-        }
+            dataset_name=dataset_name,
+            dataset_display_name=dataset_display_name,
+            project=project,
+            region=region)
+
+        model_metadata['train_budget_milli_node_hours'] = train_budget_milli_node_hours
+
         dataset_id = dataset_name.rsplit('/', 1)[-1]
-        columns = [s for s in self.list_column_specs(dataset=dataset, dataset_name = dataset_name, dataset_display_name=dataset_display_name)]
+        columns = [s for s in self.list_column_specs(dataset=dataset,
+            dataset_name=dataset_name,
+            dataset_display_name=dataset_display_name)]
 
         final_columns = []
-        if input_feature_column_specs_included:
-        	column_names = [a.display_name for a in columns]
-        	if not (all (name in column_names for name in input_feature_column_specs_included)):
-        		raise ValueError('invalid name in the list' '\'input_feature_column_specs_included\'')
+        if include_column_spec_names:
+            for c in columns:
+                if c.display_name in include_column_spec_names:
+                    final_columns.append(c)
+
+            model_metadata['input_feature_column_specs'] = final_columns
+        elif exclude_column_spec_names:
             for a in columns:
-                if a.display_name in input_feature_column_specs_included:
+                if a.display_name not in exclude_column_spec_names:
                     final_columns.append(a)
 
-            tables_model_metadata.update(
-                {'input_feature_column_specs': final_columns}
-            )
-        elif input_feature_column_specs_excluded:
-            for a in columns:
-                if a.display_name not in input_feature_column_specs_excluded:
-                    final_columns.append(a)
-
-            tables_model_metadata.update(
-                 {'input_feature_column_specs': final_columns}
-            )
+            model_metadata['input_feature_column_specs'] = final_columns
 
         request = {
-                'display_name': model_display_name,
-                'dataset_id': dataset_id,
-                'tables_model_metadata': tables_model_metadata
+            'display_name': model_display_name,
+            'dataset_id': dataset_id,
+            'tables_model_metadata': model_metadata
         }
 
-
         return self.client.create_model(
-                self.__location_path(project=project, region=region),
-                request
+             self.__location_path(project=project, region=region),
+             request
         )
-
 
     def delete_model(self, model=None, model_display_name=None,
             model_name=None, project=None, region=None):
@@ -1162,8 +1334,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> op = client.delete_model(model_display_name='my_model')
@@ -1204,11 +1378,15 @@ class ClientHelper(object):
                 to a retryable error and retry attempts failed.
             ValueError: If required parameters are missing.
         """
-        model_name = self.__model_name_from_args(model=model,
-                model_name=model_name,
-                model_display_name=model_display_name,
-                project=project,
-                region=region)
+        try:
+            model_name = self.__model_name_from_args(model=model,
+                    model_name=model_name,
+                    model_display_name=model_display_name,
+                    project=project,
+                    region=region)
+        # delete is idempotent
+        except exceptions.NotFound:
+            return None
 
         return self.client.delete_model(model_name)
 
@@ -1219,8 +1397,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> d = client.get_model(model_display_name='my_model')
@@ -1260,9 +1440,17 @@ class ClientHelper(object):
             raise ValueError('One of \'model_name\' or '
                     '\'model_display_name\' must be set.')
 
-        return next(m for m in self.list_models(project, region)
-                if m.name == model_name
-                or m.display_name == model_display_name)
+        if model_name is not None:
+            return self.client.get_model(model_name)
+
+        model = next((d for d in self.list_models(project, region)
+                if d.display_name == model_display_name), None)
+
+        if model is None:
+            raise exceptions.NotFound('No model with model_diplay_name: ' +
+                    '\'{}\' found'.format(model_display_name))
+
+        return model
 
     #TODO(jonathanskim): allow deployment from just model ID
     def deploy_model(self, model=None, model_name=None,
@@ -1273,8 +1461,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> op = client.deploy_model(model_display_name='my_model')
@@ -1332,8 +1522,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> op = client.undeploy_model(model_display_name='my_model')
@@ -1393,8 +1585,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     prediction_client=automl_v1beta1.PredictionServiceClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> client.predict(inputs={'Age': 30, 'Income': 12, 'Category': 'A'}
@@ -1439,13 +1633,15 @@ class ClientHelper(object):
                 to a retryable error and retry attempts failed.
             ValueError: If required parameters are missing.
         """
-        if model is None:
-            model = self.get_model(
-                    model_name=model_name,
-                    model_display_name=model_display_name,
-                    project=project,
-                    region=region
-            )
+        model = self.__model_from_args(
+                model=model,
+                model_name=model_name,
+                model_display_name=model_display_name,
+                project=project,
+                region=region
+        )
+        print(model)
+        print(model.tables_model_metadata)
 
         column_specs = model.tables_model_metadata.input_feature_column_specs
         if type(inputs) == dict:
@@ -1479,8 +1675,10 @@ class ClientHelper(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     prediction_client=automl_v1beta1.PredictionServiceClient(),
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> client.batch_predict(
