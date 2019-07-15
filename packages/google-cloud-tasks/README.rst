@@ -1,7 +1,7 @@
 Python Client for Cloud Tasks API
 =================================
 
-|GA| |pypi| |versions|
+|GA| |pypi| |versions| |compat_check_pypi| |compat_check_github|
 
 `Cloud Tasks API`_: Manages the execution of large numbers of distributed
 requests.
@@ -15,6 +15,10 @@ requests.
    :target: https://pypi.org/project/google-cloud-tasks/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-tasks.svg
    :target: https://pypi.org/project/google-cloud-tasks/
+.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-tasks
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-tasks
+.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dtasks
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dtasks
 .. _Cloud Tasks API: https://cloud.google.com/tasks
 .. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/tasks/index.html
 .. _Product Documentation:  https://cloud.google.com/tasks
