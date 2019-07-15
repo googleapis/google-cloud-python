@@ -14,7 +14,7 @@
 - Allow kwargs to be passed to create_channel, update templates (via synth). ([#8391](https://github.com/googleapis/google-cloud-python/pull/8391))
 
 ### New Features
-- Add 'client_options' support, update list method docstrings (via synth). ([#8510](https://github.com/googleapis/google-cloud-python/pull/8510))
+- Update list method docstrings (via synth). ([#8510](https://github.com/googleapis/google-cloud-python/pull/8510))
 
 ### Documentation
 - Update READMEs. ([#8456](https://github.com/googleapis/google-cloud-python/pull/8456))
