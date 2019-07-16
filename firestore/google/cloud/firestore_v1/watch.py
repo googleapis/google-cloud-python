@@ -426,7 +426,12 @@ class Watch(object):
             TargetChange.CURRENT: self._on_snapshot_target_change_current,
         }
 
-        target_change = proto.target_change
+        target_change = getattr(proto, 'target_change', '')
+        document_change = getattr(proto, 'document_change', '')
+        document_delete = getattr(proto, 'document_delete', '')
+        document_remove = getattr(proto, 'document_remove', '')
+        filter_ = getattr(proto, 'filter', '')
+
         if str(target_change):
             target_change_type = target_change.target_change_type
             _LOGGER.debug("on_snapshot: target change: " + str(target_change_type))
@@ -449,13 +454,13 @@ class Watch(object):
             # in other implementations, such as node, the backoff is reset here
             # in this version bidi rpc is just used and will control this.
 
-        elif str(proto.document_change):
+        elif str(document_change):
             _LOGGER.debug("on_snapshot: document change")
 
             # No other target_ids can show up here, but we still need to see
             # if the targetId was in the added list or removed list.
-            target_ids = proto.document_change.target_ids or []
-            removed_target_ids = proto.document_change.removed_target_ids or []
+            target_ids = document_change.target_ids or []
+            removed_target_ids = document_change.removed_target_ids or []
             changed = False
             removed = False
 
@@ -468,8 +473,6 @@ class Watch(object):
             if changed:
                 _LOGGER.debug("on_snapshot: document change: CHANGED")
 
-                # google.cloud.firestore_v1.types.DocumentChange
-                document_change = proto.document_change
                 # google.cloud.firestore_v1.types.Document
                 document = document_change.document
 
@@ -498,31 +501,33 @@ class Watch(object):
 
             elif removed:
                 _LOGGER.debug("on_snapshot: document change: REMOVED")
-                document = proto.document_change.document
+                document = document_change.document
                 self.change_map[document.name] = ChangeType.REMOVED
 
         # NB: document_delete and document_remove (as far as we, the client,
         # are concerned) are functionally equivalent
 
-        elif str(proto.document_delete):
+        elif str(document_delete):
             _LOGGER.debug("on_snapshot: document change: DELETE")
-            name = proto.document_delete.document
+            name = document_delete.document
             self.change_map[name] = ChangeType.REMOVED
 
-        elif str(proto.document_remove):
+        elif str(document_remove):
             _LOGGER.debug("on_snapshot: document change: REMOVE")
-            name = proto.document_remove.document
+            name = document_remove.document
             self.change_map[name] = ChangeType.REMOVED
 
-        elif proto.filter:
+        elif filter_:
             _LOGGER.debug("on_snapshot: filter update")
-            if proto.filter.count != self._current_size():
+            if filter_.count != self._current_size():
                 # We need to remove all the current results.
                 self._reset_docs()
                 # The filter didn't match, so re-issue the query.
                 # TODO: reset stream method?
                 # self._reset_stream();
 
+        elif proto is None:
+            self.close()
         else:
             _LOGGER.debug("UNKNOWN TYPE. UHOH")
             self.close(reason=ValueError("Unknown listen response type: %s" % proto))
