@@ -29,16 +29,6 @@ from google.cloud.firestore_v1.proto import tests_pb2
 from google.cloud.firestore_v1.proto import write_pb2
 
 
-def _load_testproto(filename):
-    with open(filename, "r") as tp_file:
-        tp_text = tp_file.read()
-    test_proto = test_v1_pb2.Test()
-    text_format.Merge(tp_text, test_proto)
-    shortname = os.path.split(filename)[-1]
-    test_proto.description = test_proto.description + " (%s)" % shortname
-    return test_proto
-
-
 def _load_test_json(filename):
     with open(filename, "r") as tp_file:
         tp_json = json.load(tp_file)
