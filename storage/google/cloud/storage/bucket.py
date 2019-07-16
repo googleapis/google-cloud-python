@@ -459,6 +459,9 @@ class Bucket(_PropertyMixin):
     )
     """Allowed values for :attr:`location_type`."""
 
+    RETRIES = 4
+    """Number of retries on connection failure. """
+
     def __init__(self, client, name=None, user_project=None):
         name = _validate_name(name)
         super(Bucket, self).__init__(name=name)
@@ -748,6 +751,9 @@ class Bucket(_PropertyMixin):
         :rtype: :class:`google.cloud.storage.blob.Blob` or None
         :returns: The blob object if it exists, otherwise None.
         """
+        import time
+        import random
+
         blob = Blob(
             bucket=self,
             name=blob_name,
@@ -755,15 +761,20 @@ class Bucket(_PropertyMixin):
             generation=generation,
             **kwargs
         )
-        try:
-            # NOTE: This will not fail immediately in a batch. However, when
-            #       Batch.finish() is called, the resulting `NotFound` will be
-            #       raised.
-            blob.reload(client=client)
-        except NotFound:
-            return None
-        else:
-            return blob
+        for retry in range(self.RETRIES):
+            try:
+                # NOTE: This will not fail immediately in a batch. However, when
+                #       Batch.finish() is called, the resulting `NotFound` will be
+                #       raised.
+                blob.reload(client=client)
+                break
+            except Exception:
+                if retry == self.RETRIES - 1:
+                    return None
+                else:
+                    rand_num = random.random()
+                    time.sleep(min(rand_num + 2 ** (retry - 1), rand_num + 32))
+        return blob
 
     def list_blobs(
         self,

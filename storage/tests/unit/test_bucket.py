@@ -678,7 +678,7 @@ class Test_Bucket(unittest.TestCase):
         bucket = self._make_one(name=NAME)
         result = bucket.get_blob(NONESUCH, client=client)
         self.assertIsNone(result)
-        kw, = connection._requested
+        kw = connection._requested[-1]
         self.assertEqual(kw["method"], "GET")
         self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, NONESUCH))
 
