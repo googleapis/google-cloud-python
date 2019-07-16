@@ -1952,10 +1952,8 @@ class Test_pbs_for_set_with_merge(unittest.TestCase):
 
         write_pbs = self._call_fut(document_path, document_data, merge=True)
         update_pb = self._make_write_w_document(document_path, **update_data)
-        update_data["butter"] = SERVER_TIMESTAMP
         self._update_document_mask(update_pb, field_paths=sorted(update_data))
         transform_pb = self._make_write_w_transform(document_path, fields=["butter"])
-
         expected_pbs = [update_pb, transform_pb]
         self.assertEqual(write_pbs, expected_pbs)
 
@@ -1974,7 +1972,7 @@ class Test_pbs_for_set_with_merge(unittest.TestCase):
         update_pb = self._make_write_w_document(
             document_path, cheese=document_data["cheese"]
         )
-        self._update_document_mask(update_pb, ["cheese", "butter"])
+        self._update_document_mask(update_pb, ["cheese"])
         transform_pb = self._make_write_w_transform(document_path, fields=["butter"])
         expected_pbs = [update_pb, transform_pb]
         self.assertEqual(write_pbs, expected_pbs)
@@ -1989,7 +1987,6 @@ class Test_pbs_for_set_with_merge(unittest.TestCase):
 
         write_pbs = self._call_fut(document_path, document_data, merge=["butter.pecan"])
         update_pb = self._make_write_w_document(document_path)
-        self._update_document_mask(update_pb, ["butter.pecan"])
         transform_pb = self._make_write_w_transform(
             document_path, fields=["butter.pecan"]
         )

@@ -25,7 +25,6 @@ set: <
       >
       update_mask: <
         field_paths: "a"
-        field_paths: "b"
       >
     >
     writes: <
