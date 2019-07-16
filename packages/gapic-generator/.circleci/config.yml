@@ -4,6 +4,10 @@ workflows:
   version: 2
   tests:
     jobs:
+      - style-check:
+          filters:
+            tags:
+              only: /^\d+\.\d+\.\d+$/
       - unit-3.6:
           filters:
             tags:
@@ -53,6 +57,7 @@ workflows:
       - publish_package:
           requires:
             - showcase
+            - style-check
           filters:
             branches:
               ignore: /.*/
@@ -61,6 +66,7 @@ workflows:
       - publish_image:
           requires:
             - showcase
+            - style-check
           filters:
             branches:
               ignore: /.*/
@@ -283,3 +289,24 @@ jobs:
           name: Submit coverage data to codecov.
           command: codecov
           when: always
+  style-check:
+    docker:
+      - image: python:3.6-alpine
+    steps:
+      - checkout
+      - run:
+          name: Install git
+          command: |
+            apk add git
+      - run:
+          name: Install autopep8
+          command: |
+            pip install autopep8
+      - run:
+          name: Format files
+          command: |
+            find gapic tests -name "*.py" | xargs autopep8 --in-place
+      - run:
+          name: Check diff
+          command: |
+            git diff --ignore-submodules=all --color --exit-code .

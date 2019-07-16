@@ -42,7 +42,7 @@ def test_enum_ident():
 
 def make_enum(name: str, package: str = 'foo.bar.v1', module: str = 'baz',
         values: Tuple[str, int] = (), meta: metadata.Metadata = None,
-        ) -> wrappers.EnumType:
+              ) -> wrappers.EnumType:
     enum_value_pbs = [
         descriptor_pb2.EnumValueDescriptorProto(name=i[0], number=i[1])
         for i in values

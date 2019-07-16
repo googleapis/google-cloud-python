@@ -126,7 +126,7 @@ def test_get_field_nonterminal_repeated_error():
 
 def make_message(name: str, package: str = 'foo.bar.v1', module: str = 'baz',
         fields: Sequence[wrappers.Field] = (), meta: metadata.Metadata = None,
-        ) -> wrappers.MessageType:
+                 ) -> wrappers.MessageType:
     message_pb = descriptor_pb2.DescriptorProto(
         name=name,
         field=[i.field_pb for i in fields],
@@ -167,7 +167,7 @@ def make_field(name: str, repeated: bool = False,
 
 def make_enum(name: str, package: str = 'foo.bar.v1', module: str = 'baz',
         values: Tuple[str, int] = (), meta: metadata.Metadata = None,
-        ) -> wrappers.EnumType:
+              ) -> wrappers.EnumType:
     enum_value_pbs = [
         descriptor_pb2.EnumValueDescriptorProto(name=i[0], number=i[1])
         for i in values

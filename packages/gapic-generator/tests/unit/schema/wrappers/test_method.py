@@ -72,7 +72,7 @@ def test_method_client_output_paged():
     method = make_method('ListFoos',
         input_message=input_msg,
         output_message=output_msg,
-    )
+                         )
     assert method.paged_result_field == paged
     assert method.client_output.ident.name == 'ListFoosPager'
 
@@ -91,7 +91,7 @@ def test_method_paged_result_field_not_first():
     method = make_method('ListFoos',
         input_message=input_msg,
         output_message=output_msg,
-    )
+                         )
     assert method.paged_result_field == paged
 
 
@@ -108,7 +108,7 @@ def test_method_paged_result_field_no_page_field():
     method = make_method('ListFoos',
         input_message=input_msg,
         output_message=output_msg,
-    )
+                         )
     assert method.paged_result_field is None
 
 
@@ -223,7 +223,7 @@ def make_method(
 
 def make_message(name: str, package: str = 'foo.bar.v1', module: str = 'baz',
         fields: Sequence[wrappers.Field] = (),
-        ) -> wrappers.MessageType:
+                 ) -> wrappers.MessageType:
     message_pb = descriptor_pb2.DescriptorProto(
         name=name,
         field=[i.field_pb for i in fields],

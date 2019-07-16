@@ -80,7 +80,7 @@ def wrap(text: str, width: int, *, offset: int = None, indent: int = 0) -> str:
         initial = textwrap.wrap(first,
             break_long_words=False,
             width=width - offset,
-        )
+                                )
         # Strip the first \n from the text so it is not misidentified as an
         # intentionally short line below.
         text = text.replace('\n', ' ', 1)

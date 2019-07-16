@@ -47,7 +47,7 @@ class Naming:
     def build(cls,
             *file_descriptors: descriptor_pb2.FileDescriptorProto,
             opts: options.Options = options.Options(),
-            ) -> 'Naming':
+              ) -> 'Naming':
         """Return a full Naming instance based on these file descriptors.
 
         This is pieced together from the proto package names as well as the

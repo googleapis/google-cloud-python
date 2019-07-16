@@ -185,7 +185,7 @@ class Field:
                 skip_fields=True,
             ) if self.message else None,
             enum=self.enum.with_context(collisions=collisions)
-                if self.enum else None,
+            if self.enum else None,
             meta=self.meta.with_context(collisions=collisions),
         )
 
@@ -279,7 +279,7 @@ class MessageType:
     def with_context(self, *,
             collisions: FrozenSet[str],
             skip_fields: bool = False,
-            ) -> 'MessageType':
+                     ) -> 'MessageType':
         """Return a derivative of this message with the provided context.
 
         This method is used to address naming collisions. The returned
@@ -345,7 +345,7 @@ class EnumType:
         """
         return dataclasses.replace(self,
             meta=self.meta.with_context(collisions=collisions),
-        )
+                                   )
 
 
 @dataclasses.dataclass(frozen=True)
@@ -602,7 +602,7 @@ class Method:
             input=self.input.with_context(collisions=collisions),
             output=self.output.with_context(collisions=collisions),
             meta=self.meta.with_context(collisions=collisions),
-        )
+                                   )
 
 
 @dataclasses.dataclass(frozen=True)

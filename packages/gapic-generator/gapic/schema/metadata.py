@@ -280,7 +280,7 @@ class Metadata:
         """
         return dataclasses.replace(self,
             address=self.address.with_context(collisions=collisions),
-        )
+                                   )
 
 
 @dataclasses.dataclass(frozen=True)

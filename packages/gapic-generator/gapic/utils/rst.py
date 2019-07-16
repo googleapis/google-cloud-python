@@ -46,7 +46,7 @@ def rst(text: str, width: int = 72, indent: int = 0, nl: bool = None,
             indent=indent,
             offset=indent + 3,
             width=width - indent,
-        )
+                      )
     else:
         # Convert from CommonMark to ReStructured Text.
         answer = pypandoc.convert_text(text, 'rst',

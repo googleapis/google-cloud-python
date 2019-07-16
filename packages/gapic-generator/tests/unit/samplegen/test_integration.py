@@ -29,7 +29,7 @@ dummy_method_fields = ["lro",
                        "server_streaming"]
 DummyMethod = namedtuple("DummyMethod",
                          dummy_method_fields)
-DummyMethod.__new__.__defaults__ = (False,)*len(dummy_method_fields)
+DummyMethod.__new__.__defaults__ = (False,) * len(dummy_method_fields)
 
 DummyService = namedtuple("DummyService", ["methods"])
 

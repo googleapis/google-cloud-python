@@ -196,7 +196,7 @@ def test_proto_builder_constructor():
         pb = api._ProtoBuilder(fdp,
             file_to_generate=True,
             naming=make_naming(),
-        )
+                               )
 
         # There should be three total calls to load the different types
         # of children.
@@ -569,7 +569,7 @@ def make_file_pb2(name: str = 'my_proto.proto', package: str = 'example.v1', *,
         enums: Sequence[descriptor_pb2.EnumDescriptorProto] = (),
         services: Sequence[descriptor_pb2.ServiceDescriptorProto] = (),
         locations: Sequence[descriptor_pb2.SourceCodeInfo.Location] = (),
-        ) -> descriptor_pb2.FileDescriptorProto:
+                  ) -> descriptor_pb2.FileDescriptorProto:
     return descriptor_pb2.FileDescriptorProto(
         name=name,
         package=package,
@@ -591,7 +591,7 @@ def make_message_pb2(
 def make_field_pb2(name: str, number: int,
         type: int = 11,  # 11 == message
         type_name: str = None,
-        ) -> descriptor_pb2.FieldDescriptorProto:
+                   ) -> descriptor_pb2.FieldDescriptorProto:
     return descriptor_pb2.FieldDescriptorProto(
         name=name,
         number=number,

@@ -194,7 +194,7 @@ def get_method(name: str,
         in_fields: typing.Tuple[descriptor_pb2.FieldDescriptorProto] = (),
         http_rule: http_pb2.HttpRule = None,
         method_signature: str = '',
-        ) -> wrappers.Method:
+               ) -> wrappers.Method:
     input_ = get_message(in_type, fields=in_fields)
     output = get_message(out_type)
     lro = None
@@ -227,7 +227,7 @@ def get_method(name: str,
 
 def get_message(dot_path: str, *,
         fields: typing.Tuple[descriptor_pb2.FieldDescriptorProto] = (),
-        ) -> wrappers.MessageType:
+                ) -> wrappers.MessageType:
     # Pass explicit None through (for lro_metadata).
     if dot_path is None:
         return None

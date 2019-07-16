@@ -71,7 +71,7 @@ def test_wrap_strips():
 def test_wrap_subsequent_offset():
     assert lines.wrap('foo bar baz',
         width=5, offset=0, indent=2,
-    ) == 'foo\n  bar\n  baz'
+                      ) == 'foo\n  bar\n  baz'
 
 
 def test_wrap_initial_offset():
