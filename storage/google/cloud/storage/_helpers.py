@@ -117,7 +117,6 @@ class _PropertyMixin(object):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current object.
         """
-
         client = self._require_client(client)
         query_params = self._query_params
         # Pass only '?projection=noAcl' here because 'acl' and related
@@ -130,7 +129,6 @@ class _PropertyMixin(object):
             headers=self._encryption_headers(),
             _target_object=self,
         )
-
         self._set_properties(api_response)
 
     def _patch_property(self, name, value):
