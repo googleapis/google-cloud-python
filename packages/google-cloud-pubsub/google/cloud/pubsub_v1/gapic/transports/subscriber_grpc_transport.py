@@ -18,7 +18,7 @@
 import google.api_core.grpc_helpers
 
 from google.cloud.pubsub_v1.proto import pubsub_pb2_grpc
-from google.iam.v1 import iam_policy_pb2_grpc as iam_policy_pb2
+from google.iam.v1 import iam_policy_pb2_grpc as iam_policy_pb2_grpc
 
 
 class SubscriberGrpcTransport(object):
@@ -69,7 +69,7 @@ class SubscriberGrpcTransport(object):
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            "iam_policy_stub": iam_policy_pb2.IAMPolicyStub(channel),
+            "iam_policy_stub": iam_policy_pb2_grpc.IAMPolicyStub(channel),
             "subscriber_stub": pubsub_pb2_grpc.SubscriberStub(channel),
         }
 
