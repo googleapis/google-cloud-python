@@ -85,6 +85,13 @@ class Cell(object):
 
     def __ne__(self, other):
         return not self == other
+    
+    def __repr__(self):
+        return "<{name} value={value!r} timestamp={timestamp}>".format(
+            name=self.__class__.__name__,
+            value=self.value,
+            timestamp=self.timestamp
+        )
 
 
 class PartialCellData(object):
