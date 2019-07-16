@@ -37,6 +37,7 @@ from google.cloud.pubsub_v1.gapic.transports import subscriber_grpc_transport
 from google.cloud.pubsub_v1.proto import pubsub_pb2
 from google.cloud.pubsub_v1.proto import pubsub_pb2_grpc
 from google.iam.v1 import iam_policy_pb2
+from google.iam.v1 import iam_policy_pb2_grpc
 from google.iam.v1 import options_pb2
 from google.iam.v1 import policy_pb2
 from google.protobuf import duration_pb2
