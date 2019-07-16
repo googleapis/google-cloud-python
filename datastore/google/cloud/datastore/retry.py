@@ -16,32 +16,28 @@ from google.api_core import exceptions
 from google.api_core import retry
 
 
-_RETRYABLE_REASONS = frozenset(
-    ["rateLimitExceeded", "backendError", "internalError", "badGateway"]
-)
+_RETRYABLE_REASONS = frozenset(["DEADLINE_EXCEEDED", "UNAVAILABLE"])
 
 _UNSTRUCTURED_RETRYABLE_TYPES = (
     exceptions.TooManyRequests,
     exceptions.InternalServerError,
-    exceptions.BadGateway,
 )
 
 
 def _should_retry(exc):
     """Predicate for determining when to retry.
 
-    We retry if and only if the 'reason' is 'backendError'
-    or 'rateLimitExceeded'.
+    We retry if and only if the 'error status' is 'DEADLINE_EXCEEDED'
+    or 'UNAVAILABLE'.
     """
-    if not hasattr(exc, "errors"):
-        return False
-
-    if len(exc.errors) == 0:
-        # Check for unstructured error returns, e.g. from GFE
+    if hasattr(exc, "errors"):
+        # Check for unstructured error returns
         return isinstance(exc, _UNSTRUCTURED_RETRYABLE_TYPES)
 
-    reason = exc.errors[0]["reason"]
-    return reason in _RETRYABLE_REASONS
+    if hasattr(exc, "error"):
+        reason = exc.error["status"]
+        return reason in _RETRYABLE_REASONS
+    return False
 
 
 DEFAULT_RETRY = retry.Retry(predicate=_should_retry)

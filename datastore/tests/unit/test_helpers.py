@@ -15,6 +15,7 @@
 import unittest
 from mock import Mock
 
+
 class Test__new_value_pb(unittest.TestCase):
     def _call_fut(self, entity_pb, name):
         from google.cloud.datastore.helpers import _new_value_pb
@@ -992,13 +993,14 @@ class Test__get_meaning(unittest.TestCase):
 
 
 class Test___call_api(unittest.TestCase):
-
     def _call_fut(self, fnc_call, retry, *args, **kwargs):
         from google.cloud.datastore.helpers import _call_api
+
         return _call_api(fnc_call, retry, *args, **kwargs)
 
     def test_call_api(self):
         from google.cloud.datastore.retry import DEFAULT_RETRY
+
         retry = DEFAULT_RETRY
         fnc_call = Mock()
         self._call_fut(fnc_call, retry)

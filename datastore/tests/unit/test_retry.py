@@ -31,15 +31,15 @@ class Test_should_retry(unittest.TestCase):
         self.assertFalse(self._call_fut(exc))
 
     def test_w_non_matching_reason(self):
-        exc = mock.Mock(errors=[{"reason": "bogus"}], spec=["errors"])
+        exc = mock.Mock(error={"status": "bogus"}, spec=["error"])
         self.assertFalse(self._call_fut(exc))
 
-    def test_w_backendError(self):
-        exc = mock.Mock(errors=[{"reason": "backendError"}], spec=["errors"])
+    def test_w_DEADLINE_EXCEEDED(self):
+        exc = mock.Mock(error={"status": "DEADLINE_EXCEEDED"}, spec=["error"])
         self.assertTrue(self._call_fut(exc))
 
-    def test_w_rateLimitExceeded(self):
-        exc = mock.Mock(errors=[{"reason": "rateLimitExceeded"}], spec=["errors"])
+    def test_w_UNAVAILABLE(self):
+        exc = mock.Mock(error={"status": "UNAVAILABLE"}, spec=["error"])
         self.assertTrue(self._call_fut(exc))
 
     def test_w_unstructured_too_many_requests(self):
@@ -48,22 +48,8 @@ class Test_should_retry(unittest.TestCase):
         exc = TooManyRequests("testing")
         self.assertTrue(self._call_fut(exc))
 
-    def test_w_internalError(self):
-        exc = mock.Mock(errors=[{"reason": "internalError"}], spec=["errors"])
-        self.assertTrue(self._call_fut(exc))
-
     def test_w_unstructured_internal_server_error(self):
         from google.api_core.exceptions import InternalServerError
 
         exc = InternalServerError("testing")
-        self.assertTrue(self._call_fut(exc))
-
-    def test_w_badGateway(self):
-        exc = mock.Mock(errors=[{"reason": "badGateway"}], spec=["errors"])
-        self.assertTrue(self._call_fut(exc))
-
-    def test_w_unstructured_bad_gateway(self):
-        from google.api_core.exceptions import BadGateway
-
-        exc = BadGateway("testing")
         self.assertTrue(self._call_fut(exc))
