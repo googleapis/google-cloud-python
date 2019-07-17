@@ -1,0 +1,13 @@
+{
+  "name": "audit",
+  "name_pretty": "Cloud Audit Logs",
+  "product_documentation": "https://cloud.google.com/audit-logs",
+  "client_documentation": "https://googleapis.dev/python/audit/latest",
+  "issue_tracker": "https://github.com/googleapis/python/issues",
+  "release_level": "alpha",
+  "language": "python",
+  "repo": "googleapis/google-cloud-python",
+  "distribution_name": "google-cloud-audit",
+  "api_id": null,
+  "requires_billing": false
+}
