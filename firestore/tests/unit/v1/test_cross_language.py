@@ -343,10 +343,18 @@ def convert_precondition(precond):
 
 
 class DummyRpc(object):  # pragma: NO COVER
-    def __init__(self, listen, initial_request, should_recover, metadata=None):
+    def __init__(
+        self,
+        listen,
+        should_recover,
+        should_terminate=None,
+        initial_request=None,
+        metadata=None,
+    ):
         self.listen = listen
         self.initial_request = initial_request
         self.should_recover = should_recover
+        self.should_terminate = should_terminate
         self.closed = False
         self.callbacks = []
         self._metadata = metadata

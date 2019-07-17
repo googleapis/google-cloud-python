@@ -57,13 +57,8 @@ GRPC_STATUS_CODE = {
     "DO_NOT_USE": -1,
 }
 _RPC_ERROR_THREAD_NAME = "Thread-OnRpcTerminated"
-_RETRYABLE_STREAM_ERRORS = (
-    exceptions.DeadlineExceeded,
-    exceptions.ServiceUnavailable,
-    exceptions.InternalServerError,
-    exceptions.Unknown,
-    exceptions.GatewayTimeout,
-)
+_RECOVERABLE_STREAM_EXCEPTIONS = (exceptions.ServiceUnavailable,)
+_TERMINATING_STREAM_EXCEPTIONS = (exceptions.Cancelled,)
 
 DocTreeEntry = collections.namedtuple("DocTreeEntry", ["value", "index"])
 
@@ -153,6 +148,16 @@ def document_watch_comparator(doc1, doc2):
     return 0
 
 
+def _should_recover(exception):
+    wrapped = _maybe_wrap_exception(exception)
+    return isinstance(wrapped, _RECOVERABLE_STREAM_EXCEPTIONS)
+
+
+def _should_terminate(exception):
+    wrapped = _maybe_wrap_exception(exception)
+    return isinstance(wrapped, _TERMINATING_STREAM_EXCEPTIONS)
+
+
 class Watch(object):
 
     BackgroundConsumer = BackgroundConsumer  # FBO unit tests
@@ -199,12 +204,6 @@ class Watch(object):
         self._closing = threading.Lock()
         self._closed = False
 
-        def should_recover(exc):  # pragma: NO COVER
-            return (
-                isinstance(exc, grpc.RpcError)
-                and exc.code() == grpc.StatusCode.UNAVAILABLE
-            )
-
         initial_request = firestore_pb2.ListenRequest(
             database=self._firestore._database_string, add_target=self._targets
         )
@@ -214,8 +213,9 @@ class Watch(object):
 
         self._rpc = ResumableBidiRpc(
             self._api.transport.listen,
+            should_recover=_should_recover,
+            should_terminate=_should_terminate,
             initial_request=initial_request,
-            should_recover=should_recover,
             metadata=self._firestore._rpc_metadata,
         )
 
