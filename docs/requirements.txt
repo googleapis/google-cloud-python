@@ -8,6 +8,7 @@ grpcio-gcp >= 0.2.2
 -e core/
 -e storage/
 -e asset/
+-e audit/
 -e automl/
 -e bigquery/
 -e bigquery_datatransfer/

@@ -4,6 +4,7 @@
 
   Core Libraries <core/index>
   Asset Management <asset/index>
+  Audit Logs <audit/index>
   AutoML <automl/index>
   BigQuery <bigquery/index>
   BigQuery Data-Transfer <bigquery_datatransfer/index>
