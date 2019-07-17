@@ -57,7 +57,7 @@ Mac/Linux
     pip install virtualenv
     virtualenv <your-env>
     source <your-env>/bin/activate
-    <your-env>/bin/pip install google-cloud-asset
+    <your-env>/bin/pip install google-cloud-audit
 
 
 Windows
@@ -68,7 +68,7 @@ Windows
     pip install virtualenv
     virtualenv <your-env>
     <your-env>\Scripts\activate
-    <your-env>\Scripts\pip.exe install google-cloud-asset
+    <your-env>\Scripts\pip.exe install google-cloud-audit
 
 Next Steps
 ~~~~~~~~~~
