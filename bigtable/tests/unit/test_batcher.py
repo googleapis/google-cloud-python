@@ -76,7 +76,7 @@ class TestMutationsBatcher(unittest.TestCase):
         mutation_batcher.mutate_rows(rows)
         mutation_batcher.flush()
 
-        self.assertEqual(table.mutation_calls, 1)
+        self.assertEqual(len(mutation_batcher.batches), 1)
 
     def test_mutate_rows(self):
         table = _Table(self.TABLE_NAME)
@@ -87,19 +87,15 @@ class TestMutationsBatcher(unittest.TestCase):
         row.set_cell("cf1", b"c2", 2)
         row.set_cell("cf1", b"c3", 3)
         row.set_cell("cf1", b"c4", 4)
-
-        mutation_batcher.mutate(row)
-
-        mutation_batcher.flush()
-
-        self.assertEqual(table.mutation_calls, 1)
+        mutation_batcher.mutate(row, True)
+        mutation_batcher.flush_batches()
+        self.assertEqual(len(mutation_batcher.batches), 1)
 
     def test_flush_with_no_rows(self):
         table = _Table(self.TABLE_NAME)
         mutation_batcher = MutationsBatcher(table=table)
-        mutation_batcher.flush()
-
-        self.assertEqual(table.mutation_calls, 0)
+        mutation_batcher.flush_batches()
+        self.assertEqual(len(mutation_batcher.batches), 0)
 
     def test_add_row_with_max_flush_count(self):
         table = _Table(self.TABLE_NAME)
@@ -113,7 +109,7 @@ class TestMutationsBatcher(unittest.TestCase):
         mutation_batcher.mutate(row_2)
         mutation_batcher.mutate(row_3)
 
-        self.assertEqual(table.mutation_calls, 1)
+        self.assertEqual(len(mutation_batcher.batches), 1)
 
     @mock.patch("google.cloud.bigtable.batcher.MAX_MUTATIONS", new=3)
     def test_mutate_row_with_max_mutations_failure(self):
@@ -144,7 +140,7 @@ class TestMutationsBatcher(unittest.TestCase):
         mutation_batcher.mutate(row)
         mutation_batcher.flush()
 
-        self.assertEqual(table.mutation_calls, 1)
+        self.assertEqual(len(mutation_batcher.batches), 1)
 
     def test_mutate_row_with_max_row_bytes(self):
         table = _Table(self.TABLE_NAME)
@@ -160,7 +156,7 @@ class TestMutationsBatcher(unittest.TestCase):
 
         mutation_batcher.mutate(row)
 
-        self.assertEqual(table.mutation_calls, 1)
+        self.assertEqual(len(mutation_batcher.batches), 1)
 
 
 class _Instance(object):
@@ -174,6 +170,6 @@ class _Table(object):
         self._instance = _Instance(client)
         self.mutation_calls = 0
 
-    def mutate_rows(self, rows):
+    def flush_batches(self, rows):
         self.mutation_calls += 1
         return rows

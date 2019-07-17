@@ -512,10 +512,28 @@ class Table(object):
         """
         mutate_batcher = self.mutations_batcher()
         mutate_batcher.mutate_rows(rows)
+        return self.flush_batches(mutate_batcher.batches, retry)
+
+    def flush_batches(self, batches, retry=DEFAULT_RETRY):
+        """mutate batches
+
+        :type: list
+        :param batches: list of batch. one batch is a list of rows.
+
+        :type retry: :class:`~google.api_core.retry.Retry`
+        :param retry:
+            (Optional) Retry delay and deadline arguments. To override, the
+            default value :attr:`DEFAULT_RETRY` can be used and modified with
+            the :meth:`~google.api_core.retry.Retry.with_delay` method or the
+            :meth:`~google.api_core.retry.Retry.with_deadline` method.
+
+        :rtype: list
+        :return: combined list of response status of every row in batches
+        """
         retryable_mutate_rows = _RetryableMutateRowsWorker(
             self._instance._client,
             self.name,
-            mutate_batcher.batches,
+            batches,
             app_profile_id=self._app_profile_id,
             timeout=self.mutation_timeout,
         )
@@ -776,7 +794,6 @@ class _RetryableMutateRowsWorker(object):
                    match the number of rows that were retried
         """
         batch = self.batches[batch_index]
-
         responses_statuses = self.responses_statuses[batch_index]
         retryable_rows = []
         index_into_all_rows = []

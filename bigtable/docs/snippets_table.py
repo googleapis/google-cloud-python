@@ -275,7 +275,7 @@ def test_bigtable_mutations_batcher():
     # reaches the max flush_count
 
     # Manually send the current batch to Cloud Bigtable
-    batcher.flush()
+    batcher.flush_batches()
     rows_on_table = []
     for row in table.read_rows():
         rows_on_table.append(row.row_key)
@@ -582,8 +582,8 @@ def test_bigtable_batcher_mutate_flush_mutate_rows():
 
     # In batcher, mutate will flush current batch if it
     # reaches the max_row_bytes
-    batcher.mutate(row)
-    batcher.flush()
+    batcher.mutate(row, True)
+    batcher.flush_batches()
     # [END bigtable_batcher_mutate]
 
     # [START bigtable_batcher_flush]
@@ -602,13 +602,15 @@ def test_bigtable_batcher_mutate_flush_mutate_rows():
 
     # In batcher, mutate will flush current batch if it
     # reaches the max_row_bytes
-    batcher.mutate(row)
-    batcher.flush()
+    batcher.mutate(row, True)
+    batcher.flush_batches()
     # [END bigtable_batcher_flush]
 
     rows_on_table = []
+
     for row in table.read_rows():
         rows_on_table.append(row.row_key)
+
     assert len(rows_on_table) == 2
     table.truncate(timeout=200)
 
@@ -635,7 +637,7 @@ def test_bigtable_batcher_mutate_flush_mutate_rows():
     # batcher will flush current batch if it
     # reaches the max flush_count
     # Manually send the current batch to Cloud Bigtable
-    batcher.flush()
+    batcher.flush_batches()
     # [END bigtable_batcher_mutate_rows]
 
     rows_on_table = []

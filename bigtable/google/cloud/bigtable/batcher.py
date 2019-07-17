@@ -130,7 +130,7 @@ class MutationsBatcher(object):
             self.mutate(row, is_last)
 
     def flush(self):
-        """ Sends the current. batch to Cloud Bigtable.
+        """ make batch
         For example:
 
         .. literalinclude:: snippets.py
@@ -143,3 +143,10 @@ class MutationsBatcher(object):
             self.total_mutation_count = 0
             self.total_size = 0
             self.rows = []
+
+    def flush_batches(self):
+        """Sends batches to Cloud bigtable
+
+        :return: combined list of response status of every row in batches
+        """
+        return self.table.flush_batches(self.batches)

@@ -1079,14 +1079,11 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
     def _make_client(self, *args, **kwargs):
         return self._get_target_client_class()(*args, **kwargs)
 
-    def _make_responses_statuses(self, list_of_codes):
+    def _make_responses_statuses(self, codes):
         from google.rpc.status_pb2 import Status
 
-        codes_dict = dict([(index, batch) for index, batch in enumerate(list_of_codes)])
-        for index, batch in codes_dict.items():
-            response = [Status(code=code) for code in batch]
-            codes_dict[index] = response
-        return codes_dict
+        response = [Status(code=code) for code in codes]
+        return response
 
     def _make_responses(self, codes):
         import six
@@ -1163,7 +1160,6 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
 
             worker = self._make_worker(client, table.name, [[row_1, row_2, row_3]])
             statuses = worker(retry=None)
-        statuses = statuses[0]
         result = [status.code for status in statuses]
         expected_result = [self.SUCCESS, self.RETRYABLE_1, self.NON_RETRYABLE]
 
@@ -1218,7 +1214,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         retry = DEFAULT_RETRY.with_delay(initial=0.1)
         worker = self._make_worker(client, table.name, [[row_1, row_2, row_3]])
         statuses = worker(retry=retry)
-        statuses = statuses[0]
+
         result = [status.code for status in statuses]
         expected_result = [self.SUCCESS, self.SUCCESS, self.NON_RETRYABLE]
 
@@ -1487,18 +1483,18 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         # Patch the stub used by the API method.
         inner_api_calls = client._table_data_client._inner_api_calls
         inner_api_calls["mutate_rows"] = mock.Mock(side_effect=[[response]])
-
         worker = self._make_worker(client, table.name, [[row_1, row_2, row_3, row_4]])
-        worker.responses_statuses = self._make_responses_statuses(
-            [[self.SUCCESS, self.RETRYABLE_1, self.NON_RETRYABLE, self.RETRYABLE_2]]
-        )
+        worker.responses_statuses = {
+            0: self._make_responses_statuses(
+                [self.SUCCESS, self.RETRYABLE_1, self.NON_RETRYABLE, self.RETRYABLE_2]
+            )
+        }
 
         with self.assertRaises(_BigtableRetryableError):
             worker._do_mutate_retryable_rows(0)
 
         statuses = worker.responses_statuses
-        statuses = statuses[0]
-        result = [status.code for status in statuses]
+        result = [status.code for status in statuses[0]]
         expected_result = [
             self.SUCCESS,
             self.SUCCESS,
@@ -1550,9 +1546,11 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         inner_api_calls["mutate_rows"] = mock.Mock(side_effect=[[response]])
 
         worker = self._make_worker(client, table.name, [[row_1, row_2, row_3, row_4]])
-        worker.responses_statuses = self._make_responses_statuses(
-            [[self.SUCCESS, self.RETRYABLE_1, self.NON_RETRYABLE, self.RETRYABLE_2]]
-        )
+        worker.responses_statuses = {
+            0: self._make_responses_statuses(
+                [self.SUCCESS, self.RETRYABLE_1, self.NON_RETRYABLE, self.RETRYABLE_2]
+            )
+        }
 
         statuses = worker._do_mutate_retryable_rows(0)
 
@@ -1601,9 +1599,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         row_4.set_cell("cf", b"col", b"value4")
         worker = self._make_worker(client, table.name, [[row_1, row_2], [row_3, row_4]])
 
-        worker.responses_statuses = self._make_responses_statuses(
-            [[self.SUCCESS, self.NON_RETRYABLE], [self.SUCCESS, self.NON_RETRYABLE]]
-        )
+        worker.responses_statuses = {
+            0: self._make_responses_statuses([self.SUCCESS, self.NON_RETRYABLE]),
+            1: self._make_responses_statuses([self.SUCCESS, self.NON_RETRYABLE]),
+        }
         statuses = worker._do_mutate_retryable_rows(0)
         result = [status.code for status in statuses]
         expected_result = [self.SUCCESS, self.NON_RETRYABLE]
