@@ -18,7 +18,7 @@
 import google.api_core.grpc_helpers
 
 from google.cloud.kms_v1.proto import service_pb2_grpc
-from google.iam.v1 import iam_policy_pb2
+from google.iam.v1 import iam_policy_pb2_grpc as iam_policy_pb2_grpc
 
 
 class KeyManagementServiceGrpcTransport(object):
@@ -72,7 +72,7 @@ class KeyManagementServiceGrpcTransport(object):
             "key_management_service_stub": service_pb2_grpc.KeyManagementServiceStub(
                 channel
             ),
-            "iam_policy_stub": iam_policy_pb2.IAMPolicyStub(channel),
+            "iam_policy_stub": iam_policy_pb2_grpc.IAMPolicyStub(channel),
         }
 
     @classmethod

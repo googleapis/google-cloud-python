@@ -27,16 +27,29 @@ try:
     import pandas
 except ImportError:  # pragma: NO COVER
     pandas = None
+try:
+    import pyarrow
+except ImportError:  # pragma: NO COVER
+    pyarrow = None
 import six
+
+try:
+    import pyarrow
+except ImportError:  # pragma: NO COVER
+    pyarrow = None
 
 from google.cloud.bigquery_storage_v1beta1 import types
 
 
 _STREAM_RESUMPTION_EXCEPTIONS = (google.api_core.exceptions.ServiceUnavailable,)
+
 _FASTAVRO_REQUIRED = (
     "fastavro is required to parse ReadRowResponse messages with Avro bytes."
 )
 _PANDAS_REQUIRED = "pandas is required to create a DataFrame"
+_PYARROW_REQUIRED = (
+    "pyarrow is required to parse ReadRowResponse messages with Arrow bytes."
+)
 
 
 class ReadRowsStream(object):
@@ -113,7 +126,7 @@ class ReadRowsStream(object):
         while True:
             try:
                 for message in self._wrapped:
-                    rowcount = message.avro_rows.row_count
+                    rowcount = message.row_count
                     self._position.offset += rowcount
                     yield message
 
@@ -152,10 +165,27 @@ class ReadRowsStream(object):
             Iterable[Mapping]:
                 A sequence of rows, represented as dictionaries.
         """
-        if fastavro is None:
-            raise ImportError(_FASTAVRO_REQUIRED)
-
         return ReadRowsIterable(self, read_session)
+
+    def to_arrow(self, read_session):
+        """Create a :class:`pyarrow.Table` of all rows in the stream.
+
+        This method requires the pyarrow library and a stream using the Arrow
+        format.
+
+        Args:
+            read_session ( \
+                ~google.cloud.bigquery_storage_v1beta1.types.ReadSession \
+            ):
+                The read session associated with this read rows stream. This
+                contains the schema, which is required to parse the data
+                messages.
+
+        Returns:
+            pyarrow.Table:
+                A table of all rows in the stream.
+        """
+        return self.rows(read_session).to_arrow()
 
     def to_dataframe(self, read_session, dtypes=None):
         """Create a :class:`pandas.DataFrame` of all rows in the stream.
@@ -186,8 +216,6 @@ class ReadRowsStream(object):
             pandas.DataFrame:
                 A data frame of all rows in the stream.
         """
-        if fastavro is None:
-            raise ImportError(_FASTAVRO_REQUIRED)
         if pandas is None:
             raise ImportError(_PANDAS_REQUIRED)
 
@@ -212,6 +240,7 @@ class ReadRowsIterable(object):
         self._status = None
         self._reader = reader
         self._read_session = read_session
+        self._stream_parser = _StreamParser.from_read_session(self._read_session)
 
     @property
     def total_rows(self):
@@ -231,16 +260,30 @@ class ReadRowsIterable(object):
         """
         # Each page is an iterator of rows. But also has num_items, remaining,
         # and to_dataframe.
-        stream_parser = _StreamParser(self._read_session)
         for message in self._reader:
             self._status = message.status
-            yield ReadRowsPage(stream_parser, message)
+            yield ReadRowsPage(self._stream_parser, message)
 
     def __iter__(self):
         """Iterator for each row in all pages."""
         for page in self.pages:
             for row in page:
                 yield row
+
+    def to_arrow(self):
+        """Create a :class:`pyarrow.Table` of all rows in the stream.
+
+        This method requires the pyarrow library and a stream using the Arrow
+        format.
+
+        Returns:
+            pyarrow.Table:
+                A table of all rows in the stream.
+        """
+        record_batches = []
+        for page in self.pages:
+            record_batches.append(page.to_arrow())
+        return pyarrow.Table.from_batches(record_batches)
 
     def to_dataframe(self, dtypes=None):
         """Create a :class:`pandas.DataFrame` of all rows in the stream.
@@ -291,8 +334,8 @@ class ReadRowsPage(object):
         self._stream_parser = stream_parser
         self._message = message
         self._iter_rows = None
-        self._num_items = self._message.avro_rows.row_count
-        self._remaining = self._message.avro_rows.row_count
+        self._num_items = self._message.row_count
+        self._remaining = self._message.row_count
 
     def _parse_rows(self):
         """Parse rows from the message only once."""
@@ -326,6 +369,15 @@ class ReadRowsPage(object):
     # Alias needed for Python 2/3 support.
     __next__ = next
 
+    def to_arrow(self):
+        """Create an :class:`pyarrow.RecordBatch` of rows in the page.
+
+        Returns:
+            pyarrow.RecordBatch:
+                Rows from the message, as an Arrow record batch.
+        """
+        return self._stream_parser.to_arrow(self._message)
+
     def to_dataframe(self, dtypes=None):
         """Create a :class:`pandas.DataFrame` of rows in the page.
 
@@ -355,20 +407,60 @@ class ReadRowsPage(object):
 
 
 class _StreamParser(object):
+    def to_arrow(self, message):
+        raise NotImplementedError("Not implemented.")
+
+    def to_dataframe(self, message, dtypes=None):
+        raise NotImplementedError("Not implemented.")
+
+    def to_rows(self, message):
+        raise NotImplementedError("Not implemented.")
+
+    @staticmethod
+    def from_read_session(read_session):
+        schema_type = read_session.WhichOneof("schema")
+        if schema_type == "avro_schema":
+            return _AvroStreamParser(read_session)
+        elif schema_type == "arrow_schema":
+            return _ArrowStreamParser(read_session)
+        else:
+            raise TypeError(
+                "Unsupported schema type in read_session: {0}".format(schema_type)
+            )
+
+
+class _AvroStreamParser(_StreamParser):
     """Helper to parse Avro messages into useful representations."""
 
     def __init__(self, read_session):
-        """Construct a _StreamParser.
+        """Construct an _AvroStreamParser.
 
         Args:
             read_session (google.cloud.bigquery_storage_v1beta1.types.ReadSession):
                 A read session. This is required because it contains the schema
                 used in the stream messages.
         """
+        if fastavro is None:
+            raise ImportError(_FASTAVRO_REQUIRED)
+
         self._read_session = read_session
         self._avro_schema_json = None
         self._fastavro_schema = None
         self._column_names = None
+
+    def to_arrow(self, message):
+        """Create an :class:`pyarrow.RecordBatch` of rows in the page.
+
+        Args:
+            message (google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse):
+                Protocol buffer from the read rows stream, to convert into an
+                Arrow record batch.
+
+        Returns:
+            pyarrow.RecordBatch:
+                Rows from the message, as an Arrow record batch.
+        """
+        raise NotImplementedError("to_arrow not implemented for Avro streams.")
 
     def to_dataframe(self, message, dtypes=None):
         """Create a :class:`pandas.DataFrame` of rows in the page.
@@ -445,6 +537,56 @@ class _StreamParser(object):
                 yield fastavro.schemaless_reader(messageio, self._fastavro_schema)
             except StopIteration:
                 break  # Finished with message
+
+
+class _ArrowStreamParser(_StreamParser):
+    def __init__(self, read_session):
+        if pyarrow is None:
+            raise ImportError(_PYARROW_REQUIRED)
+
+        self._read_session = read_session
+        self._schema = None
+
+    def to_arrow(self, message):
+        return self._parse_arrow_message(message)
+
+    def to_rows(self, message):
+        record_batch = self._parse_arrow_message(message)
+
+        # Iterate through each column simultaneously, and make a dict from the
+        # row values
+        for row in zip(*record_batch.columns):
+            yield dict(zip(self._column_names, row))
+
+    def to_dataframe(self, message, dtypes=None):
+        record_batch = self._parse_arrow_message(message)
+
+        if dtypes is None:
+            dtypes = {}
+
+        df = record_batch.to_pandas()
+
+        for column in dtypes:
+            df[column] = pandas.Series(df[column], dtype=dtypes[column])
+
+        return df
+
+    def _parse_arrow_message(self, message):
+        self._parse_arrow_schema()
+
+        return pyarrow.read_record_batch(
+            pyarrow.py_buffer(message.arrow_record_batch.serialized_record_batch),
+            self._schema,
+        )
+
+    def _parse_arrow_schema(self):
+        if self._schema:
+            return
+
+        self._schema = pyarrow.read_schema(
+            pyarrow.py_buffer(self._read_session.arrow_schema.serialized_schema)
+        )
+        self._column_names = [field.name for field in self._schema]
 
 
 def _copy_stream_position(position):

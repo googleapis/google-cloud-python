@@ -27,6 +27,7 @@ from google.cloud.securitycenter_v1beta1.proto import security_marks_pb2
 from google.cloud.securitycenter_v1beta1.proto import securitycenter_service_pb2
 from google.cloud.securitycenter_v1beta1.proto import source_pb2
 from google.iam.v1 import iam_policy_pb2
+from google.iam.v1 import options_pb2
 from google.iam.v1 import policy_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import any_pb2
@@ -40,6 +41,7 @@ from google.type import expr_pb2
 
 _shared_modules = [
     iam_policy_pb2,
+    options_pb2,
     policy_pb2,
     operations_pb2,
     any_pb2,

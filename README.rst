@@ -121,10 +121,9 @@ The following client libraries have **alpha** support:
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
 -  `Google Cloud Security Scanner`_ (`Security Scanner README`_ )
--  `Google Cloud Tasks`_ (`Tasks README`_)
 -  `Google Cloud Trace`_ (`Trace README`_)
 -  `Google Cloud Text-to-Speech`_ (`Text-to-Speech README`_)
--  `Grafeas_ (`Grafeas README`_)
+-  `Grafeas`_ (`Grafeas README`_)
 -  `Stackdriver Error Reporting`_ (`Error Reporting README`_)
 -  `Stackdriver Monitoring`_ (`Monitoring README`_)
 
