@@ -426,11 +426,11 @@ class Watch(object):
             TargetChange.CURRENT: self._on_snapshot_target_change_current,
         }
 
-        target_change = getattr(proto, 'target_change', '')
-        document_change = getattr(proto, 'document_change', '')
-        document_delete = getattr(proto, 'document_delete', '')
-        document_remove = getattr(proto, 'document_remove', '')
-        filter_ = getattr(proto, 'filter', '')
+        target_change = getattr(proto, "target_change", "")
+        document_change = getattr(proto, "document_change", "")
+        document_delete = getattr(proto, "document_delete", "")
+        document_remove = getattr(proto, "document_remove", "")
+        filter_ = getattr(proto, "filter", "")
 
         if str(target_change):
             target_change_type = target_change.target_change_type
