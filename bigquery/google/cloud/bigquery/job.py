@@ -2896,6 +2896,8 @@ class QueryJob(_AsyncJob):
         rows._preserve_order = _contains_order_by(self.query)
         return rows
 
+    # If changing the signature of this method, make sure to apply the same
+    # changes to table.RowIterator.to_arrow()
     def to_arrow(self, progress_bar_type=None):
         """[Beta] Create a class:`pyarrow.Table` by loading all pages of a
         table or query.
@@ -2934,6 +2936,8 @@ class QueryJob(_AsyncJob):
         """
         return self.result().to_arrow(progress_bar_type=progress_bar_type)
 
+    # If changing the signature of this method, make sure to apply the same
+    # changes to table.RowIterator.to_dataframe()
     def to_dataframe(self, bqstorage_client=None, dtypes=None, progress_bar_type=None):
         """Return a pandas DataFrame from a QueryJob
 
