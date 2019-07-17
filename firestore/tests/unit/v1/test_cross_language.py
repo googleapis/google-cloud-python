@@ -20,11 +20,9 @@ import os
 import mock
 import pytest
 
-from google.protobuf import text_format
 from google.protobuf import json_format
 from google.cloud.firestore_v1.proto import document_pb2
 from google.cloud.firestore_v1.proto import firestore_pb2
-from google.cloud.firestore_v1.proto import test_v1_pb2
 from google.cloud.firestore_v1.proto import tests_pb2
 from google.cloud.firestore_v1.proto import write_pb2
 
