@@ -7,6 +7,5 @@
   "release_level": "alpha",
   "language": "python",
   "repo": "googleapis/google-cloud-python",
-  "distribution_name": "google-cloud-iam",
-  "api_id": "iamcredentials.googleapis.com",
+  "distribution_name": "google-cloud-iam"
 }

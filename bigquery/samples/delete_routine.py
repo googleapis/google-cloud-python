@@ -12,33 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import datetime
-import os
 
-import pytest
+def main(client, routine_id):
+    # [START bigquery_delete_routine]
+    # TODO(developer): Import the client library.
+    # from google.cloud import bigquery
 
-import quickstart
+    # TODO(developer): Construct a BigQuery client object.
+    # client = bigquery.Client()
 
+    # TODO(developer): Set the fully-qualified ID for the routine.
+    # routine_id = "my-project.my_dataset.my_routine"
 
-def now_millis():
-    return int(
-        (datetime.datetime.utcnow() - datetime.datetime(1970, 1, 1)).total_seconds()
-        * 1000
-    )
+    client.delete_routine(routine_id)
+    # [END bigquery_delete_routine]
 
-
-@pytest.fixture()
-def project_id():
-    return os.environ["PROJECT_ID"]
-
-
-def test_quickstart_wo_snapshot(capsys, project_id):
-    quickstart.main(project_id)
-    out, _ = capsys.readouterr()
-    assert "WA" in out
-
-
-def test_quickstart_with_snapshot(capsys, project_id):
-    quickstart.main(project_id, now_millis() - 5000)
-    out, _ = capsys.readouterr()
-    assert "WA" in out
+    print("Deleted routine {}.".format(routine_id))

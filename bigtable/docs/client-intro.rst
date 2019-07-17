@@ -23,7 +23,7 @@ Configuration
 -------------
 
 - For an overview of authentication in ``google-cloud-python``,
-  see :doc:`/core/auth`.
+  see `Authentication <https://googleapis.dev/python/google-api-core/latest/auth.html#authentication>`_.
 
 - In addition to any authentication configuration, you can also set the
   :envvar:`GOOGLE_CLOUD_PROJECT` environment variable for the Google Cloud Console

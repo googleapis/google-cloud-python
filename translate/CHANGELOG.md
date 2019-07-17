@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## 1.6.0
+
+07-09-2019 13:13 PDT
+
+
+### Implementation Changes
+- Allow kwargs to be passed to create_channel (via synth). ([#8409](https://github.com/googleapis/google-cloud-python/pull/8409))
+- Update service descriptions and add additional rpc bindings for Translate ([#8267](https://github.com/googleapis/google-cloud-python/pull/8267))
+
+### New Features
+- Add 'client_options' support, update list method docstrings (via synth). ([#8527](https://github.com/googleapis/google-cloud-python/pull/8527))
+
+### Internal / Testing Changes
+- Pin black version (via synth). ([#8600](https://github.com/googleapis/google-cloud-python/pull/8600))
+- Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+- Declare encoding as utf-8 in pb2 files (via synth).  ([#8369](https://github.com/googleapis/google-cloud-python/pull/8369))
+- Add disclaimer to auto-generated template files (via synth).  ([#8333](https://github.com/googleapis/google-cloud-python/pull/8333))
+- Blacken (via synth). ([#8282](https://github.com/googleapis/google-cloud-python/pull/8282))
+- Suppress checking 'cov-fail-under' in nox default session (via synth). ([#8255](https://github.com/googleapis/google-cloud-python/pull/8255))
+- Fix coverage in 'types.py' (via synth). ([#8168](https://github.com/googleapis/google-cloud-python/pull/8168))
+- Blacken noxfile.py, setup.py (via synth). ([#8135](https://github.com/googleapis/google-cloud-python/pull/8135))
+- Add empty lines (via synth). ([#8076](https://github.com/googleapis/google-cloud-python/pull/8076))
+
 ## 1.5.0
 
 05-16-2019 13:05 PDT

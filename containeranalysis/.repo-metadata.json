@@ -5,7 +5,7 @@
   "client_documentation": "https://googleapis.dev/python/containeranalysis/latest",
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559777",
   "release_level": "ga",
-  "language": "nodejs",
+  "language": "python",
   "repo": "googleapis/google-cloud-python",
   "distribution_name": "google-cloud-containeranalysis",
   "api_id": "containeranalysis.googleapis.com",

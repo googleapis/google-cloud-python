@@ -21,6 +21,7 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -41,6 +42,7 @@ from google.cloud.bigtable_admin_v2.proto import bigtable_instance_admin_pb2
 from google.cloud.bigtable_admin_v2.proto import bigtable_instance_admin_pb2_grpc
 from google.cloud.bigtable_admin_v2.proto import instance_pb2
 from google.iam.v1 import iam_policy_pb2
+from google.iam.v1 import options_pb2
 from google.iam.v1 import policy_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
@@ -136,6 +138,7 @@ class BigtableInstanceAdminClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -166,6 +169,9 @@ class BigtableInstanceAdminClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -184,6 +190,15 @@ class BigtableInstanceAdminClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -192,6 +207,7 @@ class BigtableInstanceAdminClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=bigtable_instance_admin_grpc_transport.BigtableInstanceAdminGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -202,7 +218,7 @@ class BigtableInstanceAdminClient(object):
                 self.transport = transport
         else:
             self.transport = bigtable_instance_admin_grpc_transport.BigtableInstanceAdminGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -1392,10 +1408,10 @@ class BigtableInstanceAdminClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.bigtable_admin_v2.types.AppProfile` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.bigtable_admin_v2.types.AppProfile` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1626,6 +1642,7 @@ class BigtableInstanceAdminClient(object):
     def get_iam_policy(
         self,
         resource,
+        options_=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -1646,6 +1663,11 @@ class BigtableInstanceAdminClient(object):
         Args:
             resource (str): REQUIRED: The resource for which the policy is being requested.
                 See the operation documentation for the appropriate value for this field.
+            options_ (Union[dict, ~google.cloud.bigtable_admin_v2.types.GetPolicyOptions]): OPTIONAL: A ``GetPolicyOptions`` object for specifying options to
+                ``GetIamPolicy``. This field is only used by Cloud IAM.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.bigtable_admin_v2.types.GetPolicyOptions`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1676,7 +1698,9 @@ class BigtableInstanceAdminClient(object):
                 client_info=self._client_info,
             )
 
-        request = iam_policy_pb2.GetIamPolicyRequest(resource=resource)
+        request = iam_policy_pb2.GetIamPolicyRequest(
+            resource=resource, options=options_
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)

@@ -84,7 +84,7 @@ If you need different batching settings, simply provide a
     from google.cloud.pubsub import types
 
     client = pubsub.PublisherClient(
-        batch_settings=BatchSettings(max_messages=500),
+        batch_settings=types.BatchSettings(max_messages=500),
     )
 
 Pub/Sub accepts a maximum of 1,000 messages in a batch, and the size of a

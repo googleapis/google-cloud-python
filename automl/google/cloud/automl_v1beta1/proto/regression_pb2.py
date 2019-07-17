@@ -23,10 +23,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.automl.v1beta1",
     syntax="proto3",
     serialized_options=_b(
-        "\n\037com.google.cloud.automl.v1beta1B\017RegressionProtoZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1"
+        "\n\037com.google.cloud.automl.v1beta1B\017RegressionProtoZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1\352\002\036Google::Cloud::AutoML::V1beta1"
     ),
     serialized_pb=_b(
-        '\n2google/cloud/automl_v1beta1/proto/regression.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto"\xbb\x01\n\x1bRegressionEvaluationMetrics\x12\x1f\n\x17root_mean_squared_error\x18\x01 \x01(\x02\x12\x1b\n\x13mean_absolute_error\x18\x02 \x01(\x02\x12&\n\x1emean_absolute_percentage_error\x18\x03 \x01(\x02\x12\x11\n\tr_squared\x18\x04 \x01(\x02\x12#\n\x1broot_mean_squared_log_error\x18\x05 \x01(\x02\x42\x93\x01\n\x1f\x63om.google.cloud.automl.v1beta1B\x0fRegressionProtoZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1b\x06proto3'
+        '\n2google/cloud/automl_v1beta1/proto/regression.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto"\xbb\x01\n\x1bRegressionEvaluationMetrics\x12\x1f\n\x17root_mean_squared_error\x18\x01 \x01(\x02\x12\x1b\n\x13mean_absolute_error\x18\x02 \x01(\x02\x12&\n\x1emean_absolute_percentage_error\x18\x03 \x01(\x02\x12\x11\n\tr_squared\x18\x04 \x01(\x02\x12#\n\x1broot_mean_squared_log_error\x18\x05 \x01(\x02\x42\xb4\x01\n\x1f\x63om.google.cloud.automl.v1beta1B\x0fRegressionProtoZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1\xea\x02\x1eGoogle::Cloud::AutoML::V1beta1b\x06proto3'
     ),
     dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
 )

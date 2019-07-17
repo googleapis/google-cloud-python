@@ -41,8 +41,9 @@ except (ImportError, AttributeError):  # pragma: NO COVER
 import google.api_core.exceptions
 from google.api_core.gapic_v1 import client_info
 import google.cloud._helpers
-from tests.unit.helpers import make_connection
+from google.cloud import bigquery_v2
 from google.cloud.bigquery.dataset import DatasetReference
+from tests.unit.helpers import make_connection
 
 
 def _make_credentials():
@@ -866,6 +867,98 @@ class TestClient(unittest.TestCase):
             ]
         )
 
+    def test_create_routine_w_minimal_resource(self):
+        from google.cloud.bigquery.routine import Routine
+        from google.cloud.bigquery.routine import RoutineReference
+
+        creds = _make_credentials()
+        resource = {
+            "routineReference": {
+                "projectId": "test-routine-project",
+                "datasetId": "test_routines",
+                "routineId": "minimal_routine",
+            }
+        }
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        conn = client._connection = make_connection(resource)
+        full_routine_id = "test-routine-project.test_routines.minimal_routine"
+        routine = Routine(full_routine_id)
+
+        actual_routine = client.create_routine(routine)
+
+        conn.api_request.assert_called_once_with(
+            method="POST",
+            path="/projects/test-routine-project/datasets/test_routines/routines",
+            data=resource,
+        )
+        self.assertEqual(
+            actual_routine.reference, RoutineReference.from_string(full_routine_id)
+        )
+
+    def test_create_routine_w_conflict(self):
+        from google.cloud.bigquery.routine import Routine
+
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        conn = client._connection = make_connection(
+            google.api_core.exceptions.AlreadyExists("routine already exists")
+        )
+        full_routine_id = "test-routine-project.test_routines.minimal_routine"
+        routine = Routine(full_routine_id)
+
+        with pytest.raises(google.api_core.exceptions.AlreadyExists):
+            client.create_routine(routine)
+
+        resource = {
+            "routineReference": {
+                "projectId": "test-routine-project",
+                "datasetId": "test_routines",
+                "routineId": "minimal_routine",
+            }
+        }
+        conn.api_request.assert_called_once_with(
+            method="POST",
+            path="/projects/test-routine-project/datasets/test_routines/routines",
+            data=resource,
+        )
+
+    def test_create_routine_w_conflict_exists_ok(self):
+        from google.cloud.bigquery.routine import Routine
+
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        resource = {
+            "routineReference": {
+                "projectId": "test-routine-project",
+                "datasetId": "test_routines",
+                "routineId": "minimal_routine",
+            }
+        }
+        conn = client._connection = make_connection(
+            google.api_core.exceptions.AlreadyExists("routine already exists"), resource
+        )
+        full_routine_id = "test-routine-project.test_routines.minimal_routine"
+        routine = Routine(full_routine_id)
+
+        actual_routine = client.create_routine(routine, exists_ok=True)
+
+        self.assertEqual(actual_routine.project, "test-routine-project")
+        self.assertEqual(actual_routine.dataset_id, "test_routines")
+        self.assertEqual(actual_routine.routine_id, "minimal_routine")
+        conn.api_request.assert_has_calls(
+            [
+                mock.call(
+                    method="POST",
+                    path="/projects/test-routine-project/datasets/test_routines/routines",
+                    data=resource,
+                ),
+                mock.call(
+                    method="GET",
+                    path="/projects/test-routine-project/datasets/test_routines/routines/minimal_routine",
+                ),
+            ]
+        )
+
     def test_create_table_w_day_partition(self):
         from google.cloud.bigquery.table import Table
         from google.cloud.bigquery.table import TimePartitioning
@@ -1298,6 +1391,52 @@ class TestClient(unittest.TestCase):
         conn.api_request.assert_called_once_with(method="GET", path="/%s" % path)
         self.assertEqual(got.model_id, self.MODEL_ID)
 
+    def test_get_routine(self):
+        from google.cloud.bigquery.routine import Routine
+        from google.cloud.bigquery.routine import RoutineReference
+
+        full_routine_id = "test-routine-project.test_routines.minimal_routine"
+        routines = [
+            full_routine_id,
+            Routine(full_routine_id),
+            RoutineReference.from_string(full_routine_id),
+        ]
+        for routine in routines:
+            creds = _make_credentials()
+            resource = {
+                "etag": "im-an-etag",
+                "routineReference": {
+                    "projectId": "test-routine-project",
+                    "datasetId": "test_routines",
+                    "routineId": "minimal_routine",
+                },
+                "routineType": "SCALAR_FUNCTION",
+            }
+            client = self._make_one(project=self.PROJECT, credentials=creds)
+            conn = client._connection = make_connection(resource)
+
+            actual_routine = client.get_routine(routine)
+
+            conn.api_request.assert_called_once_with(
+                method="GET",
+                path="/projects/test-routine-project/datasets/test_routines/routines/minimal_routine",
+            )
+            self.assertEqual(
+                actual_routine.reference,
+                RoutineReference.from_string(full_routine_id),
+                msg="routine={}".format(repr(routine)),
+            )
+            self.assertEqual(
+                actual_routine.etag,
+                "im-an-etag",
+                msg="routine={}".format(repr(routine)),
+            )
+            self.assertEqual(
+                actual_routine.type_,
+                "SCALAR_FUNCTION",
+                msg="routine={}".format(repr(routine)),
+            )
+
     def test_get_table(self):
         path = "projects/%s/datasets/%s/tables/%s" % (
             self.PROJECT,
@@ -1498,6 +1637,66 @@ class TestClient(unittest.TestCase):
         client.update_model(model, [])
         req = conn.api_request.call_args
         self.assertEqual(req[1]["headers"]["If-Match"], "etag")
+
+    def test_update_routine(self):
+        from google.cloud.bigquery.routine import Routine
+        from google.cloud.bigquery.routine import RoutineArgument
+
+        full_routine_id = "routines-project.test_routines.updated_routine"
+        resource = {
+            "routineReference": {
+                "projectId": "routines-project",
+                "datasetId": "test_routines",
+                "routineId": "updated_routine",
+            },
+            "routineType": "SCALAR_FUNCTION",
+            "language": "SQL",
+            "definitionBody": "x * 3",
+            "arguments": [{"name": "x", "dataType": {"typeKind": "INT64"}}],
+            "returnType": None,
+            "someNewField": "someValue",
+        }
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        conn = client._connection = make_connection(resource, resource)
+        routine = Routine(full_routine_id)
+        routine.arguments = [
+            RoutineArgument(
+                name="x",
+                data_type=bigquery_v2.types.StandardSqlDataType(
+                    type_kind=bigquery_v2.enums.StandardSqlDataType.TypeKind.INT64
+                ),
+            )
+        ]
+        routine.body = "x * 3"
+        routine.language = "SQL"
+        routine.type_ = "SCALAR_FUNCTION"
+        routine._properties["someNewField"] = "someValue"
+
+        actual_routine = client.update_routine(
+            routine,
+            ["arguments", "language", "body", "type_", "return_type", "someNewField"],
+        )
+
+        # TODO: routineReference isn't needed when the Routines API supports
+        #       partial updates.
+        sent = resource
+        conn.api_request.assert_called_once_with(
+            method="PUT",
+            data=sent,
+            path="/projects/routines-project/datasets/test_routines/routines/updated_routine",
+            headers=None,
+        )
+        self.assertEqual(actual_routine.arguments, routine.arguments)
+        self.assertEqual(actual_routine.body, routine.body)
+        self.assertEqual(actual_routine.language, routine.language)
+        self.assertEqual(actual_routine.type_, routine.type_)
+
+        # ETag becomes If-Match header.
+        routine._properties["etag"] = "im-an-etag"
+        client.update_routine(routine, [])
+        req = conn.api_request.call_args
+        self.assertEqual(req[1]["headers"]["If-Match"], "im-an-etag")
 
     def test_update_table(self):
         from google.cloud.bigquery.table import Table, SchemaField
@@ -1877,6 +2076,82 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(TypeError):
             client.list_models(client.dataset(self.DS_ID).model("foo"))
 
+    def test_list_routines_empty(self):
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        conn = client._connection = make_connection({})
+
+        iterator = client.list_routines("test-routines.test_routines")
+        page = six.next(iterator.pages)
+        routines = list(page)
+        token = iterator.next_page_token
+
+        self.assertEqual(routines, [])
+        self.assertIsNone(token)
+        conn.api_request.assert_called_once_with(
+            method="GET",
+            path="/projects/test-routines/datasets/test_routines/routines",
+            query_params={},
+        )
+
+    def test_list_routines_defaults(self):
+        from google.cloud.bigquery.routine import Routine
+
+        project_id = "test-routines"
+        dataset_id = "test_routines"
+        path = "/projects/test-routines/datasets/test_routines/routines"
+        routine_1 = "routine_one"
+        routine_2 = "routine_two"
+        token = "TOKEN"
+        resource = {
+            "nextPageToken": token,
+            "routines": [
+                {
+                    "routineReference": {
+                        "routineId": routine_1,
+                        "datasetId": dataset_id,
+                        "projectId": project_id,
+                    }
+                },
+                {
+                    "routineReference": {
+                        "routineId": routine_2,
+                        "datasetId": dataset_id,
+                        "projectId": project_id,
+                    }
+                },
+            ],
+        }
+
+        creds = _make_credentials()
+        client = self._make_one(project=project_id, credentials=creds)
+        conn = client._connection = make_connection(resource)
+        dataset = client.dataset(dataset_id)
+
+        iterator = client.list_routines(dataset)
+        self.assertIs(iterator.dataset, dataset)
+        page = six.next(iterator.pages)
+        routines = list(page)
+        actual_token = iterator.next_page_token
+
+        self.assertEqual(len(routines), len(resource["routines"]))
+        for found, expected in zip(routines, resource["routines"]):
+            self.assertIsInstance(found, Routine)
+            self.assertEqual(
+                found.routine_id, expected["routineReference"]["routineId"]
+            )
+        self.assertEqual(actual_token, token)
+
+        conn.api_request.assert_called_once_with(
+            method="GET", path=path, query_params={}
+        )
+
+    def test_list_routines_wrong_type(self):
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        with self.assertRaises(TypeError):
+            client.list_routines(client.dataset(self.DS_ID).table("foo"))
+
     def test_list_tables_defaults(self):
         from google.cloud.bigquery.table import TableListItem
 
@@ -2125,6 +2400,67 @@ class TestClient(unittest.TestCase):
         )
 
         conn.api_request.assert_called_with(method="DELETE", path=path)
+
+    def test_delete_routine(self):
+        from google.cloud.bigquery.routine import Routine
+        from google.cloud.bigquery.routine import RoutineReference
+
+        full_routine_id = "test-routine-project.test_routines.minimal_routine"
+        routines = [
+            full_routine_id,
+            Routine(full_routine_id),
+            RoutineReference.from_string(full_routine_id),
+        ]
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = make_connection(*([{}] * len(routines)))
+
+        for routine in routines:
+            client.delete_routine(routine)
+            conn.api_request.assert_called_with(
+                method="DELETE",
+                path="/projects/test-routine-project/datasets/test_routines/routines/minimal_routine",
+            )
+
+    def test_delete_routine_w_wrong_type(self):
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        with self.assertRaises(TypeError):
+            client.delete_routine(client.dataset(self.DS_ID))
+
+    def test_delete_routine_w_not_found_ok_false(self):
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = make_connection(
+            google.api_core.exceptions.NotFound("routine not found")
+        )
+
+        with self.assertRaises(google.api_core.exceptions.NotFound):
+            client.delete_routine("routines-project.test_routines.test_routine")
+
+        conn.api_request.assert_called_with(
+            method="DELETE",
+            path="/projects/routines-project/datasets/test_routines/routines/test_routine",
+        )
+
+    def test_delete_routine_w_not_found_ok_true(self):
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = make_connection(
+            google.api_core.exceptions.NotFound("routine not found")
+        )
+
+        client.delete_routine(
+            "routines-project.test_routines.test_routine", not_found_ok=True
+        )
+
+        conn.api_request.assert_called_with(
+            method="DELETE",
+            path="/projects/routines-project/datasets/test_routines/routines/test_routine",
+        )
 
     def test_delete_table(self):
         from google.cloud.bigquery.table import Table

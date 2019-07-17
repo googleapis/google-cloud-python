@@ -2700,9 +2700,10 @@ CustomInfoType = _reflection.GeneratedProtocolMessageType(
                 ),
                 DESCRIPTOR=_CUSTOMINFOTYPE_DETECTIONRULE,
                 __module__="google.cloud.dlp_v2.proto.storage_pb2",
-                __doc__="""Rule for modifying a CustomInfoType to alter behavior under certain
-    circumstances, depending on the specific details of the rule. Not
-    supported for the ``surrogate_type`` custom info type.
+                __doc__="""Deprecated; use ``InspectionRuleSet`` instead. Rule for modifying a
+    ``CustomInfoType`` to alter behavior under certain circumstances,
+    depending on the specific details of the rule. Not supported for the
+    ``surrogate_type`` custom infoType.
     
     
     Attributes:

@@ -80,6 +80,11 @@ class IncidentServiceStub(object):
             request_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.SearchSignalsRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.SearchSignalsResponse.FromString,
         )
+        self.LookupSignal = channel.unary_unary(
+            "/google.cloud.irm.v1alpha2.IncidentService/LookupSignal",
+            request_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.LookupSignalRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2.Signal.FromString,
+        )
         self.GetSignal = channel.unary_unary(
             "/google.cloud.irm.v1alpha2.IncidentService/GetSignal",
             request_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.GetSignalRequest.SerializeToString,
@@ -266,6 +271,13 @@ class IncidentServiceServicer(object):
     def SearchSignals(self, request, context):
         """Lists signals that are part of an incident.
     Signals are returned in reverse chronological order.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def LookupSignal(self, request, context):
+        """Finds a signal by other unique IDs.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -484,6 +496,11 @@ def add_IncidentServiceServicer_to_server(servicer, server):
             servicer.SearchSignals,
             request_deserializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.SearchSignalsRequest.FromString,
             response_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.SearchSignalsResponse.SerializeToString,
+        ),
+        "LookupSignal": grpc.unary_unary_rpc_method_handler(
+            servicer.LookupSignal,
+            request_deserializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__service__pb2.LookupSignalRequest.FromString,
+            response_serializer=google_dot_cloud_dot_irm__v1alpha2_dot_proto_dot_incidents__pb2.Signal.SerializeToString,
         ),
         "GetSignal": grpc.unary_unary_rpc_method_handler(
             servicer.GetSignal,

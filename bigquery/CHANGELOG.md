@@ -4,6 +4,38 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.17.0
+
+07-12-2019 07:56 PDT
+
+### New Features
+
+- Support faster Arrow data format in `to_dataframe` when using BigQuery Storage API. ([#8551](https://github.com/googleapis/google-cloud-python/pull/8551))
+- Add `to_arrow` to get a `pyarrow.Table` from query results. ([#8609](https://github.com/googleapis/google-cloud-python/pull/8609))
+
+### Dependencies
+
+- Exclude bad 0.14.0 `pyarrow` release. ([#8551](https://github.com/googleapis/google-cloud-python/pull/8551))
+
+## 1.16.0
+
+07-01-2019 10:22 PDT
+
+### New Features
+
+- Add Routines API. ([#8491](https://github.com/googleapis/google-cloud-python/pull/8491))
+- Add more stats to Models API, such as `optimization_strategy` (via synth). ([#8344](https://github.com/googleapis/google-cloud-python/pull/8344))
+
+### Documentation
+
+- Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+- Add sample demonstrating how to create a job. ([#8422](https://github.com/googleapis/google-cloud-python/pull/8422))
+- Use autodetected location in code samples. ([#8340](https://github.com/googleapis/google-cloud-python/pull/8340), [#8341](https://github.com/googleapis/google-cloud-python/pull/8341))
+
+### Internal / Testing Changes
+
+- Refactor `to_dataframe` to deterministicly update progress bar. ([#8303](https://github.com/googleapis/google-cloud-python/pull/8303))
+
 ## 1.15.0
 
 06-14-2019 10:10 PDT

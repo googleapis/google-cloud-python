@@ -14,8 +14,8 @@
 
 """Shared helper functions for connecting BigQuery and pandas."""
 
-import collections
 import concurrent.futures
+import functools
 import warnings
 
 from six.moves import queue
@@ -75,6 +75,8 @@ def pyarrow_timestamp():
 
 
 if pyarrow:
+    # This dictionary is duplicated in bigquery_storage/test/unite/test_reader.py
+    # When modifying it be sure to update it there as well.
     BQ_TO_ARROW_SCALARS = {
         "BOOL": pyarrow.bool_,
         "BOOLEAN": pyarrow.bool_,
@@ -115,7 +117,7 @@ def bq_to_arrow_data_type(field):
     """
     if field.mode is not None and field.mode.upper() == "REPEATED":
         inner_type = bq_to_arrow_data_type(
-            schema.SchemaField(field.name, field.field_type)
+            schema.SchemaField(field.name, field.field_type, fields=field.fields)
         )
         if inner_type:
             return pyarrow.list_(inner_type)
@@ -142,6 +144,21 @@ def bq_to_arrow_field(bq_field):
 
     warnings.warn("Unable to determine type for field '{}'.".format(bq_field.name))
     return None
+
+
+def bq_to_arrow_schema(bq_schema):
+    """Return the Arrow schema, corresponding to a given BigQuery schema.
+
+    Returns None if any Arrow type cannot be determined.
+    """
+    arrow_fields = []
+    for bq_field in bq_schema:
+        arrow_field = bq_to_arrow_field(bq_field)
+        if arrow_field is None:
+            # Auto-detect the schema if there is an unknown field type.
+            return None
+        arrow_fields.append(arrow_field)
+    return pyarrow.schema(arrow_fields)
 
 
 def bq_to_arrow_array(series, bq_field):
@@ -210,13 +227,41 @@ def dataframe_to_parquet(dataframe, bq_schema, filepath):
     pyarrow.parquet.write_table(arrow_table, filepath)
 
 
+def _tabledata_list_page_to_arrow(page, column_names, arrow_types):
+    # Iterate over the page to force the API request to get the page data.
+    try:
+        next(iter(page))
+    except StopIteration:
+        pass
+
+    arrays = []
+    for column_index, arrow_type in enumerate(arrow_types):
+        arrays.append(pyarrow.array(page._columns[column_index], type=arrow_type))
+
+    return pyarrow.RecordBatch.from_arrays(arrays, column_names)
+
+
+def download_arrow_tabledata_list(pages, schema):
+    """Use tabledata.list to construct an iterable of RecordBatches."""
+    column_names = bq_to_arrow_schema(schema) or [field.name for field in schema]
+    arrow_types = [bq_to_arrow_data_type(field) for field in schema]
+
+    for page in pages:
+        yield _tabledata_list_page_to_arrow(page, column_names, arrow_types)
+
+
 def _tabledata_list_page_to_dataframe(page, column_names, dtypes):
-    columns = collections.defaultdict(list)
-    for row in page:
-        for column in column_names:
-            columns[column].append(row[column])
-    for column in dtypes:
-        columns[column] = pandas.Series(columns[column], dtype=dtypes[column])
+    # Iterate over the page to force the API request to get the page data.
+    try:
+        next(iter(page))
+    except StopIteration:
+        pass
+
+    columns = {}
+    for column_index, column_name in enumerate(column_names):
+        dtype = dtypes.get(column_name)
+        columns[column_name] = pandas.Series(page._columns[column_index], dtype=dtype)
+
     return pandas.DataFrame(columns, columns=column_names)
 
 
@@ -227,14 +272,18 @@ def download_dataframe_tabledata_list(pages, schema, dtypes):
         yield _tabledata_list_page_to_dataframe(page, column_names, dtypes)
 
 
-def _download_dataframe_bqstorage_stream(
-    download_state,
-    bqstorage_client,
-    column_names,
-    dtypes,
-    session,
-    stream,
-    worker_queue,
+def _bqstorage_page_to_arrow(page):
+    return page.to_arrow()
+
+
+def _bqstorage_page_to_dataframe(column_names, dtypes, page):
+    # page.to_dataframe() does not preserve column order in some versions
+    # of google-cloud-bigquery-storage. Access by column name to rearrange.
+    return page.to_dataframe(dtypes=dtypes)[column_names]
+
+
+def _download_table_bqstorage_stream(
+    download_state, bqstorage_client, session, stream, worker_queue, page_to_item
 ):
     position = bigquery_storage_v1beta1.types.StreamPosition(stream=stream)
     rowstream = bqstorage_client.read_rows(position).rows(session)
@@ -242,10 +291,8 @@ def _download_dataframe_bqstorage_stream(
     for page in rowstream.pages:
         if download_state.done:
             return
-        # page.to_dataframe() does not preserve column order in some versions
-        # of google-cloud-bigquery-storage. Access by column name to rearrange.
-        frame = page.to_dataframe(dtypes=dtypes)[column_names]
-        worker_queue.put(frame)
+        item = page_to_item(page)
+        worker_queue.put(item)
 
 
 def _nowait(futures):
@@ -262,14 +309,13 @@ def _nowait(futures):
     return done, not_done
 
 
-def download_dataframe_bqstorage(
+def _download_table_bqstorage(
     project_id,
     table,
     bqstorage_client,
-    column_names,
-    dtypes,
     preserve_order=False,
     selected_fields=None,
+    page_to_item=None,
 ):
     """Use (faster, but billable) BQ Storage API to construct DataFrame."""
     if "$" in table.table_id:
@@ -291,14 +337,13 @@ def download_dataframe_bqstorage(
     session = bqstorage_client.create_read_session(
         table.to_bqstorage(),
         "projects/{}".format(project_id),
+        format_=bigquery_storage_v1beta1.enums.DataFormat.ARROW,
         read_options=read_options,
         requested_streams=requested_streams,
     )
 
-    # Avoid reading rows from an empty table. pandas.concat will fail on an
-    # empty list.
+    # Avoid reading rows from an empty table.
     if not session.streams:
-        yield pandas.DataFrame(columns=column_names)
         return
 
     total_streams = len(session.streams)
@@ -318,14 +363,13 @@ def download_dataframe_bqstorage(
             # See: https://github.com/googleapis/google-cloud-python/pull/7698
             not_done = [
                 pool.submit(
-                    _download_dataframe_bqstorage_stream,
+                    _download_table_bqstorage_stream,
                     download_state,
                     bqstorage_client,
-                    column_names,
-                    dtypes,
                     session,
                     stream,
                     worker_queue,
+                    page_to_item,
                 )
                 for stream in session.streams
             ]
@@ -350,7 +394,7 @@ def download_dataframe_bqstorage(
                     continue
 
             # Return any remaining values after the workers finished.
-            while not worker_queue.empty():
+            while not worker_queue.empty():  # pragma: NO COVER
                 try:
                     # Include a timeout because even though the queue is
                     # non-empty, it doesn't guarantee that a subsequent call to
@@ -368,3 +412,36 @@ def download_dataframe_bqstorage(
             # Shutdown all background threads, now that they should know to
             # exit early.
             pool.shutdown(wait=True)
+
+
+def download_arrow_bqstorage(
+    project_id, table, bqstorage_client, preserve_order=False, selected_fields=None
+):
+    return _download_table_bqstorage(
+        project_id,
+        table,
+        bqstorage_client,
+        preserve_order=preserve_order,
+        selected_fields=selected_fields,
+        page_to_item=_bqstorage_page_to_arrow,
+    )
+
+
+def download_dataframe_bqstorage(
+    project_id,
+    table,
+    bqstorage_client,
+    column_names,
+    dtypes,
+    preserve_order=False,
+    selected_fields=None,
+):
+    page_to_item = functools.partial(_bqstorage_page_to_dataframe, column_names, dtypes)
+    return _download_table_bqstorage(
+        project_id,
+        table,
+        bqstorage_client,
+        preserve_order=preserve_order,
+        selected_fields=selected_fields,
+        page_to_item=page_to_item,
+    )

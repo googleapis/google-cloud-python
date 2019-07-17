@@ -20,6 +20,7 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -80,6 +81,13 @@ class EventServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
+    def project_path(cls, project):
+        """Return a fully-qualified project string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}", project=project
+        )
+
+    @classmethod
     def tenant_path(cls, project, tenant):
         """Return a fully-qualified tenant string."""
         return google.api_core.path_template.expand(
@@ -93,6 +101,7 @@ class EventServiceClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -123,6 +132,9 @@ class EventServiceClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -141,6 +153,15 @@ class EventServiceClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -149,6 +170,7 @@ class EventServiceClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=event_service_grpc_transport.EventServiceGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -159,7 +181,7 @@ class EventServiceClient(object):
                 self.transport = transport
         else:
             self.transport = event_service_grpc_transport.EventServiceGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -215,19 +237,15 @@ class EventServiceClient(object):
             >>> response = client.create_client_event(parent, client_event)
 
         Args:
-            parent (str): Required.
-
-                Resource name of the tenant under which the event is created.
+            parent (str): Required. Resource name of the tenant under which the event is created.
 
                 The format is "projects/{project\_id}/tenants/{tenant\_id}", for
                 example, "projects/api-test-project/tenant/foo".
 
                 Tenant id is optional and a default tenant is created if unspecified,
                 for example, "projects/api-test-project".
-            client_event (Union[dict, ~google.cloud.talent_v4beta1.types.ClientEvent]): Required.
-
-                Events issued when end user interacts with customer's application that
-                uses Cloud Talent Solution.
+            client_event (Union[dict, ~google.cloud.talent_v4beta1.types.ClientEvent]): Required. Events issued when end user interacts with customer's application
+                that uses Cloud Talent Solution.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.ClientEvent`

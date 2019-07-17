@@ -97,7 +97,7 @@ s.replace(
 s.replace(
     "grafeas/**/grafeas_client.py",
     r"""    def __init__\(self, transport=None, channel=None, credentials=None,
-            client_config=None, client_info=None\):""",
+            client_config=None, client_info=None, client_options=None\):""",
     "    def __init__(self, transport, client_config=None, client_info=None):",
 )
 
@@ -124,12 +124,31 @@ s.replace(
     "",
 )
 
+# Remove client_options
+# api_endpoint is currently the only option and doesn't make sense for Grafeas.
+s.replace("grafeas/**/grafeas_client.py", "import google.api_core.client_options\n", "")
+s.replace(
+    "grafeas/**/grafeas_client.py",
+    r"""            client_options \(Union\[dict, google\.api_core\.client_options\.ClientOptions\]\):
+                Client options used to set user options on the client\. API Endpoint
+                should be set through client_options\.
+        \"\"\"""",
+    "        \"\"\""
+)
+
 s.replace(
     "grafeas/**/grafeas_client.py",
     r"""if channel:
             warnings\.warn\('The `channel` argument is deprecated; use '
                           '`transport` instead\.',
                           PendingDeprecationWarning, stacklevel=2\)
+
+        api_endpoint = self\.SERVICE_ADDRESS
+        if client_options:
+            if type\(client_options\) == dict:
+                client_options = google\.api_core\.client_options\.from_dict\(client_options\)
+            if client_options\.api_endpoint:
+                api_endpoint = client_options\.api_endpoint
 
         \# Instantiate the transport\.
         \# The transport is responsible for handling serialization and
@@ -139,6 +158,7 @@ s.replace(
                 self\.transport = transport\(
                     credentials=credentials,
                     default_class=grafeas_grpc_transport\.GrafeasGrpcTransport,
+                    address=api_endpoint,
                 \)
             else:
                 if credentials:
@@ -149,7 +169,7 @@ s.replace(
                 self\.transport = transport
         else:
             self\.transport = grafeas_grpc_transport\.GrafeasGrpcTransport\(
-                address=self\.SERVICE_ADDRESS,
+                address=api_endpoint,
                 channel=channel,
                 credentials=credentials,
             \)""",

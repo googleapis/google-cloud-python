@@ -24,7 +24,7 @@ import nox
 
 
 LOCAL_DEPS = (os.path.join("..", "api_core"), os.path.join("..", "core"))
-
+BLACK_VERSION = "black==19.3b0"
 BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
 if os.path.exists("samples"):
@@ -38,7 +38,7 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", "black", *LOCAL_DEPS)
+    session.install("flake8", BLACK_VERSION, *LOCAL_DEPS)
     session.run("black", "--check", *BLACK_PATHS)
     session.run("flake8", "google", "tests")
 
@@ -53,7 +53,7 @@ def blacken(session):
     That run uses an image that doesn't have 3.6 installed. Before updating this
     check the state of the `gcp_ubuntu_config` we use for that Kokoro run.
     """
-    session.install("black")
+    session.install(BLACK_VERSION)
     session.run("black", *BLACK_PATHS)
 
 
@@ -118,11 +118,19 @@ def system(session):
     session.install("-e", "../test_utils/")
     session.install("-e", ".")
 
+    # Additional set up for VPC SC.
+    env = {
+        "PROJECT_NUMBER": "570941833855",
+        "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_IP": "10.1.1.1",
+        "GOOGLE_CLOUD_TESTS_VPCSC_INSIDE_IP": "55.55.0.0",
+    }
     # Run py.test against the system tests.
     if system_test_exists:
-        session.run("py.test", "--quiet", system_test_path, *session.posargs)
+        session.run("py.test", "--quiet", system_test_path, env=env, *session.posargs)
     if system_test_folder_exists:
-        session.run("py.test", "--quiet", system_test_folder_path, *session.posargs)
+        session.run(
+            "py.test", "--quiet", system_test_folder_path, env=env * session.posargs
+        )
 
 
 @nox.session(python="3.7")

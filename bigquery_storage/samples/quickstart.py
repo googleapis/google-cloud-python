@@ -50,7 +50,17 @@ def main(project_id="your-project-id", snapshot_millis=0):
 
     parent = "projects/{}".format(project_id)
     session = client.create_read_session(
-        table_ref, parent, table_modifiers=modifiers, read_options=read_options
+        table_ref,
+        parent,
+        table_modifiers=modifiers,
+        read_options=read_options,
+        # This API can also deliver data serialized in Apache Arrow format.
+        # This example leverages Apache Avro.
+        format_=bigquery_storage_v1beta1.enums.DataFormat.AVRO,
+        # We use a LIQUID strategy in this example because we only read from a
+        # single stream. Consider BALANCED if you're consuming multiple streams
+        # concurrently and want more consistent stream sizes.
+        sharding_strategy=(bigquery_storage_v1beta1.enums.ShardingStrategy.LIQUID),
     )  # API request.
 
     # We'll use only a single stream for reading data from the table. Because
