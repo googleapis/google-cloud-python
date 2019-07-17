@@ -14,17 +14,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
-import time
-
-from google.cloud import bigquery_datatransfer_v1
-from google.cloud.bigquery_datatransfer_v1.proto import datatransfer_pb2
+"""Unit tests for versionless import."""
 
 
-class TestSystemDataTransferService(object):
-    def test_list_data_sources(self):
-        project_id = os.environ["PROJECT_ID"]
+def test_shim():
+    from google.cloud import bigquery_datatransfer
+    from google.cloud import bigquery_datatransfer_v1
 
-        client = bigquery_datatransfer_v1.DataTransferServiceClient()
-        parent = client.location_path(project_id, "us-central1")
-        response = client.list_data_sources(parent)
+    assert bigquery_datatransfer.__all__ == bigquery_datatransfer_v1.__all__
+
+    for name in bigquery_datatransfer.__all__:
+        found = getattr(bigquery_datatransfer, name)
+        expected = getattr(bigquery_datatransfer_v1, name)
+        assert found is expected

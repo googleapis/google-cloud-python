@@ -75,7 +75,10 @@ class DataTransferServiceGrpcTransport(object):
 
     @classmethod
     def create_channel(
-        cls, address="bigquerydatatransfer.googleapis.com:443", credentials=None
+        cls,
+        address="bigquerydatatransfer.googleapis.com:443",
+        credentials=None,
+        **kwargs
     ):
         """Create and return a gRPC channel object.
 
@@ -86,12 +89,14 @@ class DataTransferServiceGrpcTransport(object):
                 credentials identify this application to the service. If
                 none are specified, the client will attempt to ascertain
                 the credentials from the environment.
+            kwargs (dict): Keyword arguments, which are passed to the
+                channel creation.
 
         Returns:
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES, **kwargs
         )
 
     @property
@@ -205,7 +210,7 @@ class DataTransferServiceGrpcTransport(object):
         Creates transfer runs for a time range [start\_time, end\_time]. For
         each date - or whatever granularity the data source supports - in the
         range, one transfer run is created. Note that runs are created per UTC
-        time in the time range.
+        time in the time range. DEPRECATED: use StartManualTransferRuns instead.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -283,3 +288,19 @@ class DataTransferServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["data_transfer_service_stub"].CheckValidCreds
+
+    @property
+    def start_manual_transfer_runs(self):
+        """Return the gRPC stub for :meth:`DataTransferServiceClient.start_manual_transfer_runs`.
+
+        Start manual transfer runs to be executed now with schedule\_time equal
+        to current time. The transfer runs can be created for a time range where
+        the run\_time is between start\_time (inclusive) and end\_time
+        (exclusive), or for a specific run\_time.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_transfer_service_stub"].StartManualTransferRuns
