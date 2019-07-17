@@ -21,6 +21,7 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -29,6 +30,7 @@ import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
+import google.api_core.protobuf_helpers
 import grpc
 
 from google.cloud.bigquery_datatransfer_v1.gapic import (
@@ -87,6 +89,46 @@ class DataTransferServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
+    def location_path(cls, project, location):
+        """Return a fully-qualified location string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}",
+            project=project,
+            location=location,
+        )
+
+    @classmethod
+    def location_data_source_path(cls, project, location, data_source):
+        """Return a fully-qualified location_data_source string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}/dataSources/{data_source}",
+            project=project,
+            location=location,
+            data_source=data_source,
+        )
+
+    @classmethod
+    def location_run_path(cls, project, location, transfer_config, run):
+        """Return a fully-qualified location_run string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}/transferConfigs/{transfer_config}/runs/{run}",
+            project=project,
+            location=location,
+            transfer_config=transfer_config,
+            run=run,
+        )
+
+    @classmethod
+    def location_transfer_config_path(cls, project, location, transfer_config):
+        """Return a fully-qualified location_transfer_config string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}/transferConfigs/{transfer_config}",
+            project=project,
+            location=location,
+            transfer_config=transfer_config,
+        )
+
+    @classmethod
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
@@ -128,6 +170,7 @@ class DataTransferServiceClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -158,6 +201,9 @@ class DataTransferServiceClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -176,6 +222,15 @@ class DataTransferServiceClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -184,6 +239,7 @@ class DataTransferServiceClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=data_transfer_service_grpc_transport.DataTransferServiceGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -194,7 +250,7 @@ class DataTransferServiceClient(object):
                 self.transport = transport
         else:
             self.transport = data_transfer_service_grpc_transport.DataTransferServiceGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -342,10 +398,10 @@ class DataTransferServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.bigquery_datatransfer_v1.types.DataSource` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.bigquery_datatransfer_v1.types.DataSource` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -401,6 +457,7 @@ class DataTransferServiceClient(object):
         parent,
         transfer_config,
         authorization_code=None,
+        version_info=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -423,7 +480,7 @@ class DataTransferServiceClient(object):
         Args:
             parent (str): The BigQuery project id where the transfer configuration should be
                 created. Must be in the format
-                /projects/{project\_id}/locations/{location\_id} If specified location
+                projects/{project\_id}/locations/{location\_id} If specified location
                 and location of the destination bigquery dataset do not match - the
                 request will fail.
             transfer_config (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.TransferConfig]): Data transfer configuration to create.
@@ -447,6 +504,12 @@ class DataTransferServiceClient(object):
                    should be returned in the title bar of the browser, with the page
                    text prompting the user to copy the code and paste it in the
                    application.
+            version_info (str): Optional version info. If users want to find a very recent access token,
+                that is, immediately after approving access, users have to set the
+                version\_info claim in the token request. To obtain the version\_info,
+                users must use the "none+gsession" response type. which be return a
+                version\_info back in the authorization response which be be put in a
+                JWT claim in the token request.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -481,6 +544,7 @@ class DataTransferServiceClient(object):
             parent=parent,
             transfer_config=transfer_config,
             authorization_code=authorization_code,
+            version_info=version_info,
         )
         if metadata is None:
             metadata = []
@@ -504,6 +568,7 @@ class DataTransferServiceClient(object):
         transfer_config,
         update_mask,
         authorization_code=None,
+        version_info=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -551,6 +616,12 @@ class DataTransferServiceClient(object):
                    should be returned in the title bar of the browser, with the page
                    text prompting the user to copy the code and paste it in the
                    application.
+            version_info (str): Optional version info. If users want to find a very recent access token,
+                that is, immediately after approving access, users have to set the
+                version\_info claim in the token request. To obtain the version\_info,
+                users must use the "none+gsession" response type. which be return a
+                version\_info back in the authorization response which be be put in a
+                JWT claim in the token request.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -585,6 +656,7 @@ class DataTransferServiceClient(object):
             transfer_config=transfer_config,
             update_mask=update_mask,
             authorization_code=authorization_code,
+            version_info=version_info,
         )
         if metadata is None:
             metadata = []
@@ -793,10 +865,10 @@ class DataTransferServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.bigquery_datatransfer_v1.types.TransferConfig` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.bigquery_datatransfer_v1.types.TransferConfig` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -860,7 +932,7 @@ class DataTransferServiceClient(object):
         Creates transfer runs for a time range [start\_time, end\_time]. For
         each date - or whatever granularity the data source supports - in the
         range, one transfer run is created. Note that runs are created per UTC
-        time in the time range.
+        time in the time range. DEPRECATED: use StartManualTransferRuns instead.
 
         Example:
             >>> from google.cloud import bigquery_datatransfer_v1
@@ -1132,10 +1204,10 @@ class DataTransferServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.bigquery_datatransfer_v1.types.TransferRun` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.bigquery_datatransfer_v1.types.TransferRun` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1239,10 +1311,10 @@ class DataTransferServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.bigquery_datatransfer_v1.types.TransferMessage` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.bigquery_datatransfer_v1.types.TransferMessage` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1365,5 +1437,98 @@ class DataTransferServiceClient(object):
             metadata.append(routing_metadata)
 
         return self._inner_api_calls["check_valid_creds"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def start_manual_transfer_runs(
+        self,
+        parent=None,
+        requested_time_range=None,
+        requested_run_time=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Start manual transfer runs to be executed now with schedule\_time equal
+        to current time. The transfer runs can be created for a time range where
+        the run\_time is between start\_time (inclusive) and end\_time
+        (exclusive), or for a specific run\_time.
+
+        Example:
+            >>> from google.cloud import bigquery_datatransfer_v1
+            >>>
+            >>> client = bigquery_datatransfer_v1.DataTransferServiceClient()
+            >>>
+            >>> response = client.start_manual_transfer_runs()
+
+        Args:
+            parent (str): Transfer configuration name in the form:
+                ``projects/{project_id}/transferConfigs/{config_id}``.
+            requested_time_range (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.TimeRange]): Time range for the transfer runs that should be started.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.bigquery_datatransfer_v1.types.TimeRange`
+            requested_run_time (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.Timestamp]): Specific run\_time for a transfer run to be started. The
+                requested\_run\_time must not be in the future.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.bigquery_datatransfer_v1.types.Timestamp`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsResponse` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "start_manual_transfer_runs" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "start_manual_transfer_runs"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.start_manual_transfer_runs,
+                default_retry=self._method_configs["StartManualTransferRuns"].retry,
+                default_timeout=self._method_configs["StartManualTransferRuns"].timeout,
+                client_info=self._client_info,
+            )
+
+        # Sanity check: We have some fields which are mutually exclusive;
+        # raise ValueError if more than one is sent.
+        google.api_core.protobuf_helpers.check_oneof(
+            requested_time_range=requested_time_range,
+            requested_run_time=requested_run_time,
+        )
+
+        request = datatransfer_pb2.StartManualTransferRunsRequest(
+            parent=parent,
+            requested_time_range=requested_time_range,
+            requested_run_time=requested_run_time,
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["start_manual_transfer_runs"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
