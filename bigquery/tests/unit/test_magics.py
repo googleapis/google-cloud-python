@@ -256,8 +256,8 @@ def test__make_bqstorage_client_false():
     assert got is None
 
 
-@pytest.mark.skipIf(
-    bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+@pytest.mark.skipif(
+    bigquery_storage_v1beta1 is None, reason="Requires `google-cloud-bigquery-storage`"
 )
 def test__make_bqstorage_client_true():
     credentials_mock = mock.create_autospec(
@@ -411,8 +411,8 @@ def test_bigquery_magic_clears_display_in_verbose_mode():
 
 
 @pytest.mark.usefixtures("ipython_interactive")
-@pytest.mark.skipIf(
-    bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+@pytest.mark.skipif(
+    bigquery_storage_v1beta1 is None, reason="Requires `google-cloud-bigquery-storage`"
 )
 def test_bigquery_magic_with_bqstorage_from_argument(monkeypatch):
     ip = IPython.get_ipython()
@@ -461,8 +461,8 @@ def test_bigquery_magic_with_bqstorage_from_argument(monkeypatch):
 
 
 @pytest.mark.usefixtures("ipython_interactive")
-@pytest.mark.skipIf(
-    bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+@pytest.mark.skipif(
+    bigquery_storage_v1beta1 is None, reason="Requires `google-cloud-bigquery-storage`"
 )
 def test_bigquery_magic_with_bqstorage_from_context(monkeypatch):
     ip = IPython.get_ipython()
@@ -511,8 +511,8 @@ def test_bigquery_magic_with_bqstorage_from_context(monkeypatch):
 
 
 @pytest.mark.usefixtures("ipython_interactive")
-@pytest.mark.skipIf(
-    bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+@pytest.mark.skipif(
+    bigquery_storage_v1beta1 is None, reason="Requires `google-cloud-bigquery-storage`"
 )
 def test_bigquery_magic_without_bqstorage(monkeypatch):
     ip = IPython.get_ipython()
