@@ -1449,6 +1449,8 @@ class RowIterator(HTTPIterator):
             bqstorage_client=bqstorage_client,
         )
 
+    # If changing the signature of this method, make sure to apply the same
+    # changes to job.QueryJob.to_arrow()
     def to_arrow(self, progress_bar_type=None, bqstorage_client=None):
         """[Beta] Create a class:`pyarrow.Table` by loading all pages of a
         table or query.
@@ -1552,6 +1554,8 @@ class RowIterator(HTTPIterator):
             bqstorage_client=bqstorage_client,
         )
 
+    # If changing the signature of this method, make sure to apply the same
+    # changes to job.QueryJob.to_dataframe()
     def to_dataframe(self, bqstorage_client=None, dtypes=None, progress_bar_type=None):
         """Create a pandas DataFrame by loading all pages of a query.
 

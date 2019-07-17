@@ -2896,7 +2896,9 @@ class QueryJob(_AsyncJob):
         rows._preserve_order = _contains_order_by(self.query)
         return rows
 
-    def to_arrow(self, progress_bar_type=None):
+    # If changing the signature of this method, make sure to apply the same
+    # changes to table.RowIterator.to_arrow()
+    def to_arrow(self, progress_bar_type=None, bqstorage_client=None):
         """[Beta] Create a class:`pyarrow.Table` by loading all pages of a
         table or query.
 
@@ -2919,6 +2921,18 @@ class QueryJob(_AsyncJob):
                 ``'tqdm_gui'``
                   Use the :func:`tqdm.tqdm_gui` function to display a
                   progress bar as a graphical dialog box.
+            bqstorage_client ( \
+                google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient \
+            ):
+                **Beta Feature** Optional. A BigQuery Storage API client. If
+                supplied, use the faster BigQuery Storage API to fetch rows
+                from BigQuery. This API is a billable API.
+
+                This method requires the ``pyarrow`` and
+                ``google-cloud-bigquery-storage`` libraries.
+
+                Reading from a specific partition or snapshot is not
+                currently supported by this method.
 
         Returns:
             pyarrow.Table
@@ -2932,8 +2946,12 @@ class QueryJob(_AsyncJob):
 
         ..versionadded:: 1.17.0
         """
-        return self.result().to_arrow(progress_bar_type=progress_bar_type)
+        return self.result().to_arrow(
+            progress_bar_type=progress_bar_type, bqstorage_client=bqstorage_client
+        )
 
+    # If changing the signature of this method, make sure to apply the same
+    # changes to table.RowIterator.to_dataframe()
     def to_dataframe(self, bqstorage_client=None, dtypes=None, progress_bar_type=None):
         """Return a pandas DataFrame from a QueryJob
 
