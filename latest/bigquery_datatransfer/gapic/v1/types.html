@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for BigQuery Data Transfer API Client &#8212; google-cloud f651c87 documentation</title>
+    <title>Types for BigQuery Data Transfer API Client &#8212; google-cloud 17fc24a documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -132,7 +132,7 @@ associated with the calling user.</p>
 <code class="descname">parent</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.CreateTransferConfigRequest.parent" title="Permalink to this definition">#</a></dt>
 <dd><p>The BigQuery project id where the transfer configuration
 should be created. Must be in the format
-/projects/{project_id}/locations/{location_id} If specified
+projects/{project_id}/locations/{location_id} If specified
 location and location of the destination bigquery dataset do
 not match - the request will fail.</p>
 </dd></dl>
@@ -165,6 +165,18 @@ paste it in the    application.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.CreateTransferConfigRequest.version_info">
+<code class="descname">version_info</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.CreateTransferConfigRequest.version_info" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional version info. If users want to find a very recent
+access token, that is, immediately after approving access,
+users have to set the version_info claim in the token
+request. To obtain the version_info, users must use the
+“none+gsession” response type. which be return a version_info
+back in the authorization response which be be put in a JWT
+claim in the token request.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">authorization_code</code></dt>
 <dd><p>Field google.cloud.bigquery.datatransfer.v1.CreateTransferConfigRequest.authorization_code</p>
@@ -180,6 +192,12 @@ paste it in the    application.</p>
 <dt>
 <code class="descname">transfer_config</code></dt>
 <dd><p>Field google.cloud.bigquery.datatransfer.v1.CreateTransferConfigRequest.transfer_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">version_info</code></dt>
+<dd><p>Field google.cloud.bigquery.datatransfer.v1.CreateTransferConfigRequest.version_info</p>
 </dd></dl>
 
 </dd></dl>
@@ -217,15 +235,13 @@ request proper OAuth tokens.</p>
 <dt id="google.cloud.bigquery_datatransfer_v1.types.DataSource.client_id">
 <code class="descname">client_id</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSource.client_id" title="Permalink to this definition">#</a></dt>
 <dd><p>Data source client id which should be used to receive refresh
-token. When not supplied, no offline credentials are populated
-for data transfer.</p>
+token.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.bigquery_datatransfer_v1.types.DataSource.scopes">
 <code class="descname">scopes</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSource.scopes" title="Permalink to this definition">#</a></dt>
 <dd><p>Api auth scopes for which refresh token needs to be obtained.
-Only valid when <code class="docutils literal notranslate"><span class="pre">client_id</span></code> is specified. Ignored otherwise.
 These are scopes needed by a data source to prepare data and
 ingest them into BigQuery, e.g.,
 <a class="reference external" href="https://www.googleapis.com/auth/bigquery">https://www.googleapis.com/auth/bigquery</a></p>
@@ -240,15 +256,15 @@ ingest them into BigQuery, e.g.,
 <dl class="attribute">
 <dt id="google.cloud.bigquery_datatransfer_v1.types.DataSource.supports_multiple_transfers">
 <code class="descname">supports_multiple_transfers</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSource.supports_multiple_transfers" title="Permalink to this definition">#</a></dt>
-<dd><p>Indicates whether the data source supports multiple transfers
-to different BigQuery targets.</p>
+<dd><p>Deprecated. This field has no effect.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.bigquery_datatransfer_v1.types.DataSource.update_deadline_seconds">
 <code class="descname">update_deadline_seconds</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSource.update_deadline_seconds" title="Permalink to this definition">#</a></dt>
 <dd><p>The number of seconds to wait for an update from the data
-source before BigQuery marks the transfer as failed.</p>
+source before the Data Transfer Service marks the transfer as
+FAILED.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -465,7 +481,7 @@ generate either generic ui, or custom data source specific forms.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.repeated">
 <code class="descname">repeated</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.repeated" title="Permalink to this definition">#</a></dt>
-<dd><p>Can parameter have multiple values.</p>
+<dd><p>Deprecated. This field has no effect.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -496,7 +512,7 @@ value.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.fields">
 <code class="descname">fields</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.fields" title="Permalink to this definition">#</a></dt>
-<dd><p>When parameter is a record, describes child fields.</p>
+<dd><p>Deprecated. This field has no effect.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -523,15 +539,26 @@ requirements.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.recurse">
 <code class="descname">recurse</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.recurse" title="Permalink to this definition">#</a></dt>
-<dd><p>If set to true, schema should be taken from the parent with
-the same parameter_id. Only applicable when parameter type is
-RECORD.</p>
+<dd><p>Deprecated. This field has no effect.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.deprecated">
+<code class="descname">deprecated</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>If true, it should not be used in new transfers, and it should
+not be visible to users.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
 <code class="descname">allowed_values</code></dt>
 <dd><p>Field google.cloud.bigquery.datatransfer.v1.DataSourceParameter.allowed_values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">deprecated</code></dt>
+<dd><p>Field google.cloud.bigquery.datatransfer.v1.DataSourceParameter.deprecated</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1187,6 +1214,60 @@ page of list results.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ScheduleOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">ScheduleOptions</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ScheduleOptions" title="Permalink to this definition">#</a></dt>
+<dd><p>Options customizing the data transfer schedule.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ScheduleOptions.disable_auto_scheduling">
+<code class="descname">disable_auto_scheduling</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ScheduleOptions.disable_auto_scheduling" title="Permalink to this definition">#</a></dt>
+<dd><p>If true, automatic scheduling of data transfer runs for this
+configuration will be disabled. The runs can be started on ad-
+hoc basis using StartManualTransferRuns API. When automatic
+scheduling is disabled, the TransferConfig.schedule field will
+be ignored.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ScheduleOptions.start_time">
+<code class="descname">start_time</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ScheduleOptions.start_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies time to start scheduling transfer runs. The first
+run will be scheduled at or after the start time according to
+a recurrence pattern defined in the schedule string. The start
+time can be changed at any moment. The time when a data
+transfer can be trigerred manually is not limited by this
+option.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ScheduleOptions.end_time">
+<code class="descname">end_time</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ScheduleOptions.end_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Defines time to stop scheduling transfer runs. A transfer run
+cannot be scheduled at or after the end time. The end time can
+be changed at any moment. The time when a data transfer can be
+trigerred manually is not limited by this option.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">disable_auto_scheduling</code></dt>
+<dd><p>Field google.cloud.bigquery.datatransfer.v1.ScheduleOptions.disable_auto_scheduling</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">end_time</code></dt>
+<dd><p>Field google.cloud.bigquery.datatransfer.v1.ScheduleOptions.end_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">start_time</code></dt>
+<dd><p>Field google.cloud.bigquery.datatransfer.v1.ScheduleOptions.start_time</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.bigquery_datatransfer_v1.types.ScheduleTransferRunsRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">ScheduleTransferRunsRequest</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ScheduleTransferRunsRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>A request to schedule transfer runs for a time range.</p>
@@ -1245,6 +1326,113 @@ page of list results.</p>
 <dt>
 <code class="descname">runs</code></dt>
 <dd><p>Field google.cloud.bigquery.datatransfer.v1.ScheduleTransferRunsResponse.runs</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">StartManualTransferRunsRequest</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>A request to start manual transfer runs.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Transfer configuration name in the form:
+<code class="docutils literal notranslate"><span class="pre">projects/{project_id}/transferConfigs/{config_id}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsRequest.time">
+<code class="descname">time</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsRequest.time" title="Permalink to this definition">#</a></dt>
+<dd><p>The requested time specification - this can be a time range or
+a specific run_time.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsRequest.requested_time_range">
+<code class="descname">requested_time_range</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsRequest.requested_time_range" title="Permalink to this definition">#</a></dt>
+<dd><p>Time range for the transfer runs that should be started.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsRequest.requested_run_time">
+<code class="descname">requested_run_time</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsRequest.requested_run_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Specific run_time for a transfer run to be started. The
+requested_run_time must not be in the future.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsRequest.TimeRange">
+<em class="property">class </em><code class="descname">TimeRange</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsRequest.TimeRange" title="Permalink to this definition">#</a></dt>
+<dd><p>A specification for a time range, this will request transfer runs with
+run_time between start_time (inclusive) and end_time (exclusive).</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsRequest.TimeRange.start_time">
+<code class="descname">start_time</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsRequest.TimeRange.start_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Start time of the range of transfer runs. For example,
+<code class="docutils literal notranslate"><span class="pre">&quot;2017-05-25T00:00:00+00:00&quot;</span></code>. The start_time must be
+strictly less than the end_time. Creates transfer runs where
+run_time is in the range betwen start_time (inclusive) and
+end_time (exlusive).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsRequest.TimeRange.end_time">
+<code class="descname">end_time</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsRequest.TimeRange.end_time" title="Permalink to this definition">#</a></dt>
+<dd><p>End time of the range of transfer runs. For example,
+<code class="docutils literal notranslate"><span class="pre">&quot;2017-05-30T00:00:00+00:00&quot;</span></code>. The end_time must not be in
+the future. Creates transfer runs where run_time is in the
+range betwen start_time (inclusive) and end_time (exlusive).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">end_time</code></dt>
+<dd><p>Field google.cloud.bigquery.datatransfer.v1.StartManualTransferRunsRequest.TimeRange.end_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">start_time</code></dt>
+<dd><p>Field google.cloud.bigquery.datatransfer.v1.StartManualTransferRunsRequest.TimeRange.start_time</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">parent</code></dt>
+<dd><p>Field google.cloud.bigquery.datatransfer.v1.StartManualTransferRunsRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">requested_run_time</code></dt>
+<dd><p>Field google.cloud.bigquery.datatransfer.v1.StartManualTransferRunsRequest.requested_run_time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">requested_time_range</code></dt>
+<dd><p>Field google.cloud.bigquery.datatransfer.v1.StartManualTransferRunsRequest.requested_time_range</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">StartManualTransferRunsResponse</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>A response to start manual transfer runs.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsResponse.runs">
+<code class="descname">runs</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsResponse.runs" title="Permalink to this definition">#</a></dt>
+<dd><p>The transfer runs that were created.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">runs</code></dt>
+<dd><p>Field google.cloud.bigquery.datatransfer.v1.StartManualTransferRunsResponse.runs</p>
 </dd></dl>
 
 </dd></dl>
@@ -1341,11 +1529,13 @@ appropriate data source service account.</p>
 <dt id="google.cloud.bigquery_datatransfer_v1.types.TransferConfig.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferConfig.name" title="Permalink to this definition">#</a></dt>
 <dd><p>The resource name of the transfer config. Transfer config
-names have the form
-<code class="docutils literal notranslate"><span class="pre">projects/{project_id}/transferConfigs/{config_id}</span></code>. Where
-<code class="docutils literal notranslate"><span class="pre">config_id</span></code> is usually a uuid, even though it is not
-guaranteed or required. The name is ignored when creating a
-transfer config.</p>
+names have the form of <code class="docutils literal notranslate"><span class="pre">projects/{project_id}/locations/{regi</span>
+<span class="pre">on}/transferConfigs/{config_id}</span></code>. The name is automatically
+generated based on the config_id specified in
+CreateTransferConfigRequest along with project_id and region.
+If config_id is not provided, usually a uuid, even though it
+is not guaranteed or required, will be generated for
+config_id.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1389,6 +1579,12 @@ least 8 hours, or less frequent.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferConfig.schedule_options">
+<code class="descname">schedule_options</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferConfig.schedule_options" title="Permalink to this definition">#</a></dt>
+<dd><p>Options customizing the data transfer schedule.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.bigquery_datatransfer_v1.types.TransferConfig.data_refresh_window_days">
 <code class="descname">data_refresh_window_days</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferConfig.data_refresh_window_days" title="Permalink to this definition">#</a></dt>
 <dd><p>The number of days to look back to automatically refresh the
@@ -1428,12 +1624,8 @@ server on input.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_datatransfer_v1.types.TransferConfig.user_id">
 <code class="descname">user_id</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferConfig.user_id" title="Permalink to this definition">#</a></dt>
-<dd><p>Output only. Unique ID of the user on whose behalf transfer is
-done. Applicable only to data sources that do not support
-service accounts. When set to 0, the data source service
-account credentials are used. May be negative. Note, that this
-identifier is not stable. It may change over time even for the
-same user.</p>
+<dd><p>Deprecated. Unique ID of the user on whose behalf transfer is
+done.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1500,6 +1692,12 @@ same user.</p>
 <dt>
 <code class="descname">schedule</code></dt>
 <dd><p>Field google.cloud.bigquery.datatransfer.v1.TransferConfig.schedule</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">schedule_options</code></dt>
+<dd><p>Field google.cloud.bigquery.datatransfer.v1.TransferConfig.schedule_options</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1586,8 +1784,8 @@ creating a transfer run.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_datatransfer_v1.types.TransferRun.run_time">
 <code class="descname">run_time</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferRun.run_time" title="Permalink to this definition">#</a></dt>
-<dd><p>For batch transfer runs, specifies the date and time that data
-should be ingested.</p>
+<dd><p>For batch transfer runs, specifies the date and time of the
+data should be ingested.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1644,12 +1842,8 @@ updated.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_datatransfer_v1.types.TransferRun.user_id">
 <code class="descname">user_id</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferRun.user_id" title="Permalink to this definition">#</a></dt>
-<dd><p>Output only. Unique ID of the user on whose behalf transfer is
-done. Applicable only to data sources that do not support
-service accounts. When set to 0, the data source service
-account credentials are used. May be negative. Note, that this
-identifier is not stable. It may change over time even for the
-same user.</p>
+<dd><p>Deprecated. Unique ID of the user on whose behalf transfer is
+done.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1659,8 +1853,7 @@ same user.</p>
 was created as part of a regular schedule. For batch transfer
 runs that are scheduled manually, this is empty. NOTE: the
 system might choose to delay the schedule depending on the
-current load, so <code class="docutils literal notranslate"><span class="pre">schedule_time</span></code> doesn’t always matches
-this.</p>
+current load, so <code class="docutils literal notranslate"><span class="pre">schedule_time</span></code> doesn’t always match this.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1804,6 +1997,18 @@ paste it in the    application.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.UpdateTransferConfigRequest.version_info">
+<code class="descname">version_info</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.UpdateTransferConfigRequest.version_info" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional version info. If users want to find a very recent
+access token, that is, immediately after approving access,
+users have to set the version_info claim in the token
+request. To obtain the version_info, users must use the
+“none+gsession” response type. which be return a version_info
+back in the authorization response which be be put in a JWT
+claim in the token request.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">authorization_code</code></dt>
 <dd><p>Field google.cloud.bigquery.datatransfer.v1.UpdateTransferConfigRequest.authorization_code</p>
@@ -1819,6 +2024,12 @@ paste it in the    application.</p>
 <dt>
 <code class="descname">update_mask</code></dt>
 <dd><p>Field google.cloud.bigquery.datatransfer.v1.UpdateTransferConfigRequest.update_mask</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">version_info</code></dt>
+<dd><p>Field google.cloud.bigquery.datatransfer.v1.UpdateTransferConfigRequest.version_info</p>
 </dd></dl>
 
 </dd></dl>
