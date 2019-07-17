@@ -22,6 +22,7 @@ import tempfile
 import unittest
 
 import google.cloud.storage.blob
+import google
 import mock
 import six
 from six.moves import http_client
@@ -1062,8 +1063,18 @@ class Test_Blob(unittest.TestCase):
 
         with _NamedTemporaryFile() as temp:
             file_ = blob.get_streaming_file(temp.name)
+            # downloading first part
             chunk1 = file_.read(3)
+
+            # reading part of downloaded chunk
+            file_.seek(0, 0)
+            chunk = file_.read(2)
+            self.assertEqual(chunk, b'ab')
+
+            # reading last chunk
+            file_.seek(3)
             chunk2 = file_.read(3)
+
             self.assertEqual(chunk1, b'abc')
             self.assertEqual(chunk2, b'def')
 
@@ -1076,6 +1087,35 @@ class Test_Blob(unittest.TestCase):
             self.assertEqual(
                 len(transport.request.call_args_list), 2
             )
+
+    def test_download_w_streaming_file_bad_response(self):
+        from google.cloud._testing import _NamedTemporaryFile
+
+        response1 = self._make_response_helper(
+            "gdfgd 1/6", b'atc', "1")
+
+        transport = mock.Mock(spec=["request"])
+        transport.request.side_effect = (response1)
+        # Create a fake client/bucket and use them in the Blob() constructor.
+        client = mock.Mock(_http=transport, spec=["_http"])
+        bucket = mock.Mock(
+            client=client,
+            user_project=None,
+            spec=["client", "user_project"]
+        )
+
+        media_link = "http://example.com/media/"
+        properties = {"mediaLink": media_link}
+        blob = self._make_one("blob-name", bucket=bucket, properties=properties, chunk_size=262144)
+
+        filehandle, filename = tempfile.mkstemp()
+        os.close(filehandle)
+
+        with self.assertRaises(google.api_core.exceptions.GoogleAPICallError) as exc:
+            file_ = blob.get_streaming_file(filename)
+            file_.read(3)
+
+        file_.close()
 
     def test_download_and_read_w_streaming_file(self):
         from google.cloud._testing import _NamedTemporaryFile
