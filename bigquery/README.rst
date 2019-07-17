@@ -22,7 +22,7 @@ processing power of Google's infrastructure.
 .. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dbigquery
    :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dbigquery
 .. _BigQuery: https://cloud.google.com/bigquery/what-is-bigquery
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/bigquery/index.html
+.. _Client Library Documentation: https://googleapis.dev/python/bigquery/latest
 .. _Product Documentation: https://cloud.google.com/bigquery/docs/reference/v2/
 
 Quick Start
@@ -38,7 +38,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Google Cloud BigQuery API.:  https://cloud.google.com/bigquery
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~

@@ -18,7 +18,7 @@ common helpers (e.g. base ``Client`` classes) used by all of the
    :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-core
 .. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dcore
    :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dcore
-.. _Documentation: https://googleapis.github.io/google-cloud-python/latest/core/index.html
+.. _Documentation: https://googleapis.dev/python/google-cloud-core/latest
 
 Quick Start
 -----------
