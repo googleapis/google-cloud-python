@@ -200,7 +200,7 @@ Running System Tests
    > --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
 
    # Create the indexes
-   $ gcloud datastore create-indexes system_tests/data/index.yaml
+   $ gcloud datastore indexes create system_tests/data/index.yaml
 
 - For datastore query tests, you'll need stored data in your dataset.
   To populate this data, run::
