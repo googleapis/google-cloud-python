@@ -201,7 +201,7 @@ class Batch(object):
 
     def put_entity_pb(self, entity_pb):
         if self._status != self._IN_PROGRESS:
-            raise ValueError("Batch must be in progress to put()")
+            raise ValueError("Batch must be in progress to put_entity_pb()")
 
         if entity_pb.key is None:
             raise ValueError("Entity must have a key")
