@@ -1,0 +1,20 @@
+indexes:
+
+- kind: TestEntityPB
+  properties:
+  - name: string_key
+  - name: int32_key
+
+- kind: TestEntityPB
+  properties:
+  - name: string_key
+    direction: asc
+  - name: int32_key
+    direction: asc
+
+- kind: TestEntityPB
+  properties:
+  - name: string_key
+    direction: desc
+  - name: int32_key
+    direction: desc
