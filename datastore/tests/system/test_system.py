@@ -243,6 +243,8 @@ class TestDatastoreQuery(TestDatastore):
         if os.getenv(GCD_DATASET) is not None:
             # Populate the datastore with the cloned client.
             populate_datastore.add_characters(client=cls.CLIENT)
+            populate_datastore.add_uid_keys(client=cls.CLIENT)
+            populate_datastore.add_timestamp_keys(client=cls.CLIENT)
 
         cls.CHARACTERS = populate_datastore.CHARACTERS
         # Use the client for this test instead of the global.
