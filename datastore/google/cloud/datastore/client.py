@@ -374,8 +374,9 @@ class Client(ClientWithProject):
 
         .. note::
 
-            This method is the same as "get()" method, but it works with raw Entity Protobuf
-            object (:class:`.entity_pb2.Entity`) instead of Entity Python class
+            This method is the same as :meth:`Client.get` method, but it works with
+            raw Entity Protobuf object (:class:`.entity_pb2.Entity`) instead of
+            Entity Python class instance
             (:class:`google.cloud.datastore.entity.Entity`).
 
         :type key: :class:`google.cloud.datastore.key.Key`
@@ -469,8 +470,9 @@ class Client(ClientWithProject):
 
         .. note::
 
-            This method is the same as "get_multi()" method, but it works with raw Entity
-            Protobuf object (:class:`.entity_pb2.Entity`) instead of Entity Python class
+            This method is the same as :meth:`Client.get_multi` method, but it
+            works with raw Entity Protobuf objects (:class:`.entity_pb2.Entity`)
+            instead of Entity Python class instances
             (:class:`google.cloud.datastore.entity.Entity`).
 
         :type keys: list of :class:`google.cloud.datastore.key.Key`
@@ -531,8 +533,9 @@ class Client(ClientWithProject):
 
         .. note::
 
-            This method is the same as "put()" method, but it works with raw Entity Protobuf
-            object (:class:`.entity_pb2.Entity`) instead of Entity Python class
+            This method is the same as :meth:`Client.put` method, but it works
+            with raw Entity Protobuf object (:class:`.entity_pb2.Entity`)
+            instead of Entity Python class instance
             (:class:`google.cloud.datastore.entity.Entity`).
 
         :type entity_pb: :class:`.entity_pb2.Entity`
@@ -573,9 +576,10 @@ class Client(ClientWithProject):
 
         .. note::
 
-            This method is the same as "put_multi()" method, but it works with raw Entity Protobuf
-            object (:class:`.entity_pb2.Entity`) instead of Entity Python class
-            (:class:`google.cloud.datastore.entity.Entity`).
+            This method is the same as :meth:`Client.put_multi` method, but it
+            works with raw Entity Protobuf objects
+            (:class:`.entity_pb2.Entity`) instead of Entity Python class
+            instances (:class:`google.cloud.datastore.entity.Entity`).
 
         :type entity_pbs: list of :class:`.entity_pb2.Entity`
         :param entity_pbs: The entities to be saved to the datastore.

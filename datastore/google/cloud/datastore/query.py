@@ -401,12 +401,14 @@ class Query(object):
         client=None,
         eventual=False,
     ):
-        """Execute the query, return iterator for the matching raw Entity Protobuf objects.
+        """Execute the query, return iterator for the matching raw Entity
+        Protobuf objects.
 
         .. note::
 
-            This method is the same as "fetch()" method, but it works with raw Entity Protobuf
-            objects (:class:`.entity_pb2.Entity`) instead of Entity Python class
+            This method is the same as :meth:`Query.fetch` method, but it works
+            with raw Entity Protobuf objects (:class:`.entity_pb2.Entity`)
+            instead of Entity Python class instances
             (:class:`google.cloud.datastore.entity.Entity`).
 
         :type limit: int
