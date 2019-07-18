@@ -80,6 +80,31 @@ def remove_kind(kind, client):
         delete_chunks(client, results)
 
 
+def remove_all_entities(client):
+    # Clear datastore, ensure it's empty
+    query = client.query(kind='__kind__')
+    query.keys_only()
+
+    kinds = [entity.key.id_or_name for entity in query.fetch()]
+
+    for kind in kinds:
+        query = client.query(kind=kind)
+        query.keys_only()
+
+        entities = list(query.fetch())
+
+        # NOTE: Emulator doesn't support deleting more than 500 entities in a
+        # single call
+        delete_chunks(client, entities)
+
+        # Verify entities have been deleted
+        query = client.query(kind=kind)
+        query.keys_only()
+        result = list(query.fetch())
+
+        assert (len(result) == 0)
+
+
 def main():
     client = datastore.Client()
     kinds = sys.argv[1:]
