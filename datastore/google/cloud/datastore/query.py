@@ -445,7 +445,7 @@ class Query(object):
             start_cursor=start_cursor,
             end_cursor=end_cursor,
             eventual=eventual,
-            item_to_value=lambda iterator, entity_pb: entity_pb
+            item_to_value=lambda iterator, entity_pb: entity_pb,
         )
 
 

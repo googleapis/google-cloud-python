@@ -82,7 +82,7 @@ def remove_kind(kind, client):
 
 def remove_all_entities(client):
     # Clear datastore, ensure it's empty
-    query = client.query(kind='__kind__')
+    query = client.query(kind="__kind__")
     query.keys_only()
 
     kinds = [entity.key.id_or_name for entity in query.fetch()]
@@ -102,7 +102,7 @@ def remove_all_entities(client):
         query.keys_only()
         result = list(query.fetch())
 
-        assert (len(result) == 0)
+        assert len(result) == 0
 
 
 def main():

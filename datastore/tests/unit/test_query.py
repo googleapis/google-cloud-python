@@ -35,7 +35,6 @@ class BaseQueryTestCase(object):
 
 
 class TestQuery(BaseQueryTestCase, unittest.TestCase):
-
     def test_ctor_defaults(self):
         client = self._make_client()
         query = self._make_one(client)
@@ -675,7 +674,6 @@ class Test__pb_from_query(unittest.TestCase):
 
 
 class TestQueryRawEntityPBMethods(BaseQueryTestCase, unittest.TestCase):
-
     def test_fetch_entity_pb_client_none(self):
         from google.cloud.datastore.query import Iterator
 

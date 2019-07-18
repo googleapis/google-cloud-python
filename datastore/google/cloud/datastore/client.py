@@ -367,7 +367,9 @@ class Client(ClientWithProject):
 
         return None
 
-    def get_entity_pb(self, key, missing=None, deferred=None, transaction=None, eventual=False):
+    def get_entity_pb(
+        self, key, missing=None, deferred=None, transaction=None, eventual=False
+    ):
         """Retrieve a single Entity Protobuf object for the provided key.
 
         .. note::
@@ -449,8 +451,13 @@ class Client(ClientWithProject):
                  which does not match our project.
         :raises: :class:`ValueError` if eventual is True and in a transaction.
         """
-        entity_pbs = self._get_multi(keys=keys, missing=missing, deferred=deferred,
-                                     transaction=transaction, eventual=eventual)
+        entity_pbs = self._get_multi(
+            keys=keys,
+            missing=missing,
+            deferred=deferred,
+            transaction=transaction,
+            eventual=eventual,
+        )
 
         entities = [helpers.entity_from_protobuf(entity_pb) for entity_pb in entity_pbs]
         return entities
@@ -496,8 +503,13 @@ class Client(ClientWithProject):
                  which does not match our project.
         :raises: :class:`ValueError` if eventual is True and in a transaction.
         """
-        return self._get_multi(keys=keys, missing=missing, deferred=deferred,
-                               transaction=transaction, eventual=eventual)
+        return self._get_multi(
+            keys=keys,
+            missing=missing,
+            deferred=deferred,
+            transaction=transaction,
+            eventual=eventual,
+        )
 
     def put(self, entity):
         """Save an entity in the Cloud Datastore.
@@ -789,7 +801,9 @@ class Client(ClientWithProject):
 
         return None
 
-    def _get_multi(self, keys, missing=None, deferred=None, transaction=None, eventual=False):
+    def _get_multi(
+        self, keys, missing=None, deferred=None, transaction=None, eventual=False
+    ):
         if not keys:
             return []
 

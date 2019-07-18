@@ -74,7 +74,7 @@ class TestBatch(unittest.TestCase):
         batch = self._make_one(client)
 
         batch.begin()
-        expected_msg = 'Entity must have a key'
+        expected_msg = "Entity must have a key"
         self.assertRaisesRegexp(ValueError, expected_msg, batch.put, _Entity())
 
     def test_put_entity_wrong_status(self):
@@ -85,7 +85,7 @@ class TestBatch(unittest.TestCase):
         entity.key = _Key("OTHER")
 
         self.assertEqual(batch._status, batch._INITIAL)
-        expected_msg = 'Batch must be in progress to put()'
+        expected_msg = "Batch must be in progress to put()"
         self.assertRaisesRegexp(ValueError, expected_msg, batch.put, entity)
 
     def test_put_entity_w_key_wrong_project(self):
@@ -96,7 +96,7 @@ class TestBatch(unittest.TestCase):
         entity.key = _Key("OTHER")
 
         batch.begin()
-        expected_msg = 'Key must be from same project as batch'
+        expected_msg = "Key must be from same project as batch"
         self.assertRaisesRegexp(ValueError, expected_msg, batch.put, entity)
 
     def test_put_entity_w_partial_key(self):
@@ -377,6 +377,7 @@ class TestBatchRawEntityPBMethods(unittest.TestCase):
     """
     Batch test case for API methods which work with raw Entity Protobuf objects.
     """
+
     @staticmethod
     def _get_target_class():
         from google.cloud.datastore.batch import Batch
@@ -394,8 +395,10 @@ class TestBatchRawEntityPBMethods(unittest.TestCase):
         batch.begin()
 
         entity_pb = entity_pb2.Entity()
-        expected_msg = 'Entity must have a key'
-        self.assertRaisesRegexp(ValueError, expected_msg, batch.put_entity_pb, entity_pb)
+        expected_msg = "Entity must have a key"
+        self.assertRaisesRegexp(
+            ValueError, expected_msg, batch.put_entity_pb, entity_pb
+        )
 
     def test_put_entity_wrong_status(self):
         project = "PROJECT"
@@ -406,8 +409,10 @@ class TestBatchRawEntityPBMethods(unittest.TestCase):
         entity_pb.key.CopyFrom(key.to_protobuf())
 
         self.assertEqual(batch._status, batch._INITIAL)
-        expected_msg = 'Batch must be in progress to put_entity_pb()'
-        self.assertRaisesRegexp(ValueError, expected_msg, batch.put_entity_pb, entity_pb)
+        expected_msg = "Batch must be in progress to put_entity_pb()"
+        self.assertRaisesRegexp(
+            ValueError, expected_msg, batch.put_entity_pb, entity_pb
+        )
 
     def test_put_entity_w_key_wrong_project(self):
         project = "PROJECT"
@@ -419,8 +424,10 @@ class TestBatchRawEntityPBMethods(unittest.TestCase):
         entity_pb.key.CopyFrom(key.to_protobuf())
 
         batch.begin()
-        expected_msg = 'Key must be from same project as batch'
-        self.assertRaisesRegexp(ValueError, expected_msg, batch.put_entity_pb, entity_pb)
+        expected_msg = "Key must be from same project as batch"
+        self.assertRaisesRegexp(
+            ValueError, expected_msg, batch.put_entity_pb, entity_pb
+        )
 
     def test_put_entity_w_partial_key(self):
         project = "PROJECT"
@@ -430,7 +437,7 @@ class TestBatchRawEntityPBMethods(unittest.TestCase):
         key._id = None
         entity_pb = entity_pb2.Entity()
         entity_pb.key.CopyFrom(key.to_protobuf())
-        int32_value = entity_pb.properties.get_or_create('int32_key')
+        int32_value = entity_pb.properties.get_or_create("int32_key")
         int32_value.integer_value = 1000
 
         batch.begin()
@@ -447,7 +454,7 @@ class TestBatchRawEntityPBMethods(unittest.TestCase):
         key = _Key(project)
         entity_pb = entity_pb2.Entity()
         entity_pb.key.CopyFrom(key.to_protobuf())
-        int32_value = entity_pb.properties.get_or_create('int32_key')
+        int32_value = entity_pb.properties.get_or_create("int32_key")
         int32_value.integer_value = 1000
 
         batch.begin()
@@ -471,8 +478,9 @@ class TestBatchRawEntityPBMethods(unittest.TestCase):
         entity_pb.key.CopyFrom(key.to_protobuf())
         batch._partial_key_entities.append(entity_pb)
 
-        is_key_partial = (not entity_pb.key.path or (not entity_pb.key.path[0].name and not
-                          entity_pb.key.path[0].id))
+        is_key_partial = not entity_pb.key.path or (
+            not entity_pb.key.path[0].name and not entity_pb.key.path[0].id
+        )
         self.assertTrue(is_key_partial)
 
         self.assertEqual(batch._status, batch._INITIAL)
@@ -484,8 +492,9 @@ class TestBatchRawEntityPBMethods(unittest.TestCase):
         mode = datastore_pb2.CommitRequest.NON_TRANSACTIONAL
         ds_api.commit.assert_called_once_with(project, mode, [], transaction=None)
 
-        is_key_partial = (not entity_pb.key.path or (not entity_pb.key.path[0].name and not
-                          entity_pb.key.path[0].id))
+        is_key_partial = not entity_pb.key.path or (
+            not entity_pb.key.path[0].name and not entity_pb.key.path[0].id
+        )
         self.assertFalse(is_key_partial)
         self.assertEqual(entity_pb.key.path[0].id, new_id)
 

@@ -142,7 +142,6 @@ class BaseClientTestCase(object):
 
 
 class TestClient(BaseClientTestCase, unittest.TestCase):
-
     def test_constructor_w_project_no_environ(self):
         # Some environments (e.g. AppVeyor CI) run in GCE, so
         # this test would fail artificially.
@@ -1106,7 +1105,7 @@ class TestClientRawEntityPBMethods(BaseClientTestCase, unittest.TestCase):
         TXN_ID = "123"
         _called_with = []
 
-        entity_pb = _make_entity_pb(self.PROJECT, 'Foo', 123, "foo", "Foo")
+        entity_pb = _make_entity_pb(self.PROJECT, "Foo", 123, "foo", "Foo")
 
         def _get_multi_entity_pb(*args, **kw):
             _called_with.append((args, kw))
@@ -1161,7 +1160,7 @@ class TestClientRawEntityPBMethods(BaseClientTestCase, unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
         client.put_multi_entity_pbs = _put_multi_entity_pbs
-        entity_pb = _make_entity_pb(self.PROJECT, 'Foo', 123, "foo", "Foo")
+        entity_pb = _make_entity_pb(self.PROJECT, "Foo", 123, "foo", "Foo")
 
         client.put_entity_pb(entity_pb)
 

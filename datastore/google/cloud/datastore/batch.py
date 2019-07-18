@@ -212,8 +212,9 @@ class Batch(object):
 
         # Key is considered partial if neither "id" nor "name" values of the key
         # "path" field are set
-        is_key_partial = (not entity_pb.key.path or (not entity_pb.key.path[0].name and not
-                          entity_pb.key.path[0].id))
+        is_key_partial = not entity_pb.key.path or (
+            not entity_pb.key.path[0].name and not entity_pb.key.path[0].id
+        )
 
         if is_key_partial:
             insert_entity_pb = self._add_partial_key_entity_pb()
