@@ -16,6 +16,8 @@ import unittest
 
 import mock
 
+from google.cloud.datastore_v1.proto import entity_pb2
+
 
 def _make_credentials():
     import google.auth.credentials
@@ -24,7 +26,6 @@ def _make_credentials():
 
 
 def _make_entity_pb(project, kind, integer_id, name=None, str_val=None):
-    from google.cloud.datastore_v1.proto import entity_pb2
     from google.cloud.datastore.helpers import _new_value_pb
 
     entity_pb = entity_pb2.Entity()
@@ -112,8 +113,7 @@ class Test__determine_default_project(unittest.TestCase):
         self.assertEqual(callers, ["gcd_mock", ("fallback_mock", None)])
 
 
-class TestClient(unittest.TestCase):
-
+class BaseClientTestCase(object):
     PROJECT = "PROJECT"
 
     @staticmethod
@@ -139,6 +139,9 @@ class TestClient(unittest.TestCase):
             _http=_http,
             _use_grpc=_use_grpc,
         )
+
+
+class TestClient(BaseClientTestCase, unittest.TestCase):
 
     def test_constructor_w_project_no_environ(self):
         # Some environments (e.g. AppVeyor CI) run in GCE, so
@@ -389,6 +392,18 @@ class TestClient(unittest.TestCase):
         ds_api.lookup.assert_called_once_with(
             self.PROJECT, [key.to_protobuf()], read_options=read_options
         )
+
+    def test_get_multi_entity_pb_miss(self):
+        from google.cloud.datastore.key import Key
+
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds)
+        ds_api = _make_datastore_api()
+        client._datastore_api_internal = ds_api
+
+        key = Key("Kind", 1234, project=self.PROJECT)
+        results = client.get_multi_entity_pb([key])
+        self.assertEqual(results, [])
 
     def test_get_multi_miss_w_missing(self):
         from google.cloud.datastore_v1.proto import entity_pb2
@@ -1086,6 +1101,141 @@ class TestClient(unittest.TestCase):
             )
 
 
+class TestClientRawEntityPBMethods(BaseClientTestCase, unittest.TestCase):
+    def test_get_entity_pb_hit(self):
+        TXN_ID = "123"
+        _called_with = []
+
+        entity_pb = _make_entity_pb(self.PROJECT, 'Foo', 123, "foo", "Foo")
+
+        def _get_multi_entity_pb(*args, **kw):
+            _called_with.append((args, kw))
+            return [entity_pb]
+
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds)
+        client.get_multi_entity_pb = _get_multi_entity_pb
+
+        key, missing, deferred = object(), [], []
+
+        self.assertIs(client.get_entity_pb(key, missing, deferred, TXN_ID), entity_pb)
+        self.assertEqual(_called_with[0][0], ())
+        self.assertEqual(_called_with[0][1]["keys"], [key])
+        self.assertIs(_called_with[0][1]["missing"], missing)
+        self.assertIs(_called_with[0][1]["deferred"], deferred)
+        self.assertEqual(_called_with[0][1]["transaction"], TXN_ID)
+
+    def test_get_entity_pb_miss(self):
+        _called_with = []
+
+        def _get_multi_entity_pb(*args, **kw):
+            _called_with.append((args, kw))
+            return []
+
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds)
+        client.get_multi_entity_pb = _get_multi_entity_pb
+
+        key = object()
+
+        self.assertIsNone(client.get_entity_pb(key))
+
+        self.assertEqual(_called_with[0][0], ())
+        self.assertEqual(_called_with[0][1]["keys"], [key])
+        self.assertIsNone(_called_with[0][1]["missing"])
+        self.assertIsNone(_called_with[0][1]["deferred"])
+        self.assertIsNone(_called_with[0][1]["transaction"])
+
+    def test_get_multi_entity_pb_no_keys(self):
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds)
+        results = client.get_multi_entity_pb([])
+        self.assertEqual(results, [])
+
+    def test_put_entity_pb(self):
+        _called_with = []
+
+        def _put_multi_entity_pbs(*args, **kw):
+            _called_with.append((args, kw))
+
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds)
+        client.put_multi_entity_pbs = _put_multi_entity_pbs
+        entity_pb = _make_entity_pb(self.PROJECT, 'Foo', 123, "foo", "Foo")
+
+        client.put_entity_pb(entity_pb)
+
+        self.assertEqual(_called_with[0][0], ())
+        self.assertEqual(_called_with[0][1]["entity_pbs"], [entity_pb])
+
+    def test_put_entity_pb_no_entities(self):
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds)
+        self.assertIsNone(client.put_multi_entity_pbs([]))
+
+    def test_put_multi_entity_pbs_no_batch_w_partial_key(self):
+        from google.cloud.datastore_v1.proto import datastore_pb2
+        from google.cloud.datastore.helpers import _property_tuples
+
+        entity_pb = entity_pb2.Entity()
+        key = _Key(self.PROJECT)
+        key._id = None
+        entity_pb.key.CopyFrom(key.to_protobuf())
+        string_value = entity_pb.properties.get_or_create("string_key")
+        string_value.string_value = "foo bar baz"
+
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds)
+        key_pb = _make_key(234)
+        ds_api = _make_datastore_api(key_pb)
+        client._datastore_api_internal = ds_api
+
+        result = client.put_multi_entity_pbs([entity_pb])
+        self.assertIsNone(result)
+
+        self.assertEqual(ds_api.commit.call_count, 1)
+        _, positional, keyword = ds_api.commit.mock_calls[0]
+        self.assertEqual(keyword, {"transaction": None})
+
+        self.assertEqual(len(positional), 3)
+        self.assertEqual(positional[0], self.PROJECT)
+        self.assertEqual(positional[1], datastore_pb2.CommitRequest.NON_TRANSACTIONAL)
+
+        mutations = positional[2]
+        mutated_entity = _mutated_pb(self, mutations, "insert")
+        self.assertEqual(mutated_entity.key, key.to_protobuf())
+
+        prop_list = list(_property_tuples(mutated_entity))
+        self.assertTrue(len(prop_list), 1)
+        name, value_pb = prop_list[0]
+        self.assertEqual(name, "string_key")
+        self.assertEqual(value_pb.string_value, u"foo bar baz")
+
+    def test_put_multi_entity_pb_existing_batch_w_completed_key(self):
+        from google.cloud.datastore.helpers import _property_tuples
+
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds)
+        entity_pb = entity_pb2.Entity()
+        key = _Key(self.PROJECT)
+        entity_pb.key.CopyFrom(key.to_protobuf())
+        string_value = entity_pb.properties.get_or_create("string_key")
+        string_value.string_value = "foo bar baz"
+
+        with _NoCommitBatch(client) as CURR_BATCH:
+            result = client.put_multi_entity_pbs([entity_pb])
+
+        self.assertIsNone(result)
+        mutated_entity = _mutated_pb(self, CURR_BATCH.mutations, "upsert")
+        self.assertEqual(mutated_entity.key, key.to_protobuf())
+
+        prop_list = list(_property_tuples(mutated_entity))
+        self.assertTrue(len(prop_list), 1)
+        name, value_pb = prop_list[0]
+        self.assertEqual(name, "string_key")
+        self.assertEqual(value_pb.string_value, u"foo bar baz")
+
+
 class _NoCommitBatch(object):
     def __init__(self, client):
         from google.cloud.datastore.batch import Batch
@@ -1146,7 +1296,7 @@ class _Key(object):
 
         key = self._key = entity_pb2.Key()
         # Don't assign it, because it will just get ripped out
-        # key.partition_id.project_id = self.project
+        key.partition_id.project_id = self.project
 
         element = key.path.add()
         element.kind = self._kind

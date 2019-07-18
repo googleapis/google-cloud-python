@@ -17,7 +17,7 @@ import unittest
 import mock
 
 
-class TestQuery(unittest.TestCase):
+class BaseQueryTestCase(object):
 
     _PROJECT = "PROJECT"
 
@@ -32,6 +32,9 @@ class TestQuery(unittest.TestCase):
 
     def _make_client(self):
         return _Client(self._PROJECT)
+
+
+class TestQuery(BaseQueryTestCase, unittest.TestCase):
 
     def test_ctor_defaults(self):
         client = self._make_client()
@@ -669,6 +672,35 @@ class Test__pb_from_query(unittest.TestCase):
     def test_distinct_on(self):
         pb = self._call_fut(_Query(distinct_on=["a", "b", "c"]))
         self.assertEqual([item.name for item in pb.distinct_on], ["a", "b", "c"])
+
+
+class TestQueryRawEntityPBMethods(BaseQueryTestCase, unittest.TestCase):
+
+    def test_fetch_entity_pb_client_none(self):
+        from google.cloud.datastore.query import Iterator
+
+        client = self._make_client()
+        query = self._make_one(client)
+        iterator = query.fetch_entity_pb(client=None)
+
+        self.assertIsInstance(iterator, Iterator)
+        self.assertIs(iterator._query, query)
+        self.assertIs(iterator.client, client)
+        self.assertIsNone(iterator.max_results)
+        self.assertEqual(iterator._offset, 0)
+
+    def test_fetch_entity_pb_client_set(self):
+        from google.cloud.datastore.query import Iterator
+
+        client = self._make_client()
+        query = self._make_one(client)
+        iterator = query.fetch(limit=7, offset=8, client=client)
+
+        self.assertIsInstance(iterator, Iterator)
+        self.assertIs(iterator._query, query)
+        self.assertIs(iterator.client, client)
+        self.assertEqual(iterator.max_results, 7)
+        self.assertEqual(iterator._offset, 8)
 
 
 class _Query(object):
