@@ -368,6 +368,123 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(client._batches, [])
 
 
+class TestBatchRawEntityPBMethods(unittest.TestCase):
+    """
+    Batch test case for API methods which work with raw Entity Protobuf objects.
+    """
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.datastore.batch import Batch
+
+        return Batch
+
+    def _make_one(self, client):
+        return self._get_target_class()(client)
+
+    def test_put_entity_pb_wo_key(self):
+        project = "PROJECT"
+        client = _Client(project)
+        batch = self._make_one(client)
+
+        batch.begin()
+
+        entity_pb = entity_pb2.Entity()
+        expected_msg = 'Entity must have a key'
+        self.assertRaisesRegexp(ValueError, expected_msg, batch.put_entity_pb, entity_pb)
+
+    def test_put_entity_wrong_status(self):
+        project = "PROJECT"
+        client = _Client(project)
+        batch = self._make_one(client)
+        key = _Key("Other")
+        entity_pb = entity_pb2.Entity()
+        entity_pb.key.CopyFrom(key.to_protobuf())
+
+        self.assertEqual(batch._status, batch._INITIAL)
+        expected_msg = 'Batch must be in progress to put_entity_pb()'
+        self.assertRaisesRegexp(ValueError, expected_msg, batch.put_entity_pb, entity_pb)
+
+    def test_put_entity_w_key_wrong_project(self):
+        project = "PROJECT"
+        client = _Client(project)
+
+        batch = self._make_one(client)
+        key = _Key("Other")
+        entity_pb = entity_pb2.Entity()
+        entity_pb.key.CopyFrom(key.to_protobuf())
+
+        batch.begin()
+        expected_msg = 'Key must be from same project as batch'
+        self.assertRaisesRegexp(ValueError, expected_msg, batch.put_entity_pb, entity_pb)
+
+    def test_put_entity_w_partial_key(self):
+        project = "PROJECT"
+        client = _Client(project)
+        batch = self._make_one(client)
+        key = _Key(project)
+        key._id = None
+        entity_pb = entity_pb2.Entity()
+        entity_pb.key.CopyFrom(key.to_protobuf())
+        int32_value = entity_pb.properties.get_or_create('int32_key')
+        int32_value.integer_value = 1000
+
+        batch.begin()
+        batch.put_entity_pb(entity_pb)
+
+        mutated_entity = _mutated_pb(self, batch.mutations, "insert")
+        self.assertEqual(mutated_entity.key, key._key)
+        self.assertEqual(batch._partial_key_entities, [entity_pb])
+
+    def test_put_entity_w_completed_key(self):
+        project = "PROJECT"
+        client = _Client(project)
+        batch = self._make_one(client)
+        key = _Key(project)
+        entity_pb = entity_pb2.Entity()
+        entity_pb.key.CopyFrom(key.to_protobuf())
+        int32_value = entity_pb.properties.get_or_create('int32_key')
+        int32_value.integer_value = 1000
+
+        batch.begin()
+        batch.put_entity_pb(entity_pb)
+
+        mutated_entity = _mutated_pb(self, batch.mutations, "upsert")
+        self.assertEqual(mutated_entity.key, key._key)
+
+    def test_commit_w_partial_key_entities(self):
+        from google.cloud.datastore_v1.proto import datastore_pb2
+
+        project = "PROJECT"
+        new_id = 1234
+        ds_api = _make_datastore_api(new_id)
+        client = _Client(project, datastore_api=ds_api)
+        batch = self._make_one(client)
+
+        key = _Key(project)
+        key._id = None
+        entity_pb = entity_pb2.Entity()
+        entity_pb.key.CopyFrom(key.to_protobuf())
+        batch._partial_key_entities.append(entity_pb)
+
+        is_key_partial = (not entity_pb.key.path or (not entity_pb.key.path[0].name and not
+                          entity_pb.key.path[0].id))
+        self.assertTrue(is_key_partial)
+
+        self.assertEqual(batch._status, batch._INITIAL)
+        batch.begin()
+        self.assertEqual(batch._status, batch._IN_PROGRESS)
+        batch.commit()
+        self.assertEqual(batch._status, batch._FINISHED)
+
+        mode = datastore_pb2.CommitRequest.NON_TRANSACTIONAL
+        ds_api.commit.assert_called_once_with(project, mode, [], transaction=None)
+
+        is_key_partial = (not entity_pb.key.path or (not entity_pb.key.path[0].name and not
+                          entity_pb.key.path[0].id))
+        self.assertFalse(is_key_partial)
+        self.assertEqual(entity_pb.key.path[0].id, new_id)
+
+
 class Test__parse_commit_response(unittest.TestCase):
     def _call_fut(self, commit_response_pb):
         from google.cloud.datastore.batch import _parse_commit_response
@@ -416,7 +533,7 @@ class _Key(object):
 
         key = self._key = entity_pb2.Key()
         # Don't assign it, because it will just get ripped out
-        # key.partition_id.project_id = self.project
+        key.partition_id.project_id = self.project
 
         element = key.path.add()
         element.kind = self._kind
