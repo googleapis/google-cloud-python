@@ -368,7 +368,40 @@ class Client(ClientWithProject):
         return None
 
     def get_entity_pb(self, key, missing=None, deferred=None, transaction=None, eventual=False):
-        """Retrieve a single raw Entity Protobuf object from a datastore.
+        """Retrieve a single Entity Protobuf object for the provided key.
+
+        .. note::
+
+            This method is the same as "get()" method, but it works with raw Entity Protobuf
+            object (:class:`.entity_pb2.Entity`) instead of Entity Python class
+            (:class:`google.cloud.datastore.entity.Entity`).
+
+        :type key: :class:`google.cloud.datastore.key.Key`
+        :param key: The key to be retrieved from the datastore.
+
+        :type missing: list
+        :param missing: (Optional) If a list is passed, the key-only entities
+                        returned by the backend as "missing" will be copied
+                        into it.
+
+        :type deferred: list
+        :param deferred: (Optional) If a list is passed, the keys returned
+                         by the backend as "deferred" will be copied into it.
+
+        :type transaction:
+            :class:`~google.cloud.datastore.transaction.Transaction`
+        :param transaction: (Optional) Transaction to use for read consistency.
+                            If not passed, uses current transaction, if set.
+
+        :type eventual: bool
+        :param eventual: (Optional) Defaults to strongly consistent (False).
+                         Setting True will use eventual consistency, but cannot
+                         be used inside a transaction or will raise ValueError.
+
+        :rtype: :class:`.entity_pb2.Entity` or ``NoneType``
+        :returns: The requested entity protobuf object if it exists.
+
+        :raises: :class:`ValueError` if eventual is True and in a transaction.
         """
         entity_pbs = self.get_multi_entity_pb(
             keys=[key],
@@ -425,6 +458,44 @@ class Client(ClientWithProject):
     def get_multi_entity_pb(
         self, keys, missing=None, deferred=None, transaction=None, eventual=False
     ):
+        """Retrieve raw Entity protobuf objects for the provided keys.
+
+        .. note::
+
+            This method is the same as "get_multi()" method, but it works with raw Entity
+            Protobuf object (:class:`.entity_pb2.Entity`) instead of Entity Python class
+            (:class:`google.cloud.datastore.entity.Entity`).
+
+        :type keys: list of :class:`google.cloud.datastore.key.Key`
+        :param keys: The keys to be retrieved from the datastore.
+
+        :type missing: list
+        :param missing: (Optional) If a list is passed, the key-only entities
+                        returned by the backend as "missing" will be copied
+                        into it. If the list is not empty, an error will occur.
+
+        :type deferred: list
+        :param deferred: (Optional) If a list is passed, the keys returned
+                         by the backend as "deferred" will be copied into it.
+                         If the list is not empty, an error will occur.
+
+        :type transaction:
+            :class:`~google.cloud.datastore.transaction.Transaction`
+        :param transaction: (Optional) Transaction to use for read consistency.
+                            If not passed, uses current transaction, if set.
+
+        :type eventual: bool
+        :param eventual: (Optional) Defaults to strongly consistent (False).
+                         Setting True will use eventual consistency, but cannot
+                         be used inside a transaction or will raise ValueError.
+
+        :rtype: list of:class:`.entity_pb2.Entity`
+        :returns: The requested entities (protobuf objects).
+
+        :raises: :class:`ValueError` if one or more of ``keys`` has a project
+                 which does not match our project.
+        :raises: :class:`ValueError` if eventual is True and in a transaction.
+        """
         return self._get_multi(keys=keys, missing=missing, deferred=deferred,
                                transaction=transaction, eventual=eventual)
 
@@ -445,6 +516,15 @@ class Client(ClientWithProject):
     def put_entity_pb(self, entity_pb):
         """
         Save a single raw Entity Protobuf object in the Cloud Datastore.
+
+        .. note::
+
+            This method is the same as "put()" method, but it works with raw Entity Protobuf
+            object (:class:`.entity_pb2.Entity`) instead of Entity Python class
+            (:class:`google.cloud.datastore.entity.Entity`).
+
+        :type entity_pb: :class:`.entity_pb2.Entity`
+        :param entity_pb: The entity to be saved to the datastore.
         """
         self.put_multi_entity_pbs(entity_pbs=[entity_pb])
 
@@ -478,6 +558,17 @@ class Client(ClientWithProject):
     def put_multi_entity_pbs(self, entity_pbs):
         """
         Save multiple raw Entity Protobuf objects in the Cloud Datastore.
+
+        .. note::
+
+            This method is the same as "put_multi()" method, but it works with raw Entity Protobuf
+            object (:class:`.entity_pb2.Entity`) instead of Entity Python class
+            (:class:`google.cloud.datastore.entity.Entity`).
+
+        :type entity_pbs: list of :class:`.entity_pb2.Entity`
+        :param entity_pbs: The entities to be saved to the datastore.
+
+        :raises: :class:`ValueError` if ``entities`` is a single entity.
         """
         if not entity_pbs:
             return

@@ -401,8 +401,38 @@ class Query(object):
         client=None,
         eventual=False,
     ):
-        """Execute the query, return iterator for the matching raw Entity
-        Protobuf objects.
+        """Execute the query, return iterator for the matching raw Entity Protobuf objects.
+
+        .. note::
+
+            This method is the same as "fetch()" method, but it works with raw Entity Protobuf
+            objects (:class:`.entity_pb2.Entity`) instead of Entity Python class
+            (:class:`google.cloud.datastore.entity.Entity`).
+
+        :type limit: int
+        :param limit: (Optional) limit passed through to the iterator.
+
+        :type offset: int
+        :param offset: (Optional) offset passed through to the iterator.
+
+        :type start_cursor: bytes
+        :param start_cursor: (Optional) cursor passed through to the iterator.
+
+        :type end_cursor: bytes
+        :param end_cursor: (Optional) cursor passed through to the iterator.
+
+        :type client: :class:`google.cloud.datastore.client.Client`
+        :param client: (Optional) client used to connect to datastore.
+                       If not supplied, uses the query's value.
+
+        :type eventual: bool
+        :param eventual: (Optional) Defaults to strongly consistent (False).
+                                    Setting True will use eventual consistency,
+                                    but cannot be used inside a transaction or
+                                    will raise ValueError.
+
+        :rtype: :class:`Iterator` of :class:`.entity_pb2.Entity`
+        :returns: The iterator for the query.
         """
         if client is None:
             client = self._client
@@ -449,6 +479,10 @@ class Iterator(page_iterator.Iterator):
                                 Setting True will use eventual consistency,
                                 but cannot be used inside a transaction or
                                 will raise ValueError.
+
+    :type item_to_value: callable
+    :param item_to_value: (Optional) Conversion function which will be called
+                                     for each iterator item.
     """
 
     next_page_token = None
