@@ -23,6 +23,8 @@ In the hierarchy of API concepts
 * a :class:`~google.cloud.firestore_v1.client.Client` owns a
   :class:`~google.cloud.firestore_v1.document.DocumentReference`
 """
+import os
+
 from google.api_core.gapic_v1 import client_info
 from google.cloud.client import ClientWithProject
 
@@ -103,6 +105,7 @@ class Client(ClientWithProject):
         )
         self._client_info = client_info
         self._database = database
+        self._emulator_host = os.getenv("FIRESTORE_EMULATOR_HOST")
 
     @property
     def _firestore_api(self):
@@ -115,11 +118,17 @@ class Client(ClientWithProject):
         if self._firestore_api_internal is None:
             # Use a custom channel.
             # We need this in order to set appropriate keepalive options.
+
             channel = firestore_grpc_transport.FirestoreGrpcTransport.create_channel(
                 self._target,
                 credentials=self._credentials,
                 options={"grpc.keepalive_time_ms": 30000}.items(),
             )
+
+            if self._emulator_host is not None:
+                channel = firestore_grpc_transport.firestore_pb2_grpc.grpc.insecure_channel(
+                    self._emulator_host,
+                )
 
             self._transport = firestore_grpc_transport.FirestoreGrpcTransport(
                 address=self._target, channel=channel
@@ -138,6 +147,9 @@ class Client(ClientWithProject):
         Returns:
             str: The location of the API.
         """
+        if self._emulator_host is not None:
+            return self._emulator_host
+
         return firestore_client.FirestoreClient.SERVICE_ADDRESS
 
     @property
