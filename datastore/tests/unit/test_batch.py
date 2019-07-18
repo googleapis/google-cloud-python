@@ -16,6 +16,8 @@ import unittest
 
 import mock
 
+from google.cloud.datastore_v1.proto import entity_pb2
+
 
 class TestBatch(unittest.TestCase):
     @staticmethod
@@ -72,7 +74,8 @@ class TestBatch(unittest.TestCase):
         batch = self._make_one(client)
 
         batch.begin()
-        self.assertRaises(ValueError, batch.put, _Entity())
+        expected_msg = 'Entity must have a key'
+        self.assertRaisesRegexp(ValueError, expected_msg, batch.put, _Entity())
 
     def test_put_entity_wrong_status(self):
         project = "PROJECT"
@@ -82,7 +85,8 @@ class TestBatch(unittest.TestCase):
         entity.key = _Key("OTHER")
 
         self.assertEqual(batch._status, batch._INITIAL)
-        self.assertRaises(ValueError, batch.put, entity)
+        expected_msg = 'Batch must be in progress to put()'
+        self.assertRaisesRegexp(ValueError, expected_msg, batch.put, entity)
 
     def test_put_entity_w_key_wrong_project(self):
         project = "PROJECT"
@@ -92,7 +96,8 @@ class TestBatch(unittest.TestCase):
         entity.key = _Key("OTHER")
 
         batch.begin()
-        self.assertRaises(ValueError, batch.put, entity)
+        expected_msg = 'Key must be from same project as batch'
+        self.assertRaisesRegexp(ValueError, expected_msg, batch.put, entity)
 
     def test_put_entity_w_partial_key(self):
         project = "PROJECT"
