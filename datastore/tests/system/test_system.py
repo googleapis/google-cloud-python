@@ -613,6 +613,9 @@ class TestDatastoreRawEntityPBMethods(TestDatastore):
         self.assertEqual(entity_retrieved_pbs[0].key.path[0].id, 1111)
         self.assertEqual(entity_retrieved_pbs[1].key.path[0].id, 2222)
 
+    def test_put_multi_no_entity_pbs(self):
+        self.assertFalse(Config.CLIENT.put_multi_entity_pbs([]))
+
     def test_fetch_entity_pbs(self):
         # Store multiple entities
         key1 = Config.CLIENT.key("TestEntityPB", 1111)
@@ -657,6 +660,12 @@ class TestDatastoreRawEntityPBMethods(TestDatastore):
         # 1. Simply retrieve all
         query = Config.CLIENT.query(kind='TestEntityPB')
         entity_retrieved_pbs = list(query.fetch_entity_pb())
+
+        self.assertEqual(len(entity_retrieved_pbs), 4)
+        self.assertEqual(entity_retrieved_pbs, entity_pbs)
+
+        query = Config.CLIENT.query(kind='TestEntityPB')
+        entity_retrieved_pbs = list(query.fetch_entity_pb(client=Config.CLIENT))
 
         self.assertEqual(len(entity_retrieved_pbs), 4)
         self.assertEqual(entity_retrieved_pbs, entity_pbs)
