@@ -23,6 +23,7 @@ https://cloud.google.com/datastore/docs/concepts/entities#batch_operations
 
 from google.cloud.datastore import helpers
 from google.cloud.datastore_v1.proto import datastore_pb2 as _datastore_pb2
+from google.cloud.datastore_v1.proto import entity_pb2 as entity_pb2
 
 
 class Batch(object):
@@ -217,6 +218,7 @@ class Batch(object):
         if is_key_partial:
             insert_entity_pb = self._add_partial_key_entity_pb()
             insert_entity_pb.CopyFrom(entity_pb)
+            self._partial_key_entities.append(entity_pb)
         else:
             upsert_entity_pb = self._add_complete_key_entity_pb()
             upsert_entity_pb.CopyFrom(entity_pb)
@@ -276,8 +278,20 @@ class Batch(object):
         # ``commit`` will return keys that match (length and
         # order) directly ``_partial_key_entities``.
         for new_key_pb, entity in zip(updated_keys, self._partial_key_entities):
-            new_id = new_key_pb.path[-1].id
-            entity.key = entity.key.completed_key(new_id)
+            if isinstance(entity, entity_pb2.Entity):
+                # Entity Protobuf instance
+                new_id = new_key_pb.path[-1].id
+
+                # TODO: Make this efficient, don't rely on conversion back and forth
+                entity_ = helpers.entity_from_protobuf(entity)
+                entity_.key = entity_.key.completed_key(new_id)
+
+                entity.key.CopyFrom(entity_.key.to_protobuf())
+                pass
+            else:
+                # Entity class
+                new_id = new_key_pb.path[-1].id
+                entity.key = entity.key.completed_key(new_id)
 
     def commit(self):
         """Commits the batch.
