@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-datalabeling/#history
 
+## 0.2.1
+
+07-16-2019 10:17 PDT
+
+
+### Implementation Changes
+- Import operations.proto (via synth). ([#8678](https://github.com/googleapis/google-cloud-python/pull/8678))
+
+### Documentation
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+- Fix links in README.rst. ([#8626](https://github.com/googleapis/google-cloud-python/pull/8626))
+
 ## 0.2.0
 
 07-09-2019 12:56 PDT

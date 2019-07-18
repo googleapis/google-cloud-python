@@ -38,6 +38,9 @@ from google.cloud.datalabeling_v1beta1.proto import (
 from google.cloud.datalabeling_v1beta1.proto import (
     instruction_pb2 as google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_instruction__pb2,
 )
+from google.cloud.datalabeling_v1beta1.proto import (
+    operations_pb2 as google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_operations__pb2,
+)
 from google.longrunning import (
     operations_pb2 as google_dot_longrunning_dot_operations__pb2,
 )
@@ -53,7 +56,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n%com.google.cloud.datalabeling.v1beta1P\001ZMgoogle.golang.org/genproto/googleapis/cloud/datalabeling/v1beta1;datalabeling"
     ),
     serialized_pb=_b(
-        '\nCgoogle/cloud/datalabeling_v1beta1/proto/data_labeling_service.proto\x12!google.cloud.datalabeling.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x38google/cloud/datalabeling_v1beta1/proto/annotation.proto\x1a\x41google/cloud/datalabeling_v1beta1/proto/annotation_spec_set.proto\x1a\x35google/cloud/datalabeling_v1beta1/proto/dataset.proto\x1a\x38google/cloud/datalabeling_v1beta1/proto/evaluation.proto\x1a<google/cloud/datalabeling_v1beta1/proto/evaluation_job.proto\x1a\x45google/cloud/datalabeling_v1beta1/proto/human_annotation_config.proto\x1a\x39google/cloud/datalabeling_v1beta1/proto/instruction.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"c\n\x14\x43reateDatasetRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12;\n\x07\x64\x61taset\x18\x02 \x01(\x0b\x32*.google.cloud.datalabeling.v1beta1.Dataset"!\n\x11GetDatasetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\\\n\x13ListDatasetsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"m\n\x14ListDatasetsResponse\x12<\n\x08\x64\x61tasets\x18\x01 \x03(\x0b\x32*.google.cloud.datalabeling.v1beta1.Dataset\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"$\n\x14\x44\x65leteDatasetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x83\x01\n\x11ImportDataRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x44\n\x0cinput_config\x18\x02 \x01(\x0b\x32..google.cloud.datalabeling.v1beta1.InputConfig\x12\x1a\n\x12user_email_address\x18\x03 \x01(\t"\xb0\x01\n\x11\x45xportDataRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x19\n\x11\x61nnotated_dataset\x18\x02 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x03 \x01(\t\x12\x46\n\routput_config\x18\x04 \x01(\x0b\x32/.google.cloud.datalabeling.v1beta1.OutputConfig\x12\x1a\n\x12user_email_address\x18\x05 \x01(\t""\n\x12GetDataItemRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"]\n\x14ListDataItemsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"q\n\x15ListDataItemsResponse\x12?\n\ndata_items\x18\x01 \x03(\x0b\x32+.google.cloud.datalabeling.v1beta1.DataItem\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"*\n\x1aGetAnnotatedDatasetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"e\n\x1cListAnnotatedDatasetsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"\x89\x01\n\x1dListAnnotatedDatasetsResponse\x12O\n\x12\x61nnotated_datasets\x18\x01 \x03(\x0b\x32\x33.google.cloud.datalabeling.v1beta1.AnnotatedDataset\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"-\n\x1d\x44\x65leteAnnotatedDatasetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\xcd\x05\n\x11LabelImageRequest\x12\x63\n\x1bimage_classification_config\x18\x04 \x01(\x0b\x32<.google.cloud.datalabeling.v1beta1.ImageClassificationConfigH\x00\x12U\n\x14\x62ounding_poly_config\x18\x05 \x01(\x0b\x32\x35.google.cloud.datalabeling.v1beta1.BoundingPolyConfigH\x00\x12L\n\x0fpolyline_config\x18\x06 \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.PolylineConfigH\x00\x12T\n\x13segmentation_config\x18\x07 \x01(\x0b\x32\x35.google.cloud.datalabeling.v1beta1.SegmentationConfigH\x00\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12N\n\x0c\x62\x61sic_config\x18\x02 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig\x12M\n\x07\x66\x65\x61ture\x18\x03 \x01(\x0e\x32<.google.cloud.datalabeling.v1beta1.LabelImageRequest.Feature"\x96\x01\n\x07\x46\x65\x61ture\x12\x17\n\x13\x46\x45\x41TURE_UNSPECIFIED\x10\x00\x12\x12\n\x0e\x43LASSIFICATION\x10\x01\x12\x10\n\x0c\x42OUNDING_BOX\x10\x02\x12\x19\n\x15ORIENTED_BOUNDING_BOX\x10\x06\x12\x11\n\rBOUNDING_POLY\x10\x03\x12\x0c\n\x08POLYLINE\x10\x04\x12\x10\n\x0cSEGMENTATION\x10\x05\x42\x10\n\x0erequest_config"\xa7\x05\n\x11LabelVideoRequest\x12\x63\n\x1bvideo_classification_config\x18\x04 \x01(\x0b\x32<.google.cloud.datalabeling.v1beta1.VideoClassificationConfigH\x00\x12[\n\x17object_detection_config\x18\x05 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.ObjectDetectionConfigH\x00\x12Y\n\x16object_tracking_config\x18\x06 \x01(\x0b\x32\x37.google.cloud.datalabeling.v1beta1.ObjectTrackingConfigH\x00\x12\x46\n\x0c\x65vent_config\x18\x07 \x01(\x0b\x32..google.cloud.datalabeling.v1beta1.EventConfigH\x00\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12N\n\x0c\x62\x61sic_config\x18\x02 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig\x12M\n\x07\x66\x65\x61ture\x18\x03 \x01(\x0e\x32<.google.cloud.datalabeling.v1beta1.LabelVideoRequest.Feature"l\n\x07\x46\x65\x61ture\x12\x17\n\x13\x46\x45\x41TURE_UNSPECIFIED\x10\x00\x12\x12\n\x0e\x43LASSIFICATION\x10\x01\x12\x14\n\x10OBJECT_DETECTION\x10\x02\x12\x13\n\x0fOBJECT_TRACKING\x10\x03\x12\t\n\x05\x45VENT\x10\x04\x42\x10\n\x0erequest_config"\xf6\x03\n\x10LabelTextRequest\x12\x61\n\x1atext_classification_config\x18\x04 \x01(\x0b\x32;.google.cloud.datalabeling.v1beta1.TextClassificationConfigH\x00\x12\x66\n\x1dtext_entity_extraction_config\x18\x05 \x01(\x0b\x32=.google.cloud.datalabeling.v1beta1.TextEntityExtractionConfigH\x00\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12N\n\x0c\x62\x61sic_config\x18\x02 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig\x12L\n\x07\x66\x65\x61ture\x18\x06 \x01(\x0e\x32;.google.cloud.datalabeling.v1beta1.LabelTextRequest.Feature"W\n\x07\x46\x65\x61ture\x12\x17\n\x13\x46\x45\x41TURE_UNSPECIFIED\x10\x00\x12\x17\n\x13TEXT_CLASSIFICATION\x10\x01\x12\x1a\n\x16TEXT_ENTITY_EXTRACTION\x10\x02\x42\x10\n\x0erequest_config"1\n\x11GetExampleRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t"\\\n\x13ListExamplesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"m\n\x14ListExamplesResponse\x12<\n\x08\x65xamples\x18\x01 \x03(\x0b\x32*.google.cloud.datalabeling.v1beta1.Example\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x83\x01\n\x1e\x43reateAnnotationSpecSetRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12Q\n\x13\x61nnotation_spec_set\x18\x02 \x01(\x0b\x32\x34.google.cloud.datalabeling.v1beta1.AnnotationSpecSet"+\n\x1bGetAnnotationSpecSetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"f\n\x1dListAnnotationSpecSetsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"\x8d\x01\n\x1eListAnnotationSpecSetsResponse\x12R\n\x14\x61nnotation_spec_sets\x18\x01 \x03(\x0b\x32\x34.google.cloud.datalabeling.v1beta1.AnnotationSpecSet\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t".\n\x1e\x44\x65leteAnnotationSpecSetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"o\n\x18\x43reateInstructionRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x43\n\x0binstruction\x18\x02 \x01(\x0b\x32..google.cloud.datalabeling.v1beta1.Instruction"%\n\x15GetInstructionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"(\n\x18\x44\x65leteInstructionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"`\n\x17ListInstructionsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"y\n\x18ListInstructionsResponse\x12\x44\n\x0cinstructions\x18\x01 \x03(\x0b\x32..google.cloud.datalabeling.v1beta1.Instruction\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"$\n\x14GetEvaluationRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"a\n\x18SearchEvaluationsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"x\n\x19SearchEvaluationsResponse\x12\x42\n\x0b\x65valuations\x18\x01 \x03(\x0b\x32-.google.cloud.datalabeling.v1beta1.Evaluation\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"X\n\x1fSearchExampleComparisonsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"\xdb\x02\n SearchExampleComparisonsResponse\x12r\n\x13\x65xample_comparisons\x18\x01 \x03(\x0b\x32U.google.cloud.datalabeling.v1beta1.SearchExampleComparisonsResponse.ExampleComparison\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x1a\xa9\x01\n\x11\x45xampleComparison\x12H\n\x14ground_truth_example\x18\x01 \x01(\x0b\x32*.google.cloud.datalabeling.v1beta1.Example\x12J\n\x16model_created_examples\x18\x02 \x03(\x0b\x32*.google.cloud.datalabeling.v1beta1.Example"k\n\x1a\x43reateEvaluationJobRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12=\n\x03job\x18\x02 \x01(\x0b\x32\x30.google.cloud.datalabeling.v1beta1.EvaluationJob"\x97\x01\n\x1aUpdateEvaluationJobRequest\x12H\n\x0e\x65valuation_job\x18\x01 \x01(\x0b\x32\x30.google.cloud.datalabeling.v1beta1.EvaluationJob\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"\'\n\x17GetEvaluationJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t")\n\x19PauseEvaluationJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"*\n\x1aResumeEvaluationJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"*\n\x1a\x44\x65leteEvaluationJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"b\n\x19ListEvaluationJobsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"\x80\x01\n\x1aListEvaluationJobsResponse\x12I\n\x0f\x65valuation_jobs\x18\x01 \x03(\x0b\x32\x30.google.cloud.datalabeling.v1beta1.EvaluationJob\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t2\xfa\x31\n\x13\x44\x61taLabelingService\x12\xa6\x01\n\rCreateDataset\x12\x37.google.cloud.datalabeling.v1beta1.CreateDatasetRequest\x1a*.google.cloud.datalabeling.v1beta1.Dataset"0\x82\xd3\xe4\x93\x02*"%/v1beta1/{parent=projects/*}/datasets:\x01*\x12\x9d\x01\n\nGetDataset\x12\x34.google.cloud.datalabeling.v1beta1.GetDatasetRequest\x1a*.google.cloud.datalabeling.v1beta1.Dataset"-\x82\xd3\xe4\x93\x02\'\x12%/v1beta1/{name=projects/*/datasets/*}\x12\xae\x01\n\x0cListDatasets\x12\x36.google.cloud.datalabeling.v1beta1.ListDatasetsRequest\x1a\x37.google.cloud.datalabeling.v1beta1.ListDatasetsResponse"-\x82\xd3\xe4\x93\x02\'\x12%/v1beta1/{parent=projects/*}/datasets\x12\x8f\x01\n\rDeleteDataset\x12\x37.google.cloud.datalabeling.v1beta1.DeleteDatasetRequest\x1a\x16.google.protobuf.Empty"-\x82\xd3\xe4\x93\x02\'*%/v1beta1/{name=projects/*/datasets/*}\x12\x9e\x01\n\nImportData\x12\x34.google.cloud.datalabeling.v1beta1.ImportDataRequest\x1a\x1d.google.longrunning.Operation";\x82\xd3\xe4\x93\x02\x35"0/v1beta1/{name=projects/*/datasets/*}:importData:\x01*\x12\x9e\x01\n\nExportData\x12\x34.google.cloud.datalabeling.v1beta1.ExportDataRequest\x1a\x1d.google.longrunning.Operation";\x82\xd3\xe4\x93\x02\x35"0/v1beta1/{name=projects/*/datasets/*}:exportData:\x01*\x12\xac\x01\n\x0bGetDataItem\x12\x35.google.cloud.datalabeling.v1beta1.GetDataItemRequest\x1a+.google.cloud.datalabeling.v1beta1.DataItem"9\x82\xd3\xe4\x93\x02\x33\x12\x31/v1beta1/{name=projects/*/datasets/*/dataItems/*}\x12\xbd\x01\n\rListDataItems\x12\x37.google.cloud.datalabeling.v1beta1.ListDataItemsRequest\x1a\x38.google.cloud.datalabeling.v1beta1.ListDataItemsResponse"9\x82\xd3\xe4\x93\x02\x33\x12\x31/v1beta1/{parent=projects/*/datasets/*}/dataItems\x12\xcc\x01\n\x13GetAnnotatedDataset\x12=.google.cloud.datalabeling.v1beta1.GetAnnotatedDatasetRequest\x1a\x33.google.cloud.datalabeling.v1beta1.AnnotatedDataset"A\x82\xd3\xe4\x93\x02;\x12\x39/v1beta1/{name=projects/*/datasets/*/annotatedDatasets/*}\x12\xdd\x01\n\x15ListAnnotatedDatasets\x12?.google.cloud.datalabeling.v1beta1.ListAnnotatedDatasetsRequest\x1a@.google.cloud.datalabeling.v1beta1.ListAnnotatedDatasetsResponse"A\x82\xd3\xe4\x93\x02;\x12\x39/v1beta1/{parent=projects/*/datasets/*}/annotatedDatasets\x12\xb5\x01\n\x16\x44\x65leteAnnotatedDataset\x12@.google.cloud.datalabeling.v1beta1.DeleteAnnotatedDatasetRequest\x1a\x16.google.protobuf.Empty"A\x82\xd3\xe4\x93\x02;*9/v1beta1/{name=projects/*/datasets/*/annotatedDatasets/*}\x12\xa1\x01\n\nLabelImage\x12\x34.google.cloud.datalabeling.v1beta1.LabelImageRequest\x1a\x1d.google.longrunning.Operation">\x82\xd3\xe4\x93\x02\x38"3/v1beta1/{parent=projects/*/datasets/*}/image:label:\x01*\x12\xa1\x01\n\nLabelVideo\x12\x34.google.cloud.datalabeling.v1beta1.LabelVideoRequest\x1a\x1d.google.longrunning.Operation">\x82\xd3\xe4\x93\x02\x38"3/v1beta1/{parent=projects/*/datasets/*}/video:label:\x01*\x12\x9e\x01\n\tLabelText\x12\x33.google.cloud.datalabeling.v1beta1.LabelTextRequest\x1a\x1d.google.longrunning.Operation"=\x82\xd3\xe4\x93\x02\x37"2/v1beta1/{parent=projects/*/datasets/*}/text:label:\x01*\x12\xbc\x01\n\nGetExample\x12\x34.google.cloud.datalabeling.v1beta1.GetExampleRequest\x1a*.google.cloud.datalabeling.v1beta1.Example"L\x82\xd3\xe4\x93\x02\x46\x12\x44/v1beta1/{name=projects/*/datasets/*/annotatedDatasets/*/examples/*}\x12\xcd\x01\n\x0cListExamples\x12\x36.google.cloud.datalabeling.v1beta1.ListExamplesRequest\x1a\x37.google.cloud.datalabeling.v1beta1.ListExamplesResponse"L\x82\xd3\xe4\x93\x02\x46\x12\x44/v1beta1/{parent=projects/*/datasets/*/annotatedDatasets/*}/examples\x12\xce\x01\n\x17\x43reateAnnotationSpecSet\x12\x41.google.cloud.datalabeling.v1beta1.CreateAnnotationSpecSetRequest\x1a\x34.google.cloud.datalabeling.v1beta1.AnnotationSpecSet":\x82\xd3\xe4\x93\x02\x34"//v1beta1/{parent=projects/*}/annotationSpecSets:\x01*\x12\xc5\x01\n\x14GetAnnotationSpecSet\x12>.google.cloud.datalabeling.v1beta1.GetAnnotationSpecSetRequest\x1a\x34.google.cloud.datalabeling.v1beta1.AnnotationSpecSet"7\x82\xd3\xe4\x93\x02\x31\x12//v1beta1/{name=projects/*/annotationSpecSets/*}\x12\xd6\x01\n\x16ListAnnotationSpecSets\x12@.google.cloud.datalabeling.v1beta1.ListAnnotationSpecSetsRequest\x1a\x41.google.cloud.datalabeling.v1beta1.ListAnnotationSpecSetsResponse"7\x82\xd3\xe4\x93\x02\x31\x12//v1beta1/{parent=projects/*}/annotationSpecSets\x12\xad\x01\n\x17\x44\x65leteAnnotationSpecSet\x12\x41.google.cloud.datalabeling.v1beta1.DeleteAnnotationSpecSetRequest\x1a\x16.google.protobuf.Empty"7\x82\xd3\xe4\x93\x02\x31*//v1beta1/{name=projects/*/annotationSpecSets/*}\x12\xa5\x01\n\x11\x43reateInstruction\x12;.google.cloud.datalabeling.v1beta1.CreateInstructionRequest\x1a\x1d.google.longrunning.Operation"4\x82\xd3\xe4\x93\x02.")/v1beta1/{parent=projects/*}/instructions:\x01*\x12\xad\x01\n\x0eGetInstruction\x12\x38.google.cloud.datalabeling.v1beta1.GetInstructionRequest\x1a..google.cloud.datalabeling.v1beta1.Instruction"1\x82\xd3\xe4\x93\x02+\x12)/v1beta1/{name=projects/*/instructions/*}\x12\xbe\x01\n\x10ListInstructions\x12:.google.cloud.datalabeling.v1beta1.ListInstructionsRequest\x1a;.google.cloud.datalabeling.v1beta1.ListInstructionsResponse"1\x82\xd3\xe4\x93\x02+\x12)/v1beta1/{parent=projects/*}/instructions\x12\x9b\x01\n\x11\x44\x65leteInstruction\x12;.google.cloud.datalabeling.v1beta1.DeleteInstructionRequest\x1a\x16.google.protobuf.Empty"1\x82\xd3\xe4\x93\x02+*)/v1beta1/{name=projects/*/instructions/*}\x12\xb4\x01\n\rGetEvaluation\x12\x37.google.cloud.datalabeling.v1beta1.GetEvaluationRequest\x1a-.google.cloud.datalabeling.v1beta1.Evaluation";\x82\xd3\xe4\x93\x02\x35\x12\x33/v1beta1/{name=projects/*/datasets/*/evaluations/*}\x12\xc7\x01\n\x11SearchEvaluations\x12;.google.cloud.datalabeling.v1beta1.SearchEvaluationsRequest\x1a<.google.cloud.datalabeling.v1beta1.SearchEvaluationsResponse"7\x82\xd3\xe4\x93\x02\x31\x12//v1beta1/{parent=projects/*}/evaluations:search\x12\xff\x01\n\x18SearchExampleComparisons\x12\x42.google.cloud.datalabeling.v1beta1.SearchExampleComparisonsRequest\x1a\x43.google.cloud.datalabeling.v1beta1.SearchExampleComparisonsResponse"Z\x82\xd3\xe4\x93\x02T"O/v1beta1/{parent=projects/*/datasets/*/evaluations/*}/exampleComparisons:search:\x01*\x12\xbe\x01\n\x13\x43reateEvaluationJob\x12=.google.cloud.datalabeling.v1beta1.CreateEvaluationJobRequest\x1a\x30.google.cloud.datalabeling.v1beta1.EvaluationJob"6\x82\xd3\xe4\x93\x02\x30"+/v1beta1/{parent=projects/*}/evaluationJobs:\x01*\x12\xda\x01\n\x13UpdateEvaluationJob\x12=.google.cloud.datalabeling.v1beta1.UpdateEvaluationJobRequest\x1a\x30.google.cloud.datalabeling.v1beta1.EvaluationJob"R\x82\xd3\xe4\x93\x02L2:/v1beta1/{evaluation_job.name=projects/*/evaluationJobs/*}:\x0e\x65valuation_job\x12\xb5\x01\n\x10GetEvaluationJob\x12:.google.cloud.datalabeling.v1beta1.GetEvaluationJobRequest\x1a\x30.google.cloud.datalabeling.v1beta1.EvaluationJob"3\x82\xd3\xe4\x93\x02-\x12+/v1beta1/{name=projects/*/evaluationJobs/*}\x12\xa8\x01\n\x12PauseEvaluationJob\x12<.google.cloud.datalabeling.v1beta1.PauseEvaluationJobRequest\x1a\x16.google.protobuf.Empty"<\x82\xd3\xe4\x93\x02\x36"1/v1beta1/{name=projects/*/evaluationJobs/*}:pause:\x01*\x12\xab\x01\n\x13ResumeEvaluationJob\x12=.google.cloud.datalabeling.v1beta1.ResumeEvaluationJobRequest\x1a\x16.google.protobuf.Empty"=\x82\xd3\xe4\x93\x02\x37"2/v1beta1/{name=projects/*/evaluationJobs/*}:resume:\x01*\x12\xa1\x01\n\x13\x44\x65leteEvaluationJob\x12=.google.cloud.datalabeling.v1beta1.DeleteEvaluationJobRequest\x1a\x16.google.protobuf.Empty"3\x82\xd3\xe4\x93\x02-*+/v1beta1/{name=projects/*/evaluationJobs/*}\x12\xc6\x01\n\x12ListEvaluationJobs\x12<.google.cloud.datalabeling.v1beta1.ListEvaluationJobsRequest\x1a=.google.cloud.datalabeling.v1beta1.ListEvaluationJobsResponse"3\x82\xd3\xe4\x93\x02-\x12+/v1beta1/{parent=projects/*}/evaluationJobs\x1aO\xca\x41\x1b\x64\x61talabeling.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformBx\n%com.google.cloud.datalabeling.v1beta1P\x01ZMgoogle.golang.org/genproto/googleapis/cloud/datalabeling/v1beta1;datalabelingb\x06proto3'
+        '\nCgoogle/cloud/datalabeling_v1beta1/proto/data_labeling_service.proto\x12!google.cloud.datalabeling.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x38google/cloud/datalabeling_v1beta1/proto/annotation.proto\x1a\x41google/cloud/datalabeling_v1beta1/proto/annotation_spec_set.proto\x1a\x35google/cloud/datalabeling_v1beta1/proto/dataset.proto\x1a\x38google/cloud/datalabeling_v1beta1/proto/evaluation.proto\x1a<google/cloud/datalabeling_v1beta1/proto/evaluation_job.proto\x1a\x45google/cloud/datalabeling_v1beta1/proto/human_annotation_config.proto\x1a\x39google/cloud/datalabeling_v1beta1/proto/instruction.proto\x1a\x38google/cloud/datalabeling_v1beta1/proto/operations.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"c\n\x14\x43reateDatasetRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12;\n\x07\x64\x61taset\x18\x02 \x01(\x0b\x32*.google.cloud.datalabeling.v1beta1.Dataset"!\n\x11GetDatasetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\\\n\x13ListDatasetsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"m\n\x14ListDatasetsResponse\x12<\n\x08\x64\x61tasets\x18\x01 \x03(\x0b\x32*.google.cloud.datalabeling.v1beta1.Dataset\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"$\n\x14\x44\x65leteDatasetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x83\x01\n\x11ImportDataRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x44\n\x0cinput_config\x18\x02 \x01(\x0b\x32..google.cloud.datalabeling.v1beta1.InputConfig\x12\x1a\n\x12user_email_address\x18\x03 \x01(\t"\xb0\x01\n\x11\x45xportDataRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x19\n\x11\x61nnotated_dataset\x18\x02 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x03 \x01(\t\x12\x46\n\routput_config\x18\x04 \x01(\x0b\x32/.google.cloud.datalabeling.v1beta1.OutputConfig\x12\x1a\n\x12user_email_address\x18\x05 \x01(\t""\n\x12GetDataItemRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"]\n\x14ListDataItemsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"q\n\x15ListDataItemsResponse\x12?\n\ndata_items\x18\x01 \x03(\x0b\x32+.google.cloud.datalabeling.v1beta1.DataItem\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"*\n\x1aGetAnnotatedDatasetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"e\n\x1cListAnnotatedDatasetsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"\x89\x01\n\x1dListAnnotatedDatasetsResponse\x12O\n\x12\x61nnotated_datasets\x18\x01 \x03(\x0b\x32\x33.google.cloud.datalabeling.v1beta1.AnnotatedDataset\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"-\n\x1d\x44\x65leteAnnotatedDatasetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\xcd\x05\n\x11LabelImageRequest\x12\x63\n\x1bimage_classification_config\x18\x04 \x01(\x0b\x32<.google.cloud.datalabeling.v1beta1.ImageClassificationConfigH\x00\x12U\n\x14\x62ounding_poly_config\x18\x05 \x01(\x0b\x32\x35.google.cloud.datalabeling.v1beta1.BoundingPolyConfigH\x00\x12L\n\x0fpolyline_config\x18\x06 \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.PolylineConfigH\x00\x12T\n\x13segmentation_config\x18\x07 \x01(\x0b\x32\x35.google.cloud.datalabeling.v1beta1.SegmentationConfigH\x00\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12N\n\x0c\x62\x61sic_config\x18\x02 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig\x12M\n\x07\x66\x65\x61ture\x18\x03 \x01(\x0e\x32<.google.cloud.datalabeling.v1beta1.LabelImageRequest.Feature"\x96\x01\n\x07\x46\x65\x61ture\x12\x17\n\x13\x46\x45\x41TURE_UNSPECIFIED\x10\x00\x12\x12\n\x0e\x43LASSIFICATION\x10\x01\x12\x10\n\x0c\x42OUNDING_BOX\x10\x02\x12\x19\n\x15ORIENTED_BOUNDING_BOX\x10\x06\x12\x11\n\rBOUNDING_POLY\x10\x03\x12\x0c\n\x08POLYLINE\x10\x04\x12\x10\n\x0cSEGMENTATION\x10\x05\x42\x10\n\x0erequest_config"\xa7\x05\n\x11LabelVideoRequest\x12\x63\n\x1bvideo_classification_config\x18\x04 \x01(\x0b\x32<.google.cloud.datalabeling.v1beta1.VideoClassificationConfigH\x00\x12[\n\x17object_detection_config\x18\x05 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.ObjectDetectionConfigH\x00\x12Y\n\x16object_tracking_config\x18\x06 \x01(\x0b\x32\x37.google.cloud.datalabeling.v1beta1.ObjectTrackingConfigH\x00\x12\x46\n\x0c\x65vent_config\x18\x07 \x01(\x0b\x32..google.cloud.datalabeling.v1beta1.EventConfigH\x00\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12N\n\x0c\x62\x61sic_config\x18\x02 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig\x12M\n\x07\x66\x65\x61ture\x18\x03 \x01(\x0e\x32<.google.cloud.datalabeling.v1beta1.LabelVideoRequest.Feature"l\n\x07\x46\x65\x61ture\x12\x17\n\x13\x46\x45\x41TURE_UNSPECIFIED\x10\x00\x12\x12\n\x0e\x43LASSIFICATION\x10\x01\x12\x14\n\x10OBJECT_DETECTION\x10\x02\x12\x13\n\x0fOBJECT_TRACKING\x10\x03\x12\t\n\x05\x45VENT\x10\x04\x42\x10\n\x0erequest_config"\xf6\x03\n\x10LabelTextRequest\x12\x61\n\x1atext_classification_config\x18\x04 \x01(\x0b\x32;.google.cloud.datalabeling.v1beta1.TextClassificationConfigH\x00\x12\x66\n\x1dtext_entity_extraction_config\x18\x05 \x01(\x0b\x32=.google.cloud.datalabeling.v1beta1.TextEntityExtractionConfigH\x00\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12N\n\x0c\x62\x61sic_config\x18\x02 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig\x12L\n\x07\x66\x65\x61ture\x18\x06 \x01(\x0e\x32;.google.cloud.datalabeling.v1beta1.LabelTextRequest.Feature"W\n\x07\x46\x65\x61ture\x12\x17\n\x13\x46\x45\x41TURE_UNSPECIFIED\x10\x00\x12\x17\n\x13TEXT_CLASSIFICATION\x10\x01\x12\x1a\n\x16TEXT_ENTITY_EXTRACTION\x10\x02\x42\x10\n\x0erequest_config"1\n\x11GetExampleRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t"\\\n\x13ListExamplesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"m\n\x14ListExamplesResponse\x12<\n\x08\x65xamples\x18\x01 \x03(\x0b\x32*.google.cloud.datalabeling.v1beta1.Example\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x83\x01\n\x1e\x43reateAnnotationSpecSetRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12Q\n\x13\x61nnotation_spec_set\x18\x02 \x01(\x0b\x32\x34.google.cloud.datalabeling.v1beta1.AnnotationSpecSet"+\n\x1bGetAnnotationSpecSetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"f\n\x1dListAnnotationSpecSetsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"\x8d\x01\n\x1eListAnnotationSpecSetsResponse\x12R\n\x14\x61nnotation_spec_sets\x18\x01 \x03(\x0b\x32\x34.google.cloud.datalabeling.v1beta1.AnnotationSpecSet\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t".\n\x1e\x44\x65leteAnnotationSpecSetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"o\n\x18\x43reateInstructionRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x43\n\x0binstruction\x18\x02 \x01(\x0b\x32..google.cloud.datalabeling.v1beta1.Instruction"%\n\x15GetInstructionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"(\n\x18\x44\x65leteInstructionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"`\n\x17ListInstructionsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"y\n\x18ListInstructionsResponse\x12\x44\n\x0cinstructions\x18\x01 \x03(\x0b\x32..google.cloud.datalabeling.v1beta1.Instruction\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"$\n\x14GetEvaluationRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"a\n\x18SearchEvaluationsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"x\n\x19SearchEvaluationsResponse\x12\x42\n\x0b\x65valuations\x18\x01 \x03(\x0b\x32-.google.cloud.datalabeling.v1beta1.Evaluation\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"X\n\x1fSearchExampleComparisonsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"\xdb\x02\n SearchExampleComparisonsResponse\x12r\n\x13\x65xample_comparisons\x18\x01 \x03(\x0b\x32U.google.cloud.datalabeling.v1beta1.SearchExampleComparisonsResponse.ExampleComparison\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x1a\xa9\x01\n\x11\x45xampleComparison\x12H\n\x14ground_truth_example\x18\x01 \x01(\x0b\x32*.google.cloud.datalabeling.v1beta1.Example\x12J\n\x16model_created_examples\x18\x02 \x03(\x0b\x32*.google.cloud.datalabeling.v1beta1.Example"k\n\x1a\x43reateEvaluationJobRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12=\n\x03job\x18\x02 \x01(\x0b\x32\x30.google.cloud.datalabeling.v1beta1.EvaluationJob"\x97\x01\n\x1aUpdateEvaluationJobRequest\x12H\n\x0e\x65valuation_job\x18\x01 \x01(\x0b\x32\x30.google.cloud.datalabeling.v1beta1.EvaluationJob\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"\'\n\x17GetEvaluationJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t")\n\x19PauseEvaluationJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"*\n\x1aResumeEvaluationJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"*\n\x1a\x44\x65leteEvaluationJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"b\n\x19ListEvaluationJobsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"\x80\x01\n\x1aListEvaluationJobsResponse\x12I\n\x0f\x65valuation_jobs\x18\x01 \x03(\x0b\x32\x30.google.cloud.datalabeling.v1beta1.EvaluationJob\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t2\xfa\x31\n\x13\x44\x61taLabelingService\x12\xa6\x01\n\rCreateDataset\x12\x37.google.cloud.datalabeling.v1beta1.CreateDatasetRequest\x1a*.google.cloud.datalabeling.v1beta1.Dataset"0\x82\xd3\xe4\x93\x02*"%/v1beta1/{parent=projects/*}/datasets:\x01*\x12\x9d\x01\n\nGetDataset\x12\x34.google.cloud.datalabeling.v1beta1.GetDatasetRequest\x1a*.google.cloud.datalabeling.v1beta1.Dataset"-\x82\xd3\xe4\x93\x02\'\x12%/v1beta1/{name=projects/*/datasets/*}\x12\xae\x01\n\x0cListDatasets\x12\x36.google.cloud.datalabeling.v1beta1.ListDatasetsRequest\x1a\x37.google.cloud.datalabeling.v1beta1.ListDatasetsResponse"-\x82\xd3\xe4\x93\x02\'\x12%/v1beta1/{parent=projects/*}/datasets\x12\x8f\x01\n\rDeleteDataset\x12\x37.google.cloud.datalabeling.v1beta1.DeleteDatasetRequest\x1a\x16.google.protobuf.Empty"-\x82\xd3\xe4\x93\x02\'*%/v1beta1/{name=projects/*/datasets/*}\x12\x9e\x01\n\nImportData\x12\x34.google.cloud.datalabeling.v1beta1.ImportDataRequest\x1a\x1d.google.longrunning.Operation";\x82\xd3\xe4\x93\x02\x35"0/v1beta1/{name=projects/*/datasets/*}:importData:\x01*\x12\x9e\x01\n\nExportData\x12\x34.google.cloud.datalabeling.v1beta1.ExportDataRequest\x1a\x1d.google.longrunning.Operation";\x82\xd3\xe4\x93\x02\x35"0/v1beta1/{name=projects/*/datasets/*}:exportData:\x01*\x12\xac\x01\n\x0bGetDataItem\x12\x35.google.cloud.datalabeling.v1beta1.GetDataItemRequest\x1a+.google.cloud.datalabeling.v1beta1.DataItem"9\x82\xd3\xe4\x93\x02\x33\x12\x31/v1beta1/{name=projects/*/datasets/*/dataItems/*}\x12\xbd\x01\n\rListDataItems\x12\x37.google.cloud.datalabeling.v1beta1.ListDataItemsRequest\x1a\x38.google.cloud.datalabeling.v1beta1.ListDataItemsResponse"9\x82\xd3\xe4\x93\x02\x33\x12\x31/v1beta1/{parent=projects/*/datasets/*}/dataItems\x12\xcc\x01\n\x13GetAnnotatedDataset\x12=.google.cloud.datalabeling.v1beta1.GetAnnotatedDatasetRequest\x1a\x33.google.cloud.datalabeling.v1beta1.AnnotatedDataset"A\x82\xd3\xe4\x93\x02;\x12\x39/v1beta1/{name=projects/*/datasets/*/annotatedDatasets/*}\x12\xdd\x01\n\x15ListAnnotatedDatasets\x12?.google.cloud.datalabeling.v1beta1.ListAnnotatedDatasetsRequest\x1a@.google.cloud.datalabeling.v1beta1.ListAnnotatedDatasetsResponse"A\x82\xd3\xe4\x93\x02;\x12\x39/v1beta1/{parent=projects/*/datasets/*}/annotatedDatasets\x12\xb5\x01\n\x16\x44\x65leteAnnotatedDataset\x12@.google.cloud.datalabeling.v1beta1.DeleteAnnotatedDatasetRequest\x1a\x16.google.protobuf.Empty"A\x82\xd3\xe4\x93\x02;*9/v1beta1/{name=projects/*/datasets/*/annotatedDatasets/*}\x12\xa1\x01\n\nLabelImage\x12\x34.google.cloud.datalabeling.v1beta1.LabelImageRequest\x1a\x1d.google.longrunning.Operation">\x82\xd3\xe4\x93\x02\x38"3/v1beta1/{parent=projects/*/datasets/*}/image:label:\x01*\x12\xa1\x01\n\nLabelVideo\x12\x34.google.cloud.datalabeling.v1beta1.LabelVideoRequest\x1a\x1d.google.longrunning.Operation">\x82\xd3\xe4\x93\x02\x38"3/v1beta1/{parent=projects/*/datasets/*}/video:label:\x01*\x12\x9e\x01\n\tLabelText\x12\x33.google.cloud.datalabeling.v1beta1.LabelTextRequest\x1a\x1d.google.longrunning.Operation"=\x82\xd3\xe4\x93\x02\x37"2/v1beta1/{parent=projects/*/datasets/*}/text:label:\x01*\x12\xbc\x01\n\nGetExample\x12\x34.google.cloud.datalabeling.v1beta1.GetExampleRequest\x1a*.google.cloud.datalabeling.v1beta1.Example"L\x82\xd3\xe4\x93\x02\x46\x12\x44/v1beta1/{name=projects/*/datasets/*/annotatedDatasets/*/examples/*}\x12\xcd\x01\n\x0cListExamples\x12\x36.google.cloud.datalabeling.v1beta1.ListExamplesRequest\x1a\x37.google.cloud.datalabeling.v1beta1.ListExamplesResponse"L\x82\xd3\xe4\x93\x02\x46\x12\x44/v1beta1/{parent=projects/*/datasets/*/annotatedDatasets/*}/examples\x12\xce\x01\n\x17\x43reateAnnotationSpecSet\x12\x41.google.cloud.datalabeling.v1beta1.CreateAnnotationSpecSetRequest\x1a\x34.google.cloud.datalabeling.v1beta1.AnnotationSpecSet":\x82\xd3\xe4\x93\x02\x34"//v1beta1/{parent=projects/*}/annotationSpecSets:\x01*\x12\xc5\x01\n\x14GetAnnotationSpecSet\x12>.google.cloud.datalabeling.v1beta1.GetAnnotationSpecSetRequest\x1a\x34.google.cloud.datalabeling.v1beta1.AnnotationSpecSet"7\x82\xd3\xe4\x93\x02\x31\x12//v1beta1/{name=projects/*/annotationSpecSets/*}\x12\xd6\x01\n\x16ListAnnotationSpecSets\x12@.google.cloud.datalabeling.v1beta1.ListAnnotationSpecSetsRequest\x1a\x41.google.cloud.datalabeling.v1beta1.ListAnnotationSpecSetsResponse"7\x82\xd3\xe4\x93\x02\x31\x12//v1beta1/{parent=projects/*}/annotationSpecSets\x12\xad\x01\n\x17\x44\x65leteAnnotationSpecSet\x12\x41.google.cloud.datalabeling.v1beta1.DeleteAnnotationSpecSetRequest\x1a\x16.google.protobuf.Empty"7\x82\xd3\xe4\x93\x02\x31*//v1beta1/{name=projects/*/annotationSpecSets/*}\x12\xa5\x01\n\x11\x43reateInstruction\x12;.google.cloud.datalabeling.v1beta1.CreateInstructionRequest\x1a\x1d.google.longrunning.Operation"4\x82\xd3\xe4\x93\x02.")/v1beta1/{parent=projects/*}/instructions:\x01*\x12\xad\x01\n\x0eGetInstruction\x12\x38.google.cloud.datalabeling.v1beta1.GetInstructionRequest\x1a..google.cloud.datalabeling.v1beta1.Instruction"1\x82\xd3\xe4\x93\x02+\x12)/v1beta1/{name=projects/*/instructions/*}\x12\xbe\x01\n\x10ListInstructions\x12:.google.cloud.datalabeling.v1beta1.ListInstructionsRequest\x1a;.google.cloud.datalabeling.v1beta1.ListInstructionsResponse"1\x82\xd3\xe4\x93\x02+\x12)/v1beta1/{parent=projects/*}/instructions\x12\x9b\x01\n\x11\x44\x65leteInstruction\x12;.google.cloud.datalabeling.v1beta1.DeleteInstructionRequest\x1a\x16.google.protobuf.Empty"1\x82\xd3\xe4\x93\x02+*)/v1beta1/{name=projects/*/instructions/*}\x12\xb4\x01\n\rGetEvaluation\x12\x37.google.cloud.datalabeling.v1beta1.GetEvaluationRequest\x1a-.google.cloud.datalabeling.v1beta1.Evaluation";\x82\xd3\xe4\x93\x02\x35\x12\x33/v1beta1/{name=projects/*/datasets/*/evaluations/*}\x12\xc7\x01\n\x11SearchEvaluations\x12;.google.cloud.datalabeling.v1beta1.SearchEvaluationsRequest\x1a<.google.cloud.datalabeling.v1beta1.SearchEvaluationsResponse"7\x82\xd3\xe4\x93\x02\x31\x12//v1beta1/{parent=projects/*}/evaluations:search\x12\xff\x01\n\x18SearchExampleComparisons\x12\x42.google.cloud.datalabeling.v1beta1.SearchExampleComparisonsRequest\x1a\x43.google.cloud.datalabeling.v1beta1.SearchExampleComparisonsResponse"Z\x82\xd3\xe4\x93\x02T"O/v1beta1/{parent=projects/*/datasets/*/evaluations/*}/exampleComparisons:search:\x01*\x12\xbe\x01\n\x13\x43reateEvaluationJob\x12=.google.cloud.datalabeling.v1beta1.CreateEvaluationJobRequest\x1a\x30.google.cloud.datalabeling.v1beta1.EvaluationJob"6\x82\xd3\xe4\x93\x02\x30"+/v1beta1/{parent=projects/*}/evaluationJobs:\x01*\x12\xda\x01\n\x13UpdateEvaluationJob\x12=.google.cloud.datalabeling.v1beta1.UpdateEvaluationJobRequest\x1a\x30.google.cloud.datalabeling.v1beta1.EvaluationJob"R\x82\xd3\xe4\x93\x02L2:/v1beta1/{evaluation_job.name=projects/*/evaluationJobs/*}:\x0e\x65valuation_job\x12\xb5\x01\n\x10GetEvaluationJob\x12:.google.cloud.datalabeling.v1beta1.GetEvaluationJobRequest\x1a\x30.google.cloud.datalabeling.v1beta1.EvaluationJob"3\x82\xd3\xe4\x93\x02-\x12+/v1beta1/{name=projects/*/evaluationJobs/*}\x12\xa8\x01\n\x12PauseEvaluationJob\x12<.google.cloud.datalabeling.v1beta1.PauseEvaluationJobRequest\x1a\x16.google.protobuf.Empty"<\x82\xd3\xe4\x93\x02\x36"1/v1beta1/{name=projects/*/evaluationJobs/*}:pause:\x01*\x12\xab\x01\n\x13ResumeEvaluationJob\x12=.google.cloud.datalabeling.v1beta1.ResumeEvaluationJobRequest\x1a\x16.google.protobuf.Empty"=\x82\xd3\xe4\x93\x02\x37"2/v1beta1/{name=projects/*/evaluationJobs/*}:resume:\x01*\x12\xa1\x01\n\x13\x44\x65leteEvaluationJob\x12=.google.cloud.datalabeling.v1beta1.DeleteEvaluationJobRequest\x1a\x16.google.protobuf.Empty"3\x82\xd3\xe4\x93\x02-*+/v1beta1/{name=projects/*/evaluationJobs/*}\x12\xc6\x01\n\x12ListEvaluationJobs\x12<.google.cloud.datalabeling.v1beta1.ListEvaluationJobsRequest\x1a=.google.cloud.datalabeling.v1beta1.ListEvaluationJobsResponse"3\x82\xd3\xe4\x93\x02-\x12+/v1beta1/{parent=projects/*}/evaluationJobs\x1aO\xca\x41\x1b\x64\x61talabeling.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformBx\n%com.google.cloud.datalabeling.v1beta1P\x01ZMgoogle.golang.org/genproto/googleapis/cloud/datalabeling/v1beta1;datalabelingb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -65,6 +68,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_evaluation__job__pb2.DESCRIPTOR,
         google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_human__annotation__config__pb2.DESCRIPTOR,
         google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_instruction__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_operations__pb2.DESCRIPTOR,
         google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,
@@ -110,8 +114,8 @@ _LABELIMAGEREQUEST_FEATURE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2513,
-    serialized_end=2663,
+    serialized_start=2571,
+    serialized_end=2721,
 )
 _sym_db.RegisterEnumDescriptor(_LABELIMAGEREQUEST_FEATURE)
 
@@ -151,8 +155,8 @@ _LABELVIDEOREQUEST_FEATURE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3237,
-    serialized_end=3345,
+    serialized_start=3295,
+    serialized_end=3403,
 )
 _sym_db.RegisterEnumDescriptor(_LABELVIDEOREQUEST_FEATURE)
 
@@ -186,8 +190,8 @@ _LABELTEXTREQUEST_FEATURE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3763,
-    serialized_end=3850,
+    serialized_start=3821,
+    serialized_end=3908,
 )
 _sym_db.RegisterEnumDescriptor(_LABELTEXTREQUEST_FEATURE)
 
@@ -244,8 +248,8 @@ _CREATEDATASETREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=691,
-    serialized_end=790,
+    serialized_start=749,
+    serialized_end=848,
 )
 
 
@@ -283,8 +287,8 @@ _GETDATASETREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=792,
-    serialized_end=825,
+    serialized_start=850,
+    serialized_end=883,
 )
 
 
@@ -376,8 +380,8 @@ _LISTDATASETSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=827,
-    serialized_end=919,
+    serialized_start=885,
+    serialized_end=977,
 )
 
 
@@ -433,8 +437,8 @@ _LISTDATASETSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=921,
-    serialized_end=1030,
+    serialized_start=979,
+    serialized_end=1088,
 )
 
 
@@ -472,8 +476,8 @@ _DELETEDATASETREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1032,
-    serialized_end=1068,
+    serialized_start=1090,
+    serialized_end=1126,
 )
 
 
@@ -547,8 +551,8 @@ _IMPORTDATAREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1071,
-    serialized_end=1202,
+    serialized_start=1129,
+    serialized_end=1260,
 )
 
 
@@ -658,8 +662,8 @@ _EXPORTDATAREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1205,
-    serialized_end=1381,
+    serialized_start=1263,
+    serialized_end=1439,
 )
 
 
@@ -697,8 +701,8 @@ _GETDATAITEMREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1383,
-    serialized_end=1417,
+    serialized_start=1441,
+    serialized_end=1475,
 )
 
 
@@ -790,8 +794,8 @@ _LISTDATAITEMSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1419,
-    serialized_end=1512,
+    serialized_start=1477,
+    serialized_end=1570,
 )
 
 
@@ -847,8 +851,8 @@ _LISTDATAITEMSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1514,
-    serialized_end=1627,
+    serialized_start=1572,
+    serialized_end=1685,
 )
 
 
@@ -886,8 +890,8 @@ _GETANNOTATEDDATASETREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1629,
-    serialized_end=1671,
+    serialized_start=1687,
+    serialized_end=1729,
 )
 
 
@@ -979,8 +983,8 @@ _LISTANNOTATEDDATASETSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1673,
-    serialized_end=1774,
+    serialized_start=1731,
+    serialized_end=1832,
 )
 
 
@@ -1036,8 +1040,8 @@ _LISTANNOTATEDDATASETSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1777,
-    serialized_end=1914,
+    serialized_start=1835,
+    serialized_end=1972,
 )
 
 
@@ -1075,8 +1079,8 @@ _DELETEANNOTATEDDATASETREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1916,
-    serialized_end=1961,
+    serialized_start=1974,
+    serialized_end=2019,
 )
 
 
@@ -1230,8 +1234,8 @@ _LABELIMAGEREQUEST = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1964,
-    serialized_end=2681,
+    serialized_start=2022,
+    serialized_end=2739,
 )
 
 
@@ -1385,8 +1389,8 @@ _LABELVIDEOREQUEST = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=2684,
-    serialized_end=3363,
+    serialized_start=2742,
+    serialized_end=3421,
 )
 
 
@@ -1504,8 +1508,8 @@ _LABELTEXTREQUEST = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=3366,
-    serialized_end=3868,
+    serialized_start=3424,
+    serialized_end=3926,
 )
 
 
@@ -1561,8 +1565,8 @@ _GETEXAMPLEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3870,
-    serialized_end=3919,
+    serialized_start=3928,
+    serialized_end=3977,
 )
 
 
@@ -1654,8 +1658,8 @@ _LISTEXAMPLESREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3921,
-    serialized_end=4013,
+    serialized_start=3979,
+    serialized_end=4071,
 )
 
 
@@ -1711,8 +1715,8 @@ _LISTEXAMPLESRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4015,
-    serialized_end=4124,
+    serialized_start=4073,
+    serialized_end=4182,
 )
 
 
@@ -1768,8 +1772,8 @@ _CREATEANNOTATIONSPECSETREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4127,
-    serialized_end=4258,
+    serialized_start=4185,
+    serialized_end=4316,
 )
 
 
@@ -1807,8 +1811,8 @@ _GETANNOTATIONSPECSETREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4260,
-    serialized_end=4303,
+    serialized_start=4318,
+    serialized_end=4361,
 )
 
 
@@ -1900,8 +1904,8 @@ _LISTANNOTATIONSPECSETSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4305,
-    serialized_end=4407,
+    serialized_start=4363,
+    serialized_end=4465,
 )
 
 
@@ -1957,8 +1961,8 @@ _LISTANNOTATIONSPECSETSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4410,
-    serialized_end=4551,
+    serialized_start=4468,
+    serialized_end=4609,
 )
 
 
@@ -1996,8 +2000,8 @@ _DELETEANNOTATIONSPECSETREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4553,
-    serialized_end=4599,
+    serialized_start=4611,
+    serialized_end=4657,
 )
 
 
@@ -2053,8 +2057,8 @@ _CREATEINSTRUCTIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4601,
-    serialized_end=4712,
+    serialized_start=4659,
+    serialized_end=4770,
 )
 
 
@@ -2092,8 +2096,8 @@ _GETINSTRUCTIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4714,
-    serialized_end=4751,
+    serialized_start=4772,
+    serialized_end=4809,
 )
 
 
@@ -2131,8 +2135,8 @@ _DELETEINSTRUCTIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4753,
-    serialized_end=4793,
+    serialized_start=4811,
+    serialized_end=4851,
 )
 
 
@@ -2224,8 +2228,8 @@ _LISTINSTRUCTIONSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4795,
-    serialized_end=4891,
+    serialized_start=4853,
+    serialized_end=4949,
 )
 
 
@@ -2281,8 +2285,8 @@ _LISTINSTRUCTIONSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4893,
-    serialized_end=5014,
+    serialized_start=4951,
+    serialized_end=5072,
 )
 
 
@@ -2320,8 +2324,8 @@ _GETEVALUATIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5016,
-    serialized_end=5052,
+    serialized_start=5074,
+    serialized_end=5110,
 )
 
 
@@ -2413,8 +2417,8 @@ _SEARCHEVALUATIONSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5054,
-    serialized_end=5151,
+    serialized_start=5112,
+    serialized_end=5209,
 )
 
 
@@ -2470,8 +2474,8 @@ _SEARCHEVALUATIONSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5153,
-    serialized_end=5273,
+    serialized_start=5211,
+    serialized_end=5331,
 )
 
 
@@ -2545,8 +2549,8 @@ _SEARCHEXAMPLECOMPARISONSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5275,
-    serialized_end=5363,
+    serialized_start=5333,
+    serialized_end=5421,
 )
 
 
@@ -2602,8 +2606,8 @@ _SEARCHEXAMPLECOMPARISONSRESPONSE_EXAMPLECOMPARISON = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5544,
-    serialized_end=5713,
+    serialized_start=5602,
+    serialized_end=5771,
 )
 
 _SEARCHEXAMPLECOMPARISONSRESPONSE = _descriptor.Descriptor(
@@ -2658,8 +2662,8 @@ _SEARCHEXAMPLECOMPARISONSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5366,
-    serialized_end=5713,
+    serialized_start=5424,
+    serialized_end=5771,
 )
 
 
@@ -2715,8 +2719,8 @@ _CREATEEVALUATIONJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5715,
-    serialized_end=5822,
+    serialized_start=5773,
+    serialized_end=5880,
 )
 
 
@@ -2772,8 +2776,8 @@ _UPDATEEVALUATIONJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5825,
-    serialized_end=5976,
+    serialized_start=5883,
+    serialized_end=6034,
 )
 
 
@@ -2811,8 +2815,8 @@ _GETEVALUATIONJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5978,
-    serialized_end=6017,
+    serialized_start=6036,
+    serialized_end=6075,
 )
 
 
@@ -2850,8 +2854,8 @@ _PAUSEEVALUATIONJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=6019,
-    serialized_end=6060,
+    serialized_start=6077,
+    serialized_end=6118,
 )
 
 
@@ -2889,8 +2893,8 @@ _RESUMEEVALUATIONJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=6062,
-    serialized_end=6104,
+    serialized_start=6120,
+    serialized_end=6162,
 )
 
 
@@ -2928,8 +2932,8 @@ _DELETEEVALUATIONJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=6106,
-    serialized_end=6148,
+    serialized_start=6164,
+    serialized_end=6206,
 )
 
 
@@ -3021,8 +3025,8 @@ _LISTEVALUATIONJOBSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=6150,
-    serialized_end=6248,
+    serialized_start=6208,
+    serialized_end=6306,
 )
 
 
@@ -3078,8 +3082,8 @@ _LISTEVALUATIONJOBSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=6251,
-    serialized_end=6379,
+    serialized_start=6309,
+    serialized_end=6437,
 )
 
 _CREATEDATASETREQUEST.fields_by_name[
@@ -4453,8 +4457,8 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
     serialized_options=_b(
         "\312A\033datalabeling.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform"
     ),
-    serialized_start=6382,
-    serialized_end=12776,
+    serialized_start=6440,
+    serialized_end=12834,
     methods=[
         _descriptor.MethodDescriptor(
             name="CreateDataset",

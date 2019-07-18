@@ -4,6 +4,41 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## 0.4.0
+
+07-16-2019 17:11 PDT
+
+### Implementation Changes
+
+- Retry DEADLINE_EXCEEDED (via synth). ([#7920](https://github.com/googleapis/google-cloud-python/pull/7920))
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+
+### New Features
+
+- Add `DatasourceServiceClient` (via synth). ([#8630](https://github.com/googleapis/google-cloud-python/pull/8630))
+- Add `start_manual_transfer_runs` method (via synth). ([#8630](https://github.com/googleapis/google-cloud-python/pull/8630))
+- Add `client_info`/`version_info` support (via synth). ([#8630](https://github.com/googleapis/google-cloud-python/pull/8630))
+- Allow passing kwargs to `create_channel` (via synth). ([#8630](https://github.com/googleapis/google-cloud-python/pull/8630))
+- Add path helpers (via synth). ([#8630](https://github.com/googleapis/google-cloud-python/pull/8630))
+- Add protos as an artifact to library ([#7205](https://github.com/googleapis/google-cloud-python/pull/7205))
+
+### Documentation
+
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+- Adjust indentation on scheduled query sample. ([#8493](https://github.com/googleapis/google-cloud-python/pull/8493))
+- Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+- Add sample to schedule query with BQ DTS. ([#7703](https://github.com/googleapis/google-cloud-python/pull/7703))
+- Add nox session `docs` (via synth). ([#7765](https://github.com/googleapis/google-cloud-python/pull/7765))
+- Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+- Pick up stub docstring fix in GAPIC generator. ([#6965](https://github.com/googleapis/google-cloud-python/pull/6965))
+
+### Internal / Testing Changes
+
+- Blacken noxfile.py, setup.py (via synth). ([#8116](https://github.com/googleapis/google-cloud-python/pull/8116))
+- Add empty lines (via synth). ([#8050](https://github.com/googleapis/google-cloud-python/pull/8050))
+- Remove unused message exports (via synth). ([#7263](https://github.com/googleapis/google-cloud-python/pull/7263))
+- Protoc-generated serialization update. ([#7075](https://github.com/googleapis/google-cloud-python/pull/7075))
+
 ## 0.3.0
 
 12-17-2018 17:59 PST
