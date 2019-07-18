@@ -204,7 +204,7 @@ class Batch(object):
         if self._status != self._IN_PROGRESS:
             raise ValueError("Batch must be in progress to put_entity_pb()")
 
-        if entity_pb.key is None:
+        if len(entity_pb.key.path) == 0:
             raise ValueError("Entity must have a key")
 
         if self.project != entity_pb.key.partition_id.project_id:
