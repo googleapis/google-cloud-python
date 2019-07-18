@@ -127,7 +127,7 @@ class Client(ClientWithProject):
 
             if self._emulator_host is not None:
                 channel = firestore_grpc_transport.firestore_pb2_grpc.grpc.insecure_channel(
-                    self._emulator_host,
+                    self._emulator_host
                 )
 
             self._transport = firestore_grpc_transport.FirestoreGrpcTransport(
@@ -190,6 +190,10 @@ class Client(ClientWithProject):
             self._rpc_metadata_internal = _helpers.metadata_with_prefix(
                 self._database_string
             )
+
+            if self._emulator_host is not None:
+                # The emulator requires additioanl metadata to be set.
+                self._rpc_metadata_internal.append(("authorization", "bearer owner"))
 
         return self._rpc_metadata_internal
 
