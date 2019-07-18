@@ -46,6 +46,7 @@ setup(
         'jinja2 >= 2.10',
         'protobuf >= 3.7.1',
         'pypandoc >= 1.4',
+        'PyYAML >= 5.1.1',
     ),
     extras_require={
         ':python_version<"3.7"': ('dataclasses >= 0.4',),

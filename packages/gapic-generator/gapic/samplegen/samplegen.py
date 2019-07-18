@@ -16,12 +16,13 @@ import itertools
 import jinja2
 import keyword
 import re
+import time
 
-from gapic.samplegen import utils
+from gapic.samplegen import utils, yaml
 
-from collections import (defaultdict, namedtuple)
-from textwrap import dedent
-from typing import (Dict, List, Mapping, Set, Tuple)
+
+from collections import defaultdict, namedtuple
+from typing import Dict, List, Mapping, Optional, Set, Tuple
 
 # Outstanding issues:
 # * In real sample configs, many variables are
@@ -29,25 +30,32 @@ from typing import (Dict, List, Mapping, Set, Tuple)
 
 MIN_SCHEMA_VERSION = (1, 2, 0)
 
-VALID_CONFIG_TYPE = 'com.google.api.codegen.SampleConfigProto'
+VALID_CONFIG_TYPE = "com.google.api.codegen.SampleConfigProto"
 
 # TODO: read in copyright and license from files.
-FILE_HEADER: Dict[str, str] = {"copyright": "TODO: add a copyright",
-                               "license": "TODO: add a license"}
+FILE_HEADER: Dict[str, str] = {
+    "copyright": "TODO: add a copyright",
+    "license": "TODO: add a license",
+}
 
 RESERVED_WORDS = frozenset(
-    itertools.chain(keyword.kwlist,
-                    dir(__builtins__),
-                    {"client",
-                     "f",            # parameter used in file I/O statements
-                     "operation",    # temporary used in LROs
-                     "page",         # used in paginated responses
-                     "page_result",  # used in paginated responses
-                     "response",     # basic 'response'
-                     "stream",       # used in server and bidi streaming
-                     }))
+    itertools.chain(
+        keyword.kwlist,
+        dir(__builtins__),
+        {
+            "client",
+            "f",  # parameter used in file I/O statements
+            "operation",  # temporary used in LROs
+            "page",  # used in paginated responses
+            "page_result",  # used in paginated responses
+            "response",  # basic 'response'
+            "stream",  # used in server and bidi streaming
+        },
+    )
+)
 
 TEMPLATE_NAME = "sample.py.j2"
+
 
 TransformedRequest = namedtuple("TransformedRequest", ["base", "body"])
 
@@ -138,9 +146,9 @@ class Validator:
 
     # TODO: this will eventually need the method name and the proto file
     # so that it can do the correct value transformation for enums.
-    def validate_and_transform_request(self,
-                                       calling_form: utils.CallingForm,
-                                       request: List[Mapping[str, str]]) -> List[TransformedRequest]:
+    def validate_and_transform_request(
+        self, calling_form: utils.CallingForm, request: List[Mapping[str, str]]
+    ) -> List[TransformedRequest]:
         """Validates and transforms the "request" block from a sample config.
 
            In the initial request, each dict has a "field" key that maps to a dotted
@@ -212,7 +220,9 @@ class Validator:
             if not field:
                 raise InvalidRequestSetup(
                     "No field attribute found in request setup assignment: {}".format(
-                        field_assignment_copy))
+                        field_assignment_copy
+                    )
+                )
 
             # TODO: properly handle top level fields
             # E.g.
@@ -224,24 +234,37 @@ class Validator:
             m = re.match(r"^([a-zA-Z]\w*)\.([a-zA-Z]\w*)$", field)
             if not m:
                 raise InvalidRequestSetup(
-                    "Malformed request attribute description: {}".format(field))
+                    "Malformed request attribute description: {}".format(field)
+                )
 
             base, attr = m.groups()
             if base in RESERVED_WORDS:
                 raise ReservedVariableName(
-                    "Tried to define '{}', which is a reserved name".format(base))
+                    "Tried to define '{}', which is a reserved name".format(
+                        base)
+                )
 
             field_assignment_copy["field"] = attr
             base_param_to_attrs[base].append(field_assignment_copy)
 
-        if (calling_form in {utils.CallingForm.RequestStreamingClient,
-                             utils.CallingForm.RequestStreamingBidi} and
-                len(base_param_to_attrs) > 1):
-            raise InvalidRequestSetup(("There can be at most 1 base request in a sample"
-                                       " for a method with client side streaming"))
+        if (
+            calling_form
+            in {
+                utils.CallingForm.RequestStreamingClient,
+                utils.CallingForm.RequestStreamingBidi,
+            }
+            and len(base_param_to_attrs) > 1
+        ):
+            raise InvalidRequestSetup(
+                (
+                    "There can be at most 1 base request in a sample"
+                    " for a method with client side streaming"
+                )
+            )
 
-        return [TransformedRequest(base, body)
-                for base, body in base_param_to_attrs.items()]
+        return [
+            TransformedRequest(base, body) for base, body in base_param_to_attrs.items()
+        ]
 
     def validate_response(self, response):
         """Validates a "response" block from a sample config.
@@ -253,8 +276,8 @@ class Validator:
         Dispatches statements to sub-validators.
 
         Args:
-            response: list[dict{str:?}]: The structured data representing
-                                         the sample's response.
+            response: list[dict{str:Any}]: The structured data representing
+                                           the sample's response.
 
         Raises:
             InvalidStatement: If an unexpected key is found in a statement dict
@@ -269,8 +292,8 @@ class Validator:
             keyword, body = next(iter(statement.items()))
             validater = self.STATEMENT_DISPATCH_TABLE.get(keyword)
             if not validater:
-                raise InvalidStatement("Invalid statement keyword: {}"
-                                       .format(keyword))
+                raise InvalidStatement(
+                    "Invalid statement keyword: {}".format(keyword))
 
             validater(self, body)
 
@@ -282,7 +305,9 @@ class Validator:
         """
         if lval in RESERVED_WORDS:
             raise ReservedVariableName(
-                "Tried to define a variable with reserved name: {}".format(lval))
+                "Tried to define a variable with reserved name: {}".format(
+                    lval)
+            )
 
         # Even though it's valid python to reassign variables to any rvalue,
         # the samplegen spec prohibits this.
@@ -310,14 +335,17 @@ class Validator:
         num_prints = fmt_str.count("%s")
         if num_prints != len(body) - 1:
             raise MismatchedFormatSpecifier(
-                "Expected {} expresssions in format string but received {}"
-                .format(num_prints, len(body) - 1))
+                "Expected {} expresssions in format string but received {}".format(
+                    num_prints, len(body) - 1
+                )
+            )
 
         for expression in body[1:]:
             var = expression.split(".")[0]
             if var not in self.var_defs_:
-                raise UndefinedVariableReference("Reference to undefined variable: {}"
-                                                 .format(var))
+                raise UndefinedVariableReference(
+                    "Reference to undefined variable: {}".format(var)
+                )
 
     def _validate_define(self, body: str):
         """"Validates 'define' statements.
@@ -348,8 +376,9 @@ class Validator:
 
         rval_base = rval.split(".")[0]
         if not rval_base in self.var_defs_:
-            raise UndefinedVariableReference("Reference to undefined variable: {}"
-                                             .format(rval_base))
+            raise UndefinedVariableReference(
+                "Reference to undefined variable: {}".format(rval_base)
+            )
 
     def _validate_write_file(self, body):
         """Validate 'write_file' statements.
@@ -382,8 +411,9 @@ class Validator:
         # TODO: check the rest of the elements for valid subfield attribute
         base = contents_var.split(".")[0]
         if base not in self.var_defs_:
-            raise UndefinedVariableReference("Reference to undefined variable: {}"
-                                             .format(base))
+            raise UndefinedVariableReference(
+                "Reference to undefined variable: {}".format(base)
+            )
 
     def _validate_loop(self, body):
         """Validates loop headers and statement bodies.
@@ -428,8 +458,10 @@ class Validator:
             # if collection_name.startswith("."):
             #     collection_name = "$resp" + collection_name
             if collection_name not in self.var_defs_:
-                raise UndefinedVariableReference("Reference to undefined variable: {}"
-                                                 .format(collection_name))
+                raise UndefinedVariableReference(
+                    "Reference to undefined variable: {}".format(
+                        collection_name)
+                )
 
             var = body[self.VAR_KWORD]
             self._handle_lvalue(var)
@@ -438,13 +470,16 @@ class Validator:
             segments -= map_args
             segments -= {self.KEY_KWORD, self.VAL_KWORD}
             if segments:
-                raise BadLoop("Unexpected keywords in loop statement: {}"
-                              .format(segments))
+                raise BadLoop(
+                    "Unexpected keywords in loop statement: {}".format(
+                        segments)
+                )
 
             map_name_base = body[self.MAP_KWORD].split(".")[0]
             if map_name_base not in self.var_defs_:
-                raise UndefinedVariableReference("Reference to undefined variable: {}"
-                                                 .format(map_name_base))
+                raise UndefinedVariableReference(
+                    "Reference to undefined variable: {}".format(map_name_base)
+                )
 
             key = body.get(self.KEY_KWORD)
             if key:
@@ -478,9 +513,9 @@ class Validator:
     }
 
 
-def generate_sample(sample,
-                    env: jinja2.environment.Environment,
-                    api_schema) -> Tuple[str, jinja2.environment.TemplateStream]:
+def generate_sample(
+    sample, id_is_unique: bool, env: jinja2.environment.Environment, api_schema
+) -> Tuple[str, jinja2.environment.TemplateStream]:
     sample_template = env.get_template(TEMPLATE_NAME)
 
     service_name = sample["service"]
@@ -492,22 +527,96 @@ def generate_sample(sample,
     rpc = service.methods.get(rpc_name)
     if not rpc:
         raise RpcMethodNotFound(
-            "Could not find rpc in service {}: {}".format(service_name, rpc_name))
+            "Could not find rpc in service {}: {}".format(
+                service_name, rpc_name)
+        )
 
     calling_form = utils.CallingForm.method_default(rpc)
 
     v = Validator()
-    sample["request"] = v.validate_and_transform_request(calling_form,
-                                                         sample["request"])
+    sample["request"] = v.validate_and_transform_request(
+        calling_form, sample["request"]
+    )
     v.validate_response(sample["response"])
 
-    sample_id = sample["id"]
-    sample_fpath = sample_id + str(calling_form) + ".py"
+    sample_fpath = (
+        sample["id"] + (str(calling_form) if not id_is_unique else "") + ".py"
+    )
 
     sample["package_name"] = api_schema.naming.warehouse_package_name
 
-    return sample_fpath, sample_template.stream(file_header=FILE_HEADER,
-                                                sample=sample,
-                                                imports=[],
-                                                calling_form=calling_form,
-                                                calling_form_enum=utils.CallingForm)
+    return (
+        sample_fpath,
+        sample_template.stream(
+            file_header=FILE_HEADER,
+            sample=sample,
+            imports=[],
+            calling_form=calling_form,
+            calling_form_enum=utils.CallingForm,
+        ),
+    )
+
+
+def generate_manifest(fpaths_and_samples, api_schema, *, manifest_time: int = None):
+    """Generate a samplegen manifest for use by sampletest
+
+    Args:
+        fpaths_and_samples (Iterable[Tuple[str, Mapping[str, Any]]]):
+                         The file paths and samples to be listed in the manifest
+
+        api_schema (~.api.API): An API schema object.
+        manifest_time (int): Optional. An override for the timestamp in the name of the manifest filename.
+                             Primarily used for testing.
+
+    Returns:
+        Tuple[str, Dict[str,Any]]: The filename of the manifest and the manifest data as a dictionary.
+
+    """
+    all_info = [
+        yaml.KeyVal("type", "manifest/samples"),
+        yaml.KeyVal("schema_version", "3"),
+        yaml.Map(
+            name="python",
+            anchor_name="python",
+            elements=[
+                yaml.KeyVal("environment", "python"),
+                yaml.KeyVal("bin", "python3"),
+                # TODO: make this the real sample base directory
+                yaml.KeyVal("base_path", "sample/base/directory"),
+                yaml.KeyVal("invocation", "'{bin} {path} @args'"),
+            ],
+        ),
+        yaml.Collection(
+            name="samples",
+            elements=[
+                [
+                    yaml.Anchor("python"),
+                    yaml.KeyVal("sample", sample["id"]),
+                    yaml.KeyVal("path", "'{base_path}/%s'" % fpath),
+                    yaml.KeyVal("region_tag", sample.get("region_tag", "")),
+                ]
+                for fpath, sample in fpaths_and_samples
+            ],
+        ),
+    ]
+
+    dt = time.gmtime(manifest_time)
+    manifest_fname_template = (
+        "{api}.{version}.python."
+        "{year:04d}{month:02d}{day:02d}."
+        "{hour:02d}{minute:02d}{second:02d}."
+        "manifest.yaml"
+    )
+
+    manifest_fname = manifest_fname_template.format(
+        api=api_schema.naming.name,
+        version=api_schema.naming.version,
+        year=dt.tm_year,
+        month=dt.tm_mon,
+        day=dt.tm_mday,
+        hour=dt.tm_hour,
+        minute=dt.tm_min,
+        second=dt.tm_sec,
+    )
+
+    return manifest_fname, all_info

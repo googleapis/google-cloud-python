@@ -14,8 +14,10 @@
 
 from gapic.samplegen import samplegen
 from gapic.samplegen import utils
+from gapic.samplegen import yaml
 
 __all__ = (
     'samplegen',
     'utils',
+    'yaml',
 )

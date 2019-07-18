@@ -13,9 +13,13 @@
 # limitations under the License.
 
 import pytest
+import yaml
 from collections import namedtuple
+from textwrap import dedent
 
 import gapic.samplegen.samplegen as samplegen
+import gapic.samplegen.yaml as gapic_yaml
+
 
 from gapic.samplegen import utils
 
@@ -523,3 +527,121 @@ def test_coerce_response_name():
     # Don't really need a test, but it shuts up code coverage.
     assert samplegen.coerce_response_name("$resp.squid") == "response.squid"
     assert samplegen.coerce_response_name("mollusc.squid") == "mollusc.squid"
+
+
+def test_generate_manifest():
+    DummyNaming = namedtuple("DummyNaming", ["name", "version"])
+    DummyApiSchema = namedtuple("DummyApiSchema", ["naming"])
+
+    fpath_to_dummy_sample = {
+        "squid_fpath.py": {"id": "squid_sample"},
+        "clam_fpath.py": {"id": "clam_sample",
+                          "region_tag": "giant_clam_sample"},
+    }
+
+    fname, info = samplegen.generate_manifest(
+        fpath_to_dummy_sample.items(),
+        DummyApiSchema(DummyNaming("Mollusc", "v1")),
+        # Empirically derived number such that the
+        # corresponding time_struct tests the zero
+        # padding in the returned filename.
+        manifest_time=4486525628
+    )
+
+    assert fname == "Mollusc.v1.python.21120304.090708.manifest.yaml"
+
+    expected_info = [
+        gapic_yaml.KeyVal("type", "manifest/samples"),
+        gapic_yaml.KeyVal("schema_version", "3"),
+        gapic_yaml.Map(name="python",
+                       anchor_name="python",
+                       elements=[
+                           gapic_yaml.KeyVal(
+                               "environment", "python"),
+                           gapic_yaml.KeyVal(
+                               "bin", "python3"),
+                           gapic_yaml.KeyVal(
+                               "base_path", "sample/base/directory"),
+                           gapic_yaml.KeyVal(
+                               "invocation", "'{bin} {path} @args'"),
+                       ]),
+        gapic_yaml.Collection(name="samples",
+                              elements=[
+                                  [
+                                      gapic_yaml.Anchor(
+                                          "python"),
+                                      gapic_yaml.KeyVal(
+                                          "sample", "squid_sample"),
+                                      gapic_yaml.KeyVal(
+                                          "path", "'{base_path}/squid_fpath.py'"),
+                                      gapic_yaml.KeyVal(
+                                          "region_tag", ""),
+                                  ],
+                                  [
+                                      gapic_yaml.Anchor("python"),
+                                      gapic_yaml.KeyVal(
+                                          "sample", "clam_sample"),
+                                      gapic_yaml.KeyVal(
+                                          "path", "'{base_path}/clam_fpath.py'"),
+                                      gapic_yaml.KeyVal(
+                                          "region_tag", "giant_clam_sample")
+                                  ],
+                              ])
+    ]
+
+    assert info == expected_info
+
+    expected_rendering = dedent("""
+                                type: manifest/samples
+                                schema_version: 3
+                                python: &python
+                                  environment: python
+                                  bin: python3
+                                  base_path: sample/base/directory
+                                  invocation: '{bin} {path} @args'
+                                samples:
+                                - <<: *python
+                                  sample: squid_sample
+                                  path: '{base_path}/squid_fpath.py'
+                                  region_tag: 
+                                - <<: *python
+                                  sample: clam_sample
+                                  path: '{base_path}/clam_fpath.py'
+                                  region_tag: giant_clam_sample""".lstrip("\n"))
+
+    rendered_yaml = "\n".join(e.render() for e in info)
+    assert rendered_yaml == expected_rendering
+
+    expected_parsed_manifest = {
+        "type": "manifest/samples",
+        "schema_version": 3,
+        "python": {
+            "environment": "python",
+            "bin": "python3",
+            "base_path": "sample/base/directory",
+            "invocation": "{bin} {path} @args",
+        },
+        "samples": [
+            {
+                "environment": "python",
+                "bin": "python3",
+                "base_path": "sample/base/directory",
+                "invocation": "{bin} {path} @args",
+                "sample": "squid_sample",
+                "path": "{base_path}/squid_fpath.py",
+                "region_tag": None,
+            },
+            {
+                "environment": "python",
+                "bin": "python3",
+                "base_path": "sample/base/directory",
+                "invocation": "{bin} {path} @args",
+                "sample": "clam_sample",
+                "path": "{base_path}/clam_fpath.py",
+                "region_tag": "giant_clam_sample",
+            },
+        ],
+    }
+
+    parsed_manifest = yaml.safe_load(rendered_yaml)
+    assert parsed_manifest == expected_parsed_manifest

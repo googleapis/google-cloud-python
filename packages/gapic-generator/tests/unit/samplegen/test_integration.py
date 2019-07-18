@@ -72,7 +72,8 @@ def test_generate_sample_basic():
                            "value_is_file": True}],
               "response": [{"print": ["Mollusc is a %s", "$resp.taxonomy"]}]}
 
-    fpath, template_stream = samplegen.generate_sample(sample, env, schema)
+    fpath, template_stream = samplegen.generate_sample(
+        sample, True, env, schema)
     sample_str = "".join(iter(template_stream))
 
     assert sample_str == '''# TODO: add a copyright
@@ -123,7 +124,7 @@ def test_generate_sample_service_not_found():
     sample = {"service": "Mollusc"}
 
     with pytest.raises(samplegen.UnknownService):
-        samplegen.generate_sample(sample, env, schema)
+        samplegen.generate_sample(sample, True, env, schema)
 
 
 def test_generate_sample_rpc_not_found():
@@ -132,4 +133,4 @@ def test_generate_sample_rpc_not_found():
     sample = {"service": "Mollusc", "rpc": "Classify"}
 
     with pytest.raises(samplegen.RpcMethodNotFound):
-        samplegen.generate_sample(sample, env, schema)
+        samplegen.generate_sample(sample, True, env, schema)
