@@ -24,6 +24,7 @@ from google.cloud import datastore
 from google.cloud.datastore.helpers import GeoPoint
 from google.cloud.environment_vars import GCD_DATASET
 from google.cloud.exceptions import Conflict
+from google.cloud.datastore_v1.proto import entity_pb2
 
 from test_utils.system import EmulatorCreds
 from test_utils.system import unique_resource_id
@@ -554,3 +555,149 @@ class TestDatastoreTransaction(TestDatastore):
         retrieved = local_client.get(entity.key)
 
         self.assertEqual(entity["children"], retrieved["children"])
+
+
+class TestDatastoreRawEntityPBMethods(TestDatastore):
+    """
+    Test which exercise methods which works with the raw Entity Protobof objects.
+    """
+
+    def test_put_and_get_entity_pb(self):
+        # 1. Store the Entity
+        key = Config.CLIENT.key("TestEntityPB", 1111)
+        entity_pb = entity_pb2.Entity()
+        entity_pb.key.CopyFrom(key.to_protobuf())
+
+        int32_value = entity_pb.properties.get_or_create('int32_key')
+        int32_value.integer_value = 1000
+        string_value = entity_pb.properties.get_or_create('string_key')
+        string_value.string_value = 'foo bar baz'
+
+        Config.CLIENT.put_entity_pb(entity_pb)
+
+        # 2. Verify that it was stored correctly
+        entity_retrieved_pb = Config.CLIENT.get_entity_pb(key=key)
+        self.assertEqual(entity_retrieved_pb, entity_pb)
+        self.assertEqual(entity_retrieved_pb.key.path[0].kind, "TestEntityPB")
+        self.assertEqual(entity_retrieved_pb.key.path[0].id, 1111)
+        self.assertEqual(entity_retrieved_pb.properties['int32_key'].integer_value,
+                         1000)
+        self.assertEqual(entity_retrieved_pb.properties['string_key'].string_value,
+                         'foo bar baz')
+
+    def test_put_multi_get_multi_pb(self):
+        # Store multiple entities
+        key1 = Config.CLIENT.key("TestEntityPB", 1111)
+        entity1_pb = entity_pb2.Entity()
+        entity1_pb.key.CopyFrom(key1.to_protobuf())
+
+        key2 = Config.CLIENT.key("TestEntityPB", 2222)
+        entity2_pb = entity_pb2.Entity()
+        entity2_pb.key.CopyFrom(key2.to_protobuf())
+
+        entity_pbs = [entity1_pb, entity2_pb]
+        Config.CLIENT.put_multi_entity_pbs(entity_pbs=entity_pbs)
+
+        # Verify they were stored correctly
+        keys = [key1, key2]
+        entity_retrieved_pbs = Config.CLIENT.get_multi_entity_pb(keys=keys)
+        self.assertEqual(len(entity_retrieved_pbs), 2)
+        self.assertEqual(entity_retrieved_pbs[0].key.path[0].id, 1111)
+        self.assertEqual(entity_retrieved_pbs[1].key.path[0].id, 2222)
+
+    def test_fetch_entity_pbs(self):
+        # Store multiple entities
+        key1 = Config.CLIENT.key("TestEntityPB", 1111)
+        entity1_pb = entity_pb2.Entity()
+        entity1_pb.key.CopyFrom(key1.to_protobuf())
+
+        int32_value = entity1_pb.properties.get_or_create('int32_key')
+        int32_value.integer_value = 1000
+        string_value = entity1_pb.properties.get_or_create('string_key')
+        string_value.string_value = 'foo1'
+
+        key2 = Config.CLIENT.key("TestEntityPB", 2222)
+        entity2_pb = entity_pb2.Entity()
+        entity2_pb.key.CopyFrom(key2.to_protobuf())
+
+        int32_value = entity2_pb.properties.get_or_create('int32_key')
+        int32_value.integer_value = 2000
+        string_value = entity2_pb.properties.get_or_create('string_key')
+        string_value.string_value = 'foo2'
+
+        key3 = Config.CLIENT.key("TestEntityPB", 3333)
+        entity3_pb = entity_pb2.Entity()
+        entity3_pb.key.CopyFrom(key3.to_protobuf())
+
+        int32_value = entity3_pb.properties.get_or_create('int32_key')
+        int32_value.integer_value = 3000
+        string_value = entity3_pb.properties.get_or_create('string_key')
+        string_value.string_value = 'foo2'
+
+        key4 = Config.CLIENT.key("TestEntityPB", 44444)
+        entity4_pb = entity_pb2.Entity()
+        entity4_pb.key.CopyFrom(key4.to_protobuf())
+
+        int32_value = entity4_pb.properties.get_or_create('int32_key')
+        int32_value.integer_value = 3000
+        string_value = entity4_pb.properties.get_or_create('string_key')
+        string_value.string_value = 'foo4'
+
+        entity_pbs = [entity1_pb, entity2_pb, entity3_pb, entity4_pb]
+        Config.CLIENT.put_multi_entity_pbs(entity_pbs=entity_pbs)
+
+        # 1. Simply retrieve all
+        query = Config.CLIENT.query(kind='TestEntityPB')
+        entity_retrieved_pbs = list(query.fetch_entity_pb())
+
+        self.assertEqual(len(entity_retrieved_pbs), 4)
+        self.assertEqual(entity_retrieved_pbs, entity_pbs)
+
+        # 2. Simple query on integer field
+        query = Config.CLIENT.query(kind='TestEntityPB')
+        query.add_filter('int32_key', '>=', 2000)
+        entity_retrieved_pbs = list(query.fetch_entity_pb())
+
+        self.assertEqual(len(entity_retrieved_pbs), 3)
+        self.assertEqual(entity_retrieved_pbs[0].properties['int32_key']
+                         .integer_value,
+                         2000)
+        self.assertEqual(entity_retrieved_pbs[1].properties['int32_key']
+                         .integer_value,
+                         3000)
+        self.assertEqual(entity_retrieved_pbs[2].properties['int32_key']
+                         .integer_value,
+                         3000)
+
+        query = Config.CLIENT.query(kind='TestEntityPB')
+        query.add_filter('int32_key', '>', 3000)
+        entity_retrieved_pbs = list(query.fetch_entity_pb())
+
+        self.assertEqual(len(entity_retrieved_pbs), 0)
+
+        # 3. Simple query on string field
+        query = Config.CLIENT.query(kind='TestEntityPB')
+        query.add_filter('string_key', '=', 'foo2')
+        entity_retrieved_pbs = list(query.fetch_entity_pb())
+
+        self.assertEqual(len(entity_retrieved_pbs), 2)
+        self.assertEqual(entity_retrieved_pbs[0].properties['string_key']
+                         .string_value,
+                         'foo2')
+        self.assertEqual(entity_retrieved_pbs[1].properties['string_key']
+                         .string_value,
+                         'foo2')
+
+        # 4. Complex query on integer and string field value
+        query = Config.CLIENT.query(kind='TestEntityPB')
+        query.add_filter('int32_key', '=', 3000)
+        query.add_filter('string_key', '=', 'foo2')
+        entity_retrieved_pbs = list(query.fetch_entity_pb())
+
+        self.assertEqual(len(entity_retrieved_pbs), 1)
+        self.assertEqual(entity_retrieved_pbs[0].properties['int32_key']
+                         .integer_value,
+                         3000)
+        self.assertEqual(entity_retrieved_pbs[0].properties['string_key']
+                         .string_value,
+                         'foo2')
