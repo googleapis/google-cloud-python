@@ -761,7 +761,7 @@ class Bucket(_PropertyMixin):
             generation=generation,
             **kwargs
         )
-        for retry in range(self.RETRIES): # pragma: no branch
+        for retry in range(self.RETRIES):  # pragma: no branch
             try:
                 # NOTE: This will not fail immediately in a batch. However, when
                 #       Batch.finish() is called, the resulting `NotFound` will be
