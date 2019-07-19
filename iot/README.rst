@@ -20,7 +20,7 @@ connect to the Google Cloud Platform.
 .. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Diot
    :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Diot
 .. _Cloud IoT API: https://cloud.google.com/iot
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/iot/index.html
+.. _Client Library Documentation: https://googleapis.dev/python/iot/latest
 .. _Product Documentation:  https://cloud.google.com/iot
 
 Quick Start
@@ -36,7 +36,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Cloud IoT API.:  https://cloud.google.com/iot
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~

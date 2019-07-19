@@ -22,7 +22,7 @@ return based on certain conditions.
 .. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Druntimeconfig
    :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Druntimeconfig
 .. _Google Cloud RuntimeConfig: https://cloud.google.com/deployment-manager/runtime-configurator/
-.. _Client Library Documentation: http://googleapis.github.io/google-cloud-python/runtimeconfig/index.html
+.. _Client Library Documentation: https://googleapis.dev/python/runtimeconfig/latest
 .. _Product Documentation: https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/
 
 **This client library is currently in alpha and may be subject to change.**
@@ -40,7 +40,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Google Cloud RuntimeConfig API.:  https://cloud.google.com/runtimeconfig
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~
