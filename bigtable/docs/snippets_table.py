@@ -403,11 +403,11 @@ def test_bigtable_table_row():
     row2_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, CELL_VAL1)
     row2_obj.commit()
 
-    actual_rows_keys = []
+    written_row_keys = []
     for row in table.read_rows():
-        actual_rows_keys.append(row.row_key)
+        written_row_keys.append(row.row_key)
 
-    assert actual_rows_keys == row_keys
+    assert written_row_keys == row_keys
 
     table.truncate(timeout=300)
 
@@ -430,11 +430,11 @@ def test_bigtable_table_append_row():
     row2_obj.append_cell_value(COLUMN_FAMILY_ID, COL_NAME1, CELL_VAL1)
     row2_obj.commit()
 
-    actual_rows_keys = []
+    written_row_keys = []
     for row in table.read_rows():
-        actual_rows_keys.append(row.row_key)
+        written_row_keys.append(row.row_key)
 
-    assert actual_rows_keys == row_keys
+    assert written_row_keys == row_keys
 
     table.truncate(timeout=300)
 
@@ -457,11 +457,11 @@ def test_bigtable_table_direct_row():
     row2_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, CELL_VAL1)
     row2_obj.commit()
 
-    actual_rows_keys = []
+    written_row_keys = []
     for row in table.read_rows():
-        actual_rows_keys.append(row.row_key)
+        written_row_keys.append(row.row_key)
 
-    assert actual_rows_keys == row_keys
+    assert written_row_keys == row_keys
 
     table.truncate(timeout=300)
 
@@ -486,11 +486,11 @@ def test_bigtable_table_conditional_row():
     row2_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, CELL_VAL1, state=False)
     row2_obj.commit()
 
-    actual_rows_keys = []
+    written_row_keys = []
     for row in table.read_rows():
-        actual_rows_keys.append(row.row_key)
+        written_row_keys.append(row.row_key)
 
-    assert actual_rows_keys == row_keys
+    assert written_row_keys == row_keys
 
     table.truncate(timeout=300)
 
@@ -993,10 +993,10 @@ def test_bigtable_row_delete():
     row_obj = table_row_del.row(b"row_key_1")
     row_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, b"cell-val")
     row_obj.commit()
-    actual_rows_keys = []
+    written_row_keys = []
     for row in table_row_del.read_rows():
-        actual_rows_keys.append(row.row_key)
-    assert actual_rows_keys == [b"row_key_1"]
+        written_row_keys.append(row.row_key)
+    assert written_row_keys == [b"row_key_1"]
 
     # [START bigtable_row_delete]
     from google.cloud.bigtable import Client
@@ -1012,10 +1012,10 @@ def test_bigtable_row_delete():
     row_obj.commit()
     # [END bigtable_row_delete]
 
-    actual_rows_keys = []
+    written_row_keys = []
     for row in table.read_rows():
-        actual_rows_keys.append(row.row_key)
-    assert len(actual_rows_keys) == 0
+        written_row_keys.append(row.row_key)
+    assert len(written_row_keys) == 0
 
 
 def test_bigtable_row_delete_cell():
@@ -1025,10 +1025,10 @@ def test_bigtable_row_delete_cell():
     row_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, CELL_VAL1)
     row_obj.commit()
 
-    actual_rows_keys = []
+    written_row_keys = []
     for row in table_row_del_cell.read_rows():
-        actual_rows_keys.append(row.row_key)
-    assert actual_rows_keys == [row_key1]
+        written_row_keys.append(row.row_key)
+    assert written_row_keys == [row_key1]
 
     # [START bigtable_row_delete_cell]
     from google.cloud.bigtable import Client
@@ -1058,10 +1058,10 @@ def test_bigtable_row_delete_cells():
     row_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME2, CELL_VAL2)
     row_obj.commit()
 
-    actual_rows_keys = []
+    written_row_keys = []
     for row in table_row_del_cells.read_rows():
-        actual_rows_keys.append(row.row_key)
-    assert actual_rows_keys == [row_key1]
+        written_row_keys.append(row.row_key)
+    assert written_row_keys == [row_key1]
 
     # [START bigtable_row_delete_cells]
     from google.cloud.bigtable import Client
@@ -1158,11 +1158,11 @@ def test_bigtable_row_setcell_commit_rowkey():
     row_obj.commit()
     # [END bigtable_row_commit]
 
-    actual_rows_keys = []
+    written_row_keys = []
     for row in table.read_rows():
-        actual_rows_keys.append(row.row_key)
+        written_row_keys.append(row.row_key)
 
-    assert actual_rows_keys == [b"row_key_1", b"row_key_2"]
+    assert written_row_keys == [b"row_key_1", b"row_key_2"]
 
     # [START bigtable_row_row_key]
     from google.cloud.bigtable import Client
