@@ -761,16 +761,16 @@ class Bucket(_PropertyMixin):
             generation=generation,
             **kwargs
         )
-        for retry in range(self.RETRIES):
+        for retry in range(self.RETRIES): # pragma: no branch
             try:
                 # NOTE: This will not fail immediately in a batch. However, when
                 #       Batch.finish() is called, the resulting `NotFound` will be
                 #       raised.
                 blob.reload(client=client)
                 break
-            except Exception:
+            except Exception as e:
                 if retry == self.RETRIES - 1:
-                    return None
+                    raise e
                 else:
                     rand_num = random.random()
                     time.sleep(min(rand_num + 2 ** (retry - 1), rand_num + 32))

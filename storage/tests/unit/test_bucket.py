@@ -676,8 +676,8 @@ class Test_Bucket(unittest.TestCase):
         connection = _Connection()
         client = _Client(connection)
         bucket = self._make_one(name=NAME)
-        result = bucket.get_blob(NONESUCH, client=client)
-        self.assertIsNone(result)
+        with self.assertRaises(Exception):
+            result = bucket.get_blob(NONESUCH, client=client)
         num_requests = len(connection._requested)
         self.assertGreater(num_requests, 1)
         kw = connection._requested[-1]
