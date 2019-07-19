@@ -20,7 +20,7 @@ powerful neural network models.
 .. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dtexttospeech
    :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dtexttospeech
 .. _Cloud Text-to-Speech API: https://cloud.google.com/texttospeech
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/texttospeech/index.html
+.. _Client Library Documentation: https://googleapis.dev/python/texttospeech/latest
 .. _Product Documentation: https://cloud.google.com/texttospeech
 
 Quick Start
@@ -36,7 +36,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Cloud Text-to-Speech API.:  https://cloud.google.com/texttospeech
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~
