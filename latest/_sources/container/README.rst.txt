@@ -21,7 +21,7 @@ Kubernetes technology.
 .. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dcontainer
    :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dcontainer
 .. _Google Kubernetes Engine API: https://cloud.google.com/kubernetes-engine
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/container/index.html
+.. _Client Library Documentation: https://googleapis.dev/python/container/latest
 .. _Product Documentation:  https://cloud.google.com/kubernetes-engine
 
 Quick Start
@@ -35,7 +35,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable the Google Container Engine API.:  https://cloud.google.com/container
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~
@@ -102,4 +102,4 @@ Next Steps
 -  Read the `Product documentation`_ to learn more about the product and see
    How-to Guides.
 
-.. _Client API Documentation: https://googleapis.github.io/google-cloud-python/latest/container/gapic/v1/api.html
+.. _Client API Documentation: https://googleapis.dev/python/container/latest
