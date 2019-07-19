@@ -527,15 +527,12 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(table.table_id, "some_tbl")
 
     def test_ctor_tablelistitem(self):
-        from google.cloud.bigquery.table import Table
-        from google.cloud.bigquery.table import TableListItem
+        from google.cloud.bigquery.table import Table, TableListItem
 
         import datetime
-        from google.cloud._helpers import _millis
-        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _millis, UTC
 
         self.WHEN_TS = 1437767599.125
-        self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(tzinfo=UTC)
         self.EXP_TIME = datetime.datetime(2015, 8, 1, 23, 59, 59, tzinfo=UTC)
 
         project = "test-project"
