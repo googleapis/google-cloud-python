@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.talent_v4beta1.gapic.profile_service_client &#8212; google-cloud 25d413d documentation</title>
+    <title>google.cloud.talent_v4beta1.gapic.profile_service_client &#8212; google-cloud 86d6001 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -726,6 +726,7 @@
         <span class="n">case_sensitive_sort</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">histogram_queries</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">result_set_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">strict_keywords_search</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
         <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
         <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -914,11 +915,24 @@
 <span class="sd">                If this field is set, the service will ignore the resource and</span>
 <span class="sd">                ``profile_query`` values, and simply retrieve a page of results from the</span>
 <span class="sd">                corresponding result set. In this case, one and only one of</span>
-<span class="sd">                [page\_token] or [offset] must be set.</span>
+<span class="sd">                ``page_token`` or ``offset`` must be set.</span>
 
 <span class="sd">                A typical use case is to invoke ``SearchProfilesRequest`` without this</span>
 <span class="sd">                field, then use the resulting ``result_set_id`` in</span>
 <span class="sd">                ``SearchProfilesResponse`` to page through the results.</span>
+<span class="sd">            strict_keywords_search (bool): Optional. This flag is used to indicate whether the service will attempt to</span>
+<span class="sd">                understand synonyms and terms related to the search query or treat the</span>
+<span class="sd">                query &quot;as is&quot; when it generates a set of results. By default this flag is</span>
+<span class="sd">                set to false, thus allowing expanded results to also be returned. For</span>
+<span class="sd">                example a search for &quot;software engineer&quot; might also return candidates who</span>
+<span class="sd">                have experience in jobs similar to software engineer positions. By setting</span>
+<span class="sd">                this flag to true, the service will only attempt to deliver candidates has</span>
+<span class="sd">                software engineer in his/her global fields by treating &quot;software engineer&quot;</span>
+<span class="sd">                as a keyword.</span>
+
+<span class="sd">                It is recommended to provide a feature in the UI (such as a checkbox) to</span>
+<span class="sd">                allow recruiters to set this flag to true if they intend to search for</span>
+<span class="sd">                longer boolean strings.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
 <span class="sd">                be retried.</span>
@@ -963,6 +977,7 @@
             <span class="n">case_sensitive_sort</span><span class="o">=</span><span class="n">case_sensitive_sort</span><span class="p">,</span>
             <span class="n">histogram_queries</span><span class="o">=</span><span class="n">histogram_queries</span><span class="p">,</span>
             <span class="n">result_set_id</span><span class="o">=</span><span class="n">result_set_id</span><span class="p">,</span>
+            <span class="n">strict_keywords_search</span><span class="o">=</span><span class="n">strict_keywords_search</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>

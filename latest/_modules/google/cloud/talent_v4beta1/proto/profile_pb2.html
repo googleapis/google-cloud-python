@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.talent_v4beta1.proto.profile_pb2 &#8212; google-cloud 25d413d documentation</title>
+    <title>google.cloud.talent_v4beta1.proto.profile_pb2 &#8212; google-cloud 86d6001 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -2760,7 +2760,8 @@
 <span class="s2">          &quot;senior software engineer&quot;. -  Provide    [EmploymentRecord.is</span>
 <span class="s2">          \_current][google.cloud.talent.v4beta1.EmploymentRecord.is\_cu</span>
 <span class="s2">          rrent]    for the current employment if possible. If not, it&#39;s</span>
-<span class="s2">          inferred from    user inputs.</span>
+<span class="s2">          inferred from    user inputs.  The limitation for max number</span>
+<span class="s2">          of employment records is 50.</span>
 <span class="s2">      education_records:</span>
 <span class="s2">          Optional. The education history record of the candidate. It&#39;s</span>
 <span class="s2">          highly recommended to input this information as accurately as</span>
@@ -2772,19 +2773,22 @@
 <span class="s2">          different degrees. -  Provide    [EducationRecord.is\_current]</span>
 <span class="s2">          [google.cloud.talent.v4beta1.EducationRecord.is\_current]</span>
 <span class="s2">          for the current education if possible. If not, it&#39;s inferred</span>
-<span class="s2">          from    user inputs.</span>
+<span class="s2">          from    user inputs.  The limitation for max number of</span>
+<span class="s2">          education records is 10.</span>
 <span class="s2">      skills:</span>
 <span class="s2">          Optional. The skill set of the candidate. It&#39;s highly</span>
 <span class="s2">          recommended to provide as much information as possible to help</span>
-<span class="s2">          improve the search quality.</span>
+<span class="s2">          improve the search quality.  The limitation for max number of</span>
+<span class="s2">          skills is 100.</span>
 <span class="s2">      activities:</span>
 <span class="s2">          Optional. The individual or collaborative activities which the</span>
 <span class="s2">          candidate has participated in, for example, open-source</span>
 <span class="s2">          projects, class assignments that aren&#39;t listed in [employment</span><span class="se">\</span>
 <span class="s2">          _records][google.cloud.talent.v4beta1.Profile.employment\_reco</span>
-<span class="s2">          rds].</span>
+<span class="s2">          rds].  The limitation for max number of activities is 50.</span>
 <span class="s2">      publications:</span>
-<span class="s2">          Optional. The publications published by the candidate.</span>
+<span class="s2">          Optional. The publications published by the candidate.  The</span>
+<span class="s2">          limitation for max number of publications is 50.</span>
 <span class="s2">      patents:</span>
 <span class="s2">          Optional. The patents acquired by the candidate.</span>
 <span class="s2">      certifications:</span>
@@ -3231,9 +3235,11 @@
 <span class="s2">          Optional. The last update date of the activity.</span>
 <span class="s2">      team_members:</span>
 <span class="s2">          Optional. A list of team members involved in this activity.</span>
-<span class="s2">          Number of characters allowed is 100.</span>
+<span class="s2">          Number of characters allowed is 100.  The limitation for max</span>
+<span class="s2">          number of team members is 50.</span>
 <span class="s2">      skills_used:</span>
-<span class="s2">          Optional. A list of skills used in this activity.</span>
+<span class="s2">          Optional. A list of skills used in this activity.  The</span>
+<span class="s2">          limitation for max number of skills used is 50.</span>
 <span class="s2">      activity_name_snippet:</span>
 <span class="s2">          Output only. Activity name snippet shows how the [display\_nam</span>
 <span class="s2">          e][google.cloud.talent.v4beta1.Activity.display\_name] is</span>
