@@ -45,7 +45,7 @@ class PollingFuture(base.Future):
     behavior will repeatedly call ``done`` until it returns True.
 
     .. note: Privacy here is intended to prevent the final class from
-    overexposing, not to prevent subclasses from accessing methods.
+      overexposing, not to prevent subclasses from accessing methods.
 
     Args:
         retry (google.api_core.retry.Retry): The retry configuration used

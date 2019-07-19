@@ -10,6 +10,7 @@ Core
     auth
     client_info
     exceptions
+    futures
     helpers
     iam
     operation
