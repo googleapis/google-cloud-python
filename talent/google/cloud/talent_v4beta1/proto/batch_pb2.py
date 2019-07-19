@@ -444,8 +444,11 @@ JobOperationResult = _reflection.GeneratedProtocolMessageType(
         __module__="google.cloud.talent_v4beta1.proto.batch_pb2",
         __doc__="""Output only.
   
-  The result of [BatchCreateJobs][] or [BatchUpdateJobs][] APIs. It's used
-  to replace
+  The result of
+  [JobService.BatchCreateJobs][google.cloud.talent.v4beta1.JobService.BatchCreateJobs]
+  or
+  [JobService.BatchUpdateJobs][google.cloud.talent.v4beta1.JobService.BatchUpdateJobs]
+  APIs. It's used to replace
   [google.longrunning.Operation.response][google.longrunning.Operation.response]
   in case of success.
   
