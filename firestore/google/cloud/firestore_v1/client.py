@@ -53,7 +53,7 @@ _BAD_DOC_TEMPLATE = (
 _ACTIVE_TXN = "There is already an active transaction."
 _INACTIVE_TXN = "There is no active transaction."
 _CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
-
+_FIRESTORE_EMULATOR_HOST = "FIRESTORE_EMULATOR_HOST"
 
 class Client(ClientWithProject):
     """Client for interacting with Google Cloud Firestore API.
@@ -105,7 +105,7 @@ class Client(ClientWithProject):
         )
         self._client_info = client_info
         self._database = database
-        self._emulator_host = os.getenv("FIRESTORE_EMULATOR_HOST")
+        self._emulator_host = os.getenv(_FIRESTORE_EMULATOR_HOST)
 
     @property
     def _firestore_api(self):
