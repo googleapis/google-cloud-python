@@ -7,27 +7,32 @@ from . import {{ subpackage }}
 {% endfor -%}
 
 {#  Import services for this package. -#}
+{% filter sort_lines -%}
 {% for service in api.services.values()|sort(attribute='name')
         if service.meta.address.subpackage == api.subpackage_view -%}
 from .services.{{ service.name|snake_case }} import {{ service.name }}
 {% endfor -%}
+{% endfilter -%}
 
 {#  Import messages from each proto.
     It is safe to import all of the messages into the same namespace here,
     because protocol buffers itself enforces selector uniqueness within
     a proto package.
 -#}
+{% filter sort_lines -%}
 {% for proto in api.protos.values()|sort(attribute='module_name')
         if proto.meta.address.subpackage == api.subpackage_view -%}
 {% for message in proto.messages.values()|sort(attribute='name') -%}
 from .types.{{ proto.module_name }} import {{ message.name }}
-{% endfor %}{% endfor %}
+{% endfor %}{% endfor -%}
+{% endfilter %}
 
 {#  Define __all__.
     This requires the full set of imported names, so we iterate over
     them again.
 -#}
 __all__ = (
+    {%- filter sort_lines %}
     {%- for subpackage in api.subpackages.keys() %}
     '{{ subpackage }}',
     {%- endfor %}
@@ -40,5 +45,6 @@ __all__ = (
     {%- for message in proto.messages.values()|sort(attribute='name') %}
     '{{ message.name }}',
     {%- endfor %}{% endfor %}
+    {%- endfilter %}
 )
 {% endblock %}

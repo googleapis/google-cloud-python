@@ -6,9 +6,12 @@
 import proto{% if p != 'proto' %} as {{ p }}{% endif %}  # type: ignore
 {% endif %}
 
+{% filter sort_lines -%}
 {% for import_ in proto.python_modules -%}
 {{ import_ }}
-{% endfor %}
+{% endfor -%}
+{% endfilter %}
+
 
 __protobuf__ = {{ p }}.module(
     package='{{ '.'.join(proto.meta.address.package) }}',
