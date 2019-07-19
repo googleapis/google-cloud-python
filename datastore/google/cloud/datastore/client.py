@@ -541,7 +541,7 @@ class Client(ClientWithProject):
         :type entity_pb: :class:`.entity_pb2.Entity`
         :param entity_pb: The entity to be saved to the datastore.
         """
-        self.put_multi_entity_pbs(entity_pbs=[entity_pb])
+        self.put_multi_entity_pb(entity_pbs=[entity_pb])
 
     def put_multi(self, entities):
         """Save entities in the Cloud Datastore.
@@ -570,7 +570,7 @@ class Client(ClientWithProject):
         if not in_batch:
             current.commit()
 
-    def put_multi_entity_pbs(self, entity_pbs):
+    def put_multi_entity_pb(self, entity_pbs):
         """
         Save multiple raw Entity Protobuf objects in the Cloud Datastore.
 

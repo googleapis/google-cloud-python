@@ -606,7 +606,7 @@ class TestDatastoreRawEntityPBMethods(TestDatastore):
         entity2_pb.key.CopyFrom(key2.to_protobuf())
 
         entity_pbs = [entity1_pb, entity2_pb]
-        Config.CLIENT.put_multi_entity_pbs(entity_pbs=entity_pbs)
+        Config.CLIENT.put_multi_entity_pb(entity_pbs=entity_pbs)
 
         # Verify they were stored correctly
         keys = [key1, key2]
@@ -654,7 +654,7 @@ class TestDatastoreRawEntityPBMethods(TestDatastore):
         string_value.string_value = "foo4"
 
         entity_pbs = [entity1_pb, entity2_pb, entity3_pb, entity4_pb]
-        Config.CLIENT.put_multi_entity_pbs(entity_pbs=entity_pbs)
+        Config.CLIENT.put_multi_entity_pb(entity_pbs=entity_pbs)
 
         # 1. Simply retrieve all
         query = Config.CLIENT.query(kind="TestEntityPB")

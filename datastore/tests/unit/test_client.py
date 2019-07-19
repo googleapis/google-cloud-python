@@ -1154,12 +1154,12 @@ class TestClientRawEntityPBMethods(BaseClientTestCase, unittest.TestCase):
     def test_put_entity_pb(self):
         _called_with = []
 
-        def _put_multi_entity_pbs(*args, **kw):
+        def _put_multi_entity_pb(*args, **kw):
             _called_with.append((args, kw))
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
-        client.put_multi_entity_pbs = _put_multi_entity_pbs
+        client.put_multi_entity_pb = _put_multi_entity_pb
         entity_pb = _make_entity_pb(self.PROJECT, "Foo", 123, "foo", "Foo")
 
         client.put_entity_pb(entity_pb)
@@ -1170,9 +1170,9 @@ class TestClientRawEntityPBMethods(BaseClientTestCase, unittest.TestCase):
     def test_put_entity_pb_no_entities(self):
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
-        self.assertIsNone(client.put_multi_entity_pbs([]))
+        self.assertIsNone(client.put_multi_entity_pb([]))
 
-    def test_put_multi_entity_pbs_no_batch_w_partial_key(self):
+    def test_put_multi_entity_pb_no_batch_w_partial_key(self):
         from google.cloud.datastore_v1.proto import datastore_pb2
         from google.cloud.datastore.helpers import _property_tuples
 
@@ -1189,7 +1189,7 @@ class TestClientRawEntityPBMethods(BaseClientTestCase, unittest.TestCase):
         ds_api = _make_datastore_api(key_pb)
         client._datastore_api_internal = ds_api
 
-        result = client.put_multi_entity_pbs([entity_pb])
+        result = client.put_multi_entity_pb([entity_pb])
         self.assertIsNone(result)
 
         self.assertEqual(ds_api.commit.call_count, 1)
@@ -1222,7 +1222,7 @@ class TestClientRawEntityPBMethods(BaseClientTestCase, unittest.TestCase):
         string_value.string_value = "foo bar baz"
 
         with _NoCommitBatch(client) as CURR_BATCH:
-            result = client.put_multi_entity_pbs([entity_pb])
+            result = client.put_multi_entity_pb([entity_pb])
 
         self.assertIsNone(result)
         mutated_entity = _mutated_pb(self, CURR_BATCH.mutations, "upsert")
