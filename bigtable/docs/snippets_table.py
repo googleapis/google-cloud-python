@@ -425,9 +425,9 @@ def test_bigtable_table_append_row():
     row2_obj = table.append_row(row_keys[1])
     # [END bigtable_table_append_row]
 
-    row1_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, CELL_VAL1)
+    row1_obj.append_cell_value(COLUMN_FAMILY_ID, COL_NAME1, CELL_VAL1)
     row1_obj.commit()
-    row2_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, CELL_VAL1)
+    row2_obj.append_cell_value(COLUMN_FAMILY_ID, COL_NAME1, CELL_VAL1)
     row2_obj.commit()
 
     actual_rows_keys = []
@@ -469,20 +469,21 @@ def test_bigtable_table_direct_row():
 def test_bigtable_table_conditional_row():
     # [START bigtable_table_conditional_row]
     from google.cloud.bigtable import Client
+    from google.cloud.bigtable.row_filters import PassAllFilter
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
     table = instance.table(TABLE_ID)
 
     row_keys = [b"row_key_1", b"row_key_2"]
-    filter_ = object()
+    filter_ = PassAllFilter(True)
     row1_obj = table.conditional_row(row_keys[0], filter_=filter_)
     row2_obj = table.conditional_row(row_keys[1], filter_=filter_)
     # [END bigtable_table_conditional_row]
 
-    row1_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, CELL_VAL1)
+    row1_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, CELL_VAL1, state=False)
     row1_obj.commit()
-    row2_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, CELL_VAL1)
+    row2_obj.set_cell(COLUMN_FAMILY_ID, COL_NAME1, CELL_VAL1, state=False)
     row2_obj.commit()
 
     actual_rows_keys = []
