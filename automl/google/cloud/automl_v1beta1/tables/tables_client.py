@@ -201,19 +201,21 @@ class TablesClient(object):
                     region=region
             )
         return dataset_name
-        
-    def __table_spec_full_name_from_args(self, table_spec_index=0, 
+
+    def __table_spec_name_from_args(self, table_spec_index=0,
             dataset=None, dataset_display_name=None,
             dataset_name=None, project=None, region=None):
-
         dataset_name = self.__dataset_name_from_args(dataset=dataset,
                 dataset_name=dataset_name,
                 dataset_display_name=dataset_display_name,
                 project=project,
                 region=region
         )
-        table_specs = [t for t in self.list_table_specs(dataset_name=dataset_name)]
-        table_spec_full_id = table_specs[table_spec_index]
+
+        table_specs = [t for t in
+            self.list_table_specs(dataset_name=dataset_name)
+        ]
+
         table_spec_full_id = table_specs[table_spec_index].name
         return table_spec_full_id
 
@@ -274,19 +276,21 @@ class TablesClient(object):
 
         return column_spec_name
 
-    def __type_code_to_value_type(self, type_code):
-        if type_code == data_types_pb2.FLOAT64:
-            return 'number_value'
+    def __type_code_to_value_type(self, type_code, value):
+        if value is None:
+            return {'null_value': 0}
+        elif type_code == data_types_pb2.FLOAT64:
+            return {'number_value': value}
         elif type_code == data_types_pb2.TIMESTAMP:
-            return 'string_value'
+            return {'string_value': value}
         elif type_code == data_types_pb2.STRING:
-            return 'string_value'
+            return {'string_value': value}
         elif type_code == data_types_pb2.ARRAY:
-            return 'list_value'
+            return {'list_value': value}
         elif type_code == data_types_pb2.STRUCT:
-            return 'struct_value'
+            return {'struct_value': value}
         elif type_code == data_types_pb2.CATEGORY:
-            return 'string_value'
+            return {'string_value': value}
         else:
             raise ValueError('Unknown type_code: {}'.format(type_code))
 
@@ -967,11 +971,12 @@ class TablesClient(object):
 
     def set_time_column(self, dataset=None, dataset_display_name=None,
             dataset_name=None, table_spec_name=None, table_spec_index=0,
-            column_spec_name=None, column_spec_display_name=None, 
+            column_spec_name=None, column_spec_display_name=None,
             project=None, region=None):
-        """Sets the time column which designates which data
-        will be of type timestamp and will be used for the timeseries data.
-        . This column must be of type timestamp.
+        """Sets the time column which designates which data will be of type
+        timestamp and will be used for the timeseries data.
+        This column must be of type timestamp.
+
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
@@ -980,8 +985,9 @@ class TablesClient(object):
             ...     project='my-project', region='us-central1')
             ...
             >>> client.set_time_column(dataset_display_name='my_dataset',
-            ...     column_spec__name='Unix Time')
+            ...     column_spec_name='Unix Time')
             ...
+
         Args:
             project (Optional[string]):
                 If you have initialized the client with a value for `project`
@@ -1056,15 +1062,90 @@ class TablesClient(object):
                 dataset_display_name=dataset_display_name,
                 project=project,
                 region=region)
-        
-        table_spec_full_id = self.__table_spec_full_name_from_args(dataset_name=dataset_name)
-        
+
+        table_spec_full_id = self.__table_spec_name_from_args(
+            dataset_name=dataset_name)
+
         my_table_spec = {
             'name': table_spec_full_id,
             'time_column_spec_id': column_spec_id
         }
 
-        response = self.client.update_table_spec(my_table_spec)  
+        self.client.update_table_spec(my_table_spec)
+        return self.get_dataset(dataset_name=dataset_name)
+
+    def clear_time_column(self, dataset=None, dataset_display_name=None,
+            dataset_name=None, project=None, region=None):
+        """Clears the time column which designates which data will be of type
+        timestamp and will be used for the timeseries data.
+
+        Example:
+            >>> from google.cloud import automl_v1beta1
+            >>>
+            >>> client = automl_v1beta1.tables.ClientHelper(
+            ...     client=automl_v1beta1.AutoMlClient(),
+            ...     project='my-project', region='us-central1')
+            ...
+            >>> client.set_time_column(dataset_display_name='my_dataset')
+            >>>
+
+        Args:
+            project (Optional[string]):
+                If you have initialized the client with a value for `project`
+                it will be used if this parameter is not supplied. Keep in
+                mind, the service account this client was initialized with must
+                have access to this project.
+            region (Optional[string]):
+                If you have initialized the client with a value for `region` it
+                will be used if this parameter is not supplied.
+            dataset_display_name (Optional[string]):
+                The human-readable name given to the dataset you want to update
+                the time column of. If no `table_spec_name` is supplied,
+                this will be used together with `table_spec_index` to infer the
+                name of table to update the time column of. This must be
+                supplied if `table_spec_name`, `dataset` or `dataset_name` are
+                not supplied.
+            dataset_name (Optional[string]):
+                The AutoML-assigned name given to the dataset you want to
+                update the time column of. If no `table_spec_name` is
+                supplied, this will be used together with `table_spec_index` to
+                infer the name of table to update the time column of.
+                This must be supplied if `table_spec_name`, `dataset` or
+                `dataset_display_name` are not supplied.
+            dataset (Optional[Dataset]):
+                The `Dataset` instance you want to update the time column
+                of.  If no `table_spec_name` is supplied, this will be used
+                together with `table_spec_index` to infer the name of table to
+                update the time column of. This must be supplied if
+                `table_spec_name`, `dataset_name` or `dataset_display_name` are
+                not supplied.
+
+        Returns:
+            A :class:`~google.cloud.automl_v1beta1.types.Dataset` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                to a retryable error and retry attempts failed.
+            ValueError: If required parameters are missing.
+        """
+        dataset_name = self.__dataset_name_from_args(dataset=dataset,
+                dataset_name=dataset_name,
+                dataset_display_name=dataset_display_name,
+                project=project,
+                region=region)
+
+        table_spec_full_id = self.__table_spec_name_from_args(
+            dataset_name=dataset_name)
+
+        my_table_spec = {
+            'name': table_spec_full_id,
+            'time_column_spec_id': None,
+        }
+
+        response = self.client.update_table_spec(my_table_spec)
+        return self.get_dataset(dataset_name=dataset_name)
 
     def set_weight_column(self, dataset=None, dataset_display_name=None,
             dataset_name=None, table_spec_name=None, table_spec_index=0,
@@ -1173,6 +1254,79 @@ class TablesClient(object):
 
         return self.client.update_dataset(request)
 
+    def clear_weight_column(self, dataset=None, dataset_display_name=None,
+            dataset_name=None, project=None, region=None):
+        """Clears the weight column for a given dataset.
+
+        Example:
+            >>> from google.cloud import automl_v1beta1
+            >>>
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     project='my-project', region='us-central1')
+            ...
+            >>> client.clear_weight_column(dataset_display_name='my_dataset')
+            >>>
+
+        Args:
+            project (Optional[string]):
+                If you have initialized the client with a value for `project`
+                it will be used if this parameter is not supplied. Keep in
+                mind, the service account this client was initialized with must
+                have access to this project.
+            region (Optional[string]):
+                If you have initialized the client with a value for `region` it
+                will be used if this parameter is not supplied.
+            dataset_display_name (Optional[string]):
+                The human-readable name given to the dataset you want to update
+                the weight column of. If no `table_spec_name` is supplied, this
+                will be used together with `table_spec_index` to infer the name
+                of table to update the weight column of. This must be supplied
+                if `table_spec_name`, `dataset` or `dataset_name` are not
+                supplied.
+            dataset_name (Optional[string]):
+                The AutoML-assigned name given to the dataset you want to
+                update the weight column of. If no `table_spec_name` is
+                supplied, this will be used together with `table_spec_index` to
+                infer the name of table to update the weight column of. This
+                must be supplied if `table_spec_name`, `dataset` or
+                `dataset_display_name` are not supplied.
+            dataset (Optional[Dataset]):
+                The `Dataset` instance you want to update the weight column of.
+                If no `table_spec_name` is supplied, this will be used together
+                with `table_spec_index` to infer the name of table to update
+                the weight column of. This must be supplied if
+                `table_spec_name`, `dataset_name` or `dataset_display_name` are
+                not supplied.
+
+        Returns:
+            A :class:`~google.cloud.automl_v1beta1.types.Dataset` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                to a retryable error and retry attempts failed.
+            ValueError: If required parameters are missing.
+        """
+        dataset = self.__dataset_from_args(dataset=dataset,
+                dataset_name=dataset_name,
+                dataset_display_name=dataset_display_name,
+                project=project,
+                region=region)
+        metadata = dataset.tables_dataset_metadata
+        metadata = self.__update_metadata(metadata, 'weight_column_spec_id',
+                None)
+
+        request = {
+                'name': dataset.name,
+                'tables_dataset_metadata': metadata,
+        }
+
+        return self.client.update_dataset(request)
+
     def set_test_train_column(self, dataset=None, dataset_display_name=None,
             dataset_name=None, table_spec_name=None, table_spec_index=0,
             column_spec_name=None, column_spec_display_name=None,
@@ -1271,6 +1425,80 @@ class TablesClient(object):
                 region=region)
         metadata = dataset.tables_dataset_metadata
         metadata = self.__update_metadata(metadata, 'ml_use_column_spec_id', column_spec_id)
+
+        request = {
+                'name': dataset.name,
+                'tables_dataset_metadata': metadata,
+        }
+
+        return self.client.update_dataset(request)
+
+    def clear_test_train_column(self, dataset=None, dataset_display_name=None,
+            dataset_name=None, project=None, region=None):
+        """Clears the test/train (ml_use) column which designates which data
+        belongs to the test and train sets.
+
+        Example:
+            >>> from google.cloud import automl_v1beta1
+            >>>
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     project='my-project', region='us-central1')
+            ...
+            >>> client.clear_test_train_column(dataset_display_name='my_dataset')
+            >>>
+
+        Args:
+            project (Optional[string]):
+                If you have initialized the client with a value for `project`
+                it will be used if this parameter is not supplied. Keep in
+                mind, the service account this client was initialized with must
+                have access to this project.
+            region (Optional[string]):
+                If you have initialized the client with a value for `region` it
+                will be used if this parameter is not supplied.
+            dataset_display_name (Optional[string]):
+                The human-readable name given to the dataset you want to update
+                the test/train column of. If no `table_spec_name` is supplied,
+                this will be used together with `table_spec_index` to infer the
+                name of table to update the test/train column of. This must be
+                supplied if `table_spec_name`, `dataset` or `dataset_name` are
+                not supplied.
+            dataset_name (Optional[string]):
+                The AutoML-assigned name given to the dataset you want to
+                update the test/train column of. If no `table_spec_name` is
+                supplied, this will be used together with `table_spec_index` to
+                infer the name of table to update the test/train column of.
+                This must be supplied if `table_spec_name`, `dataset` or
+                `dataset_display_name` are not supplied.
+            dataset (Optional[Dataset]):
+                The `Dataset` instance you want to update the test/train column
+                of.  If no `table_spec_name` is supplied, this will be used
+                together with `table_spec_index` to infer the name of table to
+                update the test/train column of. This must be supplied if
+                `table_spec_name`, `dataset_name` or `dataset_display_name` are
+                not supplied.
+
+        Returns:
+            A :class:`~google.cloud.automl_v1beta1.types.Dataset` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                to a retryable error and retry attempts failed.
+            ValueError: If required parameters are missing.
+        """
+        dataset = self.__dataset_from_args(dataset=dataset,
+                dataset_name=dataset_name,
+                dataset_display_name=dataset_display_name,
+                project=project,
+                region=region)
+        metadata = dataset.tables_dataset_metadata
+        metadata = self.__update_metadata(metadata, 'ml_use_column_spec_id',
+                None)
 
         request = {
                 'name': dataset.name,
@@ -1756,8 +1984,6 @@ class TablesClient(object):
                 project=project,
                 region=region
         )
-        print(model)
-        print(model.tables_model_metadata)
 
         column_specs = model.tables_model_metadata.input_feature_column_specs
         if type(inputs) == dict:
@@ -1766,19 +1992,20 @@ class TablesClient(object):
         if len(inputs) != len(column_specs):
             raise ValueError(('Dimension mismatch, the number of provided '
                     'inputs ({}) does not match that of the model '
-                    '({})').format(
-                        len(inputs), len(column_specs)))
+                    '({})').format(len(inputs), len(column_specs)))
 
         values = []
         for i, c in zip(inputs, column_specs):
-            value_type = self.__type_code_to_value_type(c.data_type.type_code)
-            values.append({value_type: i})
+            value_type = self.__type_code_to_value_type(
+                    c.data_type.type_code, i
+                )
+            values.append(value_type)
 
         request = {
                 'row': {
                     'values': values
                 }
-        }
+            }
 
         return self.prediction_client.predict(model.name, request)
 

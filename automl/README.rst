@@ -119,6 +119,17 @@ development environment:
     pip install -r ../docs/requirements.txt
     pip install -U mock pytest
 
-3. To test any changes you've made, run `pytest` in this directory.
-   
+3. If you want to run all tests, you will need a billing-enabled 
+   `GCP project`_, and a `service account`_ with access to the AutoML APIs.
+   Note: the first time the tests run in a new project it will take a _long_
+   time, on the order of 2-3 hours. This is one-time setup that will be skipped
+   in future runs.
+
+.. _service account: https://cloud.google.com/iam/docs/creating-managing-service-accounts
+.. _GCP project: https://cloud.google.com/resource-manager/docs/creating-managing-projects
+
+.. code-block:: console
+
+    export PROJECT_ID=<project-id> GOOGLE_APPLICATION_CREDENTIALS=</path/to/creds.json>
+    pytest
 

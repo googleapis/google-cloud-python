@@ -550,6 +550,27 @@ class TestTablesClient(object):
             }
         })
 
+    def test_clear_weight_column(self):
+        dataset_mock = mock.Mock()
+        tables_dataset_metadata_mock = mock.Mock()
+        tables_dataset_metadata_mock.configure_mock(target_column_spec_id='1',
+            weight_column_spec_id='2',
+            ml_use_column_spec_id='3')
+        dataset_mock.configure_mock(name='dataset',
+            tables_dataset_metadata=tables_dataset_metadata_mock)
+        client = self.tables_client({
+            'get_dataset.return_value': dataset_mock,
+        }, {})
+        client.clear_weight_column(dataset_name='name')
+        client.client.update_dataset.assert_called_with({
+            'name': 'dataset',
+            'tables_dataset_metadata': {
+                'target_column_spec_id': '1',
+                'weight_column_spec_id': None,
+                'ml_use_column_spec_id': '3',
+            }
+        })
+
     def test_set_test_train_column_table_not_found(self):
         client = self.tables_client({
             'list_table_specs.side_effect': exceptions.NotFound('err'),
@@ -615,6 +636,65 @@ class TestTablesClient(object):
                 'weight_column_spec_id': '2',
                 'ml_use_column_spec_id': '3',
             }
+        })
+
+    def test_clear_test_train_column(self):
+        dataset_mock = mock.Mock()
+        tables_dataset_metadata_mock = mock.Mock()
+        tables_dataset_metadata_mock.configure_mock(target_column_spec_id='1',
+            weight_column_spec_id='2',
+            ml_use_column_spec_id='2')
+        dataset_mock.configure_mock(name='dataset',
+            tables_dataset_metadata=tables_dataset_metadata_mock)
+        client = self.tables_client({
+            'get_dataset.return_value': dataset_mock,
+        }, {})
+        client.clear_test_train_column(dataset_name='name')
+        client.client.update_dataset.assert_called_with({
+            'name': 'dataset',
+            'tables_dataset_metadata': {
+                'target_column_spec_id': '1',
+                'weight_column_spec_id': '2',
+                'ml_use_column_spec_id': None,
+            }
+        })
+
+    def test_set_time_column(self):
+        table_spec_mock = mock.Mock()
+        # name is reserved in use of __init__, needs to be passed here
+        table_spec_mock.configure_mock(name='table')
+        column_spec_mock = mock.Mock()
+        column_spec_mock.configure_mock(name='column/3', display_name='column')
+        dataset_mock = mock.Mock()
+        dataset_mock.configure_mock(name='dataset')
+        client = self.tables_client({
+            'get_dataset.return_value': dataset_mock,
+            'list_table_specs.return_value': [table_spec_mock],
+            'list_column_specs.return_value': [column_spec_mock],
+        }, {})
+        client.set_time_column(dataset_name='name',
+                column_spec_display_name='column')
+        client.client.list_table_specs.assert_called_with('name')
+        client.client.list_column_specs.assert_called_with('table')
+        client.client.update_table_spec.assert_called_with({
+            'name': 'table',
+            'time_column_spec_id': '3',
+        })
+
+    def test_clear_time_column(self):
+        table_spec_mock = mock.Mock()
+        # name is reserved in use of __init__, needs to be passed here
+        table_spec_mock.configure_mock(name='table')
+        dataset_mock = mock.Mock()
+        dataset_mock.configure_mock(name='dataset')
+        client = self.tables_client({
+            'get_dataset.return_value': dataset_mock,
+            'list_table_specs.return_value': [table_spec_mock],
+        }, {})
+        client.clear_time_column(dataset_name='name')
+        client.client.update_table_spec.assert_called_with({
+            'name': 'table',
+            'time_column_spec_id': None,
         })
 
     def test_list_models_empty(self):
@@ -712,6 +792,16 @@ class TestTablesClient(object):
         }, {})
         client.delete_model(model_name='name')
         client.client.delete_model.assert_called_with('name')
+
+    def test_deploy_model_no_args(self):
+        client = self.tables_client({}, {})
+        error = None
+        try:
+            client.deploy_model()
+        except ValueError as e:
+            error = e
+        assert error is not None
+        client.client.deploy_model.assert_not_called()
 
     def test_deploy_model(self):
         client = self.tables_client({}, {})
@@ -927,7 +1017,7 @@ class TestTablesClient(object):
         client.predict({'a': '1'}, model_name='my_model')
         client.prediction_client.predict.assert_called_with('my_model', {
             'row': {
-                'values': [{'string_value': '1'}, {'string_value': None}]
+                'values': [{'string_value': '1'}, {'null_value': 0}]
             }
         })
 
@@ -950,6 +1040,8 @@ class TestTablesClient(object):
                 data_type=struct_type)
         column_spec_category = mock.Mock(display_name='category',
                 data_type=category_type)
+        column_spec_null = mock.Mock(display_name='null',
+                data_type=category_type)
         model_metadata = mock.Mock(input_feature_column_specs=[
             column_spec_float,
             column_spec_timestamp,
@@ -957,6 +1049,7 @@ class TestTablesClient(object):
             column_spec_array,
             column_spec_struct,
             column_spec_category,
+            column_spec_null,
         ])
         model = mock.Mock()
         model.configure_mock(tables_model_metadata=model_metadata,
@@ -971,6 +1064,7 @@ class TestTablesClient(object):
             'array': [1],
             'struct': {'a': 'b'},
             'category': 'a',
+            'null': None,
         } , model_name='my_model')
         client.prediction_client.predict.assert_called_with('my_model', {
             'row': {
@@ -981,6 +1075,7 @@ class TestTablesClient(object):
                     {'list_value': [1]},
                     {'struct_value': {'a': 'b'}},
                     {'string_value': 'a'},
+                    {'null_value': 0},
                 ],
             }
         })
@@ -1052,4 +1147,16 @@ class TestTablesClient(object):
         except exceptions.NotFound as e:
             error = e
         assert error is not None
+        client.prediction_client.batch_predict.assert_not_called()
+
+    def test_batch_predict_no_model(self):
+        client = self.tables_client({}, {})
+        error = None
+        try:
+            client.batch_predict(gcs_input_uris='gs://input',
+                    gcs_output_uri_prefix='gs://output')
+        except ValueError as e:
+            error = e
+        assert error is not None
+        client.client.list_models.assert_not_called()
         client.prediction_client.batch_predict.assert_not_called()
