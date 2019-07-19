@@ -421,7 +421,7 @@ class Client(ClientWithProject):
                 iterator of subcollections of the current document.
         """
         iterator = self._firestore_api.list_collection_ids(
-            self._database_string, metadata=self._rpc_metadata
+            "{}/documents".format(self._database_string), metadata=self._rpc_metadata
         )
         iterator.client = self
         iterator.item_to_value = _item_to_collection_ref
