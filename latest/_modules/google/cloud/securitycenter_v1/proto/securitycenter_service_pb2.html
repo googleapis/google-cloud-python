@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.securitycenter_v1.proto.securitycenter_service_pb2 &#8212; google-cloud fef10c0 documentation</title>
+    <title>google.cloud.securitycenter_v1.proto.securitycenter_service_pb2 &#8212; google-cloud 25d413d documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -2373,10 +2373,15 @@
 <span class="s2">          in quotes. -  integer literals without quotes. -  boolean</span>
 <span class="s2">          literals ``true`` and ``false`` without quotes.  The following</span>
 <span class="s2">          field and operator combinations are supported: name \| &#39;=&#39;</span>
-<span class="s2">          update\_time \| &#39;&gt;&#39;, &#39;&lt;&#39;, &#39;&gt;=&#39;, &#39;&lt;=&#39;, &#39;=&#39; create\_time \| &#39;&gt;&#39;,</span>
-<span class="s2">          &#39;&lt;&#39;, &#39;&gt;=&#39;, &#39;&lt;=&#39;, &#39;=&#39; iam\_policy.policy\_blob \| &#39;=&#39;, &#39;:&#39;</span>
-<span class="s2">          resource\_properties \| &#39;=&#39;, &#39;:&#39;, &#39;&gt;&#39;, &#39;&lt;&#39;, &#39;&gt;=&#39;, &#39;&lt;=&#39;</span>
-<span class="s2">          security\_marks \| &#39;=&#39;, &#39;:&#39;</span>
+<span class="s2">          update\_time \| &#39;=&#39;, &#39;&gt;&#39;, &#39;&lt;&#39;, &#39;&gt;=&#39;, &#39;&lt;=&#39;  Usage: This should</span>
+<span class="s2">          be milliseconds since epoch or an RFC3339 string. Examples:</span>
+<span class="s2">          &quot;update\_time = &quot;2019-06-10T16:07:18-07:00&quot;&quot; &quot;update\_time =</span>
+<span class="s2">          1560208038000&quot;  create\_time \| &#39;=&#39;, &#39;&gt;&#39;, &#39;&lt;&#39;, &#39;&gt;=&#39;, &#39;&lt;=&#39;</span>
+<span class="s2">          Usage: This should be milliseconds since epoch or an RFC3339</span>
+<span class="s2">          string. Examples: &quot;create\_time = &quot;2019-06-10T16:07:18-07:00&quot;&quot;</span>
+<span class="s2">          &quot;create\_time = 1560208038000&quot;  iam\_policy.policy\_blob \|</span>
+<span class="s2">          &#39;=&#39;, &#39;:&#39; resource\_properties \| &#39;=&#39;, &#39;:&#39;, &#39;&gt;&#39;, &#39;&lt;&#39;, &#39;&gt;=&#39;,</span>
+<span class="s2">          &#39;&lt;=&#39; security\_marks \| &#39;=&#39;, &#39;:&#39;</span>
 <span class="s2">          security\_center\_properties.resource\_name \| &#39;=&#39;, &#39;:&#39;</span>
 <span class="s2">          security\_center\_properties.resource\_type \| &#39;=&#39;, &#39;:&#39;</span>
 <span class="s2">          security\_center\_properties.resource\_parent \| &#39;=&#39;, &#39;:&#39;</span>
@@ -2498,9 +2503,12 @@
 <span class="s2">          without quotes.  The following field and operator combinations</span>
 <span class="s2">          are supported: name \| ``=`` parent \| &#39;=&#39;, &#39;:&#39; resource\_name</span>
 <span class="s2">          \| &#39;=&#39;, &#39;:&#39; state \| &#39;=&#39;, &#39;:&#39; category \| &#39;=&#39;, &#39;:&#39;</span>
-<span class="s2">          external\_uri \| &#39;=&#39;, &#39;:&#39; event\_time \| ``&gt;``, ``&lt;``, ``&gt;=``,</span>
-<span class="s2">          ``&lt;=`` security\_marks \| &#39;=&#39;, &#39;:&#39; source\_properties \| &#39;=&#39;,</span>
-<span class="s2">          &#39;:&#39;, ``&gt;``, ``&lt;``, ``&gt;=``, ``&lt;=``  For example,</span>
+<span class="s2">          external\_uri \| &#39;=&#39;, &#39;:&#39; event\_time \| ``=``, ``&gt;``, ``&lt;``,</span>
+<span class="s2">          ``&gt;=``, ``&lt;=``  Usage: This should be milliseconds since epoch</span>
+<span class="s2">          or an RFC3339 string. Examples: &quot;event\_time =</span>
+<span class="s2">          &quot;2019-06-10T16:07:18-07:00&quot;&quot; &quot;event\_time = 1560208038000&quot;</span>
+<span class="s2">          security\_marks \| &#39;=&#39;, &#39;:&#39; source\_properties \| &#39;=&#39;, &#39;:&#39;,</span>
+<span class="s2">          ``&gt;``, ``&lt;``, ``&gt;=``, ``&lt;=``  For example,</span>
 <span class="s2">          ``source_properties.size = 100`` is a valid filter string.</span>
 <span class="s2">      group_by:</span>
 <span class="s2">          Expression that defines what assets fields to use for grouping</span>
@@ -2690,7 +2698,13 @@
 <span class="s2">          in quotes. -  integer literals without quotes. -  boolean</span>
 <span class="s2">          literals ``true`` and ``false`` without quotes.  The following</span>
 <span class="s2">          are the allowed field and operator combinations: name \| ``=``</span>
-<span class="s2">          update\_time \| ``&gt;``, ``&lt;``, ``&gt;=``, ``&lt;=``</span>
+<span class="s2">          update\_time \| ``=``, ``&gt;``, ``&lt;``, ``&gt;=``, ``&lt;=``  Usage:</span>
+<span class="s2">          This should be milliseconds since epoch or an RFC3339 string.</span>
+<span class="s2">          Examples: &quot;update\_time = &quot;2019-06-10T16:07:18-07:00&quot;&quot;</span>
+<span class="s2">          &quot;update\_time = 1560208038000&quot;  create\_time \| ``=``, ``&gt;``,</span>
+<span class="s2">          ``&lt;``, ``&gt;=``, ``&lt;=``  Usage: This should be milliseconds</span>
+<span class="s2">          since epoch or an RFC3339 string. Examples: &quot;create\_time =</span>
+<span class="s2">          &quot;2019-06-10T16:07:18-07:00&quot;&quot; &quot;create\_time = 1560208038000&quot;</span>
 <span class="s2">          iam\_policy.policy\_blob \| &#39;=&#39;, &#39;:&#39; resource\_properties \|</span>
 <span class="s2">          &#39;=&#39;, &#39;:&#39;, ``&gt;``, ``&lt;``, ``&gt;=``, ``&lt;=`` security\_marks \| &#39;=&#39;,</span>
 <span class="s2">          &#39;:&#39; security\_center\_properties.resource\_name \| &#39;=&#39;, &#39;:&#39;</span>
@@ -2837,9 +2851,12 @@
 <span class="s2">          without quotes.  The following field and operator combinations</span>
 <span class="s2">          are supported: name \| ``=`` parent \| &#39;=&#39;, &#39;:&#39; resource\_name</span>
 <span class="s2">          \| &#39;=&#39;, &#39;:&#39; state \| &#39;=&#39;, &#39;:&#39; category \| &#39;=&#39;, &#39;:&#39;</span>
-<span class="s2">          external\_uri \| &#39;=&#39;, &#39;:&#39; event\_time \| ``&gt;``, ``&lt;``, ``&gt;=``,</span>
-<span class="s2">          ``&lt;=`` security\_marks \| &#39;=&#39;, &#39;:&#39; source\_properties \| &#39;=&#39;,</span>
-<span class="s2">          &#39;:&#39;, ``&gt;``, ``&lt;``, ``&gt;=``, ``&lt;=``  For example,</span>
+<span class="s2">          external\_uri \| &#39;=&#39;, &#39;:&#39; event\_time \| ``=``, ``&gt;``, ``&lt;``,</span>
+<span class="s2">          ``&gt;=``, ``&lt;=``  Usage: This should be milliseconds since epoch</span>
+<span class="s2">          or an RFC3339 string. Examples: &quot;event\_time =</span>
+<span class="s2">          &quot;2019-06-10T16:07:18-07:00&quot;&quot; &quot;event\_time = 1560208038000&quot;</span>
+<span class="s2">          security\_marks \| &#39;=&#39;, &#39;:&#39; source\_properties \| &#39;=&#39;, &#39;:&#39;,</span>
+<span class="s2">          ``&gt;``, ``&lt;``, ``&gt;=``, ``&lt;=``  For example,</span>
 <span class="s2">          ``source_properties.size = 100`` is a valid filter string.</span>
 <span class="s2">      order_by:</span>
 <span class="s2">          Expression that defines what fields and order to use for</span>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Cloud Security Command Center API &#8212; google-cloud fef10c0 documentation</title>
+    <title>Client for Cloud Security Command Center API &#8212; google-cloud 25d413d documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -507,10 +507,17 @@ those defined in the Asset resource. Examples include:</p>
 <li>boolean literals <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">false</span></code> without quotes.</li>
 </ul>
 <p>The following field and operator combinations are supported: name | ‘=’
-update_time | ‘&gt;’, ‘&lt;’, ‘&gt;=’, ‘&lt;=’, ‘=’ create_time | ‘&gt;’, ‘&lt;’,
-‘&gt;=’, ‘&lt;=’, ‘=’ iam_policy.policy_blob | ‘=’, ‘:’
-resource_properties | ‘=’, ‘:’, ‘&gt;’, ‘&lt;’, ‘&gt;=’, ‘&lt;=’ security_marks
-| ‘=’, ‘:’ security_center_properties.resource_name | ‘=’, ‘:’
+update_time | ‘=’, ‘&gt;’, ‘&lt;’, ‘&gt;=’, ‘&lt;=’</p>
+<p>Usage: This should be milliseconds since epoch or an RFC3339 string.
+Examples: “update_time = “2019-06-10T16:07:18-07:00”” “update_time =
+1560208038000”</p>
+<p>create_time | ‘=’, ‘&gt;’, ‘&lt;’, ‘&gt;=’, ‘&lt;=’</p>
+<p>Usage: This should be milliseconds since epoch or an RFC3339 string.
+Examples: “create_time = “2019-06-10T16:07:18-07:00”” “create_time =
+1560208038000”</p>
+<p>iam_policy.policy_blob | ‘=’, ‘:’ resource_properties | ‘=’, ‘:’,
+‘&gt;’, ‘&lt;’, ‘&gt;=’, ‘&lt;=’ security_marks | ‘=’, ‘:’
+security_center_properties.resource_name | ‘=’, ‘:’
 security_center_properties.resource_type | ‘=’, ‘:’
 security_center_properties.resource_parent | ‘=’, ‘:’
 security_center_properties.resource_project | ‘=’, ‘:’
@@ -668,9 +675,13 @@ higher precedence than <code class="docutils literal notranslate"><span class="p
 </ul>
 <p>The following field and operator combinations are supported: name |
 <code class="docutils literal notranslate"><span class="pre">=</span></code> parent | ‘=’, ‘:’ resource_name | ‘=’, ‘:’ state | ‘=’, ‘:’
-category | ‘=’, ‘:’ external_uri | ‘=’, ‘:’ event_time | <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>,
-<code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> security_marks | ‘=’, ‘:’ source_properties |
-‘=’, ‘:’, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code></p>
+category | ‘=’, ‘:’ external_uri | ‘=’, ‘:’ event_time | <code class="docutils literal notranslate"><span class="pre">=</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code></p>
+<p>Usage: This should be milliseconds since epoch or an RFC3339 string.
+Examples: “event_time = “2019-06-10T16:07:18-07:00”” “event_time =
+1560208038000”</p>
+<p>security_marks | ‘=’, ‘:’ source_properties | ‘=’, ‘:’, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code></p>
 <p>For example, <code class="docutils literal notranslate"><span class="pre">source_properties.size</span> <span class="pre">=</span> <span class="pre">100</span></code> is a valid filter string.</p>
 </li>
 <li><strong>read_time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.securitycenter_v1.types.Timestamp" title="google.cloud.securitycenter_v1.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – <p>Time used as a reference point when filtering findings. The filter is
@@ -801,8 +812,15 @@ those defined in the Asset resource. Examples include:</p>
 <li>boolean literals <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">false</span></code> without quotes.</li>
 </ul>
 <p>The following are the allowed field and operator combinations: name |
-<code class="docutils literal notranslate"><span class="pre">=</span></code> update_time | <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>
-iam_policy.policy_blob | ‘=’, ‘:’ resource_properties | ‘=’, ‘:’,
+<code class="docutils literal notranslate"><span class="pre">=</span></code> update_time | <code class="docutils literal notranslate"><span class="pre">=</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code></p>
+<p>Usage: This should be milliseconds since epoch or an RFC3339 string.
+Examples: “update_time = “2019-06-10T16:07:18-07:00”” “update_time =
+1560208038000”</p>
+<p>create_time | <code class="docutils literal notranslate"><span class="pre">=</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code></p>
+<p>Usage: This should be milliseconds since epoch or an RFC3339 string.
+Examples: “create_time = “2019-06-10T16:07:18-07:00”” “create_time =
+1560208038000”</p>
+<p>iam_policy.policy_blob | ‘=’, ‘:’ resource_properties | ‘=’, ‘:’,
 <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> security_marks | ‘=’, ‘:’
 security_center_properties.resource_name | ‘=’, ‘:’
 security_center_properties.resource_type | ‘=’, ‘:’
@@ -964,9 +982,13 @@ higher precedence than <code class="docutils literal notranslate"><span class="p
 </ul>
 <p>The following field and operator combinations are supported: name |
 <code class="docutils literal notranslate"><span class="pre">=</span></code> parent | ‘=’, ‘:’ resource_name | ‘=’, ‘:’ state | ‘=’, ‘:’
-category | ‘=’, ‘:’ external_uri | ‘=’, ‘:’ event_time | <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>,
-<code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> security_marks | ‘=’, ‘:’ source_properties |
-‘=’, ‘:’, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code></p>
+category | ‘=’, ‘:’ external_uri | ‘=’, ‘:’ event_time | <code class="docutils literal notranslate"><span class="pre">=</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code></p>
+<p>Usage: This should be milliseconds since epoch or an RFC3339 string.
+Examples: “event_time = “2019-06-10T16:07:18-07:00”” “event_time =
+1560208038000”</p>
+<p>security_marks | ‘=’, ‘:’ source_properties | ‘=’, ‘:’, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code></p>
 <p>For example, <code class="docutils literal notranslate"><span class="pre">source_properties.size</span> <span class="pre">=</span> <span class="pre">100</span></code> is a valid filter string.</p>
 </li>
 <li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Expression that defines what fields and order to use for sorting. The

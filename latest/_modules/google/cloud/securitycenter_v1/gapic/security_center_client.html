@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.securitycenter_v1.gapic.security_center_client &#8212; google-cloud fef10c0 documentation</title>
+    <title>google.cloud.securitycenter_v1.gapic.security_center_client &#8212; google-cloud 25d413d documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -780,10 +780,21 @@
 <span class="sd">                -  boolean literals ``true`` and ``false`` without quotes.</span>
 
 <span class="sd">                The following field and operator combinations are supported: name \| &#39;=&#39;</span>
-<span class="sd">                update\_time \| &#39;&gt;&#39;, &#39;&lt;&#39;, &#39;&gt;=&#39;, &#39;&lt;=&#39;, &#39;=&#39; create\_time \| &#39;&gt;&#39;, &#39;&lt;&#39;,</span>
-<span class="sd">                &#39;&gt;=&#39;, &#39;&lt;=&#39;, &#39;=&#39; iam\_policy.policy\_blob \| &#39;=&#39;, &#39;:&#39;</span>
-<span class="sd">                resource\_properties \| &#39;=&#39;, &#39;:&#39;, &#39;&gt;&#39;, &#39;&lt;&#39;, &#39;&gt;=&#39;, &#39;&lt;=&#39; security\_marks</span>
-<span class="sd">                \| &#39;=&#39;, &#39;:&#39; security\_center\_properties.resource\_name \| &#39;=&#39;, &#39;:&#39;</span>
+<span class="sd">                update\_time \| &#39;=&#39;, &#39;&gt;&#39;, &#39;&lt;&#39;, &#39;&gt;=&#39;, &#39;&lt;=&#39;</span>
+
+<span class="sd">                Usage: This should be milliseconds since epoch or an RFC3339 string.</span>
+<span class="sd">                Examples: &quot;update\_time = &quot;2019-06-10T16:07:18-07:00&quot;&quot; &quot;update\_time =</span>
+<span class="sd">                1560208038000&quot;</span>
+
+<span class="sd">                create\_time \| &#39;=&#39;, &#39;&gt;&#39;, &#39;&lt;&#39;, &#39;&gt;=&#39;, &#39;&lt;=&#39;</span>
+
+<span class="sd">                Usage: This should be milliseconds since epoch or an RFC3339 string.</span>
+<span class="sd">                Examples: &quot;create\_time = &quot;2019-06-10T16:07:18-07:00&quot;&quot; &quot;create\_time =</span>
+<span class="sd">                1560208038000&quot;</span>
+
+<span class="sd">                iam\_policy.policy\_blob \| &#39;=&#39;, &#39;:&#39; resource\_properties \| &#39;=&#39;, &#39;:&#39;,</span>
+<span class="sd">                &#39;&gt;&#39;, &#39;&lt;&#39;, &#39;&gt;=&#39;, &#39;&lt;=&#39; security\_marks \| &#39;=&#39;, &#39;:&#39;</span>
+<span class="sd">                security\_center\_properties.resource\_name \| &#39;=&#39;, &#39;:&#39;</span>
 <span class="sd">                security\_center\_properties.resource\_type \| &#39;=&#39;, &#39;:&#39;</span>
 <span class="sd">                security\_center\_properties.resource\_parent \| &#39;=&#39;, &#39;:&#39;</span>
 <span class="sd">                security\_center\_properties.resource\_project \| &#39;=&#39;, &#39;:&#39;</span>
@@ -990,9 +1001,15 @@
 
 <span class="sd">                The following field and operator combinations are supported: name \|</span>
 <span class="sd">                ``=`` parent \| &#39;=&#39;, &#39;:&#39; resource\_name \| &#39;=&#39;, &#39;:&#39; state \| &#39;=&#39;, &#39;:&#39;</span>
-<span class="sd">                category \| &#39;=&#39;, &#39;:&#39; external\_uri \| &#39;=&#39;, &#39;:&#39; event\_time \| ``&gt;``,</span>
-<span class="sd">                ``&lt;``, ``&gt;=``, ``&lt;=`` security\_marks \| &#39;=&#39;, &#39;:&#39; source\_properties \|</span>
-<span class="sd">                &#39;=&#39;, &#39;:&#39;, ``&gt;``, ``&lt;``, ``&gt;=``, ``&lt;=``</span>
+<span class="sd">                category \| &#39;=&#39;, &#39;:&#39; external\_uri \| &#39;=&#39;, &#39;:&#39; event\_time \| ``=``,</span>
+<span class="sd">                ``&gt;``, ``&lt;``, ``&gt;=``, ``&lt;=``</span>
+
+<span class="sd">                Usage: This should be milliseconds since epoch or an RFC3339 string.</span>
+<span class="sd">                Examples: &quot;event\_time = &quot;2019-06-10T16:07:18-07:00&quot;&quot; &quot;event\_time =</span>
+<span class="sd">                1560208038000&quot;</span>
+
+<span class="sd">                security\_marks \| &#39;=&#39;, &#39;:&#39; source\_properties \| &#39;=&#39;, &#39;:&#39;, ``&gt;``,</span>
+<span class="sd">                ``&lt;``, ``&gt;=``, ``&lt;=``</span>
 
 <span class="sd">                For example, ``source_properties.size = 100`` is a valid filter string.</span>
 <span class="sd">            read_time (Union[dict, ~google.cloud.securitycenter_v1.types.Timestamp]): Time used as a reference point when filtering findings. The filter is</span>
@@ -1173,7 +1190,18 @@
 <span class="sd">                -  boolean literals ``true`` and ``false`` without quotes.</span>
 
 <span class="sd">                The following are the allowed field and operator combinations: name \|</span>
-<span class="sd">                ``=`` update\_time \| ``&gt;``, ``&lt;``, ``&gt;=``, ``&lt;=``</span>
+<span class="sd">                ``=`` update\_time \| ``=``, ``&gt;``, ``&lt;``, ``&gt;=``, ``&lt;=``</span>
+
+<span class="sd">                Usage: This should be milliseconds since epoch or an RFC3339 string.</span>
+<span class="sd">                Examples: &quot;update\_time = &quot;2019-06-10T16:07:18-07:00&quot;&quot; &quot;update\_time =</span>
+<span class="sd">                1560208038000&quot;</span>
+
+<span class="sd">                create\_time \| ``=``, ``&gt;``, ``&lt;``, ``&gt;=``, ``&lt;=``</span>
+
+<span class="sd">                Usage: This should be milliseconds since epoch or an RFC3339 string.</span>
+<span class="sd">                Examples: &quot;create\_time = &quot;2019-06-10T16:07:18-07:00&quot;&quot; &quot;create\_time =</span>
+<span class="sd">                1560208038000&quot;</span>
+
 <span class="sd">                iam\_policy.policy\_blob \| &#39;=&#39;, &#39;:&#39; resource\_properties \| &#39;=&#39;, &#39;:&#39;,</span>
 <span class="sd">                ``&gt;``, ``&lt;``, ``&gt;=``, ``&lt;=`` security\_marks \| &#39;=&#39;, &#39;:&#39;</span>
 <span class="sd">                security\_center\_properties.resource\_name \| &#39;=&#39;, &#39;:&#39;</span>
@@ -1388,9 +1416,15 @@
 
 <span class="sd">                The following field and operator combinations are supported: name \|</span>
 <span class="sd">                ``=`` parent \| &#39;=&#39;, &#39;:&#39; resource\_name \| &#39;=&#39;, &#39;:&#39; state \| &#39;=&#39;, &#39;:&#39;</span>
-<span class="sd">                category \| &#39;=&#39;, &#39;:&#39; external\_uri \| &#39;=&#39;, &#39;:&#39; event\_time \| ``&gt;``,</span>
-<span class="sd">                ``&lt;``, ``&gt;=``, ``&lt;=`` security\_marks \| &#39;=&#39;, &#39;:&#39; source\_properties \|</span>
-<span class="sd">                &#39;=&#39;, &#39;:&#39;, ``&gt;``, ``&lt;``, ``&gt;=``, ``&lt;=``</span>
+<span class="sd">                category \| &#39;=&#39;, &#39;:&#39; external\_uri \| &#39;=&#39;, &#39;:&#39; event\_time \| ``=``,</span>
+<span class="sd">                ``&gt;``, ``&lt;``, ``&gt;=``, ``&lt;=``</span>
+
+<span class="sd">                Usage: This should be milliseconds since epoch or an RFC3339 string.</span>
+<span class="sd">                Examples: &quot;event\_time = &quot;2019-06-10T16:07:18-07:00&quot;&quot; &quot;event\_time =</span>
+<span class="sd">                1560208038000&quot;</span>
+
+<span class="sd">                security\_marks \| &#39;=&#39;, &#39;:&#39; source\_properties \| &#39;=&#39;, &#39;:&#39;, ``&gt;``,</span>
+<span class="sd">                ``&lt;``, ``&gt;=``, ``&lt;=``</span>
 
 <span class="sd">                For example, ``source_properties.size = 100`` is a valid filter string.</span>
 <span class="sd">            order_by (str): Expression that defines what fields and order to use for sorting. The</span>

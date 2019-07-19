@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Security Command Center API Client &#8212; google-cloud fef10c0 documentation</title>
+    <title>Types for Cloud Security Command Center API Client &#8212; google-cloud 25d413d documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -919,10 +919,15 @@ strings.  The supported value types are:  -  string literals
 in quotes. -  integer literals without quotes. -  boolean
 literals <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">false</span></code> without quotes.  The following
 field and operator combinations are supported: name | ‘=’
-update_time | ‘&gt;’, ‘&lt;’, ‘&gt;=’, ‘&lt;=’, ‘=’ create_time | ‘&gt;’,
-‘&lt;’, ‘&gt;=’, ‘&lt;=’, ‘=’ iam_policy.policy_blob | ‘=’, ‘:’
-resource_properties | ‘=’, ‘:’, ‘&gt;’, ‘&lt;’, ‘&gt;=’, ‘&lt;=’
-security_marks | ‘=’, ‘:’
+update_time | ‘=’, ‘&gt;’, ‘&lt;’, ‘&gt;=’, ‘&lt;=’  Usage: This should
+be milliseconds since epoch or an RFC3339 string. Examples:
+“update_time = “2019-06-10T16:07:18-07:00”” “update_time =
+1560208038000”  create_time | ‘=’, ‘&gt;’, ‘&lt;’, ‘&gt;=’, ‘&lt;=’
+Usage: This should be milliseconds since epoch or an RFC3339
+string. Examples: “create_time = “2019-06-10T16:07:18-07:00””
+“create_time = 1560208038000”  iam_policy.policy_blob |
+‘=’, ‘:’ resource_properties | ‘=’, ‘:’, ‘&gt;’, ‘&lt;’, ‘&gt;=’,
+‘&lt;=’ security_marks | ‘=’, ‘:’
 security_center_properties.resource_name | ‘=’, ‘:’
 security_center_properties.resource_type | ‘=’, ‘:’
 security_center_properties.resource_parent | ‘=’, ‘:’
@@ -1134,9 +1139,12 @@ without quotes. -  boolean literals <code class="docutils literal notranslate"><
 without quotes.  The following field and operator combinations
 are supported: name | <code class="docutils literal notranslate"><span class="pre">=</span></code> parent | ‘=’, ‘:’ resource_name
 | ‘=’, ‘:’ state | ‘=’, ‘:’ category | ‘=’, ‘:’
-external_uri | ‘=’, ‘:’ event_time | <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>,
-<code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> security_marks | ‘=’, ‘:’ source_properties | ‘=’,
-‘:’, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>  For example,
+external_uri | ‘=’, ‘:’ event_time | <code class="docutils literal notranslate"><span class="pre">=</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>  Usage: This should be milliseconds since epoch
+or an RFC3339 string. Examples: “event_time =
+“2019-06-10T16:07:18-07:00”” “event_time = 1560208038000”
+security_marks | ‘=’, ‘:’ source_properties | ‘=’, ‘:’,
+<code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>  For example,
 <code class="docutils literal notranslate"><span class="pre">source_properties.size</span> <span class="pre">=</span> <span class="pre">100</span></code> is a valid filter string.</p>
 </dd></dl>
 
@@ -1385,7 +1393,13 @@ strings.  The supported value types are:  -  string literals
 in quotes. -  integer literals without quotes. -  boolean
 literals <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">false</span></code> without quotes.  The following
 are the allowed field and operator combinations: name | <code class="docutils literal notranslate"><span class="pre">=</span></code>
-update_time | <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>
+update_time | <code class="docutils literal notranslate"><span class="pre">=</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>  Usage:
+This should be milliseconds since epoch or an RFC3339 string.
+Examples: “update_time = “2019-06-10T16:07:18-07:00””
+“update_time = 1560208038000”  create_time | <code class="docutils literal notranslate"><span class="pre">=</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>  Usage: This should be milliseconds
+since epoch or an RFC3339 string. Examples: “create_time =
+“2019-06-10T16:07:18-07:00”” “create_time = 1560208038000”
 iam_policy.policy_blob | ‘=’, ‘:’ resource_properties |
 ‘=’, ‘:’, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> security_marks | ‘=’,
 ‘:’ security_center_properties.resource_name | ‘=’, ‘:’
@@ -1643,9 +1657,12 @@ without quotes. -  boolean literals <code class="docutils literal notranslate"><
 without quotes.  The following field and operator combinations
 are supported: name | <code class="docutils literal notranslate"><span class="pre">=</span></code> parent | ‘=’, ‘:’ resource_name
 | ‘=’, ‘:’ state | ‘=’, ‘:’ category | ‘=’, ‘:’
-external_uri | ‘=’, ‘:’ event_time | <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>,
-<code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> security_marks | ‘=’, ‘:’ source_properties | ‘=’,
-‘:’, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>  For example,
+external_uri | ‘=’, ‘:’ event_time | <code class="docutils literal notranslate"><span class="pre">=</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>  Usage: This should be milliseconds since epoch
+or an RFC3339 string. Examples: “event_time =
+“2019-06-10T16:07:18-07:00”” “event_time = 1560208038000”
+security_marks | ‘=’, ‘:’ source_properties | ‘=’, ‘:’,
+<code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>  For example,
 <code class="docutils literal notranslate"><span class="pre">source_properties.size</span> <span class="pre">=</span> <span class="pre">100</span></code> is a valid filter string.</p>
 </dd></dl>
 
