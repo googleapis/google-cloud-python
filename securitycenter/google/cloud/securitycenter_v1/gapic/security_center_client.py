@@ -744,10 +744,21 @@ class SecurityCenterClient(object):
                 -  boolean literals ``true`` and ``false`` without quotes.
 
                 The following field and operator combinations are supported: name \| '='
-                update\_time \| '>', '<', '>=', '<=', '=' create\_time \| '>', '<',
-                '>=', '<=', '=' iam\_policy.policy\_blob \| '=', ':'
-                resource\_properties \| '=', ':', '>', '<', '>=', '<=' security\_marks
-                \| '=', ':' security\_center\_properties.resource\_name \| '=', ':'
+                update\_time \| '=', '>', '<', '>=', '<='
+
+                Usage: This should be milliseconds since epoch or an RFC3339 string.
+                Examples: "update\_time = "2019-06-10T16:07:18-07:00"" "update\_time =
+                1560208038000"
+
+                create\_time \| '=', '>', '<', '>=', '<='
+
+                Usage: This should be milliseconds since epoch or an RFC3339 string.
+                Examples: "create\_time = "2019-06-10T16:07:18-07:00"" "create\_time =
+                1560208038000"
+
+                iam\_policy.policy\_blob \| '=', ':' resource\_properties \| '=', ':',
+                '>', '<', '>=', '<=' security\_marks \| '=', ':'
+                security\_center\_properties.resource\_name \| '=', ':'
                 security\_center\_properties.resource\_type \| '=', ':'
                 security\_center\_properties.resource\_parent \| '=', ':'
                 security\_center\_properties.resource\_project \| '=', ':'
@@ -954,9 +965,15 @@ class SecurityCenterClient(object):
 
                 The following field and operator combinations are supported: name \|
                 ``=`` parent \| '=', ':' resource\_name \| '=', ':' state \| '=', ':'
-                category \| '=', ':' external\_uri \| '=', ':' event\_time \| ``>``,
-                ``<``, ``>=``, ``<=`` security\_marks \| '=', ':' source\_properties \|
-                '=', ':', ``>``, ``<``, ``>=``, ``<=``
+                category \| '=', ':' external\_uri \| '=', ':' event\_time \| ``=``,
+                ``>``, ``<``, ``>=``, ``<=``
+
+                Usage: This should be milliseconds since epoch or an RFC3339 string.
+                Examples: "event\_time = "2019-06-10T16:07:18-07:00"" "event\_time =
+                1560208038000"
+
+                security\_marks \| '=', ':' source\_properties \| '=', ':', ``>``,
+                ``<``, ``>=``, ``<=``
 
                 For example, ``source_properties.size = 100`` is a valid filter string.
             read_time (Union[dict, ~google.cloud.securitycenter_v1.types.Timestamp]): Time used as a reference point when filtering findings. The filter is
@@ -1137,7 +1154,18 @@ class SecurityCenterClient(object):
                 -  boolean literals ``true`` and ``false`` without quotes.
 
                 The following are the allowed field and operator combinations: name \|
-                ``=`` update\_time \| ``>``, ``<``, ``>=``, ``<=``
+                ``=`` update\_time \| ``=``, ``>``, ``<``, ``>=``, ``<=``
+
+                Usage: This should be milliseconds since epoch or an RFC3339 string.
+                Examples: "update\_time = "2019-06-10T16:07:18-07:00"" "update\_time =
+                1560208038000"
+
+                create\_time \| ``=``, ``>``, ``<``, ``>=``, ``<=``
+
+                Usage: This should be milliseconds since epoch or an RFC3339 string.
+                Examples: "create\_time = "2019-06-10T16:07:18-07:00"" "create\_time =
+                1560208038000"
+
                 iam\_policy.policy\_blob \| '=', ':' resource\_properties \| '=', ':',
                 ``>``, ``<``, ``>=``, ``<=`` security\_marks \| '=', ':'
                 security\_center\_properties.resource\_name \| '=', ':'
@@ -1352,9 +1380,15 @@ class SecurityCenterClient(object):
 
                 The following field and operator combinations are supported: name \|
                 ``=`` parent \| '=', ':' resource\_name \| '=', ':' state \| '=', ':'
-                category \| '=', ':' external\_uri \| '=', ':' event\_time \| ``>``,
-                ``<``, ``>=``, ``<=`` security\_marks \| '=', ':' source\_properties \|
-                '=', ':', ``>``, ``<``, ``>=``, ``<=``
+                category \| '=', ':' external\_uri \| '=', ':' event\_time \| ``=``,
+                ``>``, ``<``, ``>=``, ``<=``
+
+                Usage: This should be milliseconds since epoch or an RFC3339 string.
+                Examples: "event\_time = "2019-06-10T16:07:18-07:00"" "event\_time =
+                1560208038000"
+
+                security\_marks \| '=', ':' source\_properties \| '=', ':', ``>``,
+                ``<``, ``>=``, ``<=``
 
                 For example, ``source_properties.size = 100`` is a valid filter string.
             order_by (str): Expression that defines what fields and order to use for sorting. The
