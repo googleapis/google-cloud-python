@@ -690,6 +690,7 @@ class ProfileServiceClient(object):
         case_sensitive_sort=None,
         histogram_queries=None,
         result_set_id=None,
+        strict_keywords_search=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -878,11 +879,24 @@ class ProfileServiceClient(object):
                 If this field is set, the service will ignore the resource and
                 ``profile_query`` values, and simply retrieve a page of results from the
                 corresponding result set. In this case, one and only one of
-                [page\_token] or [offset] must be set.
+                ``page_token`` or ``offset`` must be set.
 
                 A typical use case is to invoke ``SearchProfilesRequest`` without this
                 field, then use the resulting ``result_set_id`` in
                 ``SearchProfilesResponse`` to page through the results.
+            strict_keywords_search (bool): Optional. This flag is used to indicate whether the service will attempt to
+                understand synonyms and terms related to the search query or treat the
+                query "as is" when it generates a set of results. By default this flag is
+                set to false, thus allowing expanded results to also be returned. For
+                example a search for "software engineer" might also return candidates who
+                have experience in jobs similar to software engineer positions. By setting
+                this flag to true, the service will only attempt to deliver candidates has
+                software engineer in his/her global fields by treating "software engineer"
+                as a keyword.
+
+                It is recommended to provide a feature in the UI (such as a checkbox) to
+                allow recruiters to set this flag to true if they intend to search for
+                longer boolean strings.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -927,6 +941,7 @@ class ProfileServiceClient(object):
             case_sensitive_sort=case_sensitive_sort,
             histogram_queries=histogram_queries,
             result_set_id=result_set_id,
+            strict_keywords_search=strict_keywords_search,
         )
         if metadata is None:
             metadata = []

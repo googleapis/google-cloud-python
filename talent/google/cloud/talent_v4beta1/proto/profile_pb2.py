@@ -2724,7 +2724,8 @@ Profile = _reflection.GeneratedProtocolMessageType(
           "senior software engineer". -  Provide    [EmploymentRecord.is
           \_current][google.cloud.talent.v4beta1.EmploymentRecord.is\_cu
           rrent]    for the current employment if possible. If not, it's
-          inferred from    user inputs.
+          inferred from    user inputs.  The limitation for max number
+          of employment records is 50.
       education_records:
           Optional. The education history record of the candidate. It's
           highly recommended to input this information as accurately as
@@ -2736,19 +2737,22 @@ Profile = _reflection.GeneratedProtocolMessageType(
           different degrees. -  Provide    [EducationRecord.is\_current]
           [google.cloud.talent.v4beta1.EducationRecord.is\_current]
           for the current education if possible. If not, it's inferred
-          from    user inputs.
+          from    user inputs.  The limitation for max number of
+          education records is 10.
       skills:
           Optional. The skill set of the candidate. It's highly
           recommended to provide as much information as possible to help
-          improve the search quality.
+          improve the search quality.  The limitation for max number of
+          skills is 100.
       activities:
           Optional. The individual or collaborative activities which the
           candidate has participated in, for example, open-source
           projects, class assignments that aren't listed in [employment\
           _records][google.cloud.talent.v4beta1.Profile.employment\_reco
-          rds].
+          rds].  The limitation for max number of activities is 50.
       publications:
-          Optional. The publications published by the candidate.
+          Optional. The publications published by the candidate.  The
+          limitation for max number of publications is 50.
       patents:
           Optional. The patents acquired by the candidate.
       certifications:
@@ -3195,9 +3199,11 @@ Activity = _reflection.GeneratedProtocolMessageType(
           Optional. The last update date of the activity.
       team_members:
           Optional. A list of team members involved in this activity.
-          Number of characters allowed is 100.
+          Number of characters allowed is 100.  The limitation for max
+          number of team members is 50.
       skills_used:
-          Optional. A list of skills used in this activity.
+          Optional. A list of skills used in this activity.  The
+          limitation for max number of skills used is 50.
       activity_name_snippet:
           Output only. Activity name snippet shows how the [display\_nam
           e][google.cloud.talent.v4beta1.Activity.display\_name] is

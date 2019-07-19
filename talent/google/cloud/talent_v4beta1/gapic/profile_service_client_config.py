@@ -18,32 +18,32 @@ config = {
             },
             "methods": {
                 "ListProfiles": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "CreateProfile": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "GetProfile": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "UpdateProfile": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "DeleteProfile": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "SearchProfiles": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
