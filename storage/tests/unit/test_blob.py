@@ -349,9 +349,7 @@ class Test_Blob(unittest.TestCase):
         BLOB_NAME = "foo~bar"
         bucket = _Bucket()
         blob = self._make_one(BLOB_NAME, bucket=bucket)
-        self.assertEqual(
-            blob.public_url, "https://storage.googleapis.com/name/foo~bar"
-        )
+        self.assertEqual(blob.public_url, "https://storage.googleapis.com/name/foo~bar")
 
     def test_public_url_with_non_ascii(self):
         blob_name = u"winter \N{snowman}"
@@ -1020,46 +1018,36 @@ class Test_Blob(unittest.TestCase):
         self._download_to_file_helper(use_chunks=True)
 
     def _make_response_helper(self, range_, content, length):
-        headers = {
-            "content-length": length,
-            "content-range": range_
-        }
+        headers = {"content-length": length, "content-range": range_}
         mock_raw = mock.Mock(headers=headers, spec=["headers"])
         response = mock.MagicMock(
             headers=headers,
             status_code=http_client.OK,
             raw=mock_raw,
             content=content,
-            spec=[
-                "headers",
-                "iter_content",
-                "status_code",
-                "raw",
-            ]
+            spec=["headers", "iter_content", "status_code", "raw"],
         )
         return response
 
     def test_download_w_streaming_file(self):
         from google.cloud._testing import _NamedTemporaryFile
 
-        response1 = self._make_response_helper(
-            "bytes 0-2/6", b'abc', "3")
-        response2 = self._make_response_helper(
-            "bytes 3-5/6", b'def', "3")
+        response1 = self._make_response_helper("bytes 0-2/6", b"abc", "3")
+        response2 = self._make_response_helper("bytes 3-5/6", b"def", "3")
 
         transport = mock.Mock(spec=["request"])
         transport.request.side_effect = (response1, response2)
         # Create a fake client/bucket and use them in the Blob() constructor.
         client = mock.Mock(_http=transport, spec=["_http"])
         bucket = mock.Mock(
-            client=client,
-            user_project=None,
-            spec=["client", "user_project"]
+            client=client, user_project=None, spec=["client", "user_project"]
         )
 
         media_link = "http://example.com/media/"
         properties = {"mediaLink": media_link}
-        blob = self._make_one("blob-name", bucket=bucket, properties=properties, chunk_size=262144)
+        blob = self._make_one(
+            "blob-name", bucket=bucket, properties=properties, chunk_size=262144
+        )
 
         with _NamedTemporaryFile() as temp:
             file_ = blob.get_streaming_file(temp.name)
@@ -1069,49 +1057,44 @@ class Test_Blob(unittest.TestCase):
             # reading part of downloaded chunk
             file_.seek(0, 0)
             chunk = file_.read(2)
-            self.assertEqual(chunk, b'ab')
+            self.assertEqual(chunk, b"ab")
 
             # reading last chunk
             file_.seek(3)
             chunk2 = file_.read(3)
 
-            self.assertEqual(chunk1, b'abc')
-            self.assertEqual(chunk2, b'def')
+            self.assertEqual(chunk1, b"abc")
+            self.assertEqual(chunk2, b"def")
 
             file_.seek(0, 0)
             whole_file = file_.read()
-            self.assertEqual(whole_file, b'abcdef')
+            self.assertEqual(whole_file, b"abcdef")
 
             file_.close()
 
-            self.assertEqual(
-                len(transport.request.call_args_list), 2
-            )
+            self.assertEqual(len(transport.request.call_args_list), 2)
 
     def test_download_w_streaming_file_bad_response(self):
-        from google.cloud._testing import _NamedTemporaryFile
-
-        response1 = self._make_response_helper(
-            "gdfgd 1/6", b'atc', "1")
+        response1 = self._make_response_helper("gdfgd 1/6", b"atc", "1")
 
         transport = mock.Mock(spec=["request"])
-        transport.request.side_effect = (response1)
+        transport.request.side_effect = response1
         # Create a fake client/bucket and use them in the Blob() constructor.
         client = mock.Mock(_http=transport, spec=["_http"])
         bucket = mock.Mock(
-            client=client,
-            user_project=None,
-            spec=["client", "user_project"]
+            client=client, user_project=None, spec=["client", "user_project"]
         )
 
         media_link = "http://example.com/media/"
         properties = {"mediaLink": media_link}
-        blob = self._make_one("blob-name", bucket=bucket, properties=properties, chunk_size=262144)
+        blob = self._make_one(
+            "blob-name", bucket=bucket, properties=properties, chunk_size=262144
+        )
 
         filehandle, filename = tempfile.mkstemp()
         os.close(filehandle)
 
-        with self.assertRaises(google.api_core.exceptions.GoogleAPICallError) as exc:
+        with self.assertRaises(google.api_core.exceptions.GoogleAPICallError):
             file_ = blob.get_streaming_file(filename)
             file_.read(3)
 
@@ -1120,33 +1103,30 @@ class Test_Blob(unittest.TestCase):
     def test_download_and_read_w_streaming_file(self):
         from google.cloud._testing import _NamedTemporaryFile
 
-        response1 = self._make_response_helper(
-            "bytes 0-2/6", b'abc', "3")
-        response2 = self._make_response_helper(
-            "bytes 3-4/6", b'd', "1")
-        response3 = self._make_response_helper(
-            "bytes 5-5/6", b'ef', "2")
+        response1 = self._make_response_helper("bytes 0-2/6", b"abc", "3")
+        response2 = self._make_response_helper("bytes 3-4/6", b"d", "1")
+        response3 = self._make_response_helper("bytes 5-5/6", b"ef", "2")
 
         transport = mock.Mock(spec=["request"])
         transport.request.side_effect = (response1, response2, response3)
         # Create a fake client/bucket and use them in the Blob() constructor.
         client = mock.Mock(_http=transport, spec=["_http"])
         bucket = mock.Mock(
-            client=client,
-            user_project=None,
-            spec=["client", "user_project"]
+            client=client, user_project=None, spec=["client", "user_project"]
         )
 
         media_link = "http://example.com/media/"
         properties = {"mediaLink": media_link}
-        blob = self._make_one("blob-name", bucket=bucket, properties=properties, chunk_size=262144)
+        blob = self._make_one(
+            "blob-name", bucket=bucket, properties=properties, chunk_size=262144
+        )
 
         with _NamedTemporaryFile() as temp:
             file_ = blob.get_streaming_file(temp.name)
 
             # check if first chunk downloaded
             chunk1 = file_.read(3)
-            self.assertEqual(chunk1, b'abc')
+            self.assertEqual(chunk1, b"abc")
             # check if file size equals read() arg
             self.assertEqual(os.fstat(file_.fileno()).st_size, 3)
 
@@ -1154,22 +1134,20 @@ class Test_Blob(unittest.TestCase):
             # returned with part of the first one
             file_.seek(2, 0)
             from_second = file_.read(2)
-            self.assertEqual(from_second, b'cd')
+            self.assertEqual(from_second, b"cd")
             # check if one more letter downloaded
             self.assertEqual(os.fstat(file_.fileno()).st_size, 4)
 
             # check if last chunk downloaded
             file_.seek(0, 0)
             whole_file = file_.read()
-            self.assertEqual(whole_file, b'abcdef')
+            self.assertEqual(whole_file, b"abcdef")
             # check if whole file downloaded
             self.assertEqual(os.fstat(file_.fileno()).st_size, 6)
 
             file_.close()
 
-            self.assertEqual(
-                len(transport.request.call_args_list), 3
-            )
+            self.assertEqual(len(transport.request.call_args_list), 3)
 
     def _download_to_filename_helper(self, updated=None):
         import os

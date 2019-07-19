@@ -614,7 +614,7 @@ class Blob(_PropertyMixin):
             download_url=download_url,
             headers=headers,
             transport=transport,
-            chunk_size=self.chunk_size
+            chunk_size=self.chunk_size,
         )
 
     def download_to_file(self, file_obj, client=None, start=None, end=None):
@@ -2001,15 +2001,13 @@ class StreamingFile(FileIO):
 
     chunk_size (int): The size of chunks to be downloaded.
     """
+
     def __init__(self, filename, download_url, headers, transport, chunk_size):
-        super(StreamingFile, self).__init__(filename, 'wb+')
+        super(StreamingFile, self).__init__(filename, "wb+")
 
         self._transport = transport
         self._download = ChunkedDownload(
-            download_url,
-            chunk_size,
-            self,
-            headers=headers
+            download_url, chunk_size, self, headers=headers
         )
 
     def read(self, size=None):
@@ -2054,8 +2052,7 @@ class StreamingFile(FileIO):
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
         try:
-            self._download.consume_next_chunk(
-                self._transport).content
+            self._download.consume_next_chunk(self._transport).content
         except resumable_media.InvalidResponse as exc:
             _raise_from_invalid_response(exc)
 
