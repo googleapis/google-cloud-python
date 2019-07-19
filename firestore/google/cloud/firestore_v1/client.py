@@ -193,7 +193,7 @@ class Client(ClientWithProject):
 
             if self._emulator_host is not None:
                 # The emulator requires additional metadata to be set.
-                self._rpc_metadata_internal.append(("authorization", "bearer owner"))
+                self._rpc_metadata_internal.append(("authorization", "Bearer owner"))
 
         return self._rpc_metadata_internal
 
