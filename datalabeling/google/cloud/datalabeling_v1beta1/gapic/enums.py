@@ -60,9 +60,9 @@ class AnnotationType(enum.IntEnum):
       VIDEO_OBJECT_TRACKING_ANNOTATION (int): Video object tracking annotation.
       VIDEO_OBJECT_DETECTION_ANNOTATION (int): Video object detection annotation.
       VIDEO_EVENT_ANNOTATION (int): Video event annotation.
-      AUDIO_TRANSCRIPTION_ANNOTATION (int): Speech to text annotation.
       TEXT_CLASSIFICATION_ANNOTATION (int): Classification for text.
       TEXT_ENTITY_EXTRACTION_ANNOTATION (int): Entity extraction for text.
+      GENERAL_CLASSIFICATION_ANNOTATION (int): General classification.
     """
 
     ANNOTATION_TYPE_UNSPECIFIED = 0
@@ -76,9 +76,9 @@ class AnnotationType(enum.IntEnum):
     VIDEO_OBJECT_TRACKING_ANNOTATION = 4
     VIDEO_OBJECT_DETECTION_ANNOTATION = 5
     VIDEO_EVENT_ANNOTATION = 6
-    AUDIO_TRANSCRIPTION_ANNOTATION = 7
     TEXT_CLASSIFICATION_ANNOTATION = 8
     TEXT_ENTITY_EXTRACTION_ANNOTATION = 9
+    GENERAL_CLASSIFICATION_ANNOTATION = 14
 
 
 class DataType(enum.IntEnum):
@@ -88,14 +88,14 @@ class DataType(enum.IntEnum):
       IMAGE (int)
       VIDEO (int)
       TEXT (int)
-      AUDIO (int)
+      GENERAL_DATA (int)
     """
 
     DATA_TYPE_UNSPECIFIED = 0
     IMAGE = 1
     VIDEO = 2
     TEXT = 4
-    AUDIO = 5
+    GENERAL_DATA = 6
 
 
 class StringAggregationType(enum.IntEnum):
@@ -113,18 +113,24 @@ class StringAggregationType(enum.IntEnum):
     NO_AGGREGATION = 3
 
 
-class LabelAudioRequest(object):
-    class Feature(enum.IntEnum):
+class EvaluationJob(object):
+    class State(enum.IntEnum):
         """
-        Audio labeling task feature.
+        State of the job.
 
         Attributes:
-          FEATURE_UNSPECIFIED (int)
-          AUDIO_TRANSCRIPTION (int): Transcribe the audios into text.
+          STATE_UNSPECIFIED (int)
+          SCHEDULED (int)
+          RUNNING (int)
+          PAUSED (int)
+          STOPPED (int)
         """
 
-        FEATURE_UNSPECIFIED = 0
-        AUDIO_TRANSCRIPTION = 1
+        STATE_UNSPECIFIED = 0
+        SCHEDULED = 1
+        RUNNING = 2
+        PAUSED = 3
+        STOPPED = 4
 
 
 class LabelImageRequest(object):

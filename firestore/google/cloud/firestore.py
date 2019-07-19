@@ -16,6 +16,8 @@
 
 
 from google.cloud.firestore_v1 import __version__
+from google.cloud.firestore_v1 import ArrayRemove
+from google.cloud.firestore_v1 import ArrayUnion
 from google.cloud.firestore_v1 import Client
 from google.cloud.firestore_v1 import CollectionReference
 from google.cloud.firestore_v1 import DELETE_FIELD
@@ -24,7 +26,10 @@ from google.cloud.firestore_v1 import DocumentSnapshot
 from google.cloud.firestore_v1 import enums
 from google.cloud.firestore_v1 import ExistsOption
 from google.cloud.firestore_v1 import GeoPoint
+from google.cloud.firestore_v1 import Increment
 from google.cloud.firestore_v1 import LastUpdateOption
+from google.cloud.firestore_v1 import Maximum
+from google.cloud.firestore_v1 import Minimum
 from google.cloud.firestore_v1 import Query
 from google.cloud.firestore_v1 import ReadAfterWriteError
 from google.cloud.firestore_v1 import SERVER_TIMESTAMP
@@ -38,6 +43,8 @@ from google.cloud.firestore_v1 import WriteOption
 
 __all__ = [
     "__version__",
+    "ArrayRemove",
+    "ArrayUnion",
     "Client",
     "CollectionReference",
     "DELETE_FIELD",
@@ -46,7 +53,10 @@ __all__ = [
     "enums",
     "ExistsOption",
     "GeoPoint",
+    "Increment",
     "LastUpdateOption",
+    "Maximum",
+    "Minimum",
     "Query",
     "ReadAfterWriteError",
     "SERVER_TIMESTAMP",

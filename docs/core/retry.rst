@@ -1,6 +1,1 @@
-Retry
-=====
-
-.. automodule:: google.api_core.retry
-  :members:
-  :show-inheritance:
+../../api_core/docs/retry.rst

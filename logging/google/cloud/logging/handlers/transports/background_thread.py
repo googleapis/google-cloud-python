@@ -20,6 +20,7 @@ Uses a background worker to log to Stackdriver Logging asynchronously.
 from __future__ import print_function
 
 import atexit
+import datetime
 import logging
 import sys
 import threading
@@ -261,7 +262,7 @@ class _Worker(object):
                 "labels": labels,
                 "trace": trace,
                 "span_id": span_id,
-                "timestamp": datetime.utcfromtimestamp(record.created),
+                "timestamp": datetime.datetime.utcfromtimestamp(record.created),
             }
         )
 

@@ -15,6 +15,7 @@
 """This script is used to synthesize generated parts of this library."""
 
 import re
+import textwrap
 
 import synthtool as s
 from synthtool import gcp
@@ -164,6 +165,13 @@ s.replace(
         else:
             client_config = _merge_dict(default_client_config, client_config)
     """
+)
+
+# Temporary fixup for 'grpc-google-iam-vi 0.12.4' (before generation).
+s.replace(
+    "google/cloud/pubsub_v1/gapic/transports/*_grpc_transport.py",
+    "from google.iam.v1 import iam_policy_pb2",
+    "from google.iam.v1 import iam_policy_pb2_grpc as iam_policy_pb2",
 )
 
 # ----------------------------------------------------------------------------

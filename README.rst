@@ -42,6 +42,7 @@ The following client libraries have **GA** support:
 -  `Google Cloud Natural Language`_ (`Natural Language README`_)
 -  `Google Cloud Scheduler`_ (`Scheduler README`_)
 -  `Google Cloud Spanner`_ (`Spanner README`_)
+-  `Google Cloud Speech`_ (`Speech README`_)
 -  `Google Cloud Storage`_ (`Storage README`_)
 -  `Google Cloud Tasks`_ (`Tasks README`_)
 -  `Google Cloud Translation`_ (`Translation README`_)
@@ -57,6 +58,8 @@ The following client libraries have **GA** support:
 .. _Natural Language README: https://github.com/googleapis/google-cloud-python/tree/master/language
 .. _Google Cloud Spanner: https://pypi.org/project/google-cloud-spanner
 .. _Spanner README: https://github.com/googleapis/google-cloud-python/tree/master/spanner
+.. _Google Cloud Speech: https://pypi.org/project/google-cloud-speech/
+.. _Speech README: https://github.com/googleapis/google-cloud-python/tree/master/speech
 .. _Google Cloud Storage: https://pypi.org/project/google-cloud-storage/
 .. _Storage README: https://github.com/googleapis/google-cloud-python/tree/master/storage
 .. _Google Cloud Tasks: https://pypi.org/project/google-cloud-tasks/
@@ -80,7 +83,6 @@ The following client libraries have **beta** support:
 -  `Google Cloud Bigtable`_ (`Bigtable README`_)
 -  `Google Cloud Firestore`_ (`Firestore README`_)
 -  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_)
--  `Google Cloud Speech`_ (`Speech README`_)
 -  `Google Cloud Video Intelligence`_ (`Video Intelligence README`_)
 -  `Google Cloud Vision`_ (`Vision README`_)
 
@@ -90,8 +92,6 @@ The following client libraries have **beta** support:
 .. _Firestore README: https://github.com/googleapis/google-cloud-python/tree/master/firestore
 .. _Google Cloud Pub/Sub: https://pypi.org/project/google-cloud-pubsub/
 .. _Pub/Sub README: https://github.com/googleapis/google-cloud-python/tree/master/pubsub
-.. _Google Cloud Speech: https://pypi.org/project/google-cloud-speech/
-.. _Speech README: https://github.com/googleapis/google-cloud-python/tree/master/speech
 .. _Google Cloud Video Intelligence: https://pypi.org/project/google-cloud-videointelligence
 .. _Video Intelligence README: https://github.com/googleapis/google-cloud-python/tree/master/videointelligence
 .. _Google Cloud Vision: https://pypi.org/project/google-cloud-vision/
@@ -112,6 +112,7 @@ The following client libraries have **alpha** support:
 -  `Google BigQuery Data Transfer`_ (`BigQuery Data Transfer README`_)
 -  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_)
 -  `Google Cloud Container`_ (`Container README`_)
+-  `Google Cloud Container Analysis`_ (`Container Analysis README`_)
 -  `Google Cloud Dataproc`_ (`Dataproc README`_)
 -  `Google Cloud DLP`_ (`DLP README`_)
 -  `Google Cloud DNS`_ (`DNS README`_)
@@ -120,9 +121,9 @@ The following client libraries have **alpha** support:
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
 -  `Google Cloud Security Scanner`_ (`Security Scanner README`_ )
--  `Google Cloud Tasks`_ (`Tasks README`_)
 -  `Google Cloud Trace`_ (`Trace README`_)
 -  `Google Cloud Text-to-Speech`_ (`Text-to-Speech README`_)
+-  `Grafeas`_ (`Grafeas README`_)
 -  `Stackdriver Error Reporting`_ (`Error Reporting README`_)
 -  `Stackdriver Monitoring`_ (`Monitoring README`_)
 
@@ -136,6 +137,8 @@ The following client libraries have **alpha** support:
 .. _HappyBase README: https://github.com/googleapis/google-cloud-python-happybase
 .. _Google Cloud Container: https://pypi.org/project/google-cloud-container/
 .. _Container README: https://github.com/googleapis/google-cloud-python/tree/master/container
+.. _Google Cloud Container Analysis: https://pypi.org/project/google-cloud-containeranalysis/
+.. _Container Analysis README: https://github.com/googleapis/google-cloud-python/tree/master/containeranalysis
 .. _Google Cloud Dataproc: https://pypi.org/project/google-cloud-dataproc/
 .. _Dataproc README: https://github.com/googleapis/google-cloud-python/tree/master/dataproc
 .. _Google Cloud DLP: https://pypi.org/project/google-cloud-dlp/
@@ -156,6 +159,8 @@ The following client libraries have **alpha** support:
 .. _Text-to-Speech README: https://github.com/googleapis/google-cloud-python/tree/master/texttospeech
 .. _Google Cloud Trace: https://pypi.org/project/google-cloud-trace/
 .. _Trace README: https://github.com/googleapis/google-cloud-python/tree/master/trace
+.. _Grafeas: https://pypi.org/project/grafeas/
+.. _Grafeas README: https://github.com/googleapis/google-cloud-python/tree/master/grafeas
 .. _Stackdriver Error Reporting: https://pypi.org/project/google-cloud-error-reporting/
 .. _Error Reporting README: https://github.com/googleapis/google-cloud-python/tree/master/error_reporting
 .. _Stackdriver Monitoring: https://pypi.org/project/google-cloud-monitoring/

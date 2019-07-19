@@ -1,0 +1,13 @@
+{
+  "name": "cloudasset",
+  "name_pretty": "Cloud Asset Inventory",
+  "product_documentation": "https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/overview",
+  "client_documentation": "https://googleapis.dev/python/asset/latest",
+  "issue_tracker": "https://issuetracker.google.com/savedsearches/559757",
+  "release_level": "alpha",
+  "language": "python",
+  "repo": "googleapis/google-cloud-python",
+  "distribution_name": "google-cloud-asset",
+  "api_id": "cloudasset.googleapis.com",
+  "requires_billing": true
+}

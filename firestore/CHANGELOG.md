@@ -5,6 +5,35 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## 1.3.0
+
+07-09-2019 13:19 PDT
+
+
+### Implementation Changes
+- Add missing transforms to 'google.cloud.firestore' shim. ([#8481](https://github.com/googleapis/google-cloud-python/pull/8481))
+- Preserve reference to missing documents in 'Client.get_all'. ([#8472](https://github.com/googleapis/google-cloud-python/pull/8472))
+- Add gRPC keepalive to gapic client initialization. ([#8264](https://github.com/googleapis/google-cloud-python/pull/8264))
+- Add disclaimer to auto-generated template files. ([#8314](https://github.com/googleapis/google-cloud-python/pull/8314))
+- Use correct environment variable to guard the 'system' part. ([#7912](https://github.com/googleapis/google-cloud-python/pull/7912))
+
+### New Features
+- Add 'client_options' support, update list method docstrings (via synth). ([#8509](https://github.com/googleapis/google-cloud-python/pull/8509))
+- Allow kwargs to be passed to create_channel (via synth). ([#8390](https://github.com/googleapis/google-cloud-python/pull/8390))
+- Add 'FieldPath.documentId()'. ([#8543](https://github.com/googleapis/google-cloud-python/pull/8543))
+
+### Documentation
+- Fix docstring example for 'Client.collection_group'. ([#8438](https://github.com/googleapis/google-cloud-python/pull/8438))
+- Normalize docstring class refs. ([#8102](https://github.com/googleapis/google-cloud-python/pull/8102))
+
+### Internal / Testing Changes
+- Pin black version (via synth). ([#8583](https://github.com/googleapis/google-cloud-python/pull/8583))
+- All: Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+- Declare encoding as utf-8 in pb2 files (via synth). ([#8352](https://github.com/googleapis/google-cloud-python/pull/8352))
+- Suppress checking 'cov-fail-under' in nox default session (via synth).  ([#8241](https://github.com/googleapis/google-cloud-python/pull/8241))
+- Blacken noxfile.py, setup.py (via synth). ([#8123](https://github.com/googleapis/google-cloud-python/pull/8123))
+- Add empty lines (via synth). ([#8058](https://github.com/googleapis/google-cloud-python/pull/8058))
+
 ## 1.2.0
 
 05-16-2019 12:25 PDT

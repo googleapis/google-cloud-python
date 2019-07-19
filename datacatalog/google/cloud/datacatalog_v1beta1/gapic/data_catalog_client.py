@@ -21,6 +21,7 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -40,6 +41,7 @@ from google.cloud.datacatalog_v1beta1.proto import datacatalog_pb2
 from google.cloud.datacatalog_v1beta1.proto import datacatalog_pb2_grpc
 from google.cloud.datacatalog_v1beta1.proto import tags_pb2
 from google.iam.v1 import iam_policy_pb2
+from google.iam.v1 import options_pb2
 from google.iam.v1 import policy_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
@@ -143,6 +145,7 @@ class DataCatalogClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -173,6 +176,9 @@ class DataCatalogClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -191,6 +197,15 @@ class DataCatalogClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -199,6 +214,7 @@ class DataCatalogClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=data_catalog_grpc_transport.DataCatalogGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -209,7 +225,7 @@ class DataCatalogClient(object):
                 self.transport = transport
         else:
             self.transport = data_catalog_grpc_transport.DataCatalogGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -254,8 +270,14 @@ class DataCatalogClient(object):
         return the complete resource, only the resource identifier and high
         level fields. Clients can subsequentally call Get methods.
 
+        Note that searches do not have full recall. There may be results that
+        match your query but are not returned, even in subsequent pages of
+        results. These missing results may vary across repeated calls to search.
+        Do not rely on this method if you need to guarantee full recall.
+
         See `Data Catalog Search
         Syntax <https://cloud.google.com/data-catalog/docs/how-to/search-reference>`__
+        for more information.
 
         Example:
             >>> from google.cloud import datacatalog_v1beta1
@@ -315,8 +337,7 @@ class DataCatalogClient(object):
                       <li> last_access_timestamp [asc|desc], defaults to descending if not
                       specified, </li>
                       <li> last_modified_timestamp [asc|desc], defaults to descending if not
-                      specified, </li>
-                      <li> title [asc|desc], defaults to ascending if not specified. </li>
+                      specified. </li>
                     </ul>
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
@@ -328,10 +349,10 @@ class DataCatalogClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.datacatalog_v1beta1.types.SearchCatalogResult` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.datacatalog_v1beta1.types.SearchCatalogResult` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -645,7 +666,9 @@ class DataCatalogClient(object):
 
         Args:
             parent (str): Required. The name of the project and the location this template is in.
-                Example: "projects/{project\_id}/locations/{location}".
+                Example: "projects/{project\_id}/locations/{location}". Note that this
+                TagTemplate and its child resources may not actually be stored in the
+                location in this name.
             tag_template_id (str): Required. The id of the tag template to create.
             tag_template (Union[dict, ~google.cloud.datacatalog_v1beta1.types.TagTemplate]): Required. The tag template to create.
 
@@ -965,6 +988,8 @@ class DataCatalogClient(object):
         Args:
             parent (str): Required. The name of the project this template is in. Example:
                 "projects/{project\_id}/locations/{location}/tagTemplates/{tag\_template\_id}".
+                Note that this TagTemplateField may not actually be stored in the
+                location in this name.
             tag_template_field_id (str): Required. The id of the tag template field to create. Field ids can
                 contain letters (both uppercase and lowercase), numbers (0-9),
                 underscores (\_) and dashes (-). Field ids must be at least 1 character
@@ -1302,6 +1327,8 @@ class DataCatalogClient(object):
             parent (str): Required. The name of the resource to attach this tag to. Tags can be
                 attached to Entries. (example:
                 "projects/{project\_id}/locations/{location}/entryGroups/{entry\_group\_id}/entries/{entry\_id}").
+                Note that this Tag and its child resources may not actually be stored in
+                the location in this name.
             tag (Union[dict, ~google.cloud.datacatalog_v1beta1.types.Tag]): Required. The tag to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -1551,10 +1578,10 @@ class DataCatalogClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.datacatalog_v1beta1.types.Tag` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.datacatalog_v1beta1.types.Tag` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1696,6 +1723,7 @@ class DataCatalogClient(object):
     def get_iam_policy(
         self,
         resource,
+        options_=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -1727,6 +1755,11 @@ class DataCatalogClient(object):
         Args:
             resource (str): REQUIRED: The resource for which the policy is being requested.
                 See the operation documentation for the appropriate value for this field.
+            options_ (Union[dict, ~google.cloud.datacatalog_v1beta1.types.GetPolicyOptions]): OPTIONAL: A ``GetPolicyOptions`` object for specifying options to
+                ``GetIamPolicy``. This field is only used by Cloud IAM.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.datacatalog_v1beta1.types.GetPolicyOptions`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -1757,7 +1790,9 @@ class DataCatalogClient(object):
                 client_info=self._client_info,
             )
 
-        request = iam_policy_pb2.GetIamPolicyRequest(resource=resource)
+        request = iam_policy_pb2.GetIamPolicyRequest(
+            resource=resource, options=options_
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)

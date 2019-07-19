@@ -14,8 +14,11 @@
 
 """Bi-directional streaming RPC helpers."""
 
+import collections
+import datetime
 import logging
 import threading
+import time
 
 from six.moves import queue
 
@@ -132,6 +135,73 @@ class _RequestQueueGenerator(object):
                 return
 
             yield item
+
+
+class _Throttle(object):
+    """A context manager limiting the total entries in a sliding time window.
+
+    If more than ``access_limit`` attempts are made to enter the context manager
+    instance in the last ``time window`` interval, the exceeding requests block
+    until enough time elapses.
+
+    The context manager instances are thread-safe and can be shared between
+    multiple threads. If multiple requests are blocked and waiting to enter,
+    the exact order in which they are allowed to proceed is not determined.
+
+    Example::
+
+        max_three_per_second = _Throttle(
+            access_limit=3, time_window=datetime.timedelta(seconds=1)
+        )
+
+        for i in range(5):
+            with max_three_per_second as time_waited:
+                print("{}: Waited {} seconds to enter".format(i, time_waited))
+
+    Args:
+        access_limit (int): the maximum number of entries allowed in the time window
+        time_window (datetime.timedelta): the width of the sliding time window
+    """
+
+    def __init__(self, access_limit, time_window):
+        if access_limit < 1:
+            raise ValueError("access_limit argument must be positive")
+
+        if time_window <= datetime.timedelta(0):
+            raise ValueError("time_window argument must be a positive timedelta")
+
+        self._time_window = time_window
+        self._access_limit = access_limit
+        self._past_entries = collections.deque(maxlen=access_limit)  # least recent first
+        self._entry_lock = threading.Lock()
+
+    def __enter__(self):
+        with self._entry_lock:
+            cutoff_time = datetime.datetime.now() - self._time_window
+
+            # drop the entries that are too old, as they are no longer relevant
+            while self._past_entries and self._past_entries[0] < cutoff_time:
+                self._past_entries.popleft()
+
+            if len(self._past_entries) < self._access_limit:
+                self._past_entries.append(datetime.datetime.now())
+                return 0.0  # no waiting was needed
+
+            to_wait = (self._past_entries[0] - cutoff_time).total_seconds()
+            time.sleep(to_wait)
+
+            self._past_entries.append(datetime.datetime.now())
+            return to_wait
+
+    def __exit__(self, *_):
+        pass
+
+    def __repr__(self):
+        return "{}(access_limit={}, time_window={})".format(
+            self.__class__.__name__,
+            self._access_limit,
+            repr(self._time_window),
+        )
 
 
 class BidiRpc(object):
@@ -279,6 +349,11 @@ class BidiRpc(object):
         return self._request_queue.qsize()
 
 
+def _never_terminate(future_or_error):
+    """By default, no errors cause BiDi termination."""
+    return False
+
+
 class ResumableBidiRpc(BidiRpc):
     """A :class:`BidiRpc` that can automatically resume the stream on errors.
 
@@ -321,16 +396,37 @@ class ResumableBidiRpc(BidiRpc):
         should_recover (Callable[[Exception], bool]): A function that returns
             True if the stream should be recovered. This will be called
             whenever an error is encountered on the stream.
+        should_terminate (Callable[[Exception], bool]): A function that returns
+            True if the stream should be terminated. This will be called
+            whenever an error is encountered on the stream.
         metadata Sequence[Tuple(str, str)]: RPC metadata to include in
             the request.
+        throttle_reopen (bool): If ``True``, throttling will be applied to
+            stream reopen calls. Defaults to ``False``.
     """
 
-    def __init__(self, start_rpc, should_recover, initial_request=None, metadata=None):
+    def __init__(
+        self,
+        start_rpc,
+        should_recover,
+        should_terminate=_never_terminate,
+        initial_request=None,
+        metadata=None,
+        throttle_reopen=False,
+    ):
         super(ResumableBidiRpc, self).__init__(start_rpc, initial_request, metadata)
         self._should_recover = should_recover
+        self._should_terminate = should_terminate
         self._operational_lock = threading.RLock()
         self._finalized = False
         self._finalize_lock = threading.Lock()
+
+        if throttle_reopen:
+            self._reopen_throttle = _Throttle(
+                access_limit=5, time_window=datetime.timedelta(seconds=10),
+            )
+        else:
+            self._reopen_throttle = None
 
     def _finalize(self, result):
         with self._finalize_lock:
@@ -347,7 +443,9 @@ class ResumableBidiRpc(BidiRpc):
         # error, not for errors that we can recover from. Note that grpc's
         # "future" here is also a grpc.RpcError.
         with self._operational_lock:
-            if not self._should_recover(future):
+            if self._should_terminate(future):
+                self._finalize(future)
+            elif not self._should_recover(future):
                 self._finalize(future)
             else:
                 _LOGGER.debug("Re-opening stream from gRPC callback.")
@@ -374,7 +472,11 @@ class ResumableBidiRpc(BidiRpc):
             # retryable error.
 
             try:
-                self.open()
+                if self._reopen_throttle:
+                    with self._reopen_throttle:
+                        self.open()
+                else:
+                    self.open()
             # If re-opening or re-calling the method fails for any reason,
             # consider it a terminal error and finalize the stream.
             except Exception as exc:
@@ -405,6 +507,12 @@ class ResumableBidiRpc(BidiRpc):
             except Exception as exc:
                 with self._operational_lock:
                     _LOGGER.debug("Call to retryable %r caused %s.", method, exc)
+
+                    if self._should_terminate(exc):
+                        self.close()
+                        _LOGGER.debug("Terminating %r due to %s.", method, exc)
+                        self._finalize(exc)
+                        break
 
                     if not self._should_recover(exc):
                         self.close()
@@ -573,7 +681,7 @@ class BackgroundConsumer(object):
             thread = threading.Thread(
                 name=_BIDIRECTIONAL_CONSUMER_NAME,
                 target=self._thread_main,
-                args=(ready,)
+                args=(ready,),
             )
             thread.daemon = True
             thread.start()

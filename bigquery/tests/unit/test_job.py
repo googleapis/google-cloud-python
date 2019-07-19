@@ -24,6 +24,11 @@ try:
     import pandas
 except (ImportError, AttributeError):  # pragma: NO COVER
     pandas = None
+
+try:
+    import pyarrow
+except ImportError:  # pragma: NO COVER
+    pyarrow = None
 try:
     from google.cloud import bigquery_storage_v1beta1
 except (ImportError, AttributeError):  # pragma: NO COVER
@@ -3845,6 +3850,30 @@ class TestQueryJob(unittest.TestCase, _Base):
         query_stats["ddlOperationPerformed"] = op
         self.assertEqual(job.ddl_operation_performed, op)
 
+    def test_ddl_target_routine(self):
+        from google.cloud.bigquery.routine import RoutineReference
+
+        ref_routine = {
+            "projectId": self.PROJECT,
+            "datasetId": "ddl_ds",
+            "routineId": "targetroutine",
+        }
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+        self.assertIsNone(job.ddl_target_routine)
+
+        statistics = job._properties["statistics"] = {}
+        self.assertIsNone(job.ddl_target_routine)
+
+        query_stats = statistics["query"] = {}
+        self.assertIsNone(job.ddl_target_routine)
+
+        query_stats["ddlTargetRoutine"] = ref_routine
+        self.assertIsInstance(job.ddl_target_routine, RoutineReference)
+        self.assertEqual(job.ddl_target_routine.routine_id, "targetroutine")
+        self.assertEqual(job.ddl_target_routine.dataset_id, "ddl_ds")
+        self.assertEqual(job.ddl_target_routine.project, self.PROJECT)
+
     def test_ddl_target_table(self):
         from google.cloud.bigquery.table import TableReference
 
@@ -4684,6 +4713,96 @@ class TestQueryJob(unittest.TestCase, _Base):
         )
         self._verifyResourceProperties(job, RESOURCE)
 
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_to_arrow(self):
+        begun_resource = self._make_resource()
+        query_resource = {
+            "jobComplete": True,
+            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
+            "totalRows": "4",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "spouse_1",
+                        "type": "RECORD",
+                        "fields": [
+                            {"name": "name", "type": "STRING", "mode": "NULLABLE"},
+                            {"name": "age", "type": "INTEGER", "mode": "NULLABLE"},
+                        ],
+                    },
+                    {
+                        "name": "spouse_2",
+                        "type": "RECORD",
+                        "fields": [
+                            {"name": "name", "type": "STRING", "mode": "NULLABLE"},
+                            {"name": "age", "type": "INTEGER", "mode": "NULLABLE"},
+                        ],
+                    },
+                ]
+            },
+        }
+        tabledata_resource = {
+            "rows": [
+                {
+                    "f": [
+                        {"v": {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]}},
+                        {"v": {"f": [{"v": "Wylma Phlyntstone"}, {"v": "29"}]}},
+                    ]
+                },
+                {
+                    "f": [
+                        {"v": {"f": [{"v": "Bhettye Rhubble"}, {"v": "27"}]}},
+                        {"v": {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]}},
+                    ]
+                },
+            ]
+        }
+        done_resource = copy.deepcopy(begun_resource)
+        done_resource["status"] = {"state": "DONE"}
+        connection = _make_connection(
+            begun_resource, query_resource, done_resource, tabledata_resource
+        )
+        client = _make_client(project=self.PROJECT, connection=connection)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+
+        tbl = job.to_arrow()
+
+        self.assertIsInstance(tbl, pyarrow.Table)
+        self.assertEqual(tbl.num_rows, 2)
+
+        # Check the schema.
+        self.assertEqual(tbl.schema[0].name, "spouse_1")
+        self.assertEqual(tbl.schema[0].type[0].name, "name")
+        self.assertEqual(tbl.schema[0].type[1].name, "age")
+        self.assertTrue(pyarrow.types.is_struct(tbl.schema[0].type))
+        self.assertTrue(pyarrow.types.is_string(tbl.schema[0].type[0].type))
+        self.assertTrue(pyarrow.types.is_int64(tbl.schema[0].type[1].type))
+        self.assertEqual(tbl.schema[1].name, "spouse_2")
+        self.assertEqual(tbl.schema[1].type[0].name, "name")
+        self.assertEqual(tbl.schema[1].type[1].name, "age")
+        self.assertTrue(pyarrow.types.is_struct(tbl.schema[1].type))
+        self.assertTrue(pyarrow.types.is_string(tbl.schema[1].type[0].type))
+        self.assertTrue(pyarrow.types.is_int64(tbl.schema[1].type[1].type))
+
+        # Check the data.
+        tbl_data = tbl.to_pydict()
+        spouse_1 = tbl_data["spouse_1"]
+        self.assertEqual(
+            spouse_1,
+            [
+                {"name": "Phred Phlyntstone", "age": 32},
+                {"name": "Bhettye Rhubble", "age": 27},
+            ],
+        )
+        spouse_2 = tbl_data["spouse_2"]
+        self.assertEqual(
+            spouse_2,
+            [
+                {"name": "Wylma Phlyntstone", "age": 29},
+                {"name": "Bharney Rhubble", "age": 33},
+            ],
+        )
+
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe(self):
         begun_resource = self._make_resource()
@@ -4697,17 +4816,19 @@ class TestQueryJob(unittest.TestCase, _Base):
                     {"name": "age", "type": "INTEGER", "mode": "NULLABLE"},
                 ]
             },
+        }
+        tabledata_resource = {
             "rows": [
                 {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
                 {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
                 {"f": [{"v": "Wylma Phlyntstone"}, {"v": "29"}]},
                 {"f": [{"v": "Bhettye Rhubble"}, {"v": "27"}]},
-            ],
+            ]
         }
         done_resource = copy.deepcopy(begun_resource)
         done_resource["status"] = {"state": "DONE"}
         connection = _make_connection(
-            begun_resource, query_resource, done_resource, query_resource
+            begun_resource, query_resource, done_resource, tabledata_resource
         )
         client = _make_client(project=self.PROJECT, connection=connection)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
@@ -4776,6 +4897,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         bqstorage_client.create_read_session.assert_called_once_with(
             mock.ANY,
             "projects/{}".format(self.PROJECT),
+            format_=bigquery_storage_v1beta1.enums.DataFormat.ARROW,
             read_options=mock.ANY,
             # Use default number of streams for best performance.
             requested_streams=0,
@@ -5219,6 +5341,7 @@ def test_to_dataframe_bqstorage_preserve_order(query):
     bqstorage_client.create_read_session.assert_called_once_with(
         mock.ANY,
         "projects/test-project",
+        format_=bigquery_storage_v1beta1.enums.DataFormat.ARROW,
         read_options=mock.ANY,
         # Use a single stream to preserve row order.
         requested_streams=1,

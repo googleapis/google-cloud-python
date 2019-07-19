@@ -4,6 +4,39 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 0.42.1
+
+06-18-2019 15:14 PDT
+
+
+### Implementation Changes
+- Increase the minimum allowed version for api core. ([#8419](https://github.com/googleapis/google-cloud-python/pull/8419))
+- Allow kwargs to be passed to create_channel. ([#8399](https://github.com/googleapis/google-cloud-python/pull/8399))
+
+## 0.42.0
+
+06-18-2019 11:32 PDT
+
+### Implementation Changes
+- Core: Mitigate busy reopen loop in ResumableBidiRpc consuming 100% CPU ([#8193](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8193))
+- Pub/Sub: Increase initial_rpc_timeout for messaging (via synth). ([#8219](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8219))
+- PubSub: Release the state lock before calling the publish api ([#8234](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8234))
+- Pub/Sub: Expose publish retry settings ([#8231](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8231))
+- Prevent unhandled background error on SPM shutdown ([#8111](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8111))
+- Update timeouts, blacken noxfile.py, setup.py (via synth). ([#8128](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8128))
+- PubSub: Fix streaming pull incorrectly handling FlowControl max_messages setting ([#7948](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7948))
+
+### Documentation
+- Document PubSub FlowControl settings ([#8293](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8293))
+- Replace readthedocs links with links to github docs. ([#8291](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8291))
+- Pub/Sub: surface publish future in documentation ([#8229](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8229))
+- Pubsub: Separate subscriber and publish future documentation. ([#8205](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8205))
+- Drop mention of long-removed 'policy' object. ([#8081](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8081))
+
+### Internal / Testing Changes
+- Pub/Sub: staticmethod check ([#8091](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8091))
+- Add empty lines (via synth). ([#8067](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8067))
+
 ## 0.41.0
 
 05-15-2019 13:57 PDT

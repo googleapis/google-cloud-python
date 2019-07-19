@@ -1,7 +1,7 @@
 Python Client for Google Cloud Pub / Sub
 ========================================
 
-|beta| |pypi| |versions|
+|beta| |pypi| |versions| |compat_check_pypi| |compat_check_github|
 
 `Google Cloud Pub / Sub`_ is a fully-managed real-time messaging service that
 allows you to send and receive messages between independent applications. You
@@ -25,6 +25,10 @@ independently written applications.
    :target: https://pypi.org/project/google-cloud-pubsub/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-pubsub.svg
    :target: https://pypi.org/project/google-cloud-pubsub/
+.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-pubsub
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-pubsub
+.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dpubsub
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dpubsub
 .. _Google Cloud Pub / Sub: https://cloud.google.com/pubsub/
 .. _Product Documentation: https://cloud.google.com/pubsub/docs
 .. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/pubsub/
@@ -155,6 +159,40 @@ block the current thread until a given condition obtains:
     except KeyboardInterrupt:
         future.cancel()
 
-To learn more, consult the `subscriber documentation`_.
+It is also possible to pull messages in a synchronous (blocking) fashion. To
+learn more about subscribing, consult the `subscriber documentation`_.
 
 .. _subscriber documentation: https://googleapis.github.io/google-cloud-python/latest/pubsub/subscriber/index.html
+
+
+Authentication
+^^^^^^^^^^^^^^
+
+It is possible to specify the authentication method to use with the Pub/Sub
+clients. This can be done by providing an explicit `Credentials`_ instance. Support
+for various authentication methods is available from the `google-auth`_ library.
+
+For example, to use JSON Web Tokens, provide a `google.auth.jwt.Credentials`_ instance:
+
+.. code-block:: python
+
+    import json
+    from google.auth import jwt
+
+    service_account_info = json.load(open("service-account-info.json"))
+    audience = "https://pubsub.googleapis.com/google.pubsub.v1.Subscriber"
+
+    credentials = jwt.Credentials.from_service_account_info(
+        service_account_info, audience=audience
+    )
+
+    subscriber = pubsub_v1.SubscriberClient(credentials=credentials)
+
+    # The same for the publisher, except that the "audience" claim needs to be adjusted
+    publisher_audience = "https://pubsub.googleapis.com/google.pubsub.v1.Publisher"
+    credentials_pub = credentials.with_claims(audience=publisher_audience) 
+    publisher = pubsub_v1.PublisherClient(credentials=credentials_pub)
+
+.. _Credentials: https://google-auth.readthedocs.io/en/latest/reference/google.auth.credentials.html#google.auth.credentials.Credentials
+.. _google-auth: https://google-auth.readthedocs.io/en/latest/index.html
+.. _google.auth.jwt.Credentials: https://google-auth.readthedocs.io/en/latest/reference/google.auth.jwt.html#google.auth.jwt.Credentials

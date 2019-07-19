@@ -1,0 +1,13 @@
+{
+  "name": "grafeas",
+  "name_pretty": "Grafeas",
+  "product_documentation": "https://grafeas.io",
+  "client_documentation": "https://googleapis.dev/python/grafeas/latest",
+  "issue_tracker": "",
+  "release_level": "alpha",
+  "language": "python",
+  "repo": "googleapis/google-cloud-python",
+  "distribution_name": "grafeas",
+  "api_id": "",
+  "requires_billing": false
+}

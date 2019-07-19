@@ -247,7 +247,6 @@ class Query(object):
             conjunction. If just one is provided and no keyword arguments
             are provided, it can be a disjunction.
 
-        :type kwargs: dict
         :param kwargs: Label filters to include in the conjunction as
             described above.
 
@@ -309,7 +308,6 @@ class Query(object):
             conjunction. If just one is provided and no keyword arguments
             are provided, it can be a disjunction.
 
-        :type kwargs: dict
         :param kwargs: Label filters to include in the conjunction as
             described above.
 
