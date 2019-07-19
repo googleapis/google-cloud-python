@@ -57,6 +57,10 @@ def cleanup():
         operation()
 
 
+def test_collections(client):
+    collections = list(client.collections())
+    assert isinstance(collections, list)
+
 def test_create_document(client, cleanup):
     now = datetime.datetime.utcnow().replace(tzinfo=UTC)
     collection_id = "doc-create" + unique_resource_id("-")
