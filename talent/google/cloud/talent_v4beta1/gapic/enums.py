@@ -527,9 +527,9 @@ class BatchOperationMetadata(object):
           successfully processed.
           FAILED (int): The batch operation is done and no item has been successfully processed.
           CANCELLING (int): The batch operation is in the process of cancelling after
-          [google.longrunning.Operation.CancelOperation] is called.
+          ``google.longrunning.Operations.CancelOperation`` is called.
           CANCELLED (int): The batch operation is done after
-          [google.longrunning.Operation.CancelOperation] is called. Any items
+          ``google.longrunning.Operations.CancelOperation`` is called. Any items
           processed before cancelling are returned in the response.
         """
 
@@ -980,7 +980,7 @@ class ProfileEvent(object):
 
           For a VIEW that happens as a result of seeing the profile in a CTS API
           request's result set, the ``ClientEvent.request_id`` should be
-          populated. If the VIEW happens for some other reason, the [requestId]
+          populated. If the VIEW happens for some other reason, the ``request_id``
           should not be populated.
 
           This event requires a valid recruiter and one valid ID in profiles.
