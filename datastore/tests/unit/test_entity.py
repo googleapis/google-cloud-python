@@ -225,10 +225,10 @@ class TestEntity(unittest.TestCase):
     def test__set_item_enum(self):
         """Test if given Enum converts to int."""
         entity = self._make_one(key=_Key())
-        entity['some_value'] = _IntEnum.VALUE_1
+        entity["some_value"] = _IntEnum.VALUE_1
 
-        self.assertEqual(type(entity['some_value']), int)
-        self.assertEqual(entity['some_value'], _IntEnum.VALUE_1.value)
+        self.assertEqual(type(entity["some_value"]), int)
+        self.assertEqual(entity["some_value"], _IntEnum.VALUE_1.value)
 
 
 class _IntEnum(enum.IntEnum):
