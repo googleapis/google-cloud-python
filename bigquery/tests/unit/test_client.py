@@ -5353,10 +5353,11 @@ class TestClientUpload(object):
                 dataframe, self.TABLE_REF, job_config=job_config, location=self.LOCATION
             )
 
-        assert len(warned) == 1
-        warning = warned[0]
-        assert warning.category is PendingDeprecationWarning
-        assert "pyarrow" in str(warning)
+        # there might be other warnings unrelated to the expected pyarrow warning,
+        # thus some filtering is necessary
+        pyarrow_warning = next((w for w in warned if "pyarrow" in str(w)), None)
+        assert pyarrow_warning is not None
+        assert pyarrow_warning.category is PendingDeprecationWarning
 
         load_table_from_file.assert_called_once_with(
             client,
