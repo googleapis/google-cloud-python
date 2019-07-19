@@ -292,8 +292,9 @@ class TestClient(unittest.TestCase):
             self.assertEqual(collection.parent, None)
             self.assertEqual(collection.id, collection_id)
 
+        base_path = client._database_string + "/documents"
         firestore_api.list_collection_ids.assert_called_once_with(
-            client._database_string, metadata=client._rpc_metadata
+            base_path, metadata=client._rpc_metadata
         )
 
     def _get_all_helper(self, client, references, document_pbs, **kwargs):
