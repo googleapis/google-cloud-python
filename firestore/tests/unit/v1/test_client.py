@@ -143,6 +143,23 @@ class TestClient(unittest.TestCase):
             [("google-cloud-resource-prefix", client._database_string)],
         )
 
+    def test__rpc_metadata_property_with_emulator(self):
+        emulator_host = "localhost:8081"
+        with mock.patch("os.getenv") as getenv:
+            getenv.return_value = emulator_host
+
+            credentials = _make_credentials()
+            database = "quanta"
+            client = self._make_one(
+                project=self.PROJECT, credentials=credentials, database=database
+            )
+
+        self.assertEqual(
+            client._rpc_metadata,
+            [("google-cloud-resource-prefix", client._database_string),
+            ("authorization", "Bearer owner")],
+        )
+
     def test_collection_factory(self):
         from google.cloud.firestore_v1.collection import CollectionReference
 
