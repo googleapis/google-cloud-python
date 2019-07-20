@@ -55,6 +55,7 @@ _INACTIVE_TXN = "There is no active transaction."
 _CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
 _FIRESTORE_EMULATOR_HOST = "FIRESTORE_EMULATOR_HOST"
 
+
 class Client(ClientWithProject):
     """Client for interacting with Google Cloud Firestore API.
 

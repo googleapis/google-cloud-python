@@ -156,8 +156,10 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(
             client._rpc_metadata,
-            [("google-cloud-resource-prefix", client._database_string),
-            ("authorization", "Bearer owner")],
+            [
+                ("google-cloud-resource-prefix", client._database_string),
+                ("authorization", "Bearer owner"),
+            ],
         )
 
     def test_collection_factory(self):
