@@ -101,11 +101,11 @@ class TablesClient(object):
             client_info_.gapic_version = version
 
         if client is None:
-            self.client = gapic.auto_ml_client.AutoMlClient(
+            self.auto_ml_client = gapic.auto_ml_client.AutoMlClient(
                 client_info=client_info_, **kwargs
             )
         else:
-            self.client = client
+            self.auto_ml_client = client
 
         if prediction_client is None:
             self.prediction_client = gapic.prediction_service_client.PredictionServiceClient(
@@ -136,7 +136,7 @@ class TablesClient(object):
                 )
             region = self.region
 
-        return self.client.location_path(project, region)
+        return self.auto_ml_client.location_path(project, region)
 
     # the returned metadata object doesn't allow for updating fields, so
     # we need to manually copy user-updated fields over
@@ -156,6 +156,7 @@ class TablesClient(object):
         dataset_name=None,
         project=None,
         region=None,
+        **kwargs
     ):
         if dataset is None and dataset_display_name is None and dataset_name is None:
             raise ValueError(
@@ -172,6 +173,7 @@ class TablesClient(object):
             dataset_name=dataset_name,
             project=project,
             region=region,
+            **kwargs
         )
 
     def __model_from_args(
@@ -181,6 +183,7 @@ class TablesClient(object):
         model_name=None,
         project=None,
         region=None,
+        **kwargs
     ):
         if model is None and model_display_name is None and model_name is None:
             raise ValueError(
@@ -196,6 +199,7 @@ class TablesClient(object):
             model_name=model_name,
             project=project,
             region=region,
+            **kwargs
         )
 
     def __dataset_name_from_args(
@@ -205,6 +209,7 @@ class TablesClient(object):
         dataset_name=None,
         project=None,
         region=None,
+        **kwargs
     ):
         if dataset is None and dataset_display_name is None and dataset_name is None:
             raise ValueError(
@@ -218,12 +223,15 @@ class TablesClient(object):
                     dataset_display_name=dataset_display_name,
                     project=project,
                     region=region,
+                    **kwargs
                 )
 
             dataset_name = dataset.name
         else:
             # we do this to force a NotFound error when needed
-            self.get_dataset(dataset_name=dataset_name, project=project, region=region)
+            self.get_dataset(
+                dataset_name=dataset_name, project=project, region=region, **kwargs
+            )
         return dataset_name
 
     def __table_spec_name_from_args(
@@ -234,6 +242,7 @@ class TablesClient(object):
         dataset_name=None,
         project=None,
         region=None,
+        **kwargs
     ):
         dataset_name = self.__dataset_name_from_args(
             dataset=dataset,
@@ -241,9 +250,12 @@ class TablesClient(object):
             dataset_display_name=dataset_display_name,
             project=project,
             region=region,
+            **kwargs
         )
 
-        table_specs = [t for t in self.list_table_specs(dataset_name=dataset_name)]
+        table_specs = [
+            t for t in self.list_table_specs(dataset_name=dataset_name, **kwargs)
+        ]
 
         table_spec_full_id = table_specs[table_spec_index].name
         return table_spec_full_id
@@ -255,6 +267,7 @@ class TablesClient(object):
         model_name=None,
         project=None,
         region=None,
+        **kwargs
     ):
         if model is None and model_display_name is None and model_name is None:
             raise ValueError(
@@ -267,11 +280,14 @@ class TablesClient(object):
                     model_display_name=model_display_name,
                     project=project,
                     region=region,
+                    **kwargs
                 )
             model_name = model.name
         else:
             # we do this to force a NotFound error when needed
-            self.get_model(model_name=model_name, project=project, region=region)
+            self.get_model(
+                model_name=model_name, project=project, region=region, **kwargs
+            )
         return model_name
 
     def __column_spec_name_from_args(
@@ -285,6 +301,7 @@ class TablesClient(object):
         column_spec_display_name=None,
         project=None,
         region=None,
+        **kwargs
     ):
         column_specs = self.list_column_specs(
             dataset=dataset,
@@ -294,6 +311,7 @@ class TablesClient(object):
             table_spec_index=table_spec_index,
             project=project,
             region=region,
+            **kwargs
         )
         if column_spec_display_name is not None:
             column_specs = {s.display_name: s for s in column_specs}
@@ -338,7 +356,7 @@ class TablesClient(object):
         else:
             raise ValueError("Unknown type_code: {}".format(type_code))
 
-    def list_datasets(self, project=None, region=None):
+    def list_datasets(self, project=None, region=None, **kwargs):
         """List all datasets in a particular project and region.
 
         Example:
@@ -380,12 +398,17 @@ class TablesClient(object):
                 to a retryable error and retry attempts failed.
             ValueError: If required parameters are missing.
         """
-        return self.client.list_datasets(
-            self.__location_path(project=project, region=region)
+        return self.auto_ml_client.list_datasets(
+            self.__location_path(project=project, region=region), **kwargs
         )
 
     def get_dataset(
-        self, project=None, region=None, dataset_name=None, dataset_display_name=None
+        self,
+        project=None,
+        region=None,
+        dataset_name=None,
+        dataset_display_name=None,
+        **kwargs
     ):
         """Gets a single dataset in a particular project and region.
 
@@ -438,12 +461,12 @@ class TablesClient(object):
             )
 
         if dataset_name is not None:
-            return self.client.get_dataset(dataset_name)
+            return self.auto_ml_client.get_dataset(dataset_name, **kwargs)
 
         result = next(
             (
                 d
-                for d in self.list_datasets(project, region)
+                for d in self.list_datasets(project, region, **kwargs)
                 if d.display_name == dataset_display_name
             ),
             None,
@@ -459,7 +482,7 @@ class TablesClient(object):
         return result
 
     def create_dataset(
-        self, dataset_display_name, metadata={}, project=None, region=None
+        self, dataset_display_name, metadata={}, project=None, region=None, **kwargs
     ):
         """Create a dataset. Keep in mind, importing data is a separate step.
 
@@ -497,9 +520,10 @@ class TablesClient(object):
                 to a retryable error and retry attempts failed.
             ValueError: If required parameters are missing.
         """
-        return self.client.create_dataset(
+        return self.auto_ml_client.create_dataset(
             self.__location_path(project, region),
             {"display_name": dataset_display_name, "tables_dataset_metadata": metadata},
+            **kwargs
         )
 
     def delete_dataset(
@@ -509,6 +533,7 @@ class TablesClient(object):
         dataset_name=None,
         project=None,
         region=None,
+        **kwargs
     ):
         """Deletes a dataset. This does not delete any models trained on
         this dataset.
@@ -567,12 +592,13 @@ class TablesClient(object):
                 dataset_display_name=dataset_display_name,
                 project=project,
                 region=region,
+                **kwargs
             )
         # delete is idempotent
         except exceptions.NotFound:
             return None
 
-        return self.client.delete_dataset(dataset_name)
+        return self.auto_ml_client.delete_dataset(dataset_name, **kwargs)
 
     def import_data(
         self,
@@ -583,6 +609,7 @@ class TablesClient(object):
         bigquery_input_uri=None,
         project=None,
         region=None,
+        **kwargs
     ):
         """Imports data into a dataset.
 
@@ -652,6 +679,7 @@ class TablesClient(object):
             dataset_display_name=dataset_display_name,
             project=project,
             region=region,
+            **kwargs
         )
 
         request = {}
@@ -666,7 +694,140 @@ class TablesClient(object):
                 "One of 'gcs_input_uris', or " "'bigquery_input_uri' must be set."
             )
 
-        return self.client.import_data(dataset_name, request)
+        return self.auto_ml_client.import_data(dataset_name, request, **kwargs)
+
+    def export_data(
+        self,
+        dataset=None,
+        dataset_display_name=None,
+        dataset_name=None,
+        gcs_output_uri_prefix=None,
+        bigquery_output_uri=None,
+        project=None,
+        region=None,
+        **kwargs
+    ):
+        """Exports data from a dataset.
+
+        Example:
+            >>> from google.cloud import automl_v1beta1
+            >>>
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     project='my-project', region='us-central1')
+            ...
+            >>> d = client.create_dataset(dataset_display_name='my_dataset')
+            >>>
+            >>> client.export_data(dataset=d,
+            ...     gcs_output_uri_prefix='gs://cloud-ml-tables-data/bank-marketing.csv')
+            ...
+            >>> def callback(operation_future):
+            ...    result = operation_future.result()
+            ...
+            >>> response.add_done_callback(callback)
+            >>>
+
+        Args:
+            project (Optional[string]):
+                If you have initialized the client with a value for `project`
+                it will be used if this parameter is not supplied. Keep in
+                mind, the service account this client was initialized with must
+                have access to this project.
+            region (Optional[string]):
+                If you have initialized the client with a value for `region` it
+                will be used if this parameter is not supplied.
+            dataset_display_name (Optional[string]):
+                The human-readable name given to the dataset you want to export
+                data from. This must be supplied if `dataset` or `dataset_name`
+                are not supplied.
+            dataset_name (Optional[string]):
+                The AutoML-assigned name given to the dataset you want to
+                export data from. This must be supplied if
+                `dataset_display_name` or `dataset` are not supplied.
+            dataset (Optional[Dataset]):
+                The `Dataset` instance you want to export data from. This must
+                be supplied if `dataset_display_name` or `dataset_name` are not
+                supplied.
+            gcs_output_uri_prefix (Optional[Union[string, Sequence[string]]]):
+                A single `gs://..` prefixed URI to export to. This must be
+                supplied if `bigquery_output_uri` is not.
+            bigquery_output_uri (Optional[string]):
+                A URI pointing to the BigQuery table containing the data to
+                export. This must be supplied if `gcs_output_uri_prefix` is not.
+
+        Returns:
+            A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
+            instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                to a retryable error and retry attempts failed.
+            ValueError: If required parameters are missing.
+        """
+        dataset_name = self.__dataset_name_from_args(
+            dataset=dataset,
+            dataset_name=dataset_name,
+            dataset_display_name=dataset_display_name,
+            project=project,
+            region=region,
+            **kwargs
+        )
+
+        request = {}
+        if gcs_output_uri_prefix is not None:
+            request = {"gcs_destination": {"output_uri_prefix": gcs_output_uri_prefix}}
+        elif bigquery_output_uri is not None:
+            request = {"bigquery_destination": {"output_uri": bigquery_output_uri}}
+        else:
+            raise ValueError(
+                "One of 'gcs_output_uri_prefix', or 'bigquery_output_uri' must be set."
+            )
+
+        return self.auto_ml_client.export_data(dataset_name, request, **kwargs)
+
+    def get_table_spec(self, table_spec_name, project=None, region=None, **kwargs):
+        """Gets a single table spec in a particular project and region.
+
+        Example:
+            >>> from google.cloud import automl_v1beta1
+            >>>
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     project='my-project', region='us-central1')
+            ...
+            >>> d = client.get_table_spec('my_table_spec')
+            >>>
+
+        Args:
+            table_spec_name (string):
+                This is the fully-qualified name generated by the AutoML API
+                for this table spec.
+            project (Optional[string]):
+                If you have initialized the client with a value for `project`
+                it will be used if this parameter is not supplied. Keep in
+                mind, the service account this client was initialized with must
+                have access to this project.
+            region (Optional[string]):
+                If you have initialized the client with a value for `region` it
+                will be used if this parameter is not supplied.
+
+        Returns:
+            A :class:`~google.cloud.automl_v1beta1.types.TableSpec` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                to a retryable error and retry attempts failed.
+            ValueError: If required parameters are missing.
+        """
+        return self.auto_ml_client.get_table_spec(table_spec_name, **kwargs)
 
     def list_table_specs(
         self,
@@ -675,6 +836,7 @@ class TablesClient(object):
         dataset_name=None,
         project=None,
         region=None,
+        **kwargs
     ):
         """Lists table specs.
 
@@ -734,9 +896,50 @@ class TablesClient(object):
             dataset_display_name=dataset_display_name,
             project=project,
             region=region,
+            **kwargs
         )
 
-        return self.client.list_table_specs(dataset_name)
+        return self.auto_ml_client.list_table_specs(dataset_name, **kwargs)
+
+    def get_column_spec(self, column_spec_name, project=None, region=None, **kwargs):
+        """Gets a single column spec in a particular project and region.
+
+        Example:
+            >>> from google.cloud import automl_v1beta1
+            >>>
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     project='my-project', region='us-central1')
+            ...
+            >>> d = client.get_column_spec('my_column_spec')
+            >>>
+
+        Args:
+            column_spec_name (string):
+                This is the fully-qualified name generated by the AutoML API
+                for this column spec.
+            project (Optional[string]):
+                If you have initialized the client with a value for `project`
+                it will be used if this parameter is not supplied. Keep in
+                mind, the service account this client was initialized with must
+                have access to this project.
+            region (Optional[string]):
+                If you have initialized the client with a value for `region` it
+                will be used if this parameter is not supplied.
+
+        Returns:
+            A :class:`~google.cloud.automl_v1beta1.types.ColumnSpec` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                to a retryable error and retry attempts failed.
+            ValueError: If required parameters are missing.
+        """
+        return self.auto_ml_client.get_column_spec(column_spec_name, **kwargs)
 
     def list_column_specs(
         self,
@@ -747,6 +950,7 @@ class TablesClient(object):
         table_spec_index=0,
         project=None,
         region=None,
+        **kwargs
     ):
         """Lists column specs.
 
@@ -824,12 +1028,13 @@ class TablesClient(object):
                     dataset_name=dataset_name,
                     project=project,
                     region=region,
+                    **kwargs
                 )
             ]
 
             table_spec_name = table_specs[table_spec_index].name
 
-        return self.client.list_column_specs(table_spec_name)
+        return self.auto_ml_client.list_column_specs(table_spec_name, **kwargs)
 
     def update_column_spec(
         self,
@@ -844,6 +1049,7 @@ class TablesClient(object):
         nullable=None,
         project=None,
         region=None,
+        **kwargs
     ):
         """Updates a column's specs.
 
@@ -926,6 +1132,7 @@ class TablesClient(object):
             column_spec_display_name=column_spec_display_name,
             project=project,
             region=region,
+            **kwargs
         )
 
         # type code must always be set
@@ -942,6 +1149,7 @@ class TablesClient(object):
                     table_spec_index=table_spec_index,
                     project=project,
                     region=region,
+                    **kwargs
                 )
             }[column_spec_name].data_type.type_code
 
@@ -953,7 +1161,7 @@ class TablesClient(object):
 
         request = {"name": column_spec_name, "data_type": data_type}
 
-        return self.client.update_column_spec(request)
+        return self.auto_ml_client.update_column_spec(request, **kwargs)
 
     def set_target_column(
         self,
@@ -966,6 +1174,7 @@ class TablesClient(object):
         column_spec_display_name=None,
         project=None,
         region=None,
+        **kwargs
     ):
         """Sets the target column for a given table.
 
@@ -1050,6 +1259,7 @@ class TablesClient(object):
             column_spec_display_name=column_spec_display_name,
             project=project,
             region=region,
+            **kwargs
         )
         column_spec_id = column_spec_name.rsplit("/", 1)[-1]
 
@@ -1059,6 +1269,7 @@ class TablesClient(object):
             dataset_display_name=dataset_display_name,
             project=project,
             region=region,
+            **kwargs
         )
         metadata = dataset.tables_dataset_metadata
         metadata = self.__update_metadata(
@@ -1067,7 +1278,7 @@ class TablesClient(object):
 
         request = {"name": dataset.name, "tables_dataset_metadata": metadata}
 
-        return self.client.update_dataset(request)
+        return self.auto_ml_client.update_dataset(request, **kwargs)
 
     def set_time_column(
         self,
@@ -1080,6 +1291,7 @@ class TablesClient(object):
         column_spec_display_name=None,
         project=None,
         region=None,
+        **kwargs
     ):
         """Sets the time column which designates which data will be of type
         timestamp and will be used for the timeseries data.
@@ -1088,8 +1300,8 @@ class TablesClient(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> client.set_time_column(dataset_display_name='my_dataset',
@@ -1144,7 +1356,7 @@ class TablesClient(object):
                 `table_spec_name`, `dataset_name` or `dataset_display_name` are
                 not supplied.
         Returns:
-            A :class:`~google.cloud.automl_v1beta1.types.Dataset` instance.
+            A :class:`~google.cloud.automl_v1beta1.types.TableSpec` instance.
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
                 failed for any reason.
@@ -1162,6 +1374,7 @@ class TablesClient(object):
             column_spec_display_name=column_spec_display_name,
             project=project,
             region=region,
+            **kwargs
         )
         column_spec_id = column_spec_name.rsplit("/", 1)[-1]
 
@@ -1171,17 +1384,19 @@ class TablesClient(object):
             dataset_display_name=dataset_display_name,
             project=project,
             region=region,
+            **kwargs
         )
 
-        table_spec_full_id = self.__table_spec_name_from_args(dataset_name=dataset_name)
+        table_spec_full_id = self.__table_spec_name_from_args(
+            dataset_name=dataset_name, **kwargs
+        )
 
         my_table_spec = {
             "name": table_spec_full_id,
             "time_column_spec_id": column_spec_id,
         }
 
-        self.client.update_table_spec(my_table_spec)
-        return self.get_dataset(dataset_name=dataset_name)
+        return self.auto_ml_client.update_table_spec(my_table_spec, **kwargs)
 
     def clear_time_column(
         self,
@@ -1190,6 +1405,7 @@ class TablesClient(object):
         dataset_name=None,
         project=None,
         region=None,
+        **kwargs
     ):
         """Clears the time column which designates which data will be of type
         timestamp and will be used for the timeseries data.
@@ -1197,8 +1413,8 @@ class TablesClient(object):
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
-            >>> client = automl_v1beta1.tables.ClientHelper(
-            ...     client=automl_v1beta1.AutoMlClient(),
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
             >>> client.set_time_column(dataset_display_name='my_dataset')
@@ -1236,7 +1452,7 @@ class TablesClient(object):
                 not supplied.
 
         Returns:
-            A :class:`~google.cloud.automl_v1beta1.types.Dataset` instance.
+            A :class:`~google.cloud.automl_v1beta1.types.TableSpec` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1251,14 +1467,16 @@ class TablesClient(object):
             dataset_display_name=dataset_display_name,
             project=project,
             region=region,
+            **kwargs
         )
 
-        table_spec_full_id = self.__table_spec_name_from_args(dataset_name=dataset_name)
+        table_spec_full_id = self.__table_spec_name_from_args(
+            dataset_name=dataset_name, **kwargs
+        )
 
         my_table_spec = {"name": table_spec_full_id, "time_column_spec_id": None}
 
-        response = self.client.update_table_spec(my_table_spec)
-        return self.get_dataset(dataset_name=dataset_name)
+        return self.auto_ml_client.update_table_spec(my_table_spec, **kwargs)
 
     def set_weight_column(
         self,
@@ -1271,6 +1489,7 @@ class TablesClient(object):
         column_spec_display_name=None,
         project=None,
         region=None,
+        **kwargs
     ):
         """Sets the weight column for a given table.
 
@@ -1355,6 +1574,7 @@ class TablesClient(object):
             column_spec_display_name=column_spec_display_name,
             project=project,
             region=region,
+            **kwargs
         )
         column_spec_id = column_spec_name.rsplit("/", 1)[-1]
 
@@ -1364,6 +1584,7 @@ class TablesClient(object):
             dataset_display_name=dataset_display_name,
             project=project,
             region=region,
+            **kwargs
         )
         metadata = dataset.tables_dataset_metadata
         metadata = self.__update_metadata(
@@ -1372,7 +1593,7 @@ class TablesClient(object):
 
         request = {"name": dataset.name, "tables_dataset_metadata": metadata}
 
-        return self.client.update_dataset(request)
+        return self.auto_ml_client.update_dataset(request, **kwargs)
 
     def clear_weight_column(
         self,
@@ -1381,6 +1602,7 @@ class TablesClient(object):
         dataset_name=None,
         project=None,
         region=None,
+        **kwargs
     ):
         """Clears the weight column for a given dataset.
 
@@ -1443,13 +1665,14 @@ class TablesClient(object):
             dataset_display_name=dataset_display_name,
             project=project,
             region=region,
+            **kwargs
         )
         metadata = dataset.tables_dataset_metadata
         metadata = self.__update_metadata(metadata, "weight_column_spec_id", None)
 
         request = {"name": dataset.name, "tables_dataset_metadata": metadata}
 
-        return self.client.update_dataset(request)
+        return self.auto_ml_client.update_dataset(request, **kwargs)
 
     def set_test_train_column(
         self,
@@ -1462,6 +1685,7 @@ class TablesClient(object):
         column_spec_display_name=None,
         project=None,
         region=None,
+        **kwargs
     ):
         """Sets the test/train (ml_use) column which designates which data
         belongs to the test and train sets. This column must be categorical.
@@ -1547,6 +1771,7 @@ class TablesClient(object):
             column_spec_display_name=column_spec_display_name,
             project=project,
             region=region,
+            **kwargs
         )
         column_spec_id = column_spec_name.rsplit("/", 1)[-1]
 
@@ -1556,6 +1781,7 @@ class TablesClient(object):
             dataset_display_name=dataset_display_name,
             project=project,
             region=region,
+            **kwargs
         )
         metadata = dataset.tables_dataset_metadata
         metadata = self.__update_metadata(
@@ -1564,7 +1790,7 @@ class TablesClient(object):
 
         request = {"name": dataset.name, "tables_dataset_metadata": metadata}
 
-        return self.client.update_dataset(request)
+        return self.auto_ml_client.update_dataset(request, **kwargs)
 
     def clear_test_train_column(
         self,
@@ -1573,6 +1799,7 @@ class TablesClient(object):
         dataset_name=None,
         project=None,
         region=None,
+        **kwargs
     ):
         """Clears the test/train (ml_use) column which designates which data
         belongs to the test and train sets.
@@ -1636,15 +1863,16 @@ class TablesClient(object):
             dataset_display_name=dataset_display_name,
             project=project,
             region=region,
+            **kwargs
         )
         metadata = dataset.tables_dataset_metadata
         metadata = self.__update_metadata(metadata, "ml_use_column_spec_id", None)
 
         request = {"name": dataset.name, "tables_dataset_metadata": metadata}
 
-        return self.client.update_dataset(request)
+        return self.auto_ml_client.update_dataset(request, **kwargs)
 
-    def list_models(self, project=None, region=None):
+    def list_models(self, project=None, region=None, **kwargs):
         """List all models in a particular project and region.
 
         Example:
@@ -1686,9 +1914,83 @@ class TablesClient(object):
                 to a retryable error and retry attempts failed.
             ValueError: If required parameters are missing.
         """
-        return self.client.list_models(
-            self.__location_path(project=project, region=region)
+        return self.auto_ml_client.list_models(
+            self.__location_path(project=project, region=region), **kwargs
         )
+
+    def list_model_evaluations(
+        self,
+        project=None,
+        region=None,
+        model=None,
+        model_display_name=None,
+        model_name=None,
+        **kwargs
+    ):
+        """List all model evaluations for a given model.
+
+        Example:
+            >>> from google.cloud import automl_v1beta1
+            >>>
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     project='my-project', region='us-central1')
+            ...
+            >>> ms = client.list_model_evaluations(model_display_name='my_model')
+            >>>
+            >>> for m in ms:
+            ...     # do something
+            ...     pass
+            ...
+
+        Args:
+            project (Optional[string]):
+                If you have initialized the client with a value for `project`
+                it will be used if this parameter is not supplied. Keep in
+                mind, the service account this client was initialized with must
+                have access to this project.
+            region (Optional[string]):
+                If you have initialized the client with a value for `region` it
+                will be used if this parameter is not supplied.
+            model_display_name (Optional[string]):
+                The human-readable name given to the model you want to list
+                evaluations for.  This must be supplied if `model` or
+                `model_name` are not supplied.
+            model_name (Optional[string]):
+                The AutoML-assigned name given to the model you want to list
+                evaluations for. This must be supplied if `model_display_name`
+                or `model` are not supplied.
+            model (Optional[model]):
+                The `model` instance you want to list evaluations for. This
+                must be supplied if `model_display_name` or `model_name` are
+                not supplied.
+
+        Returns:
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of
+            :class:`~google.cloud.automl_v1beta1.types.ModelEvaluation`
+            instances.  You can also iterate over the pages of the response
+            using its `pages` property.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                to a retryable error and retry attempts failed.
+            ValueError: If required parameters are missing.
+        """
+        model_name = self.__model_name_from_args(
+            model=model,
+            model_name=model_name,
+            model_display_name=model_display_name,
+            project=project,
+            region=region,
+            **kwargs
+        )
+
+        return self.auto_ml_client.list_model_evaluations(model_name, **kwargs)
 
     def create_model(
         self,
@@ -1702,6 +2004,7 @@ class TablesClient(object):
         model_metadata={},
         include_column_spec_names=None,
         exclude_column_spec_names=None,
+        **kwargs
     ):
         """Create a model. This will train your model on the given dataset.
 
@@ -1790,6 +2093,7 @@ class TablesClient(object):
             dataset_display_name=dataset_display_name,
             project=project,
             region=region,
+            **kwargs
         )
 
         model_metadata["train_budget_milli_node_hours"] = train_budget_milli_node_hours
@@ -1801,6 +2105,7 @@ class TablesClient(object):
                 dataset=dataset,
                 dataset_name=dataset_name,
                 dataset_display_name=dataset_display_name,
+                **kwargs
             )
         ]
 
@@ -1824,8 +2129,8 @@ class TablesClient(object):
             "tables_model_metadata": model_metadata,
         }
 
-        return self.client.create_model(
-            self.__location_path(project=project, region=region), request
+        return self.auto_ml_client.create_model(
+            self.__location_path(project=project, region=region), request, **kwargs
         )
 
     def delete_model(
@@ -1835,6 +2140,7 @@ class TablesClient(object):
         model_name=None,
         project=None,
         region=None,
+        **kwargs
     ):
         """Deletes a model. Note this will not delete any datasets associated
         with this model.
@@ -1893,15 +2199,63 @@ class TablesClient(object):
                 model_display_name=model_display_name,
                 project=project,
                 region=region,
+                **kwargs
             )
         # delete is idempotent
         except exceptions.NotFound:
             return None
 
-        return self.client.delete_model(model_name)
+        return self.auto_ml_client.delete_model(model_name, **kwargs)
+
+    def get_model_evaluation(
+        self, model_evaluation_name, project=None, region=None, **kwargs
+    ):
+        """Gets a single evaluation model in a particular project and region.
+
+        Example:
+            >>> from google.cloud import automl_v1beta1
+            >>>
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     project='my-project', region='us-central1')
+            ...
+            >>> d = client.get_model_evaluation('my_model_evaluation')
+            >>>
+
+        Args:
+            model_evaluation_name (string):
+                This is the fully-qualified name generated by the AutoML API
+                for this model evaluation.
+            project (Optional[string]):
+                If you have initialized the client with a value for `project`
+                it will be used if this parameter is not supplied. Keep in
+                mind, the service account this client was initialized with must
+                have access to this project.
+            region (Optional[string]):
+                If you have initialized the client with a value for `region` it
+                will be used if this parameter is not supplied.
+
+        Returns:
+            A :class:`~google.cloud.automl_v1beta1.types.ModelEvaluation` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                to a retryable error and retry attempts failed.
+            ValueError: If required parameters are missing.
+        """
+        return self.auto_ml_client.get_model_evaluation(model_evaluation_name, **kwargs)
 
     def get_model(
-        self, project=None, region=None, model_name=None, model_display_name=None
+        self,
+        project=None,
+        region=None,
+        model_name=None,
+        model_display_name=None,
+        **kwargs
     ):
         """Gets a single model in a particular project and region.
 
@@ -1953,12 +2307,12 @@ class TablesClient(object):
             )
 
         if model_name is not None:
-            return self.client.get_model(model_name)
+            return self.auto_ml_client.get_model(model_name, **kwargs)
 
         model = next(
             (
                 d
-                for d in self.list_models(project, region)
+                for d in self.list_models(project, region, **kwargs)
                 if d.display_name == model_display_name
             ),
             None,
@@ -1980,6 +2334,7 @@ class TablesClient(object):
         model_display_name=None,
         project=None,
         region=None,
+        **kwargs
     ):
         """Deploys a model. This allows you make online predictions using the
         model you've deployed.
@@ -2037,9 +2392,10 @@ class TablesClient(object):
             model_display_name=model_display_name,
             project=project,
             region=region,
+            **kwargs
         )
 
-        return self.client.deploy_model(model_name)
+        return self.auto_ml_client.deploy_model(model_name, **kwargs)
 
     def undeploy_model(
         self,
@@ -2048,6 +2404,7 @@ class TablesClient(object):
         model_display_name=None,
         project=None,
         region=None,
+        **kwargs
     ):
         """Undeploys a model.
 
@@ -2104,9 +2461,10 @@ class TablesClient(object):
             model_display_name=model_display_name,
             project=project,
             region=region,
+            **kwargs
         )
 
-        return self.client.undeploy_model(model_name)
+        return self.auto_ml_client.undeploy_model(model_name, **kwargs)
 
     ## TODO(lwander): support pandas DataFrame as input type
     def predict(
@@ -2117,6 +2475,7 @@ class TablesClient(object):
         model_display_name=None,
         project=None,
         region=None,
+        **kwargs
     ):
         """Makes a prediction on a deployed model. This will fail if the model
         was not deployed.
@@ -2178,6 +2537,7 @@ class TablesClient(object):
             model_display_name=model_display_name,
             project=project,
             region=region,
+            **kwargs
         )
 
         column_specs = model.tables_model_metadata.input_feature_column_specs
@@ -2200,7 +2560,7 @@ class TablesClient(object):
 
         request = {"row": {"values": values}}
 
-        return self.prediction_client.predict(model.name, request)
+        return self.prediction_client.predict(model.name, request, **kwargs)
 
     def batch_predict(
         self,
@@ -2212,6 +2572,7 @@ class TablesClient(object):
         project=None,
         region=None,
         inputs=None,
+        **kwargs
     ):
         """Makes a batch prediction on a model. This does _not_ require the
         model to be deployed.
@@ -2281,6 +2642,7 @@ class TablesClient(object):
             model_display_name=model_display_name,
             project=project,
             region=region,
+            **kwargs
         )
 
         if type(gcs_input_uris) != list:
@@ -2291,5 +2653,5 @@ class TablesClient(object):
         output_request = {"gcs_source": {"output_uri_prefix": gcs_output_uri_prefix}}
 
         return self.prediction_client.batch_predict(
-            model_name, input_request, output_request
+            model_name, input_request, output_request, **kwargs
         )

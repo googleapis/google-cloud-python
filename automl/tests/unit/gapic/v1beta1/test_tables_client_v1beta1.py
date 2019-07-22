@@ -48,8 +48,8 @@ class TestTablesClient(object):
             {},
         )
         ds = client.list_datasets()
-        client.client.location_path.assert_called_with(PROJECT, REGION)
-        client.client.list_datasets.assert_called_with(LOCATION_PATH)
+        client.auto_ml_client.location_path.assert_called_with(PROJECT, REGION)
+        client.auto_ml_client.list_datasets.assert_called_with(LOCATION_PATH)
         assert ds == []
 
     def test_list_datasets_not_empty(self):
@@ -62,8 +62,8 @@ class TestTablesClient(object):
             {},
         )
         ds = client.list_datasets()
-        client.client.location_path.assert_called_with(PROJECT, REGION)
-        client.client.list_datasets.assert_called_with(LOCATION_PATH)
+        client.auto_ml_client.location_path.assert_called_with(PROJECT, REGION)
+        client.auto_ml_client.list_datasets.assert_called_with(LOCATION_PATH)
         assert len(ds) == 1
         assert ds[0] == "some_dataset"
 
@@ -76,13 +76,13 @@ class TestTablesClient(object):
         except ValueError as e:
             error = e
         assert error is not None
-        client.client.get_dataset.assert_not_called()
+        client.auto_ml_client.get_dataset.assert_not_called()
 
     def test_get_dataset_name(self):
         dataset_actual = "dataset"
         client = self.tables_client({"get_dataset.return_value": dataset_actual}, {})
         dataset = client.get_dataset(dataset_name="my_dataset")
-        client.client.get_dataset.assert_called_with("my_dataset")
+        client.auto_ml_client.get_dataset.assert_called_with("my_dataset")
         assert dataset == dataset_actual
 
     def test_get_no_dataset(self):
@@ -95,7 +95,7 @@ class TestTablesClient(object):
         except exceptions.NotFound as e:
             error = e
         assert error is not None
-        client.client.get_dataset.assert_called_with("my_dataset")
+        client.auto_ml_client.get_dataset.assert_called_with("my_dataset")
 
     def test_get_dataset_from_empty_list(self):
         client = self.tables_client({"list_datasets.return_value": []}, {})
@@ -140,8 +140,8 @@ class TestTablesClient(object):
         )
         metadata = {"metadata": "values"}
         dataset = client.create_dataset("name", metadata=metadata)
-        client.client.location_path.assert_called_with(PROJECT, REGION)
-        client.client.create_dataset.assert_called_with(
+        client.auto_ml_client.location_path.assert_called_with(PROJECT, REGION)
+        client.auto_ml_client.create_dataset.assert_called_with(
             LOCATION_PATH, {"display_name": "name", "tables_dataset_metadata": metadata}
         )
         assert dataset.display_name == "name"
@@ -151,17 +151,42 @@ class TestTablesClient(object):
         dataset.configure_mock(name="name")
         client = self.tables_client({"delete_dataset.return_value": None}, {})
         client.delete_dataset(dataset=dataset)
-        client.client.delete_dataset.assert_called_with("name")
+        client.auto_ml_client.delete_dataset.assert_called_with("name")
 
     def test_delete_dataset_not_found(self):
         client = self.tables_client({"list_datasets.return_value": []}, {})
         client.delete_dataset(dataset_display_name="not_found")
-        client.client.delete_dataset.assert_not_called()
+        client.auto_ml_client.delete_dataset.assert_not_called()
 
     def test_delete_dataset_name(self):
         client = self.tables_client({"delete_dataset.return_value": None}, {})
         client.delete_dataset(dataset_name="name")
-        client.client.delete_dataset.assert_called_with("name")
+        client.auto_ml_client.delete_dataset.assert_called_with("name")
+
+    def test_export_not_found(self):
+        client = self.tables_client({"list_datasets.return_value": []}, {})
+        error = None
+        try:
+            client.export_data(dataset_display_name="name", gcs_input_uris="uri")
+        except exceptions.NotFound as e:
+            error = e
+        assert error is not None
+
+        client.auto_ml_client.export_data.assert_not_called()
+
+    def test_export_gcs_uri(self):
+        client = self.tables_client({"export_data.return_value": None}, {})
+        client.export_data(dataset_name="name", gcs_output_uri_prefix="uri")
+        client.auto_ml_client.export_data.assert_called_with(
+            "name", {"gcs_destination": {"output_uri_prefix": "uri"}}
+        )
+
+    def test_export_bq_uri(self):
+        client = self.tables_client({"export_data.return_value": None}, {})
+        client.export_data(dataset_name="name", bigquery_output_uri="uri")
+        client.auto_ml_client.export_data.assert_called_with(
+            "name", {"bigquery_destination": {"output_uri": "uri"}}
+        )
 
     def test_import_not_found(self):
         client = self.tables_client({"list_datasets.return_value": []}, {})
@@ -172,33 +197,33 @@ class TestTablesClient(object):
             error = e
         assert error is not None
 
-        client.client.import_data.assert_not_called()
+        client.auto_ml_client.import_data.assert_not_called()
 
     def test_import_gcs_uri(self):
         client = self.tables_client({"import_data.return_value": None}, {})
         client.import_data(dataset_name="name", gcs_input_uris="uri")
-        client.client.import_data.assert_called_with(
+        client.auto_ml_client.import_data.assert_called_with(
             "name", {"gcs_source": {"input_uris": ["uri"]}}
         )
 
     def test_import_gcs_uris(self):
         client = self.tables_client({"import_data.return_value": None}, {})
         client.import_data(dataset_name="name", gcs_input_uris=["uri", "uri"])
-        client.client.import_data.assert_called_with(
+        client.auto_ml_client.import_data.assert_called_with(
             "name", {"gcs_source": {"input_uris": ["uri", "uri"]}}
         )
 
     def test_import_bq_uri(self):
         client = self.tables_client({"import_data.return_value": None}, {})
         client.import_data(dataset_name="name", bigquery_input_uri="uri")
-        client.client.import_data.assert_called_with(
+        client.auto_ml_client.import_data.assert_called_with(
             "name", {"bigquery_source": {"input_uri": "uri"}}
         )
 
     def test_list_table_specs(self):
         client = self.tables_client({"list_table_specs.return_value": None}, {})
         client.list_table_specs(dataset_name="name")
-        client.client.list_table_specs.assert_called_with("name")
+        client.auto_ml_client.list_table_specs.assert_called_with("name")
 
     def test_list_table_specs_not_found(self):
         client = self.tables_client(
@@ -210,7 +235,17 @@ class TestTablesClient(object):
         except exceptions.NotFound as e:
             error = e
         assert error is not None
-        client.client.list_table_specs.assert_called_with("name")
+        client.auto_ml_client.list_table_specs.assert_called_with("name")
+
+    def test_get_table_spec(self):
+        client = self.tables_client({}, {})
+        client.get_table_spec("name")
+        client.auto_ml_client.get_table_spec.assert_called_with("name")
+
+    def test_get_column_spec(self):
+        client = self.tables_client({}, {})
+        client.get_column_spec("name")
+        client.auto_ml_client.get_column_spec.assert_called_with("name")
 
     def test_list_column_specs(self):
         table_spec_mock = mock.Mock()
@@ -224,8 +259,8 @@ class TestTablesClient(object):
             {},
         )
         client.list_column_specs(dataset_name="name")
-        client.client.list_table_specs.assert_called_with("name")
-        client.client.list_column_specs.assert_called_with("table")
+        client.auto_ml_client.list_table_specs.assert_called_with("name")
+        client.auto_ml_client.list_column_specs.assert_called_with("table")
 
     def test_update_column_spec_not_found(self):
         table_spec_mock = mock.Mock()
@@ -249,9 +284,9 @@ class TestTablesClient(object):
         except exceptions.NotFound as e:
             error = e
         assert error is not None
-        client.client.list_table_specs.assert_called_with("name")
-        client.client.list_column_specs.assert_called_with("table")
-        client.client.update_column_spec.assert_not_called()
+        client.auto_ml_client.list_table_specs.assert_called_with("name")
+        client.auto_ml_client.list_column_specs.assert_called_with("table")
+        client.auto_ml_client.update_column_spec.assert_not_called()
 
     def test_update_column_spec_display_name_not_found(self):
         table_spec_mock = mock.Mock()
@@ -277,9 +312,9 @@ class TestTablesClient(object):
         except exceptions.NotFound as e:
             error = e
         assert error is not None
-        client.client.list_table_specs.assert_called_with("name")
-        client.client.list_column_specs.assert_called_with("table")
-        client.client.update_column_spec.assert_not_called()
+        client.auto_ml_client.list_table_specs.assert_called_with("name")
+        client.auto_ml_client.list_column_specs.assert_called_with("table")
+        client.auto_ml_client.update_column_spec.assert_not_called()
 
     def test_update_column_spec_name_no_args(self):
         table_spec_mock = mock.Mock()
@@ -298,9 +333,9 @@ class TestTablesClient(object):
             {},
         )
         client.update_column_spec(dataset_name="name", column_spec_name="column/2")
-        client.client.list_table_specs.assert_called_with("name")
-        client.client.list_column_specs.assert_called_with("table")
-        client.client.update_column_spec.assert_called_with(
+        client.auto_ml_client.list_table_specs.assert_called_with("name")
+        client.auto_ml_client.list_column_specs.assert_called_with("table")
+        client.auto_ml_client.update_column_spec.assert_called_with(
             {"name": "column/2", "data_type": {"type_code": "type_code"}}
         )
 
@@ -323,9 +358,9 @@ class TestTablesClient(object):
         client.update_column_spec(
             dataset_name="name", column_spec_display_name="column"
         )
-        client.client.list_table_specs.assert_called_with("name")
-        client.client.list_column_specs.assert_called_with("table")
-        client.client.update_column_spec.assert_called_with(
+        client.auto_ml_client.list_table_specs.assert_called_with("name")
+        client.auto_ml_client.list_column_specs.assert_called_with("table")
+        client.auto_ml_client.update_column_spec.assert_called_with(
             {"name": "column", "data_type": {"type_code": "type_code"}}
         )
 
@@ -348,9 +383,9 @@ class TestTablesClient(object):
         client.update_column_spec(
             dataset_name="name", column_spec_display_name="column", nullable=True
         )
-        client.client.list_table_specs.assert_called_with("name")
-        client.client.list_column_specs.assert_called_with("table")
-        client.client.update_column_spec.assert_called_with(
+        client.auto_ml_client.list_table_specs.assert_called_with("name")
+        client.auto_ml_client.list_column_specs.assert_called_with("table")
+        client.auto_ml_client.update_column_spec.assert_called_with(
             {
                 "name": "column",
                 "data_type": {"type_code": "type_code", "nullable": True},
@@ -378,9 +413,9 @@ class TestTablesClient(object):
             column_spec_display_name="column",
             type_code="type_code2",
         )
-        client.client.list_table_specs.assert_called_with("name")
-        client.client.list_column_specs.assert_called_with("table")
-        client.client.update_column_spec.assert_called_with(
+        client.auto_ml_client.list_table_specs.assert_called_with("name")
+        client.auto_ml_client.list_column_specs.assert_called_with("table")
+        client.auto_ml_client.update_column_spec.assert_called_with(
             {"name": "column", "data_type": {"type_code": "type_code2"}}
         )
 
@@ -406,9 +441,9 @@ class TestTablesClient(object):
             column_spec_display_name="column",
             type_code="type_code2",
         )
-        client.client.list_table_specs.assert_called_with("name")
-        client.client.list_column_specs.assert_called_with("table")
-        client.client.update_column_spec.assert_called_with(
+        client.auto_ml_client.list_table_specs.assert_called_with("name")
+        client.auto_ml_client.list_column_specs.assert_called_with("table")
+        client.auto_ml_client.update_column_spec.assert_called_with(
             {
                 "name": "column",
                 "data_type": {"type_code": "type_code2", "nullable": True},
@@ -437,9 +472,9 @@ class TestTablesClient(object):
             column_spec_display_name="column",
             type_code="type_code2",
         )
-        client.client.list_table_specs.assert_called_with("name")
-        client.client.list_column_specs.assert_called_with("table")
-        client.client.update_column_spec.assert_called_with(
+        client.auto_ml_client.list_table_specs.assert_called_with("name")
+        client.auto_ml_client.list_column_specs.assert_called_with("table")
+        client.auto_ml_client.update_column_spec.assert_called_with(
             {
                 "name": "column",
                 "data_type": {"type_code": "type_code2", "nullable": False},
@@ -458,9 +493,9 @@ class TestTablesClient(object):
         except exceptions.NotFound as e:
             error = e
         assert error is not None
-        client.client.list_table_specs.assert_called_with("name")
-        client.client.list_column_specs.assert_not_called()
-        client.client.update_dataset.assert_not_called()
+        client.auto_ml_client.list_table_specs.assert_called_with("name")
+        client.auto_ml_client.list_column_specs.assert_not_called()
+        client.auto_ml_client.update_dataset.assert_not_called()
 
     def test_set_target_column_not_found(self):
         table_spec_mock = mock.Mock()
@@ -483,9 +518,9 @@ class TestTablesClient(object):
         except exceptions.NotFound as e:
             error = e
         assert error is not None
-        client.client.list_table_specs.assert_called_with("name")
-        client.client.list_column_specs.assert_called_with("table")
-        client.client.update_dataset.assert_not_called()
+        client.auto_ml_client.list_table_specs.assert_called_with("name")
+        client.auto_ml_client.list_column_specs.assert_called_with("table")
+        client.auto_ml_client.update_dataset.assert_not_called()
 
     def test_set_target_column(self):
         table_spec_mock = mock.Mock()
@@ -512,9 +547,9 @@ class TestTablesClient(object):
             {},
         )
         client.set_target_column(dataset_name="name", column_spec_display_name="column")
-        client.client.list_table_specs.assert_called_with("name")
-        client.client.list_column_specs.assert_called_with("table")
-        client.client.update_dataset.assert_called_with(
+        client.auto_ml_client.list_table_specs.assert_called_with("name")
+        client.auto_ml_client.list_column_specs.assert_called_with("table")
+        client.auto_ml_client.update_dataset.assert_called_with(
             {
                 "name": "dataset",
                 "tables_dataset_metadata": {
@@ -535,9 +570,9 @@ class TestTablesClient(object):
             )
         except exceptions.NotFound:
             pass
-        client.client.list_table_specs.assert_called_with("name")
-        client.client.list_column_specs.assert_not_called()
-        client.client.update_dataset.assert_not_called()
+        client.auto_ml_client.list_table_specs.assert_called_with("name")
+        client.auto_ml_client.list_column_specs.assert_not_called()
+        client.auto_ml_client.update_dataset.assert_not_called()
 
     def test_set_weight_column_not_found(self):
         table_spec_mock = mock.Mock()
@@ -560,9 +595,9 @@ class TestTablesClient(object):
         except exceptions.NotFound as e:
             error = e
         assert error is not None
-        client.client.list_table_specs.assert_called_with("name")
-        client.client.list_column_specs.assert_called_with("table")
-        client.client.update_dataset.assert_not_called()
+        client.auto_ml_client.list_table_specs.assert_called_with("name")
+        client.auto_ml_client.list_column_specs.assert_called_with("table")
+        client.auto_ml_client.update_dataset.assert_not_called()
 
     def test_set_weight_column(self):
         table_spec_mock = mock.Mock()
@@ -589,9 +624,9 @@ class TestTablesClient(object):
             {},
         )
         client.set_weight_column(dataset_name="name", column_spec_display_name="column")
-        client.client.list_table_specs.assert_called_with("name")
-        client.client.list_column_specs.assert_called_with("table")
-        client.client.update_dataset.assert_called_with(
+        client.auto_ml_client.list_table_specs.assert_called_with("name")
+        client.auto_ml_client.list_column_specs.assert_called_with("table")
+        client.auto_ml_client.update_dataset.assert_called_with(
             {
                 "name": "dataset",
                 "tables_dataset_metadata": {
@@ -615,7 +650,7 @@ class TestTablesClient(object):
         )
         client = self.tables_client({"get_dataset.return_value": dataset_mock}, {})
         client.clear_weight_column(dataset_name="name")
-        client.client.update_dataset.assert_called_with(
+        client.auto_ml_client.update_dataset.assert_called_with(
             {
                 "name": "dataset",
                 "tables_dataset_metadata": {
@@ -638,9 +673,9 @@ class TestTablesClient(object):
         except exceptions.NotFound as e:
             error = e
         assert error is not None
-        client.client.list_table_specs.assert_called_with("name")
-        client.client.list_column_specs.assert_not_called()
-        client.client.update_dataset.assert_not_called()
+        client.auto_ml_client.list_table_specs.assert_called_with("name")
+        client.auto_ml_client.list_column_specs.assert_not_called()
+        client.auto_ml_client.update_dataset.assert_not_called()
 
     def test_set_test_train_column_not_found(self):
         table_spec_mock = mock.Mock()
@@ -663,9 +698,9 @@ class TestTablesClient(object):
         except exceptions.NotFound as e:
             error = e
         assert error is not None
-        client.client.list_table_specs.assert_called_with("name")
-        client.client.list_column_specs.assert_called_with("table")
-        client.client.update_dataset.assert_not_called()
+        client.auto_ml_client.list_table_specs.assert_called_with("name")
+        client.auto_ml_client.list_column_specs.assert_called_with("table")
+        client.auto_ml_client.update_dataset.assert_not_called()
 
     def test_set_test_train_column(self):
         table_spec_mock = mock.Mock()
@@ -694,9 +729,9 @@ class TestTablesClient(object):
         client.set_test_train_column(
             dataset_name="name", column_spec_display_name="column"
         )
-        client.client.list_table_specs.assert_called_with("name")
-        client.client.list_column_specs.assert_called_with("table")
-        client.client.update_dataset.assert_called_with(
+        client.auto_ml_client.list_table_specs.assert_called_with("name")
+        client.auto_ml_client.list_column_specs.assert_called_with("table")
+        client.auto_ml_client.update_dataset.assert_called_with(
             {
                 "name": "dataset",
                 "tables_dataset_metadata": {
@@ -720,7 +755,7 @@ class TestTablesClient(object):
         )
         client = self.tables_client({"get_dataset.return_value": dataset_mock}, {})
         client.clear_test_train_column(dataset_name="name")
-        client.client.update_dataset.assert_called_with(
+        client.auto_ml_client.update_dataset.assert_called_with(
             {
                 "name": "dataset",
                 "tables_dataset_metadata": {
@@ -748,9 +783,9 @@ class TestTablesClient(object):
             {},
         )
         client.set_time_column(dataset_name="name", column_spec_display_name="column")
-        client.client.list_table_specs.assert_called_with("name")
-        client.client.list_column_specs.assert_called_with("table")
-        client.client.update_table_spec.assert_called_with(
+        client.auto_ml_client.list_table_specs.assert_called_with("name")
+        client.auto_ml_client.list_column_specs.assert_called_with("table")
+        client.auto_ml_client.update_table_spec.assert_called_with(
             {"name": "table", "time_column_spec_id": "3"}
         )
 
@@ -768,9 +803,34 @@ class TestTablesClient(object):
             {},
         )
         client.clear_time_column(dataset_name="name")
-        client.client.update_table_spec.assert_called_with(
+        client.auto_ml_client.update_table_spec.assert_called_with(
             {"name": "table", "time_column_spec_id": None}
         )
+
+    def test_get_model_evaluation(self):
+        client = self.tables_client({}, {})
+        ds = client.get_model_evaluation(model_evaluation_name="x")
+        client.auto_ml_client.get_model_evaluation.assert_called_with("x")
+
+    def test_list_model_evaluations_empty(self):
+        client = self.tables_client({"list_model_evaluations.return_value": []}, {})
+        ds = client.list_model_evaluations(model_name="model")
+        client.auto_ml_client.list_model_evaluations.assert_called_with("model")
+        assert ds == []
+
+    def test_list_model_evaluations_not_empty(self):
+        evaluations = ["eval"]
+        client = self.tables_client(
+            {
+                "list_model_evaluations.return_value": evaluations,
+                "location_path.return_value": LOCATION_PATH,
+            },
+            {},
+        )
+        ds = client.list_model_evaluations(model_name="model")
+        client.auto_ml_client.list_model_evaluations.assert_called_with("model")
+        assert len(ds) == 1
+        assert ds[0] == "eval"
 
     def test_list_models_empty(self):
         client = self.tables_client(
@@ -781,8 +841,8 @@ class TestTablesClient(object):
             {},
         )
         ds = client.list_models()
-        client.client.location_path.assert_called_with(PROJECT, REGION)
-        client.client.list_models.assert_called_with(LOCATION_PATH)
+        client.auto_ml_client.location_path.assert_called_with(PROJECT, REGION)
+        client.auto_ml_client.list_models.assert_called_with(LOCATION_PATH)
         assert ds == []
 
     def test_list_models_not_empty(self):
@@ -795,8 +855,8 @@ class TestTablesClient(object):
             {},
         )
         ds = client.list_models()
-        client.client.location_path.assert_called_with(PROJECT, REGION)
-        client.client.list_models.assert_called_with(LOCATION_PATH)
+        client.auto_ml_client.location_path.assert_called_with(PROJECT, REGION)
+        client.auto_ml_client.list_models.assert_called_with(LOCATION_PATH)
         assert len(ds) == 1
         assert ds[0] == "some_model"
 
@@ -804,7 +864,7 @@ class TestTablesClient(object):
         model_actual = "model"
         client = self.tables_client({"get_model.return_value": model_actual}, {})
         model = client.get_model(model_name="my_model")
-        client.client.get_model.assert_called_with("my_model")
+        client.auto_ml_client.get_model.assert_called_with("my_model")
         assert model == model_actual
 
     def test_get_no_model(self):
@@ -817,7 +877,7 @@ class TestTablesClient(object):
         except exceptions.NotFound as e:
             error = e
         assert error is not None
-        client.client.get_model.assert_called_with("my_model")
+        client.auto_ml_client.get_model.assert_called_with("my_model")
 
     def test_get_model_from_empty_list(self):
         client = self.tables_client({"list_models.return_value": []}, {})
@@ -857,17 +917,17 @@ class TestTablesClient(object):
         model.configure_mock(name="name")
         client = self.tables_client({"delete_model.return_value": None}, {})
         client.delete_model(model=model)
-        client.client.delete_model.assert_called_with("name")
+        client.auto_ml_client.delete_model.assert_called_with("name")
 
     def test_delete_model_not_found(self):
         client = self.tables_client({"list_models.return_value": []}, {})
         client.delete_model(model_display_name="not_found")
-        client.client.delete_model.assert_not_called()
+        client.auto_ml_client.delete_model.assert_not_called()
 
     def test_delete_model_name(self):
         client = self.tables_client({"delete_model.return_value": None}, {})
         client.delete_model(model_name="name")
-        client.client.delete_model.assert_called_with("name")
+        client.auto_ml_client.delete_model.assert_called_with("name")
 
     def test_deploy_model_no_args(self):
         client = self.tables_client({}, {})
@@ -877,12 +937,12 @@ class TestTablesClient(object):
         except ValueError as e:
             error = e
         assert error is not None
-        client.client.deploy_model.assert_not_called()
+        client.auto_ml_client.deploy_model.assert_not_called()
 
     def test_deploy_model(self):
         client = self.tables_client({}, {})
         client.deploy_model(model_name="name")
-        client.client.deploy_model.assert_called_with("name")
+        client.auto_ml_client.deploy_model.assert_called_with("name")
 
     def test_deploy_model_not_found(self):
         client = self.tables_client({"list_models.return_value": []}, {})
@@ -892,12 +952,12 @@ class TestTablesClient(object):
         except exceptions.NotFound as e:
             error = e
         assert error is not None
-        client.client.deploy_model.assert_not_called()
+        client.auto_ml_client.deploy_model.assert_not_called()
 
     def test_undeploy_model(self):
         client = self.tables_client({}, {})
         client.undeploy_model(model_name="name")
-        client.client.undeploy_model.assert_called_with("name")
+        client.auto_ml_client.undeploy_model.assert_called_with("name")
 
     def test_undeploy_model_not_found(self):
         client = self.tables_client({"list_models.return_value": []}, {})
@@ -907,7 +967,7 @@ class TestTablesClient(object):
         except exceptions.NotFound as e:
             error = e
         assert error is not None
-        client.client.undeploy_model.assert_not_called()
+        client.auto_ml_client.undeploy_model.assert_not_called()
 
     def test_create_model(self):
         table_spec_mock = mock.Mock()
@@ -926,7 +986,7 @@ class TestTablesClient(object):
         client.create_model(
             "my_model", dataset_name="my_dataset", train_budget_milli_node_hours=1000
         )
-        client.client.create_model.assert_called_with(
+        client.auto_ml_client.create_model.assert_called_with(
             LOCATION_PATH,
             {
                 "display_name": "my_model",
@@ -960,7 +1020,7 @@ class TestTablesClient(object):
             include_column_spec_names=["column1"],
             train_budget_milli_node_hours=1000,
         )
-        client.client.create_model.assert_called_with(
+        client.auto_ml_client.create_model.assert_called_with(
             LOCATION_PATH,
             {
                 "display_name": "my_model",
@@ -997,7 +1057,7 @@ class TestTablesClient(object):
             exclude_column_spec_names=["column1"],
             train_budget_milli_node_hours=1000,
         )
-        client.client.create_model.assert_called_with(
+        client.auto_ml_client.create_model.assert_called_with(
             LOCATION_PATH,
             {
                 "display_name": "my_model",
@@ -1019,7 +1079,7 @@ class TestTablesClient(object):
         except ValueError as e:
             error = e
         assert error is not None
-        client.client.create_model.assert_not_called()
+        client.auto_ml_client.create_model.assert_not_called()
 
     def test_create_model_invalid_hours_large(self):
         client = self.tables_client({}, {})
@@ -1033,7 +1093,7 @@ class TestTablesClient(object):
         except ValueError as e:
             error = e
         assert error is not None
-        client.client.create_model.assert_not_called()
+        client.auto_ml_client.create_model.assert_not_called()
 
     def test_create_model_invalid_no_dataset(self):
         client = self.tables_client({}, {})
@@ -1043,8 +1103,8 @@ class TestTablesClient(object):
         except ValueError as e:
             error = e
         assert error is not None
-        client.client.get_dataset.assert_not_called()
-        client.client.create_model.assert_not_called()
+        client.auto_ml_client.get_dataset.assert_not_called()
+        client.auto_ml_client.create_model.assert_not_called()
 
     def test_create_model_invalid_include_exclude(self):
         client = self.tables_client({}, {})
@@ -1060,8 +1120,8 @@ class TestTablesClient(object):
         except ValueError as e:
             error = e
         assert error is not None
-        client.client.get_dataset.assert_not_called()
-        client.client.create_model.assert_not_called()
+        client.auto_ml_client.get_dataset.assert_not_called()
+        client.auto_ml_client.create_model.assert_not_called()
 
     def test_predict_from_array(self):
         data_type = mock.Mock(type_code=data_types_pb2.CATEGORY)
@@ -1247,5 +1307,5 @@ class TestTablesClient(object):
         except ValueError as e:
             error = e
         assert error is not None
-        client.client.list_models.assert_not_called()
+        client.auto_ml_client.list_models.assert_not_called()
         client.prediction_client.batch_predict.assert_not_called()

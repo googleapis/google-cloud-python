@@ -29,7 +29,7 @@ REGION = "us-central1"
 MAX_WAIT_TIME_SECONDS = 30
 MAX_SLEEP_TIME_SECONDS = 5
 STATIC_DATASET = "test_dataset_do_not_delete"
-STATIC_MODEL='test_model_do_not_delete'
+STATIC_MODEL = "test_model_do_not_delete"
 
 ID = "{rand}_{time}".format(
     rand="".join(
@@ -58,7 +58,7 @@ class TestSystemTablesClient(object):
     def test_list_datasets(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
         # we need to unroll the iterator to actually make client calls
-        [d for d in client.list_datasets()]
+        [d for d in client.list_datasets(timeout=10)]
 
     def test_list_models(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
@@ -109,11 +109,19 @@ class TestSystemTablesClient(object):
         # we need to unroll the iterator to actually make client calls
         [d for d in client.list_column_specs(dataset=dataset)]
 
+    def test_get_column_spec(self):
+        client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
+        dataset = self.ensure_dataset_ready(client)
+        # we need to unroll the iterator to actually make client calls
+        cs = [d for d in client.list_column_specs(dataset=dataset)]
+        client.get_column_spec(cs[0].name)
+
     def test_list_table_specs(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
         dataset = self.ensure_dataset_ready(client)
         # we need to unroll the iterator to actually make client calls
-        [d for d in client.list_table_specs(dataset=dataset)]
+        ts = [d for d in client.list_table_specs(dataset=dataset)]
+        client.get_table_spec(ts[0].name)
 
     def test_set_column_nullable(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
@@ -171,6 +179,18 @@ class TestSystemTablesClient(object):
         )
         self.cancel_and_wait(op)
         client.delete_model(model_display_name=display_name)
+
+    def test_list_model_evaluations(self):
+        client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
+        model = self.ensure_model_online(client)
+        # we need to unroll the iterator to actually make client calls
+        [m for m in client.list_model_evaluations(model=model)]
+
+    def test_get_model_evaluation(self):
+        client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
+        model = self.ensure_model_online(client)
+        me = [m for m in client.list_model_evaluations(model=model)]
+        client.get_model_evaluation(model_evaluation_name=me[0].name)
 
     def test_online_predict(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
