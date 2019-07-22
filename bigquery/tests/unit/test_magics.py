@@ -321,6 +321,31 @@ def test_bigquery_magic_without_optional_arguments(monkeypatch):
 
 
 @pytest.mark.usefixtures("ipython_interactive")
+def test_bigquery_magic_default_connection_user_agent():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context._connection = None
+
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    default_patch = mock.patch(
+        "google.auth.default", return_value=(credentials_mock, "general-project")
+    )
+    run_query_patch = mock.patch(
+        "google.cloud.bigquery.magics._run_query", autospec=True
+    )
+    conn_patch = mock.patch("google.cloud.bigquery.client.Connection", autospec=True)
+
+    with conn_patch as conn, run_query_patch, default_patch:
+        ip.run_cell_magic("bigquery", "", "SELECT 17 as num")
+
+    client_info_arg = conn.call_args.kwargs.get("client_info")
+    assert client_info_arg is not None
+    assert client_info_arg.user_agent == "ipython-" + IPython.__version__
+
+
+@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_with_legacy_sql():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")
