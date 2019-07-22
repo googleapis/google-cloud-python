@@ -535,14 +535,7 @@ def test_main_block():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_main_block("ListMolluscs", [{"field": "list_molluscs.order",
-                                                   "value": "coleoidea",
-                                                   "input_parameter": "order"},
-                                                  {"field ": "list_molluscs.mass",
-                                                   "value": "60kg",
-                                                   "input_parameter": "mass"},
-                                                  {"field": "list_molluscs.zone",
-                                                   "value": "MESOPELAGIC"},]) }}
+        {{ frags.render_main_block("ListMolluscs", request) }}
         ''',
         '''
         def main():
@@ -562,5 +555,15 @@ def test_main_block():
 
         if __name__ == "__main__":
             main()
-        '''
+        ''',
+        request=[
+            samplegen.TransformedRequest("input_params", [{"field": "list_molluscs.order",
+                                                           "value": "coleoidea",
+                                                           "input_parameter": "order"},
+                                                          {"field ": "list_molluscs.mass",
+                                                           "value": "60kg",
+                                                           "input_parameter": "mass"}]),
+            samplegen.TransformedRequest("enum_param", [{"field": "list_molluscs.zone",
+                                                         "value": "MESOPELAGIC"}])
+        ]
     )

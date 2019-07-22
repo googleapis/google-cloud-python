@@ -217,11 +217,13 @@ def main():
 
     parser = argparse.ArgumentParser()
 {% with arg_list = [] %}
-{% for attr in request_block if "input_parameter" in attr %}
+{% for request in request_block|map(attribute="body") -%}
+{% for attr in request if "input_parameter" in attr %}
     parser.add_argument("--{{ attr.input_parameter }}",
                         type=str,
                         default="{{ attr.value }}")
 {% do arg_list.append("args." + attr.input_parameter) -%}
+{% endfor %}
 {% endfor %}
     args = parser.parse_args()
 
