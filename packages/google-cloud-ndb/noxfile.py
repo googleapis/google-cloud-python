@@ -18,6 +18,7 @@ Assumes ``nox >= 2018.9.14`` is installed.
 """
 
 import os
+import shutil
 
 import nox
 
@@ -107,13 +108,26 @@ def blacken(session):
 
 @nox.session(py=DEFAULT_INTERPRETER)
 def docs(session):
-    # Install all dependencies.
-    session.install("Sphinx")
-    session.install("sphinxcontrib.spelling")
-    session.install(".")
-    # Building the docs.
-    run_args = ["bash", "test_utils/test_utils/scripts/update_docs.sh"]
-    session.run(*run_args)
+    """Build the docs for this library."""
+
+    session.install("-e", ".")
+    session.install(
+        "sphinx", "alabaster", "recommonmark", "sphinxcontrib.spelling"
+    )
+
+    shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
+    session.run(
+        "sphinx-build",
+        "-W",  # warnings as errors
+        "-T",  # show full traceback on exception
+        "-N",  # no colors
+        "-b",
+        "html",
+        "-d",
+        os.path.join("docs", "_build", "doctrees", ""),
+        os.path.join("docs", ""),
+        os.path.join("docs", "_build", "html", ""),
+    )
 
 
 @nox.session(py=DEFAULT_INTERPRETER)
