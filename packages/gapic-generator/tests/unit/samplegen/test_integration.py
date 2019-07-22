@@ -19,23 +19,11 @@ import pytest
 import gapic.samplegen.samplegen as samplegen
 import gapic.utils as utils
 
+from common_types import (DummyMethod, DummyService,
+                          DummyApiSchema, DummyNaming)
+
 from collections import namedtuple
 from textwrap import dedent
-
-# Injected dummy test types
-dummy_method_fields = ["lro",
-                       "paged_result_field",
-                       "client_streaming",
-                       "server_streaming"]
-DummyMethod = namedtuple("DummyMethod",
-                         dummy_method_fields)
-DummyMethod.__new__.__defaults__ = (False,) * len(dummy_method_fields)
-
-DummyService = namedtuple("DummyService", ["methods"])
-
-DummyApiSchema = namedtuple("DummyApiSchema", ["services", "naming"])
-
-DummyNaming = namedtuple("DummyNaming", ["warehouse_package_name"])
 
 
 env = jinja2.Environment(

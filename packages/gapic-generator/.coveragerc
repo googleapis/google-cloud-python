@@ -3,7 +3,6 @@ branch = True
 omit =
   gapic/cli/*.py
   *_pb2.py
-  # Abstract methods play hob with coverage
 
 [report]
 fail_under = 100
@@ -17,3 +16,4 @@ exclude_lines =
     def __repr__
     # Abstract methods by definition are not invoked
     @abstractmethod
+    
