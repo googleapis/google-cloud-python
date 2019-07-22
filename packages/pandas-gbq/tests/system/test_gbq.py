@@ -868,26 +868,27 @@ class TestReadGBQIntegration(object):
             ),
         )
 
-    def test_array_of_floats(self, private_key_path, project_id):
+    def test_array_of_floats(self, project_id):
         query = """select [1.1, 2.2, 3.3] as a, 4 as b"""
         df = gbq.read_gbq(
             query,
             project_id=project_id,
-            private_key=private_key_path,
+            credentials=self.credentials,
             dialect="standard",
         )
         tm.assert_frame_equal(
             df, DataFrame([[[1.1, 2.2, 3.3], 4]], columns=["a", "b"])
         )
 
-    def test_tokyo(self, tokyo_dataset, tokyo_table, private_key_path):
+    def test_tokyo(self, tokyo_dataset, tokyo_table, project_id):
         df = gbq.read_gbq(
             "SELECT MAX(year) AS max_year FROM {}.{}".format(
                 tokyo_dataset, tokyo_table
             ),
             dialect="standard",
             location="asia-northeast1",
-            private_key=private_key_path,
+            project_id=project_id,
+            credentials=self.credentials,
         )
         assert df["max_year"][0] >= 2000
 
@@ -1401,7 +1402,17 @@ class TestToGBQIntegration(object):
             index=range(test_size),
             columns=list("ABCD"),
         )
-        df["times"] = np.datetime64("2018-03-13T05:40:45.348318Z")
+        df["times"] = pandas.Series(
+            [
+                "2018-03-13T05:40:45.348318",
+                "2018-04-13T05:40:45.348318",
+                "2018-05-13T05:40:45.348318",
+                "2018-06-13T05:40:45.348318",
+                "2018-07-13T05:40:45.348318",
+                "2018-08-13T05:40:45.348318",
+            ],
+            dtype="datetime64[ns]",
+        ).dt.tz_localize("UTC")
 
         gbq.to_gbq(
             df,
@@ -1421,7 +1432,7 @@ class TestToGBQIntegration(object):
 
         expected = df["times"].sort_values()
         result = result_df["times"].sort_values()
-        tm.assert_numpy_array_equal(expected.values, result.values)
+        tm.assert_series_equal(expected, result)
 
     def test_upload_data_with_different_df_and_user_schema(self, project_id):
         df = tm.makeMixedDataFrame()

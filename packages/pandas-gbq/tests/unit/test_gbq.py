@@ -121,9 +121,8 @@ def test_to_gbq_with_no_project_id_given_should_fail(monkeypatch):
         pydata_google_auth, "default", mock_get_credentials_no_project
     )
 
-    with pytest.raises(ValueError) as exception:
+    with pytest.raises(ValueError, match="Could not determine project ID"):
         gbq.to_gbq(DataFrame([[1]]), "dataset.tablename")
-    assert "Could not determine project ID" in str(exception)
 
 
 def test_to_gbq_with_verbose_new_pandas_warns_deprecation(min_bq_version):
@@ -280,9 +279,8 @@ def test_read_gbq_with_no_project_id_given_should_fail(monkeypatch):
         pydata_google_auth, "default", mock_get_credentials_no_project
     )
 
-    with pytest.raises(ValueError) as exception:
+    with pytest.raises(ValueError, match="Could not determine project ID"):
         gbq.read_gbq("SELECT 1", dialect="standard")
-    assert "Could not determine project ID" in str(exception)
 
 
 def test_read_gbq_with_inferred_project_id(monkeypatch):
@@ -311,13 +309,12 @@ def test_read_gbq_with_inferred_project_id_from_service_account_credentials(
 def test_read_gbq_without_inferred_project_id_from_compute_engine_credentials(
     mock_compute_engine_credentials
 ):
-    with pytest.raises(ValueError) as exception:
+    with pytest.raises(ValueError, match="Could not determine project ID"):
         gbq.read_gbq(
             "SELECT 1",
             dialect="standard",
             credentials=mock_compute_engine_credentials,
         )
-    assert "Could not determine project ID" in str(exception)
 
 
 def test_read_gbq_with_invalid_private_key_json_should_fail():
@@ -469,9 +466,8 @@ def test_read_gbq_with_private_key_old_pandas_no_warnings(
 
 
 def test_read_gbq_with_invalid_dialect():
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(ValueError, match="is not valid for dialect"):
         gbq.read_gbq("SELECT 1", dialect="invalid")
-    assert "is not valid for dialect" in str(excinfo.value)
 
 
 def test_generate_bq_schema_deprecated():
