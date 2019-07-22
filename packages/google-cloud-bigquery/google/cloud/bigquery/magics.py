@@ -144,6 +144,7 @@ try:
 except ImportError:  # pragma: NO COVER
     bigquery_storage_v1beta1 = None
 
+from google.api_core import client_info
 import google.auth
 from google.cloud import bigquery
 from google.cloud.bigquery.dbapi import _helpers
@@ -398,6 +399,9 @@ def _cell_magic(line, query):
         project=project,
         credentials=context.credentials,
         default_query_job_config=context.default_query_job_config,
+        client_info=client_info.ClientInfo(
+            user_agent="ipython-{}".format(IPython.__version__)
+        ),
     )
     if context._connection:
         client._connection = context._connection
