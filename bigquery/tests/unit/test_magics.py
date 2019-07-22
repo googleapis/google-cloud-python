@@ -584,9 +584,17 @@ def test_bigquery_magic_w_maximum_bytes_billed_invalid():
     ip.extension_manager.load_extension("google.cloud.bigquery")
     magics.context._project = None
 
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    default_patch = mock.patch(
+        "google.auth.default", return_value=(credentials_mock, "general-project")
+    )
+    client_query_patch = mock.patch("google.cloud.bigquery.client.Client.query")
+
     sql = "SELECT 17 AS num"
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError), default_patch, client_query_patch:
         ip.run_cell_magic("bigquery", "--maximum_bytes_billed=abc", sql)
 
 
