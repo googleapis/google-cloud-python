@@ -47,7 +47,6 @@ _LOCATION_SETTER_MESSAGE = (
     "valid before the bucket is created. Instead, pass the location "
     "to `Bucket.create`."
 )
-_API_ACCESS_ENDPOINT = "https://storage.googleapis.com"
 
 
 def _blobs_page_start(iterator, page, response):
@@ -2065,7 +2064,7 @@ class Bucket(_PropertyMixin):
     def generate_signed_url(
         self,
         expiration=None,
-        api_access_endpoint=_API_ACCESS_ENDPOINT,
+        api_access_endpoint=None,
         method="GET",
         headers=None,
         query_parameters=None,
@@ -2098,7 +2097,8 @@ class Bucket(_PropertyMixin):
         :param expiration: Point in time when the signed URL should expire.
 
         :type api_access_endpoint: str
-        :param api_access_endpoint: Optional URI base.
+        :param api_access_endpoint: Optional URI base. If not passed, falls back
+        to the api_endpoint of the client.
 
         :type method: str
         :param method: The HTTP verb that will be used when requesting the URL.
@@ -2151,6 +2151,8 @@ class Bucket(_PropertyMixin):
 
         if credentials is None:
             client = self._require_client(client)
+            if api_access_endpoint is None:
+                api_access_endpoint = client.api_endpoint
             credentials = client._credentials
 
         if version == "v2":
