@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Field Paths &#8212; google-cloud 951b9c6 documentation</title>
+    <title>Field Paths &#8212; google-cloud f5ad704 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -183,19 +183,19 @@ in the data</p>
 <code class="descclassname">google.cloud.firestore_v1.field_path.</code><code class="descname">get_nested_value</code><span class="sig-paren">(</span><em>field_path</em>, <em>data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1/field_path.html#get_nested_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1.field_path.get_nested_value" title="Permalink to this definition">#</a></dt>
 <dd><p>Get a (potentially nested) value from a dictionary.</p>
 <p>If the data is nested, for example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span>
-<span class="go">{</span>
-<span class="go">    &#39;top1&#39;: {</span>
-<span class="go">        &#39;middle2&#39;: {</span>
-<span class="go">            &#39;bottom3&#39;: 20,</span>
-<span class="go">            &#39;bottom4&#39;: 22,</span>
-<span class="go">        },</span>
-<span class="go">        &#39;middle5&#39;: True,</span>
-<span class="go">    },</span>
-<span class="go">    &#39;top6&#39;: b&#39;  foo&#39;,</span>
-<span class="go">}</span>
-</pre></div>
-</div>
+<pre class="literal-block">
+&gt;&gt;&gt; data
+{
+    'top1': {
+        'middle2': {
+            'bottom3': 20,
+            'bottom4': 22,
+        },
+        'middle5': True,
+    },
+    'top6': b' foo',
+}
+</pre>
 <p>a <strong>field path</strong> can be used to access the nested data. For
 example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">get_nested_value</span><span class="p">(</span><span class="s1">&#39;top1&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
