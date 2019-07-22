@@ -20,10 +20,11 @@ import pkg_resources
 
 from google.api_core.gapic_v1 import client_info
 from google.api_core import exceptions
-from google.cloud import automl_v1beta1
+from google.cloud.automl_v1beta1 import gapic
 from google.cloud.automl_v1beta1.proto import data_types_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-automl").version
+
 
 class TablesClient(object):
     """
@@ -33,8 +34,15 @@ class TablesClient(object):
     in particular for the `AutoML Tables product
     <https://cloud.google.com/automl-tables/>`_.
     """
-    def __init__(self, project=None, region='us-central1', client=None,
-            prediction_client=None, **kwargs):
+
+    def __init__(
+        self,
+        project=None,
+        region="us-central1",
+        client=None,
+        prediction_client=None,
+        **kwargs
+    ):
         """Constructor.
 
         Example:
@@ -81,28 +89,27 @@ class TablesClient(object):
                 should be set through client_options.
         """
         version = _GAPIC_LIBRARY_VERSION
-        user_agent = 'automl-tables-wrapper/{}'.format(version)
+        user_agent = "automl-tables-wrapper/{}".format(version)
 
-        client_info_ = kwargs.get('client_info')
+        client_info_ = kwargs.get("client_info")
         if client_info_ is None:
             client_info_ = client_info.ClientInfo(
-                    user_agent=user_agent,
-                    gapic_version=version
+                user_agent=user_agent, gapic_version=version
             )
         else:
             client_info_.user_agent = user_agent
             client_info_.gapic_version = version
 
         if client is None:
-            self.client = automl_v1beta1.AutoMlClient(client_info=client_info_,
-                    **kwargs)
+            self.client = gapic.auto_ml_client.AutoMlClient(
+                client_info=client_info_, **kwargs
+            )
         else:
             self.client = client
 
         if prediction_client is None:
-            self.prediction_client = automl_v1beta1.PredictionServiceClient(
-                    client_info=client_info_,
-                    **kwargs
+            self.prediction_client = gapic.prediction_service_client.PredictionServiceClient(
+                client_info=client_info_, **kwargs
             )
         else:
             self.prediction_client = prediction_client
@@ -113,16 +120,20 @@ class TablesClient(object):
     def __location_path(self, project=None, region=None):
         if project is None:
             if self.project is None:
-                raise ValueError('Either initialize your client with a value '
-                        'for \'project\', or provide \'project\' as a '
-                        'parameter for this method.')
+                raise ValueError(
+                    "Either initialize your client with a value "
+                    "for 'project', or provide 'project' as a "
+                    "parameter for this method."
+                )
             project = self.project
 
         if region is None:
             if self.region is None:
-                raise ValueError('Either initialize your client with a value '
-                        'for \'region\', or provide \'region\' as a '
-                        'parameter for this method.')
+                raise ValueError(
+                    "Either initialize your client with a value "
+                    "for 'region', or provide 'region' as a "
+                    "parameter for this method."
+                )
             region = self.region
 
         return self.client.location_path(project, region)
@@ -131,168 +142,201 @@ class TablesClient(object):
     # we need to manually copy user-updated fields over
     def __update_metadata(self, metadata, k, v):
         new_metadata = {}
-        new_metadata['ml_use_column_spec_id'] = metadata.ml_use_column_spec_id
-        new_metadata['weight_column_spec_id'] = metadata.weight_column_spec_id
-        new_metadata['target_column_spec_id'] = metadata.target_column_spec_id
+        new_metadata["ml_use_column_spec_id"] = metadata.ml_use_column_spec_id
+        new_metadata["weight_column_spec_id"] = metadata.weight_column_spec_id
+        new_metadata["target_column_spec_id"] = metadata.target_column_spec_id
         new_metadata[k] = v
 
         return new_metadata
 
-    def __dataset_from_args(self, dataset=None, dataset_display_name=None,
-            dataset_name=None, project=None, region=None):
-        if (dataset is None
-                and dataset_display_name is None
-                and dataset_name is None):
-            raise ValueError('One of \'dataset\', \'dataset_name\' or '
-                    '\'dataset_display_name\' must be set.')
+    def __dataset_from_args(
+        self,
+        dataset=None,
+        dataset_display_name=None,
+        dataset_name=None,
+        project=None,
+        region=None,
+    ):
+        if dataset is None and dataset_display_name is None and dataset_name is None:
+            raise ValueError(
+                "One of 'dataset', 'dataset_name' or "
+                "'dataset_display_name' must be set."
+            )
         # we prefer to make a live call here in the case that the
         # dataset object is out-of-date
         if dataset is not None:
             dataset_name = dataset.name
 
         return self.get_dataset(
-                dataset_display_name=dataset_display_name,
-                dataset_name=dataset_name,
-                project=project,
-                region=region
+            dataset_display_name=dataset_display_name,
+            dataset_name=dataset_name,
+            project=project,
+            region=region,
         )
 
-    def __model_from_args(self, model=None, model_display_name=None,
-            model_name=None, project=None, region=None):
-        if (model is None
-                and model_display_name is None
-                and model_name is None):
-            raise ValueError('One of \'model\', \'model_name\' or '
-                    '\'model_display_name\' must be set.')
+    def __model_from_args(
+        self,
+        model=None,
+        model_display_name=None,
+        model_name=None,
+        project=None,
+        region=None,
+    ):
+        if model is None and model_display_name is None and model_name is None:
+            raise ValueError(
+                "One of 'model', 'model_name' or " "'model_display_name' must be set."
+            )
         # we prefer to make a live call here in the case that the
         # model object is out-of-date
         if model is not None:
             model_name = model.name
 
         return self.get_model(
-                model_display_name=model_display_name,
-                model_name=model_name,
-                project=project,
-                region=region
+            model_display_name=model_display_name,
+            model_name=model_name,
+            project=project,
+            region=region,
         )
 
-    def __dataset_name_from_args(self, dataset=None, dataset_display_name=None,
-            dataset_name=None, project=None, region=None):
-        if (dataset is None
-                and dataset_display_name is None
-                and dataset_name is None):
-            raise ValueError('One of \'dataset\', \'dataset_name\' or '
-                    '\'dataset_display_name\' must be set.')
+    def __dataset_name_from_args(
+        self,
+        dataset=None,
+        dataset_display_name=None,
+        dataset_name=None,
+        project=None,
+        region=None,
+    ):
+        if dataset is None and dataset_display_name is None and dataset_name is None:
+            raise ValueError(
+                "One of 'dataset', 'dataset_name' or "
+                "'dataset_display_name' must be set."
+            )
 
         if dataset_name is None:
             if dataset is None:
                 dataset = self.get_dataset(
-                        dataset_display_name=dataset_display_name,
-                        project=project,
-                        region=region
+                    dataset_display_name=dataset_display_name,
+                    project=project,
+                    region=region,
                 )
 
             dataset_name = dataset.name
         else:
             # we do this to force a NotFound error when needed
-            self.get_dataset(
-                    dataset_name=dataset_name,
-                    project=project,
-                    region=region
-            )
+            self.get_dataset(dataset_name=dataset_name, project=project, region=region)
         return dataset_name
 
-    def __table_spec_name_from_args(self, table_spec_index=0,
-            dataset=None, dataset_display_name=None,
-            dataset_name=None, project=None, region=None):
-        dataset_name = self.__dataset_name_from_args(dataset=dataset,
-                dataset_name=dataset_name,
-                dataset_display_name=dataset_display_name,
-                project=project,
-                region=region
+    def __table_spec_name_from_args(
+        self,
+        table_spec_index=0,
+        dataset=None,
+        dataset_display_name=None,
+        dataset_name=None,
+        project=None,
+        region=None,
+    ):
+        dataset_name = self.__dataset_name_from_args(
+            dataset=dataset,
+            dataset_name=dataset_name,
+            dataset_display_name=dataset_display_name,
+            project=project,
+            region=region,
         )
 
-        table_specs = [t for t in
-            self.list_table_specs(dataset_name=dataset_name)
-        ]
+        table_specs = [t for t in self.list_table_specs(dataset_name=dataset_name)]
 
         table_spec_full_id = table_specs[table_spec_index].name
         return table_spec_full_id
 
-    def __model_name_from_args(self, model=None, model_display_name=None,
-            model_name=None, project=None, region=None):
-        if (model is None
-                and model_display_name is None
-                and model_name is None):
-            raise ValueError('One of \'model\', \'model_name\' or '
-                    '\'model_display_name\' must be set.')
+    def __model_name_from_args(
+        self,
+        model=None,
+        model_display_name=None,
+        model_name=None,
+        project=None,
+        region=None,
+    ):
+        if model is None and model_display_name is None and model_name is None:
+            raise ValueError(
+                "One of 'model', 'model_name' or " "'model_display_name' must be set."
+            )
 
         if model_name is None:
             if model is None:
                 model = self.get_model(
-                        model_display_name=model_display_name,
-                        project=project,
-                        region=region
+                    model_display_name=model_display_name,
+                    project=project,
+                    region=region,
                 )
             model_name = model.name
         else:
             # we do this to force a NotFound error when needed
-            self.get_model(
-                    model_name=model_name,
-                    project=project,
-                    region=region
-            )
+            self.get_model(model_name=model_name, project=project, region=region)
         return model_name
 
-    def __column_spec_name_from_args(self, dataset=None, dataset_display_name=None,
-            dataset_name=None, table_spec_name=None, table_spec_index=0,
-            column_spec_name=None, column_spec_display_name=None,
-            project=None, region=None):
-        column_specs = self.list_column_specs(dataset=dataset,
-                dataset_display_name=dataset_display_name,
-                dataset_name=dataset_name,
-                table_spec_name=table_spec_name,
-                table_spec_index=table_spec_index,
-                project=project,
-                region=region)
+    def __column_spec_name_from_args(
+        self,
+        dataset=None,
+        dataset_display_name=None,
+        dataset_name=None,
+        table_spec_name=None,
+        table_spec_index=0,
+        column_spec_name=None,
+        column_spec_display_name=None,
+        project=None,
+        region=None,
+    ):
+        column_specs = self.list_column_specs(
+            dataset=dataset,
+            dataset_display_name=dataset_display_name,
+            dataset_name=dataset_name,
+            table_spec_name=table_spec_name,
+            table_spec_index=table_spec_index,
+            project=project,
+            region=region,
+        )
         if column_spec_display_name is not None:
             column_specs = {s.display_name: s for s in column_specs}
             if column_specs.get(column_spec_display_name) is None:
-                raise exceptions.NotFound('No column with ' +
-                        'column_spec_display_name: \'{}\' found'.format(
-                            column_spec_display_name
-                        ))
+                raise exceptions.NotFound(
+                    "No column with "
+                    + "column_spec_display_name: '{}' found".format(
+                        column_spec_display_name
+                    )
+                )
             column_spec_name = column_specs[column_spec_display_name].name
         elif column_spec_name is not None:
             column_specs = {s.name: s for s in column_specs}
             if column_specs.get(column_spec_name) is None:
-                raise exceptions.NotFound('No column with ' +
-                        'column_spec_name: \'{}\' found'.format(
-                            column_spec_name
-                        ))
+                raise exceptions.NotFound(
+                    "No column with "
+                    + "column_spec_name: '{}' found".format(column_spec_name)
+                )
         else:
-            raise ValueError('Either supply \'column_spec_name\' or '
-                    '\'column_spec_display_name\' for the column to update')
+            raise ValueError(
+                "Either supply 'column_spec_name' or "
+                "'column_spec_display_name' for the column to update"
+            )
 
         return column_spec_name
 
     def __type_code_to_value_type(self, type_code, value):
         if value is None:
-            return {'null_value': 0}
+            return {"null_value": 0}
         elif type_code == data_types_pb2.FLOAT64:
-            return {'number_value': value}
+            return {"number_value": value}
         elif type_code == data_types_pb2.TIMESTAMP:
-            return {'string_value': value}
+            return {"string_value": value}
         elif type_code == data_types_pb2.STRING:
-            return {'string_value': value}
+            return {"string_value": value}
         elif type_code == data_types_pb2.ARRAY:
-            return {'list_value': value}
+            return {"list_value": value}
         elif type_code == data_types_pb2.STRUCT:
-            return {'struct_value': value}
+            return {"struct_value": value}
         elif type_code == data_types_pb2.CATEGORY:
-            return {'string_value': value}
+            return {"string_value": value}
         else:
-            raise ValueError('Unknown type_code: {}'.format(type_code))
+            raise ValueError("Unknown type_code: {}".format(type_code))
 
     def list_datasets(self, project=None, region=None):
         """List all datasets in a particular project and region.
@@ -337,11 +381,12 @@ class TablesClient(object):
             ValueError: If required parameters are missing.
         """
         return self.client.list_datasets(
-                    self.__location_path(project=project, region=region)
-                )
+            self.__location_path(project=project, region=region)
+        )
 
-    def get_dataset(self, project=None, region=None,
-            dataset_name=None, dataset_display_name=None):
+    def get_dataset(
+        self, project=None, region=None, dataset_name=None, dataset_display_name=None
+    ):
         """Gets a single dataset in a particular project and region.
 
         Example:
@@ -388,23 +433,34 @@ class TablesClient(object):
             ValueError: If required parameters are missing.
         """
         if dataset_name is None and dataset_display_name is None:
-            raise ValueError('One of \'dataset_name\' or '
-                    '\'dataset_display_name\' must be set.')
+            raise ValueError(
+                "One of 'dataset_name' or " "'dataset_display_name' must be set."
+            )
 
         if dataset_name is not None:
             return self.client.get_dataset(dataset_name)
 
-        result = next((d for d in self.list_datasets(project, region)
-                if d.display_name == dataset_display_name), None)
+        result = next(
+            (
+                d
+                for d in self.list_datasets(project, region)
+                if d.display_name == dataset_display_name
+            ),
+            None,
+        )
 
         if result is None:
-            raise exceptions.NotFound(('Dataset with display_name: \'{}\' ' +
-                'not found').format(dataset_display_name))
+            raise exceptions.NotFound(
+                ("Dataset with display_name: '{}' " + "not found").format(
+                    dataset_display_name
+                )
+            )
 
         return result
 
-    def create_dataset(self, dataset_display_name, metadata={}, project=None,
-            region=None):
+    def create_dataset(
+        self, dataset_display_name, metadata={}, project=None, region=None
+    ):
         """Create a dataset. Keep in mind, importing data is a separate step.
 
         Example:
@@ -442,15 +498,18 @@ class TablesClient(object):
             ValueError: If required parameters are missing.
         """
         return self.client.create_dataset(
-                    self.__location_path(project, region),
-                    {
-                        'display_name': dataset_display_name,
-                        'tables_dataset_metadata': metadata
-                    }
-                )
+            self.__location_path(project, region),
+            {"display_name": dataset_display_name, "tables_dataset_metadata": metadata},
+        )
 
-    def delete_dataset(self, dataset=None, dataset_display_name=None,
-            dataset_name=None, project=None, region=None):
+    def delete_dataset(
+        self,
+        dataset=None,
+        dataset_display_name=None,
+        dataset_name=None,
+        project=None,
+        region=None,
+    ):
         """Deletes a dataset. This does not delete any models trained on
         this dataset.
 
@@ -502,20 +561,29 @@ class TablesClient(object):
             ValueError: If required parameters are missing.
         """
         try:
-            dataset_name = self.__dataset_name_from_args(dataset=dataset,
-                    dataset_name=dataset_name,
-                    dataset_display_name=dataset_display_name,
-                    project=project,
-                    region=region)
+            dataset_name = self.__dataset_name_from_args(
+                dataset=dataset,
+                dataset_name=dataset_name,
+                dataset_display_name=dataset_display_name,
+                project=project,
+                region=region,
+            )
         # delete is idempotent
         except exceptions.NotFound:
             return None
 
         return self.client.delete_dataset(dataset_name)
 
-    def import_data(self, dataset=None, dataset_display_name=None,
-            dataset_name=None, gcs_input_uris=None,
-            bigquery_input_uri=None, project=None, region=None):
+    def import_data(
+        self,
+        dataset=None,
+        dataset_display_name=None,
+        dataset_name=None,
+        gcs_input_uris=None,
+        bigquery_input_uri=None,
+        project=None,
+        region=None,
+    ):
         """Imports data into a dataset.
 
         Example:
@@ -578,35 +646,36 @@ class TablesClient(object):
                 to a retryable error and retry attempts failed.
             ValueError: If required parameters are missing.
         """
-        dataset_name = self.__dataset_name_from_args(dataset=dataset,
-                dataset_name=dataset_name,
-                dataset_display_name=dataset_display_name,
-                project=project,
-                region=region)
+        dataset_name = self.__dataset_name_from_args(
+            dataset=dataset,
+            dataset_name=dataset_name,
+            dataset_display_name=dataset_display_name,
+            project=project,
+            region=region,
+        )
 
         request = {}
         if gcs_input_uris is not None:
             if type(gcs_input_uris) != list:
                 gcs_input_uris = [gcs_input_uris]
-            request = {
-                    'gcs_source': {
-                        'input_uris': gcs_input_uris
-                    }
-            }
+            request = {"gcs_source": {"input_uris": gcs_input_uris}}
         elif bigquery_input_uri is not None:
-            request = {
-                    'bigquery_source': {
-                        'input_uri': bigquery_input_uri
-                    }
-            }
+            request = {"bigquery_source": {"input_uri": bigquery_input_uri}}
         else:
-            raise ValueError('One of \'gcs_input_uris\', or '
-                    '\'bigquery_input_uri\' must be set.')
+            raise ValueError(
+                "One of 'gcs_input_uris', or " "'bigquery_input_uri' must be set."
+            )
 
         return self.client.import_data(dataset_name, request)
 
-    def list_table_specs(self, dataset=None, dataset_display_name=None,
-            dataset_name=None, project=None, region=None):
+    def list_table_specs(
+        self,
+        dataset=None,
+        dataset_display_name=None,
+        dataset_name=None,
+        project=None,
+        region=None,
+    ):
         """Lists table specs.
 
         Example:
@@ -659,17 +728,26 @@ class TablesClient(object):
                 to a retryable error and retry attempts failed.
             ValueError: If required parameters are missing.
         """
-        dataset_name = self.__dataset_name_from_args(dataset=dataset,
-                dataset_name=dataset_name,
-                dataset_display_name=dataset_display_name,
-                project=project,
-                region=region)
+        dataset_name = self.__dataset_name_from_args(
+            dataset=dataset,
+            dataset_name=dataset_name,
+            dataset_display_name=dataset_display_name,
+            project=project,
+            region=region,
+        )
 
         return self.client.list_table_specs(dataset_name)
 
-    def list_column_specs(self, dataset=None, dataset_display_name=None,
-            dataset_name=None, table_spec_name=None, table_spec_index=0,
-            project=None, region=None):
+    def list_column_specs(
+        self,
+        dataset=None,
+        dataset_display_name=None,
+        dataset_name=None,
+        table_spec_name=None,
+        table_spec_index=0,
+        project=None,
+        region=None,
+    ):
         """Lists column specs.
 
         Example:
@@ -738,20 +816,35 @@ class TablesClient(object):
             ValueError: If required parameters are missing.
         """
         if table_spec_name is None:
-            table_specs = [t for t in self.list_table_specs(dataset=dataset,
+            table_specs = [
+                t
+                for t in self.list_table_specs(
+                    dataset=dataset,
                     dataset_display_name=dataset_display_name,
                     dataset_name=dataset_name,
                     project=project,
-                    region=region)]
+                    region=region,
+                )
+            ]
 
             table_spec_name = table_specs[table_spec_index].name
 
         return self.client.list_column_specs(table_spec_name)
 
-    def update_column_spec(self, dataset=None, dataset_display_name=None,
-            dataset_name=None, table_spec_name=None, table_spec_index=0,
-            column_spec_name=None, column_spec_display_name=None,
-            type_code=None, nullable=None, project=None, region=None):
+    def update_column_spec(
+        self,
+        dataset=None,
+        dataset_display_name=None,
+        dataset_name=None,
+        table_spec_name=None,
+        table_spec_index=0,
+        column_spec_name=None,
+        column_spec_display_name=None,
+        type_code=None,
+        nullable=None,
+        project=None,
+        region=None,
+    ):
         """Updates a column's specs.
 
         Example:
@@ -824,48 +917,56 @@ class TablesClient(object):
             ValueError: If required parameters are missing.
         """
         column_spec_name = self.__column_spec_name_from_args(
-                dataset=dataset,
-                dataset_display_name=dataset_display_name,
-                dataset_name=dataset_name,
-                table_spec_name=table_spec_name,
-                table_spec_index=table_spec_index,
-                column_spec_name=column_spec_name,
-                column_spec_display_name=column_spec_display_name,
-                project=project,
-                region=region
+            dataset=dataset,
+            dataset_display_name=dataset_display_name,
+            dataset_name=dataset_name,
+            table_spec_name=table_spec_name,
+            table_spec_index=table_spec_index,
+            column_spec_name=column_spec_name,
+            column_spec_display_name=column_spec_display_name,
+            project=project,
+            region=region,
         )
 
         # type code must always be set
         if type_code is None:
             # this index is safe, we would have already thrown a NotFound
             # had the column_spec_name not existed
-            type_code = {s.name: s for s in self.list_column_specs(
+            type_code = {
+                s.name: s
+                for s in self.list_column_specs(
                     dataset=dataset,
                     dataset_display_name=dataset_display_name,
                     dataset_name=dataset_name,
                     table_spec_name=table_spec_name,
                     table_spec_index=table_spec_index,
                     project=project,
-                    region=region)
+                    region=region,
+                )
             }[column_spec_name].data_type.type_code
 
         data_type = {}
         if nullable is not None:
-            data_type['nullable'] = nullable
+            data_type["nullable"] = nullable
 
-        data_type['type_code'] = type_code
+        data_type["type_code"] = type_code
 
-        request = {
-                'name': column_spec_name,
-                'data_type': data_type
-        }
+        request = {"name": column_spec_name, "data_type": data_type}
 
         return self.client.update_column_spec(request)
 
-    def set_target_column(self, dataset=None, dataset_display_name=None,
-            dataset_name=None, table_spec_name=None, table_spec_index=0,
-            column_spec_name=None, column_spec_display_name=None,
-            project=None, region=None):
+    def set_target_column(
+        self,
+        dataset=None,
+        dataset_display_name=None,
+        dataset_name=None,
+        table_spec_name=None,
+        table_spec_index=0,
+        column_spec_name=None,
+        column_spec_display_name=None,
+        project=None,
+        region=None,
+    ):
         """Sets the target column for a given table.
 
         Example:
@@ -940,39 +1041,46 @@ class TablesClient(object):
             ValueError: If required parameters are missing.
         """
         column_spec_name = self.__column_spec_name_from_args(
-                dataset=dataset,
-                dataset_display_name=dataset_display_name,
-                dataset_name=dataset_name,
-                table_spec_name=table_spec_name,
-                table_spec_index=table_spec_index,
-                column_spec_name=column_spec_name,
-                column_spec_display_name=column_spec_display_name,
-                project=project,
-                region=region
+            dataset=dataset,
+            dataset_display_name=dataset_display_name,
+            dataset_name=dataset_name,
+            table_spec_name=table_spec_name,
+            table_spec_index=table_spec_index,
+            column_spec_name=column_spec_name,
+            column_spec_display_name=column_spec_display_name,
+            project=project,
+            region=region,
         )
-        column_spec_id = column_spec_name.rsplit('/', 1)[-1]
+        column_spec_id = column_spec_name.rsplit("/", 1)[-1]
 
-        dataset = self.__dataset_from_args(dataset=dataset,
-                dataset_name=dataset_name,
-                dataset_display_name=dataset_display_name,
-                project=project,
-                region=region)
+        dataset = self.__dataset_from_args(
+            dataset=dataset,
+            dataset_name=dataset_name,
+            dataset_display_name=dataset_display_name,
+            project=project,
+            region=region,
+        )
         metadata = dataset.tables_dataset_metadata
-        metadata = self.__update_metadata(metadata,
-                'target_column_spec_id',
-                column_spec_id)
+        metadata = self.__update_metadata(
+            metadata, "target_column_spec_id", column_spec_id
+        )
 
-        request = {
-                'name': dataset.name,
-                'tables_dataset_metadata': metadata,
-        }
+        request = {"name": dataset.name, "tables_dataset_metadata": metadata}
 
         return self.client.update_dataset(request)
 
-    def set_time_column(self, dataset=None, dataset_display_name=None,
-            dataset_name=None, table_spec_name=None, table_spec_index=0,
-            column_spec_name=None, column_spec_display_name=None,
-            project=None, region=None):
+    def set_time_column(
+        self,
+        dataset=None,
+        dataset_display_name=None,
+        dataset_name=None,
+        table_spec_name=None,
+        table_spec_index=0,
+        column_spec_name=None,
+        column_spec_display_name=None,
+        project=None,
+        region=None,
+    ):
         """Sets the time column which designates which data will be of type
         timestamp and will be used for the timeseries data.
         This column must be of type timestamp.
@@ -1045,37 +1153,44 @@ class TablesClient(object):
             ValueError: If required parameters are missing.
         """
         column_spec_name = self.__column_spec_name_from_args(
-                dataset=dataset,
-                dataset_display_name=dataset_display_name,
-                dataset_name=dataset_name,
-                table_spec_name=table_spec_name,
-                table_spec_index=table_spec_index,
-                column_spec_name=column_spec_name,
-                column_spec_display_name=column_spec_display_name,
-                project=project,
-                region=region
+            dataset=dataset,
+            dataset_display_name=dataset_display_name,
+            dataset_name=dataset_name,
+            table_spec_name=table_spec_name,
+            table_spec_index=table_spec_index,
+            column_spec_name=column_spec_name,
+            column_spec_display_name=column_spec_display_name,
+            project=project,
+            region=region,
         )
-        column_spec_id = column_spec_name.rsplit('/', 1)[-1]
+        column_spec_id = column_spec_name.rsplit("/", 1)[-1]
 
-        dataset_name = self.__dataset_name_from_args(dataset=dataset,
-                dataset_name=dataset_name,
-                dataset_display_name=dataset_display_name,
-                project=project,
-                region=region)
+        dataset_name = self.__dataset_name_from_args(
+            dataset=dataset,
+            dataset_name=dataset_name,
+            dataset_display_name=dataset_display_name,
+            project=project,
+            region=region,
+        )
 
-        table_spec_full_id = self.__table_spec_name_from_args(
-            dataset_name=dataset_name)
+        table_spec_full_id = self.__table_spec_name_from_args(dataset_name=dataset_name)
 
         my_table_spec = {
-            'name': table_spec_full_id,
-            'time_column_spec_id': column_spec_id
+            "name": table_spec_full_id,
+            "time_column_spec_id": column_spec_id,
         }
 
         self.client.update_table_spec(my_table_spec)
         return self.get_dataset(dataset_name=dataset_name)
 
-    def clear_time_column(self, dataset=None, dataset_display_name=None,
-            dataset_name=None, project=None, region=None):
+    def clear_time_column(
+        self,
+        dataset=None,
+        dataset_display_name=None,
+        dataset_name=None,
+        project=None,
+        region=None,
+    ):
         """Clears the time column which designates which data will be of type
         timestamp and will be used for the timeseries data.
 
@@ -1130,27 +1245,33 @@ class TablesClient(object):
                 to a retryable error and retry attempts failed.
             ValueError: If required parameters are missing.
         """
-        dataset_name = self.__dataset_name_from_args(dataset=dataset,
-                dataset_name=dataset_name,
-                dataset_display_name=dataset_display_name,
-                project=project,
-                region=region)
+        dataset_name = self.__dataset_name_from_args(
+            dataset=dataset,
+            dataset_name=dataset_name,
+            dataset_display_name=dataset_display_name,
+            project=project,
+            region=region,
+        )
 
-        table_spec_full_id = self.__table_spec_name_from_args(
-            dataset_name=dataset_name)
+        table_spec_full_id = self.__table_spec_name_from_args(dataset_name=dataset_name)
 
-        my_table_spec = {
-            'name': table_spec_full_id,
-            'time_column_spec_id': None,
-        }
+        my_table_spec = {"name": table_spec_full_id, "time_column_spec_id": None}
 
         response = self.client.update_table_spec(my_table_spec)
         return self.get_dataset(dataset_name=dataset_name)
 
-    def set_weight_column(self, dataset=None, dataset_display_name=None,
-            dataset_name=None, table_spec_name=None, table_spec_index=0,
-            column_spec_name=None, column_spec_display_name=None,
-            project=None, region=None):
+    def set_weight_column(
+        self,
+        dataset=None,
+        dataset_display_name=None,
+        dataset_name=None,
+        table_spec_name=None,
+        table_spec_index=0,
+        column_spec_name=None,
+        column_spec_display_name=None,
+        project=None,
+        region=None,
+    ):
         """Sets the weight column for a given table.
 
         Example:
@@ -1225,37 +1346,42 @@ class TablesClient(object):
             ValueError: If required parameters are missing.
         """
         column_spec_name = self.__column_spec_name_from_args(
-                dataset=dataset,
-                dataset_display_name=dataset_display_name,
-                dataset_name=dataset_name,
-                table_spec_name=table_spec_name,
-                table_spec_index=table_spec_index,
-                column_spec_name=column_spec_name,
-                column_spec_display_name=column_spec_display_name,
-                project=project,
-                region=region
+            dataset=dataset,
+            dataset_display_name=dataset_display_name,
+            dataset_name=dataset_name,
+            table_spec_name=table_spec_name,
+            table_spec_index=table_spec_index,
+            column_spec_name=column_spec_name,
+            column_spec_display_name=column_spec_display_name,
+            project=project,
+            region=region,
         )
-        column_spec_id = column_spec_name.rsplit('/', 1)[-1]
+        column_spec_id = column_spec_name.rsplit("/", 1)[-1]
 
-        dataset = self.__dataset_from_args(dataset=dataset,
-                dataset_name=dataset_name,
-                dataset_display_name=dataset_display_name,
-                project=project,
-                region=region)
+        dataset = self.__dataset_from_args(
+            dataset=dataset,
+            dataset_name=dataset_name,
+            dataset_display_name=dataset_display_name,
+            project=project,
+            region=region,
+        )
         metadata = dataset.tables_dataset_metadata
-        metadata = self.__update_metadata(metadata,
-                'weight_column_spec_id',
-                column_spec_id)
+        metadata = self.__update_metadata(
+            metadata, "weight_column_spec_id", column_spec_id
+        )
 
-        request = {
-                'name': dataset.name,
-                'tables_dataset_metadata': metadata,
-        }
+        request = {"name": dataset.name, "tables_dataset_metadata": metadata}
 
         return self.client.update_dataset(request)
 
-    def clear_weight_column(self, dataset=None, dataset_display_name=None,
-            dataset_name=None, project=None, region=None):
+    def clear_weight_column(
+        self,
+        dataset=None,
+        dataset_display_name=None,
+        dataset_name=None,
+        project=None,
+        region=None,
+    ):
         """Clears the weight column for a given dataset.
 
         Example:
@@ -1311,26 +1437,32 @@ class TablesClient(object):
                 to a retryable error and retry attempts failed.
             ValueError: If required parameters are missing.
         """
-        dataset = self.__dataset_from_args(dataset=dataset,
-                dataset_name=dataset_name,
-                dataset_display_name=dataset_display_name,
-                project=project,
-                region=region)
+        dataset = self.__dataset_from_args(
+            dataset=dataset,
+            dataset_name=dataset_name,
+            dataset_display_name=dataset_display_name,
+            project=project,
+            region=region,
+        )
         metadata = dataset.tables_dataset_metadata
-        metadata = self.__update_metadata(metadata, 'weight_column_spec_id',
-                None)
+        metadata = self.__update_metadata(metadata, "weight_column_spec_id", None)
 
-        request = {
-                'name': dataset.name,
-                'tables_dataset_metadata': metadata,
-        }
+        request = {"name": dataset.name, "tables_dataset_metadata": metadata}
 
         return self.client.update_dataset(request)
 
-    def set_test_train_column(self, dataset=None, dataset_display_name=None,
-            dataset_name=None, table_spec_name=None, table_spec_index=0,
-            column_spec_name=None, column_spec_display_name=None,
-            project=None, region=None):
+    def set_test_train_column(
+        self,
+        dataset=None,
+        dataset_display_name=None,
+        dataset_name=None,
+        table_spec_name=None,
+        table_spec_index=0,
+        column_spec_name=None,
+        column_spec_display_name=None,
+        project=None,
+        region=None,
+    ):
         """Sets the test/train (ml_use) column which designates which data
         belongs to the test and train sets. This column must be categorical.
 
@@ -1406,35 +1538,42 @@ class TablesClient(object):
             ValueError: If required parameters are missing.
         """
         column_spec_name = self.__column_spec_name_from_args(
-                dataset=dataset,
-                dataset_display_name=dataset_display_name,
-                dataset_name=dataset_name,
-                table_spec_name=table_spec_name,
-                table_spec_index=table_spec_index,
-                column_spec_name=column_spec_name,
-                column_spec_display_name=column_spec_display_name,
-                project=project,
-                region=region
+            dataset=dataset,
+            dataset_display_name=dataset_display_name,
+            dataset_name=dataset_name,
+            table_spec_name=table_spec_name,
+            table_spec_index=table_spec_index,
+            column_spec_name=column_spec_name,
+            column_spec_display_name=column_spec_display_name,
+            project=project,
+            region=region,
         )
-        column_spec_id = column_spec_name.rsplit('/', 1)[-1]
+        column_spec_id = column_spec_name.rsplit("/", 1)[-1]
 
-        dataset = self.__dataset_from_args(dataset=dataset,
-                dataset_name=dataset_name,
-                dataset_display_name=dataset_display_name,
-                project=project,
-                region=region)
+        dataset = self.__dataset_from_args(
+            dataset=dataset,
+            dataset_name=dataset_name,
+            dataset_display_name=dataset_display_name,
+            project=project,
+            region=region,
+        )
         metadata = dataset.tables_dataset_metadata
-        metadata = self.__update_metadata(metadata, 'ml_use_column_spec_id', column_spec_id)
+        metadata = self.__update_metadata(
+            metadata, "ml_use_column_spec_id", column_spec_id
+        )
 
-        request = {
-                'name': dataset.name,
-                'tables_dataset_metadata': metadata,
-        }
+        request = {"name": dataset.name, "tables_dataset_metadata": metadata}
 
         return self.client.update_dataset(request)
 
-    def clear_test_train_column(self, dataset=None, dataset_display_name=None,
-            dataset_name=None, project=None, region=None):
+    def clear_test_train_column(
+        self,
+        dataset=None,
+        dataset_display_name=None,
+        dataset_name=None,
+        project=None,
+        region=None,
+    ):
         """Clears the test/train (ml_use) column which designates which data
         belongs to the test and train sets.
 
@@ -1491,19 +1630,17 @@ class TablesClient(object):
                 to a retryable error and retry attempts failed.
             ValueError: If required parameters are missing.
         """
-        dataset = self.__dataset_from_args(dataset=dataset,
-                dataset_name=dataset_name,
-                dataset_display_name=dataset_display_name,
-                project=project,
-                region=region)
+        dataset = self.__dataset_from_args(
+            dataset=dataset,
+            dataset_name=dataset_name,
+            dataset_display_name=dataset_display_name,
+            project=project,
+            region=region,
+        )
         metadata = dataset.tables_dataset_metadata
-        metadata = self.__update_metadata(metadata, 'ml_use_column_spec_id',
-                None)
+        metadata = self.__update_metadata(metadata, "ml_use_column_spec_id", None)
 
-        request = {
-                'name': dataset.name,
-                'tables_dataset_metadata': metadata,
-        }
+        request = {"name": dataset.name, "tables_dataset_metadata": metadata}
 
         return self.client.update_dataset(request)
 
@@ -1550,15 +1687,22 @@ class TablesClient(object):
             ValueError: If required parameters are missing.
         """
         return self.client.list_models(
-                self.__location_path(project=project, region=region)
+            self.__location_path(project=project, region=region)
         )
 
-    def create_model(self, model_display_name, dataset=None,
-            dataset_display_name=None, dataset_name=None,
-            train_budget_milli_node_hours=None, project=None,
-            region=None, model_metadata={},
-            include_column_spec_names=None,
-            exclude_column_spec_names=None):
+    def create_model(
+        self,
+        model_display_name,
+        dataset=None,
+        dataset_display_name=None,
+        dataset_name=None,
+        train_budget_milli_node_hours=None,
+        project=None,
+        region=None,
+        model_metadata={},
+        include_column_spec_names=None,
+        exclude_column_spec_names=None,
+    ):
         """Create a model. This will train your model on the given dataset.
 
         Example:
@@ -1620,30 +1764,45 @@ class TablesClient(object):
                 to a retryable error and retry attempts failed.
             ValueError: If required parameters are missing.
         """
-        if (train_budget_milli_node_hours is None or
-                train_budget_milli_node_hours < 1000 or
-                train_budget_milli_node_hours > 72000):
-            raise ValueError('\'train_budget_milli_node_hours\' must be a '
-                    'value between 1,000 and 72,000 inclusive')
+        if (
+            train_budget_milli_node_hours is None
+            or train_budget_milli_node_hours < 1000
+            or train_budget_milli_node_hours > 72000
+        ):
+            raise ValueError(
+                "'train_budget_milli_node_hours' must be a "
+                "value between 1,000 and 72,000 inclusive"
+            )
 
-        if (exclude_column_spec_names not in [None, []] and
-                include_column_spec_names not in [None, []]):
-            raise ValueError('Cannot set both '
-                    '\'exclude_column_spec_names\' and '
-                    '\'include_column_spec_names\'')
+        if exclude_column_spec_names not in [
+            None,
+            [],
+        ] and include_column_spec_names not in [None, []]:
+            raise ValueError(
+                "Cannot set both "
+                "'exclude_column_spec_names' and "
+                "'include_column_spec_names'"
+            )
 
-        dataset_name = self.__dataset_name_from_args(dataset=dataset,
+        dataset_name = self.__dataset_name_from_args(
+            dataset=dataset,
             dataset_name=dataset_name,
             dataset_display_name=dataset_display_name,
             project=project,
-            region=region)
+            region=region,
+        )
 
-        model_metadata['train_budget_milli_node_hours'] = train_budget_milli_node_hours
+        model_metadata["train_budget_milli_node_hours"] = train_budget_milli_node_hours
 
-        dataset_id = dataset_name.rsplit('/', 1)[-1]
-        columns = [s for s in self.list_column_specs(dataset=dataset,
-            dataset_name=dataset_name,
-            dataset_display_name=dataset_display_name)]
+        dataset_id = dataset_name.rsplit("/", 1)[-1]
+        columns = [
+            s
+            for s in self.list_column_specs(
+                dataset=dataset,
+                dataset_name=dataset_name,
+                dataset_display_name=dataset_display_name,
+            )
+        ]
 
         final_columns = []
         if include_column_spec_names:
@@ -1651,27 +1810,32 @@ class TablesClient(object):
                 if c.display_name in include_column_spec_names:
                     final_columns.append(c)
 
-            model_metadata['input_feature_column_specs'] = final_columns
+            model_metadata["input_feature_column_specs"] = final_columns
         elif exclude_column_spec_names:
             for a in columns:
                 if a.display_name not in exclude_column_spec_names:
                     final_columns.append(a)
 
-            model_metadata['input_feature_column_specs'] = final_columns
+            model_metadata["input_feature_column_specs"] = final_columns
 
         request = {
-            'display_name': model_display_name,
-            'dataset_id': dataset_id,
-            'tables_model_metadata': model_metadata
+            "display_name": model_display_name,
+            "dataset_id": dataset_id,
+            "tables_model_metadata": model_metadata,
         }
 
         return self.client.create_model(
-             self.__location_path(project=project, region=region),
-             request
+            self.__location_path(project=project, region=region), request
         )
 
-    def delete_model(self, model=None, model_display_name=None,
-            model_name=None, project=None, region=None):
+    def delete_model(
+        self,
+        model=None,
+        model_display_name=None,
+        model_name=None,
+        project=None,
+        region=None,
+    ):
         """Deletes a model. Note this will not delete any datasets associated
         with this model.
 
@@ -1723,19 +1887,22 @@ class TablesClient(object):
             ValueError: If required parameters are missing.
         """
         try:
-            model_name = self.__model_name_from_args(model=model,
-                    model_name=model_name,
-                    model_display_name=model_display_name,
-                    project=project,
-                    region=region)
+            model_name = self.__model_name_from_args(
+                model=model,
+                model_name=model_name,
+                model_display_name=model_display_name,
+                project=project,
+                region=region,
+            )
         # delete is idempotent
         except exceptions.NotFound:
             return None
 
         return self.client.delete_model(model_name)
 
-    def get_model(self, project=None, region=None,
-            model_name=None, model_display_name=None):
+    def get_model(
+        self, project=None, region=None, model_name=None, model_display_name=None
+    ):
         """Gets a single model in a particular project and region.
 
         Example:
@@ -1781,24 +1948,39 @@ class TablesClient(object):
             ValueError: If required parameters are missing.
         """
         if model_name is None and model_display_name is None:
-            raise ValueError('One of \'model_name\' or '
-                    '\'model_display_name\' must be set.')
+            raise ValueError(
+                "One of 'model_name' or " "'model_display_name' must be set."
+            )
 
         if model_name is not None:
             return self.client.get_model(model_name)
 
-        model = next((d for d in self.list_models(project, region)
-                if d.display_name == model_display_name), None)
+        model = next(
+            (
+                d
+                for d in self.list_models(project, region)
+                if d.display_name == model_display_name
+            ),
+            None,
+        )
 
         if model is None:
-            raise exceptions.NotFound('No model with model_diplay_name: ' +
-                    '\'{}\' found'.format(model_display_name))
+            raise exceptions.NotFound(
+                "No model with model_diplay_name: "
+                + "'{}' found".format(model_display_name)
+            )
 
         return model
 
-    #TODO(jonathanskim): allow deployment from just model ID
-    def deploy_model(self, model=None, model_name=None,
-            model_display_name=None, project=None, region=None):
+    # TODO(jonathanskim): allow deployment from just model ID
+    def deploy_model(
+        self,
+        model=None,
+        model_name=None,
+        model_display_name=None,
+        project=None,
+        region=None,
+    ):
         """Deploys a model. This allows you make online predictions using the
         model you've deployed.
 
@@ -1850,17 +2032,23 @@ class TablesClient(object):
             ValueError: If required parameters are missing.
         """
         model_name = self.__model_name_from_args(
-                model=model,
-                model_name=model_name,
-                model_display_name=model_display_name,
-                project=project,
-                region=region
+            model=model,
+            model_name=model_name,
+            model_display_name=model_display_name,
+            project=project,
+            region=region,
         )
 
         return self.client.deploy_model(model_name)
 
-    def undeploy_model(self, model=None, model_name=None,
-            model_display_name=None, project=None, region=None):
+    def undeploy_model(
+        self,
+        model=None,
+        model_name=None,
+        model_display_name=None,
+        project=None,
+        region=None,
+    ):
         """Undeploys a model.
 
         Example:
@@ -1911,18 +2099,25 @@ class TablesClient(object):
             ValueError: If required parameters are missing.
         """
         model_name = self.__model_name_from_args(
-                model=model,
-                model_name=model_name,
-                model_display_name=model_display_name,
-                project=project,
-                region=region
+            model=model,
+            model_name=model_name,
+            model_display_name=model_display_name,
+            project=project,
+            region=region,
         )
 
         return self.client.undeploy_model(model_name)
 
     ## TODO(lwander): support pandas DataFrame as input type
-    def predict(self, inputs, model=None, model_name=None,
-            model_display_name=None, project=None, region=None):
+    def predict(
+        self,
+        inputs,
+        model=None,
+        model_name=None,
+        model_display_name=None,
+        project=None,
+        region=None,
+    ):
         """Makes a prediction on a deployed model. This will fail if the model
         was not deployed.
 
@@ -1978,11 +2173,11 @@ class TablesClient(object):
             ValueError: If required parameters are missing.
         """
         model = self.__model_from_args(
-                model=model,
-                model_name=model_name,
-                model_display_name=model_display_name,
-                project=project,
-                region=region
+            model=model,
+            model_name=model_name,
+            model_display_name=model_display_name,
+            project=project,
+            region=region,
         )
 
         column_specs = model.tables_model_metadata.input_feature_column_specs
@@ -1990,28 +2185,34 @@ class TablesClient(object):
             inputs = [inputs.get(c.display_name, None) for c in column_specs]
 
         if len(inputs) != len(column_specs):
-            raise ValueError(('Dimension mismatch, the number of provided '
-                    'inputs ({}) does not match that of the model '
-                    '({})').format(len(inputs), len(column_specs)))
+            raise ValueError(
+                (
+                    "Dimension mismatch, the number of provided "
+                    "inputs ({}) does not match that of the model "
+                    "({})"
+                ).format(len(inputs), len(column_specs))
+            )
 
         values = []
         for i, c in zip(inputs, column_specs):
-            value_type = self.__type_code_to_value_type(
-                    c.data_type.type_code, i
-                )
+            value_type = self.__type_code_to_value_type(c.data_type.type_code, i)
             values.append(value_type)
 
-        request = {
-                'row': {
-                    'values': values
-                }
-            }
+        request = {"row": {"values": values}}
 
         return self.prediction_client.predict(model.name, request)
 
-    def batch_predict(self, gcs_input_uris, gcs_output_uri_prefix,
-            model=None, model_name=None, model_display_name=None, project=None,
-            region=None, inputs=None):
+    def batch_predict(
+        self,
+        gcs_input_uris,
+        gcs_output_uri_prefix,
+        model=None,
+        model_name=None,
+        model_display_name=None,
+        project=None,
+        region=None,
+        inputs=None,
+    ):
         """Makes a batch prediction on a model. This does _not_ require the
         model to be deployed.
 
@@ -2070,31 +2271,25 @@ class TablesClient(object):
             ValueError: If required parameters are missing.
         """
         if gcs_input_uris is None or gcs_output_uri_prefix is None:
-            raise ValueError('Both \'gcs_input_uris\' and '
-                '\'gcs_output_uri_prefix\' must be set.')
+            raise ValueError(
+                "Both 'gcs_input_uris' and " "'gcs_output_uri_prefix' must be set."
+            )
 
         model_name = self.__model_name_from_args(
-                model=model,
-                model_name=model_name,
-                model_display_name=model_display_name,
-                project=project,
-                region=region
+            model=model,
+            model_name=model_name,
+            model_display_name=model_display_name,
+            project=project,
+            region=region,
         )
 
         if type(gcs_input_uris) != list:
             gcs_input_uris = [gcs_input_uris]
 
-        input_request = {
-                'gcs_source': {
-                    'input_uris': gcs_input_uris
-                }
-        }
+        input_request = {"gcs_source": {"input_uris": gcs_input_uris}}
 
-        output_request = {
-                'gcs_source': {
-                    'output_uri_prefix': gcs_output_uri_prefix
-                }
-        }
+        output_request = {"gcs_source": {"output_uri_prefix": gcs_output_uri_prefix}}
 
-        return self.prediction_client.batch_predict(model_name, input_request,
-                output_request)
+        return self.prediction_client.batch_predict(
+            model_name, input_request, output_request
+        )

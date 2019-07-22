@@ -38,5 +38,4 @@ class TablesClient(tables_client.TablesClient):
     __doc__ = tables_client.TablesClient.__doc__
 
 
-__all__ = ("enums", "types", "AutoMlClient", "PredictionServiceClient",
-        "TablesClient")
+__all__ = ("enums", "types", "AutoMlClient", "PredictionServiceClient", "TablesClient")
