@@ -34,6 +34,14 @@ class TestConnection(unittest.TestCase):
         )
         self.assertEqual(conn.build_api_url("/foo"), URI)
 
+    def test_build_api_url_w_custom_endpoint(self):
+        custom_endpoint = "https://foo-translation.googleapis.com"
+        conn = self._make_one(object(), api_endpoint=custom_endpoint)
+        URI = "/".join(
+            [custom_endpoint, "language", "translate", conn.API_VERSION, "foo"]
+        )
+        self.assertEqual(conn.build_api_url("/foo"), URI)
+
     def test_build_api_url_w_extra_query_params(self):
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
