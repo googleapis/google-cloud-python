@@ -882,7 +882,7 @@ def test_watch_document(client, cleanup):
 
     on_snapshot.called_count = 0
 
-    watch = doc_ref.on_snapshot(on_snapshot)
+    doc_ref.on_snapshot(on_snapshot)
 
     # Alter document
     doc_ref.set({u"first": u"Ada", u"last": u"Lovelace", u"born": 1815})
@@ -919,7 +919,7 @@ def test_watch_collection(client, cleanup):
     on_snapshot.called_count = 0
     on_snapshot.born = 0
 
-    watch = collection_ref.on_snapshot(on_snapshot)
+    collection_ref.on_snapshot(on_snapshot)
 
     # delay here so initial on_snapshot occurs and isn't combined with set
     sleep(1)
@@ -959,7 +959,7 @@ def test_watch_query(client, cleanup):
 
     on_snapshot.called_count = 0
 
-    watch = query_ref.on_snapshot(on_snapshot)
+    query_ref.on_snapshot(on_snapshot)
 
     # Alter document
     doc_ref.set({u"first": u"Ada", u"last": u"Lovelace", u"born": 1815})
@@ -1013,7 +1013,7 @@ def test_watch_query_order(client, cleanup):
     on_snapshot.called_count = 0
     on_snapshot.last_doc_count = 0
     on_snapshot.failed = None
-    watch = query_ref.on_snapshot(on_snapshot)
+    query_ref.on_snapshot(on_snapshot)
 
     sleep(1)
 
