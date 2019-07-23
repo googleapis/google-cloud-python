@@ -139,7 +139,7 @@ class PollingFuture(base.Future):
             Optional[google.api_core.GoogleAPICallError]: The operation's
                 error.
         """
-        self._blocking_poll()
+        self._blocking_poll(timeout=timeout)
         return self._exception
 
     def add_done_callback(self, fn):
