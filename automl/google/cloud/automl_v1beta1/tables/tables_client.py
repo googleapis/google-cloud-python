@@ -1999,6 +1999,7 @@ class TablesClient(object):
         dataset_display_name=None,
         dataset_name=None,
         train_budget_milli_node_hours=None,
+        optimization_objective=None,
         project=None,
         region=None,
         model_metadata={},
@@ -2037,6 +2038,8 @@ class TablesClient(object):
                 The amount of time (in thousandths of an hour) to spend
                 training. This value must be between 1,000 and 72,000 inclusive
                 (between 1 and 72 hours).
+            optimization_objective (string):
+                The metric AutoML tables should optimize for.
             dataset_display_name (Optional[string]):
                 The human-readable name given to the dataset you want to train
                 your model on. This must be supplied if `dataset` or
@@ -2097,6 +2100,8 @@ class TablesClient(object):
         )
 
         model_metadata["train_budget_milli_node_hours"] = train_budget_milli_node_hours
+        if optimization_objective is not None:
+            model_metadata["optimization_objective"] = optimization_objective
 
         dataset_id = dataset_name.rsplit("/", 1)[-1]
         columns = [
@@ -2564,8 +2569,10 @@ class TablesClient(object):
 
     def batch_predict(
         self,
-        gcs_input_uris,
-        gcs_output_uri_prefix,
+        bigquery_input_uri=None,
+        bigquery_output_uri=None,
+        gcs_input_uris=None,
+        gcs_output_uri_prefix=None,
         model=None,
         model_name=None,
         model_display_name=None,
@@ -2602,11 +2609,15 @@ class TablesClient(object):
             region (Optional[string]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
-            gcs_input_uris (Union[List[string], string])
+            gcs_input_uris (Optional(Union[List[string], string]))
                 Either a list of or a single GCS URI containing the data you
                 want to predict off of.
-            gcs_output_uri_prefix (string)
+            gcs_output_uri_prefix (Optional[string])
                 The folder in GCS you want to write output to.
+            bigquery_input_uri (Optional[string])
+                The BigQuery table to input data from.
+            bigquery_output_uri (Optional[string])
+                The BigQuery table to output data to.
             model_display_name (Optional[string]):
                 The human-readable name given to the model you want to predict
                 with.  This must be supplied if `model` or `model_name` are not
@@ -2631,11 +2642,6 @@ class TablesClient(object):
                 to a retryable error and retry attempts failed.
             ValueError: If required parameters are missing.
         """
-        if gcs_input_uris is None or gcs_output_uri_prefix is None:
-            raise ValueError(
-                "Both 'gcs_input_uris' and " "'gcs_output_uri_prefix' must be set."
-            )
-
         model_name = self.__model_name_from_args(
             model=model,
             model_name=model_name,
@@ -2645,12 +2651,31 @@ class TablesClient(object):
             **kwargs
         )
 
-        if type(gcs_input_uris) != list:
-            gcs_input_uris = [gcs_input_uris]
+        input_request = None
+        if gcs_input_uris is not None:
+            if type(gcs_input_uris) != list:
+                gcs_input_uris = [gcs_input_uris]
+            input_request = {"gcs_source": {"input_uris": gcs_input_uris}}
+        elif bigquery_input_uri is not None:
+            input_request = {"bigquery_source": {"input_uri": bigquery_input_uri}}
+        else:
+            raise ValueError(
+                "One of 'gcs_input_uris'/'bigquery_input_uris' must" "be set"
+            )
 
-        input_request = {"gcs_source": {"input_uris": gcs_input_uris}}
-
-        output_request = {"gcs_source": {"output_uri_prefix": gcs_output_uri_prefix}}
+        output_request = None
+        if gcs_output_uri_prefix is not None:
+            output_request = {
+                "gcs_destination": {"output_uri_prefix": gcs_output_uri_prefix}
+            }
+        elif bigquery_output_uri is not None:
+            output_request = {
+                "bigquery_destination": {"output_uri": bigquery_output_uri}
+            }
+        else:
+            raise ValueError(
+                "One of 'gcs_output_uri_prefix'/'bigquery_output_uri' must be set"
+            )
 
         return self.prediction_client.batch_predict(
             model_name, input_request, output_request, **kwargs

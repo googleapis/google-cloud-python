@@ -1242,7 +1242,7 @@ class TestTablesClient(object):
         assert error is not None
         client.prediction_client.predict.assert_not_called()
 
-    def test_batch_predict(self):
+    def test_batch_predict_gcs(self):
         client = self.tables_client({}, {})
         client.batch_predict(
             model_name="my_model",
@@ -1252,7 +1252,33 @@ class TestTablesClient(object):
         client.prediction_client.batch_predict.assert_called_with(
             "my_model",
             {"gcs_source": {"input_uris": ["gs://input"]}},
-            {"gcs_source": {"output_uri_prefix": "gs://output"}},
+            {"gcs_destination": {"output_uri_prefix": "gs://output"}},
+        )
+
+    def test_batch_predict_bigquery(self):
+        client = self.tables_client({}, {})
+        client.batch_predict(
+            model_name="my_model",
+            bigquery_input_uri="bq://input",
+            bigquery_output_uri="bq://output",
+        )
+        client.prediction_client.batch_predict.assert_called_with(
+            "my_model",
+            {"bigquery_source": {"input_uri": "bq://input"}},
+            {"bigquery_destination": {"output_uri": "bq://output"}},
+        )
+
+    def test_batch_predict_mixed(self):
+        client = self.tables_client({}, {})
+        client.batch_predict(
+            model_name="my_model",
+            gcs_input_uris="gs://input",
+            bigquery_output_uri="bq://output",
+        )
+        client.prediction_client.batch_predict.assert_called_with(
+            "my_model",
+            {"gcs_source": {"input_uris": ["gs://input"]}},
+            {"bigquery_destination": {"output_uri": "bq://output"}},
         )
 
     def test_batch_predict_missing_input_gcs_uri(self):
@@ -1269,7 +1295,21 @@ class TestTablesClient(object):
         assert error is not None
         client.prediction_client.batch_predict.assert_not_called()
 
-    def test_batch_predict_missing_input_gcs_uri(self):
+    def test_batch_predict_missing_input_bigquery_uri(self):
+        client = self.tables_client({}, {})
+        error = None
+        try:
+            client.batch_predict(
+                model_name="my_model",
+                bigquery_input_uri=None,
+                gcs_output_uri_prefix="gs://output",
+            )
+        except ValueError as e:
+            error = e
+        assert error is not None
+        client.prediction_client.batch_predict.assert_not_called()
+
+    def test_batch_predict_missing_output_gcs_uri(self):
         client = self.tables_client({}, {})
         error = None
         try:
@@ -1277,6 +1317,20 @@ class TestTablesClient(object):
                 model_name="my_model",
                 gcs_input_uris="gs://input",
                 gcs_output_uri_prefix=None,
+            )
+        except ValueError as e:
+            error = e
+        assert error is not None
+        client.prediction_client.batch_predict.assert_not_called()
+
+    def test_batch_predict_missing_output_bigquery_uri(self):
+        client = self.tables_client({}, {})
+        error = None
+        try:
+            client.batch_predict(
+                model_name="my_model",
+                gcs_input_uris="gs://input",
+                bigquery_output_uri=None,
             )
         except ValueError as e:
             error = e
