@@ -147,6 +147,9 @@ from google.cloud.bigquery.dbapi import _helpers
 import six
 
 
+IPYTHON_USER_AGENT = "ipython-{}".format(IPython.__version__)
+
+
 class Context(object):
     """Storage for objects to be used throughout an IPython notebook session.
 
@@ -396,9 +399,7 @@ def _cell_magic(line, query):
         project=project,
         credentials=context.credentials,
         default_query_job_config=context.default_query_job_config,
-        client_info=client_info.ClientInfo(
-            user_agent="ipython-{}".format(IPython.__version__)
-        ),
+        client_info=client_info.ClientInfo(user_agent=IPYTHON_USER_AGENT),
     )
     if context._connection:
         client._connection = context._connection
@@ -439,4 +440,7 @@ def _make_bqstorage_client(use_bqstorage_api, credentials):
         )
         six.raise_from(customized_error, err)
 
-    return bigquery_storage_v1beta1.BigQueryStorageClient(credentials=credentials)
+    return bigquery_storage_v1beta1.BigQueryStorageClient(
+        credentials=credentials,
+        client_info=client_info.ClientInfo(user_agent=IPYTHON_USER_AGENT),
+    )

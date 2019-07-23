@@ -490,10 +490,16 @@ def test_bigquery_magic_with_bqstorage_from_argument(monkeypatch):
 
         return_value = ip.run_cell_magic("bigquery", "--use_bqstorage_api", sql)
 
-        bqstorage_mock.assert_called_once_with(credentials=mock_credentials)
-        query_job_mock.to_dataframe.assert_called_once_with(
-            bqstorage_client=bqstorage_instance_mock
-        )
+    assert len(bqstorage_mock.call_args_list) == 1
+    kwargs = bqstorage_mock.call_args_list[0].kwargs
+    assert kwargs.get("credentials") is mock_credentials
+    client_info = kwargs.get("client_info")
+    assert client_info is not None
+    assert client_info.user_agent == "ipython-" + IPython.__version__
+
+    query_job_mock.to_dataframe.assert_called_once_with(
+        bqstorage_client=bqstorage_instance_mock
+    )
 
     assert isinstance(return_value, pandas.DataFrame)
 
@@ -540,10 +546,16 @@ def test_bigquery_magic_with_bqstorage_from_context(monkeypatch):
 
         return_value = ip.run_cell_magic("bigquery", "", sql)
 
-        bqstorage_mock.assert_called_once_with(credentials=mock_credentials)
-        query_job_mock.to_dataframe.assert_called_once_with(
-            bqstorage_client=bqstorage_instance_mock
-        )
+    assert len(bqstorage_mock.call_args_list) == 1
+    kwargs = bqstorage_mock.call_args_list[0].kwargs
+    assert kwargs.get("credentials") is mock_credentials
+    client_info = kwargs.get("client_info")
+    assert client_info is not None
+    assert client_info.user_agent == "ipython-" + IPython.__version__
+
+    query_job_mock.to_dataframe.assert_called_once_with(
+        bqstorage_client=bqstorage_instance_mock
+    )
 
     assert isinstance(return_value, pandas.DataFrame)
 
