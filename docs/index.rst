@@ -25,7 +25,7 @@
   Natural Language <language/index>
   OSLogin <oslogin/index>
   PubSub <pubsub/index>
-  Redis <redis/index>
+  Memorystore <redis/index>
   Resource Manager <resource-manager/index>
   Runtime Configuration <runtimeconfig/index>
   Scheduler <scheduler/index>
