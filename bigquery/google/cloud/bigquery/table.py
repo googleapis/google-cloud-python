@@ -388,10 +388,7 @@ class Table(object):
     }
 
     def __init__(self, table_ref, schema=None):
-        if isinstance(table_ref, six.string_types):
-            table_ref = TableReference.from_string(table_ref)
-        elif isinstance(table_ref, TableListItem):
-            table_ref = table_ref.reference
+        table_ref = _table_arg_to_table_ref(table_ref)
         self._properties = {"tableReference": table_ref.to_api_repr(), "labels": {}}
         # Let the @property do validation.
         if schema is not None:
