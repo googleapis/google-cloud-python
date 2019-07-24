@@ -119,6 +119,12 @@ def test_result_timeout():
         future.result(timeout=1)
 
 
+def test_exception_timeout():
+    future = PollingFutureImplTimeout()
+    with pytest.raises(concurrent.futures.TimeoutError):
+        future.exception(timeout=1)
+
+
 class PollingFutureImplTransient(PollingFutureImplWithPoll):
     def __init__(self, errors):
         super(PollingFutureImplTransient, self).__init__()
