@@ -82,16 +82,23 @@ def test_from_rfc3339():
     )
 
 
-def test_from_rfc3339_with_bad_tz():
-    value = "2009-12-17T12:44:32.123456789BAD"
-
-    with pytest.raises(ValueError):
-        datetime_helpers.from_rfc3339(value)
+def test_from_rfc3339_nanos():
+    value = "2009-12-17T12:44:32.123456Z"
+    assert datetime_helpers.from_rfc3339_nanos(value) == datetime.datetime(
+        2009, 12, 17, 12, 44, 32, 123456, pytz.utc
+    )
 
 
 def test_from_rfc3339_without_nanos():
     value = "2009-12-17T12:44:32Z"
     assert datetime_helpers.from_rfc3339(value) == datetime.datetime(
+        2009, 12, 17, 12, 44, 32, 0, pytz.utc
+    )
+
+
+def test_from_rfc3339_nanos_without_nanos():
+    value = "2009-12-17T12:44:32Z"
+    assert datetime_helpers.from_rfc3339_nanos(value) == datetime.datetime(
         2009, 12, 17, 12, 44, 32, 0, pytz.utc
     )
 
@@ -112,6 +119,26 @@ def test_from_rfc3339_without_nanos():
 def test_from_rfc3339_with_truncated_nanos(truncated, micros):
     value = "2009-12-17T12:44:32.{}Z".format(truncated)
     assert datetime_helpers.from_rfc3339(value) == datetime.datetime(
+        2009, 12, 17, 12, 44, 32, micros, pytz.utc
+    )
+
+
+@pytest.mark.parametrize(
+    "truncated, micros",
+    [
+        ("12345678", 123456),
+        ("1234567", 123456),
+        ("123456", 123456),
+        ("12345", 123450),
+        ("1234", 123400),
+        ("123", 123000),
+        ("12", 120000),
+        ("1", 100000),
+    ],
+)
+def test_from_rfc3339_nanos_with_truncated_nanos(truncated, micros):
+    value = "2009-12-17T12:44:32.{}Z".format(truncated)
+    assert datetime_helpers.from_rfc3339_nanos(value) == datetime.datetime(
         2009, 12, 17, 12, 44, 32, micros, pytz.utc
     )
 
