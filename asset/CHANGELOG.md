@@ -26,7 +26,7 @@
 - Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
 
 ### Internal / Testing Changes
-- Cloud Asset: update vpcsc test settings. ([#8627](https://github.com/googleapis/google-cloud-python/pull/8627))
+- Update vpcsc test settings. ([#8627](https://github.com/googleapis/google-cloud-python/pull/8627))
 - Pin black version (via synth) ([#8572](https://github.com/googleapis/google-cloud-python/pull/8572))
 - Add VPCSC tests. ([#8613](https://github.com/googleapis/google-cloud-python/pull/8613))
 - All: Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
