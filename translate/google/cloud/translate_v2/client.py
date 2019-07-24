@@ -81,7 +81,7 @@ class Client(BaseClient):
         self.target_language = target_language
         super(Client, self).__init__(credentials=credentials, _http=_http)
 
-        api_endpoint = None
+        kw_args = {"client_info": client_info}
         if client_options:
             if type(client_options) == dict:
                 client_options = google.api_core.client_options.from_dict(
@@ -89,10 +89,9 @@ class Client(BaseClient):
                 )
             if client_options.api_endpoint:
                 api_endpoint = client_options.api_endpoint
+                kw_args["api_endpoint"] = api_endpoint
 
-        self._connection = Connection(
-            self, client_info=client_info, api_endpoint=api_endpoint
-        )
+        self._connection = Connection(self, **kw_args)
 
     def get_languages(self, target_language=None):
         """Get list of supported languages for translation.

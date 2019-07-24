@@ -30,7 +30,13 @@ class TestConnection(unittest.TestCase):
     def test_build_api_url_no_extra_query_params(self):
         conn = self._make_one(object())
         URI = "/".join(
-            [conn.DEFAULT_API_ENDPOINT, "language", "translate", conn.API_VERSION, "foo"]
+            [
+                conn.DEFAULT_API_ENDPOINT,
+                "language",
+                "translate",
+                conn.API_VERSION,
+                "foo",
+            ]
         )
         self.assertEqual(conn.build_api_url("/foo"), URI)
 
