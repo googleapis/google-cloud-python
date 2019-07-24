@@ -2,7 +2,7 @@
 ==========================================
 
 .. automodule:: google.resumable_media.requests.upload
-    :members:
-    :inherited-members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :inherited-members:
+   :undoc-members:
+   :show-inheritance:

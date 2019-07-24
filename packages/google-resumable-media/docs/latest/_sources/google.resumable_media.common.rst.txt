@@ -2,7 +2,7 @@
 =================================
 
 .. automodule:: google.resumable_media.common
-    :members:
-    :inherited-members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :inherited-members:
+   :undoc-members:
+   :show-inheritance:

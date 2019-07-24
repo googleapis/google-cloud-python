@@ -201,9 +201,9 @@ be sent with the request, e.g. headers for encrypted data.</li>
 </table>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.resumable_media.requests.upload.MultipartUpload.finished">
-<code class="descname">finished</code><a class="headerlink" href="#google.resumable_media.requests.upload.MultipartUpload.finished" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="descname">finished</code><a class="headerlink" href="#google.resumable_media.requests.upload.MultipartUpload.finished" title="Permalink to this definition">¶</a></dt>
 <dd><p>Flag indicating if the upload has completed.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -351,9 +351,9 @@ encrypted data. These <strong>will not</strong> be sent with
 </tr>
 </tbody>
 </table>
-<dl class="attribute">
+<dl class="method">
 <dt id="google.resumable_media.requests.upload.ResumableUpload.bytes_uploaded">
-<code class="descname">bytes_uploaded</code><a class="headerlink" href="#google.resumable_media.requests.upload.ResumableUpload.bytes_uploaded" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="descname">bytes_uploaded</code><a class="headerlink" href="#google.resumable_media.requests.upload.ResumableUpload.bytes_uploaded" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of bytes that have been uploaded.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -365,9 +365,9 @@ encrypted data. These <strong>will not</strong> be sent with
 </table>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.resumable_media.requests.upload.ResumableUpload.chunk_size">
-<code class="descname">chunk_size</code><a class="headerlink" href="#google.resumable_media.requests.upload.ResumableUpload.chunk_size" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="descname">chunk_size</code><a class="headerlink" href="#google.resumable_media.requests.upload.ResumableUpload.chunk_size" title="Permalink to this definition">¶</a></dt>
 <dd><p>The size of each chunk used to upload the resource.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -379,9 +379,9 @@ encrypted data. These <strong>will not</strong> be sent with
 </table>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.resumable_media.requests.upload.ResumableUpload.finished">
-<code class="descname">finished</code><a class="headerlink" href="#google.resumable_media.requests.upload.ResumableUpload.finished" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="descname">finished</code><a class="headerlink" href="#google.resumable_media.requests.upload.ResumableUpload.finished" title="Permalink to this definition">¶</a></dt>
 <dd><p>Flag indicating if the upload has completed.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -440,9 +440,9 @@ we determine the upload size from the size of the stream. If
 </table>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.resumable_media.requests.upload.ResumableUpload.invalid">
-<code class="descname">invalid</code><a class="headerlink" href="#google.resumable_media.requests.upload.ResumableUpload.invalid" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="descname">invalid</code><a class="headerlink" href="#google.resumable_media.requests.upload.ResumableUpload.invalid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Indicates if the upload is in an invalid state.</p>
 <p>This will occur if a call to <a class="reference internal" href="#google.resumable_media.requests.upload.ResumableUpload.transmit_next_chunk" title="google.resumable_media.requests.upload.ResumableUpload.transmit_next_chunk"><code class="xref py py-meth docutils literal notranslate"><span class="pre">transmit_next_chunk()</span></code></a> fails.
 To recover from such a failure, call <a class="reference internal" href="#google.resumable_media.requests.upload.ResumableUpload.recover" title="google.resumable_media.requests.upload.ResumableUpload.recover"><code class="xref py py-meth docutils literal notranslate"><span class="pre">recover()</span></code></a>.</p>
@@ -480,9 +480,9 @@ make authenticated requests.</td>
 </table>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.resumable_media.requests.upload.ResumableUpload.resumable_url">
-<code class="descname">resumable_url</code><a class="headerlink" href="#google.resumable_media.requests.upload.ResumableUpload.resumable_url" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="descname">resumable_url</code><a class="headerlink" href="#google.resumable_media.requests.upload.ResumableUpload.resumable_url" title="Permalink to this definition">¶</a></dt>
 <dd><p>The URL of the in-progress resumable upload.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -494,9 +494,9 @@ make authenticated requests.</td>
 </table>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.resumable_media.requests.upload.ResumableUpload.total_bytes">
-<code class="descname">total_bytes</code><a class="headerlink" href="#google.resumable_media.requests.upload.ResumableUpload.total_bytes" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="descname">total_bytes</code><a class="headerlink" href="#google.resumable_media.requests.upload.ResumableUpload.total_bytes" title="Permalink to this definition">¶</a></dt>
 <dd><p>The total number of bytes to be uploaded.</p>
 <p>If this upload is initiated (via <a class="reference internal" href="#google.resumable_media.requests.upload.ResumableUpload.initiate" title="google.resumable_media.requests.upload.ResumableUpload.initiate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">initiate()</span></code></a>) with
 <code class="docutils literal notranslate"><span class="pre">stream_final=True</span></code>, this value will be populated based on the size
@@ -591,9 +591,9 @@ be sent with the request, e.g. headers for encrypted data.</li>
 </table>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.resumable_media.requests.upload.SimpleUpload.finished">
-<code class="descname">finished</code><a class="headerlink" href="#google.resumable_media.requests.upload.SimpleUpload.finished" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="descname">finished</code><a class="headerlink" href="#google.resumable_media.requests.upload.SimpleUpload.finished" title="Permalink to this definition">¶</a></dt>
 <dd><p>Flag indicating if the upload has completed.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

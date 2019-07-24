@@ -34,10 +34,10 @@ _BASE_PACKAGE = 'google.resumable_media.requests'
 _EXPECTED_AUTOMODULE_LINES = (
     '',
     '.. automodule:: google.resumable_media.requests',
-    '    :members:',
-    '    :inherited-members:',
-    '    :undoc-members:',
-    '    :show-inheritance:',
+    '   :members:',
+    '   :inherited-members:',
+    '   :undoc-members:',
+    '   :show-inheritance:',
     '',
 )
 _CURR_DIR = os.path.dirname(__file__)

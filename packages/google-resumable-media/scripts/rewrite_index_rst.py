@@ -42,10 +42,10 @@ _EXPECTED_SUBMODULE_LINES = (
 _EXPECTED_AUTOMODULE_LINES = (
     '',
     '.. automodule:: google.resumable_media',
-    '    :members:',
-    '    :inherited-members:',
-    '    :undoc-members:',
-    '    :show-inheritance:',
+    '   :members:',
+    '   :inherited-members:',
+    '   :undoc-members:',
+    '   :show-inheritance:',
     '',
 )
 _CURR_DIR = os.path.dirname(__file__)

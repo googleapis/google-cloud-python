@@ -58,8 +58,8 @@ def docs(session):
     # Install Sphinx and other dependencies.
     session.chdir(os.path.realpath(os.path.dirname(__file__)))
     session.install(
-        'sphinx',
-        'sphinx_rtd_theme',
+        'Sphinx == 2.1.2',
+        'sphinx_rtd_theme == 0.4.3',
         'sphinx-docstring-typing >= 0.0.3',
         REQUESTS,
     )
