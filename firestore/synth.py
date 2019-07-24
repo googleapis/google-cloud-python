@@ -94,4 +94,11 @@ s.replace(
     "FIRESTORE_APPLICATION_CREDENTIALS",
 )
 
+s.replace(
+    "noxfile.py",
+    '"--quiet", system_test',
+    '"--verbose", system_test',
+)
+
+
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
