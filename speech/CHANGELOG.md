@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## 1.2.0
+
+07-24-2019 17:35 PDT
+
+### New Features
+- Add 'client_options' support (via synth). ([#8534](https://github.com/googleapis/google-cloud-python/pull/8534))
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+- Pin black version (via synth). ([#8596](https://github.com/googleapis/google-cloud-python/pull/8596))
+
+### Documentation
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+
 ## 1.1.0
 
 06-27-2019 16:55 PDT
