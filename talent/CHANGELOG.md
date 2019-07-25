@@ -10,7 +10,7 @@
 
 
 ### Implementation Changes
-- search_profiles returns iterable of SummarizedProfile instead of HistogramQueryResult (via synth). ([#7962](https://github.com/googleapis/google-cloud-python/pull/7962))
+- Return iterable of `SummarizedProfile` from `search_profiles` rather than`HistogramQueryResult` (via synth). ([#7962](https://github.com/googleapis/google-cloud-python/pull/7962))
 
 ### New Features
 - Add strict keywords search, increase timeout (via synth). ([#8712](https://github.com/googleapis/google-cloud-python/pull/8712))
