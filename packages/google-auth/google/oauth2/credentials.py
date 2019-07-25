@@ -179,7 +179,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
                 'Authorized user info was not in the expected format, missing '
                 'fields {}.'.format(', '.join(missing)))
 
-        return Credentials(
+        return cls(
             None,  # No access token, must be refreshed.
             refresh_token=info['refresh_token'],
             token_uri=_GOOGLE_OAUTH2_TOKEN_ENDPOINT,
