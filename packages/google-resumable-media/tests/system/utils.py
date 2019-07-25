@@ -14,25 +14,24 @@
 
 import base64
 import hashlib
-import os
+import time
 
 
-BUCKET_NAME = os.environ[u'GOOGLE_RESUMABLE_MEDIA_BUCKET']
-DOWNLOAD_URL_TEMPLATE = (
-    u'https://www.googleapis.com/download/storage/v1/b/' +
-    BUCKET_NAME +
-    u'/o/{blob_name}?alt=media')
-_UPLOAD_BASE = (
-    u'https://www.googleapis.com/upload/storage/v1/b/' +
-    BUCKET_NAME +
-    u'/o?uploadType=')
+BUCKET_NAME = u'grpm-systest-{}'.format(int(1000 * time.time()))
+BUCKET_POST_URL = u'https://www.googleapis.com/storage/v1/b/'
+BUCKET_URL = u'https://www.googleapis.com/storage/v1/b/{}'.format(BUCKET_NAME)
+
+_DOWNLOAD_BASE = u'https://www.googleapis.com/download/storage/v1/b/{}'.format(
+    BUCKET_NAME)
+DOWNLOAD_URL_TEMPLATE = _DOWNLOAD_BASE + u'/o/{blob_name}?alt=media'
+
+_UPLOAD_BASE = u'https://www.googleapis.com/upload/storage/v1/b/{}'.format(
+    BUCKET_NAME) + u'/o?uploadType='
 SIMPLE_UPLOAD_TEMPLATE = _UPLOAD_BASE + u'media&name={blob_name}'
 MULTIPART_UPLOAD = _UPLOAD_BASE + u'multipart'
 RESUMABLE_UPLOAD = _UPLOAD_BASE + u'resumable'
-METADATA_URL_TEMPLATE = (
-    u'https://www.googleapis.com/storage/v1/b/' +
-    BUCKET_NAME +
-    u'/o/{blob_name}')
+
+METADATA_URL_TEMPLATE = BUCKET_URL + u'/o/{blob_name}'
 
 GCS_RW_SCOPE = u'https://www.googleapis.com/auth/devstorage.read_write'
 # Generated using random.choice() with all 256 byte choices.

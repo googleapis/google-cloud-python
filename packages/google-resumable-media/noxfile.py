@@ -19,7 +19,6 @@ import nox
 
 
 SYSTEM_TEST_ENV_VARS = (
-    'GOOGLE_RESUMABLE_MEDIA_BUCKET',
     'GOOGLE_APPLICATION_CREDENTIALS',
 )
 REQUESTS = 'requests >= 2.18.0, < 3.0.0dev'

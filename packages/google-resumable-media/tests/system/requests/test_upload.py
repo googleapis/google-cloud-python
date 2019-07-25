@@ -17,8 +17,6 @@ import hashlib
 import io
 import os
 
-import google.auth
-import google.auth.transport.requests as tr_requests
 import pytest
 from six.moves import http_client
 from six.moves import urllib_parse
@@ -40,12 +38,6 @@ BAD_CHUNK_SIZE_MSG = (
     b'or greater than 262144, except for the final request (it\'s recommended '
     b'to be the exact multiple of 262144).  The received request contained '
     b'1024 bytes, which does not meet this requirement.')
-
-
-@pytest.fixture(scope=u'module')
-def authorized_transport():
-    credentials, _ = google.auth.default(scopes=(utils.GCS_RW_SCOPE,))
-    yield tr_requests.AuthorizedSession(credentials)
 
 
 @pytest.fixture
@@ -116,7 +108,7 @@ def check_does_not_exist(transport, blob_name):
     assert response.status_code == http_client.NOT_FOUND
 
 
-def test_simple_upload(authorized_transport, cleanup):
+def test_simple_upload(authorized_transport, bucket, cleanup):
     with open(ICO_FILE, u'rb') as file_obj:
         actual_contents = file_obj.read()
 
@@ -139,7 +131,7 @@ def test_simple_upload(authorized_transport, cleanup):
         upload, authorized_transport, actual_contents, ICO_CONTENT_TYPE)
 
 
-def test_simple_upload_with_headers(authorized_transport, cleanup):
+def test_simple_upload_with_headers(authorized_transport, bucket, cleanup):
     blob_name = u'some-stuff.bin'
     # Make sure to clean up the uploaded blob when we are done.
     cleanup(blob_name, authorized_transport)
@@ -163,7 +155,7 @@ def test_simple_upload_with_headers(authorized_transport, cleanup):
         upload, authorized_transport, data, BYTES_CONTENT_TYPE)
 
 
-def test_multipart_upload(authorized_transport, cleanup):
+def test_multipart_upload(authorized_transport, bucket, cleanup):
     with open(ICO_FILE, u'rb') as file_obj:
         actual_contents = file_obj.read()
 
@@ -193,7 +185,7 @@ def test_multipart_upload(authorized_transport, cleanup):
         metadata, ICO_CONTENT_TYPE)
 
 
-def test_multipart_upload_with_headers(authorized_transport, cleanup):
+def test_multipart_upload_with_headers(authorized_transport, bucket, cleanup):
     blob_name = u'some-multipart-stuff.bin'
     # Make sure to clean up the uploaded blob when we are done.
     cleanup(blob_name, authorized_transport)
@@ -308,12 +300,12 @@ def _resumable_upload_helper(authorized_transport, stream, cleanup,
     check_tombstoned(upload, authorized_transport)
 
 
-def test_resumable_upload(authorized_transport, img_stream, cleanup):
+def test_resumable_upload(authorized_transport, img_stream, bucket, cleanup):
     _resumable_upload_helper(authorized_transport, img_stream, cleanup)
 
 
 def test_resumable_upload_with_headers(
-        authorized_transport, img_stream, cleanup):
+        authorized_transport, img_stream, bucket, cleanup):
     headers = utils.get_encryption_headers()
     _resumable_upload_helper(
         authorized_transport, img_stream, cleanup, headers=headers)
@@ -405,11 +397,12 @@ def _resumable_upload_recover_helper(authorized_transport, cleanup,
     check_tombstoned(upload, authorized_transport)
 
 
-def test_resumable_upload_recover(authorized_transport, cleanup):
+def test_resumable_upload_recover(authorized_transport, bucket, cleanup):
     _resumable_upload_recover_helper(authorized_transport, cleanup)
 
 
-def test_resumable_upload_recover_with_headers(authorized_transport, cleanup):
+def test_resumable_upload_recover_with_headers(
+        authorized_transport, bucket, cleanup):
     headers = utils.get_encryption_headers()
     _resumable_upload_recover_helper(
         authorized_transport, cleanup, headers=headers)
@@ -445,7 +438,8 @@ class TestResumableUploadUnknownSize(object):
         self._check_range_sent(response, start_byte, end_byte, u'*')
         self._check_range_received(response, end_byte + 1)
 
-    def test_smaller_than_chunk_size(self, authorized_transport, cleanup):
+    def test_smaller_than_chunk_size(
+            self, authorized_transport, bucket, cleanup):
         blob_name = os.path.basename(ICO_FILE)
         chunk_size = resumable_media.UPLOAD_CHUNK_SIZE
         # Make sure to clean up the uploaded blob when we are done.
@@ -480,7 +474,7 @@ class TestResumableUploadUnknownSize(object):
             # Make sure the upload is tombstoned.
             check_tombstoned(upload, authorized_transport)
 
-    def test_finish_at_chunk(self, authorized_transport, cleanup):
+    def test_finish_at_chunk(self, authorized_transport, bucket, cleanup):
         blob_name = u'some-clean-stuff.bin'
         chunk_size = resumable_media.UPLOAD_CHUNK_SIZE
         # Make sure to clean up the uploaded blob when we are done.
@@ -526,7 +520,7 @@ class TestResumableUploadUnknownSize(object):
         # Go back to where we were before the write.
         stream.seek(curr_pos)
 
-    def test_interleave_writes(self, authorized_transport, cleanup):
+    def test_interleave_writes(self, authorized_transport, bucket, cleanup):
         blob_name = u'some-moar-stuff.bin'
         chunk_size = resumable_media.UPLOAD_CHUNK_SIZE
         # Make sure to clean up the uploaded blob when we are done.
