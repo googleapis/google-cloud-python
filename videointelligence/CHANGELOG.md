@@ -4,6 +4,33 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## 1.10.0
+
+07-24-2019 17:52 PDT
+
+
+### Implementation Changes
+- Allow kwargs to be passed to create_channel (via synth). ([#8410](https://github.com/googleapis/google-cloud-python/pull/8410))
+
+### New Features
+- Add 'client_options' support (via synth). ([#8528](https://github.com/googleapis/google-cloud-python/pull/8528))
+- Add support for streaming classification / object tracking (via synth). ([#8427](https://github.com/googleapis/google-cloud-python/pull/8427))
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+
+### Documentation
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+
+### Internal / Testing Changes
+- Add VPC SC integration tests. ([#8607](https://github.com/googleapis/google-cloud-python/pull/8607))
+- Pin black version (via synth). ([#8601](https://github.com/googleapis/google-cloud-python/pull/8601))
+- Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+- Change test video URI, add disclaimer to auto-generated template files (via synth). ([#8334](https://github.com/googleapis/google-cloud-python/pull/8334))
+- Declare encoding as utf-8 in pb2 files (via synth).  ([#8370](https://github.com/googleapis/google-cloud-python/pull/8370))
+- Suppress checking 'cov-fail-under' in nox default session (via synth). ([#8256](https://github.com/googleapis/google-cloud-python/pull/8256))
+
 ## 1.9.0
 
 06-05-2019 10:42 PDT
