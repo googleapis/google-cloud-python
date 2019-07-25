@@ -2913,9 +2913,8 @@ class QueryJob(_AsyncJob):
                     self.job_id, retry, project=self.project, location=self.location
                 )
         except exceptions.GoogleCloudError as exc:
-            new_msg = str(exc) + self._format_for_exception(self.query, self.job_id)
-            new_exc = type(exc)(new_msg)
-            raise six.raise_from(new_exc, exc)
+            exc.message += self._format_for_exception(self.query, self.job_id)
+            raise
 
         # If the query job is complete but there are no query results, this was
         # special job, such as a DDL query. Return an empty result set to
