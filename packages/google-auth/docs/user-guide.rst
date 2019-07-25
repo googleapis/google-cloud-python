@@ -56,7 +56,7 @@ Service account private key files
 A service account private key file can be used to obtain credentials for a
 service account. You can create a private key using the `Credentials page of the
 Google Cloud Console`_. Once you have a private key you can either obtain
-credentials one of two ways:
+credentials one of three ways:
 
 1. Set the ``GOOGLE_APPLICATION_CREDENTIALS`` environment variable to the full
    path to your service account private key file
@@ -77,6 +77,20 @@ credentials one of two ways:
 
         credentials = service_account.Credentials.from_service_account_file(
             '/path/to/key.json')
+
+        scoped_credentials = credentials.with_scopes(
+            ['https://www.googleapis.com/auth/cloud-platform'])
+
+3. Use :meth:`service_account.Credentials.from_service_account_info
+   <google.oauth2.service_account.Credentials.from_service_account_info>`::
+
+        import json
+
+        from google.oauth2 import service_account
+
+        json_acct_info = json.loads(function_to_get_json_creds())
+        credentials = service_account.Credentials.from_service_account_info(
+            json_acct_info)
 
         scoped_credentials = credentials.with_scopes(
             ['https://www.googleapis.com/auth/cloud-platform'])
