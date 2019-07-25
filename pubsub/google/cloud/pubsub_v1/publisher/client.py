@@ -58,6 +58,8 @@ class Client(object):
             Before being passed along to the GAPIC constructor, a channel may
             be added if ``credentials`` are passed explicitly or if the
             Pub / Sub emulator is detected as running.
+            Regional endpoints can be set via `client_options` that takes a
+            single key-value pair of name `api_endpoint`.
     """
 
     _batch_class = thread.Batch
