@@ -334,7 +334,7 @@ class Table(object):
             for cluster_id, value_pb in table_pb.cluster_states.items()
         }
 
-    def read_row(self, row_key, filter_=None):
+    def read_row(self, row_key, filter_=None, retry=DEFAULT_RETRY_READ_ROWS):
         """Read a single row from this table.
 
         For example:
@@ -350,6 +350,12 @@ class Table(object):
         :param filter_: (Optional) The filter to apply to the contents of the
                         row. If unset, returns the entire row.
 
+        :type retry: :class:`~google.api_core.retry.Retry`
+        :param retry: (Optional) Retry delay or deadline argument. Override
+            the default via, e.g.:
+            ``DEFAULT_RETRY_READ_ROWS.with_deadline(new_value)`` or
+            ``DEFAULT_RETRY_READ_ROWS.with_delay(new_value)``.
+
         :rtype: :class:`.PartialRowData`, :data:`NoneType <types.NoneType>`
         :returns: The contents of the row if any chunks were returned in
                   the response, otherwise :data:`None`.
@@ -358,7 +364,9 @@ class Table(object):
         """
         row_set = RowSet()
         row_set.add_row_key(row_key)
-        result_iter = iter(self.read_rows(filter_=filter_, row_set=row_set))
+        result_iter = iter(
+            self.read_rows(filter_=filter_, row_set=row_set, retry=retry)
+        )
         row = next(result_iter, None)
         if next(result_iter, None) is not None:
             raise ValueError("More than one row was returned.")
