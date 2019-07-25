@@ -347,12 +347,10 @@ class Table(object):
                         row. If unset, returns the entire row.
 
         :type retry: :class:`~google.api_core.retry.Retry`
-        :param retry:
-            (Optional) Retry delay and deadline arguments. To override, the
-            default value :attr:`DEFAULT_RETRY_READ_ROWS` can be used and
-            modified with the :meth:`~google.api_core.retry.Retry.with_delay`
-            method or the :meth:`~google.api_core.retry.Retry.with_deadline`
-            method.
+        :param retry: (Optional) Retry delay or deadline argument. Override
+            the default via, e.g.:
+            ``DEFAULT_RETRY_READ_ROWS.with_deadline(new_value)`` or
+            ``DEFAULT_RETRY_READ_ROWS.with_delay(new_value)``.
 
         :rtype: :class:`.PartialRowData`, :data:`NoneType <types.NoneType>`
         :returns: The contents of the row if any chunks were returned in
