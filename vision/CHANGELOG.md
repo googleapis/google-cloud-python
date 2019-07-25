@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## 0.38.1
+
+07-24-2019 17:54 PDT
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+
+### Documentation
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+
 ## 0.38.0
 
 07-09-2019 10:05 PDT
