@@ -131,11 +131,11 @@ def from_rfc3339(value):
         in UTC.
 
     """
-    with_nanos = _RFC3339_NANOS.match(value)
-
-    if with_nanos is None:
+    try:
         return datetime.datetime.strptime(value, _RFC3339_MICROS).replace(tzinfo=pytz.utc)
-    else:
+    except ValueError:
+        with_nanos = _RFC3339_NANOS.match(value)
+
         bare_seconds = datetime.datetime.strptime(
             with_nanos.group("no_fraction"), _RFC3339_NO_FRACTION
         )
@@ -155,14 +155,14 @@ def from_rfc3339_nanos(value):
     """Convert a nanosecond-precision timestamp to a native datetime.
 
     .. note::
-        Python datetimes do not support nanosecond precision; this 
+        Python datetimes do not support nanosecond precision; this
         function therefore truncates such values to microseconds.
 
     Args:
         value (str): The RFC3339 string to convert.
 
     Returns:
-        datetime.datetime: The datetime object equivalent to the 
+        datetime.datetime: The datetime object equivalent to the
         timestamp in UTC.
 
     Raises:
@@ -172,7 +172,7 @@ def from_rfc3339_nanos(value):
     # Raise deprecation warnings for things we want to go away.
     warnings.warn(
         "The `from_rfc3339_nanos` method will be deprecated in"
-        "future versions; use `from_rfc3339` instead.",
+        " future versions; use `from_rfc3339` instead.",
         PendingDeprecationWarning,
         stacklevel=2,
     )
