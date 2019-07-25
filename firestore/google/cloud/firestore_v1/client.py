@@ -120,15 +120,15 @@ class Client(ClientWithProject):
             # Use a custom channel.
             # We need this in order to set appropriate keepalive options.
 
-            channel = firestore_grpc_transport.FirestoreGrpcTransport.create_channel(
-                self._target,
-                credentials=self._credentials,
-                options={"grpc.keepalive_time_ms": 30000}.items(),
-            )
-
             if self._emulator_host is not None:
                 channel = firestore_grpc_transport.firestore_pb2_grpc.grpc.insecure_channel(
                     self._emulator_host
+                )
+            else:
+                channel = firestore_grpc_transport.FirestoreGrpcTransport.create_channel(
+                    self._target,
+                    credentials=self._credentials,
+                    options={"grpc.keepalive_time_ms": 30000}.items(),
                 )
 
             self._transport = firestore_grpc_transport.FirestoreGrpcTransport(

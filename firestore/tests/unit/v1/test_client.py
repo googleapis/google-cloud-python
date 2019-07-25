@@ -47,6 +47,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client._credentials, credentials)
         self.assertEqual(client._database, DEFAULT_DATABASE)
         self.assertIs(client._client_info, _CLIENT_INFO)
+        self.assertIsNone(client._emulator_host)
 
     def test_constructor_with_emulator_host(self):
         from google.cloud.firestore_v1.client import _FIRESTORE_EMULATOR_HOST
@@ -75,7 +76,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(client._client_info, client_info)
 
     @mock.patch(
-        "google.cloud.firestore_v1.gapic.firestore_client." "FirestoreClient",
+        "google.cloud.firestore_v1.gapic.firestore_client.FirestoreClient",
         autospec=True,
         return_value=mock.sentinel.firestore_api,
     )
@@ -96,11 +97,17 @@ class TestClient(unittest.TestCase):
         self.assertEqual(mock_client.call_count, 1)
 
     @mock.patch(
-        "google.cloud.firestore_v1.gapic.firestore_client." "FirestoreClient",
+        "google.cloud.firestore_v1.gapic.firestore_client.FirestoreClient",
         autospec=True,
         return_value=mock.sentinel.firestore_api,
     )
-    def test__firestore_api_property_with_emulator(self, mock_client):
+    @mock.patch(
+        "google.cloud.firestore_v1.gapic.transports.firestore_grpc_transport.firestore_pb2_grpc.grpc.insecure_channel",
+        autospec=True,
+    )
+    def test__firestore_api_property_with_emulator(
+        self, mock_insecure_channel, mock_client
+    ):
         emulator_host = "localhost:8081"
         with mock.patch("os.getenv") as getenv:
             getenv.return_value = emulator_host
@@ -110,6 +117,9 @@ class TestClient(unittest.TestCase):
         firestore_api = client._firestore_api
         self.assertIs(firestore_api, mock_client.return_value)
         self.assertIs(firestore_api, client._firestore_api_internal)
+
+        self.assertEqual(mock_insecure_channel.call_count, 1)
+        self.assertEqual(mock_insecure_channel.call_args.args[0], emulator_host)
 
         # Call again to show that it is cached, but call count is still 1.
         self.assertIs(client._firestore_api, mock_client.return_value)
