@@ -143,7 +143,14 @@ class MutationsBatcher(object):
             self.mutate(row)
 
     def flush(self):
-        """ Sends the current. batch to Cloud Bigtable. """
+        """ Sends the current. batch to Cloud Bigtable.
+        For example:
+
+        .. literalinclude:: snippets.py
+            :start-after: [START bigtable_batcher_flush]
+            :end-before: [END bigtable_batcher_flush]
+
+        """
         if len(self.rows) != 0:
             self.table.mutate_rows(self.rows)
             self.total_mutation_count = 0
