@@ -92,7 +92,7 @@ def test__load_credentials_from_file_authorized_user_bad_format(tmpdir):
 
 
 def test__load_credentials_from_file_authorized_user_cloud_sdk():
-    with pytest.warns(UserWarning, matches='Cloud SDK'):
+    with pytest.warns(UserWarning, match='Cloud SDK'):
         credentials, project_id = _default._load_credentials_from_file(
             AUTHORIZED_USER_CLOUD_SDK_FILE)
     assert isinstance(credentials, google.oauth2.credentials.Credentials)
