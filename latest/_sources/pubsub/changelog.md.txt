@@ -4,6 +4,36 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 0.43.0
+
+07-24-2019 17:13 PDT
+
+
+### Implementation Changes
+- Accomodate new location of 'IAMPolicyStub' (via synth). ([#8680](https://github.com/googleapis/google-cloud-python/pull/8680))
+- Use kwargs in test_subscriber_client ([#8414](https://github.com/googleapis/google-cloud-python/pull/8414))
+
+### New Features
+- Add 'options_' argument to clients' 'get_iam_policy'; pin black version (via synth). ([#8657](https://github.com/googleapis/google-cloud-python/pull/8657))
+- Add 'client_options' support, update list method docstrings (via synth). ([#8518](https://github.com/googleapis/google-cloud-python/pull/8518))
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+- Update pin for 'grpc-google-iam-v1' to 0.12.3+. ([#8647](https://github.com/googleapis/google-cloud-python/pull/8647))
+
+### Documentation
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+- Fix typo in publisher index. ([#8619](https://github.com/googleapis/google-cloud-python/pull/8619))
+- Document how to choose the PubSub auth method ([#8429](https://github.com/googleapis/google-cloud-python/pull/8429))
+- Document different PuSub received message types ([#8468](https://github.com/googleapis/google-cloud-python/pull/8468))
+- PubSub: Document batch settings, make synth operations idempotent ([#8448](https://github.com/googleapis/google-cloud-python/pull/8448))
+- Add custom docstrings for FlowControl enum and values (via synth). ([#8426](https://github.com/googleapis/google-cloud-python/pull/8426))
+
+### Internal / Testing Changes
+- Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+- Add system tests for PubSub clients ([#8277](https://github.com/googleapis/google-cloud-python/pull/8277))
+
 ## 0.42.1
 
 06-18-2019 15:14 PDT
