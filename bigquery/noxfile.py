@@ -86,6 +86,9 @@ def system(session):
         session.install("-e", local_dep)
     session.install("-e", os.path.join("..", "storage"))
     session.install("-e", os.path.join("..", "test_utils"))
+    # Workaround for possible pyarrow regression in handling of NaN vs NULL in
+    # float columns.
+    session.install("pyarrow==0.13.0")
     session.install("-e", ".[all]")
 
     # IPython does not support Python 2 after version 5.x
@@ -114,6 +117,9 @@ def snippets(session):
         session.install("-e", local_dep)
     session.install("-e", os.path.join("..", "storage"))
     session.install("-e", os.path.join("..", "test_utils"))
+    # Workaround for possible pyarrow regression in handling of NaN vs NULL in
+    # float columns.
+    session.install("pyarrow==0.13.0")
     session.install("-e", ".[all]")
 
     # Run py.test against the snippets tests.
@@ -176,6 +182,9 @@ def docs(session):
     for local_dep in LOCAL_DEPS:
         session.install("-e", local_dep)
     session.install("-e", os.path.join("..", "storage"))
+    # Workaround for possible pyarrow regression in handling of NaN vs NULL in
+    # float columns.
+    session.install("pyarrow==0.13.0")
     session.install("-e", ".[all]")
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
