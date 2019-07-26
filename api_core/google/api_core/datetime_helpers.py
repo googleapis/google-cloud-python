@@ -132,23 +132,19 @@ def from_rfc3339(value):
 
     """
     with_nanos = _RFC3339_NANOS.match(value)
+    bare_seconds = datetime.datetime.strptime(
+        with_nanos.group("no_fraction"), _RFC3339_NO_FRACTION
+    )
+    fraction = with_nanos.group("nanos")
 
-    if with_nanos is None:
-        return datetime.datetime.strptime(value, _RFC3339_MICROS).replace(tzinfo=pytz.utc)
+    if fraction is None:
+        micros = 0
     else:
-        bare_seconds = datetime.datetime.strptime(
-            with_nanos.group("no_fraction"), _RFC3339_NO_FRACTION
-        )
-        fraction = with_nanos.group("nanos")
+        scale = 9 - len(fraction)
+        nanos = int(fraction) * (10 ** scale)
+        micros = nanos // 1000
 
-        if fraction is None:
-            micros = 0
-        else:
-            scale = 9 - len(fraction)
-            nanos = int(fraction) * (10 ** scale)
-            micros = nanos // 1000
-
-        return bare_seconds.replace(microsecond=micros, tzinfo=pytz.utc)
+    return bare_seconds.replace(microsecond=micros, tzinfo=pytz.utc)
 
 
 def from_rfc3339_nanos(value):
@@ -173,7 +169,7 @@ def from_rfc3339_nanos(value):
     warnings.warn(
         "The `from_rfc3339_nanos` function is deprecated"
         " use `from_rfc3339` instead.",
-        PendingDeprecationWarning,
+        DeprecationWarning,
         stacklevel=2,
     )
     return from_rfc3339(value)
