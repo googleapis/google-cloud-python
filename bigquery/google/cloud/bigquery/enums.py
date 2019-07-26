@@ -34,12 +34,11 @@ def _make_sql_scalars_enum():
             "DATE",
             "TIME",
             "DATETIME",
+            "GEOGRAPHY",
             "NUMERIC",
         )
     )
-    excluded_members = frozenset(
-        ("TYPE_KIND_UNSPECIFIED", "GEOGRAPHY", "ARRAY", "STRUCT")
-    )
+    excluded_members = frozenset(("TYPE_KIND_UNSPECIFIED", "ARRAY", "STRUCT"))
 
     # Sanity check - we do not want the new enum to go out of sync with the original
     # enum from gapic.

@@ -35,7 +35,7 @@ def gapic_enum():
 
 def test_standard_sql_types_enum_members(enum_under_test, gapic_enum):
     # check the presence of a few typical SQL types
-    for name in ("INT64", "FLOAT64", "DATE", "BOOL"):
+    for name in ("INT64", "FLOAT64", "DATE", "BOOL", "GEOGRAPHY"):
         assert name in enum_under_test.__members__
 
     # the enum members must match those in the original gapic enum
@@ -44,7 +44,7 @@ def test_standard_sql_types_enum_members(enum_under_test, gapic_enum):
         assert member.value == gapic_enum[member.name].value
 
     # check a few members that should *not* be copied over from the gapic enum
-    for name in ("GEOGRAPHY", "ARRAY"):
+    for name in ("STRUCT", "ARRAY"):
         assert name in gapic_enum.__members__
         assert name not in enum_under_test.__members__
 
