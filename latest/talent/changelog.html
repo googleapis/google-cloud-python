@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Changelog &#8212; google-cloud 79e0210 documentation</title>
+    <title>Changelog &#8212; google-cloud d4378c1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -39,22 +39,68 @@
 <h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">#</a></h1>
 <p><a class="reference external" href="https://pypi.org/project/google-cloud-talent/#history">PyPI History</a></p>
 <div class="section" id="id1">
-<h2>0.2.0<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h2>
-<p>05-09-2019 12:25 PDT</p>
+<h2>0.3.0<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h2>
+<p>07-24-2019 17:36 PDT</p>
 <div class="section" id="implementation-changes">
 <h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Remove classifier for Python 3.4 for end-of-life. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7535">#7535</a>)</li>
+<li>Return iterable of <code class="docutils literal notranslate"><span class="pre">SummarizedProfile</span></code> from <code class="docutils literal notranslate"><span class="pre">search_profiles</span></code> rather than<code class="docutils literal notranslate"><span class="pre">HistogramQueryResult</span></code> (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7962">#7962</a>)</li>
 </ul>
 </div>
 <div class="section" id="new-features">
 <h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Regenerate talent (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7861">#7861</a>)</li>
+<li>Add strict keywords search, increase timeout (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8712">#8712</a>)</li>
+<li>Add path-construction helpers to GAPIC clients (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8632">#8632</a>)</li>
+<li>Add ‘result_set_id’ param to ‘ProfileSearchClient.search_profiles’; add ‘ProfileQuery.candidate_availability_filter’; pin ‘black’ version; dostring tweaks (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8597">#8597</a>)</li>
+<li>Add ‘client_options’ support, update list method docstrings (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8523">#8523</a>)</li>
+<li>Add ‘batch_create_jobs’ and ‘batch_update_jobs’ (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8189">#8189</a>)</li>
+</ul>
+</div>
+<div class="section" id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Bump minimum version for google-api-core to 1.14.0. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8709">#8709</a>)</li>
 </ul>
 </div>
 <div class="section" id="documentation">
 <h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Link to googleapis.dev documentation in READMEs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8705">#8705</a>)</li>
+<li>Add compatibility check badges to READMEs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8288">#8288</a>)</li>
+</ul>
+</div>
+<div class="section" id="internal-testing-changes">
+<h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Add docs job to publish to googleapis.dev. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8464">#8464</a>)</li>
+<li>Allow kwargs to be passed to create_channel (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8405">#8405</a>)</li>
+<li>Declare encoding as utf-8 in pb2 files (via synth).(<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8365">#8365</a>)</li>
+<li>Add disclaimer to auto-generated template files (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8329">#8329</a>)</li>
+<li>Suppress checking ‘cov-fail-under’ in nox default session (via synth).  (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8253">#8253</a>)</li>
+<li>Fix coverage in ‘types.py’ (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8165">#8165</a>)</li>
+<li>Blacken noxfile.py, setup.py (via synth).(<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8133">#8133</a>)</li>
+<li>Add empty lines (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8073">#8073</a>)</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>0.2.0<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h2>
+<p>05-09-2019 12:25 PDT</p>
+<div class="section" id="id3">
+<h3>Implementation Changes<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Remove classifier for Python 3.4 for end-of-life. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7535">#7535</a>)</li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h3>New Features<a class="headerlink" href="#id4" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Regenerate talent (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7861">#7861</a>)</li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h3>Documentation<a class="headerlink" href="#id5" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Fixed broken talent client library documentation link (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7546">#7546</a>)</li>
 <li>Fix link in docstring.(<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7508">#7508</a>)</li>
@@ -62,8 +108,8 @@
 </ul>
 </div>
 </div>
-<div class="section" id="id2">
-<h2>0.1.0<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h2>
+<div class="section" id="id6">
+<h2>0.1.0<a class="headerlink" href="#id6" title="Permalink to this headline">#</a></h2>
 <p>03-05-2019 12:50 PST</p>
 <ul class="simple">
 <li>Initial release of google-cloud-talent</li>
