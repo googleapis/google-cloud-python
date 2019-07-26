@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import dataclasses
 import itertools
 import jinja2
 import keyword
@@ -23,7 +24,7 @@ from gapic.schema import (api, wrappers)
 
 from collections import (defaultdict, namedtuple, ChainMap as chainmap)
 from textwrap import dedent
-from typing import (ChainMap, Dict, List, Mapping, Optional, Set, Tuple)
+from typing import (ChainMap, Dict, List, Mapping, Optional, Set, Tuple, Union)
 
 # Outstanding issues:
 # * In real sample configs, many variables are
@@ -58,7 +59,50 @@ RESERVED_WORDS = frozenset(
 TEMPLATE_NAME = "sample.py.j2"
 
 
-TransformedRequest = namedtuple("TransformedRequest", ["base", "body"])
+@dataclasses.dataclass(frozen=True)
+class AttributeRequestSetup:
+    """A single request-field setup description.
+
+    If 'field' is not set, this is a top level attribute, in which case the 'base'
+    parameter of the owning TransformedRequest is the attribute name.
+
+    A True 'value_is_file' indicates that 'value' is a file path,
+    and that the value of the attribute is the contents of that file.
+
+    A non-empty 'input_parameter' indicates a formal parameter to the sample function
+    that contains the value for the attribute.
+
+    """
+    value: str
+    field: Optional[str] = None
+    value_is_file: bool = False
+    input_parameter: Optional[str] = None
+    comment: Optional[str] = None
+
+
+@dataclasses.dataclass(frozen=True)
+class TransformedRequest:
+    """Class representing a single field in a method call.
+
+    A request block, as read in from the sample config, is a list of dicts that
+    describe field setup for the API method request.
+
+    Fields with subfields are treated as dictionaries, with subfields as keys
+    and passed, read, or hardcoded subfield values as the mapped values.
+    These field dictionaries are passed into the client method as positional arguments.
+
+    Fields _without_ subfields, aka top-level-fields, are passed into the method call
+    as keyword parameters, with their associated values assigned directly.
+
+    A TransformedRequest describes a subfield of the API request.
+    It is either a top level request, in which case the 'single' attribute is filled,
+    or it has assigned-to subfields, in which case 'body' lists assignment setups.
+
+    The Optional[single]/Optional[body] is workaround for not having tagged unions.
+    """
+    base: str
+    single: Optional[AttributeRequestSetup]
+    body: Optional[List[AttributeRequestSetup]]
 
 
 class SampleError(Exception):
@@ -117,6 +161,10 @@ class InvalidRequestSetup(SampleError):
     pass
 
 
+class InvalidEnumVariant(SampleError):
+    pass
+
+
 def coerce_response_name(s: str) -> str:
     # In the sample config, the "$resp" keyword is used to refer to the
     # item of interest as received by the corresponding calling form.
@@ -148,6 +196,7 @@ class Validator:
     def __init__(self, method: wrappers.Method):
         # The response ($resp) variable is special and guaranteed to exist.
         # TODO: name lookup also involes type checking
+        self.request_type_ = method.input
         response_type = method.output
         if method.paged_result_field:
             response_type = method.paged_result_field
@@ -183,15 +232,16 @@ class Validator:
            variable name, e.g. clam.shell.
 
            The only required keys in each dict are "field" and value".
-           Optional keys are "input_parameter" and "value_is_file".
-           All values in the initial request are strings
-           except for the value for "value_is_file", which is a bool.
+           Optional keys are "input_parameter", "value_is_file". and "comment".
+           All values in the initial request are strings except for the value
+           for "value_is_file", which is a bool.
 
-           The topmost dict of the return value has two keys: "base" and "body",
-           where "base" maps to a variable name, and "body" maps to a list of variable
-           assignment definitions. The only difference in the bottommost dicts
-           are that "field" maps only to the second part of a dotted variable name.
-           Other key/value combinations in the dict are unmodified for the time being.
+           The TransformedRequest structure of the return value has three fields:
+           "base", "body", and "single", where "base" maps to the top level attribute name,
+           "body" maps to a list of subfield assignment definitions, and "single"
+           maps to a singleton attribute assignment structure with no "field" value.
+           The "field" attribute in the requests in a "body" list have their prefix stripped;
+           the request in a "single" attribute has no "field" attribute.
 
            Note: gRPC API methods only take one parameter (ignoring client-side streaming).
                  The reason that GAPIC client library API methods may take multiple parameters
@@ -199,22 +249,28 @@ class Validator:
                  The different 'bases' are really attributes for the singular request parameter.
 
            TODO: properly handle subfields, indexing, and so forth.
-
-           TODO: Conduct module lookup and expansion for protobuf enums.
-                 Requires proto/method/message descriptors.
-           TODO: Permit single level field/oneof requst parameters.
-                 Requires proto/method/message descriptors.
            TODO: Add/transform to list repeated element fields.
                  Requires proto/method/message descriptors.
 
            E.g. [{"field": "clam.shell", "value": "10 kg", "input_parameter": "shell"},
                  {"field": "clam.pearls", "value": "3"},
-                 {"field": "squid.mantle", "value": "100 kg"}]
+                 {"field": "squid.mantle", "value": "100 kg"},
+                 {"field": "whelk", "value": "speckled"}]
                   ->
-                [TransformedRequest("clam",
-                  [{"field": "shell", "value": "10 kg", "input_parameter": "shell"},
-                   {"field": "pearls", "value": "3"}]),
-                 TransformedRequest("squid", [{"field": "mantle", "value": "100 kg"}])]
+                [TransformedRequest(
+                     base="clam",
+                     body=[AttributeRequestSetup(field="shell",
+                                                 value="10 kg",
+                                                 input_parameter="shell"),
+                           AttributeRequestSetup(field="pearls", value="3")],
+                     single=None),
+                 TransformedRequest(base="squid",
+                                    body=[AttributeRequestSetup(field="mantle",
+                                                                value="100 kg")],
+                                    single=None),
+                 TransformedRequest(base="whelk",
+                                    body=None,
+                                    single=AttributeRequestSetup(value="speckled))]
 
            The transformation makes it easier to set up request parameters in jinja
            because it doesn't have to engage in prefix detection, validation,
@@ -225,78 +281,104 @@ class Validator:
             request (list[dict{str:str}]): The request body from the sample config
 
         Returns:
-            list[dict{str:(str|list[dict{str:str}])}]: The transformed request block.
+            List[TransformedRequest]: The transformed request block.
 
         Raises:
-            RedefinedVariable: If an "input_parameter" attempts to redefine a
-                               previously defined variable.
-            ReservedVariableName: If an "input_parameter" value or a "base" value
-                                  is a reserved word.
-            InvalidRequestSetup: If a dict in the request lacks a "field" key
-                                 or the corresponding value is malformed.
+            InvalidRequestSetup: If a dict in the request lacks a "field" key,
+                                 a "value" key, if there is an unexpected keyword,
+                                 or if more than one base parameter is given for
+                                 a client-side streaming calling form.
+            BadAttributeLookup: If a request field refers to a non-existent field
+                                in the request message type.
+
         """
-        base_param_to_attrs: Mapping[str,
-                                     List[Mapping[str, str]]] = defaultdict(list)
+        base_param_to_attrs: Dict[str,
+                                  List[AttributeRequestSetup]] = defaultdict(list)
 
-        for field_assignment in request:
-            field_assignment_copy = dict(field_assignment)
-            input_param = field_assignment_copy.get("input_parameter")
-            if input_param:
-                # We use str as the input type because
-                # validate_expression just needs to know
-                # that the input_parameter isn't a MessageType of any kind.
-                # TODO: write a test about that.
-                # TODO: handle enums
-                self._handle_lvalue(input_param, str)
+        for r in request:
+            duplicate = dict(r)
+            val = duplicate.get("value")
+            if not val:
+                raise InvalidRequestSetup(
+                    "Missing keyword in request entry: 'value'")
 
-            field = field_assignment_copy.get("field")
+            field = duplicate.get("field")
             if not field:
                 raise InvalidRequestSetup(
-                    "No field attribute found in request setup assignment: {}".format(
-                        field_assignment_copy
-                    )
-                )
+                    "Missing keyword in request entry: 'field'")
 
-            # TODO: properly handle top level fields
-            # E.g.
-            #
-            #  -field: edition
-            #   comment: The edition of the series.
-            #   value: '123'
-            #   input_parameter: edition
-            m = re.match(r"^([a-zA-Z]\w*)\.([a-zA-Z]\w*)$", field)
-            if not m:
+            spurious_keywords = set(duplicate.keys()) - {"value",
+                                                         "field",
+                                                         "value_is_file",
+                                                         "input_parameter",
+                                                         "comment"}
+            if spurious_keywords:
                 raise InvalidRequestSetup(
-                    "Malformed request attribute description: {}".format(field)
-                )
+                    "Spurious keyword(s) in request entry: {}".format(
+                        ", ".join(f"'{kword}'" for kword in spurious_keywords)))
 
-            base, attr = m.groups()
-            if base in RESERVED_WORDS:
-                raise ReservedVariableName(
-                    "Tried to define '{}', which is a reserved name".format(
-                        base)
-                )
+            input_parameter = duplicate.get("input_parameter")
+            if input_parameter:
+                self._handle_lvalue(input_parameter, str)
 
-            field_assignment_copy["field"] = attr
-            base_param_to_attrs[base].append(field_assignment_copy)
+            attr_chain = field.split(".")
+            base = self.request_type_
+            for attr_name in attr_chain:
+                attr = base.fields.get(attr_name)
+                if not attr:
+                    raise BadAttributeLookup(
+                        "Method request type {} has no attribute: '{}'".format(
+                            self.request_type_.type, attr_name))
 
-        if (
-            calling_form
-            in {
-                utils.CallingForm.RequestStreamingClient,
-                utils.CallingForm.RequestStreamingBidi,
-            }
-            and len(base_param_to_attrs) > 1
-        ):
+                if attr.message:
+                    base = attr.message
+
+                else:
+                    raise TypeError
+
+                # TODO: uncomment this when handling enums
+                # if attr.enum:
+                #     # A little bit hacky, but 'values' is a list, and this is the easiest
+                #     # way to verify that the value is a valid enum variant.
+                #     witness = next((e.name for e in attr.enum.values if e.name == val), None)
+                #     if not witness:
+                #         raise InvalidEnumVariant
+                #     # Python code can set protobuf enums from strings.
+                #     # This is preferable to adding the necessary import statement
+                #     # and requires less munging of the assigned value
+                #     duplicate["value"] = f"'{witness}'"
+
+            # TODO: what if there's more stuff in the chain?
+            if len(attr_chain) > 1:
+                duplicate["field"] = ".".join(attr_chain[1:])
+            else:
+                # Because of the way top level attrs get rendered,
+                # there can't be duplicates.
+                # This is admittedly a bit of a hack.
+                if attr_chain[0] in base_param_to_attrs:
+                    raise InvalidRequestSetup(
+                        "Duplicated top level field in request block: '{}'".format(
+                            attr_chain[0]))
+                del duplicate["field"]
+
+            # Mypy isn't smart enough to handle dictionary unpacking,
+            # so disable it for the AttributeRequestSetup ctor call.
+            base_param_to_attrs[attr_chain[0]].append(
+                AttributeRequestSetup(**duplicate))  # type: ignore
+
+        client_streaming_forms = {
+            utils.CallingForm.RequestStreamingClient,
+            utils.CallingForm.RequestStreamingBidi,
+        }
+
+        if len(base_param_to_attrs) > 1 and calling_form in client_streaming_forms:
             raise InvalidRequestSetup(
-                (
-                    "There can be at most 1 base request in a sample"
-                    " for a method with client side streaming"
-                )
-            )
+                "Too many base parameters for client side streaming form")
 
         return [
-            TransformedRequest(base, body) for base, body in base_param_to_attrs.items()
+            (TransformedRequest(base=key, body=val, single=None) if val[0].field
+             else TransformedRequest(base=key, body=None, single=val[0]))
+            for key, val in base_param_to_attrs.items()
         ]
 
     def validate_response(self, response):

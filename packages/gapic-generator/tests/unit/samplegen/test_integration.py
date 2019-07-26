@@ -20,7 +20,7 @@ import gapic.samplegen.samplegen as samplegen
 import gapic.utils as utils
 
 from common_types import (DummyMethod, DummyService,
-                          DummyApiSchema, DummyNaming)
+                          DummyApiSchema, DummyNaming, message_factory, enum_factory)
 
 from collections import namedtuple
 from textwrap import dedent
@@ -47,7 +47,8 @@ def test_generate_sample_basic():
     # to have standalone tests.
     schema = DummyApiSchema(
         {"animalia.mollusca.v1.Mollusc": DummyService(
-            {"Classify": DummyMethod()})},
+            {"Classify": DummyMethod(
+                input=message_factory("mollusc.classify_request.video"))})},
         DummyNaming("molluscs-v1-mollusc"))
 
     sample = {"service": "animalia.mollusca.v1.Mollusc",

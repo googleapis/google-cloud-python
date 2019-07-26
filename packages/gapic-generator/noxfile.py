@@ -31,7 +31,8 @@ def unit(session):
 
     session.run(
         'py.test',
-        '--quiet',
+        '-vv',
+        # '--quiet',
         '--cov=gapic',
         '--cov-config=.coveragerc',
         '--cov-report=term',
@@ -71,12 +72,12 @@ def showcase(session):
 
         # Write out a client library for Showcase.
         session.run('protoc',
-            f'--descriptor_set_in={tmp_dir}{os.path.sep}showcase.desc',
-            f'--python_gapic_out={tmp_dir}',
-            'google/showcase/v1beta1/echo.proto',
-            'google/showcase/v1beta1/identity.proto',
-            external=True,
-        )
+                    f'--descriptor_set_in={tmp_dir}{os.path.sep}showcase.desc',
+                    f'--python_gapic_out={tmp_dir}',
+                    'google/showcase/v1beta1/echo.proto',
+                    'google/showcase/v1beta1/identity.proto',
+                    external=True,
+                    )
 
         # Install the library.
         session.install(tmp_dir)
@@ -107,14 +108,14 @@ def showcase_unit(session):
 
         # Write out a client library for Showcase.
         session.run('protoc',
-            f'--descriptor_set_in={tmp_dir}{os.path.sep}showcase.desc',
-            f'--python_gapic_out={tmp_dir}',
-            'google/showcase/v1beta1/echo.proto',
-            'google/showcase/v1beta1/identity.proto',
-            'google/showcase/v1beta1/messaging.proto',
-            'google/showcase/v1beta1/testing.proto',
-            external=True,
-        )
+                    f'--descriptor_set_in={tmp_dir}{os.path.sep}showcase.desc',
+                    f'--python_gapic_out={tmp_dir}',
+                    'google/showcase/v1beta1/echo.proto',
+                    'google/showcase/v1beta1/identity.proto',
+                    'google/showcase/v1beta1/messaging.proto',
+                    'google/showcase/v1beta1/testing.proto',
+                    external=True,
+                    )
 
         # Install the library.
         session.chdir(tmp_dir)
@@ -152,14 +153,14 @@ def showcase_mypy(session):
 
         # Write out a client library for Showcase.
         session.run('protoc',
-            f'--descriptor_set_in={tmp_dir}{os.path.sep}showcase.desc',
-            f'--python_gapic_out={tmp_dir}',
-            'google/showcase/v1beta1/echo.proto',
-            'google/showcase/v1beta1/identity.proto',
-            'google/showcase/v1beta1/messaging.proto',
-            'google/showcase/v1beta1/testing.proto',
-            external=True,
-        )
+                    f'--descriptor_set_in={tmp_dir}{os.path.sep}showcase.desc',
+                    f'--python_gapic_out={tmp_dir}',
+                    'google/showcase/v1beta1/echo.proto',
+                    'google/showcase/v1beta1/identity.proto',
+                    'google/showcase/v1beta1/messaging.proto',
+                    'google/showcase/v1beta1/testing.proto',
+                    external=True,
+                    )
 
         # Install the library.
         session.chdir(tmp_dir)

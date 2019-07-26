@@ -37,7 +37,7 @@ def sample_{{ frags.render_method_name(sample.rpc)|trim -}}({{ frags.print_input
                 map("lower")|
                 join("_") }}.{{ sample.service.split(".")[-1] }}Client()
 
-    {{ frags.render_request(sample.request)|indent }}
+    {{ frags.render_request_setup(sample.request)|indent }}
 {% with method_call = frags.render_method_call(sample, calling_form, calling_form_enum) %}
     {{ frags.render_calling_form(method_call, calling_form, calling_form_enum, sample.response)|indent -}}
 {% endwith %}
