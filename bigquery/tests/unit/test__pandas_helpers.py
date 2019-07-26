@@ -488,7 +488,10 @@ def test_bq_to_arrow_array_w_special_floats(module_under_test):
     roundtrip = arrow_array.to_pylist()
     assert len(rows) == len(roundtrip)
     assert roundtrip[0] == float("-inf")
-    assert roundtrip[1] != roundtrip[1]  # NaN doesn't equal itself.
+    # Since we are converting from pandas, NaN is treated as NULL in pyarrow
+    # due to pandas conventions.
+    # https://arrow.apache.org/docs/python/data.html#none-values-and-nan-handling
+    assert roundtrip[1] is None
     assert roundtrip[2] == float("inf")
     assert roundtrip[3] is None
 

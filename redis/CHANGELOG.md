@@ -4,6 +4,49 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+## 0.3.0
+
+07-24-2019 17:15 PDT
+
+
+### Implementation Changes
+- Allow kwargs to be passed to create_channel (via synth). ([#8400](https://github.com/googleapis/google-cloud-python/pull/8400))
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+- Remove unused message exports. ([#7272](https://github.com/googleapis/google-cloud-python/pull/7272))
+- Protoc-generated serialization update. ([#7092](https://github.com/googleapis/google-cloud-python/pull/7092))
+- Pick up stub docstring fix in GAPIC generator. ([#6979](https://github.com/googleapis/google-cloud-python/pull/6979))
+
+### New Features
+- Add 'client_options' support, update list method docstrings (via synth). ([#8519](https://github.com/googleapis/google-cloud-python/pull/8519))
+- Add 'import_instance' / 'export_instance' support (via synth). ([#8220](https://github.com/googleapis/google-cloud-python/pull/8220))
+- Remove v1 'import_instance' / 'export_instance'; add v1beta1 'failover_instance' (via synth). ([#7937](https://github.com/googleapis/google-cloud-python/pull/7937))
+- Add support for instance import / export / failover (via synth). ([#7423](https://github.com/googleapis/google-cloud-python/pull/7423))
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+- Pin black version (via synth). ([#8592](https://github.com/googleapis/google-cloud-python/pull/8592))
+
+### Documentation
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+- Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+- Update year: 2018 -> 2019. ([#7154](https://github.com/googleapis/google-cloud-python/pull/7154))
+
+### Internal / Testing Changes
+- Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+- Declare encoding as utf-8 in pb2 files (via synth). ([#8360](https://github.com/googleapis/google-cloud-python/pull/8360))
+- Add disclaimer to auto-generated template files (via synth).  ([#8324](https://github.com/googleapis/google-cloud-python/pull/8324))
+- Suppress checking 'cov-fail-under' in nox default session (via synth). ([#8249](https://github.com/googleapis/google-cloud-python/pull/8249))
+- Fix coverage in 'types.py' (via synth). ([#8161](https://github.com/googleapis/google-cloud-python/pull/8161))
+- Blacken noxfile.py, setup.py (via synth). ([#8129](https://github.com/googleapis/google-cloud-python/pull/8129))
+- Add empty lines (via synth). ([#8068](https://github.com/googleapis/google-cloud-python/pull/8068))
+- Finsh setup for 'docs' session in nox. ([#8101](https://github.com/googleapis/google-cloud-python/pull/8101))
+- Use alabaster theme everwhere. ([#8021](https://github.com/googleapis/google-cloud-python/pull/8021))
+- Copy lintified proto files (via synth).
+- Add clarifying comment to blacken nox target. ([#7400](https://github.com/googleapis/google-cloud-python/pull/7400))
+- Copy proto files alongside protoc versions.
+- Add protos as an artifact to library ([#7205](https://github.com/googleapis/google-cloud-python/pull/7205))
+
 ## 0.2.1
 
 12-18-2018 09:40 PST

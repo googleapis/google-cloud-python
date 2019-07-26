@@ -16,7 +16,7 @@ include: Entries (Data Catalog representation of a cloud resource).
    :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Ddatacatalog
 .. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
 .. _Google Cloud Data Catalog API: https://cloud.google.com/data-catalog
-.. _Client Library Documentation: https://cloud.google.com/nodejs/docs/reference/datacatalog/latest/
+.. _Client Library Documentation: https://googleapis.dev/python/datacatalog/latest
 .. _Product Documentation:  https://cloud.google.com/data-catalog
 
 Quick Start
