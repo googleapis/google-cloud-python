@@ -2862,7 +2862,7 @@ class QueryJob(_AsyncJob):
         lines = query.splitlines()
         max_line_len = max(len(l) for l in lines)
 
-        header = "-----Offending SQL Follows-----"
+        header = "-----Query Job SQL Follows-----"
         header = "{:^{total_width}}".format(header, total_width=max_line_len + 5)
 
         # Print out a "ruler" above and below the SQL so we can judge columns.

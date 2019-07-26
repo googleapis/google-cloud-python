@@ -4288,7 +4288,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         full_text = str(exc_info.exception)
 
         assert job.job_id in full_text
-        assert "Offending SQL Follows" in full_text
+        assert "Query Job SQL Follows" in full_text
 
         for i, line in enumerate(query.splitlines(), start=1):
             expected_line = "{}:{}".format(i, line)
