@@ -526,6 +526,47 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(table.dataset_id, "some_dset")
         self.assertEqual(table.table_id, "some_tbl")
 
+    def test_ctor_tablelistitem(self):
+        from google.cloud.bigquery.table import Table, TableListItem
+
+        import datetime
+        from google.cloud._helpers import _millis, UTC
+
+        self.WHEN_TS = 1437767599.125
+        self.EXP_TIME = datetime.datetime(2015, 8, 1, 23, 59, 59, tzinfo=UTC)
+
+        project = "test-project"
+        dataset_id = "test_dataset"
+        table_id = "coffee_table"
+        resource = {
+            "creationTime": self.WHEN_TS * 1000,
+            "expirationTime": _millis(self.EXP_TIME),
+            "kind": "bigquery#table",
+            "id": "{}:{}.{}".format(project, dataset_id, table_id),
+            "tableReference": {
+                "projectId": project,
+                "datasetId": dataset_id,
+                "tableId": table_id,
+            },
+            "friendlyName": "Mahogany Coffee Table",
+            "type": "TABLE",
+            "timePartitioning": {
+                "type": "DAY",
+                "field": "mycolumn",
+                "expirationMs": "10000",
+            },
+            "labels": {"some-stuff": "this-is-a-label"},
+            "clustering": {"fields": ["string"]},
+        }
+
+        table_list_item = TableListItem(resource)
+        table = Table(table_list_item)
+
+        self.assertIsNone(table.created)
+        self.assertEqual(table.reference.project, project)
+        self.assertEqual(table.reference.dataset_id, dataset_id)
+        self.assertEqual(table.reference.table_id, table_id)
+
     def test_ctor_string_wo_project_id(self):
         with pytest.raises(ValueError):
             # Project ID is missing.
