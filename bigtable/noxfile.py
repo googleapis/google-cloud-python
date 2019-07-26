@@ -23,6 +23,7 @@ import nox
 
 LOCAL_DEPS = (os.path.join("..", "api_core"), os.path.join("..", "core"))
 
+
 @nox.session(python="3.7")
 def lint(session):
     """Run linters.
@@ -136,6 +137,7 @@ def cover(session):
 
     session.run("coverage", "erase")
 
+
 @nox.session(python="3.7")
 def docs(session):
     """Build the docs for this library."""
@@ -156,6 +158,7 @@ def docs(session):
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "html", ""),
     )
+
 
 @nox.session(python=['2.7', '3.7'])
 def snippets(session):
