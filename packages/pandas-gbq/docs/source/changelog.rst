@@ -10,6 +10,12 @@ Changelog
   with the pandas package which dropped Python 2 support at the end of 2019.
   (:issue:`268`)
 
+Implementation changes
+~~~~~~~~~~~~~~~~~~~~~~
+
+- Use object dtype for ``STRING``, ``ARRAY``, and ``STRUCT`` columns when
+  there are zero rows. (:issue:`285`)
+
 .. _changelog-0.10.0:
 
 0.10.0 / 2019-04-05

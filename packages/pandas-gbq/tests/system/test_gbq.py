@@ -577,24 +577,25 @@ class TestReadGBQIntegration(object):
     def test_zero_rows(self, project_id):
         # Bug fix for https://github.com/pandas-dev/pandas/issues/10273
         df = gbq.read_gbq(
-            "SELECT title, id, is_bot, "
-            "SEC_TO_TIMESTAMP(timestamp) ts "
-            "FROM [publicdata:samples.wikipedia] "
-            "WHERE timestamp=-9999999",
+            'SELECT name, number, (mlc_class = "HU") is_hurricane, iso_time '
+            "FROM `bigquery-public-data.noaa_hurricanes.hurricanes` "
+            'WHERE iso_time = TIMESTAMP("1900-01-01 00:00:00") ',
             project_id=project_id,
             credentials=self.credentials,
-            dialect="legacy",
         )
         empty_columns = {
-            "title": pandas.Series([], dtype=object),
-            "id": pandas.Series([], dtype=np.dtype(int)),
-            "is_bot": pandas.Series([], dtype=np.dtype(bool)),
-            "ts": pandas.Series([], dtype="datetime64[ns]"),
+            "name": pandas.Series([], dtype=object),
+            "number": pandas.Series([], dtype=np.dtype(int)),
+            "is_hurricane": pandas.Series([], dtype=np.dtype(bool)),
+            "iso_time": pandas.Series([], dtype="datetime64[ns]"),
         }
         expected_result = DataFrame(
-            empty_columns, columns=["title", "id", "is_bot", "ts"]
+            empty_columns,
+            columns=["name", "number", "is_hurricane", "iso_time"],
         )
-        expected_result["ts"] = expected_result["ts"].dt.tz_localize("UTC")
+        expected_result["iso_time"] = expected_result[
+            "iso_time"
+        ].dt.tz_localize("UTC")
         tm.assert_frame_equal(df, expected_result, check_index_type=False)
 
     def test_one_row_one_column(self, project_id):

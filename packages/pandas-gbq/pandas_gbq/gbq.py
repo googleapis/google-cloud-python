@@ -672,20 +672,26 @@ def _bqschema_to_nullsafe_dtypes(schema_fields):
     # If you update this mapping, also update the table at
     # `docs/source/reading.rst`.
     dtype_map = {
+        "DATE": "datetime64[ns]",
+        "DATETIME": "datetime64[ns]",
         "FLOAT": np.dtype(float),
+        "GEOMETRY": "object",
+        "RECORD": "object",
+        "STRING": "object",
+        "TIME": "datetime64[ns]",
         # pandas doesn't support timezone-aware dtype in DataFrame/Series
         # constructors. It's more idiomatic to localize after construction.
         # https://github.com/pandas-dev/pandas/issues/25843
         "TIMESTAMP": "datetime64[ns]",
-        "TIME": "datetime64[ns]",
-        "DATE": "datetime64[ns]",
-        "DATETIME": "datetime64[ns]",
     }
 
     dtypes = {}
     for field in schema_fields:
         name = str(field["name"])
+        # Array BigQuery type is represented as an object column containing
+        # list objects.
         if field["mode"].upper() == "REPEATED":
+            dtypes[name] = "object"
             continue
 
         dtype = dtype_map.get(field["type"].upper())
