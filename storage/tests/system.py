@@ -1647,13 +1647,13 @@ class TestIAMConfiguration(unittest.TestCase):
             bucket = Config.CLIENT.bucket(bucket_name)
             retry_429_harder(bucket.delete)(force=True)
 
-    def test_new_bucket_w_bpo(self):
-        new_bucket_name = "new-w-bpo" + unique_resource_id("-")
+    def test_new_bucket_w_ubla(self):
+        new_bucket_name = "new-w-ubla" + unique_resource_id("-")
         self.assertRaises(
             exceptions.NotFound, Config.CLIENT.get_bucket, new_bucket_name
         )
         bucket = Config.CLIENT.bucket(new_bucket_name)
-        bucket.iam_configuration.bucket_policy_only_enabled = True
+        bucket.iam_configuration.uniform_bucket_level_access_enabled = True
         retry_429(bucket.create)()
         self.case_buckets_to_delete.append(new_bucket_name)
 
@@ -1702,17 +1702,17 @@ class TestIAMConfiguration(unittest.TestCase):
         blob_acl_before = list(bucket.acl)
 
         # Set BPO
-        bucket.iam_configuration.bucket_policy_only_enabled = True
+        bucket.iam_configuration.uniform_bucket_level_access_enabled = True
         bucket.patch()
 
-        self.assertTrue(bucket.iam_configuration.bucket_policy_only_enabled)
+        self.assertTrue(bucket.iam_configuration.uniform_bucket_level_access_enabled)
 
         # While BPO is set, cannot get / set ACLs
         with self.assertRaises(exceptions.BadRequest):
             bucket.acl.reload()
 
         # Clear BPO
-        bucket.iam_configuration.bucket_policy_only_enabled = False
+        bucket.iam_configuration.uniform_bucket_level_access_enabled = False
         bucket.patch()
 
         # Query ACLs after clearing BPO
@@ -1723,3 +1723,4 @@ class TestIAMConfiguration(unittest.TestCase):
 
         self.assertEqual(bucket_acl_before, bucket_acl_after)
         self.assertEqual(blob_acl_before, blob_acl_after)
+

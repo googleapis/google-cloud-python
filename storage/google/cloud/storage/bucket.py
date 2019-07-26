@@ -280,6 +280,12 @@ class IAMConfiguration(dict):
     :type bucket: :class:`Bucket`
     :params bucket: Bucket for which this instance is the policy.
 
+    :type uniform_bucket_level_access_enabled: bool
+    :params bucket_policy_only_enabled: (optional) whether the IAM-only policy is enabled for the bucket.
+
+    :type uniform_bucket_level_locked_time: :class:`datetime.datetime`
+    :params uniform_bucket_level_locked_time: (optional) When the bucket's IAM-only policy was ehabled.  This value should normally only be set by the back-end API.
+
     :type bucket_policy_only_enabled: bool
     :params bucket_policy_only_enabled: (optional) whether the IAM-only policy is enabled for the bucket.
 
@@ -292,10 +298,13 @@ class IAMConfiguration(dict):
         bucket,
         bucket_policy_only_enabled=False,
         bucket_policy_only_locked_time=None,
+        uniform_bucket_level_access_enabled=False,
+        uniform_bucket_level_access_locked_time=None,
     ):
-        data = {"bucketPolicyOnly": {"enabled": bucket_policy_only_enabled}}
-        if bucket_policy_only_locked_time is not None:
-            data["bucketPolicyOnly"]["lockedTime"] = _datetime_to_rfc3339(
+        # Which one wins???
+        data = {"uniformBucketLevelAccess": {"enabled": bucket_policy_only_enabled}}
+        if uniform_bucket_level_access_locked_time is not None:
+            data["uniformBucketLevelAccess"]["lockedTime"] = _datetime_to_rfc3339(
                 bucket_policy_only_locked_time
             )
         super(IAMConfiguration, self).__init__(data)
@@ -329,35 +338,49 @@ class IAMConfiguration(dict):
 
     @property
     def bucket_policy_only_enabled(self):
+        """Alias for uniform_bucket_level_access_enabled"""
+        self.uniform_bucket_level_access_enabled()
+
+    @property
+    def uniform_bucket_level_access_enabled(self):
         """If set, access checks only use bucket-level IAM policies or above.
 
         :rtype: bool
         :returns: whether the bucket is configured to allow only IAM.
         """
-        bpo = self.get("bucketPolicyOnly", {})
+        bpo = self.get("uniformBucketLevelAccess", {})
         return bpo.get("enabled", False)
+
+    @uniform_bucket_level_access_enabled.setter
+    def uniform_bucket_level_access_enabled(self, value):
+        ubla = self.setdefault("uniformBucketLevelAccess", {})
+        ubla["enabled"] = bool(value)
+        self.bucket._patch_property("iamConfiguration", self)
 
     @bucket_policy_only_enabled.setter
     def bucket_policy_only_enabled(self, value):
-        bpo = self.setdefault("bucketPolicyOnly", {})
-        bpo["enabled"] = bool(value)
-        self.bucket._patch_property("iamConfiguration", self)
+        self.uniform_bucket_level_access_enabled(value)
 
     @property
     def bucket_policy_only_locked_time(self):
-        """Deadline for changing :attr:`bucket_policy_only_enabled` from true to false.
+        """Alias for uniform_bucket_level_access."""
+        return self.uniform_bucket_level_access_locked_time()
 
-        If the bucket's :attr:`bucket_policy_only_enabled` is true, this property
+    @property
+    def uniform_bucket_level_access_locked_time(self):
+        """Deadline for changing :attr:`uniform_bucket_level_access_enabled` from true to false.
+
+        If the bucket's :attr:`uniform_bucket_level_access_enabled` is true, this property
         is time time after which that setting becomes immutable.
 
-        If the bucket's :attr:`bucket_policy_only_enabled` is false, this property
+        If the bucket's :attr:`uniform_bucket_level_access_enabled` is false, this property
         is ``None``.
 
         :rtype: Union[:class:`datetime.datetime`, None]
-        :returns:  (readonly) Time after which :attr:`bucket_policy_only_enabled` will
+        :returns:  (readonly) Time after which :attr:`uniform_bucket_level_access_enabled` will
                    be frozen as true.
         """
-        bpo = self.get("bucketPolicyOnly", {})
+        ubla = self.get("uniformBucketLevelAccess", {})
         stamp = bpo.get("lockedTime")
         if stamp is not None:
             stamp = _rfc3339_to_datetime(stamp)
