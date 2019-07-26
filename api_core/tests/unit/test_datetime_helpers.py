@@ -15,6 +15,7 @@
 import calendar
 import datetime
 
+import mock
 import pytest
 import pytz
 
@@ -23,6 +24,8 @@ from google.protobuf import timestamp_pb2
 
 
 ONE_MINUTE_IN_MICROSECONDS = 60 * 1e6
+MESSAGE = ("The `from_rfc3339_nanos` function is deprecated"
+           " use `from_rfc3339` instead.")
 
 
 def test_utcnow():
@@ -121,6 +124,19 @@ def test_from_rfc3339_with_truncated_nanos(truncated, micros):
     assert datetime_helpers.from_rfc3339(value) == datetime.datetime(
         2009, 12, 17, 12, 44, 32, micros, pytz.utc
     )
+
+
+def test_from_rfc3339_nanos_is_deprecated():
+    from_rfc3339_patch = mock.patch("google.api_core.datetime_helpers.from_rfc3339")
+    warnings_patch = mock.patch("warnings.warn")
+    value = "2009-12-17T12:44:32.123456Z"
+
+    with from_rfc3339_patch as from_rfc3339, warnings_patch as warn:
+        result = datetime_helpers.from_rfc3339_nanos(value)
+
+    assert result is from_rfc3339.return_value
+    from_rfc3339.assert_called_once_with(value)
+    warn.assert_called_once_with(MESSAGE, DeprecationWarning, stacklevel=2)
 
 
 @pytest.mark.parametrize(
