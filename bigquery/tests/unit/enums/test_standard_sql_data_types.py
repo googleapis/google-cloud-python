@@ -12,10 +12,14 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import enum
-import mock
 import pytest
-import six
+
+
+@pytest.fixture
+def module_under_test():
+    from google.cloud.bigquery import enums
+
+    return enums
 
 
 @pytest.fixture
@@ -31,6 +35,14 @@ def gapic_enum():
     from google.cloud.bigquery_v2.gapic.enums import StandardSqlDataType
 
     return StandardSqlDataType.TypeKind
+
+
+def test_all_gapic_enum_members_are_known(module_under_test, gapic_enum):
+    gapic_names = set(type_.name for type_ in gapic_enum)
+    anticipated_names = (
+        module_under_test._SQL_SCALAR_TYPES | module_under_test._SQL_NONSCALAR_TYPES
+    )
+    assert not (gapic_names - anticipated_names)  # no unhandled names
 
 
 def test_standard_sql_types_enum_members(enum_under_test, gapic_enum):
@@ -57,29 +69,3 @@ def test_standard_sql_types_enum_docstring(enum_under_test, gapic_enum):
     # all lines in the docstring should actually come from the original docstring
     doc_lines = enum_under_test.__doc__.splitlines()
     assert set(doc_lines) <= set(gapic_enum.__doc__.splitlines())
-
-
-def test_standard_sql_types_enum_warning_on_new_added_types(gapic_enum):
-    class ReplacementEnum(enum.IntEnum):
-        """Fake enum with some new database types."""
-
-        INT64 = 2
-        TIMESTAMP = 19
-        TROOLEAN = 911  # One of {True, False, FileNotFound}. (OMG, help!)
-
-    gapic_enum_patch = mock.patch(
-        "google.cloud.bigquery_v2.gapic.enums.StandardSqlDataType.TypeKind",
-        new=ReplacementEnum,
-    )
-
-    from google.cloud.bigquery import enums
-
-    with pytest.warns(UserWarning) as warn_record, gapic_enum_patch:
-        enums = six.moves.reload_module(enums)
-
-    try:
-        warning_msg = str(warn_record[0].message)
-        assert "StandardSqlDataTypes" in warning_msg
-        assert "out of sync" in warning_msg
-    finally:
-        six.moves.reload_module(enums)  # regenerate enum with original gapic enum
