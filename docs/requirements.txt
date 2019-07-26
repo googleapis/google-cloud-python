@@ -1,8 +1,8 @@
-setuptools >= 36.4.0
-sphinx >= 1.6.3, < 2.0dev
-ipython >= 4
-recommonmark >= 0.4.0
-grpcio-gcp >= 0.2.2
+setuptools==41.0.1
+sphinx==1.8.5
+ipython==7.6.1
+recommonmark==0.5.0
+grpcio-gcp==0.2.2
 
 -e api_core/
 -e core/

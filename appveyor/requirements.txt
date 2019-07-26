@@ -3,4 +3,4 @@
 # pip will build them from source using the MSVC compiler matching the
 # target Python version and architecture
 wheel
-nox-automation>=0.17.0
+nox-automation==2019.5.13
