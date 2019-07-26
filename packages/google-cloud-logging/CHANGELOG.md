@@ -4,6 +4,34 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## 1.12.0
+
+07-24-2019 16:47 PDT
+
+
+### Implementation Changes
+- Set the 'timestamp' on log records created by handler. ([#8227](https://github.com/googleapis/google-cloud-python/pull/8227))
+- Clarify worker thread implementation. ([#8228](https://github.com/googleapis/google-cloud-python/pull/8228))
+
+### New Features
+- Add path-construction helpers to GAPIC clients (via synth). ([#8631](https://github.com/googleapis/google-cloud-python/pull/8631))
+- Add 'client_options' support, update list method docstrings (via synth). ([#8535](https://github.com/googleapis/google-cloud-python/pull/8535))
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+
+### Documentation
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+
+### Internal / Testing Changes
+- Re-add "generated" markers (via synth). ([#8538](https://github.com/googleapis/google-cloud-python/pull/8538))
+- Add nox session 'docs' to remaining manual clients. ([#8478](https://github.com/googleapis/google-cloud-python/pull/8478))
+- Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+- Fix tests broken in PR [#8227](https://github.com/googleapis/google-cloud-python/pull/8227). ([#8273](https://github.com/googleapis/google-cloud-python/pull/8273))
+- Add empty lines. ([#8064](https://github.com/googleapis/google-cloud-python/pull/8064))
+- Use alabaster theme everwhere. ([#8021](https://github.com/googleapis/google-cloud-python/pull/8021))
+
 ## 1.11.0
 
 05-16-2019 12:27 PDT
