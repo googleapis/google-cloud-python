@@ -42,6 +42,7 @@ from google.cloud.bigquery import job
 from google.cloud.bigquery import table
 from google.cloud.bigquery import magics
 from tests.unit.helpers import make_connection
+from tests.unit.helpers import maybe_fail_import
 
 
 pytestmark = pytest.mark.skipif(IPython is None, reason="Requires `ipython`")
@@ -68,17 +69,14 @@ def ipython_interactive(request, ipython):
 @pytest.fixture(scope="session")
 def missing_bq_storage():
     """Provide a patcher that can make the bigquery storage import to fail."""
-    orig_import = six.moves.builtins.__import__
 
-    def custom_import(name, globals=None, locals=None, fromlist=(), level=0):
+    def fail_if(name, globals, locals, fromlist, level):
         # NOTE: *very* simplified, assuming a straightforward absolute import
-        if "bigquery_storage_v1beta1" in name or (
+        return "bigquery_storage_v1beta1" in name or (
             fromlist is not None and "bigquery_storage_v1beta1" in fromlist
-        ):
-            raise ImportError
-        return orig_import(name, globals, locals, fromlist, level)
+        )
 
-    return mock.patch.object(six.moves.builtins, "__import__", new=custom_import)
+    return maybe_fail_import(predicate=fail_if)
 
 
 JOB_REFERENCE_RESOURCE = {"projectId": "its-a-project-eh", "jobId": "some-random-id"}
