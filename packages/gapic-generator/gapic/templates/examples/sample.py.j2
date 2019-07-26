@@ -30,7 +30,7 @@
 {% endfor %}
 
 {# also need calling form #}
-def sample_{{ frags.render_method_name(sample.rpc) }}({{ frags.print_input_params(sample.request) }}):
+def sample_{{ frags.render_method_name(sample.rpc)|trim -}}({{ frags.print_input_params(sample.request)|trim -}}):
     """{{ sample.description }}"""
 
     client = {{ sample.service.split(".")[-3:-1]|

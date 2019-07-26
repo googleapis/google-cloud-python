@@ -64,7 +64,7 @@ def test_generate_sample_basic():
         sample, True, env, schema)
     sample_str = "".join(iter(template_stream))
 
-    assert sample_str == '''# TODO: add a copyright
+    expected_str = '''# TODO: add a copyright
 # TODO: add a license
 #
 # DO NOT EDIT! This is a generated sample ("CallingForm.Request",  "mollusc_classify_sync")
@@ -91,6 +91,7 @@ def sample_classify(video):
     print("Mollusc is a {}".format(response.taxonomy))
 
 
+
 # [END mollusc_classify_sync]
 
 def main():
@@ -108,6 +109,8 @@ def main():
 if __name__ == "__main__":
     main()
 '''
+
+    assert sample_str == expected_str
 
 
 def test_generate_sample_service_not_found():

@@ -56,7 +56,7 @@ def test_generate_manifest():
         gapic_yaml.Collection(name="samples",
                               elements=[
                                   [
-                                      gapic_yaml.Anchor(
+                                      gapic_yaml.Alias(
                                           "python"),
                                       gapic_yaml.KeyVal(
                                           "sample", "squid_sample"),
@@ -66,7 +66,7 @@ def test_generate_manifest():
                                           "region_tag", ""),
                                   ],
                                   [
-                                      gapic_yaml.Anchor("python"),
+                                      gapic_yaml.Alias("python"),
                                       gapic_yaml.KeyVal(
                                           "sample", "clam_sample"),
                                       gapic_yaml.KeyVal(

@@ -76,7 +76,7 @@ class Collection(Element):
 
 
 @dataclasses.dataclass()
-class Anchor(Element):
+class Alias(Element):
     """An anchor to a map."""
     target: str
 

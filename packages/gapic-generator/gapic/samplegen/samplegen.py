@@ -334,8 +334,7 @@ class Validator:
 
         Given a lookup expression, e.g. squid.clam.whelk,
         recursively validate that each base has an attr with the name of the
-        next lookup lower down and that no attributes, besides possibly the final,
-        are repeated fields.
+        next lookup lower down and repeated attributes are indexed.
 
         Args:
             expr: str: The attribute expression.
@@ -684,7 +683,7 @@ def generate_manifest(fpaths_and_samples, api_schema, *, manifest_time: int = No
             name="samples",
             elements=[
                 [
-                    yaml.Anchor("python"),
+                    yaml.Alias("python"),
                     yaml.KeyVal("sample", sample["id"]),
                     yaml.KeyVal("path", "'{base_path}/%s'" % fpath),
                     yaml.KeyVal("region_tag", sample.get("region_tag", "")),

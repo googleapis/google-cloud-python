@@ -56,14 +56,14 @@ There is a little, but not enough for it to be important because
     {% endif %}
   {% endfor %}
 {% endfor %}
-{{ input_parameters|join(", ") -}}
+{{ input_parameters|join(", ") }}
 {% endwith %}
 {% endmacro %}
 
+{# First elment is a format string, remaining elements are the format string parameters #}
+{# Validating that the number of format params equals #}
+{# the number of remaining params is handled by real python code #}
 {% macro render_print(elts) %}
-  {# First elment is a format string, remaining elements are the format string parameters #}
-  {# Validating that the number of format params equals #}
-  {# the number of remaining params is handled by real python code #}
 print({{ print_string_formatting(elts)|trim }})
 {% endmacro %}
 
@@ -87,7 +87,9 @@ print({{ print_string_formatting(elts)|trim }})
 
 {% macro render_collection_loop(statement) %}
 for {{ statement.variable }} in {{ statement.collection|coerce_response_name }}:
-    {{ dispatch_statement(statement.body) -}}
+  {% for s in statement.body %}
+    {{ dispatch_statement(s) }}
+  {% endfor %}
 {% endmacro %}
 
 {% macro render_map_loop(statement) %}
@@ -99,33 +101,36 @@ for {{ statement.key }} in {{ statement.map|coerce_response_name }}.keys():
 {% else %}
 for {{statement.key }}, {{ statement.value }} in {{ statement.map|coerce_response_name }}.items():
 {% endif %}
-    {{ dispatch_statement(statement.body) -}}
+{% for s in statement.body %}
+    {{ dispatch_statement(s) }}
+{% endfor %}
 {% endmacro %}
 
 {% macro render_write_file(statement) %}
   {% with contents_rval = statement["contents"]|coerce_response_name %}
 with open({{ print_string_formatting(statement["filename"])|trim }}, "wb") as f:
     f.write({{ contents_rval }})
-
   {% endwith %}
 {% endmacro %}
 
 {% macro dispatch_statement(statement) %}
 {# Each statement is a dict with a single key/value pair #}
-{% if "print" in statement %}
-{{ render_print(statement["print"]) -}}
-{% elif "comment" in statement %}
-{{ render_comment(statement["comment"]) -}}
-{% elif "loop" in statement %}
-  {% with loop = statement["loop"] %}
-    {% if "collection" in loop %}
-{{ render_collection_loop(loop) -}}
-    {% else %}
-{{ render_map_loop(loop) -}}
-    {% endif %}
-  {% endwith %}
-{% elif "write_file" in statement %}
-{{ render_write_file(statement["write_file"]) -}}
+{% if "print" in statement -%}
+{{ render_print(statement["print"]) }}
+{% elif "define" in statement -%}
+{{ render_define(statement["define"]) }}
+{% elif "comment" in statement -%}
+{{ render_comment(statement["comment"]) }}
+{% elif "loop" in statement -%}
+  {% with loop = statement["loop"] -%}
+    {% if "collection" in loop -%}
+{{ render_collection_loop(loop) }}
+    {% else -%}
+{{ render_map_loop(loop) }}
+    {% endif -%}
+  {% endwith -%}
+{% elif "write_file" in statement -%}
+{{ render_write_file(statement["write_file"]) }}
 {% endif %}
 {% endmacro %}
 
@@ -208,7 +213,7 @@ response = operation.result()
 {% endmacro %}
 
 {% macro render_method_name(method_name) %}
-{{ method_name|snake_case -}}
+{{ method_name|snake_case }}
 {% endmacro %}
 
 {% macro render_main_block(method_name, request_block) %}
@@ -217,17 +222,17 @@ def main():
 
     parser = argparse.ArgumentParser()
 {% with arg_list = [] %}
-{% for request in request_block|map(attribute="body") -%}
+{% for request in request_block|map(attribute="body") %}
 {% for attr in request if "input_parameter" in attr %}
     parser.add_argument("--{{ attr.input_parameter }}",
                         type=str,
                         default="{{ attr.value }}")
-{% do arg_list.append("args." + attr.input_parameter) -%}
+{% do arg_list.append("args." + attr.input_parameter) %}
 {% endfor %}
 {% endfor %}
     args = parser.parse_args()
 
-    sample_{{ render_method_name(method_name) }}({{ arg_list|join(", ") }})
+    sample_{{ render_method_name(method_name)|trim }}({{ arg_list|join(", ") }})
 
 
 if __name__ == "__main__":

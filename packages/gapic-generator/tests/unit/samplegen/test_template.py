@@ -48,7 +48,9 @@ def check_template(template_fragment, expected_output, **kwargs):
 
     template = env.get_template("template_fragment")
     text = template.render(**kwargs)
-    assert text == dedent(expected_output)
+    expected_output = dedent(expected_output)
+
+    assert text == expected_output
 
 
 def test_render_attr_value():
@@ -226,6 +228,20 @@ def test_dispatch_print():
         ''',
         '''
         print("Squid")
+        
+        '''
+    )
+
+
+def test_dispatch_define():
+    check_template(
+        '''
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.dispatch_statement({"define": "squid=humboldt"})}}
+        ''',
+        '''
+        squid = humboldt
+        
         '''
     )
 
@@ -238,6 +254,7 @@ def test_dispatch_comment():
         ''',
         '''
         # Squid
+        
         '''
     )
 
@@ -253,7 +270,6 @@ def test_write_file():
         '''
         with open("specimen-{}".format(response.species), "wb") as f:
             f.write(response.photo)
-      
         '''
     )
 
@@ -281,11 +297,13 @@ def test_collection_loop():
         {% import "feature_fragments.j2" as frags %}
         {{ frags.render_collection_loop({"collection": "$resp.molluscs",
                                        "variable": "m",
-                                       "body": {"print": ["Mollusc: %s", "m"]}})}}
+                                       "body": [{"print": ["Mollusc: %s", "m"]}]})}}
         ''',
         '''
         for m in response.molluscs:
             print("Mollusc: {}".format(m))
+        
+        
         '''
     )
 
@@ -296,10 +314,13 @@ def test_dispatch_collection_loop():
         {% import "feature_fragments.j2" as frags %}
         {{ frags.dispatch_statement({"loop": {"collection": "molluscs",
                                     "variable": "m",
-                                    "body": {"print": ["Mollusc: %s", "m"]}}}) }}''',
+                                    "body": [{"print": ["Mollusc: %s", "m"]}]}}) }}''',
         '''
         for m in molluscs:
             print("Mollusc: {}".format(m))
+        
+        
+        
         '''
     )
 
@@ -311,11 +332,13 @@ def test_map_loop():
         {{ frags.render_map_loop({"map": "$resp.molluscs",
                                 "key":"cls",
                                 "value":"example",
-                                "body": {"print": ["A %s is a %s", "example", "cls"] }})
+                                "body": [{"print": ["A %s is a %s", "example", "cls"] }]})
         }}''',
         '''
         for cls, example in response.molluscs.items():
             print("A {} is a {}".format(example, cls))
+        
+        
         '''
     )
 
@@ -326,12 +349,14 @@ def test_map_loop_no_key():
         {% import "feature_fragments.j2" as frags %}
         {{ frags.render_map_loop({"map": "$resp.molluscs",
                                 "value":"example",
-                                "body": {"print": ["A %s is a mollusc", "example"] }})
+                                "body": [{"print": ["A %s is a mollusc", "example"] }]})
         }}
         ''',
         '''
         for example in response.molluscs.values():
             print("A {} is a mollusc".format(example))
+        
+        
         '''
     )
 
@@ -342,12 +367,14 @@ def test_map_loop_no_value():
         {% import "feature_fragments.j2" as frags %}
         {{ frags.render_map_loop({"map": "$resp.molluscs",
                                 "key":"cls",
-                                "body": {"print": ["A %s is a mollusc", "cls"] }})
+                                "body": [{"print": ["A %s is a mollusc", "cls"] }]})
         }}
         ''',
         '''
         for cls in response.molluscs.keys():
             print("A {} is a mollusc".format(cls))
+        
+        
         '''
     )
 
@@ -359,13 +386,16 @@ def test_dispatch_map_loop():
         {{ frags.dispatch_statement({"loop":{"map": "molluscs",
                                             "key":"cls",
                                             "value":"example",
-                                            "body": {
-                                              "print": ["A %s is a %s", "example", "cls"] }}})
+                                            "body": [{
+                                              "print": ["A %s is a %s", "example", "cls"] }]}})
         }}
         ''',
         '''
         for cls, example in molluscs.items():
             print("A {} is a {}".format(example, cls))
+        
+        
+        
         '''
     )
 
@@ -391,7 +421,8 @@ def test_print_input_params():
                                     ]) }}
         ''',
         '''
-        mass, length, color'''
+        mass, length, color
+        '''
     )
 
 
@@ -409,6 +440,7 @@ def test_render_calling_form_request():
                    response = TEST_INVOCATION_TXT
                    print("Test print statement")
                    
+                   
                    ''',
                    calling_form_enum=CallingForm,
                    calling_form=CallingForm.Request)
@@ -420,7 +452,8 @@ def test_render_calling_form_paged_all():
                    page_result = TEST_INVOCATION_TXT
                    for response in page_result:
                        print("Test print statement")
-
+                   
+                   
                    ''',
                    calling_form_enum=CallingForm,
                    calling_form=CallingForm.RequestPagedAll)
@@ -433,7 +466,8 @@ def test_render_calling_form_paged():
                     for page in page_result.pages():
                         for response in page:
                             print("Test print statement")
-
+                   
+                   
                     ''',
                    calling_form_enum=CallingForm,
                    calling_form=CallingForm.RequestPaged)
@@ -446,6 +480,7 @@ def test_render_calling_form_streaming_server():
                    for response in stream:
                        print("Test print statement")
                    
+                   
                    ''',
                    calling_form_enum=CallingForm,
                    calling_form=CallingForm.RequestStreamingServer)
@@ -457,6 +492,7 @@ def test_render_calling_form_streaming_bidi():
                    stream = TEST_INVOCATION_TXT
                    for response in stream:
                        print("Test print statement")
+                   
                    
                    ''',
                    calling_form_enum=CallingForm,
@@ -472,6 +508,7 @@ def test_render_calling_form_longrunning():
                    
                    response = operation.result()
                    print("Test print statement")
+                   
                    
                    ''',
                    calling_form_enum=CallingForm,

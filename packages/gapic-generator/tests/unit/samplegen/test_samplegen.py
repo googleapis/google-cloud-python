@@ -882,6 +882,14 @@ def test_validate_expression_repeated_lookup():
     v.validate_expression("$resp.molluscs[0].mantle")
 
 
+def test_validate_expression_repeated_lookup_nested():
+    exp = "$resp.molluscs.tentacles.club"
+    OutputType = message_factory(exp, [True, True, False])
+    method = DummyMethod(output=OutputType)
+    v = samplegen.Validator(method)
+    v.validate_expression("$resp.molluscs[0].tentacles[0].club")
+
+
 def test_validate_expression_repeated_lookup_invalid():
     exp = "$resp.molluscs.mantle"
     OutputType = message_factory(exp)
