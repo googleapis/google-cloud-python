@@ -59,7 +59,8 @@ class Client(object):
             be added if ``credentials`` are passed explicitly or if the
             Pub / Sub emulator is detected as running.
             Regional endpoints can be set via `client_options` that takes a
-            single key-value pair of name `api_endpoint`.
+            single key-value pair that defines the endpoint, i.e.
+            `client_options={"api_endpoint": REGIONAL_ENDPOINT}`
     """
 
     _batch_class = thread.Batch

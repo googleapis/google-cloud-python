@@ -54,7 +54,8 @@ class Client(object):
             Generally, you should not need to set additional keyword
             arguments.
             Regional endpoints can be set via `client_options` that takes a
-            single key-value pair of name `api_endpoint`.
+            single key-value pair that defines the endpoint, i.e.
+            `client_options={"api_endpoint": REGIONAL_ENDPOINT}`.
     """
 
     def __init__(self, **kwargs):
