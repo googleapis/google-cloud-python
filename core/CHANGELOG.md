@@ -10,7 +10,7 @@
 
 
 ### Implementation Changes
-- Change build_api_url to an instance method. ([#8747](https://github.com/googleapis/google-cloud-python/pull/8747))
+- Make `Client.build_api_url` an instance method. ([#8747](https://github.com/googleapis/google-cloud-python/pull/8747))
 
 ### Dependencies
 - Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
