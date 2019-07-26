@@ -159,8 +159,6 @@ class JSONConnection(Connection):
     This defines :meth:`api_request` for making a generic JSON
     API request and API requests are created elsewhere.
 
-    The class constants
-
     * :attr:`API_BASE_URL`
     * :attr:`API_VERSION`
     * :attr:`API_URL_TEMPLATE`
@@ -177,9 +175,8 @@ class JSONConnection(Connection):
     API_URL_TEMPLATE = None
     """A template for the URL of a particular API call."""
 
-    @classmethod
     def build_api_url(
-        cls, path, query_params=None, api_base_url=None, api_version=None
+        self, path, query_params=None, api_base_url=None, api_version=None
     ):
         """Construct an API url given a few components, some optional.
 
@@ -205,9 +202,9 @@ class JSONConnection(Connection):
         :rtype: str
         :returns: The URL assembled from the pieces provided.
         """
-        url = cls.API_URL_TEMPLATE.format(
-            api_base_url=(api_base_url or cls.API_BASE_URL),
-            api_version=(api_version or cls.API_VERSION),
+        url = self.API_URL_TEMPLATE.format(
+            api_base_url=(api_base_url or self.API_BASE_URL),
+            api_version=(api_version or self.API_VERSION),
             path=path,
         )
 
