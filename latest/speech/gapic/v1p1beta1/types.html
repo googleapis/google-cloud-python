@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Speech API Client &#8212; google-cloud be95b31 documentation</title>
+    <title>Types for Cloud Speech API Client &#8212; google-cloud ab1d59e documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -510,21 +510,31 @@ premium feature.</p>
 <dd><p><em>Optional</em> If ‘true’, enables speaker detection for each
 recognized word in the top alternative of the recognition
 result using a speaker_tag provided in the WordInfo. Note:
-When this is true, we send all the words from the beginning of
-the audio for the top alternative in every consecutive
-STREAMING responses. This is done in order to improve our
-speaker tags as our models learn to identify the speakers in
-the conversation over time. For non-streaming requests, the
-diarization results will be provided only in the top
-alternative of the FINAL SpeechRecognitionResult.</p>
+Use diarization_config instead.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.speech_v1p1beta1.types.RecognitionConfig.diarization_speaker_count">
 <code class="descname">diarization_speaker_count</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionConfig.diarization_speaker_count" title="Permalink to this definition">#</a></dt>
 <dd><p><em>Optional</em> If set, specifies the estimated number of speakers
-in the conversation. If not set, defaults to ‘2’. Ignored
-unless enable_speaker_diarization is set to true.”</p>
+in the conversation. Defaults to ‘2’. Ignored unless
+enable_speaker_diarization is set to true. Note: Use
+diarization_config instead.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.RecognitionConfig.diarization_config">
+<code class="descname">diarization_config</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.RecognitionConfig.diarization_config" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> Config to enable speaker diarization and set
+additional parameters to make diarization better suited for
+your application. Note: When this is enabled, we send all the
+words from the beginning of the audio for the top alternative
+in every consecutive STREAMING responses. This is done in
+order to improve our speaker tags as our models learn to
+identify the speakers in the conversation over time. For non-
+streaming requests, the diarization results will be provided
+only in the top alternative of the FINAL
+SpeechRecognitionResult.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -584,6 +594,12 @@ using the standard version of the specified model.</p>
 <dt>
 <code class="descname">audio_channel_count</code></dt>
 <dd><p>Field google.cloud.speech.v1p1beta1.RecognitionConfig.audio_channel_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">diarization_config</code></dt>
+<dd><p>Field google.cloud.speech.v1p1beta1.RecognitionConfig.diarization_config</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -853,6 +869,56 @@ corresponding to sequential portions of audio.</p>
 <dt>
 <code class="descname">results</code></dt>
 <dd><p>Field google.cloud.speech.v1p1beta1.RecognizeResponse.results</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.speech_v1p1beta1.types.SpeakerDiarizationConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.speech_v1p1beta1.types.</code><code class="descname">SpeakerDiarizationConfig</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.SpeakerDiarizationConfig" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> Config to enable speaker diarization.</p>
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.SpeakerDiarizationConfig.enable_speaker_diarization">
+<code class="descname">enable_speaker_diarization</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.SpeakerDiarizationConfig.enable_speaker_diarization" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> If ‘true’, enables speaker detection for each
+recognized word in the top alternative of the recognition
+result using a speaker_tag provided in the WordInfo.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.SpeakerDiarizationConfig.min_speaker_count">
+<code class="descname">min_speaker_count</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.SpeakerDiarizationConfig.min_speaker_count" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> Minimum number of speakers in the conversation.
+This range gives you more flexibility by allowing the system
+to automatically determine the correct number of speakers. If
+not set, the default value is 2.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1p1beta1.types.SpeakerDiarizationConfig.max_speaker_count">
+<code class="descname">max_speaker_count</code><a class="headerlink" href="#google.cloud.speech_v1p1beta1.types.SpeakerDiarizationConfig.max_speaker_count" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> Maximum number of speakers in the conversation.
+This range gives you more flexibility by allowing the system
+to automatically determine the correct number of speakers. If
+not set, the default value is 6.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">enable_speaker_diarization</code></dt>
+<dd><p>Field google.cloud.speech.v1p1beta1.SpeakerDiarizationConfig.enable_speaker_diarization</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">max_speaker_count</code></dt>
+<dd><p>Field google.cloud.speech.v1p1beta1.SpeakerDiarizationConfig.max_speaker_count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">min_speaker_count</code></dt>
+<dd><p>Field google.cloud.speech.v1p1beta1.SpeakerDiarizationConfig.min_speaker_count</p>
 </dd></dl>
 
 </dd></dl>
