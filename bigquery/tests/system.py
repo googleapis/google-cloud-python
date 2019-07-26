@@ -1882,7 +1882,9 @@ class TestBigQuery(unittest.TestCase):
             language="JAVASCRIPT",
             type_="SCALAR_FUNCTION",
             return_type=float64_type,
-            imported_libraries=["gs://{}/bigquery/udfs/max-value.js".format(SAMPLES_BUCKET)],
+            imported_libraries=[
+                "gs://{}/bigquery/udfs/max-value.js".format(SAMPLES_BUCKET)
+            ],
         )
         routine.arguments = [
             bigquery.RoutineArgument(
