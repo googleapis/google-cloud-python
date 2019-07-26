@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## 1.2.0
+
+07-24-2019 16:42 PDT
+
+
+### Implementation Changes
+- Accomodate new location of 'IAMPolicyStub' (via synth). ([#8679](https://github.com/googleapis/google-cloud-python/pull/8679))
+
+### New Features
+- Add 'options_' argument to client's 'get_iam_policy'; pin black version (via synth). ([#8656](https://github.com/googleapis/google-cloud-python/pull/8656))
+- Add 'client_options' support, update list method docstrings (via synth). ([#8514](https://github.com/googleapis/google-cloud-python/pull/8514))
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+- Update pin for 'grpc-google-iam-v1' to 0.12.3+. ([#8647](https://github.com/googleapis/google-cloud-python/pull/8647))
+
+### Documentation
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+
 ## 1.1.0
 
 06-27-2019 12:32 PDT
