@@ -108,7 +108,7 @@ if sys.version_info >= (3, 5):
         greater than ``1.0``.
 
         .. note::
-            .. deprecated:: 0.43.1
+            .. deprecated:: 0.44.0
                 Will be removed in future versions."""
     )
     FlowControl.max_requests.__doc__ = textwrap.dedent(
@@ -116,7 +116,7 @@ if sys.version_info >= (3, 5):
         Currently not in use.
 
         .. note::
-            .. deprecated:: 0.43.1
+            .. deprecated:: 0.44.0
                 Will be removed in future versions."""
     )
     FlowControl.max_request_batch_size.__doc__ = textwrap.dedent(
@@ -125,7 +125,7 @@ if sys.version_info >= (3, 5):
         dispatch at a time.
 
         .. note::
-            .. deprecated:: 0.43.1
+            .. deprecated:: 0.44.0
                 Will be removed in future versions."""
     )
     FlowControl.max_request_batch_latency.__doc__ = textwrap.dedent(
@@ -134,7 +134,7 @@ if sys.version_info >= (3, 5):
         items before processing the next batch of requests.
 
         .. note::
-            .. deprecated:: 0.43.1
+            .. deprecated:: 0.44.0
                 Will be removed in future versions."""
     )
     FlowControl.max_lease_duration.__doc__ = (

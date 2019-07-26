@@ -91,7 +91,7 @@ class Message(object):
                 Defaults to :data:`True`.
 
                 .. note::
-                    .. deprecated:: 0.43.1
+                    .. deprecated:: 0.44.0
                         Parameter will be removed in future versions.
         """
         self._message = message
@@ -222,11 +222,11 @@ class Message(object):
             :class:`~.pubsub_v1.subscriber.message.Message` instance was
             created with ``autolease=False``.
 
-            .. deprecated:: 0.43.1
+            .. deprecated:: 0.44.0
                 Will be removed in future versions.
         """
         warnings.warn(
-            "lease() is deprecated since 0.43.1, and will be removed in future versions.",
+            "lease() is deprecated since 0.44.0, and will be removed in future versions.",
             category=DeprecationWarning,
         )
         self._request_queue.put(
