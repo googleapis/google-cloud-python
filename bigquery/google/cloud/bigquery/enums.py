@@ -44,7 +44,7 @@ def _make_sql_scalars_enum():
     # enum from gapic.
     # ASSUMPTION: No existing types are ever renamed or deleted, we only try to
     # detect cases when new types are introduced.
-    gapic_names = set(m.name for m in gapic_enums.StandardSqlDataType.TypeKind)
+    gapic_names = set(type_.name for type_ in gapic_enums.StandardSqlDataType.TypeKind)
     anticipated_names = sql_scalar_types | excluded_members
     unhandled_names = gapic_names - anticipated_names
 
