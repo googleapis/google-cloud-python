@@ -14,6 +14,7 @@
 
 import copy
 import json
+import textwrap
 import unittest
 
 import mock
@@ -4256,8 +4257,15 @@ class TestQueryJob(unittest.TestCase, _Base):
     def test_result_error(self):
         from google.cloud import exceptions
 
+        query = textwrap.dedent(
+            """
+            SELECT foo, bar
+            FROM table_baz
+            WHERE foo == bar"""
+        )
+
         client = _make_client(project=self.PROJECT)
-        job = self._make_one(self.JOB_ID, self.QUERY, client)
+        job = self._make_one(self.JOB_ID, query, client)
         error_result = {
             "debugInfo": "DEBUG",
             "location": "LOCATION",
@@ -4276,6 +4284,15 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         self.assertIsInstance(exc_info.exception, exceptions.GoogleCloudError)
         self.assertEqual(exc_info.exception.code, http_client.BAD_REQUEST)
+
+        full_text = str(exc_info.exception)
+
+        assert job.job_id in full_text
+        assert "Query Job SQL Follows" in full_text
+
+        for i, line in enumerate(query.splitlines(), start=1):
+            expected_line = "{}:{}".format(i, line)
+            assert expected_line in full_text
 
     def test_begin_w_bound_client(self):
         from google.cloud.bigquery.dataset import DatasetReference
