@@ -4,6 +4,35 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## 1.9.0
+
+07-24-2019 16:04 PDT
+
+
+### Implementation Changes
+- Allow kwargs to be passed to create_channel (via synth). ([#8388](https://github.com/googleapis/google-cloud-python/pull/8388))
+
+### New Features
+- Add 'client_options' support (via synth). ([#8506](https://github.com/googleapis/google-cloud-python/pull/8506))
+- Add 'Client.reserve_ids' API wrapper. ([#8178](https://github.com/googleapis/google-cloud-python/pull/8178))
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+
+### Documentation
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+
+### Internal / Testing Changes
+- Pin black version (via synth). ([#8580](https://github.com/googleapis/google-cloud-python/pull/8580))
+- Remove typing information for kwargs to not conflict with type checkers ([#8546](https://github.com/googleapis/google-cloud-python/pull/8546))
+- Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+- Declare encoding as utf-8 in pb2 files (via synth). ([#8350](https://github.com/googleapis/google-cloud-python/pull/8350))
+- Add disclaimer to auto-generated template files (via synth). ([#8312](https://github.com/googleapis/google-cloud-python/pull/8312))
+- Suppress checking 'cov-fail-under' in nox default session (via synth). ([#8238](https://github.com/googleapis/google-cloud-python/pull/8238))
+- Blacken noxfile.py, setup.py (via synth). ([#8120](https://github.com/googleapis/google-cloud-python/pull/8120))
+- Add empty lines (via synth). ([#8055](https://github.com/googleapis/google-cloud-python/pull/8055))
+
 ## 1.8.0
 
 05-17-2019 08:28 PDT
