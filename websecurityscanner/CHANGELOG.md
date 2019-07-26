@@ -25,7 +25,7 @@
 
 ### Internal / Testing Changes
 - Pin black version (via synth). ([#8603](https://github.com/googleapis/google-cloud-python/pull/8603))
-- All: Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+- Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
 - Declare encoding as utf-8 in pb2 files (via synth).  ([#8373](https://github.com/googleapis/google-cloud-python/pull/8373))
 - Add disclaimer to auto-generated template files. ([#8337](https://github.com/googleapis/google-cloud-python/pull/8337))
 - Suppress checking 'cov-fail-under' in nox default session (via synth). ([#8258](https://github.com/googleapis/google-cloud-python/pull/8258))
