@@ -348,14 +348,18 @@ class IAMConfiguration(dict):
         :rtype: bool
         :returns: whether the bucket is configured to allow only IAM.
         """
-        bpo = self.get("uniformBucketLevelAccess", {})
-        return bpo.get("enabled", False)
+        ubla = self.get("uniformBucketLevelAccess", {})
+        return ubla.get("enabled", False)
 
     @uniform_bucket_level_access_enabled.setter
     def uniform_bucket_level_access_enabled(self, value):
         ubla = self.setdefault("uniformBucketLevelAccess", {})
         ubla["enabled"] = bool(value)
+        #### THIS IS A WORKAROUND ####
+        bpo = self.setdefault("bucketPolicyOnly", {})
+        bpo["enabled"] = bool(value)
         self.bucket._patch_property("iamConfiguration", self)
+        #### THIS IS A WORKAROUND ####
 
     @bucket_policy_only_enabled.setter
     def bucket_policy_only_enabled(self, value):
@@ -381,7 +385,7 @@ class IAMConfiguration(dict):
                    be frozen as true.
         """
         ubla = self.get("uniformBucketLevelAccess", {})
-        stamp = bpo.get("lockedTime")
+        stamp = ubla.get("lockedTime")
         if stamp is not None:
             stamp = _rfc3339_to_datetime(stamp)
         return stamp
