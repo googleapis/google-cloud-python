@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Changelog &#8212; google-cloud bbe686d documentation</title>
+    <title>Changelog &#8212; google-cloud 128e478 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -39,10 +39,51 @@
 <h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">#</a></h1>
 <p><a class="reference external" href="https://pypi.org/project/google-cloud-websecurityscanner/#history">PyPI History</a></p>
 <div class="section" id="id1">
-<h2>0.2.0<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h2>
-<p>05-15-2019 15:20 PDT</p>
+<h2>0.3.0<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h2>
+<p>07-24-2019 17:56 PDT</p>
 <div class="section" id="implementation-changes">
 <h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Allow kwargs to be passed to create_channel (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8413">#8413</a>)</li>
+<li>Retry code ‘idempotent’ for ListCrawledUrls, add empty lines (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8079">#8079</a>)</li>
+</ul>
+</div>
+<div class="section" id="new-features">
+<h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Add ‘client_options’ support, update list method docstrings (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8531">#8531</a>)</li>
+</ul>
+</div>
+<div class="section" id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Bump minimum version for google-api-core to 1.14.0. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8709">#8709</a>)</li>
+</ul>
+</div>
+<div class="section" id="documentation">
+<h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Link to googleapis.dev documentation in READMEs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8705">#8705</a>)</li>
+<li>Add compatibility check badges to READMEs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8288">#8288</a>)</li>
+</ul>
+</div>
+<div class="section" id="internal-testing-changes">
+<h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Pin black version (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8603">#8603</a>)</li>
+<li>Add docs job to publish to googleapis.dev. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8464">#8464</a>)</li>
+<li>Declare encoding as utf-8 in pb2 files (via synth).  (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8373">#8373</a>)</li>
+<li>Add disclaimer to auto-generated template files. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8337">#8337</a>)</li>
+<li>Suppress checking ‘cov-fail-under’ in nox default session (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8258">#8258</a>)</li>
+<li>Fix coverage in ‘types.py’ (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8172">#8172</a>)</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>0.2.0<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h2>
+<p>05-15-2019 15:20 PDT</p>
+<div class="section" id="id3">
+<h3>Implementation Changes<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Add routing header to method metadata (via synth).  (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7605">#7605</a>)</li>
 <li>Remove classifier for Python 3.4 for end-of-life. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7535">#7535</a>)</li>
@@ -51,21 +92,21 @@
 <li>Pick up order-of-enum fix from GAPIC generator. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6882">#6882</a>)</li>
 </ul>
 </div>
-<div class="section" id="new-features">
-<h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
+<div class="section" id="id4">
+<h3>New Features<a class="headerlink" href="#id4" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Generate v1beta. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7992">#7992</a>)</li>
 </ul>
 </div>
-<div class="section" id="documentation">
-<h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<div class="section" id="id5">
+<h3>Documentation<a class="headerlink" href="#id5" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Updated client library documentation URLs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7307">#7307</a>)</li>
 <li>Update copyright headers</li>
 </ul>
 </div>
-<div class="section" id="internal-testing-changes">
-<h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
+<div class="section" id="id6">
+<h3>Internal / Testing Changes<a class="headerlink" href="#id6" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Update noxfile (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7803">#7803</a>)</li>
 <li>Fix ‘docs’ session in nox. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7788">#7788</a>)</li>
@@ -76,32 +117,32 @@
 </ul>
 </div>
 </div>
-<div class="section" id="id2">
-<h2>0.1.1<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h2>
+<div class="section" id="id7">
+<h2>0.1.1<a class="headerlink" href="#id7" title="Permalink to this headline">#</a></h2>
 <p>12-18-2018 10:45 PST</p>
-<div class="section" id="id3">
-<h3>Implementation Changes<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h3>
+<div class="section" id="id8">
+<h3>Implementation Changes<a class="headerlink" href="#id8" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Import <code class="docutils literal notranslate"><span class="pre">iam.policy</span></code> from <code class="docutils literal notranslate"><span class="pre">google.api_core</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6741">#6741</a>)</li>
 <li>Avoid overwriting <code class="docutils literal notranslate"><span class="pre">__module__</span></code> of messages from shared modules. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5364">#5364</a>)</li>
 </ul>
 </div>
-<div class="section" id="dependencies">
-<h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
+<div class="section" id="id9">
+<h3>Dependencies<a class="headerlink" href="#id9" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Bump minimum <code class="docutils literal notranslate"><span class="pre">api_core</span></code> version for all GAPIC libs to 1.4.1. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6391">#6391</a>)</li>
 </ul>
 </div>
-<div class="section" id="id4">
-<h3>Documentation<a class="headerlink" href="#id4" title="Permalink to this headline">#</a></h3>
+<div class="section" id="id10">
+<h3>Documentation<a class="headerlink" href="#id10" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Document Python 2 deprecation (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6910">#6910</a>)</li>
 <li>Normalize use of support level badges (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6159">#6159</a>)</li>
 <li>Replace links to <code class="docutils literal notranslate"><span class="pre">/stable/</span></code> with <code class="docutils literal notranslate"><span class="pre">/latest/</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5901">#5901</a>)</li>
 </ul>
 </div>
-<div class="section" id="id5">
-<h3>Internal / Testing Changes<a class="headerlink" href="#id5" title="Permalink to this headline">#</a></h3>
+<div class="section" id="id11">
+<h3>Internal / Testing Changes<a class="headerlink" href="#id11" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Blacken all gen’d libs (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6792">#6792</a>)</li>
 <li>Omit local deps (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6701">#6701</a>)</li>
@@ -117,10 +158,10 @@
 </ul>
 </div>
 </div>
-<div class="section" id="id6">
-<h2>0.1.0<a class="headerlink" href="#id6" title="Permalink to this headline">#</a></h2>
-<div class="section" id="id7">
-<h3>New Features<a class="headerlink" href="#id7" title="Permalink to this headline">#</a></h3>
+<div class="section" id="id12">
+<h2>0.1.0<a class="headerlink" href="#id12" title="Permalink to this headline">#</a></h2>
+<div class="section" id="id13">
+<h3>New Features<a class="headerlink" href="#id13" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li>Add v1alpha1 websecurityscanner endpoint</li>
 </ul>

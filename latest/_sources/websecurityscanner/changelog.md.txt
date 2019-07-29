@@ -4,6 +4,33 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+## 0.3.0
+
+07-24-2019 17:56 PDT
+
+
+### Implementation Changes
+- Allow kwargs to be passed to create_channel (via synth). ([#8413](https://github.com/googleapis/google-cloud-python/pull/8413))
+- Retry code 'idempotent' for ListCrawledUrls, add empty lines (via synth). ([#8079](https://github.com/googleapis/google-cloud-python/pull/8079))
+
+### New Features
+- Add 'client_options' support, update list method docstrings (via synth). ([#8531](https://github.com/googleapis/google-cloud-python/pull/8531))
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+
+### Documentation
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+
+### Internal / Testing Changes
+- Pin black version (via synth). ([#8603](https://github.com/googleapis/google-cloud-python/pull/8603))
+- Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+- Declare encoding as utf-8 in pb2 files (via synth).  ([#8373](https://github.com/googleapis/google-cloud-python/pull/8373))
+- Add disclaimer to auto-generated template files. ([#8337](https://github.com/googleapis/google-cloud-python/pull/8337))
+- Suppress checking 'cov-fail-under' in nox default session (via synth). ([#8258](https://github.com/googleapis/google-cloud-python/pull/8258))
+- Fix coverage in 'types.py' (via synth). ([#8172](https://github.com/googleapis/google-cloud-python/pull/8172))
+
 ## 0.2.0
 
 05-15-2019 15:20 PDT
