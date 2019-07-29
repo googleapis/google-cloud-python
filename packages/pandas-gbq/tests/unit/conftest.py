@@ -15,12 +15,14 @@ def reset_context():
 
 @pytest.fixture(autouse=True)
 def mock_bigquery_client(monkeypatch):
-    from pandas_gbq import gbq
     from google.api_core.exceptions import NotFound
     import google.cloud.bigquery
     import google.cloud.bigquery.table
 
     mock_client = mock.create_autospec(google.cloud.bigquery.Client)
+    # Constructor returns the mock itself, so this mock can be treated as the
+    # constructor or the instance.
+    mock_client.return_value = mock_client
     mock_schema = [google.cloud.bigquery.SchemaField("_f0", "INTEGER")]
     # Mock out SELECT 1 query results.
     mock_query = mock.create_autospec(google.cloud.bigquery.QueryJob)
@@ -34,5 +36,6 @@ def mock_bigquery_client(monkeypatch):
     mock_client.query.return_value = mock_query
     # Mock table creation.
     mock_client.get_table.side_effect = NotFound("nope")
-    monkeypatch.setattr(gbq.GbqConnector, "get_client", lambda _: mock_client)
+    monkeypatch.setattr(google.cloud.bigquery, "Client", mock_client)
+    mock_client.reset_mock()
     return mock_client

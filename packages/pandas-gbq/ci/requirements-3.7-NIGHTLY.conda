@@ -1,5 +1,6 @@
 pydata-google-auth
-google-cloud-bigquery==1.10.0
+google-cloud-bigquery
+google-cloud-bigquery-storage
 pytest
 pytest-cov
 codecov

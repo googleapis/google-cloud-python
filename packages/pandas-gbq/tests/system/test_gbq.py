@@ -71,6 +71,16 @@ def random_dataset_id(bigquery_client):
 
 
 @pytest.fixture()
+def random_dataset(bigquery_client, random_dataset_id):
+    from google.cloud import bigquery
+
+    dataset_ref = bigquery_client.dataset(random_dataset_id)
+    dataset = bigquery.Dataset(dataset_ref)
+    bigquery_client.create_dataset(dataset)
+    return dataset
+
+
+@pytest.fixture()
 def tokyo_dataset(bigquery_client, random_dataset_id):
     from google.cloud import bigquery
 
@@ -894,31 +904,41 @@ class TestReadGBQIntegration(object):
         assert df["max_year"][0] >= 2000
 
 
-@pytest.mark.skip(reason="large query for BQ Storage API tests")
-def test_read_gbq_w_bqstorage_api(credentials):
+@pytest.mark.slow(reason="Large query for BQ Storage API tests.")
+def test_read_gbq_w_bqstorage_api(credentials, random_dataset):
+    pytest.importorskip("google.cloud.bigquery_storage")
     df = gbq.read_gbq(
         """
         SELECT
-            dependency_name,
-            dependency_platform,
-            project_name,
-            project_id,
-            version_number,
-            version_id,
-            dependency_kind,
-            optional_dependency,
-            dependency_requirements,
-            dependency_project_id
-        FROM
-            `bigquery-public-data.libraries_io.dependencies`
-        WHERE
-            LOWER(dependency_platform) = 'npm'
-        LIMIT 2500000
+          total_amount,
+          passenger_count,
+          trip_distance
+        FROM `bigquery-public-data.new_york_taxi_trips.tlc_green_trips_2014`
+        -- Select non-null rows for no-copy conversion from Arrow to pandas.
+        WHERE total_amount IS NOT NULL
+          AND passenger_count IS NOT NULL
+          AND trip_distance IS NOT NULL
+        LIMIT 10000000
         """,
         use_bqstorage_api=True,
         credentials=credentials,
+        configuration={
+            "query": {
+                "destinationTable": {
+                    "projectId": random_dataset.project,
+                    "datasetId": random_dataset.dataset_id,
+                    "tableId": "".join(
+                        [
+                            "test_read_gbq_w_bqstorage_api_",
+                            str(uuid.uuid4()).replace("-", "_"),
+                        ]
+                    ),
+                },
+                "writeDisposition": "WRITE_TRUNCATE",
+            }
+        },
     )
-    assert len(df) == 2500000
+    assert len(df) == 10000000
 
 
 class TestToGBQIntegration(object):

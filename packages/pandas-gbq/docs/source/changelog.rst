@@ -16,6 +16,11 @@ Implementation changes
 - Use object dtype for ``STRING``, ``ARRAY``, and ``STRUCT`` columns when
   there are zero rows. (:issue:`285`)
 
+Internal changes
+~~~~~~~~~~~~~~~~
+
+- Populate ``user-agent`` with ``pandas`` version information. (:issue:`281`)
+
 .. _changelog-0.10.0:
 
 0.10.0 / 2019-04-05

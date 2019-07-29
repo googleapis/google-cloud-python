@@ -5,6 +5,7 @@ import datetime
 from unittest import mock
 
 import numpy
+import pandas
 from pandas import DataFrame
 import pandas.util.testing as tm
 import pkg_resources
@@ -20,6 +21,10 @@ pytestmark = pytest.mark.filter_warnings(
 pandas_installed_version = pkg_resources.get_distribution(
     "pandas"
 ).parsed_version
+
+
+def _make_connector(project_id="some-project", **kwargs):
+    return gbq.GbqConnector(project_id, **kwargs)
 
 
 @pytest.fixture
@@ -99,7 +104,7 @@ def no_auth(monkeypatch):
         ("DATETIME", "datetime64[ns]"),
     ],
 )
-def test_should_return_bigquery_correctly_typed(type_, expected):
+def test__bqschema_to_nullsafe_dtypes(type_, expected):
     result = gbq._bqschema_to_nullsafe_dtypes(
         [dict(name="x", type=type_, mode="NULLABLE")]
     )
@@ -107,6 +112,35 @@ def test_should_return_bigquery_correctly_typed(type_, expected):
         assert result == {}
     else:
         assert result == {"x": expected}
+
+
+def test_GbqConnector_get_client_w_old_bq(monkeypatch, mock_bigquery_client):
+    gbq._test_google_api_imports()
+    connector = _make_connector()
+    monkeypatch.setattr(gbq, "HAS_CLIENT_INFO", False)
+
+    connector.get_client()
+
+    # No client_info argument.
+    mock_bigquery_client.assert_called_with(
+        credentials=mock.ANY, project=mock.ANY
+    )
+
+
+def test_GbqConnector_get_client_w_new_bq(mock_bigquery_client):
+    gbq._test_google_api_imports()
+    pytest.importorskip(
+        "google.cloud.bigquery", minversion=gbq.BIGQUERY_CLIENT_INFO_VERSION
+    )
+    pytest.importorskip("google.api_core.client_info")
+
+    connector = _make_connector()
+    connector.get_client()
+
+    _, kwargs = mock_bigquery_client.call_args
+    assert kwargs["client_info"].user_agent == "pandas-{}".format(
+        pandas.__version__
+    )
 
 
 def test_to_gbq_should_fail_if_invalid_table_name_passed():

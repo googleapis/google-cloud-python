@@ -1,7 +1,9 @@
-pydata-google-auth
-google-cloud-bigquery==1.9.0
-pytest
-pytest-cov
 codecov
 coverage
+fastavro
 flake8
+google-cloud-bigquery==1.9.0
+google-cloud-bigquery-storage==0.5.0
+pydata-google-auth
+pytest
+pytest-cov

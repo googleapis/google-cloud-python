@@ -72,8 +72,6 @@ def test_get_credentials_default_credentials(monkeypatch):
         )
 
     monkeypatch.setattr(google.auth, "default", mock_default_credentials)
-    mock_client = mock.create_autospec(google.cloud.bigquery.Client)
-    monkeypatch.setattr(google.cloud.bigquery, "Client", mock_client)
 
     credentials, project = auth.get_credentials()
     assert project == "default-project"
