@@ -669,9 +669,6 @@ class BackgroundConsumer(object):
                 exc,
             )
 
-        else:
-            _LOGGER.error("The bidirectional RPC exited.")
-
         _LOGGER.info("%s exiting", _BIDIRECTIONAL_CONSUMER_NAME)
 
     def start(self):
