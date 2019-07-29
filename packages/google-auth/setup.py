@@ -19,7 +19,7 @@ from setuptools import setup
 
 
 DEPENDENCIES = (
-    'cachetools>=2.0.0,<3.0',
+    'cachetools>=2.0.0,<3.2',
     'pyasn1-modules>=0.2.1',
     'rsa>=3.1.4,<4.1',
     'setuptools>=40.3.0',
