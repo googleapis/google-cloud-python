@@ -16,6 +16,7 @@ import datetime
 import time
 
 import mock
+import pytest
 import pytz
 from six.moves import queue
 from google.protobuf import timestamp_pb2
@@ -135,7 +136,9 @@ def test_drop():
 
 def test_lease():
     msg = create_message(b"foo", ack_id="bogus_ack_id")
-    with mock.patch.object(msg._request_queue, "put") as put:
+
+    pytest_warns = pytest.warns(DeprecationWarning)
+    with pytest_warns, mock.patch.object(msg._request_queue, "put") as put:
         msg.lease()
         put.assert_called_once_with(
             requests.LeaseRequest(ack_id="bogus_ack_id", byte_size=30)
