@@ -440,7 +440,15 @@ def _make_bqstorage_client(use_bqstorage_api, credentials):
         )
         six.raise_from(customized_error, err)
 
+    try:
+        from google.api_core.gapic_v1 import client_info as gapic_client_info
+    except ImportError as err:
+        customized_error = ImportError(
+            "Install the grpcio package to use the BigQuery Storage API."
+        )
+        six.raise_from(customized_error, err)
+
     return bigquery_storage_v1beta1.BigQueryStorageClient(
         credentials=credentials,
-        client_info=client_info.ClientInfo(user_agent=IPYTHON_USER_AGENT),
+        client_info=gapic_client_info.ClientInfo(user_agent=IPYTHON_USER_AGENT),
     )

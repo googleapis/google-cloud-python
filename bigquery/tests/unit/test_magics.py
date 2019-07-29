@@ -79,6 +79,17 @@ def missing_bq_storage():
     return maybe_fail_import(predicate=fail_if)
 
 
+@pytest.fixture(scope="session")
+def missing_grpcio_lib():
+    """Provide a patcher that can make the gapic library import to fail."""
+
+    def fail_if(name, globals, locals, fromlist, level):
+        # NOTE: *very* simplified, assuming a straightforward absolute import
+        return "gapic_v1" in name or (fromlist is not None and "gapic_v1" in fromlist)
+
+    return maybe_fail_import(predicate=fail_if)
+
+
 JOB_REFERENCE_RESOURCE = {"projectId": "its-a-project-eh", "jobId": "some-random-id"}
 TABLE_REFERENCE_RESOURCE = {
     "projectId": "its-a-project-eh",
@@ -290,6 +301,17 @@ def test__make_bqstorage_client_true_raises_import_error(missing_bq_storage):
         magics._make_bqstorage_client(True, credentials_mock)
 
     assert "google-cloud-bigquery-storage" in str(exc_context.value)
+
+
+def test__make_bqstorage_client_true_missing_gapic(missing_grpcio_lib):
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+
+    with pytest.raises(ImportError) as exc_context, missing_grpcio_lib:
+        magics._make_bqstorage_client(True, credentials_mock)
+
+    assert "grpcio" in str(exc_context.value)
 
 
 @pytest.mark.usefixtures("ipython_interactive")
