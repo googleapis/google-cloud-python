@@ -66,6 +66,8 @@ def test_standard_sql_types_enum_docstring(enum_under_test, gapic_enum):
     assert "BOOL (int):" in enum_under_test.__doc__
     assert "TIME (int):" in enum_under_test.__doc__
 
-    # all lines in the docstring should actually come from the original docstring
+    # All lines in the docstring should actually come from the original docstring,
+    # except for the header.
+    assert "An Enum of scalar SQL types." in enum_under_test.__doc__
     doc_lines = enum_under_test.__doc__.splitlines()
-    assert set(doc_lines) <= set(gapic_enum.__doc__.splitlines())
+    assert set(doc_lines[1:]) <= set(gapic_enum.__doc__.splitlines())

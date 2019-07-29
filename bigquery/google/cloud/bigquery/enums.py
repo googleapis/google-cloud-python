@@ -61,7 +61,7 @@ def _make_sql_scalars_enum():
     new_doc = "\n".join(
         six.moves.filterfalse(skip_pattern.search, orig_doc.splitlines())
     )
-    new_enum.__doc__ = new_doc
+    new_enum.__doc__ = "An Enum of scalar SQL types.\n" + new_doc
 
     return new_enum
 
