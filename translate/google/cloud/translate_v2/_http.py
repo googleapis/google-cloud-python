@@ -32,9 +32,8 @@ class Connection(_http.JSONConnection):
     DEFAULT_API_ENDPOINT = "https://translation.googleapis.com"
 
     def __init__(self, client, client_info=None, api_endpoint=DEFAULT_API_ENDPOINT):
-        Connection.API_BASE_URL = api_endpoint
         super(Connection, self).__init__(client, client_info)
-
+        self.API_BASE_URL = api_endpoint
         self._client_info.gapic_version = __version__
         self._client_info.client_library_version = __version__
 
