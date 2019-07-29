@@ -347,7 +347,7 @@ intersphinx_mapping = {
         None,
     ),
     "grpc": ("https://grpc.io/grpc/python/", None),
-    "requests": ("http://docs.python-requests.org/en/master/", None),
+    "requests": ("https://2.python-requests.org/en/master/", None),
     "fastavro": ("https://fastavro.readthedocs.io/en/stable/", None),
     "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
 }
