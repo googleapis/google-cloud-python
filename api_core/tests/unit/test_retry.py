@@ -161,6 +161,7 @@ class TestRetry(object):
         assert retry_._maximum == 60
         assert retry_._multiplier == 2
         assert retry_._deadline == 120
+        assert retry_._on_error is None
 
     def test_constructor_options(self):
         retry_ = retry.Retry(
@@ -169,12 +170,14 @@ class TestRetry(object):
             maximum=2,
             multiplier=3,
             deadline=4,
+            on_error=ValueError,
         )
         assert retry_._predicate == mock.sentinel.predicate
         assert retry_._initial == 1
         assert retry_._maximum == 2
         assert retry_._multiplier == 3
         assert retry_._deadline == 4
+        assert retry_._on_error is ValueError
 
     def test_with_deadline(self):
         retry_ = retry.Retry()
@@ -209,7 +212,8 @@ class TestRetry(object):
         assert re.match(
             (
                 r"<Retry predicate=<function.*?if_exception_type.*?>, "
-                r"initial=1.0, maximum=60.0, multiplier=2.0, deadline=120.0>"
+                r"initial=1.0, maximum=60.0, multiplier=2.0, deadline=120.0, "
+                r"on_error=None>"
             ),
             str(retry_),
         )
@@ -253,3 +257,49 @@ class TestRetry(object):
         target.assert_has_calls([mock.call("meep"), mock.call("meep")])
         sleep.assert_called_once_with(retry_._initial)
         assert on_error.call_count == 1
+
+    @mock.patch("time.sleep", autospec=True)
+    def test___init___executed_without_retry(self, sleep):
+        retry_ = retry.Retry(on_error=ValueError)
+        # check the proper creation of the class
+        assert retry_._on_error is ValueError
+        target = mock.Mock(spec=["__call__"], return_value=42)
+        # __name__ is needed by functools.partial.
+        target.__name__ = "target"
+
+        decorated = retry_(target)
+        target.assert_not_called()
+
+        result = decorated("meep")
+
+        assert result == 42
+        target.assert_called_once_with("meep")
+        sleep.assert_not_called()
+
+    # Make uniform return half of its maximum, which will be the calculated
+    # sleep time.
+    @mock.patch("random.uniform", autospec=True, side_effect=lambda m, n: n / 2.0)
+    @mock.patch("time.sleep", autospec=True)
+    def test___init___when_retry_is_executed(self, sleep, uniform):
+
+        retry_ = retry.Retry(
+            predicate=retry.if_exception_type(ValueError), on_error=ValueError
+        )
+        # check the proper creation of the class
+        assert retry_._on_error is ValueError
+
+        target = mock.Mock(
+            spec=["__call__"], side_effect=[ValueError(), ValueError(), 42]
+        )
+        # __name__ is needed by functools.partial.
+        target.__name__ = "target"
+
+        decorated = retry_(target)
+        target.assert_not_called()
+
+        result = decorated("meep")
+
+        assert result == 42
+        assert target.call_count == 3
+        target.assert_has_calls([mock.call("meep"), mock.call("meep")])
+        sleep.assert_any_call(retry_._initial)
