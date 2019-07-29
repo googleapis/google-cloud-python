@@ -321,8 +321,7 @@ def generate_signed_url_v2(
 
     :type response_type: str
     :param response_type: (Optional) Content type of responses to requests for
-                          the signed URL. Used to over-ride the content type of
-                          the underlying resource.
+                          the signed URL.Ignored if content_type is set.
 
     :type response_disposition: str
     :param response_disposition: (Optional) Content disposition of responses to
