@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Messages &#8212; google-cloud a5dc557 documentation</title>
+    <title>Messages &#8212; google-cloud b32e4e9 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -124,9 +124,16 @@ from Pub/Sub.</li>
 <li><strong>request_queue</strong> (<a class="reference external" href="https://docs.python.org/3/library/queue.html#queue.Queue" title="(in Python v3.7)"><em>queue.Queue</em></a>) – A queue provided by the policy that
 can accept requests; the policy is responsible for handling
 those requests.</li>
-<li><strong>autolease</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – An optional flag determining whether a new Message
+<li><strong>autolease</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – <p>An optional flag determining whether a new Message
 instance should automatically lease itself upon creation.
-Defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a>.</li>
+Defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<div class="last deprecated">
+<p><span class="versionmodified">Deprecated since version 0.44.0: </span>Parameter will be removed in future versions.</p>
+</div>
+</div>
+</li>
 </ul>
 </td>
 </tr>
@@ -231,10 +238,13 @@ directly.</p>
 <dd><p>Inform the policy to lease this message continually.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">By default this method is called by the constructor, and you should
+<p>By default this method is called by the constructor, and you should
 never need to call it manually, unless the
 <a class="reference internal" href="#google.cloud.pubsub_v1.subscriber.message.Message" title="google.cloud.pubsub_v1.subscriber.message.Message"><code class="xref py py-class docutils literal notranslate"><span class="pre">Message</span></code></a> instance was
 created with <code class="docutils literal notranslate"><span class="pre">autolease=False</span></code>.</p>
+<div class="last deprecated">
+<p><span class="versionmodified">Deprecated since version 0.44.0: </span>Will be removed in future versions.</p>
+</div>
 </div>
 </dd></dl>
 
