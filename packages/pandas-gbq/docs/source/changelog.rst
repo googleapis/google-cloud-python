@@ -3,12 +3,17 @@ Changelog
 
 .. _changelog-0.11.0:
 
-0.11.0 / TBD
-------------
+0.11.0 / 2019-07-29
+-------------------
 
 - **Breaking Change:** Python 2 support has been dropped. This is to align
   with the pandas package which dropped Python 2 support at the end of 2019.
   (:issue:`268`)
+
+Enhancements
+~~~~~~~~~~~~
+
+- Ensure ``table_schema`` argument is not modified inplace. (:issue:`278`)
 
 Implementation changes
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -20,6 +25,9 @@ Internal changes
 ~~~~~~~~~~~~~~~~
 
 - Populate ``user-agent`` with ``pandas`` version information. (:issue:`281`)
+- Fix ``pytest.raises`` usage for latest pytest. Fix warnings in tests.
+  (:issue:`282`)
+- Update CI to install nightly packages in the conda tests. (:issue:`254`)
 
 .. _changelog-0.10.0:
 
