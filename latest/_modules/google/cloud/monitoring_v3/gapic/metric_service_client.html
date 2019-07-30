@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.monitoring_v3.gapic.metric_service_client &#8212; google-cloud bb353b9 documentation</title>
+    <title>google.cloud.monitoring_v3.gapic.metric_service_client &#8212; google-cloud a76637c documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -34,7 +34,7 @@
   <h1>Source code for google.cloud.monitoring_v3.gapic.metric_service_client</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="c1">#</span>
-<span class="c1"># Copyright 2018 Google LLC</span>
+<span class="c1"># Copyright 2019 Google LLC</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -47,6 +47,7 @@
 <span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
+
 <span class="sd">&quot;&quot;&quot;Accesses the google.monitoring.v3 MetricService API.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">functools</span>
@@ -54,9 +55,11 @@
 <span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="kn">import</span> <span class="nn">google.api_core.client_options</span>
 <span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.client_info</span>
 <span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.config</span>
 <span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.method</span>
+<span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.routing_header</span>
 <span class="kn">import</span> <span class="nn">google.api_core.grpc_helpers</span>
 <span class="kn">import</span> <span class="nn">google.api_core.page_iterator</span>
 <span class="kn">import</span> <span class="nn">google.api_core.path_template</span>
@@ -79,6 +82,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.monitoring_v3.proto</span> <span class="k">import</span> <span class="n">metric_service_pb2_grpc</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">empty_pb2</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">field_mask_pb2</span>
+
 
 <span class="n">_GAPIC_LIBRARY_VERSION</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">get_distribution</span><span class="p">(</span>
     <span class="s2">&quot;google-cloud-monitoring&quot;</span>
@@ -118,13 +122,6 @@
 
     <span class="n">from_service_account_json</span> <span class="o">=</span> <span class="n">from_service_account_file</span>
 
-<div class="viewcode-block" id="MetricServiceClient.project_path"><a class="viewcode-back" href="../../../../../monitoring/gapic/v3/api.html#google.cloud.monitoring_v3.MetricServiceClient.project_path">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">project_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a fully-qualified project string.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
-            <span class="s2">&quot;projects/</span><span class="si">{project}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span>
-        <span class="p">)</span></div>
-
 <div class="viewcode-block" id="MetricServiceClient.metric_descriptor_path"><a class="viewcode-back" href="../../../../../monitoring/gapic/v3/api.html#google.cloud.monitoring_v3.MetricServiceClient.metric_descriptor_path">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">metric_descriptor_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">metric_descriptor</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a fully-qualified metric_descriptor string.&quot;&quot;&quot;</span>
@@ -143,6 +140,13 @@
             <span class="n">monitored_resource_descriptor</span><span class="o">=</span><span class="n">monitored_resource_descriptor</span><span class="p">,</span>
         <span class="p">)</span></div>
 
+<div class="viewcode-block" id="MetricServiceClient.project_path"><a class="viewcode-back" href="../../../../../monitoring/gapic/v3/api.html#google.cloud.monitoring_v3.MetricServiceClient.project_path">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">project_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified project string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s2">&quot;projects/</span><span class="si">{project}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span>
+        <span class="p">)</span></div>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">transport</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -150,6 +154,7 @@
         <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">client_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">client_info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">client_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Constructor.</span>
 
@@ -180,6 +185,9 @@
 <span class="sd">                API requests. If ``None``, then default info will be used.</span>
 <span class="sd">                Generally, you only need to set this if you&#39;re developing</span>
 <span class="sd">                your own client library.</span>
+<span class="sd">            client_options (Union[dict, google.api_core.client_options.ClientOptions]):</span>
+<span class="sd">                Client options used to set user options on the client. API Endpoint</span>
+<span class="sd">                should be set through client_options.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Raise deprecation warnings for things we want to go away.</span>
         <span class="k">if</span> <span class="n">client_config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -198,6 +206,15 @@
                 <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
             <span class="p">)</span>
 
+        <span class="n">api_endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span>
+        <span class="k">if</span> <span class="n">client_options</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">client_options</span><span class="p">)</span> <span class="o">==</span> <span class="nb">dict</span><span class="p">:</span>
+                <span class="n">client_options</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">client_options</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
+                    <span class="n">client_options</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="n">client_options</span><span class="o">.</span><span class="n">api_endpoint</span><span class="p">:</span>
+                <span class="n">api_endpoint</span> <span class="o">=</span> <span class="n">client_options</span><span class="o">.</span><span class="n">api_endpoint</span>
+
         <span class="c1"># Instantiate the transport.</span>
         <span class="c1"># The transport is responsible for handling serialization and</span>
         <span class="c1"># deserialization and actually sending data to the service.</span>
@@ -206,6 +223,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="n">transport</span><span class="p">(</span>
                     <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
                     <span class="n">default_class</span><span class="o">=</span><span class="n">metric_service_grpc_transport</span><span class="o">.</span><span class="n">MetricServiceGrpcTransport</span><span class="p">,</span>
+                    <span class="n">address</span><span class="o">=</span><span class="n">api_endpoint</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">credentials</span><span class="p">:</span>
@@ -216,7 +234,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="n">transport</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="n">metric_service_grpc_transport</span><span class="o">.</span><span class="n">MetricServiceGrpcTransport</span><span class="p">(</span>
-                <span class="n">address</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span><span class="p">,</span> <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span>
+                <span class="n">address</span><span class="o">=</span><span class="n">api_endpoint</span><span class="p">,</span> <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -252,7 +270,8 @@
         <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Lists monitored resource descriptors that match a filter. This method does not require a Stackdriver account.</span>
+<span class="sd">        Lists monitored resource descriptors that match a filter. This method does</span>
+<span class="sd">        not require a Stackdriver account.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import monitoring_v3</span>
@@ -302,10 +321,10 @@
 <span class="sd">                that is provided to the method.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            A :class:`~google.gax.PageIterator` instance. By default, this</span>
-<span class="sd">            is an iterable of :class:`~google.cloud.monitoring_v3.types.MonitoredResourceDescriptor` instances.</span>
-<span class="sd">            This object can also be configured to iterate over the pages</span>
-<span class="sd">            of the response through the `options` parameter.</span>
+<span class="sd">            A :class:`~google.api_core.page_iterator.PageIterator` instance.</span>
+<span class="sd">            An iterable of :class:`~google.cloud.monitoring_v3.types.MonitoredResourceDescriptor` instances.</span>
+<span class="sd">            You can also iterate over the pages of the response</span>
+<span class="sd">            using its `pages` property.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
@@ -335,6 +354,19 @@
         <span class="n">request</span> <span class="o">=</span> <span class="n">metric_service_pb2</span><span class="o">.</span><span class="n">ListMonitoredResourceDescriptorsRequest</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">filter_</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span>
         <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="n">iterator</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">GRPCIterator</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">method</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
@@ -358,7 +390,8 @@
         <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Gets a single monitored resource descriptor. This method does not require a Stackdriver account.</span>
+<span class="sd">        Gets a single monitored resource descriptor. This method does not require a</span>
+<span class="sd">        Stackdriver account.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import monitoring_v3</span>
@@ -412,6 +445,19 @@
             <span class="p">)</span>
 
         <span class="n">request</span> <span class="o">=</span> <span class="n">metric_service_pb2</span><span class="o">.</span><span class="n">GetMonitoredResourceDescriptorRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;get_monitored_resource_descriptor&quot;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
         <span class="p">)</span></div>
@@ -426,7 +472,8 @@
         <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Lists metric descriptors that match a filter. This method does not require a Stackdriver account.</span>
+<span class="sd">        Lists metric descriptors that match a filter. This method does not require</span>
+<span class="sd">        a Stackdriver account.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import monitoring_v3</span>
@@ -477,10 +524,10 @@
 <span class="sd">                that is provided to the method.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            A :class:`~google.gax.PageIterator` instance. By default, this</span>
-<span class="sd">            is an iterable of :class:`~google.cloud.monitoring_v3.types.MetricDescriptor` instances.</span>
-<span class="sd">            This object can also be configured to iterate over the pages</span>
-<span class="sd">            of the response through the `options` parameter.</span>
+<span class="sd">            A :class:`~google.api_core.page_iterator.PageIterator` instance.</span>
+<span class="sd">            An iterable of :class:`~google.cloud.monitoring_v3.types.MetricDescriptor` instances.</span>
+<span class="sd">            You can also iterate over the pages of the response</span>
+<span class="sd">            using its `pages` property.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
@@ -506,6 +553,19 @@
         <span class="n">request</span> <span class="o">=</span> <span class="n">metric_service_pb2</span><span class="o">.</span><span class="n">ListMetricDescriptorsRequest</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">filter_</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span>
         <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="n">iterator</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">GRPCIterator</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">method</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
@@ -529,7 +589,8 @@
         <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Gets a single metric descriptor. This method does not require a Stackdriver account.</span>
+<span class="sd">        Gets a single metric descriptor. This method does not require a Stackdriver</span>
+<span class="sd">        account.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import monitoring_v3</span>
@@ -579,6 +640,19 @@
             <span class="p">)</span>
 
         <span class="n">request</span> <span class="o">=</span> <span class="n">metric_service_pb2</span><span class="o">.</span><span class="n">GetMetricDescriptorRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;get_metric_descriptor&quot;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
         <span class="p">)</span></div>
@@ -652,6 +726,19 @@
         <span class="n">request</span> <span class="o">=</span> <span class="n">metric_service_pb2</span><span class="o">.</span><span class="n">CreateMetricDescriptorRequest</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">metric_descriptor</span><span class="o">=</span><span class="n">metric_descriptor</span>
         <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;create_metric_descriptor&quot;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
         <span class="p">)</span></div>
@@ -713,6 +800,19 @@
             <span class="p">)</span>
 
         <span class="n">request</span> <span class="o">=</span> <span class="n">metric_service_pb2</span><span class="o">.</span><span class="n">DeleteMetricDescriptorRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;delete_metric_descriptor&quot;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
         <span class="p">)</span></div>
@@ -731,7 +831,8 @@
         <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Lists time series that match a filter. This method does not require a Stackdriver account.</span>
+<span class="sd">        Lists time series that match a filter. This method does not require a</span>
+<span class="sd">        Stackdriver account.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import monitoring_v3</span>
@@ -807,10 +908,10 @@
 <span class="sd">                that is provided to the method.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            A :class:`~google.gax.PageIterator` instance. By default, this</span>
-<span class="sd">            is an iterable of :class:`~google.cloud.monitoring_v3.types.TimeSeries` instances.</span>
-<span class="sd">            This object can also be configured to iterate over the pages</span>
-<span class="sd">            of the response through the `options` parameter.</span>
+<span class="sd">            A :class:`~google.api_core.page_iterator.PageIterator` instance.</span>
+<span class="sd">            An iterable of :class:`~google.cloud.monitoring_v3.types.TimeSeries` instances.</span>
+<span class="sd">            You can also iterate over the pages of the response</span>
+<span class="sd">            using its `pages` property.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
@@ -842,6 +943,19 @@
             <span class="n">order_by</span><span class="o">=</span><span class="n">order_by</span><span class="p">,</span>
             <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="n">iterator</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">GRPCIterator</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">method</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
@@ -927,6 +1041,19 @@
         <span class="n">request</span> <span class="o">=</span> <span class="n">metric_service_pb2</span><span class="o">.</span><span class="n">CreateTimeSeriesRequest</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">time_series</span><span class="o">=</span><span class="n">time_series</span>
         <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;create_time_series&quot;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
         <span class="p">)</span></div>

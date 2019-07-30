@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Client for Stackdriver Monitoring API &#8212; google-cloud bb353b9 documentation</title>
+    <title>Client for Stackdriver Monitoring API &#8212; google-cloud a76637c documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -37,7 +37,7 @@
 <span id="client-for-stackdriver-monitoring-api"></span><h1>Client for Stackdriver Monitoring API<a class="headerlink" href="#module-google.cloud.monitoring_v3" title="Permalink to this headline">#</a></h1>
 <dl class="class">
 <dt id="google.cloud.monitoring_v3.AlertPolicyServiceClient">
-<em class="property">class </em><code class="sig-prename descclassname">google.cloud.monitoring_v3.</code><code class="sig-name descname">AlertPolicyServiceClient</code><span class="sig-paren">(</span><em class="sig-param">transport=None</em>, <em class="sig-param">channel=None</em>, <em class="sig-param">credentials=None</em>, <em class="sig-param">client_config=None</em>, <em class="sig-param">client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3.html#AlertPolicyServiceClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.AlertPolicyServiceClient" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.monitoring_v3.</code><code class="sig-name descname">AlertPolicyServiceClient</code><span class="sig-paren">(</span><em class="sig-param">transport=None</em>, <em class="sig-param">channel=None</em>, <em class="sig-param">credentials=None</em>, <em class="sig-param">client_config=None</em>, <em class="sig-param">client_info=None</em>, <em class="sig-param">client_options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3.html#AlertPolicyServiceClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.AlertPolicyServiceClient" title="Permalink to this definition">#</a></dt>
 <dd><p>The AlertPolicyService API is used to manage (list, create, delete,
 edit) alert policies in Stackdriver Monitoring. An alerting policy is a
 description of the conditions under which some aspect of your system is
@@ -75,6 +75,8 @@ each method. If not specified, the default configuration is used.</p></li>
 API requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then default info will be used.
 Generally, you only need to set this if you’re developing
 your own client library.</p></li>
+<li><p><strong>client_options</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>google.api_core.client_options.ClientOptions</em><em>]</em>) – Client options used to set user options on the client. API Endpoint
+should be set through client_options.</p></li>
 </ul>
 </dd>
 </dl>
@@ -354,10 +356,10 @@ that is provided to the method.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code></a> instance. By default, this
-is an iterable of <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.AlertPolicy" title="google.cloud.monitoring_v3.types.AlertPolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">AlertPolicy</span></code></a> instances.
-This object can also be configured to iterate over the pages
-of the response through the <cite>options</cite> parameter.</p>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code> instance.
+An iterable of <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.AlertPolicy" title="google.cloud.monitoring_v3.types.AlertPolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">AlertPolicy</span></code></a> instances.
+You can also iterate over the pages of the response
+using its <cite>pages</cite> property.</p>
 </dd>
 <dt class="field-odd">Raises</dt>
 <dd class="field-odd"><ul class="simple">
@@ -458,7 +460,7 @@ that is provided to the method.</p></li>
 
 <dl class="class">
 <dt id="google.cloud.monitoring_v3.GroupServiceClient">
-<em class="property">class </em><code class="sig-prename descclassname">google.cloud.monitoring_v3.</code><code class="sig-name descname">GroupServiceClient</code><span class="sig-paren">(</span><em class="sig-param">transport=None</em>, <em class="sig-param">channel=None</em>, <em class="sig-param">credentials=None</em>, <em class="sig-param">client_config=None</em>, <em class="sig-param">client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3.html#GroupServiceClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.GroupServiceClient" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.monitoring_v3.</code><code class="sig-name descname">GroupServiceClient</code><span class="sig-paren">(</span><em class="sig-param">transport=None</em>, <em class="sig-param">channel=None</em>, <em class="sig-param">credentials=None</em>, <em class="sig-param">client_config=None</em>, <em class="sig-param">client_info=None</em>, <em class="sig-param">client_options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3.html#GroupServiceClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.GroupServiceClient" title="Permalink to this definition">#</a></dt>
 <dd><p>The Group API lets you inspect and manage your
 <a class="reference external" href="#google.monitoring.v3.Group">groups</a>.</p>
 <p>A group is a named filter that is used to identify a collection of
@@ -497,6 +499,8 @@ each method. If not specified, the default configuration is used.</p></li>
 API requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then default info will be used.
 Generally, you only need to set this if you’re developing
 your own client library.</p></li>
+<li><p><strong>client_options</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>google.api_core.client_options.ClientOptions</em><em>]</em>) – Client options used to set user options on the client. API Endpoint
+should be set through client_options.</p></li>
 </ul>
 </dd>
 </dl>
@@ -759,10 +763,10 @@ that is provided to the method.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code></a> instance. By default, this
-is an iterable of <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.MonitoredResource" title="google.cloud.monitoring_v3.types.MonitoredResource"><code class="xref py py-class docutils literal notranslate"><span class="pre">MonitoredResource</span></code></a> instances.
-This object can also be configured to iterate over the pages
-of the response through the <cite>options</cite> parameter.</p>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code> instance.
+An iterable of <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.MonitoredResource" title="google.cloud.monitoring_v3.types.MonitoredResource"><code class="xref py py-class docutils literal notranslate"><span class="pre">MonitoredResource</span></code></a> instances.
+You can also iterate over the pages of the response
+using its <cite>pages</cite> property.</p>
 </dd>
 <dt class="field-odd">Raises</dt>
 <dd class="field-odd"><ul class="simple">
@@ -835,10 +839,10 @@ that is provided to the method.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code></a> instance. By default, this
-is an iterable of <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.Group" title="google.cloud.monitoring_v3.types.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a> instances.
-This object can also be configured to iterate over the pages
-of the response through the <cite>options</cite> parameter.</p>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code> instance.
+An iterable of <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.Group" title="google.cloud.monitoring_v3.types.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a> instances.
+You can also iterate over the pages of the response
+using its <cite>pages</cite> property.</p>
 </dd>
 <dt class="field-odd">Raises</dt>
 <dd class="field-odd"><ul class="simple">
@@ -913,7 +917,7 @@ that is provided to the method.</p></li>
 
 <dl class="class">
 <dt id="google.cloud.monitoring_v3.MetricServiceClient">
-<em class="property">class </em><code class="sig-prename descclassname">google.cloud.monitoring_v3.</code><code class="sig-name descname">MetricServiceClient</code><span class="sig-paren">(</span><em class="sig-param">transport=None</em>, <em class="sig-param">channel=None</em>, <em class="sig-param">credentials=None</em>, <em class="sig-param">client_config=None</em>, <em class="sig-param">client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3.html#MetricServiceClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.MetricServiceClient" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.monitoring_v3.</code><code class="sig-name descname">MetricServiceClient</code><span class="sig-paren">(</span><em class="sig-param">transport=None</em>, <em class="sig-param">channel=None</em>, <em class="sig-param">credentials=None</em>, <em class="sig-param">client_config=None</em>, <em class="sig-param">client_info=None</em>, <em class="sig-param">client_options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3.html#MetricServiceClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.MetricServiceClient" title="Permalink to this definition">#</a></dt>
 <dd><p>Manages metric descriptors, monitored resource descriptors, and
 time series data.</p>
 <p>Constructor.</p>
@@ -944,6 +948,8 @@ each method. If not specified, the default configuration is used.</p></li>
 API requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then default info will be used.
 Generally, you only need to set this if you’re developing
 your own client library.</p></li>
+<li><p><strong>client_options</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>google.api_core.client_options.ClientOptions</em><em>]</em>) – Client options used to set user options on the client. API Endpoint
+should be set through client_options.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1155,7 +1161,8 @@ file.</p></li>
 <dl class="method">
 <dt id="google.cloud.monitoring_v3.MetricServiceClient.get_metric_descriptor">
 <code class="sig-name descname">get_metric_descriptor</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3/gapic/metric_service_client.html#MetricServiceClient.get_metric_descriptor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.MetricServiceClient.get_metric_descriptor" title="Permalink to this definition">#</a></dt>
-<dd><p>Gets a single metric descriptor. This method does not require a Stackdriver account.</p>
+<dd><p>Gets a single metric descriptor. This method does not require a Stackdriver
+account.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">monitoring_v3</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1201,7 +1208,8 @@ that is provided to the method.</p></li>
 <dl class="method">
 <dt id="google.cloud.monitoring_v3.MetricServiceClient.get_monitored_resource_descriptor">
 <code class="sig-name descname">get_monitored_resource_descriptor</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3/gapic/metric_service_client.html#MetricServiceClient.get_monitored_resource_descriptor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.MetricServiceClient.get_monitored_resource_descriptor" title="Permalink to this definition">#</a></dt>
-<dd><p>Gets a single monitored resource descriptor. This method does not require a Stackdriver account.</p>
+<dd><p>Gets a single monitored resource descriptor. This method does not require a
+Stackdriver account.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">monitoring_v3</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1247,7 +1255,8 @@ that is provided to the method.</p></li>
 <dl class="method">
 <dt id="google.cloud.monitoring_v3.MetricServiceClient.list_metric_descriptors">
 <code class="sig-name descname">list_metric_descriptors</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">filter_=None</em>, <em class="sig-param">page_size=None</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3/gapic/metric_service_client.html#MetricServiceClient.list_metric_descriptors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.MetricServiceClient.list_metric_descriptors" title="Permalink to this definition">#</a></dt>
-<dd><p>Lists metric descriptors that match a filter. This method does not require a Stackdriver account.</p>
+<dd><p>Lists metric descriptors that match a filter. This method does not require
+a Stackdriver account.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">monitoring_v3</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1301,10 +1310,10 @@ that is provided to the method.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code></a> instance. By default, this
-is an iterable of <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.MetricDescriptor" title="google.cloud.monitoring_v3.types.MetricDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetricDescriptor</span></code></a> instances.
-This object can also be configured to iterate over the pages
-of the response through the <cite>options</cite> parameter.</p>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code> instance.
+An iterable of <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.MetricDescriptor" title="google.cloud.monitoring_v3.types.MetricDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetricDescriptor</span></code></a> instances.
+You can also iterate over the pages of the response
+using its <cite>pages</cite> property.</p>
 </dd>
 <dt class="field-odd">Raises</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1321,7 +1330,8 @@ of the response through the <cite>options</cite> parameter.</p>
 <dl class="method">
 <dt id="google.cloud.monitoring_v3.MetricServiceClient.list_monitored_resource_descriptors">
 <code class="sig-name descname">list_monitored_resource_descriptors</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">filter_=None</em>, <em class="sig-param">page_size=None</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3/gapic/metric_service_client.html#MetricServiceClient.list_monitored_resource_descriptors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.MetricServiceClient.list_monitored_resource_descriptors" title="Permalink to this definition">#</a></dt>
-<dd><p>Lists monitored resource descriptors that match a filter. This method does not require a Stackdriver account.</p>
+<dd><p>Lists monitored resource descriptors that match a filter. This method does
+not require a Stackdriver account.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">monitoring_v3</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -1374,10 +1384,10 @@ that is provided to the method.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code></a> instance. By default, this
-is an iterable of <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.MonitoredResourceDescriptor" title="google.cloud.monitoring_v3.types.MonitoredResourceDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">MonitoredResourceDescriptor</span></code></a> instances.
-This object can also be configured to iterate over the pages
-of the response through the <cite>options</cite> parameter.</p>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code> instance.
+An iterable of <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.MonitoredResourceDescriptor" title="google.cloud.monitoring_v3.types.MonitoredResourceDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">MonitoredResourceDescriptor</span></code></a> instances.
+You can also iterate over the pages of the response
+using its <cite>pages</cite> property.</p>
 </dd>
 <dt class="field-odd">Raises</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1394,7 +1404,8 @@ of the response through the <cite>options</cite> parameter.</p>
 <dl class="method">
 <dt id="google.cloud.monitoring_v3.MetricServiceClient.list_time_series">
 <code class="sig-name descname">list_time_series</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">filter_</em>, <em class="sig-param">interval</em>, <em class="sig-param">view</em>, <em class="sig-param">aggregation=None</em>, <em class="sig-param">order_by=None</em>, <em class="sig-param">page_size=None</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3/gapic/metric_service_client.html#MetricServiceClient.list_time_series"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.MetricServiceClient.list_time_series" title="Permalink to this definition">#</a></dt>
-<dd><p>Lists time series that match a filter. This method does not require a Stackdriver account.</p>
+<dd><p>Lists time series that match a filter. This method does not require a
+Stackdriver account.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">monitoring_v3</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.monitoring_v3</span> <span class="k">import</span> <span class="n">enums</span>
@@ -1473,10 +1484,10 @@ that is provided to the method.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code></a> instance. By default, this
-is an iterable of <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.TimeSeries" title="google.cloud.monitoring_v3.types.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a> instances.
-This object can also be configured to iterate over the pages
-of the response through the <cite>options</cite> parameter.</p>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code> instance.
+An iterable of <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.TimeSeries" title="google.cloud.monitoring_v3.types.TimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code></a> instances.
+You can also iterate over the pages of the response
+using its <cite>pages</cite> property.</p>
 </dd>
 <dt class="field-odd">Raises</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1512,7 +1523,7 @@ of the response through the <cite>options</cite> parameter.</p>
 
 <dl class="class">
 <dt id="google.cloud.monitoring_v3.NotificationChannelServiceClient">
-<em class="property">class </em><code class="sig-prename descclassname">google.cloud.monitoring_v3.</code><code class="sig-name descname">NotificationChannelServiceClient</code><span class="sig-paren">(</span><em class="sig-param">transport=None</em>, <em class="sig-param">channel=None</em>, <em class="sig-param">credentials=None</em>, <em class="sig-param">client_config=None</em>, <em class="sig-param">client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3.html#NotificationChannelServiceClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.NotificationChannelServiceClient" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.monitoring_v3.</code><code class="sig-name descname">NotificationChannelServiceClient</code><span class="sig-paren">(</span><em class="sig-param">transport=None</em>, <em class="sig-param">channel=None</em>, <em class="sig-param">credentials=None</em>, <em class="sig-param">client_config=None</em>, <em class="sig-param">client_info=None</em>, <em class="sig-param">client_options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3.html#NotificationChannelServiceClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.NotificationChannelServiceClient" title="Permalink to this definition">#</a></dt>
 <dd><p>The Notification Channel API provides access to configuration that
 controls how messages related to incidents are sent.</p>
 <p>Constructor.</p>
@@ -1543,6 +1554,8 @@ each method. If not specified, the default configuration is used.</p></li>
 API requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then default info will be used.
 Generally, you only need to set this if you’re developing
 your own client library.</p></li>
+<li><p><strong>client_options</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>google.api_core.client_options.ClientOptions</em><em>]</em>) – Client options used to set user options on the client. API Endpoint
+should be set through client_options.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1850,10 +1863,10 @@ that is provided to the method.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code></a> instance. By default, this
-is an iterable of <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.NotificationChannelDescriptor" title="google.cloud.monitoring_v3.types.NotificationChannelDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">NotificationChannelDescriptor</span></code></a> instances.
-This object can also be configured to iterate over the pages
-of the response through the <cite>options</cite> parameter.</p>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code> instance.
+An iterable of <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.NotificationChannelDescriptor" title="google.cloud.monitoring_v3.types.NotificationChannelDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">NotificationChannelDescriptor</span></code></a> instances.
+You can also iterate over the pages of the response
+using its <cite>pages</cite> property.</p>
 </dd>
 <dt class="field-odd">Raises</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1928,10 +1941,10 @@ that is provided to the method.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code></a> instance. By default, this
-is an iterable of <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.NotificationChannel" title="google.cloud.monitoring_v3.types.NotificationChannel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NotificationChannel</span></code></a> instances.
-This object can also be configured to iterate over the pages
-of the response through the <cite>options</cite> parameter.</p>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code> instance.
+An iterable of <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.NotificationChannel" title="google.cloud.monitoring_v3.types.NotificationChannel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NotificationChannel</span></code></a> instances.
+You can also iterate over the pages of the response
+using its <cite>pages</cite> property.</p>
 </dd>
 <dt class="field-odd">Raises</dt>
 <dd class="field-odd"><ul class="simple">
@@ -2022,7 +2035,7 @@ that is provided to the method.</p></li>
 
 <dl class="class">
 <dt id="google.cloud.monitoring_v3.UptimeCheckServiceClient">
-<em class="property">class </em><code class="sig-prename descclassname">google.cloud.monitoring_v3.</code><code class="sig-name descname">UptimeCheckServiceClient</code><span class="sig-paren">(</span><em class="sig-param">transport=None</em>, <em class="sig-param">channel=None</em>, <em class="sig-param">credentials=None</em>, <em class="sig-param">client_config=None</em>, <em class="sig-param">client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3.html#UptimeCheckServiceClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.UptimeCheckServiceClient" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.monitoring_v3.</code><code class="sig-name descname">UptimeCheckServiceClient</code><span class="sig-paren">(</span><em class="sig-param">transport=None</em>, <em class="sig-param">channel=None</em>, <em class="sig-param">credentials=None</em>, <em class="sig-param">client_config=None</em>, <em class="sig-param">client_info=None</em>, <em class="sig-param">client_options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/monitoring_v3.html#UptimeCheckServiceClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring_v3.UptimeCheckServiceClient" title="Permalink to this definition">#</a></dt>
 <dd><p>The UptimeCheckService API is used to manage (list, create, delete,
 edit) uptime check configurations in the Stackdriver Monitoring product.
 An uptime check is a piece of configuration that determines which
@@ -2059,6 +2072,8 @@ each method. If not specified, the default configuration is used.</p></li>
 API requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then default info will be used.
 Generally, you only need to set this if you’re developing
 your own client library.</p></li>
+<li><p><strong>client_options</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>google.api_core.client_options.ClientOptions</em><em>]</em>) – Client options used to set user options on the client. API Endpoint
+should be set through client_options.</p></li>
 </ul>
 </dd>
 </dl>
@@ -2299,10 +2314,10 @@ that is provided to the method.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code></a> instance. By default, this
-is an iterable of <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.UptimeCheckConfig" title="google.cloud.monitoring_v3.types.UptimeCheckConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">UptimeCheckConfig</span></code></a> instances.
-This object can also be configured to iterate over the pages
-of the response through the <cite>options</cite> parameter.</p>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code> instance.
+An iterable of <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.UptimeCheckConfig" title="google.cloud.monitoring_v3.types.UptimeCheckConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">UptimeCheckConfig</span></code></a> instances.
+You can also iterate over the pages of the response
+using its <cite>pages</cite> property.</p>
 </dd>
 <dt class="field-odd">Raises</dt>
 <dd class="field-odd"><ul class="simple">
@@ -2359,10 +2374,10 @@ that is provided to the method.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.16.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code></a> instance. By default, this
-is an iterable of <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.UptimeCheckIp" title="google.cloud.monitoring_v3.types.UptimeCheckIp"><code class="xref py py-class docutils literal notranslate"><span class="pre">UptimeCheckIp</span></code></a> instances.
-This object can also be configured to iterate over the pages
-of the response through the <cite>options</cite> parameter.</p>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code> instance.
+An iterable of <a class="reference internal" href="types.html#google.cloud.monitoring_v3.types.UptimeCheckIp" title="google.cloud.monitoring_v3.types.UptimeCheckIp"><code class="xref py py-class docutils literal notranslate"><span class="pre">UptimeCheckIp</span></code></a> instances.
+You can also iterate over the pages of the response
+using its <cite>pages</cite> property.</p>
 </dd>
 <dt class="field-odd">Raises</dt>
 <dd class="field-odd"><ul class="simple">
