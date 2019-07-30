@@ -164,6 +164,16 @@ Magics
 
     magics
 
+
+Enums
+=====
+
+.. autosummary::
+    :toctree: generated
+
+    enums.StandardSqlDataTypes
+
+
 Additional Types
 ================
 
