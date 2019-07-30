@@ -139,15 +139,15 @@ try:
     from IPython.core import magic_arguments
 except ImportError:  # pragma: NO COVER
     raise ImportError("This module can only be loaded in IPython.")
-try:
-    from google.cloud import bigquery_storage_v1beta1
-except ImportError:  # pragma: NO COVER
-    bigquery_storage_v1beta1 = None
 
 from google.api_core import client_info
 import google.auth
 from google.cloud import bigquery
 from google.cloud.bigquery.dbapi import _helpers
+import six
+
+
+IPYTHON_USER_AGENT = "ipython-{}".format(IPython.__version__)
 
 
 class Context(object):
@@ -399,9 +399,7 @@ def _cell_magic(line, query):
         project=project,
         credentials=context.credentials,
         default_query_job_config=context.default_query_job_config,
-        client_info=client_info.ClientInfo(
-            user_agent="ipython-{}".format(IPython.__version__)
-        ),
+        client_info=client_info.ClientInfo(user_agent=IPYTHON_USER_AGENT),
     )
     if context._connection:
         client._connection = context._connection
@@ -433,10 +431,24 @@ def _make_bqstorage_client(use_bqstorage_api, credentials):
     if not use_bqstorage_api:
         return None
 
-    if bigquery_storage_v1beta1 is None:
-        raise ImportError(
-            "Install the google-cloud-bigquery-storage and fastavro packages "
+    try:
+        from google.cloud import bigquery_storage_v1beta1
+    except ImportError as err:
+        customized_error = ImportError(
+            "Install the google-cloud-bigquery-storage and pyarrow packages "
             "to use the BigQuery Storage API."
         )
+        six.raise_from(customized_error, err)
 
-    return bigquery_storage_v1beta1.BigQueryStorageClient(credentials=credentials)
+    try:
+        from google.api_core.gapic_v1 import client_info as gapic_client_info
+    except ImportError as err:
+        customized_error = ImportError(
+            "Install the grpcio package to use the BigQuery Storage API."
+        )
+        six.raise_from(customized_error, err)
+
+    return bigquery_storage_v1beta1.BigQueryStorageClient(
+        credentials=credentials,
+        client_info=gapic_client_info.ClientInfo(user_agent=IPYTHON_USER_AGENT),
+    )
