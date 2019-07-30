@@ -4,6 +4,38 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 1.14.0
+
+07-17-2019 13:16 PDT
+
+
+### New Features
+- Firestore: Add `should_terminate` predicate for clean BiDi shutdown. ([#8650](https://github.com/googleapis/google-cloud-python/pull/8650))
+
+### Dependencies
+- Update pins of 'googleapis-common-protos. ([#8688](https://github.com/googleapis/google-cloud-python/pull/8688))
+
+### Documentation
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+
+### Internal / Testing Changes
+- All: Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+
+## 1.13.0
+
+06-24-2019 10:34 PDT
+
+### New Features
+- Add `client_options.ClientOptions` object. ([#8265](https://github.com/googleapis/google-cloud-python/pull/8265))
+
+## 1.12.0
+
+06-18-2019 12:37 PDT
+
+
+### New Features
+- Add Throttling to Bidi Reopening. Mitigates ResumableBidiRpc consuming 100% CPU ([#8193](https://github.com/googleapis/google-cloud-python/pull/8193))
+
 ## 1.11.1
 
 05-28-2019 11:19 PDT

@@ -101,6 +101,16 @@ Model
     model.Model
     model.ModelReference
 
+Routine
+=======
+
+.. autosummary::
+    :toctree: generated
+
+    routine.Routine
+    routine.RoutineArgument
+    routine.RoutineReference
+
 Schema
 ======
 
@@ -153,6 +163,16 @@ Magics
     :maxdepth: 2
 
     magics
+
+
+Enums
+=====
+
+.. autosummary::
+    :toctree: generated
+
+    enums.StandardSqlDataTypes
+
 
 Additional Types
 ================

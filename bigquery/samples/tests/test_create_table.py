@@ -16,7 +16,6 @@ from .. import create_table
 
 
 def test_create_table(capsys, client, random_table_id):
-
     create_table.create_table(client, random_table_id)
     out, err = capsys.readouterr()
     assert "Created table {}".format(random_table_id) in out

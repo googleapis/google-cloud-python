@@ -33,6 +33,7 @@ from google.cloud.firestore_v1beta1.document import DocumentReference
 from google.cloud.firestore_v1beta1.document import DocumentSnapshot
 from google.cloud.firestore_v1beta1.field_path import render_field_path
 from google.cloud.firestore_v1beta1.gapic import firestore_client
+from google.cloud.firestore_v1beta1.gapic.transports import firestore_grpc_transport
 from google.cloud.firestore_v1beta1.transaction import Transaction
 
 
@@ -96,11 +97,32 @@ class Client(ClientWithProject):
             GAPIC client with the credentials of the current client.
         """
         if self._firestore_api_internal is None:
+            # Use a custom channel.
+            # We need this in order to set appropriate keepalive options.
+            channel = firestore_grpc_transport.FirestoreGrpcTransport.create_channel(
+                self._target,
+                credentials=self._credentials,
+                options={"grpc.keepalive_time_ms": 30000}.items(),
+            )
+
+            self._transport = firestore_grpc_transport.FirestoreGrpcTransport(
+                address=self._target, channel=channel
+            )
+
             self._firestore_api_internal = firestore_client.FirestoreClient(
-                credentials=self._credentials
+                transport=self._transport
             )
 
         return self._firestore_api_internal
+
+    @property
+    def _target(self):
+        """Return the target (where the API is).
+
+        Returns:
+            str: The location of the API.
+        """
+        return firestore_client.FirestoreClient.SERVICE_ADDRESS
 
     @property
     def _database_string(self):

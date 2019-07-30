@@ -1,20 +1,24 @@
 Python Client for Google Cloud OS Login API (unreleased)
 ========================================================
 
-|pypi| |versions|
+|pypi| |versions| |compat_check_pypi| |compat_check_github|
 
 `Google Cloud OS Login API`_: Manages OS login configuration for Google account users.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
+.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-os-login
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-os-login
+.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Doslogin
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Doslogin
 .. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-oslogin.svg
    :target: https://pypi.org/project/google-cloud-oslogin/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-oslogin.svg
    :target: https://pypi.org/project/google-cloud-oslogin/
 .. _Google Cloud OS Login API: https://cloud.google.com/os-login
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/oslogin/index.html
+.. _Client Library Documentation: https://googleapis.dev/python/oslogin/latest
 .. _Product Documentation:  https://cloud.google.com/os-login
 
 Quick Start
@@ -30,7 +34,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Google Cloud OS Login API.:  https://cloud.google.com/os-login
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~

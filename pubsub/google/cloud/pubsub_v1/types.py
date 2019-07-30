@@ -15,6 +15,7 @@
 from __future__ import absolute_import
 import collections
 import sys
+import textwrap
 
 from google.api import http_pb2
 from google.iam.v1 import iam_policy_pb2
@@ -44,6 +45,22 @@ BatchSettings.__new__.__defaults__ = (
     1000,  # max_messages: 1,000
 )
 
+if sys.version_info >= (3, 5):
+    BatchSettings.__doc__ = "The settings for batch publishing the messages."
+    BatchSettings.max_bytes.__doc__ = (
+        "The maximum total size of the messages to collect before automatically "
+        "publishing the batch."
+    )
+    BatchSettings.max_latency.__doc__ = (
+        "The maximum number of seconds to wait for additional messages before "
+        "automatically publishing the batch."
+    )
+    BatchSettings.max_messages.__doc__ = (
+        "The maximum number of messages to collect before automatically "
+        "publishing the batch."
+    )
+
+
 # Define the type class and default values for flow control settings.
 #
 # This class is used when creating a publisher or subscriber client, and
@@ -70,6 +87,60 @@ FlowControl.__new__.__defaults__ = (
     0.01,  # max_request_batch_latency: 0.01s
     2 * 60 * 60,  # max_lease_duration: 2 hours.
 )
+
+if sys.version_info >= (3, 5):
+    FlowControl.__doc__ = (
+        "The settings for controlling the rate at which messages are pulled "
+        "with an asynchronous subscription."
+    )
+    FlowControl.max_bytes.__doc__ = (
+        "The maximum total size of received - but not yet processed - messages "
+        "before pausing the message stream."
+    )
+    FlowControl.max_messages.__doc__ = (
+        "The maximum number of received - but not yet processed - messages before "
+        "pausing the message stream."
+    )
+    FlowControl.resume_threshold.__doc__ = textwrap.dedent(
+        """
+        The relative threshold of the ``max_bytes`` and ``max_messages`` limits
+        below which to resume the message stream. Must be a positive number not
+        greater than ``1.0``.
+
+        .. note::
+            .. deprecated:: 0.44.0
+                Will be removed in future versions."""
+    )
+    FlowControl.max_requests.__doc__ = textwrap.dedent(
+        """
+        Currently not in use.
+
+        .. note::
+            .. deprecated:: 0.44.0
+                Will be removed in future versions."""
+    )
+    FlowControl.max_request_batch_size.__doc__ = textwrap.dedent(
+        """
+        The maximum number of requests scheduled by callbacks to process and
+        dispatch at a time.
+
+        .. note::
+            .. deprecated:: 0.44.0
+                Will be removed in future versions."""
+    )
+    FlowControl.max_request_batch_latency.__doc__ = textwrap.dedent(
+        """
+        The maximum amount of time in seconds to wait for additional request
+        items before processing the next batch of requests.
+
+        .. note::
+            .. deprecated:: 0.44.0
+                Will be removed in future versions."""
+    )
+    FlowControl.max_lease_duration.__doc__ = (
+        "The maximum amount of time in seconds to hold a lease on a message "
+        "before dropping it from the lease management."
+    )
 
 
 _shared_modules = [

@@ -4,6 +4,43 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## 0.3.0
+
+07-30-2019 10:28 PDT
+
+
+### Implementation Changes
+
+### New Features
+- Add 'client_options' support, update list method docstrings (via synth). ([#8501](https://github.com/googleapis/google-cloud-python/pull/8501))
+- Add synth support for v1beta1 API version (via manual synth). ([#8436](https://github.com/googleapis/google-cloud-python/pull/8436))
+-  Allow kwargs to be passed to create_channel (via synth).  ([#8384](https://github.com/googleapis/google-cloud-python/pull/8384))
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+- Update pin for 'grpc-google-iam-v1' to 0.12.3+. ([#8647](https://github.com/googleapis/google-cloud-python/pull/8647))
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+
+### Documentation
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+- Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+
+### Internal / Testing Changes
+- Pin black version (via synth). ([#8575](https://github.com/googleapis/google-cloud-python/pull/8575))
+- Declare encoding as utf-8 in pb2 files (via synth). ([#8347](https://github.com/googleapis/google-cloud-python/pull/8347))
+- Add disclaimer to auto-generated template files (via synth).  ([#8309](https://github.com/googleapis/google-cloud-python/pull/8309))
+- Update noxfile and setup.py (via synth). ([#8298](https://github.com/googleapis/google-cloud-python/pull/8298))
+- Blacken (via synth). ([#8285](https://github.com/googleapis/google-cloud-python/pull/8285))
+- Add routing header to method metadata, add nox session `docs` (via synth). ([#7922](https://github.com/googleapis/google-cloud-python/pull/7922))
+- Copy proto files alongside protoc versions.
+- Minor gapic-generator change. ([#7225](https://github.com/googleapis/google-cloud-python/pull/7225))
+- Add protos as an artifact to library ([#7205](https://github.com/googleapis/google-cloud-python/pull/7205))
+- Update copyright headers ([#7140](https://github.com/googleapis/google-cloud-python/pull/7140))
+- Protoc-generated serialization update. ([#7078](https://github.com/googleapis/google-cloud-python/pull/7078))
+- Pick up stub docstring fix in GAPIC generator. ([#6966](https://github.com/googleapis/google-cloud-python/pull/6966))
+
 ## 0.2.1
 
 12-17-2018 16:36 PST

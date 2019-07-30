@@ -4,6 +4,82 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 0.44.0
+
+07-29-2019 04:28 PDT
+
+
+### Implementation Changes
+
+- PubSub: Deprecate several FlowControl settings and things in Message class ([#8796](https://github.com/googleapis/google-cloud-python/pull/8796))
+
+### Documentation
+
+- Pub/Sub: document regional endpoint ([#8789](https://github.com/googleapis/google-cloud-python/pull/8789))
+
+## 0.43.0
+
+07-24-2019 17:13 PDT
+
+
+### Implementation Changes
+- Accomodate new location of 'IAMPolicyStub' (via synth). ([#8680](https://github.com/googleapis/google-cloud-python/pull/8680))
+- Use kwargs in test_subscriber_client ([#8414](https://github.com/googleapis/google-cloud-python/pull/8414))
+
+### New Features
+- Add 'options_' argument to clients' 'get_iam_policy'; pin black version (via synth). ([#8657](https://github.com/googleapis/google-cloud-python/pull/8657))
+- Add 'client_options' support, update list method docstrings (via synth). ([#8518](https://github.com/googleapis/google-cloud-python/pull/8518))
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+- Update pin for 'grpc-google-iam-v1' to 0.12.3+. ([#8647](https://github.com/googleapis/google-cloud-python/pull/8647))
+
+### Documentation
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+- Fix typo in publisher index. ([#8619](https://github.com/googleapis/google-cloud-python/pull/8619))
+- Document how to choose the PubSub auth method ([#8429](https://github.com/googleapis/google-cloud-python/pull/8429))
+- Document different PuSub received message types ([#8468](https://github.com/googleapis/google-cloud-python/pull/8468))
+- PubSub: Document batch settings, make synth operations idempotent ([#8448](https://github.com/googleapis/google-cloud-python/pull/8448))
+- Add custom docstrings for FlowControl enum and values (via synth). ([#8426](https://github.com/googleapis/google-cloud-python/pull/8426))
+
+### Internal / Testing Changes
+- Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+- Add system tests for PubSub clients ([#8277](https://github.com/googleapis/google-cloud-python/pull/8277))
+
+## 0.42.1
+
+06-18-2019 15:14 PDT
+
+
+### Implementation Changes
+- Increase the minimum allowed version for api core. ([#8419](https://github.com/googleapis/google-cloud-python/pull/8419))
+- Allow kwargs to be passed to create_channel. ([#8399](https://github.com/googleapis/google-cloud-python/pull/8399))
+
+## 0.42.0
+
+06-18-2019 11:32 PDT
+
+### Implementation Changes
+- Core: Mitigate busy reopen loop in ResumableBidiRpc consuming 100% CPU ([#8193](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8193))
+- Pub/Sub: Increase initial_rpc_timeout for messaging (via synth). ([#8219](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8219))
+- PubSub: Release the state lock before calling the publish api ([#8234](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8234))
+- Pub/Sub: Expose publish retry settings ([#8231](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8231))
+- Prevent unhandled background error on SPM shutdown ([#8111](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8111))
+- Update timeouts, blacken noxfile.py, setup.py (via synth). ([#8128](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8128))
+- PubSub: Fix streaming pull incorrectly handling FlowControl max_messages setting ([#7948](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7948))
+
+### Documentation
+- Document PubSub FlowControl settings ([#8293](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8293))
+- Replace readthedocs links with links to github docs. ([#8291](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8291))
+- Pub/Sub: surface publish future in documentation ([#8229](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8229))
+- Pubsub: Separate subscriber and publish future documentation. ([#8205](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8205))
+- Drop mention of long-removed 'policy' object. ([#8081](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8081))
+
+### Internal / Testing Changes
+- Pub/Sub: staticmethod check ([#8091](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8091))
+- Add empty lines (via synth). ([#8067](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8067))
+
 ## 0.41.0
 
 05-15-2019 13:57 PDT

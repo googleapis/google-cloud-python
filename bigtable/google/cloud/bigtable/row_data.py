@@ -86,6 +86,11 @@ class Cell(object):
     def __ne__(self, other):
         return not self == other
 
+    def __repr__(self):
+        return "<{name} value={value!r} timestamp={timestamp}>".format(
+            name=self.__class__.__name__, value=self.value, timestamp=self.timestamp
+        )
+
 
 class PartialCellData(object):
     """Representation of partial cell in a Google Cloud Bigtable Table.
@@ -400,6 +405,9 @@ class PartialRowsData(object):
         self.rows = {}
         self._state = self.STATE_NEW_ROW
 
+        # Flag to stop iteration, for any reason not related to self.retry()
+        self._cancelled = False
+
     @property
     def state(self):
         """State machine state.
@@ -412,6 +420,7 @@ class PartialRowsData(object):
 
     def cancel(self):
         """Cancels the iterator, closing the stream."""
+        self._cancelled = True
         self.response_iterator.cancel()
 
     def consume_all(self, max_loops=None):
@@ -454,13 +463,13 @@ class PartialRowsData(object):
         return self.retry(self._read_next, on_error=self._on_error)()
 
     def __iter__(self):
-        """Consume the ``ReadRowsResponse``s from the stream.
+        """Consume the ``ReadRowsResponse`` s from the stream.
         Read the rows and yield each to the reader
 
         Parse the response and its chunks into a new/existing row in
         :attr:`_rows`. Rows are returned in order by row key.
         """
-        while True:
+        while not self._cancelled:
             try:
                 response = self._read_next_response()
             except StopIteration:
@@ -469,6 +478,8 @@ class PartialRowsData(object):
                 break
 
             for chunk in response.chunks:
+                if self._cancelled:
+                    break
                 self._process_chunk(chunk)
                 if chunk.commit_row:
                     self.last_scanned_row_key = self._previous_row.row_key

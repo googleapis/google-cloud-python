@@ -22,6 +22,7 @@ import copy
 import google.cloud._helpers
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery.model import ModelReference
+from google.cloud.bigquery.routine import RoutineReference
 from google.cloud.bigquery.table import TableReference
 
 
@@ -50,6 +51,25 @@ def _get_model_reference(self, model_id):
     """
     return ModelReference.from_api_repr(
         {"projectId": self.project, "datasetId": self.dataset_id, "modelId": model_id}
+    )
+
+
+def _get_routine_reference(self, routine_id):
+    """Constructs a RoutineReference.
+
+    Args:
+        routine_id (str): the ID of the routine.
+
+    Returns:
+        google.cloud.bigquery.routine.RoutineReference:
+            A RoutineReference for a routine in this dataset.
+    """
+    return RoutineReference.from_api_repr(
+        {
+            "projectId": self.project,
+            "datasetId": self.dataset_id,
+            "routineId": routine_id,
+        }
     )
 
 
@@ -223,6 +243,8 @@ class DatasetReference(object):
     table = _get_table_reference
 
     model = _get_model_reference
+
+    routine = _get_routine_reference
 
     @classmethod
     def from_api_repr(cls, resource):
@@ -591,6 +613,8 @@ class Dataset(object):
 
     model = _get_model_reference
 
+    routine = _get_routine_reference
+
     def __repr__(self):
         return "Dataset({})".format(repr(self.reference))
 
@@ -672,3 +696,5 @@ class DatasetListItem(object):
     table = _get_table_reference
 
     model = _get_model_reference
+
+    routine = _get_routine_reference

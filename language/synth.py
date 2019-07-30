@@ -45,4 +45,10 @@ for version in versions:
 templated_files = common.py_library(unit_cov_level=97, cov_level=100)
 s.move(templated_files)
 
+s.replace(
+    f"google/cloud/**/gapic/language_service_client.py",
+    r"types\.EncodingType",
+    "enums.EncodingType",
+)
+
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

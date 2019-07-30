@@ -1,7 +1,7 @@
 Python Client for Stackdriver Trace API
 =======================================
 
-|alpha| |pypi| |versions|
+|alpha| |pypi| |versions| |compat_check_pypi| |compat_check_github|
 
 The `Stackdriver Trace API`_ sends application trace data to Stackdriver Trace
 for viewing. Trace data is collected for all App Engine applications by
@@ -16,8 +16,12 @@ default. Trace data from other applications can be provided using this API.
    :target: https://pypi.org/project/google-cloud-trace/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-trace.svg
    :target: https://pypi.org/project/google-cloud-trace/
+.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-trace
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-trace
+.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dtrace
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dtrace
 .. _Stackdriver Trace API: https://cloud.google.com/trace
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/trace/starting.html
+.. _Client Library Documentation: https://googleapis.dev/python/trace/latest
 .. _Product Documentation:  https://cloud.google.com/trace
 
 Quick Start
@@ -31,7 +35,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable the trace API.:  https://cloud.google.com/trace
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~

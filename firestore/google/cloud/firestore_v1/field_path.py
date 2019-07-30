@@ -384,3 +384,12 @@ class FieldPath(object):
         """
         indexes = six.moves.range(1, len(self.parts))
         return {FieldPath(*self.parts[:index]) for index in indexes}
+
+    @staticmethod
+    def document_id():
+        """A special FieldPath value to refer to the ID of a document. It can be used
+           in queries to sort or filter by the document ID.
+
+        Returns: A special sentinel value to refer to the ID of a document.
+        """
+        return "__name__"

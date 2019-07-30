@@ -23,6 +23,8 @@ In the hierarchy of API concepts
 * a :class:`~google.cloud.firestore_v1.client.Client` owns a
   :class:`~google.cloud.firestore_v1.document.DocumentReference`
 """
+import os
+
 from google.api_core.gapic_v1 import client_info
 from google.cloud.client import ClientWithProject
 
@@ -36,6 +38,7 @@ from google.cloud.firestore_v1.document import DocumentReference
 from google.cloud.firestore_v1.document import DocumentSnapshot
 from google.cloud.firestore_v1.field_path import render_field_path
 from google.cloud.firestore_v1.gapic import firestore_client
+from google.cloud.firestore_v1.gapic.transports import firestore_grpc_transport
 from google.cloud.firestore_v1.transaction import Transaction
 
 
@@ -50,6 +53,7 @@ _BAD_DOC_TEMPLATE = (
 _ACTIVE_TXN = "There is already an active transaction."
 _INACTIVE_TXN = "There is no active transaction."
 _CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
+_FIRESTORE_EMULATOR_HOST = "FIRESTORE_EMULATOR_HOST"
 
 
 class Client(ClientWithProject):
@@ -102,6 +106,7 @@ class Client(ClientWithProject):
         )
         self._client_info = client_info
         self._database = database
+        self._emulator_host = os.getenv(_FIRESTORE_EMULATOR_HOST)
 
     @property
     def _firestore_api(self):
@@ -112,11 +117,41 @@ class Client(ClientWithProject):
             <The GAPIC client with the credentials of the current client.
         """
         if self._firestore_api_internal is None:
+            # Use a custom channel.
+            # We need this in order to set appropriate keepalive options.
+
+            if self._emulator_host is not None:
+                channel = firestore_grpc_transport.firestore_pb2_grpc.grpc.insecure_channel(
+                    self._emulator_host
+                )
+            else:
+                channel = firestore_grpc_transport.FirestoreGrpcTransport.create_channel(
+                    self._target,
+                    credentials=self._credentials,
+                    options={"grpc.keepalive_time_ms": 30000}.items(),
+                )
+
+            self._transport = firestore_grpc_transport.FirestoreGrpcTransport(
+                address=self._target, channel=channel
+            )
+
             self._firestore_api_internal = firestore_client.FirestoreClient(
-                credentials=self._credentials, client_info=self._client_info
+                transport=self._transport, client_info=self._client_info
             )
 
         return self._firestore_api_internal
+
+    @property
+    def _target(self):
+        """Return the target (where the API is).
+
+        Returns:
+            str: The location of the API.
+        """
+        if self._emulator_host is not None:
+            return self._emulator_host
+
+        return firestore_client.FirestoreClient.SERVICE_ADDRESS
 
     @property
     def _database_string(self):
@@ -156,6 +191,10 @@ class Client(ClientWithProject):
             self._rpc_metadata_internal = _helpers.metadata_with_prefix(
                 self._database_string
             )
+
+            if self._emulator_host is not None:
+                # The emulator requires additional metadata to be set.
+                self._rpc_metadata_internal.append(("authorization", "Bearer owner"))
 
         return self._rpc_metadata_internal
 
@@ -203,7 +242,7 @@ class Client(ClientWithProject):
 
         .. code-block:: python
 
-            >>> query = firestore.collection_group('mygroup')
+            >>> query = client.collection_group('mygroup')
 
         @param {string} collectionId Identifies the collections to query over.
         Every collection or subcollection with this ID as the last segment of its
@@ -399,7 +438,7 @@ class Client(ClientWithProject):
                 iterator of subcollections of the current document.
         """
         iterator = self._firestore_api.list_collection_ids(
-            self._database_string, metadata=self._rpc_metadata
+            "{}/documents".format(self._database_string), metadata=self._rpc_metadata
         )
         iterator.client = self
         iterator.item_to_value = _item_to_collection_ref
@@ -520,8 +559,9 @@ def _parse_batch_get(get_doc_response, reference_map, client):
             update_time=get_doc_response.found.update_time,
         )
     elif result_type == "missing":
+        reference = _get_reference(get_doc_response.missing, reference_map)
         snapshot = DocumentSnapshot(
-            None,
+            reference,
             None,
             exists=False,
             read_time=get_doc_response.read_time,

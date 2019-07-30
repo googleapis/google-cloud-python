@@ -1801,10 +1801,7 @@ class Test_pbs_for_update(unittest.TestCase):
 
         map_pb = document_pb2.MapValue(fields={"yum": _value_pb(bytes_value=value)})
 
-        if do_transform:
-            field_paths = [field_path1, "blog"]
-        else:
-            field_paths = [field_path1]
+        field_paths = [field_path1]
 
         expected_update_pb = write_pb2.Write(
             update=document_pb2.Document(

@@ -1,6 +1,1 @@
-Timeout
-=======
-
-.. automodule:: google.api_core.timeout
-  :members:
-  :show-inheritance:
+../../api_core/docs/timeout.rst

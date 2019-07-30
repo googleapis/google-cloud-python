@@ -110,6 +110,44 @@ class Test_document_watch_comparator(unittest.TestCase):
         self.assertRaises(AssertionError, self._callFUT, 1, 2)
 
 
+class Test_should_recover(unittest.TestCase):
+    def _callFUT(self, exception):
+        from google.cloud.firestore_v1.watch import _should_recover
+
+        return _should_recover(exception)
+
+    def test_w_unavailable(self):
+        from google.api_core.exceptions import ServiceUnavailable
+
+        exception = ServiceUnavailable("testing")
+
+        self.assertTrue(self._callFUT(exception))
+
+    def test_w_non_recoverable(self):
+        exception = ValueError("testing")
+
+        self.assertFalse(self._callFUT(exception))
+
+
+class Test_should_terminate(unittest.TestCase):
+    def _callFUT(self, exception):
+        from google.cloud.firestore_v1.watch import _should_terminate
+
+        return _should_terminate(exception)
+
+    def test_w_unavailable(self):
+        from google.api_core.exceptions import Cancelled
+
+        exception = Cancelled("testing")
+
+        self.assertTrue(self._callFUT(exception))
+
+    def test_w_non_recoverable(self):
+        exception = ValueError("testing")
+
+        self.assertFalse(self._callFUT(exception))
+
+
 class TestWatch(unittest.TestCase):
     def _makeOne(
         self,
@@ -161,17 +199,26 @@ class TestWatch(unittest.TestCase):
         self.snapshotted = (docs, changes, read_time)
 
     def test_ctor(self):
+        from google.cloud.firestore_v1.proto import firestore_pb2
+        from google.cloud.firestore_v1.watch import _should_recover
+        from google.cloud.firestore_v1.watch import _should_terminate
+
         inst = self._makeOne()
         self.assertTrue(inst._consumer.started)
         self.assertTrue(inst._rpc.callbacks, [inst._on_rpc_done])
+        self.assertIs(inst._rpc.start_rpc, inst._api.transport.listen)
+        self.assertIs(inst._rpc.should_recover, _should_recover)
+        self.assertIs(inst._rpc.should_terminate, _should_terminate)
+        self.assertIsInstance(inst._rpc.initial_request, firestore_pb2.ListenRequest)
+        self.assertEqual(inst._rpc.metadata, DummyFirestore._rpc_metadata)
 
     def test__on_rpc_done(self):
+        from google.cloud.firestore_v1.watch import _RPC_ERROR_THREAD_NAME
+
         inst = self._makeOne()
         threading = DummyThreading()
         with mock.patch("google.cloud.firestore_v1.watch.threading", threading):
             inst._on_rpc_done(True)
-        from google.cloud.firestore_v1.watch import _RPC_ERROR_THREAD_NAME
-
         self.assertTrue(threading.threads[_RPC_ERROR_THREAD_NAME].started)
 
     def test_close(self):
@@ -274,6 +321,13 @@ class TestWatch(unittest.TestCase):
         self.assertTrue(inst._consumer.started)
         self.assertTrue(inst._rpc.callbacks, [inst._on_rpc_done])
         self.assertEqual(inst._targets["query"], "dummy query target")
+
+    def test_on_snapshot_target_w_none(self):
+        inst = self._makeOne()
+        proto = None
+        inst.on_snapshot(proto)  # nothing to assert, no mutations, no rtnval
+        self.assertTrue(inst._consumer is None)
+        self.assertTrue(inst._rpc is None)
 
     def test_on_snapshot_target_no_change_no_target_ids_not_current(self):
         inst = self._makeOne()
@@ -835,13 +889,21 @@ class DummyThreading(object):
 
 
 class DummyRpc(object):
-    def __init__(self, listen, initial_request, should_recover, metadata=None):
-        self.listen = listen
-        self.initial_request = initial_request
+    def __init__(
+        self,
+        start_rpc,
+        should_recover,
+        should_terminate=None,
+        initial_request=None,
+        metadata=None,
+    ):
+        self.start_rpc = start_rpc
         self.should_recover = should_recover
+        self.should_terminate = should_terminate
+        self.initial_request = initial_request
+        self.metadata = metadata
         self.closed = False
         self.callbacks = []
-        self._metadata = metadata
 
     def add_done_callback(self, callback):
         self.callbacks.append(callback)

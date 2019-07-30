@@ -23,6 +23,8 @@ import six
 from google.api_core import exceptions
 from google.cloud.firestore_v1 import batch
 from google.cloud.firestore_v1 import types
+from google.cloud.firestore_v1.document import DocumentReference
+from google.cloud.firestore_v1.query import Query
 
 
 MAX_ATTEMPTS = 5
@@ -199,6 +201,37 @@ class Transaction(batch.WriteBatch):
 
         self._clean_up()
         return list(commit_response.write_results)
+
+    def get_all(self, references):
+        """Retrieves multiple documents from Firestore.
+
+        Args:
+            references (List[.DocumentReference, ...]): Iterable of document
+                references to be retrieved.
+
+        Yields:
+            .DocumentSnapshot: The next document snapshot that fulfills the
+            query, or :data:`None` if the document does not exist.
+        """
+        return self._client.get_all(references, transaction=self._id)
+
+    def get(self, ref_or_query):
+        """
+        Retrieve a document or a query result from the database.
+        Args:
+            ref_or_query The document references or query object to return.
+        Yields:
+            .DocumentSnapshot: The next document snapshot that fulfills the
+            query, or :data:`None` if the document does not exist.
+        """
+        if isinstance(ref_or_query, DocumentReference):
+            return self._client.get_all([ref_or_query], transaction=self._id)
+        elif isinstance(ref_or_query, Query):
+            return ref_or_query.stream(transaction=self._id)
+        else:
+            raise ValueError(
+                'Value for argument "ref_or_query" must be a DocumentReference or a Query.'
+            )
 
 
 class _Transactional(object):

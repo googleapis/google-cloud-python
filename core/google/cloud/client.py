@@ -62,7 +62,6 @@ class _ClientFactoryMixin(object):
         :type args: tuple
         :param args: Remaining positional arguments to pass to constructor.
 
-        :type kwargs: dict
         :param kwargs: Remaining keyword arguments to pass to constructor.
 
         :rtype: :class:`_ClientFactoryMixin`

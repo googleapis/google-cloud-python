@@ -1,7 +1,7 @@
 Python Client for Cloud Scheduler API
 ================================================
 
-|GA| |pypi| |versions|
+|GA| |pypi| |versions| |compat_check_pypi| |compat_check_github|
 
 `Cloud Scheduler API`_: Creates and manages jobs run on a regular recurring schedule.
 
@@ -14,8 +14,12 @@ Python Client for Cloud Scheduler API
    :target: https://pypi.org/project/google-cloud-scheduler/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-scheduler.svg
    :target: https://pypi.org/project/google-cloud-scheduler/
+.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-scheduler
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-scheduler
+.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dscheduler
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dscheduler
 .. _Cloud Scheduler API: https://cloud.google.com/scheduler
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/scheduler/index.html
+.. _Client Library Documentation: https://googleapis.dev/python/scheduler/latest
 .. _Product Documentation:  https://cloud.google.com/scheduler
 
 Quick Start
@@ -31,7 +35,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Cloud Scheduler API.:  https://cloud.google.com/scheduler
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~

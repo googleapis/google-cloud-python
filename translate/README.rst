@@ -1,7 +1,7 @@
 Python Client for Google Cloud Translation
 ==========================================
 
-|GA| |pypi| |versions|
+|GA| |pypi| |versions| |compat_check_pypi| |compat_check_github|
 
 With `Google Cloud Translation`_, you can dynamically translate text between
 thousands of language pairs. The Google Cloud Translation API lets websites
@@ -18,10 +18,14 @@ Cloud Translation is available as a paid service. See the `Pricing`_ and
    :target: https://pypi.org/project/google-cloud-translate/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-translate.svg
    :target: https://pypi.org/project/google-cloud-translate/
+.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-translate
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-translate
+.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dtranslate
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dtranslate
 .. _Google Cloud Translation: https://cloud.google.com/translate/
 .. _Pricing: https://cloud.google.com/translate/pricing
 .. _FAQ: https://cloud.google.com/translate/faq
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/translate/usage.html
+.. _Client Library Documentation: https://googleapis.dev/python/translate/latest
 .. _Product Documentation: https://cloud.google.com/translate/docs
 
 Quick Start
@@ -37,7 +41,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Google Cloud Translate API.:  https://cloud.google.com/translate
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~
