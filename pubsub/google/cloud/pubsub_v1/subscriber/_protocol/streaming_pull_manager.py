@@ -518,10 +518,7 @@ class StreamingPullManager(object):
 
         for received_message in response.received_messages:
             message = google.cloud.pubsub_v1.subscriber.message.Message(
-                received_message.message,
-                received_message.ack_id,
-                self._scheduler.queue,
-                autolease=False,
+                received_message.message, received_message.ack_id, self._scheduler.queue
             )
             if self.load < 1.0:
                 req = requests.LeaseRequest(
