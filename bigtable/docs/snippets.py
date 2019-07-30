@@ -45,6 +45,7 @@ UNIQUE_SUFFIX = unique_resource_id("-")
 INSTANCE_ID = "snippet-tests" + UNIQUE_SUFFIX
 CLUSTER_ID = "clus-1-" + UNIQUE_SUFFIX
 APP_PROFILE_ID = "app-prof" + UNIQUE_SUFFIX
+TABLE_ID = "tabl-1" + UNIQUE_SUFFIX
 ROUTING_POLICY_TYPE = enums.RoutingPolicyType.ANY
 LOCATION_ID = "us-central1-f"
 ALT_LOCATION_ID = "us-central1-a"
@@ -72,6 +73,7 @@ class Config(object):
 
     CLIENT = None
     INSTANCE = None
+    TABLE = None
 
 
 def setup_module():
@@ -88,6 +90,8 @@ def setup_module():
     operation = Config.INSTANCE.create(clusters=[cluster])
     # We want to make sure the operation completes.
     operation.result(timeout=100)
+    Config.TABLE = Config.INSTANCE.table(TABLE_ID)
+    Config.TABLE.create()
 
 
 def teardown_module():
@@ -413,14 +417,6 @@ def test_bigtable_create_table():
 
 
 def test_bigtable_list_tables():
-    from google.cloud.bigtable import Client
-    from google.cloud.bigtable import column_family
-
-    client = Client(admin=True)
-    instance = client.instance(INSTANCE_ID)
-    table = instance.table("to_list")
-    max_versions_rule = column_family.MaxVersionsGCRule(2)
-    table.create(column_families={"cf1": max_versions_rule})
 
     # [START bigtable_list_tables]
     from google.cloud.bigtable import Client
@@ -429,12 +425,6 @@ def test_bigtable_list_tables():
     instance = client.instance(INSTANCE_ID)
     tables_list = instance.list_tables()
     # [END bigtable_list_tables]
-
-    table_names = [table.name for table in tables_list]
-    try:
-        assert table.name in table_names
-    finally:
-        retry_429(table.delete)()
 
 
 def test_bigtable_delete_cluster():
@@ -471,9 +461,10 @@ def test_bigtable_delete_instance():
 
     client = Client(admin=True)
 
-    instance = client.instance("inst-my-123", instance_type=PRODUCTION, labels=LABELS)
+    instance_id = "snipt-inst-del" + UNIQUE_SUFFIX
+    instance = client.instance(instance_id, instance_type=PRODUCTION, labels=LABELS)
     cluster = instance.cluster(
-        "clus-my-123",
+        "clus-to-delete" + UNIQUE_SUFFIX,
         location_id=ALT_LOCATION_ID,
         serve_nodes=1,
         default_storage_type=STORAGE_TYPE,
@@ -491,7 +482,6 @@ def test_bigtable_delete_instance():
 
     client = Client(admin=True)
 
-    instance_id = "inst-my-123"
     instance_to_delete = client.instance(instance_id)
     instance_to_delete.delete()
     # [END bigtable_delete_instance]
