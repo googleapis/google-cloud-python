@@ -15,7 +15,6 @@
 from __future__ import absolute_import
 import collections
 import sys
-import textwrap
 
 from google.api import http_pb2
 from google.iam.v1 import iam_policy_pb2
@@ -67,13 +66,11 @@ if sys.version_info >= (3, 5):
 # these settings can be altered to tweak Pub/Sub behavior.
 # The defaults should be fine for most use cases.
 FlowControl = collections.namedtuple(
-    "FlowControl",
-    ["max_bytes", "max_messages", "max_request_batch_latency", "max_lease_duration"],
+    "FlowControl", ["max_bytes", "max_messages", "max_lease_duration"]
 )
 FlowControl.__new__.__defaults__ = (
     100 * 1024 * 1024,  # max_bytes: 100mb
     100,  # max_messages: 100
-    0.01,  # max_request_batch_latency: 0.01s
     2 * 60 * 60,  # max_lease_duration: 2 hours.
 )
 
@@ -89,15 +86,6 @@ if sys.version_info >= (3, 5):
     FlowControl.max_messages.__doc__ = (
         "The maximum number of received - but not yet processed - messages before "
         "pausing the message stream."
-    )
-    FlowControl.max_request_batch_latency.__doc__ = textwrap.dedent(
-        """
-        The maximum amount of time in seconds to wait for additional request
-        items before processing the next batch of requests.
-
-        .. note::
-            .. deprecated:: 0.44.0
-                Will be removed in future versions."""
     )
     FlowControl.max_lease_duration.__doc__ = (
         "The maximum amount of time in seconds to hold a lease on a message "

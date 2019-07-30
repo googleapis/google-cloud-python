@@ -42,12 +42,8 @@ class Dispatcher(object):
             if self._thread is not None:
                 raise ValueError("Dispatcher is already running.")
 
-            flow_control = self._manager.flow_control
             worker = helper_threads.QueueCallbackWorker(
-                self._queue,
-                self.dispatch_callback,
-                max_items=100,
-                max_latency=flow_control.max_request_batch_latency,
+                self._queue, self.dispatch_callback, max_items=100, max_latency=0.01
             )
             # Create and start the helper thread.
             thread = threading.Thread(name=_CALLBACK_WORKER_NAME, target=worker)
