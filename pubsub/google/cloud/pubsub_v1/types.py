@@ -71,7 +71,6 @@ FlowControl = collections.namedtuple(
     [
         "max_bytes",
         "max_messages",
-        "max_requests",
         "max_request_batch_size",
         "max_request_batch_latency",
         "max_lease_duration",
@@ -80,7 +79,6 @@ FlowControl = collections.namedtuple(
 FlowControl.__new__.__defaults__ = (
     100 * 1024 * 1024,  # max_bytes: 100mb
     100,  # max_messages: 100
-    100,  # max_requests: 100
     100,  # max_request_batch_size: 100
     0.01,  # max_request_batch_latency: 0.01s
     2 * 60 * 60,  # max_lease_duration: 2 hours.
@@ -98,14 +96,6 @@ if sys.version_info >= (3, 5):
     FlowControl.max_messages.__doc__ = (
         "The maximum number of received - but not yet processed - messages before "
         "pausing the message stream."
-    )
-    FlowControl.max_requests.__doc__ = textwrap.dedent(
-        """
-        Currently not in use.
-
-        .. note::
-            .. deprecated:: 0.44.0
-                Will be removed in future versions."""
     )
     FlowControl.max_request_batch_size.__doc__ = textwrap.dedent(
         """
