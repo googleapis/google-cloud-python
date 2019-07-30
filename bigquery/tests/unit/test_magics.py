@@ -300,7 +300,9 @@ def test__make_bqstorage_client_true_raises_import_error(missing_bq_storage):
     with pytest.raises(ImportError) as exc_context, missing_bq_storage:
         magics._make_bqstorage_client(True, credentials_mock)
 
-    assert "google-cloud-bigquery-storage" in str(exc_context.value)
+    error_msg = str(exc_context.value)
+    assert "google-cloud-bigquery-storage" in error_msg
+    assert "pyarrow" in error_msg
 
 
 def test__make_bqstorage_client_true_missing_gapic(missing_grpcio_lib):

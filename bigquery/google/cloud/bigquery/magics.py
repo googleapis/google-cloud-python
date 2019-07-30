@@ -435,7 +435,7 @@ def _make_bqstorage_client(use_bqstorage_api, credentials):
         from google.cloud import bigquery_storage_v1beta1
     except ImportError as err:
         customized_error = ImportError(
-            "Install the google-cloud-bigquery-storage and fastavro packages "
+            "Install the google-cloud-bigquery-storage and pyarrow packages "
             "to use the BigQuery Storage API."
         )
         six.raise_from(customized_error, err)
