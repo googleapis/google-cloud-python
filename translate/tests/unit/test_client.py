@@ -46,13 +46,57 @@ class TestClient(unittest.TestCase):
         target = "es"
         client_info = ClientInfo()
         client = self._make_one(
-            target_language=target, _http=http, client_info=client_info
+            target_language=target,
+            _http=http,
+            client_info=client_info,
+            client_options={"api_endpoint": "https://foo-translation.googleapis.com"},
         )
         self.assertIsInstance(client._connection, Connection)
         self.assertIsNone(client._connection.credentials)
         self.assertIs(client._connection.http, http)
         self.assertEqual(client.target_language, target)
         self.assertIs(client._connection._client_info, client_info)
+        self.assertEqual(
+            client._connection.API_BASE_URL, "https://foo-translation.googleapis.com"
+        )
+
+    def test_constructor_w_empty_client_options(self):
+        from google.cloud._http import ClientInfo
+        from google.api_core.client_options import ClientOptions
+
+        http = object()
+        target = "es"
+        client_info = ClientInfo()
+        client_options = ClientOptions()
+        client = self._make_one(
+            target_language=target,
+            _http=http,
+            client_info=client_info,
+            client_options=client_options,
+        )
+        self.assertEqual(
+            client._connection.API_BASE_URL, client._connection.DEFAULT_API_ENDPOINT
+        )
+
+    def test_constructor_w_client_options_object(self):
+        from google.cloud._http import ClientInfo
+        from google.api_core.client_options import ClientOptions
+
+        http = object()
+        target = "es"
+        client_info = ClientInfo()
+        client_options = ClientOptions(
+            api_endpoint="https://foo-translation.googleapis.com"
+        )
+        client = self._make_one(
+            target_language=target,
+            _http=http,
+            client_info=client_info,
+            client_options=client_options,
+        )
+        self.assertEqual(
+            client._connection.API_BASE_URL, "https://foo-translation.googleapis.com"
+        )
 
     def test_get_languages(self):
         from google.cloud.translate_v2.client import ENGLISH_ISO_639
