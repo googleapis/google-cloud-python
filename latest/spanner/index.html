@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Python Client for Cloud Spanner &#8212; google-cloud d73a825 documentation</title>
+    <title>Python Client for Cloud Spanner &#8212; google-cloud 0b1d118 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -154,8 +154,27 @@ as a callback to <code class="docutils literal notranslate"><span class="pre">da
 </pre></div>
 </div>
 </div>
-<div class="section" id="insert-records-using-a-transaction">
-<h3>Insert records using a Transaction<a class="headerlink" href="#insert-records-using-a-transaction" title="Permalink to this headline">#</a></h3>
+<div class="section" id="insert-records-using-data-manipulation-language-dml-with-a-transaction">
+<h3>Insert records using Data Manipulation Language (DML) with a Transaction<a class="headerlink" href="#insert-records-using-data-manipulation-language-dml-with-a-transaction" title="Permalink to this headline">#</a></h3>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">execute_update()</span></code> method to execute a DML statement:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">spanner_client</span> <span class="o">=</span> <span class="n">spanner</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="n">instance</span> <span class="o">=</span> <span class="n">spanner_client</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">instance_id</span><span class="p">)</span>
+<span class="n">database</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">database</span><span class="p">(</span><span class="n">database_id</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">insert_singers</span><span class="p">(</span><span class="n">transaction</span><span class="p">):</span>
+    <span class="n">row_ct</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">execute_update</span><span class="p">(</span>
+        <span class="s2">&quot;INSERT Singers (SingerId, FirstName, LastName) &quot;</span>
+        <span class="s2">&quot; VALUES (10, &#39;Virginia&#39;, &#39;Watson&#39;)&quot;</span>
+    <span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;{} record(s) inserted.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">row_ct</span><span class="p">))</span>
+
+<span class="n">database</span><span class="o">.</span><span class="n">run_in_transaction</span><span class="p">(</span><span class="n">insert_singers</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="insert-records-using-mutations-with-a-transaction">
+<h3>Insert records using Mutations with a Transaction<a class="headerlink" href="#insert-records-using-mutations-with-a-transaction" title="Permalink to this headline">#</a></h3>
 <p>To add one or more records to a table, use <code class="docutils literal notranslate"><span class="pre">insert</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transaction</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
     <span class="s1">&#39;citizens&#39;</span><span class="p">,</span>
@@ -168,8 +187,27 @@ as a callback to <code class="docutils literal notranslate"><span class="pre">da
 </pre></div>
 </div>
 </div>
-<div class="section" id="update-records-using-a-transaction">
-<h3>Update records using a Transaction<a class="headerlink" href="#update-records-using-a-transaction" title="Permalink to this headline">#</a></h3>
+<div class="section" id="update-records-using-data-manipulation-language-dml-with-a-transaction">
+<h3>Update records using Data Manipulation Language (DML) with a Transaction<a class="headerlink" href="#update-records-using-data-manipulation-language-dml-with-a-transaction" title="Permalink to this headline">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">spanner_client</span> <span class="o">=</span> <span class="n">spanner</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="n">instance</span> <span class="o">=</span> <span class="n">spanner_client</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">instance_id</span><span class="p">)</span>
+<span class="n">database</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">database</span><span class="p">(</span><span class="n">database_id</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">update_albums</span><span class="p">(</span><span class="n">transaction</span><span class="p">):</span>
+    <span class="n">row_ct</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">execute_update</span><span class="p">(</span>
+        <span class="s2">&quot;UPDATE Albums &quot;</span>
+        <span class="s2">&quot;SET MarketingBudget = MarketingBudget * 2 &quot;</span>
+        <span class="s2">&quot;WHERE SingerId = 1 and AlbumId = 1&quot;</span>
+    <span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;{} record(s) updated.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">row_ct</span><span class="p">))</span>
+
+<span class="n">database</span><span class="o">.</span><span class="n">run_in_transaction</span><span class="p">(</span><span class="n">update_albums</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="update-records-using-mutations-with-a-transaction">
+<h3>Update records using Mutations with a Transaction<a class="headerlink" href="#update-records-using-mutations-with-a-transaction" title="Permalink to this headline">#</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">Transaction.update</span></code> updates one or more existing records in a table.  Fails
 if any of the records does not already exist.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transaction</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
