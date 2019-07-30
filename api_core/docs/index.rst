@@ -9,6 +9,7 @@ Core
 .. toctree::
     auth
     client_info
+    client_options
     exceptions
     futures
     helpers
