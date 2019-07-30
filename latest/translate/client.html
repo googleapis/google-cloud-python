@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Translation Client &#8212; google-cloud 8912691 documentation</title>
+    <title>Translation Client &#8212; google-cloud 3979e8b documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -44,7 +44,7 @@
 
 <dl class="class">
 <dt id="google.cloud.translate_v2.client.Client">
-<em class="property">class </em><code class="sig-prename descclassname">google.cloud.translate_v2.client.</code><code class="sig-name descname">Client</code><span class="sig-paren">(</span><em class="sig-param">target_language='en'</em>, <em class="sig-param">credentials=None</em>, <em class="sig-param">_http=None</em>, <em class="sig-param">client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/translate_v2/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.translate_v2.client.Client" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.translate_v2.client.</code><code class="sig-name descname">Client</code><span class="sig-paren">(</span><em class="sig-param">target_language='en'</em>, <em class="sig-param">credentials=None</em>, <em class="sig-param">_http=None</em>, <em class="sig-param">client_info=None</em>, <em class="sig-param">client_options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/translate_v2/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.translate_v2.client.Client" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../core/client.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.client.Client</span></code></a></p>
 <p>Client to bundle configuration needed for API requests.</p>
 <dl class="field-list simple">
@@ -68,6 +68,8 @@ change in the future.</p></li>
 requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then default info will be used. Generally,
 you only need to set this if you’re developing your own library
 or partner tool.</p></li>
+<li><p><strong>client_options</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">ClientOptions</span></code> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>) – (Optional) Client options used to set user options on the client.
+API Endpoint should be set through client_options.</p></li>
 </ul>
 </dd>
 </dl>
