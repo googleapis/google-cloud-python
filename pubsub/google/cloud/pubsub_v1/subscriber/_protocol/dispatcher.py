@@ -27,6 +27,14 @@ _LOGGER = logging.getLogger(__name__)
 _CALLBACK_WORKER_NAME = "Thread-CallbackRequestDispatcher"
 
 
+_MAX_BATCH_SIZE = 100
+"""The maximum number of requests to process and dispatch at a time."""
+
+_MAX_BATCH_LATENCY = 0.01
+"""The maximum amount of time in seconds to wait for additional request items
+before processing the next batch of requests."""
+
+
 class Dispatcher(object):
     def __init__(self, manager, queue):
         self._manager = manager
@@ -43,7 +51,10 @@ class Dispatcher(object):
                 raise ValueError("Dispatcher is already running.")
 
             worker = helper_threads.QueueCallbackWorker(
-                self._queue, self.dispatch_callback, max_items=100, max_latency=0.01
+                self._queue,
+                self.dispatch_callback,
+                max_items=_MAX_BATCH_SIZE,
+                max_latency=_MAX_BATCH_LATENCY,
             )
             # Create and start the helper thread.
             thread = threading.Thread(name=_CALLBACK_WORKER_NAME, target=worker)
