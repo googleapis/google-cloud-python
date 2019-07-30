@@ -53,9 +53,9 @@ class Client(object):
             :class:`~.gapic.pubsub.v1.subscriber_client.SubscriberClient`.
             Generally, you should not need to set additional keyword
             arguments.
-            Regional endpoints can be set via `client_options` that takes a
+            Regional endpoints can be set via ``client_options`` that takes a
             single key-value pair that defines the endpoint, i.e.
-            `client_options={"api_endpoint": REGIONAL_ENDPOINT}`.
+            ``client_options={"api_endpoint": REGIONAL_ENDPOINT}``.
     """
 
     def __init__(self, **kwargs):
