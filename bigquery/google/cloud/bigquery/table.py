@@ -19,6 +19,7 @@ from __future__ import absolute_import
 import copy
 import datetime
 import functools
+import logging
 import operator
 import warnings
 
@@ -55,6 +56,8 @@ from google.cloud.bigquery.schema import _build_schema_resource
 from google.cloud.bigquery.schema import _parse_schema_resource
 from google.cloud.bigquery.external_config import ExternalConfig
 
+
+_LOGGER = logging.getLogger(__name__)
 
 _NO_BQSTORAGE_ERROR = (
     "The google-cloud-bigquery-storage library is not installed, "
@@ -1426,6 +1429,11 @@ class RowIterator(HTTPIterator):
                 # with the tabledata.list API.
                 pass
 
+        _LOGGER.debug(
+            "Started reading table '{}.{}.{}' with tabledata.list.".format(
+                self._table.project, self._table.dataset_id, self._table.table_id
+            )
+        )
         for item in tabledata_list_download():
             yield item
 

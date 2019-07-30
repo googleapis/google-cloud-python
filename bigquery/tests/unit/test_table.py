@@ -1445,8 +1445,10 @@ class TestRowIterator(unittest.TestCase):
         return RowIterator
 
     def _make_one(
-        self, client=None, api_request=None, path=None, schema=None, **kwargs
+        self, client=None, api_request=None, path=None, schema=None, table=None, **kwargs
     ):
+        from google.cloud.bigquery.table import TableReference
+
         if client is None:
             client = _mock_client()
 
@@ -1459,7 +1461,10 @@ class TestRowIterator(unittest.TestCase):
         if schema is None:
             schema = []
 
-        return self._class_under_test()(client, api_request, path, schema, **kwargs)
+        if table is None:
+            table = TableReference.from_string("my-project.my_dataset.my_table")
+
+        return self._class_under_test()(client, api_request, path, schema, table=table, **kwargs)
 
     def test_constructor(self):
         from google.cloud.bigquery.table import _item_to_row
