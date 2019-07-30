@@ -32,7 +32,6 @@ def unit(session):
     session.run(
         'py.test',
         '-vv',
-        # '--quiet',
         '--cov=gapic',
         '--cov-config=.coveragerc',
         '--cov-report=term',

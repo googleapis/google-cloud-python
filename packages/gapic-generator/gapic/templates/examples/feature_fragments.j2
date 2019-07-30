@@ -90,7 +90,7 @@ print({{ print_string_formatting(elts)|trim }})
 {% macro render_collection_loop(statement) %}
 for {{ statement.variable }} in {{ statement.collection|coerce_response_name }}:
   {% for s in statement.body %}
-    {{ dispatch_statement(s) }}
+{{ dispatch_statement(s, 4) }}
   {% endfor %}
 {% endmacro %}
 
@@ -104,7 +104,7 @@ for {{ statement.key }} in {{ statement.map|coerce_response_name }}.keys():
 for {{statement.key }}, {{ statement.value }} in {{ statement.map|coerce_response_name }}.items():
 {% endif %}
 {% for s in statement.body %}
-    {{ dispatch_statement(s) }}
+{{ dispatch_statement(s, 4) }}
 {% endfor %}
 {% endmacro %}
 
@@ -115,24 +115,24 @@ with open({{ print_string_formatting(statement["filename"])|trim }}, "wb") as f:
   {% endwith %}
 {% endmacro %}
 
-{% macro dispatch_statement(statement) %}
+{% macro dispatch_statement(statement, indentation=0) %}
 {# Each statement is a dict with a single key/value pair #}
 {% if "print" in statement -%}
-{{ render_print(statement["print"]) }}
+{{ render_print(statement["print"])|indent(width=indentation, first=True) }}
 {% elif "define" in statement -%}
-{{ render_define(statement["define"]) }}
+{{ render_define(statement["define"])|indent(width=indentation, first=True) }}
 {% elif "comment" in statement -%}
-{{ render_comment(statement["comment"]) }}
+{{ render_comment(statement["comment"])|indent(width=indentation, first=True) }}
 {% elif "loop" in statement -%}
   {% with loop = statement["loop"] -%}
     {% if "collection" in loop -%}
-{{ render_collection_loop(loop) }}
+{{ render_collection_loop(loop)|indent(width=indentation, first=True) }}
     {% else -%}
-{{ render_map_loop(loop) }}
+{{ render_map_loop(loop)|indent(width=indentation, first=True) }}
     {% endif -%}
   {% endwith -%}
 {% elif "write_file" in statement -%}
-{{ render_write_file(statement["write_file"]) }}
+{{ render_write_file(statement["write_file"])|indent(indentation, first=True) }}
 {% endif %}
 {% endmacro %}
 
@@ -193,27 +193,27 @@ client.{{ sample.rpc|snake_case }}({{ render_request_params(sample.request) }})
 {% if calling_form == calling_form_enum.Request %}
 response = {{ method_invocation_text }}
 {% for statement in response_statements %}
-{{ dispatch_statement(statement ) }}
+{{ dispatch_statement(statement)|trim }}
 {% endfor %}
 {% elif calling_form == calling_form_enum.RequestPagedAll %}
 page_result = {{ method_invocation_text }}
 for response in page_result:
   {% for statement in response_statements %}
-    {{ dispatch_statement(statement ) }}
+    {{ dispatch_statement(statement)|trim }}
   {% endfor %}
 {% elif calling_form == calling_form_enum.RequestPaged %}
-page_result = {{ method_invocation_text }}
+page_result = {{ method_invocation_text}}
 for page in page_result.pages():
     for response in page:
   {% for statement in response_statements %}
-        {{ dispatch_statement(statement ) }}
+        {{ dispatch_statement(statement)|trim }}
   {% endfor %}
 {% elif calling_form in [calling_form_enum.RequestStreamingServer,
                         calling_form_enum.RequestStreamingBidi] %}
 stream = {{ method_invocation_text }}
 for response in stream:
   {% for statement in response_statements %}
-    {{ dispatch_statement(statement ) }}
+    {{ dispatch_statement(statement)|trim }}
   {% endfor %}
 {% elif calling_form == calling_form_enum.LongRunningRequestPromise %}
 operation = {{ method_invocation_text }}
@@ -222,7 +222,7 @@ print("Waiting for operation to complete...")
 
 response = operation.result()
 {% for statement in response_statements %}
-{{ dispatch_statement(statement) }}
+{{ dispatch_statement(statement)|trim }}
 {% endfor %}
 {% endif %}
 {% endmacro %}

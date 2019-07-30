@@ -113,23 +113,23 @@ def test_render_request_basic():
         cephalopod = {}
         # cephalopod_mass = "10 kg"
         cephalopod["mantle_mass"] = cephalopod_mass
-        
+
         # photo_path = "path/to/cephalopod/photo.jpg"
         with open(photo_path, "rb") as f:
             cephalopod["photo"] = f.read()
-        
+
         cephalopod["order"] = Molluscs.Cephalopoda.Coleoidea
-        
+
         gastropod = {}
         # gastropod_mass = "1 kg"
         gastropod["mantle_mass"] = gastropod_mass
-        
+
         gastropod["order"] = Molluscs.Gastropoda.Pulmonata
-        
+
         # movie_path = "path/to/gastropod/movie.mkv"
         with open(movie_path, "rb") as f:
             gastropod["movie"] = f.read()
-    
+
         ''',
         request=[samplegen.TransformedRequest(base="cephalopod",
                                               body=[
@@ -252,7 +252,7 @@ def test_dispatch_print():
         ''',
         '''
         print("Squid")
-        
+
         '''
     )
 
@@ -265,7 +265,7 @@ def test_dispatch_define():
         ''',
         '''
         squid = humboldt
-        
+
         '''
     )
 
@@ -278,7 +278,7 @@ def test_dispatch_comment():
         ''',
         '''
         # Squid
-        
+
         '''
     )
 
@@ -302,7 +302,7 @@ def test_dispatch_write_file():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.dispatch_statement({"write_file": 
+        {{ frags.dispatch_statement({"write_file":
                                        {"filename": ["specimen-%s",
                                                      "$resp.species"],
                                         "contents": "$resp.photo"}})}}
@@ -310,7 +310,7 @@ def test_dispatch_write_file():
         '''
         with open("specimen-{}".format(response.species), "wb") as f:
             f.write(response.photo)
-      
+
         '''
     )
 
@@ -319,16 +319,17 @@ def test_collection_loop():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_collection_loop({"collection": "$resp.molluscs",
-                                       "variable": "m",
-                                       "body": [{"print": ["Mollusc: %s", "m"]}]})}}
+        {{ frags.render_collection_loop(collection) }}
         ''',
         '''
         for m in response.molluscs:
             print("Mollusc: {}".format(m))
         
         
-        '''
+        ''',
+        collection={"collection": "$resp.molluscs",
+                    "variable": "m",
+                    "body": [{"print": ["Mollusc: %s", "m"]}]}
     )
 
 
@@ -336,16 +337,17 @@ def test_dispatch_collection_loop():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.dispatch_statement({"loop": {"collection": "molluscs",
-                                    "variable": "m",
-                                    "body": [{"print": ["Mollusc: %s", "m"]}]}}) }}''',
+        {{ frags.dispatch_statement(statement) }}''',
         '''
         for m in molluscs:
             print("Mollusc: {}".format(m))
-        
-        
-        
-        '''
+
+
+
+        ''',
+        statement={"loop": {"collection": "molluscs",
+                            "variable": "m",
+                            "body": [{"print": ["Mollusc: %s", "m"]}]}}
     )
 
 
@@ -353,17 +355,18 @@ def test_map_loop():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_map_loop({"map": "$resp.molluscs",
-                                "key":"cls",
-                                "value":"example",
-                                "body": [{"print": ["A %s is a %s", "example", "cls"] }]})
+        {{ frags.render_map_loop(map_loop)
         }}''',
         '''
         for cls, example in response.molluscs.items():
             print("A {} is a {}".format(example, cls))
-        
-        
-        '''
+
+
+        ''',
+        map_loop={"map": "$resp.molluscs",
+                  "key": "cls",
+                  "value": "example",
+                  "body": [{"print": ["A %s is a %s", "example", "cls"]}]}
     )
 
 
@@ -371,17 +374,18 @@ def test_map_loop_no_key():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_map_loop({"map": "$resp.molluscs",
-                                "value":"example",
-                                "body": [{"print": ["A %s is a mollusc", "example"] }]})
+        {{ frags.render_map_loop(map_loop)
         }}
         ''',
         '''
         for example in response.molluscs.values():
             print("A {} is a mollusc".format(example))
-        
-        
-        '''
+
+
+        ''',
+        map_loop={"map": "$resp.molluscs",
+                  "value": "example",
+                  "body": [{"print": ["A %s is a mollusc", "example"]}]}
     )
 
 
@@ -389,17 +393,18 @@ def test_map_loop_no_value():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_map_loop({"map": "$resp.molluscs",
-                                "key":"cls",
-                                "body": [{"print": ["A %s is a mollusc", "cls"] }]})
+        {{ frags.render_map_loop(map_loop)
         }}
         ''',
         '''
         for cls in response.molluscs.keys():
             print("A {} is a mollusc".format(cls))
-        
-        
-        '''
+
+
+        ''',
+        map_loop={"map": "$resp.molluscs",
+                  "key": "cls",
+                  "body": [{"print": ["A %s is a mollusc", "cls"]}]}
     )
 
 
@@ -407,20 +412,121 @@ def test_dispatch_map_loop():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.dispatch_statement({"loop":{"map": "molluscs",
-                                            "key":"cls",
-                                            "value":"example",
-                                            "body": [{
-                                              "print": ["A %s is a %s", "example", "cls"] }]}})
-        }}
+        {{ frags.dispatch_statement(statement) }}
         ''',
         '''
         for cls, example in molluscs.items():
             print("A {} is a {}".format(example, cls))
+
+
+        
+        ''',
+        statement={"loop": {"map": "molluscs",
+                            "key": "cls",
+                            "value": "example",
+                            "body": [{"print": ["A %s is a %s", "example", "cls"]}]}}
+    )
+
+
+def test_render_nested_loop_collection():
+    # Note: the vast quantity of extraneous tailing whitespace is an artifact of the
+    # recursive dispatch and indentation.
+    # The calling form macros are responsible for trimming it out.
+    statement = {
+        "loop": {
+            "collection": "$resp.molluscs",
+            "variable": "m",
+            "body": [
+                {
+                    "loop": {
+                        "collection": "m.tentacles",
+                        "variable": "t",
+                        "body": [
+                            {
+                                "loop": {
+                                    "collection": "t.suckers",
+                                    "variable": "s",
+                                    "body": [{"print": ["Sucker: %s", "s"]}],
+                                }
+                            }
+                        ],
+                    }
+                }
+            ],
+        }
+    }
+    check_template(
+        """
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.dispatch_statement(statement) }}
+        """,
+        """
+        for m in response.molluscs:
+            for t in m.tentacles:
+                for s in t.suckers:
+                    print("Sucker: {}".format(s))
+
+
         
         
         
-        '''
+        
+        
+        """,
+        statement=statement
+    )
+
+
+def test_render_nested_loop_map():
+    # Note: the vast quantity of extraneous tailing whitespace is an artifact of the
+    # recursive dispatch and indentation.
+    # The calling form macros are responsible for trimming it out.
+    statement = {
+        "loop": {
+            "map": "$resp.molluscs",
+            "key": "klass",
+            "value": "orders",
+            "body": [
+                {
+                    "loop": {
+                        "map": "orders",
+                        "key": "order",
+                        "value": "families",
+                        "body": [
+                            {
+                                "loop": {
+                                    "map": "families",
+                                    "key": "family",
+                                    "value": "ex",
+                                    "body": [{"print": ["Example: %s", "ex"]}]
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    }
+
+    check_template(
+        """
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.dispatch_statement(statement) }}
+        """,
+        """
+        for klass, orders in response.molluscs.items():
+            for order, families in orders.items():
+                for family, ex in families.items():
+                    print("Example: {}".format(ex))
+
+
+        
+        
+        
+        
+        
+        """,
+        statement=statement
     )
 
 
@@ -476,8 +582,6 @@ def test_render_calling_form_request():
                    '''
                    response = TEST_INVOCATION_TXT
                    print("Test print statement")
-                   
-                   
                    ''',
                    calling_form_enum=CallingForm,
                    calling_form=CallingForm.Request)
@@ -489,8 +593,6 @@ def test_render_calling_form_paged_all():
                    page_result = TEST_INVOCATION_TXT
                    for response in page_result:
                        print("Test print statement")
-                   
-                   
                    ''',
                    calling_form_enum=CallingForm,
                    calling_form=CallingForm.RequestPagedAll)
@@ -503,9 +605,7 @@ def test_render_calling_form_paged():
                     for page in page_result.pages():
                         for response in page:
                             print("Test print statement")
-                   
-                   
-                    ''',
+                   ''',
                    calling_form_enum=CallingForm,
                    calling_form=CallingForm.RequestPaged)
 
@@ -516,8 +616,6 @@ def test_render_calling_form_streaming_server():
                    stream = TEST_INVOCATION_TXT
                    for response in stream:
                        print("Test print statement")
-                   
-                   
                    ''',
                    calling_form_enum=CallingForm,
                    calling_form=CallingForm.RequestStreamingServer)
@@ -529,8 +627,6 @@ def test_render_calling_form_streaming_bidi():
                    stream = TEST_INVOCATION_TXT
                    for response in stream:
                        print("Test print statement")
-                   
-                   
                    ''',
                    calling_form_enum=CallingForm,
                    calling_form=CallingForm.RequestStreamingBidi)
@@ -540,13 +636,11 @@ def test_render_calling_form_longrunning():
     check_template(CALLING_FORM_TEMPLATE_TEST_STR,
                    '''
                    operation = TEST_INVOCATION_TXT
-                   
+
                    print("Waiting for operation to complete...")
-                   
+
                    response = operation.result()
                    print("Test print statement")
-                   
-                   
                    ''',
                    calling_form_enum=CallingForm,
                    calling_form=CallingForm.LongRunningRequestPromise)
@@ -617,7 +711,7 @@ def test_render_request_params():
         '''
         {% import "feature_fragments.j2" as frags %}
         {{ frags.render_request_params(request) }}
-        
+
         ''',
         '''
         mollusc, length_meters=16, order='TEUTHIDA'

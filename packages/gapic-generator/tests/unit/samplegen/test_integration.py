@@ -91,8 +91,6 @@ def sample_classify(video):
 
     print("Mollusc is a {}".format(response.taxonomy))
 
-
-
 # [END mollusc_classify_sync]
 
 def main():
