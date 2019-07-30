@@ -160,7 +160,7 @@ Once you have a transaction object (such as the first argument sent to
 
 
 Insert records using Data Manipulation Language (DML) with a Transaction
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Use the ``execute_update()`` method to execute a DML statement:
 
@@ -182,7 +182,7 @@ Use the ``execute_update()`` method to execute a DML statement:
 
 
 Insert records using Mutations with a Transaction
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To add one or more records to a table, use ``insert``:
 
@@ -199,7 +199,7 @@ To add one or more records to a table, use ``insert``:
 
 
 Update records using Data Manipulation Language (DML) with a Transaction
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -220,7 +220,7 @@ Update records using Data Manipulation Language (DML) with a Transaction
 
 
 Update records using Mutations with a Transaction
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ``Transaction.update`` updates one or more existing records in a table.  Fails
 if any of the records does not already exist.
