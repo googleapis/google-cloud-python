@@ -73,7 +73,6 @@ _DEFAULT_INITIAL_DELAY = 1.0  # seconds
 _DEFAULT_MAXIMUM_DELAY = 60.0  # seconds
 _DEFAULT_DELAY_MULTIPLIER = 2.0
 _DEFAULT_DEADLINE = 60.0 * 2.0  # seconds
-_DEFAULT_ON_ERROR = None
 
 
 def if_exception_type(*exception_types):
@@ -238,7 +237,7 @@ class Retry(object):
         maximum=_DEFAULT_MAXIMUM_DELAY,
         multiplier=_DEFAULT_DELAY_MULTIPLIER,
         deadline=_DEFAULT_DEADLINE,
-        on_error=_DEFAULT_ON_ERROR
+        on_error=None
     ):
         self._predicate = predicate
         self._initial = initial

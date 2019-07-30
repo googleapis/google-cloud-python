@@ -234,8 +234,7 @@ class TestRetry(object):
         target.assert_called_once_with("meep")
         sleep.assert_not_called()
 
-    # Make uniform return half of its maximum, which will be the calculated
-    # sleep time.
+    # Make uniform return half of its maximum, which is the calculated sleep time.
     @mock.patch("random.uniform", autospec=True, side_effect=lambda m, n: n / 2.0)
     @mock.patch("time.sleep", autospec=True)
     def test___call___and_execute_retry(self, sleep, uniform):
@@ -276,8 +275,7 @@ class TestRetry(object):
         target.assert_called_once_with("meep")
         sleep.assert_not_called()
 
-    # Make uniform return half of its maximum, which will be the calculated
-    # sleep time.
+    # Make uniform return half of its maximum, which is the calculated sleep time.
     @mock.patch("random.uniform", autospec=True, side_effect=lambda m, n: n / 2.0)
     @mock.patch("time.sleep", autospec=True)
     def test___init___when_retry_is_executed(self, sleep, uniform):
