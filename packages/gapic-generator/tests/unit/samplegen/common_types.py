@@ -17,6 +17,8 @@ import itertools
 from collections import namedtuple
 from typing import(Iterable, Optional)
 
+from google.protobuf import descriptor_pb2
+
 from gapic.schema import wrappers
 
 # Injected dummy test types

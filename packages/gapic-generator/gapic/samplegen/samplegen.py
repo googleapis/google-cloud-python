@@ -323,7 +323,7 @@ class Validator:
 
             attr_chain = field.split(".")
             base = self.request_type_
-            for attr_name in attr_chain:
+            for i, attr_name in enumerate(attr_chain):
                 attr = base.fields.get(attr_name)
                 if not attr:
                     raise BadAttributeLookup(
@@ -332,23 +332,27 @@ class Validator:
 
                 if attr.message:
                     base = attr.message
-
+                elif attr.enum:
+                    # A little bit hacky, but 'values' is a list, and this is the easiest
+                    # way to verify that the value is a valid enum variant.
+                    witness = any(e.name == val for e in attr.enum.values)
+                    if not witness:
+                        raise InvalidEnumVariant(
+                            "Invalid variant for enum {}: '{}'".format(attr, val))
+                    # Python code can set protobuf enums from strings.
+                    # This is preferable to adding the necessary import statement
+                    # and requires less munging of the assigned value
+                    duplicate["value"] = f"'{val}'"
+                    break
                 else:
                     raise TypeError
 
-                # TODO: uncomment this when handling enums
-                # if attr.enum:
-                #     # A little bit hacky, but 'values' is a list, and this is the easiest
-                #     # way to verify that the value is a valid enum variant.
-                #     witness = next((e.name for e in attr.enum.values if e.name == val), None)
-                #     if not witness:
-                #         raise InvalidEnumVariant
-                #     # Python code can set protobuf enums from strings.
-                #     # This is preferable to adding the necessary import statement
-                #     # and requires less munging of the assigned value
-                #     duplicate["value"] = f"'{witness}'"
+            if i != len(attr_chain) - 1:
+                # We broke out of the loop after processing an enum.
+                extra_attrs = ".".join(attr_chain[i:])
+                raise InvalidEnumVariant(
+                    f"Attempted to reference attributes of enum value: '{extra_attrs}'")
 
-            # TODO: what if there's more stuff in the chain?
             if len(attr_chain) > 1:
                 duplicate["field"] = ".".join(attr_chain[1:])
             else:

@@ -24,7 +24,7 @@ import gapic.samplegen.yaml as gapic_yaml
 import gapic.samplegen.samplegen as samplegen
 
 from common_types import (DummyField, DummyMessage,
-                          DummyMethod, message_factory)
+                          DummyMethod, message_factory, enum_factory)
 from gapic.samplegen import utils
 
 
@@ -1075,3 +1075,61 @@ def test_validate_expression_malformed_attr():
     v = samplegen.Validator(method)
     with pytest.raises(samplegen.BadAttributeLookup):
         v.validate_expression(exp)
+
+
+def test_validate_request_enum():
+    enum = enum_factory("subclass", ["AMMONOIDEA", "COLEOIDEA", "NAUTILOIDEA"])
+    request_type = message_factory("mollusc.cephalopod.subclass", enum=enum)
+
+    v = samplegen.Validator(DummyMethod(input=request_type))
+    actual = v.validate_and_transform_request(
+        utils.CallingForm.Request,
+        [{"field": "cephalopod.subclass", "value": "COLEOIDEA"}]
+    )
+    expected = [samplegen.TransformedRequest(
+        "cephalopod",
+        body=[samplegen.AttributeRequestSetup(field="subclass",
+                                              value="'COLEOIDEA'")],
+        single=None)]
+    assert actual == expected
+
+
+def test_validate_request_enum_top_level():
+    enum = enum_factory("subclass", ["AMMONOIDEA", "COLEOIDEA", "NAUTILOIDEA"])
+    request_type = message_factory("mollusc.subclass", enum=enum)
+
+    v = samplegen.Validator(DummyMethod(input=request_type))
+    actual = v.validate_and_transform_request(
+        utils.CallingForm.Request,
+        [{"field": "subclass", "value": "COLEOIDEA"}]
+    )
+    expected = [samplegen.TransformedRequest(
+        "subclass",
+        single=samplegen.AttributeRequestSetup(value="'COLEOIDEA'"),
+        body=None)]
+    assert actual == expected
+
+
+def test_validate_request_enum_invalid_value():
+    enum = enum_factory("subclass", ["AMMONOIDEA", "COLEOIDEA", "NAUTILOIDEA"])
+    request_type = message_factory("mollusc.cephalopod.subclass", enum=enum)
+    v = samplegen.Validator(DummyMethod(output=message_factory("mollusc_result"),
+                                        input=request_type))
+    with pytest.raises(samplegen.InvalidEnumVariant):
+        v.validate_and_transform_request(
+            utils.CallingForm.Request,
+            # Heterodonta are bivalves, not cephalopods
+            [{"field": "cephalopod.subclass", "value": "HETERODONTA"}]
+        )
+
+
+def test_validate_request_enum_not_last_attr():
+    enum = enum_factory("subclass", ["AMMONOIDEA", "COLEOIDEA", "NAUTILOIDEA"])
+    request_type = message_factory("mollusc.subclass", enum=enum)
+    v = samplegen.Validator(DummyMethod(output=message_factory("mollusc_result"),
+                                        input=request_type))
+    with pytest.raises(samplegen.InvalidEnumVariant):
+        v.validate_and_transform_request(
+            utils.CallingForm.Request,
+            [{"field": "subclass.order", "value": "COLEOIDEA"}]
+        )
