@@ -32,7 +32,8 @@ for version in versions:
         "speech",
         version,
         include_protos=True,
-        include_samples=True)
+        include_samples=True,
+    )
 
     # Don't move over __init__.py, as we modify it to make the generated client
     # use helpers.py.
@@ -41,11 +42,10 @@ for version in versions:
     s.move(library / f"google/cloud/speech_{version}/proto")
     s.move(library / f"tests/unit/gapic/{version}")
     s.move(library / f"docs/gapic/{version}")
-    s.copy(library / "samples")
 
-
-# Use the highest version library to generate documentation import alias.
+# Use the highest version library to generate documentation import alias, samples.
 s.move(library / "google/cloud/speech.py")
+s.move(library / "samples")
 
 # Issues exist where python files should define the source encoding
 # https://github.com/googleapis/gapic-generator/issues/2097
