@@ -159,8 +159,30 @@ Once you have a transaction object (such as the first argument sent to
         print(row)
 
 
-Insert records using a Transaction
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Insert records using Data Manipulation Language (DML) with a Transaction
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Use the ``execute_update()`` method to execute a DML statement:
+
+.. code:: python
+
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    def insert_singers(transaction):
+        row_ct = transaction.execute_update(
+            "INSERT Singers (SingerId, FirstName, LastName) "
+            " VALUES (10, 'Virginia', 'Watson')"
+        )
+
+        print("{} record(s) inserted.".format(row_ct))
+
+    database.run_in_transaction(insert_singers)
+
+
+Insert records using Mutations with a Transaction
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To add one or more records to a table, use ``insert``:
 
@@ -176,8 +198,29 @@ To add one or more records to a table, use ``insert``:
     )
 
 
-Update records using a Transaction
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Update records using Data Manipulation Language (DML) with a Transaction
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    def update_albums(transaction):
+        row_ct = transaction.execute_update(
+            "UPDATE Albums "
+            "SET MarketingBudget = MarketingBudget * 2 "
+            "WHERE SingerId = 1 and AlbumId = 1"
+        )
+
+        print("{} record(s) updated.".format(row_ct))
+
+    database.run_in_transaction(update_albums)
+
+
+Update records using Mutations with a Transaction
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ``Transaction.update`` updates one or more existing records in a table.  Fails
 if any of the records does not already exist.
