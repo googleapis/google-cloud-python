@@ -30,11 +30,13 @@ class Connection(_http.JSONConnection):
     """
 
     def __init__(self, client, client_info=None):
-        Connection.API_BASE_URL = client.api_endpoint
         super(Connection, self).__init__(client, client_info)
 
         self._client_info.gapic_version = __version__
         self._client_info.client_library_version = __version__
+
+    API_BASE_URL = _http.API_BASE_URL
+    """The base of the API call URL."""
 
     API_VERSION = "v1"
     """The version of the API, used in building the API call's URL."""

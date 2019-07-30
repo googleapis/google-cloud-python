@@ -60,6 +60,7 @@ from google.cloud.storage.acl import ACL
 from google.cloud.storage.acl import ObjectACL
 
 
+_API_ACCESS_ENDPOINT = "https://storage.googleapis.com"
 _DEFAULT_CONTENT_TYPE = u"application/octet-stream"
 _DOWNLOAD_URL_TEMPLATE = (
     u"https://www.googleapis.com/download/storage/v1{path}?alt=media"
@@ -295,7 +296,7 @@ class Blob(_PropertyMixin):
         :returns: The public URL for this blob.
         """
         return "{storage_base_url}/{bucket_name}/{quoted_name}".format(
-            storage_base_url=self.bucket.client.api_endpoint,
+            storage_base_url=_API_ACCESS_ENDPOINT,
             bucket_name=self.bucket.name,
             quoted_name=_quote(self.name, safe=b"/~"),
         )
@@ -303,7 +304,7 @@ class Blob(_PropertyMixin):
     def generate_signed_url(
         self,
         expiration=None,
-        api_access_endpoint=None,
+        api_access_endpoint=_API_ACCESS_ENDPOINT,
         method="GET",
         content_md5=None,
         content_type=None,
@@ -341,8 +342,7 @@ class Blob(_PropertyMixin):
         :param expiration: Point in time when the signed URL should expire.
 
         :type api_access_endpoint: str
-        :param api_access_endpoint: Optional URI base. If not passed, falls back
-        to the api_endpoint of the client.
+        :param api_access_endpoint: Optional URI base.
 
         :type method: str
         :param method: The HTTP verb that will be used when requesting the URL.
@@ -423,8 +423,6 @@ class Blob(_PropertyMixin):
 
         if credentials is None:
             client = self._require_client(client)
-            if api_access_endpoint is None:
-                api_access_endpoint = client.api_endpoint
             credentials = client._credentials
 
         if version == "v2":

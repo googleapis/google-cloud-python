@@ -18,7 +18,6 @@ from six.moves.urllib.parse import urlsplit
 
 from google.auth.credentials import AnonymousCredentials
 
-import google.api_core.client_options
 from google.api_core import page_iterator
 from google.cloud._helpers import _LocalStack
 from google.cloud.client import ClientWithProject
@@ -61,13 +60,7 @@ class Client(ClientWithProject):
         requests. If ``None``, then default info will be used. Generally,
         you only need to set this if you're developing your own library
         or partner tool.
-    :type client_options: Union(Dict, :class:`~google.api_core.client_options.ClientOptions`)
-    :param client_options:
-        Client options used to set user options on the client. API Endpoint
-        should be set through client_options.
     """
-
-    API_ENDPOINT = "https://storage.googleapis.com"
 
     SCOPE = (
         "https://www.googleapis.com/auth/devstorage.full_control",
@@ -76,8 +69,7 @@ class Client(ClientWithProject):
     )
     """The scopes required for authenticating as a Cloud Storage consumer."""
 
-    def __init__(self, project=_marker, credentials=None, _http=None, client_info=None,
-        client_options=None):
+    def __init__(self, project=_marker, credentials=None, _http=None, client_info=None):
         self._base_connection = None
         if project is None:
             no_project = True
@@ -86,14 +78,6 @@ class Client(ClientWithProject):
             no_project = False
         if project is _marker:
             project = None
-
-        self.api_endpoint = self.API_ENDPOINT
-        if client_options:
-            if type(client_options) == dict:
-                client_options = google.api_core.client_options.from_dict(client_options)
-            if client_options.api_endpoint:
-                self.api_endpoint = client_options.api_endpoint
-
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http
         )
