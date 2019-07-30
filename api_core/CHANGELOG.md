@@ -11,7 +11,7 @@
 
 ### Implementation Changes
 - Remove error log entry on clean BiDi shutdown. ([#8806](https://github.com/googleapis/google-cloud-python/pull/8806))
-- Forward 'timeout' arg from 'exception' to '_blocking_poll'. ([#8735](https://github.com/googleapis/google-cloud-python/pull/8735))
+- Forward 'timeout' arg from 'exception' to `_blocking_poll`. ([#8735](https://github.com/googleapis/google-cloud-python/pull/8735))
 
 ### Documentation
 - Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
