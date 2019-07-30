@@ -187,6 +187,10 @@ class Blob(_PropertyMixin):
         if generation is not None:
             self._properties["generation"] = generation
 
+        # Fraction of uploaded (downloaded) bytes to the total number of bytes
+        # to be uploaded (downloaded), in the range of 0..1
+        self.progress = float(0)
+
     @property
     def chunk_size(self):
         """Get the blob's default chunk size.
@@ -568,6 +572,8 @@ class Blob(_PropertyMixin):
         :type end: int
         :param end: Optional, The last byte in a range to be downloaded.
         """
+        self.progress = 0.0
+
         if self.chunk_size is None:
             download = Download(
                 download_url, stream=file_obj, headers=headers, start=start, end=end
@@ -585,6 +591,9 @@ class Blob(_PropertyMixin):
 
             while not download.finished:
                 download.consume_next_chunk(transport)
+                self.progress = float(download.bytes_downloaded) / download.total_bytes
+
+        self.progress = 1.0
 
     def download_to_file(self, file_obj, client=None, start=None, end=None):
         """Download the contents of this blob into a file-like object.
@@ -1013,6 +1022,7 @@ class Blob(_PropertyMixin):
 
         while not upload.finished:
             response = upload.transmit_next_chunk(transport)
+            self.progress = float(upload.bytes_uploaded) / upload.total_bytes
 
         return response
 
@@ -1059,6 +1069,8 @@ class Blob(_PropertyMixin):
                   **only** response in the multipart case and it will be the
                   **final** response in the resumable case.
         """
+        self.progress = 0.0
+
         if size is not None and size <= _MAX_MULTIPART_SIZE:
             response = self._do_multipart_upload(
                 client, stream, content_type, size, num_retries, predefined_acl
@@ -1067,6 +1079,8 @@ class Blob(_PropertyMixin):
             response = self._do_resumable_upload(
                 client, stream, content_type, size, num_retries, predefined_acl
             )
+
+        self.progress = 1.0
 
         return response.json()
 
