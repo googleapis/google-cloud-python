@@ -186,10 +186,21 @@ class TestDatasetReference(unittest.TestCase):
         self.assertEqual(got.project, "string-project")
         self.assertEqual(got.dataset_id, "string_dataset")
 
+    def test_from_string_w_prefix(self):
+        cls = self._get_target_class()
+        got = cls.from_string("prefix:string-project.string_dataset")
+        self.assertEqual(got.project, "string-project")
+        self.assertEqual(got.dataset_id, "string_dataset")
+
     def test_from_string_legacy_string(self):
         cls = self._get_target_class()
         with self.assertRaises(ValueError):
             cls.from_string("string-project:string_dataset")
+
+    def test_from_string_w_several_prefixes(self):
+        cls = self._get_target_class()
+        with self.assertRaises(ValueError):
+            cls.from_string("google.com:project:dataset_id")
 
     def test_from_string_not_fully_qualified(self):
         cls = self._get_target_class()
