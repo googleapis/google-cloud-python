@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Read-write Transactions &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Read-write Transactions &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -47,17 +45,17 @@ To learn more about how to use them in the Python client, continue reading.</p>
 <p>Read data for selected rows from a table in the database.  Calls the <code class="docutils literal notranslate"><span class="pre">Read</span></code>
 API, which returns all rows specified in <code class="docutils literal notranslate"><span class="pre">key_set</span></code>, or else fails if the
 result set is too large,</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
     <span class="n">table</span><span class="o">=</span><span class="s1">&#39;table-name&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">],</span>
     <span class="n">key_set</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;phred@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;bharney@example.com&#39;</span><span class="p">])</span>
 
 <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If streaming a chunk fails due to a “resumable” error,
+<p class="admonition-title">Note</p>
+<p>If streaming a chunk fails due to a “resumable” error,
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">Snapshot.read()</span></code> retries the <code class="docutils literal notranslate"><span class="pre">StreamingRead</span></code> API request,
 passing the <code class="docutils literal notranslate"><span class="pre">resume_token</span></code> from the last partial result streamed.</p>
 </div>
@@ -67,14 +65,14 @@ passing the <code class="docutils literal notranslate"><span class="pre">resume_
 <p>Read data from a query against tables in the database.  Calls
 the <code class="docutils literal notranslate"><span class="pre">ExecuteSql</span></code> API, which returns all rows matching the query, or else
 fails if the result set is too large,</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">QUERY</span> <span class="o">=</span> <span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">QUERY</span> <span class="o">=</span> <span class="p">(</span>
     <span class="s1">&#39;SELECT e.first_name, e.last_name, p.telephone &#39;</span>
     <span class="s1">&#39;FROM employees as e, phones as p &#39;</span>
     <span class="s1">&#39;WHERE p.employee_id == e.employee_id&#39;</span><span class="p">)</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">execute_sql</span><span class="p">(</span><span class="n">QUERY</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -82,7 +80,7 @@ fails if the result set is too large,</p>
 <h2>Insert records using a Transaction<a class="headerlink" href="#insert-records-using-a-transaction" title="Permalink to this headline">#</a></h2>
 <p><code class="xref py py-meth docutils literal notranslate"><span class="pre">Transaction.insert()</span></code> adds one or more new records to a table.  Fails if
 any of the records already exists.</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">transaction</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transaction</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
     <span class="s1">&#39;citizens&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">],</span>
     <span class="n">values</span><span class="o">=</span><span class="p">[</span>
         <span class="p">[</span><span class="s1">&#39;phred@exammple.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Phred&#39;</span><span class="p">,</span> <span class="s1">&#39;Phlyntstone&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">],</span>
@@ -91,10 +89,10 @@ any of the records already exists.</p>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>Ensure that data being sent for <code class="docutils literal notranslate"><span class="pre">STRING</span></code> columns uses a text string
 (<code class="docutils literal notranslate"><span class="pre">str</span></code> in Python 3; <code class="docutils literal notranslate"><span class="pre">unicode</span></code> in Python 2).</p>
-<p class="last">Additionally, if you are writing data intended for a <code class="docutils literal notranslate"><span class="pre">BYTES</span></code> column, you
+<p>Additionally, if you are writing data intended for a <code class="docutils literal notranslate"><span class="pre">BYTES</span></code> column, you
 must base64 encode it.</p>
 </div>
 </div>
@@ -102,7 +100,7 @@ must base64 encode it.</p>
 <h2>Update records using a Transaction<a class="headerlink" href="#update-records-using-a-transaction" title="Permalink to this headline">#</a></h2>
 <p><code class="xref py py-meth docutils literal notranslate"><span class="pre">Transaction.update()</span></code> updates one or more existing records in a table.  Fails
 if any of the records does not already exist.</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">transaction</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transaction</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
     <span class="s1">&#39;citizens&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">],</span>
     <span class="n">values</span><span class="o">=</span><span class="p">[</span>
         <span class="p">[</span><span class="s1">&#39;phred@exammple.com&#39;</span><span class="p">,</span> <span class="mi">33</span><span class="p">],</span>
@@ -111,10 +109,10 @@ if any of the records does not already exist.</p>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>Ensure that data being sent for <code class="docutils literal notranslate"><span class="pre">STRING</span></code> columns uses a text string
 (<code class="docutils literal notranslate"><span class="pre">str</span></code> in Python 3; <code class="docutils literal notranslate"><span class="pre">unicode</span></code> in Python 2).</p>
-<p class="last">Additionally, if you are writing data intended for a <code class="docutils literal notranslate"><span class="pre">BYTES</span></code> column, you
+<p>Additionally, if you are writing data intended for a <code class="docutils literal notranslate"><span class="pre">BYTES</span></code> column, you
 must base64 encode it.</p>
 </div>
 </div>
@@ -123,7 +121,7 @@ must base64 encode it.</p>
 <p><code class="xref py py-meth docutils literal notranslate"><span class="pre">Transaction.insert_or_update()</span></code> inserts <em>or</em> updates one or more records
 in a table.  Existing rows have values for the supplied columns overwritten;
 other column values are preserved.</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">transaction</span><span class="o">.</span><span class="n">insert_or_update</span><span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transaction</span><span class="o">.</span><span class="n">insert_or_update</span><span class="p">(</span>
     <span class="s1">&#39;citizens&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">],</span>
     <span class="n">values</span><span class="o">=</span><span class="p">[</span>
         <span class="p">[</span><span class="s1">&#39;phred@exammple.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Phred&#39;</span><span class="p">,</span> <span class="s1">&#39;Phlyntstone&#39;</span><span class="p">,</span> <span class="mi">31</span><span class="p">],</span>
@@ -132,10 +130,10 @@ other column values are preserved.</p>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>Ensure that data being sent for <code class="docutils literal notranslate"><span class="pre">STRING</span></code> columns uses a text string
 (<code class="docutils literal notranslate"><span class="pre">str</span></code> in Python 3; <code class="docutils literal notranslate"><span class="pre">unicode</span></code> in Python 2).</p>
-<p class="last">Additionally, if you are writing data intended for a <code class="docutils literal notranslate"><span class="pre">BYTES</span></code> column, you
+<p>Additionally, if you are writing data intended for a <code class="docutils literal notranslate"><span class="pre">BYTES</span></code> column, you
 must base64 encode it.</p>
 </div>
 </div>
@@ -144,7 +142,7 @@ must base64 encode it.</p>
 <p><code class="xref py py-meth docutils literal notranslate"><span class="pre">Transaction.replace()</span></code> inserts <em>or</em> updates one or more records in a
 table.  Existing rows have values for the supplied columns overwritten;  other
 column values are set to null.</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">transaction</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transaction</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
     <span class="s1">&#39;citizens&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">],</span>
     <span class="n">values</span><span class="o">=</span><span class="p">[</span>
         <span class="p">[</span><span class="s1">&#39;bharney@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Bharney&#39;</span><span class="p">,</span> <span class="s1">&#39;Rhubble&#39;</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
@@ -153,10 +151,10 @@ column values are set to null.</p>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>Ensure that data being sent for <code class="docutils literal notranslate"><span class="pre">STRING</span></code> columns uses a text string
 (<code class="docutils literal notranslate"><span class="pre">str</span></code> in Python 3; <code class="docutils literal notranslate"><span class="pre">unicode</span></code> in Python 2).</p>
-<p class="last">Additionally, if you are writing data intended for a <code class="docutils literal notranslate"><span class="pre">BYTES</span></code> column, you
+<p>Additionally, if you are writing data intended for a <code class="docutils literal notranslate"><span class="pre">BYTES</span></code> column, you
 must base64 encode it.</p>
 </div>
 </div>
@@ -164,7 +162,7 @@ must base64 encode it.</p>
 <h2>Delete records using a Transaction<a class="headerlink" href="#delete-records-using-a-transaction" title="Permalink to this headline">#</a></h2>
 <p><code class="xref py py-meth docutils literal notranslate"><span class="pre">Transaction.delete()</span></code> removes one or more records from a table.
 Non-existent rows do not cause errors.</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">transaction</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transaction</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span>
     <span class="s1">&#39;citizens&#39;</span><span class="p">,</span> <span class="n">keyset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;bharney@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;nonesuch@example.com&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
@@ -179,7 +177,7 @@ exception.  The function will automatically be retried for
 <a class="reference internal" href="../core/exceptions.html#google.api_core.exceptions.Aborted" title="google.api_core.exceptions.Aborted"><code class="xref py py-class docutils literal notranslate"><span class="pre">Aborted</span></code></a> errors, but will raise on
 <a class="reference internal" href="../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal notranslate"><span class="pre">GoogleAPICallError</span></code></a> and
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">rollback()</span></code> will be called on all others.</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_unit_of_work</span><span class="p">(</span><span class="n">transaction</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_unit_of_work</span><span class="p">(</span><span class="n">transaction</span><span class="p">):</span>
 
     <span class="n">transaction</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
         <span class="s1">&#39;citizens&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">],</span>
@@ -211,7 +209,7 @@ manager.  The transaction’s <code class="xref py py-meth docutils literal notr
 automatically if the <code class="docutils literal notranslate"><span class="pre">with</span></code> block exits without raising an exception.</p>
 <p>If an exception is raised inside the <code class="docutils literal notranslate"><span class="pre">with</span></code> block, the transaction’s
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">rollback()</span></code> method will automatically be called.</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
 
     <span class="n">transaction</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
         <span class="s1">&#39;citizens&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">],</span>
@@ -237,21 +235,21 @@ automatically if the <code class="docutils literal notranslate"><span class="pre
 <div class="section" id="begin-a-transaction">
 <h2>Begin a Transaction<a class="headerlink" href="#begin-a-transaction" title="Permalink to this headline">#</a></h2>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Normally, applications will not construct transactions manually.  Rather,
+<p class="admonition-title">Note</p>
+<p>Normally, applications will not construct transactions manually.  Rather,
 consider using <code class="xref py py-meth docutils literal notranslate"><span class="pre">run_in_transaction()</span></code> or the context manager
 as described above.</p>
 </div>
 <p>To begin using a transaction manually:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">transaction</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transaction</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="commit-changes-for-a-transaction">
 <h2>Commit changes for a Transaction<a class="headerlink" href="#commit-changes-for-a-transaction" title="Permalink to this headline">#</a></h2>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Normally, applications will not commit transactions manually.  Rather,
+<p class="admonition-title">Note</p>
+<p>Normally, applications will not commit transactions manually.  Rather,
 consider using <code class="xref py py-meth docutils literal notranslate"><span class="pre">run_in_transaction()</span></code> or the context manager
 as described above.</p>
 </div>
@@ -261,15 +259,15 @@ as described above.</p>
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">Transaction.delete()</span></code> methods above, send them to
 the back-end by calling <code class="xref py py-meth docutils literal notranslate"><span class="pre">Transaction.commit()</span></code>, which makes the <code class="docutils literal notranslate"><span class="pre">Commit</span></code>
 API call.</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">transaction</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transaction</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="roll-back-changes-for-a-transaction">
 <h2>Roll back changes for a Transaction<a class="headerlink" href="#roll-back-changes-for-a-transaction" title="Permalink to this headline">#</a></h2>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Normally, applications will not roll back transactions manually.  Rather,
+<p class="admonition-title">Note</p>
+<p>Normally, applications will not roll back transactions manually.  Rather,
 consider using <code class="xref py py-meth docutils literal notranslate"><span class="pre">run_in_transaction()</span></code> or the context manager
 as described above.</p>
 </div>
@@ -279,7 +277,7 @@ as described above.</p>
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">Transaction.delete()</span></code> methods above, cancel the transaction on the
 the back-end by calling <code class="xref py py-meth docutils literal notranslate"><span class="pre">Transaction.rollback()</span></code>, which makes the
 <code class="docutils literal notranslate"><span class="pre">Rollback</span></code> API call.</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">transaction</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transaction</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -371,13 +369,11 @@ the back-end by calling <code class="xref py py-meth docutils literal notranslat
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -390,7 +386,7 @@ the back-end by calling <code class="xref py py-meth docutils literal notranslat
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

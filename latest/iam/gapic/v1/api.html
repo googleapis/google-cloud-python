@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for IAM Service Account Credentials API &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Client for IAM Service Account Credentials API &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -39,7 +37,7 @@
 <span id="client-for-iam-service-account-credentials-api"></span><h1>Client for IAM Service Account Credentials API<a class="headerlink" href="#module-google.cloud.iam_credentials_v1" title="Permalink to this headline">#</a></h1>
 <dl class="class">
 <dt id="google.cloud.iam_credentials_v1.IAMCredentialsClient">
-<em class="property">class </em><code class="descclassname">google.cloud.iam_credentials_v1.</code><code class="descname">IAMCredentialsClient</code><span class="sig-paren">(</span><em>transport=None</em>, <em>channel=None</em>, <em>credentials=None</em>, <em>client_config=None</em>, <em>client_info=None</em>, <em>client_options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/iam_credentials_v1.html#IAMCredentialsClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam_credentials_v1.IAMCredentialsClient" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.iam_credentials_v1.</code><code class="sig-name descname">IAMCredentialsClient</code><span class="sig-paren">(</span><em class="sig-param">transport=None</em>, <em class="sig-param">channel=None</em>, <em class="sig-param">credentials=None</em>, <em class="sig-param">client_config=None</em>, <em class="sig-param">client_info=None</em>, <em class="sig-param">client_options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/iam_credentials_v1.html#IAMCredentialsClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam_credentials_v1.IAMCredentialsClient" title="Permalink to this definition">#</a></dt>
 <dd><p>A service account is a special type of Google account that belongs to your
 application or a virtual machine (VM), instead of to an individual end user.
 Your application assumes the identity of the service account to call Google
@@ -49,99 +47,87 @@ of the service account. Supported credential types include OAuth 2.0 access
 tokens, OpenID Connect ID tokens, self-signed JSON Web Tokens (JWTs), and
 more.</p>
 <p>Constructor.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>(</strong><strong>Union</strong><strong>[</strong><strong>IamCredentialsGrpcTransport</strong><strong>,</strong> (<em>transport</em>) – Callable[[~.Credentials, type], ~.IamCredentialsGrpcTransport]): A transport
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong><strong>Union</strong><strong>[</strong><strong>IamCredentialsGrpcTransport</strong><strong>,</strong> (<em>transport</em>) – Callable[[~.Credentials, type], ~.IamCredentialsGrpcTransport]): A transport
 instance, responsible for actually making the API calls.
 The default transport uses the gRPC protocol.
 This argument may also be a callable which returns a
 transport instance. Callables will be sent the credentials
 as the first argument and the default transport class as
-the second argument.</li>
-<li><strong>channel</strong> (<a class="reference external" href="https://grpc.github.io/grpc/python/grpc.html#grpc.Channel" title="(in gRPC Python v1.22.0)"><em>grpc.Channel</em></a>) – DEPRECATED. A <code class="docutils literal notranslate"><span class="pre">Channel</span></code> instance
+the second argument.</p></li>
+<li><p><strong>channel</strong> (<a class="reference external" href="https://grpc.github.io/grpc/python/grpc.html#grpc.Channel" title="(in gRPC Python v1.22.0)"><em>grpc.Channel</em></a>) – DEPRECATED. A <code class="docutils literal notranslate"><span class="pre">Channel</span></code> instance
 through which to make calls. This argument is mutually exclusive
-with <code class="docutils literal notranslate"><span class="pre">credentials</span></code>; providing both will raise an exception.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.6.2)"><em>google.auth.credentials.Credentials</em></a>) – The
+with <code class="docutils literal notranslate"><span class="pre">credentials</span></code>; providing both will raise an exception.</p></li>
+<li><p><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.6.2)"><em>google.auth.credentials.Credentials</em></a>) – The
 authorization credentials to attach to requests. These
 credentials identify this application to the service. If none
 are specified, the client will attempt to ascertain the
 credentials from the environment.
 This argument is mutually exclusive with providing a
 transport instance to <code class="docutils literal notranslate"><span class="pre">transport</span></code>; doing so will raise
-an exception.</li>
-<li><strong>client_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – DEPRECATED. A dictionary of call options for
-each method. If not specified, the default configuration is used.</li>
-<li><strong>client_info</strong> (<a class="reference internal" href="../../../core/client_info.html#google.api_core.gapic_v1.client_info.ClientInfo" title="google.api_core.gapic_v1.client_info.ClientInfo"><em>google.api_core.gapic_v1.client_info.ClientInfo</em></a>) – The client info used to send a user-agent string along with
+an exception.</p></li>
+<li><p><strong>client_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – DEPRECATED. A dictionary of call options for
+each method. If not specified, the default configuration is used.</p></li>
+<li><p><strong>client_info</strong> (<a class="reference internal" href="../../../core/client_info.html#google.api_core.gapic_v1.client_info.ClientInfo" title="google.api_core.gapic_v1.client_info.ClientInfo"><em>google.api_core.gapic_v1.client_info.ClientInfo</em></a>) – The client info used to send a user-agent string along with
 API requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then default info will be used.
 Generally, you only need to set this if you’re developing
-your own client library.</li>
-<li><strong>client_options</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>google.api_core.client_options.ClientOptions</em><em>]</em>) – Client options used to set user options on the client. API Endpoint
-should be set through client_options.</li>
+your own client library.</p></li>
+<li><p><strong>client_options</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>google.api_core.client_options.ClientOptions</em><em>]</em>) – Client options used to set user options on the client. API Endpoint
+should be set through client_options.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="classmethod">
+</dd>
+</dl>
+<dl class="method">
 <dt id="google.cloud.iam_credentials_v1.IAMCredentialsClient.from_service_account_file">
-<em class="property">classmethod </em><code class="descname">from_service_account_file</code><span class="sig-paren">(</span><em>filename</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/iam_credentials_v1/gapic/iam_credentials_client.html#IAMCredentialsClient.from_service_account_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam_credentials_v1.IAMCredentialsClient.from_service_account_file" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">from_service_account_file</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/iam_credentials_v1/gapic/iam_credentials_client.html#IAMCredentialsClient.from_service_account_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam_credentials_v1.IAMCredentialsClient.from_service_account_file" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates an instance of this client using the provided credentials
 file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the service account private key json
-file.</li>
-<li><strong>args</strong> – Additional arguments to pass to the constructor.</li>
-<li><strong>kwargs</strong> – Additional arguments to pass to the constructor.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the service account private key json
+file.</p></li>
+<li><p><strong>args</strong> – Additional arguments to pass to the constructor.</p></li>
+<li><p><strong>kwargs</strong> – Additional arguments to pass to the constructor.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The constructed client.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#google.cloud.iam_credentials_v1.IAMCredentialsClient" title="google.cloud.iam_credentials_v1.IAMCredentialsClient">IAMCredentialsClient</a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The constructed client.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#google.cloud.iam_credentials_v1.IAMCredentialsClient" title="google.cloud.iam_credentials_v1.IAMCredentialsClient">IAMCredentialsClient</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="google.cloud.iam_credentials_v1.IAMCredentialsClient.from_service_account_json">
-<em class="property">classmethod </em><code class="descname">from_service_account_json</code><span class="sig-paren">(</span><em>filename</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.iam_credentials_v1.IAMCredentialsClient.from_service_account_json" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">from_service_account_json</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.iam_credentials_v1.IAMCredentialsClient.from_service_account_json" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates an instance of this client using the provided credentials
 file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the service account private key json
-file.</li>
-<li><strong>args</strong> – Additional arguments to pass to the constructor.</li>
-<li><strong>kwargs</strong> – Additional arguments to pass to the constructor.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the service account private key json
+file.</p></li>
+<li><p><strong>args</strong> – Additional arguments to pass to the constructor.</p></li>
+<li><p><strong>kwargs</strong> – Additional arguments to pass to the constructor.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The constructed client.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#google.cloud.iam_credentials_v1.IAMCredentialsClient" title="google.cloud.iam_credentials_v1.IAMCredentialsClient">IAMCredentialsClient</a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The constructed client.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#google.cloud.iam_credentials_v1.IAMCredentialsClient" title="google.cloud.iam_credentials_v1.IAMCredentialsClient">IAMCredentialsClient</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.iam_credentials_v1.IAMCredentialsClient.generate_access_token">
-<code class="descname">generate_access_token</code><span class="sig-paren">(</span><em>name</em>, <em>scope</em>, <em>delegates=None</em>, <em>lifetime=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/iam_credentials_v1/gapic/iam_credentials_client.html#IAMCredentialsClient.generate_access_token"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam_credentials_v1.IAMCredentialsClient.generate_access_token" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">generate_access_token</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">scope</em>, <em class="sig-param">delegates=None</em>, <em class="sig-param">lifetime=None</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/iam_credentials_v1/gapic/iam_credentials_client.html#IAMCredentialsClient.generate_access_token"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam_credentials_v1.IAMCredentialsClient.generate_access_token" title="Permalink to this definition">#</a></dt>
 <dd><p>Generates an OAuth 2.0 access token for a service account.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">iam_credentials_v1</span>
@@ -156,19 +142,17 @@ file.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">generate_access_token</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">scope</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The resource name of the service account for which the credentials are
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The resource name of the service account for which the credentials are
 requested, in the following format:
-<code class="docutils literal notranslate"><span class="pre">projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}</span></code>.</li>
-<li><strong>scope</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – Code to identify the scopes to be included in the OAuth 2.0 access token.
+<code class="docutils literal notranslate"><span class="pre">projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}</span></code>.</p></li>
+<li><p><strong>scope</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – Code to identify the scopes to be included in the OAuth 2.0 access token.
 See <a class="reference external" href="https://developers.google.com/identity/protocols/googlescopes">https://developers.google.com/identity/protocols/googlescopes</a> for more
 information.
-At least one value required.</li>
-<li><strong>delegates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – <p>The sequence of service accounts in a delegation chain. Each service
+At least one value required.</p></li>
+<li><p><strong>delegates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – <p>The sequence of service accounts in a delegation chain. Each service
 account must be granted the <code class="docutils literal notranslate"><span class="pre">roles/iam.serviceAccountTokenCreator</span></code>
 role on its next service account in the chain. The last service account
 in the chain must be granted the
@@ -176,44 +160,42 @@ in the chain must be granted the
 that is specified in the <code class="docutils literal notranslate"><span class="pre">name</span></code> field of the request.</p>
 <p>The delegates must have the following format:
 <code class="docutils literal notranslate"><span class="pre">projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}</span></code></p>
-</li>
-<li><strong>lifetime</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.iam_credentials_v1.types.Duration" title="google.cloud.iam_credentials_v1.types.Duration"><em>Duration</em></a><em>]</em>) – <p>The desired lifetime duration of the access token in seconds.
+</p></li>
+<li><p><strong>lifetime</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.iam_credentials_v1.types.Duration" title="google.cloud.iam_credentials_v1.types.Duration"><em>Duration</em></a><em>]</em>) – <p>The desired lifetime duration of the access token in seconds.
 Must be set to a value less than or equal to 3600 (1 hour). If a value is
 not specified, the token’s lifetime will be set to a default value of one
 hour.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.iam_credentials_v1.types.Duration" title="google.cloud.iam_credentials_v1.types.Duration"><code class="xref py py-class docutils literal notranslate"><span class="pre">Duration</span></code></a></p>
-</li>
-<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+</p></li>
+<li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</li>
-<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+be retried.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
-specified, the timeout applies to each individual attempt.</li>
-<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
-that is provided to the method.</li>
+specified, the timeout applies to each individual attempt.</p></li>
+<li><p><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.iam_credentials_v1.types.GenerateAccessTokenResponse" title="google.cloud.iam_credentials_v1.types.GenerateAccessTokenResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenerateAccessTokenResponse</span></code></a> instance.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
-failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
-to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#google.cloud.iam_credentials_v1.types.GenerateAccessTokenResponse" title="google.cloud.iam_credentials_v1.types.GenerateAccessTokenResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenerateAccessTokenResponse</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the parameters are invalid.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.iam_credentials_v1.IAMCredentialsClient.generate_id_token">
-<code class="descname">generate_id_token</code><span class="sig-paren">(</span><em>name</em>, <em>audience</em>, <em>delegates=None</em>, <em>include_email=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/iam_credentials_v1/gapic/iam_credentials_client.html#IAMCredentialsClient.generate_id_token"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam_credentials_v1.IAMCredentialsClient.generate_id_token" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">generate_id_token</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">audience</em>, <em class="sig-param">delegates=None</em>, <em class="sig-param">include_email=None</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/iam_credentials_v1/gapic/iam_credentials_client.html#IAMCredentialsClient.generate_id_token"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam_credentials_v1.IAMCredentialsClient.generate_id_token" title="Permalink to this definition">#</a></dt>
 <dd><p>Generates an OpenID Connect ID token for a service account.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">iam_credentials_v1</span>
@@ -228,17 +210,15 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">generate_id_token</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">audience</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The resource name of the service account for which the credentials are
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The resource name of the service account for which the credentials are
 requested, in the following format:
-<code class="docutils literal notranslate"><span class="pre">projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}</span></code>.</li>
-<li><strong>audience</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The audience for the token, such as the API or account that this token
-grants access to.</li>
-<li><strong>delegates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – <p>The sequence of service accounts in a delegation chain. Each service
+<code class="docutils literal notranslate"><span class="pre">projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}</span></code>.</p></li>
+<li><p><strong>audience</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The audience for the token, such as the API or account that this token
+grants access to.</p></li>
+<li><p><strong>delegates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – <p>The sequence of service accounts in a delegation chain. Each service
 account must be granted the <code class="docutils literal notranslate"><span class="pre">roles/iam.serviceAccountTokenCreator</span></code>
 role on its next service account in the chain. The last service account
 in the chain must be granted the
@@ -246,45 +226,43 @@ in the chain must be granted the
 that is specified in the <code class="docutils literal notranslate"><span class="pre">name</span></code> field of the request.</p>
 <p>The delegates must have the following format:
 <code class="docutils literal notranslate"><span class="pre">projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}</span></code></p>
-</li>
-<li><strong>include_email</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Include the service account email in the token. If set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the
-token will contain <code class="docutils literal notranslate"><span class="pre">email</span></code> and <code class="docutils literal notranslate"><span class="pre">email_verified</span></code> claims.</li>
-<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+</p></li>
+<li><p><strong>include_email</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Include the service account email in the token. If set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the
+token will contain <code class="docutils literal notranslate"><span class="pre">email</span></code> and <code class="docutils literal notranslate"><span class="pre">email_verified</span></code> claims.</p></li>
+<li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</li>
-<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+be retried.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
-specified, the timeout applies to each individual attempt.</li>
-<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
-that is provided to the method.</li>
+specified, the timeout applies to each individual attempt.</p></li>
+<li><p><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.iam_credentials_v1.types.GenerateIdTokenResponse" title="google.cloud.iam_credentials_v1.types.GenerateIdTokenResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenerateIdTokenResponse</span></code></a> instance.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
-failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
-to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#google.cloud.iam_credentials_v1.types.GenerateIdTokenResponse" title="google.cloud.iam_credentials_v1.types.GenerateIdTokenResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenerateIdTokenResponse</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the parameters are invalid.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="google.cloud.iam_credentials_v1.IAMCredentialsClient.service_account_path">
-<em class="property">classmethod </em><code class="descname">service_account_path</code><span class="sig-paren">(</span><em>project</em>, <em>service_account</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/iam_credentials_v1/gapic/iam_credentials_client.html#IAMCredentialsClient.service_account_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam_credentials_v1.IAMCredentialsClient.service_account_path" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">service_account_path</code><span class="sig-paren">(</span><em class="sig-param">project</em>, <em class="sig-param">service_account</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/iam_credentials_v1/gapic/iam_credentials_client.html#IAMCredentialsClient.service_account_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam_credentials_v1.IAMCredentialsClient.service_account_path" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a fully-qualified service_account string.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.iam_credentials_v1.IAMCredentialsClient.sign_blob">
-<code class="descname">sign_blob</code><span class="sig-paren">(</span><em>name</em>, <em>payload</em>, <em>delegates=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/iam_credentials_v1/gapic/iam_credentials_client.html#IAMCredentialsClient.sign_blob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam_credentials_v1.IAMCredentialsClient.sign_blob" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">sign_blob</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">payload</em>, <em class="sig-param">delegates=None</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/iam_credentials_v1/gapic/iam_credentials_client.html#IAMCredentialsClient.sign_blob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam_credentials_v1.IAMCredentialsClient.sign_blob" title="Permalink to this definition">#</a></dt>
 <dd><p>Signs a blob using a service account’s system-managed private key.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">iam_credentials_v1</span>
@@ -299,16 +277,14 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sign_blob</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">payload</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The resource name of the service account for which the credentials are
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The resource name of the service account for which the credentials are
 requested, in the following format:
-<code class="docutils literal notranslate"><span class="pre">projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}</span></code>.</li>
-<li><strong>payload</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)"><em>bytes</em></a>) – The bytes to sign.</li>
-<li><strong>delegates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – <p>The sequence of service accounts in a delegation chain. Each service
+<code class="docutils literal notranslate"><span class="pre">projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}</span></code>.</p></li>
+<li><p><strong>payload</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)"><em>bytes</em></a>) – The bytes to sign.</p></li>
+<li><p><strong>delegates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – <p>The sequence of service accounts in a delegation chain. Each service
 account must be granted the <code class="docutils literal notranslate"><span class="pre">roles/iam.serviceAccountTokenCreator</span></code>
 role on its next service account in the chain. The last service account
 in the chain must be granted the
@@ -316,37 +292,35 @@ in the chain must be granted the
 that is specified in the <code class="docutils literal notranslate"><span class="pre">name</span></code> field of the request.</p>
 <p>The delegates must have the following format:
 <code class="docutils literal notranslate"><span class="pre">projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}</span></code></p>
-</li>
-<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+</p></li>
+<li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</li>
-<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+be retried.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
-specified, the timeout applies to each individual attempt.</li>
-<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
-that is provided to the method.</li>
+specified, the timeout applies to each individual attempt.</p></li>
+<li><p><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.iam_credentials_v1.types.SignBlobResponse" title="google.cloud.iam_credentials_v1.types.SignBlobResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">SignBlobResponse</span></code></a> instance.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
-failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
-to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#google.cloud.iam_credentials_v1.types.SignBlobResponse" title="google.cloud.iam_credentials_v1.types.SignBlobResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">SignBlobResponse</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the parameters are invalid.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.iam_credentials_v1.IAMCredentialsClient.sign_jwt">
-<code class="descname">sign_jwt</code><span class="sig-paren">(</span><em>name</em>, <em>payload</em>, <em>delegates=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/iam_credentials_v1/gapic/iam_credentials_client.html#IAMCredentialsClient.sign_jwt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam_credentials_v1.IAMCredentialsClient.sign_jwt" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">sign_jwt</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">payload</em>, <em class="sig-param">delegates=None</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/iam_credentials_v1/gapic/iam_credentials_client.html#IAMCredentialsClient.sign_jwt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam_credentials_v1.IAMCredentialsClient.sign_jwt" title="Permalink to this definition">#</a></dt>
 <dd><p>Signs a JWT using a service account’s system-managed private key.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">iam_credentials_v1</span>
@@ -361,16 +335,14 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sign_jwt</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">payload</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The resource name of the service account for which the credentials are
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The resource name of the service account for which the credentials are
 requested, in the following format:
-<code class="docutils literal notranslate"><span class="pre">projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}</span></code>.</li>
-<li><strong>payload</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The JWT payload to sign: a JSON object that contains a JWT Claims Set.</li>
-<li><strong>delegates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – <p>The sequence of service accounts in a delegation chain. Each service
+<code class="docutils literal notranslate"><span class="pre">projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}</span></code>.</p></li>
+<li><p><strong>payload</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The JWT payload to sign: a JSON object that contains a JWT Claims Set.</p></li>
+<li><p><strong>delegates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – <p>The sequence of service accounts in a delegation chain. Each service
 account must be granted the <code class="docutils literal notranslate"><span class="pre">roles/iam.serviceAccountTokenCreator</span></code>
 role on its next service account in the chain. The last service account
 in the chain must be granted the
@@ -378,32 +350,30 @@ in the chain must be granted the
 that is specified in the <code class="docutils literal notranslate"><span class="pre">name</span></code> field of the request.</p>
 <p>The delegates must have the following format:
 <code class="docutils literal notranslate"><span class="pre">projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}</span></code></p>
-</li>
-<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+</p></li>
+<li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</li>
-<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+be retried.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
-specified, the timeout applies to each individual attempt.</li>
-<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
-that is provided to the method.</li>
+specified, the timeout applies to each individual attempt.</p></li>
+<li><p><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.iam_credentials_v1.types.SignJwtResponse" title="google.cloud.iam_credentials_v1.types.SignJwtResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">SignJwtResponse</span></code></a> instance.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
-failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
-to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#google.cloud.iam_credentials_v1.types.SignJwtResponse" title="google.cloud.iam_credentials_v1.types.SignJwtResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">SignJwtResponse</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the parameters are invalid.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -496,13 +466,11 @@ to a retryable error and retry attempts failed.</li>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -515,7 +483,7 @@ to a retryable error and retry attempts failed.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

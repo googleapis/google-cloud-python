@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Changelog &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Changelog &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -44,34 +42,34 @@
 <div class="section" id="new-features">
 <h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add <code class="docutils literal notranslate"><span class="pre">Bucket.location_type</span></code> property. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8570">#8570</a>)</li>
-<li>Add <code class="docutils literal notranslate"><span class="pre">Client.list_blobs(bucket_or_name)</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8375">#8375</a>)</li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">Bucket.location_type</span></code> property. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8570">#8570</a>)</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">Client.list_blobs(bucket_or_name)</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8375">#8375</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="implementation-changes">
 <h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Retry bucket creation in signing setup. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8620">#8620</a>)</li>
-<li>Fix URI -&gt; blob name conversion in <code class="docutils literal notranslate"><span class="pre">Client</span> <span class="pre">download_blob_to_file</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8440">#8440</a>)</li>
-<li>Avoid escaping tilde in blob public / signed URLs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8434">#8434</a>)</li>
-<li>Add generation to ‘Blob.<strong>repr</strong>’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8423">#8423</a>)</li>
+<li><p>Retry bucket creation in signing setup. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8620">#8620</a>)</p></li>
+<li><p>Fix URI -&gt; blob name conversion in <code class="docutils literal notranslate"><span class="pre">Client</span> <span class="pre">download_blob_to_file</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8440">#8440</a>)</p></li>
+<li><p>Avoid escaping tilde in blob public / signed URLs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8434">#8434</a>)</p></li>
+<li><p>Add generation to ‘Blob.<strong>repr</strong>’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8423">#8423</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="documentation">
 <h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Link to googleapis.dev documentation in READMEs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8705">#8705</a>)</li>
-<li>Add compatibility check badges to READMEs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8288">#8288</a>)</li>
-<li>Fix example in <code class="docutils literal notranslate"><span class="pre">Client.download_blob_to_file</span></code> docstring. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8629">#8629</a>)</li>
-<li>Remove typing information for kwargs to not conflict with type checkers (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8546">#8546</a>)</li>
+<li><p>Link to googleapis.dev documentation in READMEs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8705">#8705</a>)</p></li>
+<li><p>Add compatibility check badges to READMEs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8288">#8288</a>)</p></li>
+<li><p>Fix example in <code class="docutils literal notranslate"><span class="pre">Client.download_blob_to_file</span></code> docstring. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8629">#8629</a>)</p></li>
+<li><p>Remove typing information for kwargs to not conflict with type checkers (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8546">#8546</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="internal-testing-changes">
 <h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Skip failing <code class="docutils literal notranslate"><span class="pre">test_bpo_set_unset_preserves_acls</span></code> systest. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8617">#8617</a>)</li>
-<li>Add nox session ‘docs’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8478">#8478</a>)</li>
-<li>Add docs job to publish to googleapis.dev. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8464">#8464</a>)</li>
+<li><p>Skip failing <code class="docutils literal notranslate"><span class="pre">test_bpo_set_unset_preserves_acls</span></code> systest. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8617">#8617</a>)</p></li>
+<li><p>Add nox session ‘docs’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8478">#8478</a>)</p></li>
+<li><p>Add docs job to publish to googleapis.dev. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8464">#8464</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -81,23 +79,23 @@
 <div class="section" id="dependencies">
 <h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Don’t pin <code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> in libs using <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8213">#8213</a>)</li>
+<li><p>Don’t pin <code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> in libs using <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8213">#8213</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id3">
 <h3>Documentation<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Fix example in <code class="docutils literal notranslate"><span class="pre">download_blob_to_file</span></code> docstring. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8201">#8201</a>)</li>
-<li>Tweak <code class="docutils literal notranslate"><span class="pre">fields</span></code> docstring further. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8040">#8040</a>)</li>
-<li>Improve docs for <code class="docutils literal notranslate"><span class="pre">fields</span></code> argument to <code class="docutils literal notranslate"><span class="pre">Bucket.list_blobs</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8023">#8023</a>)</li>
-<li>Fix docs typo. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8027">#8027</a>)</li>
+<li><p>Fix example in <code class="docutils literal notranslate"><span class="pre">download_blob_to_file</span></code> docstring. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8201">#8201</a>)</p></li>
+<li><p>Tweak <code class="docutils literal notranslate"><span class="pre">fields</span></code> docstring further. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8040">#8040</a>)</p></li>
+<li><p>Improve docs for <code class="docutils literal notranslate"><span class="pre">fields</span></code> argument to <code class="docutils literal notranslate"><span class="pre">Bucket.list_blobs</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8023">#8023</a>)</p></li>
+<li><p>Fix docs typo. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8027">#8027</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id4">
 <h3>Internal / Testing Changes<a class="headerlink" href="#id4" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Retry harder in face of 409/429 during module teardown. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8113">#8113</a>)</li>
-<li>Add more retries for 429s during teardown operations. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8112">#8112</a>)</li>
+<li><p>Retry harder in face of 409/429 during module teardown. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8113">#8113</a>)</p></li>
+<li><p>Add more retries for 429s during teardown operations. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8112">#8112</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -107,17 +105,17 @@
 <div class="section" id="id6">
 <h3>New Features<a class="headerlink" href="#id6" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Update <code class="docutils literal notranslate"><span class="pre">Client.create_bucket</span></code> to take a Bucket object or string. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7820">#7820</a>)</li>
-<li>Update <code class="docutils literal notranslate"><span class="pre">Client.get_bucket</span></code> to take a <code class="docutils literal notranslate"><span class="pre">Bucket</span></code> object or string. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7856">#7856</a>)</li>
-<li>Add <code class="docutils literal notranslate"><span class="pre">Client.download_blob_to_file</span></code> method. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7949">#7949</a>)</li>
-<li>Add <code class="docutils literal notranslate"><span class="pre">client_info</span></code> support to client / connection. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7872">#7872</a>)</li>
+<li><p>Update <code class="docutils literal notranslate"><span class="pre">Client.create_bucket</span></code> to take a Bucket object or string. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7820">#7820</a>)</p></li>
+<li><p>Update <code class="docutils literal notranslate"><span class="pre">Client.get_bucket</span></code> to take a <code class="docutils literal notranslate"><span class="pre">Bucket</span></code> object or string. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7856">#7856</a>)</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">Client.download_blob_to_file</span></code> method. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7949">#7949</a>)</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">client_info</span></code> support to client / connection. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7872">#7872</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id7">
 <h3>Dependencies<a class="headerlink" href="#id7" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Pin <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span> <span class="pre">&gt;=</span> <span class="pre">1.0.0,</span> <span class="pre">&lt;</span> <span class="pre">2.0dev</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7993">#7993</a>)</li>
-<li>Pin <code class="docutils literal notranslate"><span class="pre">google-auth</span> <span class="pre">&gt;=</span> <span class="pre">1.2.0</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7798">#7798</a>)</li>
+<li><p>Pin <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span> <span class="pre">&gt;=</span> <span class="pre">1.0.0,</span> <span class="pre">&lt;</span> <span class="pre">2.0dev</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7993">#7993</a>)</p></li>
+<li><p>Pin <code class="docutils literal notranslate"><span class="pre">google-auth</span> <span class="pre">&gt;=</span> <span class="pre">1.2.0</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7798">#7798</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -127,29 +125,29 @@
 <div class="section" id="id9">
 <h3>New Features<a class="headerlink" href="#id9" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add support for V4 signed URLs (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7460">#7460</a>)</li>
-<li>Add generation arguments to bucket / blob methods. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7444">#7444</a>)</li>
+<li><p>Add support for V4 signed URLs (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7460">#7460</a>)</p></li>
+<li><p>Add generation arguments to bucket / blob methods. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7444">#7444</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id10">
 <h3>Implementation Changes<a class="headerlink" href="#id10" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Remove classifier for Python 3.4 for end-of-life. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7535">#7535</a>)</li>
-<li>Ensure that ‘Blob.reload’ passes encryption headers. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7441">#7441</a>)</li>
+<li><p>Remove classifier for Python 3.4 for end-of-life. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7535">#7535</a>)</p></li>
+<li><p>Ensure that ‘Blob.reload’ passes encryption headers. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7441">#7441</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id11">
 <h3>Documentation<a class="headerlink" href="#id11" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Update client library documentation URLs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7307">#7307</a>)</li>
+<li><p>Update client library documentation URLs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7307">#7307</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id12">
 <h3>Internal / Testing Changes<a class="headerlink" href="#id12" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Fix failing system tests (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7714">#7714</a>)</li>
-<li>Increase number of retries for 429 errors. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7484">#7484</a>)</li>
-<li>Un-flake KMS integration tests expecting empty bucket. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7479">#7479</a>)</li>
+<li><p>Fix failing system tests (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7714">#7714</a>)</p></li>
+<li><p>Increase number of retries for 429 errors. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7484">#7484</a>)</p></li>
+<li><p>Un-flake KMS integration tests expecting empty bucket. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7479">#7479</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -159,13 +157,13 @@
 <div class="section" id="id14">
 <h3>New Features<a class="headerlink" href="#id14" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add ‘Bucket.iam_configuration’ property, enabling Bucket-Policy-Only. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7066">#7066</a>)</li>
+<li><p>Add ‘Bucket.iam_configuration’ property, enabling Bucket-Policy-Only. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7066">#7066</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id15">
 <h3>Documentation<a class="headerlink" href="#id15" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Improve docs for ‘generate_signed_url’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7201">#7201</a>)</li>
+<li><p>Improve docs for ‘generate_signed_url’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7201">#7201</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -175,15 +173,15 @@
 <div class="section" id="id17">
 <h3>Implementation Changes<a class="headerlink" href="#id17" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Update <code class="docutils literal notranslate"><span class="pre">Blob.update_storage_class</span></code> to support rewrite tokens. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6527">#6527</a>)</li>
+<li><p>Update <code class="docutils literal notranslate"><span class="pre">Blob.update_storage_class</span></code> to support rewrite tokens. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6527">#6527</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id18">
 <h3>Internal / Testing Changes<a class="headerlink" href="#id18" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Skip signing tests for insufficient credentials (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6917">#6917</a>)</li>
-<li>Document Python 2 deprecation (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6910">#6910</a>)</li>
-<li>Normalize docs for <code class="docutils literal notranslate"><span class="pre">page_size</span></code> / <code class="docutils literal notranslate"><span class="pre">max_results</span></code> / <code class="docutils literal notranslate"><span class="pre">page_token</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6842">#6842</a>)</li>
+<li><p>Skip signing tests for insufficient credentials (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6917">#6917</a>)</p></li>
+<li><p>Document Python 2 deprecation (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6910">#6910</a>)</p></li>
+<li><p>Normalize docs for <code class="docutils literal notranslate"><span class="pre">page_size</span></code> / <code class="docutils literal notranslate"><span class="pre">max_results</span></code> / <code class="docutils literal notranslate"><span class="pre">page_token</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6842">#6842</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -193,35 +191,35 @@
 <div class="section" id="id20">
 <h3>Implementation Changes<a class="headerlink" href="#id20" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Import <code class="docutils literal notranslate"><span class="pre">iam.policy</span></code> from <code class="docutils literal notranslate"><span class="pre">google.api_core</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6741">#6741</a>)</li>
-<li>Accomodate new back-end restriction on retention period. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6388">#6388</a>)</li>
-<li>Avoid deleting a blob renamed to itself (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6365">#6365</a>)</li>
+<li><p>Import <code class="docutils literal notranslate"><span class="pre">iam.policy</span></code> from <code class="docutils literal notranslate"><span class="pre">google.api_core</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6741">#6741</a>)</p></li>
+<li><p>Accomodate new back-end restriction on retention period. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6388">#6388</a>)</p></li>
+<li><p>Avoid deleting a blob renamed to itself (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6365">#6365</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id21">
 <h3>Dependencies<a class="headerlink" href="#id21" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Update dependency to google-cloud-core (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6835">#6835</a>)</li>
-<li>Bump minimum <code class="docutils literal notranslate"><span class="pre">api_core</span></code> version for all GAPIC libs to 1.4.1. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6391">#6391</a>)</li>
+<li><p>Update dependency to google-cloud-core (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6835">#6835</a>)</p></li>
+<li><p>Bump minimum <code class="docutils literal notranslate"><span class="pre">api_core</span></code> version for all GAPIC libs to 1.4.1. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6391">#6391</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id22">
 <h3>Documentation<a class="headerlink" href="#id22" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Normalize use of support level badges (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6159">#6159</a>)</li>
+<li><p>Normalize use of support level badges (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6159">#6159</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id23">
 <h3>Internal / Testing Changes<a class="headerlink" href="#id23" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Blacken libraries (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6794">#6794</a>)</li>
-<li>Add templates for flake8, coveragerc, noxfile, and black. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6642">#6642</a>)</li>
-<li>Harden teardown in system tests. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6444">#6444</a>)</li>
-<li>Harden <code class="docutils literal notranslate"><span class="pre">create_bucket</span></code> call in systests vs. 429 TooManyRequests. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6401">#6401</a>)</li>
-<li>Skip public bucket test in VPC Service Controls  (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6230">#6230</a>)</li>
-<li>Fix lint failure. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6219">#6219</a>)</li>
-<li>Disable test running in VPC Service Controls  restricted environment (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6215">#6215</a>)</li>
-<li>Use new Nox (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6175">#6175</a>)</li>
+<li><p>Blacken libraries (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6794">#6794</a>)</p></li>
+<li><p>Add templates for flake8, coveragerc, noxfile, and black. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6642">#6642</a>)</p></li>
+<li><p>Harden teardown in system tests. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6444">#6444</a>)</p></li>
+<li><p>Harden <code class="docutils literal notranslate"><span class="pre">create_bucket</span></code> call in systests vs. 429 TooManyRequests. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6401">#6401</a>)</p></li>
+<li><p>Skip public bucket test in VPC Service Controls  (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6230">#6230</a>)</p></li>
+<li><p>Fix lint failure. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6219">#6219</a>)</p></li>
+<li><p>Disable test running in VPC Service Controls  restricted environment (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6215">#6215</a>)</p></li>
+<li><p>Use new Nox (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6175">#6175</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -230,21 +228,21 @@
 <div class="section" id="id25">
 <h3>New Features<a class="headerlink" href="#id25" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add support for bucket retention policies (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5534">#5534</a>)</li>
-<li>Allow <code class="docutils literal notranslate"><span class="pre">destination.content_type</span></code> to be None in <code class="docutils literal notranslate"><span class="pre">Blob.compose</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6031">#6031</a>)</li>
+<li><p>Add support for bucket retention policies (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5534">#5534</a>)</p></li>
+<li><p>Allow <code class="docutils literal notranslate"><span class="pre">destination.content_type</span></code> to be None in <code class="docutils literal notranslate"><span class="pre">Blob.compose</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6031">#6031</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id26">
 <h3>Implementation Changes<a class="headerlink" href="#id26" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Ensure that <code class="docutils literal notranslate"><span class="pre">method</span></code> for <code class="docutils literal notranslate"><span class="pre">Blob.generate_signed_url</span></code> is uppercase. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6110">#6110</a>)</li>
+<li><p>Ensure that <code class="docutils literal notranslate"><span class="pre">method</span></code> for <code class="docutils literal notranslate"><span class="pre">Blob.generate_signed_url</span></code> is uppercase. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6110">#6110</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id27">
 <h3>Documentation<a class="headerlink" href="#id27" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Clarify GCS URL signing limitations on GCE (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6104">#6104</a>)</li>
-<li>Redirect renamed ‘usage.html’/’client.html’ -&gt; ‘index.html’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5996">#5996</a>)</li>
+<li><p>Clarify GCS URL signing limitations on GCE (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6104">#6104</a>)</p></li>
+<li><p>Redirect renamed ‘usage.html’/’client.html’ -&gt; ‘index.html’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5996">#5996</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -253,28 +251,28 @@
 <div class="section" id="id29">
 <h3>New Features<a class="headerlink" href="#id29" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add support for Python 3.7, drop support for Python 3.4. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5942">#5942</a>)</li>
-<li>Add lifecycle rules helpers to bucket. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5877">#5877</a>)</li>
+<li><p>Add support for Python 3.7, drop support for Python 3.4. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5942">#5942</a>)</p></li>
+<li><p>Add lifecycle rules helpers to bucket. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5877">#5877</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id30">
 <h3>Implementation Changes<a class="headerlink" href="#id30" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add ‘stacklevel=2’ to deprecation warnings. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5897">#5897</a>)</li>
+<li><p>Add ‘stacklevel=2’ to deprecation warnings. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5897">#5897</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id31">
 <h3>Documentation<a class="headerlink" href="#id31" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Storage docs: fix typos. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5933">#5933</a>)</li>
-<li>Prep storage docs for repo split. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5923">#5923</a>)</li>
+<li><p>Storage docs: fix typos. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5933">#5933</a>)</p></li>
+<li><p>Prep storage docs for repo split. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5923">#5923</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id32">
 <h3>Internal / Testing Changes<a class="headerlink" href="#id32" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Harden systest teardown further. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5900">#5900</a>)</li>
-<li>Nox: use inplace installs (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5865">#5865</a>)</li>
+<li><p>Harden systest teardown further. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5900">#5900</a>)</p></li>
+<li><p>Nox: use inplace installs (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5865">#5865</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -283,32 +281,32 @@
 <div class="section" id="id34">
 <h3>Implementation Changes<a class="headerlink" href="#id34" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Preserve message / args from an <code class="docutils literal notranslate"><span class="pre">InvalidResponse</span></code>. (#5492)</li>
-<li>Fix generating signed urls for blobs with non-ascii names. (#5625)</li>
-<li>Move bucket location specification to <code class="docutils literal notranslate"><span class="pre">Bucket.create</span></code>; deprecate <code class="docutils literal notranslate"><span class="pre">Bucket.location</span></code> setter (#5808)</li>
+<li><p>Preserve message / args from an <code class="docutils literal notranslate"><span class="pre">InvalidResponse</span></code>. (#5492)</p></li>
+<li><p>Fix generating signed urls for blobs with non-ascii names. (#5625)</p></li>
+<li><p>Move bucket location specification to <code class="docutils literal notranslate"><span class="pre">Bucket.create</span></code>; deprecate <code class="docutils literal notranslate"><span class="pre">Bucket.location</span></code> setter (#5808)</p></li>
 </ul>
 </div>
 <div class="section" id="id35">
 <h3>New Features<a class="headerlink" href="#id35" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add <code class="docutils literal notranslate"><span class="pre">Client.get_service_account_email</span></code>. (#5765)</li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">Client.get_service_account_email</span></code>. (#5765)</p></li>
 </ul>
 </div>
 <div class="section" id="id36">
 <h3>Documentation<a class="headerlink" href="#id36" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Clarify <code class="docutils literal notranslate"><span class="pre">None</span></code> values for resource-backed properties. (#5509)</li>
-<li>Elaborate docs for <code class="docutils literal notranslate"><span class="pre">{Bucket,Blob}.make_{public,private}</span></code>; note how to enable anonymous accesss to <code class="docutils literal notranslate"><span class="pre">Blob.public_url</span></code>. (#5767)</li>
+<li><p>Clarify <code class="docutils literal notranslate"><span class="pre">None</span></code> values for resource-backed properties. (#5509)</p></li>
+<li><p>Elaborate docs for <code class="docutils literal notranslate"><span class="pre">{Bucket,Blob}.make_{public,private}</span></code>; note how to enable anonymous accesss to <code class="docutils literal notranslate"><span class="pre">Blob.public_url</span></code>. (#5767)</p></li>
 </ul>
 </div>
 <div class="section" id="id37">
 <h3>Internal / Testing Changes<a class="headerlink" href="#id37" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Harden <code class="docutils literal notranslate"><span class="pre">create_bucket</span></code> systest against 429 responses. (#5535)</li>
-<li>Add system test: signed URLs w/ non-ASCII blob name. (#5626)</li>
-<li>Harden <code class="docutils literal notranslate"><span class="pre">tearDownModule</span></code> against 429 TooManyRequests. (#5701)</li>
-<li>Retry <code class="docutils literal notranslate"><span class="pre">notification.create()</span></code> on <code class="docutils literal notranslate"><span class="pre">503</span> <span class="pre">ServiceUnavailable</span></code>. (#5741)</li>
-<li>Fix failing KMS system tests. (#5832, #5837, #5860)</li>
+<li><p>Harden <code class="docutils literal notranslate"><span class="pre">create_bucket</span></code> systest against 429 responses. (#5535)</p></li>
+<li><p>Add system test: signed URLs w/ non-ASCII blob name. (#5626)</p></li>
+<li><p>Harden <code class="docutils literal notranslate"><span class="pre">tearDownModule</span></code> against 429 TooManyRequests. (#5701)</p></li>
+<li><p>Retry <code class="docutils literal notranslate"><span class="pre">notification.create()</span></code> on <code class="docutils literal notranslate"><span class="pre">503</span> <span class="pre">ServiceUnavailable</span></code>. (#5741)</p></li>
+<li><p>Fix failing KMS system tests. (#5832, #5837, #5860)</p></li>
 </ul>
 </div>
 </div>
@@ -317,14 +315,14 @@
 <div class="section" id="id39">
 <h3>New Features<a class="headerlink" href="#id39" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add support for KMS keys (#5259)</li>
-<li>Add <code class="docutils literal notranslate"><span class="pre">{Blob,Bucket}make_private</span></code> method (#5336)</li>
+<li><p>Add support for KMS keys (#5259)</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">{Blob,Bucket}make_private</span></code> method (#5336)</p></li>
 </ul>
 </div>
 <div class="section" id="id40">
 <h3>Internal / Testing Changes<a class="headerlink" href="#id40" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Modify system tests to use prerelease versions of grpcio (#5304)</li>
+<li><p>Modify system tests to use prerelease versions of grpcio (#5304)</p></li>
 </ul>
 </div>
 </div>
@@ -333,33 +331,33 @@
 <div class="section" id="id42">
 <h3>Implementation Changes<a class="headerlink" href="#id42" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Change GCS batch endpoint from <code class="docutils literal notranslate"><span class="pre">/batch</span></code> to <code class="docutils literal notranslate"><span class="pre">/batch/storage/v1</span></code> (#5040)</li>
+<li><p>Change GCS batch endpoint from <code class="docutils literal notranslate"><span class="pre">/batch</span></code> to <code class="docutils literal notranslate"><span class="pre">/batch/storage/v1</span></code> (#5040)</p></li>
 </ul>
 </div>
 <div class="section" id="id43">
 <h3>New Features<a class="headerlink" href="#id43" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Allow uploading files larger than 2GB by using Resumable Media Requests (#5187)</li>
-<li>Add range downloads (#5081)</li>
+<li><p>Allow uploading files larger than 2GB by using Resumable Media Requests (#5187)</p></li>
+<li><p>Add range downloads (#5081)</p></li>
 </ul>
 </div>
 <div class="section" id="id44">
 <h3>Documentation<a class="headerlink" href="#id44" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Update docstring to reflect correct units (#5277)</li>
-<li>Replace link to 404 object IAM docs with a note on limited utility. (#5181)</li>
-<li>Update doc reference in GCS client documentation (#5084)</li>
-<li>Add see also for <code class="docutils literal notranslate"><span class="pre">Bucket.create</span></code> method call for <code class="docutils literal notranslate"><span class="pre">Client.create_bucket()</span></code> documentation. (#5073)</li>
-<li>Link out to requester pays docs. (#5065)</li>
+<li><p>Update docstring to reflect correct units (#5277)</p></li>
+<li><p>Replace link to 404 object IAM docs with a note on limited utility. (#5181)</p></li>
+<li><p>Update doc reference in GCS client documentation (#5084)</p></li>
+<li><p>Add see also for <code class="docutils literal notranslate"><span class="pre">Bucket.create</span></code> method call for <code class="docutils literal notranslate"><span class="pre">Client.create_bucket()</span></code> documentation. (#5073)</p></li>
+<li><p>Link out to requester pays docs. (#5065)</p></li>
 </ul>
 </div>
 <div class="section" id="id45">
 <h3>Internal / Testing Changes<a class="headerlink" href="#id45" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add testing support for Python 3.7; remove testing support for Python 3.4. (#5295)</li>
-<li>Fix bad trove classifier</li>
-<li>Remove unused var (flake8 warning) (#5280)</li>
-<li>Fix unit test moving batch to batch/storage/v1 (#5082)</li>
+<li><p>Add testing support for Python 3.7; remove testing support for Python 3.4. (#5295)</p></li>
+<li><p>Fix bad trove classifier</p></li>
+<li><p>Remove unused var (flake8 warning) (#5280)</p></li>
+<li><p>Fix unit test moving batch to batch/storage/v1 (#5082)</p></li>
 </ul>
 </div>
 </div>
@@ -368,34 +366,34 @@
 <div class="section" id="id47">
 <h3>New features<a class="headerlink" href="#id47" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Implement predefined acl (#4757)</li>
-<li>Add support for resumable signed url generation (#4789)</li>
+<li><p>Implement predefined acl (#4757)</p></li>
+<li><p>Add support for resumable signed url generation (#4789)</p></li>
 </ul>
 </div>
 <div class="section" id="id48">
 <h3>Implementation changes<a class="headerlink" href="#id48" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Do not quote embedded slashes for public / signed URLs (#4716)</li>
+<li><p>Do not quote embedded slashes for public / signed URLs (#4716)</p></li>
 </ul>
 </div>
 <div class="section" id="id49">
 <h3>Dependencies<a class="headerlink" href="#id49" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Update dependency range for api-core to include v1.0.0 releases (#4944)</li>
+<li><p>Update dependency range for api-core to include v1.0.0 releases (#4944)</p></li>
 </ul>
 </div>
 <div class="section" id="id50">
 <h3>Documentation<a class="headerlink" href="#id50" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Missing word in docstring (#4763)</li>
+<li><p>Missing word in docstring (#4763)</p></li>
 </ul>
 </div>
 <div class="section" id="testing-and-internal-changes">
 <h3>Testing and internal changes<a class="headerlink" href="#testing-and-internal-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Install local dependencies when running lint (#4936)</li>
-<li>Re-enable lint for tests, remove usage of pylint (#4921)</li>
-<li>Normalize all setup.py files (#4909)</li>
+<li><p>Install local dependencies when running lint (#4936)</p></li>
+<li><p>Re-enable lint for tests, remove usage of pylint (#4921)</p></li>
+<li><p>Normalize all setup.py files (#4909)</p></li>
 </ul>
 </div>
 </div>
@@ -404,10 +402,10 @@
 <div class="section" id="features">
 <h3>Features<a class="headerlink" href="#features" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Enable anonymous access to blobs in public buckets (#4315)</li>
-<li>Make project optional / overridable for storage client (#4381)</li>
-<li>Relax regex used to test for valid project IDs (#4543)</li>
-<li>Add support for <code class="docutils literal notranslate"><span class="pre">source_generation</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">Bucket.copy_blob</span></code> (#4546)</li>
+<li><p>Enable anonymous access to blobs in public buckets (#4315)</p></li>
+<li><p>Make project optional / overridable for storage client (#4381)</p></li>
+<li><p>Relax regex used to test for valid project IDs (#4543)</p></li>
+<li><p>Add support for <code class="docutils literal notranslate"><span class="pre">source_generation</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">Bucket.copy_blob</span></code> (#4546)</p></li>
 </ul>
 </div>
 </div>
@@ -416,16 +414,16 @@
 <div class="section" id="id53">
 <h3>Documentation<a class="headerlink" href="#id53" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Added link to “Python Development Environment Setup Guide” in
-project README (#4187, h/t to &#64;michaelawyu)</li>
+<li><p>Added link to “Python Development Environment Setup Guide” in
+project README (#4187, h/t to &#64;michaelawyu)</p></li>
 </ul>
 </div>
 <div class="section" id="id54">
 <h3>Dependencies<a class="headerlink" href="#id54" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Upgrading to <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span> <span class="pre">&gt;=</span> <span class="pre">0.28.0</span></code> and adding dependency
-on <code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> (#4221, #4280)</li>
-<li>Requiring <code class="docutils literal notranslate"><span class="pre">google-resumable-media</span> <span class="pre">&gt;=</span> <span class="pre">0.3.1</span></code> (#4244)</li>
+<li><p>Upgrading to <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span> <span class="pre">&gt;=</span> <span class="pre">0.28.0</span></code> and adding dependency
+on <code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> (#4221, #4280)</p></li>
+<li><p>Requiring <code class="docutils literal notranslate"><span class="pre">google-resumable-media</span> <span class="pre">&gt;=</span> <span class="pre">0.3.1</span></code> (#4244)</p></li>
 </ul>
 <p>PyPI: https://pypi.org/project/google-cloud-storage/1.6.0/</p>
 </div>
@@ -518,13 +516,11 @@ on <code class="docutils literal notranslate"><span class="pre">google-api-core<
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -537,7 +533,7 @@ on <code class="docutils literal notranslate"><span class="pre">google-api-core<
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

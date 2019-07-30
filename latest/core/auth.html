@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Authentication &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Authentication &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -40,10 +38,9 @@
 <div class="section" id="overview">
 <span id="id1"></span><h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">#</a></h2>
 <ul>
-<li><p class="first"><strong>If you’re running in Compute Engine or App Engine</strong>,
-authentication should “just work”.</p>
-</li>
-<li><p class="first"><strong>If you’re developing locally</strong>,
+<li><p><strong>If you’re running in Compute Engine or App Engine</strong>,
+authentication should “just work”.</p></li>
+<li><p><strong>If you’re developing locally</strong>,
 the easiest way to authenticate is using the <a class="reference external" href="http://cloud.google.com/sdk">Google Cloud SDK</a>:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ gcloud auth application-default login
 </pre></div>
@@ -61,7 +58,7 @@ please update it:</p>
 </li>
 </ul>
 <ul>
-<li><p class="first"><strong>If you’re running your application elsewhere</strong>,
+<li><p><strong>If you’re running your application elsewhere</strong>,
 you should download a <a class="reference external" href="https://cloud.google.com/storage/docs/authentication#generating-a-private-key">service account</a> JSON keyfile
 and point to it using an environment variable:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">export</span> <span class="nv">GOOGLE_APPLICATION_CREDENTIALS</span><span class="o">=</span><span class="s2">&quot;/path/to/keyfile.json&quot;</span>
@@ -97,28 +94,28 @@ if your code needs to run in many different environments or
 if you just don’t want authentication to be a focus in your code.</p>
 <p>However, you may want to be explicit because</p>
 <ul class="simple">
-<li>your code will only run in one place</li>
-<li>you may have code which needs to be run as a specific service account
-every time (rather than with the locally inferred credentials)</li>
-<li>you may want to use two separate accounts to simultaneously access data
-from different projects</li>
+<li><p>your code will only run in one place</p></li>
+<li><p>you may have code which needs to be run as a specific service account
+every time (rather than with the locally inferred credentials)</p></li>
+<li><p>you may want to use two separate accounts to simultaneously access data
+from different projects</p></li>
 </ul>
 <p>In these situations, you can create an explicit
 <a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.6.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Credentials</span></code></a> object suited to your environment.
 After creation, you can pass it directly to a <a class="reference internal" href="client.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a>:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition tip">
-<p class="first admonition-title">Tip</p>
-<p class="last">To create a credentials object, follow the <a class="reference external" href="https://google-auth.readthedocs.io/en/latest/user-guide.html#service-account-private-key-files">google-auth-guide</a>.</p>
+<p class="admonition-title">Tip</p>
+<p>To create a credentials object, follow the <a class="reference external" href="https://google-auth.readthedocs.io/en/latest/user-guide.html#service-account-private-key-files">google-auth-guide</a>.</p>
 </div>
 <div class="section" id="google-app-engine-environment">
 <h3>Google App Engine Environment<a class="headerlink" href="#google-app-engine-environment" title="Permalink to this headline">#</a></h3>
 <p>To create
 <a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.app_engine.html#google.auth.app_engine.Credentials" title="(in google-auth v1.6.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">credentials</span></code></a>
 just for Google App Engine:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.auth</span> <span class="k">import</span> <span class="n">app_engine</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.auth</span> <span class="kn">import</span> <span class="n">app_engine</span>
 <span class="n">credentials</span> <span class="o">=</span> <span class="n">app_engine</span><span class="o">.</span><span class="n">Credentials</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -128,7 +125,7 @@ just for Google App Engine:</p>
 <p>To create
 <a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.compute_engine.html#google.auth.compute_engine.Credentials" title="(in google-auth v1.6.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">credentials</span></code></a>
 just for Google Compute Engine:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.auth</span> <span class="k">import</span> <span class="n">compute_engine</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.auth</span> <span class="kn">import</span> <span class="n">compute_engine</span>
 <span class="n">credentials</span> <span class="o">=</span> <span class="n">compute_engine</span><span class="o">.</span><span class="n">Credentials</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -141,12 +138,12 @@ just for Google Compute Engine:</p>
 factory can be used to create a <a class="reference internal" href="client.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> with
 service account credentials.</p>
 <p>For example, with a JSON keyfile:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="o">.</span><span class="n">from_service_account_json</span><span class="p">(</span><span class="s1">&#39;/path/to/keyfile.json&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="o">.</span><span class="n">from_service_account_json</span><span class="p">(</span><span class="s1">&#39;/path/to/keyfile.json&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition tip">
-<p class="first admonition-title">Tip</p>
-<p class="last">Previously the Google Cloud Console would issue a PKCS12/P12 key for your
+<p class="admonition-title">Tip</p>
+<p>Previously the Google Cloud Console would issue a PKCS12/P12 key for your
 service account. This library does not support that key format. You can
 generate a new JSON key for the same service account from the console.</p>
 </div>
@@ -158,15 +155,15 @@ workers rather than actual user accounts. However, it’s also
 possible to call Google Cloud APIs with a user account via
 <a class="reference external" href="https://developers.google.com/identity/protocols/OAuth2">OAuth 2.0</a>.</p>
 <div class="admonition tip">
-<p class="first admonition-title">Tip</p>
-<p class="last">A production application should <strong>use a service account</strong>,
+<p class="admonition-title">Tip</p>
+<p>A production application should <strong>use a service account</strong>,
 but you may wish to use your own personal user account when first
 getting started with the <code class="docutils literal notranslate"><span class="pre">google-cloud-python</span></code> library.</p>
 </div>
 <p>The simplest way to use credentials from a user account is via
 Application Default Credentials using <code class="docutils literal notranslate"><span class="pre">gcloud</span> <span class="pre">auth</span> <span class="pre">login</span></code>
 (as mentioned above) and <a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.html#google.auth.default" title="(in google-auth v1.6.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">google.auth.default()</span></code></a>:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">google.auth</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">google.auth</span>
 
 <span class="n">credentials</span><span class="p">,</span> <span class="n">project</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">default</span><span class="p">()</span>
 </pre></div>
@@ -194,41 +191,43 @@ to use <code class="docutils literal notranslate"><span class="pre">oauth2client
 <p>If your application is not running on Google Compute Engine,
 you need a <a class="reference external" href="https://developers.google.com/accounts/docs/OAuth2ServiceAccount">Google Developers Service Account</a>.</p>
 <ol class="arabic">
-<li><p class="first">Visit the <a class="reference external" href="https://console.developers.google.com/project">Google Developers Console</a>.</p>
-</li>
-<li><p class="first">Create a new project or click on an existing project.</p>
-</li>
-<li><p class="first">Navigate to <strong>APIs &amp; auth</strong> &gt; <strong>APIs</strong> and enable the APIs
+<li><p>Visit the <a class="reference external" href="https://console.developers.google.com/project">Google Developers Console</a>.</p></li>
+<li><p>Create a new project or click on an existing project.</p></li>
+<li><p>Navigate to <strong>APIs &amp; auth</strong> &gt; <strong>APIs</strong> and enable the APIs
 that your application requires.</p>
 <img src="https://raw.githubusercontent.com/GoogleCloudPlatform/google-cloud-common/master/authentication/enable-apis.png"/></li>
 </ol>
 <blockquote>
 <div><div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>You may need to enable billing in order to use these services.</p>
-<ul class="last simple">
-<li><strong>BigQuery</strong><ul>
-<li>BigQuery API</li>
+<ul class="simple">
+<li><p><strong>BigQuery</strong></p>
+<ul>
+<li><p>BigQuery API</p></li>
 </ul>
 </li>
-<li><strong>Datastore</strong><ul>
-<li>Google Cloud Datastore API</li>
+<li><p><strong>Datastore</strong></p>
+<ul>
+<li><p>Google Cloud Datastore API</p></li>
 </ul>
 </li>
-<li><strong>Pub/Sub</strong><ul>
-<li>Google Cloud Pub/Sub</li>
+<li><p><strong>Pub/Sub</strong></p>
+<ul>
+<li><p>Google Cloud Pub/Sub</p></li>
 </ul>
 </li>
-<li><strong>Storage</strong><ul>
-<li>Google Cloud Storage</li>
-<li>Google Cloud Storage JSON API</li>
+<li><p><strong>Storage</strong></p>
+<ul>
+<li><p>Google Cloud Storage</p></li>
+<li><p>Google Cloud Storage JSON API</p></li>
 </ul>
 </li>
 </ul>
 </div>
 </div></blockquote>
 <ol class="arabic">
-<li><p class="first">Navigate to <strong>APIs &amp; auth</strong> &gt; <strong>Credentials</strong>.</p>
+<li><p>Navigate to <strong>APIs &amp; auth</strong> &gt; <strong>Credentials</strong>.</p>
 <p>You should see a screen like one of the following:</p>
 <img src="https://raw.githubusercontent.com/GoogleCloudPlatform/google-cloud-common/master/authentication/create-new-service-account.png"><img src="https://raw.githubusercontent.com/GoogleCloudPlatform/google-cloud-common/master/authentication/create-new-service-account-existing-keys.png"></li>
 </ol>
@@ -253,43 +252,43 @@ access to the services you intend to use.
 Be sure when you <a class="reference external" href="https://cloud.google.com/compute/docs/authentication#using">set up the GCE instance</a>,
 you add the correct scopes for the APIs you want to access:</p>
 <ul>
-<li><p class="first"><strong>All APIs</strong></p>
+<li><p><strong>All APIs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/auth/cloud-platform</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/auth/cloud-platform.read-only</span></code></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/auth/cloud-platform</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/auth/cloud-platform.read-only</span></code></p></li>
 </ul>
 </div></blockquote>
 </li>
-<li><p class="first"><strong>BigQuery</strong></p>
+<li><p><strong>BigQuery</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/auth/bigquery</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/auth/bigquery.insertdata</span></code></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/auth/bigquery</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/auth/bigquery.insertdata</span></code></p></li>
 </ul>
 </div></blockquote>
 </li>
-<li><p class="first"><strong>Datastore</strong></p>
+<li><p><strong>Datastore</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/auth/datastore</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/auth/userinfo.email</span></code></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/auth/datastore</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/auth/userinfo.email</span></code></p></li>
 </ul>
 </div></blockquote>
 </li>
-<li><p class="first"><strong>Pub/Sub</strong></p>
+<li><p><strong>Pub/Sub</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/auth/pubsub</span></code></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/auth/pubsub</span></code></p></li>
 </ul>
 </div></blockquote>
 </li>
-<li><p class="first"><strong>Storage</strong></p>
+<li><p><strong>Storage</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/auth/devstorage.full_control</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/auth/devstorage.read_only</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/auth/devstorage.read_write</span></code></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/auth/devstorage.full_control</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/auth/devstorage.read_only</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/auth/devstorage.read_write</span></code></p></li>
 </ul>
 </div></blockquote>
 </li>
@@ -384,13 +383,11 @@ you add the correct scopes for the APIs you want to access:</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -403,7 +400,7 @@ you add the correct scopes for the APIs you want to access:</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

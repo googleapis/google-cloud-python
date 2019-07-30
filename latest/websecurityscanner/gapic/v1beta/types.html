@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Web Security Scanner API Client &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Types for Web Security Scanner API Client &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -39,46 +37,46 @@
 <span id="types-for-web-security-scanner-api-client"></span><h1>Types for Web Security Scanner API Client<a class="headerlink" href="#module-google.cloud.websecurityscanner_v1beta.types" title="Permalink to this headline">#</a></h1>
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.CrawledUrl">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">CrawledUrl</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.CrawledUrl" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">CrawledUrl</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.CrawledUrl" title="Permalink to this definition">#</a></dt>
 <dd><p>A CrawledUrl resource represents a URL that was crawled during a
 ScanRun. Web Security Scanner Service crawls the web applications,
 following all links within the scope of sites, to find the URLs to test
 against.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.CrawledUrl.http_method">
-<code class="descname">http_method</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.CrawledUrl.http_method" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">http_method</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.CrawledUrl.http_method" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The http method of the request that was used to
 visit the URL, in uppercase.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.CrawledUrl.url">
-<code class="descname">url</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.CrawledUrl.url" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">url</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.CrawledUrl.url" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The URL that was crawled.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.CrawledUrl.body">
-<code class="descname">body</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.CrawledUrl.body" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">body</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.CrawledUrl.body" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The body of the request that was used to visit
 the URL.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">body</code></dt>
+<code class="sig-name descname">body</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.CrawledUrl.body</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">http_method</code></dt>
+<code class="sig-name descname">http_method</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.CrawledUrl.http_method</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">url</code></dt>
+<code class="sig-name descname">url</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.CrawledUrl.url</p>
 </dd></dl>
 
@@ -86,11 +84,11 @@ the URL.</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.CreateScanConfigRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">CreateScanConfigRequest</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.CreateScanConfigRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">CreateScanConfigRequest</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.CreateScanConfigRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request for the <code class="docutils literal notranslate"><span class="pre">CreateScanConfig</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.CreateScanConfigRequest.parent">
-<code class="descname">parent</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.CreateScanConfigRequest.parent" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">parent</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.CreateScanConfigRequest.parent" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The parent resource name where the scan is created,
 which should be a project resource name in the format
 ‘projects/{projectId}’.</p>
@@ -98,19 +96,19 @@ which should be a project resource name in the format
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.CreateScanConfigRequest.scan_config">
-<code class="descname">scan_config</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.CreateScanConfigRequest.scan_config" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">scan_config</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.CreateScanConfigRequest.scan_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The ScanConfig to be created.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">parent</code></dt>
+<code class="sig-name descname">parent</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.CreateScanConfigRequest.parent</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">scan_config</code></dt>
+<code class="sig-name descname">scan_config</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.CreateScanConfigRequest.scan_config</p>
 </dd></dl>
 
@@ -118,11 +116,11 @@ which should be a project resource name in the format
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.DeleteScanConfigRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">DeleteScanConfigRequest</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.DeleteScanConfigRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">DeleteScanConfigRequest</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.DeleteScanConfigRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request for the <code class="docutils literal notranslate"><span class="pre">DeleteScanConfig</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.DeleteScanConfigRequest.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.DeleteScanConfigRequest.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.DeleteScanConfigRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The resource name of the ScanConfig to be deleted.
 The name follows the format of
 ‘projects/{projectId}/scanConfigs/{scanConfigId}’.</p>
@@ -130,7 +128,7 @@ The name follows the format of
 
 <dl class="attribute">
 <dt>
-<code class="descname">name</code></dt>
+<code class="sig-name descname">name</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.DeleteScanConfigRequest.name</p>
 </dd></dl>
 
@@ -138,15 +136,15 @@ The name follows the format of
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.Empty">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">Empty</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Empty" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">Empty</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Empty" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.FieldMask">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">FieldMask</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.FieldMask" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">FieldMask</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.FieldMask" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.FieldMask.paths">
-<code class="descname">paths</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.FieldMask.paths" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">paths</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.FieldMask.paths" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.FieldMask.paths</p>
 </dd></dl>
 
@@ -154,12 +152,12 @@ The name follows the format of
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.Finding">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">Finding</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">Finding</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding" title="Permalink to this definition">#</a></dt>
 <dd><p>A Finding resource represents a vulnerability instance identified during
 a ScanRun.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.Finding.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The resource name of the Finding. The name
 follows the format of ‘projects/{projectId}/scanConfigs/{scanC
 onfigId}/scanruns/{scanRunId}/findings/{findingId}’. The
@@ -168,7 +166,7 @@ finding IDs are generated by the system.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.Finding.finding_type">
-<code class="descname">finding_type</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.finding_type" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">finding_type</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.finding_type" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The type of the Finding. Detailed and up-to-date
 information on findings can be found here:
 <a class="reference external" href="https://cloud.google.com/security-scanner/docs/scan-result">https://cloud.google.com/security-scanner/docs/scan-result</a>-
@@ -177,76 +175,76 @@ details</p>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.Finding.http_method">
-<code class="descname">http_method</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.http_method" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">http_method</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.http_method" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The http method of the request that triggered the
 vulnerability, in uppercase.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.Finding.fuzzed_url">
-<code class="descname">fuzzed_url</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.fuzzed_url" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">fuzzed_url</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.fuzzed_url" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The URL produced by the server-side fuzzer and
 used in the request that triggered the vulnerability.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.Finding.body">
-<code class="descname">body</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.body" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">body</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.body" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The body of the request that triggered the
 vulnerability.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.Finding.description">
-<code class="descname">description</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.description" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">description</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.description" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The description of the vulnerability.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.Finding.reproduction_url">
-<code class="descname">reproduction_url</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.reproduction_url" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">reproduction_url</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.reproduction_url" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The URL containing human-readable payload that
 user can leverage to reproduce the vulnerability.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.Finding.frame_url">
-<code class="descname">frame_url</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.frame_url" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">frame_url</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.frame_url" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. If the vulnerability was originated from nested
 IFrame, the immediate parent IFrame is reported.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.Finding.final_url">
-<code class="descname">final_url</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.final_url" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">final_url</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.final_url" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The URL where the browser lands when the
 vulnerability is detected.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.Finding.tracking_id">
-<code class="descname">tracking_id</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.tracking_id" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">tracking_id</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.tracking_id" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The tracking ID uniquely identifies a
 vulnerability instance across multiple ScanRuns.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.Finding.form">
-<code class="descname">form</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.form" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">form</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.form" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. An addon containing information reported for a
 vulnerability with an HTML form, if any.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.Finding.outdated_library">
-<code class="descname">outdated_library</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.outdated_library" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">outdated_library</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.outdated_library" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. An addon containing information about outdated
 libraries.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.Finding.violating_resource">
-<code class="descname">violating_resource</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.violating_resource" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">violating_resource</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.violating_resource" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. An addon containing detailed information
 regarding any resource causing the vulnerability such as
 JavaScript sources, image, audio files, etc.</p>
@@ -254,118 +252,118 @@ JavaScript sources, image, audio files, etc.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.Finding.vulnerable_headers">
-<code class="descname">vulnerable_headers</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.vulnerable_headers" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">vulnerable_headers</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.vulnerable_headers" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. An addon containing information about vulnerable
 or missing HTTP headers.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.Finding.vulnerable_parameters">
-<code class="descname">vulnerable_parameters</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.vulnerable_parameters" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">vulnerable_parameters</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.vulnerable_parameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. An addon containing information about request
 parameters which were found to be vulnerable.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.Finding.xss">
-<code class="descname">xss</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.xss" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">xss</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Finding.xss" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. An addon containing information reported for an
 XSS, if any.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">body</code></dt>
+<code class="sig-name descname">body</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.Finding.body</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">description</code></dt>
+<code class="sig-name descname">description</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.Finding.description</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">final_url</code></dt>
+<code class="sig-name descname">final_url</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.Finding.final_url</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">finding_type</code></dt>
+<code class="sig-name descname">finding_type</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.Finding.finding_type</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">form</code></dt>
+<code class="sig-name descname">form</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.Finding.form</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">frame_url</code></dt>
+<code class="sig-name descname">frame_url</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.Finding.frame_url</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">fuzzed_url</code></dt>
+<code class="sig-name descname">fuzzed_url</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.Finding.fuzzed_url</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">http_method</code></dt>
+<code class="sig-name descname">http_method</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.Finding.http_method</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">name</code></dt>
+<code class="sig-name descname">name</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.Finding.name</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">outdated_library</code></dt>
+<code class="sig-name descname">outdated_library</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.Finding.outdated_library</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">reproduction_url</code></dt>
+<code class="sig-name descname">reproduction_url</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.Finding.reproduction_url</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">tracking_id</code></dt>
+<code class="sig-name descname">tracking_id</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.Finding.tracking_id</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">violating_resource</code></dt>
+<code class="sig-name descname">violating_resource</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.Finding.violating_resource</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">vulnerable_headers</code></dt>
+<code class="sig-name descname">vulnerable_headers</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.Finding.vulnerable_headers</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">vulnerable_parameters</code></dt>
+<code class="sig-name descname">vulnerable_parameters</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.Finding.vulnerable_parameters</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">xss</code></dt>
+<code class="sig-name descname">xss</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.Finding.xss</p>
 </dd></dl>
 
@@ -373,31 +371,31 @@ XSS, if any.</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.FindingTypeStats">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">FindingTypeStats</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.FindingTypeStats" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">FindingTypeStats</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.FindingTypeStats" title="Permalink to this definition">#</a></dt>
 <dd><p>A FindingTypeStats resource represents stats regarding a specific
 FindingType of Findings under a given ScanRun.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.FindingTypeStats.finding_type">
-<code class="descname">finding_type</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.FindingTypeStats.finding_type" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">finding_type</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.FindingTypeStats.finding_type" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The finding type associated with the stats.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.FindingTypeStats.finding_count">
-<code class="descname">finding_count</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.FindingTypeStats.finding_count" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">finding_count</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.FindingTypeStats.finding_count" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The count of findings belonging to this finding
 type.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">finding_count</code></dt>
+<code class="sig-name descname">finding_count</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.FindingTypeStats.finding_count</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">finding_type</code></dt>
+<code class="sig-name descname">finding_type</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.FindingTypeStats.finding_type</p>
 </dd></dl>
 
@@ -405,29 +403,29 @@ type.</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.Form">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">Form</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Form" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">Form</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Form" title="Permalink to this definition">#</a></dt>
 <dd><p>! Information about a vulnerability with an HTML.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.Form.action_uri">
-<code class="descname">action_uri</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Form.action_uri" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">action_uri</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Form.action_uri" title="Permalink to this definition">#</a></dt>
 <dd><p>! The URI where to send the form when it’s submitted.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.Form.fields">
-<code class="descname">fields</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Form.fields" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">fields</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Form.fields" title="Permalink to this definition">#</a></dt>
 <dd><p>! The names of form fields related to the vulnerability.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">action_uri</code></dt>
+<code class="sig-name descname">action_uri</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.Form.action_uri</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">fields</code></dt>
+<code class="sig-name descname">fields</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.Form.fields</p>
 </dd></dl>
 
@@ -435,11 +433,11 @@ type.</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.GetFindingRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">GetFindingRequest</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.GetFindingRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">GetFindingRequest</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.GetFindingRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request for the <code class="docutils literal notranslate"><span class="pre">GetFinding</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.GetFindingRequest.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.GetFindingRequest.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.GetFindingRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The resource name of the Finding to be returned. The
 name follows the format of ‘projects/{projectId}/scanConfigs/{
 scanConfigId}/scanRuns/{scanRunId}/findings/{findingId}’.</p>
@@ -447,7 +445,7 @@ scanConfigId}/scanRuns/{scanRunId}/findings/{findingId}’.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">name</code></dt>
+<code class="sig-name descname">name</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.GetFindingRequest.name</p>
 </dd></dl>
 
@@ -455,11 +453,11 @@ scanConfigId}/scanRuns/{scanRunId}/findings/{findingId}’.</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.GetScanConfigRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">GetScanConfigRequest</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.GetScanConfigRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">GetScanConfigRequest</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.GetScanConfigRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request for the <code class="docutils literal notranslate"><span class="pre">GetScanConfig</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.GetScanConfigRequest.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.GetScanConfigRequest.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.GetScanConfigRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The resource name of the ScanConfig to be returned.
 The name follows the format of
 ‘projects/{projectId}/scanConfigs/{scanConfigId}’.</p>
@@ -467,7 +465,7 @@ The name follows the format of
 
 <dl class="attribute">
 <dt>
-<code class="descname">name</code></dt>
+<code class="sig-name descname">name</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.GetScanConfigRequest.name</p>
 </dd></dl>
 
@@ -475,11 +473,11 @@ The name follows the format of
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.GetScanRunRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">GetScanRunRequest</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.GetScanRunRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">GetScanRunRequest</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.GetScanRunRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request for the <code class="docutils literal notranslate"><span class="pre">GetScanRun</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.GetScanRunRequest.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.GetScanRunRequest.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.GetScanRunRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The resource name of the ScanRun to be returned. The
 name follows the format of ‘projects/{projectId}/scanConfigs/{
 scanConfigId}/scanRuns/{scanRunId}’.</p>
@@ -487,7 +485,7 @@ scanConfigId}/scanRuns/{scanRunId}’.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">name</code></dt>
+<code class="sig-name descname">name</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.GetScanRunRequest.name</p>
 </dd></dl>
 
@@ -495,11 +493,11 @@ scanConfigId}/scanRuns/{scanRunId}’.</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListCrawledUrlsRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">ListCrawledUrlsRequest</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListCrawledUrlsRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">ListCrawledUrlsRequest</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListCrawledUrlsRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request for the <code class="docutils literal notranslate"><span class="pre">ListCrawledUrls</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListCrawledUrlsRequest.parent">
-<code class="descname">parent</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListCrawledUrlsRequest.parent" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">parent</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListCrawledUrlsRequest.parent" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The parent resource name, which should be a scan run
 resource name in the format ‘projects/{projectId}/scanConfigs/
 {scanConfigId}/scanRuns/{scanRunId}’.</p>
@@ -507,7 +505,7 @@ resource name in the format ‘projects/{projectId}/scanConfigs/
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListCrawledUrlsRequest.page_token">
-<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListCrawledUrlsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">page_token</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListCrawledUrlsRequest.page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>A token identifying a page of results to be returned. This
 should be a <code class="docutils literal notranslate"><span class="pre">next_page_token</span></code> value returned from a previous
 List request. If unspecified, the first page of results is
@@ -516,7 +514,7 @@ returned.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListCrawledUrlsRequest.page_size">
-<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListCrawledUrlsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">page_size</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListCrawledUrlsRequest.page_size" title="Permalink to this definition">#</a></dt>
 <dd><p>The maximum number of CrawledUrls to return, can be limited by
 server. If not specified or not positive, the implementation
 will select a reasonable value.</p>
@@ -524,19 +522,19 @@ will select a reasonable value.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">page_size</code></dt>
+<code class="sig-name descname">page_size</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ListCrawledUrlsRequest.page_size</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">page_token</code></dt>
+<code class="sig-name descname">page_token</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ListCrawledUrlsRequest.page_token</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">parent</code></dt>
+<code class="sig-name descname">parent</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ListCrawledUrlsRequest.parent</p>
 </dd></dl>
 
@@ -544,30 +542,30 @@ will select a reasonable value.</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListCrawledUrlsResponse">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">ListCrawledUrlsResponse</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListCrawledUrlsResponse" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">ListCrawledUrlsResponse</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListCrawledUrlsResponse" title="Permalink to this definition">#</a></dt>
 <dd><p>Response for the <code class="docutils literal notranslate"><span class="pre">ListCrawledUrls</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListCrawledUrlsResponse.crawled_urls">
-<code class="descname">crawled_urls</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListCrawledUrlsResponse.crawled_urls" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">crawled_urls</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListCrawledUrlsResponse.crawled_urls" title="Permalink to this definition">#</a></dt>
 <dd><p>The list of CrawledUrls returned.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListCrawledUrlsResponse.next_page_token">
-<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListCrawledUrlsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">next_page_token</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListCrawledUrlsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>Token to retrieve the next page of results, or empty if there
 are no more results in the list.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">crawled_urls</code></dt>
+<code class="sig-name descname">crawled_urls</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ListCrawledUrlsResponse.crawled_urls</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">next_page_token</code></dt>
+<code class="sig-name descname">next_page_token</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ListCrawledUrlsResponse.next_page_token</p>
 </dd></dl>
 
@@ -575,11 +573,11 @@ are no more results in the list.</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListFindingTypeStatsRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">ListFindingTypeStatsRequest</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListFindingTypeStatsRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">ListFindingTypeStatsRequest</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListFindingTypeStatsRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request for the <code class="docutils literal notranslate"><span class="pre">ListFindingTypeStats</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListFindingTypeStatsRequest.parent">
-<code class="descname">parent</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListFindingTypeStatsRequest.parent" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">parent</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListFindingTypeStatsRequest.parent" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The parent resource name, which should be a scan run
 resource name in the format ‘projects/{projectId}/scanConfigs/
 {scanConfigId}/scanRuns/{scanRunId}’.</p>
@@ -587,7 +585,7 @@ resource name in the format ‘projects/{projectId}/scanConfigs/
 
 <dl class="attribute">
 <dt>
-<code class="descname">parent</code></dt>
+<code class="sig-name descname">parent</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ListFindingTypeStatsRequest.parent</p>
 </dd></dl>
 
@@ -595,17 +593,17 @@ resource name in the format ‘projects/{projectId}/scanConfigs/
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListFindingTypeStatsResponse">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">ListFindingTypeStatsResponse</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListFindingTypeStatsResponse" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">ListFindingTypeStatsResponse</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListFindingTypeStatsResponse" title="Permalink to this definition">#</a></dt>
 <dd><p>Response for the <code class="docutils literal notranslate"><span class="pre">ListFindingTypeStats</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListFindingTypeStatsResponse.finding_type_stats">
-<code class="descname">finding_type_stats</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListFindingTypeStatsResponse.finding_type_stats" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">finding_type_stats</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListFindingTypeStatsResponse.finding_type_stats" title="Permalink to this definition">#</a></dt>
 <dd><p>The list of FindingTypeStats returned.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">finding_type_stats</code></dt>
+<code class="sig-name descname">finding_type_stats</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ListFindingTypeStatsResponse.finding_type_stats</p>
 </dd></dl>
 
@@ -613,11 +611,11 @@ resource name in the format ‘projects/{projectId}/scanConfigs/
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListFindingsRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">ListFindingsRequest</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListFindingsRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">ListFindingsRequest</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListFindingsRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request for the <code class="docutils literal notranslate"><span class="pre">ListFindings</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListFindingsRequest.parent">
-<code class="descname">parent</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListFindingsRequest.parent" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">parent</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListFindingsRequest.parent" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The parent resource name, which should be a scan run
 resource name in the format ‘projects/{projectId}/scanConfigs/
 {scanConfigId}/scanRuns/{scanRunId}’.</p>
@@ -625,14 +623,14 @@ resource name in the format ‘projects/{projectId}/scanConfigs/
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListFindingsRequest.filter">
-<code class="descname">filter</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListFindingsRequest.filter" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">filter</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListFindingsRequest.filter" title="Permalink to this definition">#</a></dt>
 <dd><p>The filter expression. The expression must be in the format: .
 Supported field: ‘finding_type’. Supported operator: ‘=’.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListFindingsRequest.page_token">
-<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListFindingsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">page_token</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListFindingsRequest.page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>A token identifying a page of results to be returned. This
 should be a <code class="docutils literal notranslate"><span class="pre">next_page_token</span></code> value returned from a previous
 List request. If unspecified, the first page of results is
@@ -641,7 +639,7 @@ returned.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListFindingsRequest.page_size">
-<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListFindingsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">page_size</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListFindingsRequest.page_size" title="Permalink to this definition">#</a></dt>
 <dd><p>The maximum number of Findings to return, can be limited by
 server. If not specified or not positive, the implementation
 will select a reasonable value.</p>
@@ -649,25 +647,25 @@ will select a reasonable value.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">filter</code></dt>
+<code class="sig-name descname">filter</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ListFindingsRequest.filter</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">page_size</code></dt>
+<code class="sig-name descname">page_size</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ListFindingsRequest.page_size</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">page_token</code></dt>
+<code class="sig-name descname">page_token</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ListFindingsRequest.page_token</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">parent</code></dt>
+<code class="sig-name descname">parent</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ListFindingsRequest.parent</p>
 </dd></dl>
 
@@ -675,30 +673,30 @@ will select a reasonable value.</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListFindingsResponse">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">ListFindingsResponse</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListFindingsResponse" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">ListFindingsResponse</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListFindingsResponse" title="Permalink to this definition">#</a></dt>
 <dd><p>Response for the <code class="docutils literal notranslate"><span class="pre">ListFindings</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListFindingsResponse.findings">
-<code class="descname">findings</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListFindingsResponse.findings" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">findings</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListFindingsResponse.findings" title="Permalink to this definition">#</a></dt>
 <dd><p>The list of Findings returned.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListFindingsResponse.next_page_token">
-<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListFindingsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">next_page_token</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListFindingsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>Token to retrieve the next page of results, or empty if there
 are no more results in the list.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">findings</code></dt>
+<code class="sig-name descname">findings</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ListFindingsResponse.findings</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">next_page_token</code></dt>
+<code class="sig-name descname">next_page_token</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ListFindingsResponse.next_page_token</p>
 </dd></dl>
 
@@ -706,18 +704,18 @@ are no more results in the list.</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListScanConfigsRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">ListScanConfigsRequest</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanConfigsRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">ListScanConfigsRequest</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanConfigsRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request for the <code class="docutils literal notranslate"><span class="pre">ListScanConfigs</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListScanConfigsRequest.parent">
-<code class="descname">parent</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanConfigsRequest.parent" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">parent</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanConfigsRequest.parent" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The parent resource name, which should be a project
 resource name in the format ‘projects/{projectId}’.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListScanConfigsRequest.page_token">
-<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanConfigsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">page_token</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanConfigsRequest.page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>A token identifying a page of results to be returned. This
 should be a <code class="docutils literal notranslate"><span class="pre">next_page_token</span></code> value returned from a previous
 List request. If unspecified, the first page of results is
@@ -726,7 +724,7 @@ returned.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListScanConfigsRequest.page_size">
-<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanConfigsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">page_size</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanConfigsRequest.page_size" title="Permalink to this definition">#</a></dt>
 <dd><p>The maximum number of ScanConfigs to return, can be limited by
 server. If not specified or not positive, the implementation
 will select a reasonable value.</p>
@@ -734,19 +732,19 @@ will select a reasonable value.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">page_size</code></dt>
+<code class="sig-name descname">page_size</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ListScanConfigsRequest.page_size</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">page_token</code></dt>
+<code class="sig-name descname">page_token</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ListScanConfigsRequest.page_token</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">parent</code></dt>
+<code class="sig-name descname">parent</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ListScanConfigsRequest.parent</p>
 </dd></dl>
 
@@ -754,30 +752,30 @@ will select a reasonable value.</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListScanConfigsResponse">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">ListScanConfigsResponse</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanConfigsResponse" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">ListScanConfigsResponse</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanConfigsResponse" title="Permalink to this definition">#</a></dt>
 <dd><p>Response for the <code class="docutils literal notranslate"><span class="pre">ListScanConfigs</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListScanConfigsResponse.scan_configs">
-<code class="descname">scan_configs</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanConfigsResponse.scan_configs" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">scan_configs</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanConfigsResponse.scan_configs" title="Permalink to this definition">#</a></dt>
 <dd><p>The list of ScanConfigs returned.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListScanConfigsResponse.next_page_token">
-<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanConfigsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">next_page_token</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanConfigsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>Token to retrieve the next page of results, or empty if there
 are no more results in the list.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">next_page_token</code></dt>
+<code class="sig-name descname">next_page_token</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ListScanConfigsResponse.next_page_token</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">scan_configs</code></dt>
+<code class="sig-name descname">scan_configs</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ListScanConfigsResponse.scan_configs</p>
 </dd></dl>
 
@@ -785,11 +783,11 @@ are no more results in the list.</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListScanRunsRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">ListScanRunsRequest</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanRunsRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">ListScanRunsRequest</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanRunsRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request for the <code class="docutils literal notranslate"><span class="pre">ListScanRuns</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListScanRunsRequest.parent">
-<code class="descname">parent</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanRunsRequest.parent" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">parent</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanRunsRequest.parent" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The parent resource name, which should be a scan
 resource name in the format
 ‘projects/{projectId}/scanConfigs/{scanConfigId}’.</p>
@@ -797,7 +795,7 @@ resource name in the format
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListScanRunsRequest.page_token">
-<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanRunsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">page_token</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanRunsRequest.page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>A token identifying a page of results to be returned. This
 should be a <code class="docutils literal notranslate"><span class="pre">next_page_token</span></code> value returned from a previous
 List request. If unspecified, the first page of results is
@@ -806,7 +804,7 @@ returned.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListScanRunsRequest.page_size">
-<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanRunsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">page_size</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanRunsRequest.page_size" title="Permalink to this definition">#</a></dt>
 <dd><p>The maximum number of ScanRuns to return, can be limited by
 server. If not specified or not positive, the implementation
 will select a reasonable value.</p>
@@ -814,19 +812,19 @@ will select a reasonable value.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">page_size</code></dt>
+<code class="sig-name descname">page_size</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ListScanRunsRequest.page_size</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">page_token</code></dt>
+<code class="sig-name descname">page_token</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ListScanRunsRequest.page_token</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">parent</code></dt>
+<code class="sig-name descname">parent</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ListScanRunsRequest.parent</p>
 </dd></dl>
 
@@ -834,30 +832,30 @@ will select a reasonable value.</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListScanRunsResponse">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">ListScanRunsResponse</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanRunsResponse" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">ListScanRunsResponse</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanRunsResponse" title="Permalink to this definition">#</a></dt>
 <dd><p>Response for the <code class="docutils literal notranslate"><span class="pre">ListScanRuns</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListScanRunsResponse.scan_runs">
-<code class="descname">scan_runs</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanRunsResponse.scan_runs" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">scan_runs</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanRunsResponse.scan_runs" title="Permalink to this definition">#</a></dt>
 <dd><p>The list of ScanRuns returned.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ListScanRunsResponse.next_page_token">
-<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanRunsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">next_page_token</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ListScanRunsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>Token to retrieve the next page of results, or empty if there
 are no more results in the list.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">next_page_token</code></dt>
+<code class="sig-name descname">next_page_token</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ListScanRunsResponse.next_page_token</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">scan_runs</code></dt>
+<code class="sig-name descname">scan_runs</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ListScanRunsResponse.scan_runs</p>
 </dd></dl>
 
@@ -865,42 +863,42 @@ are no more results in the list.</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.OutdatedLibrary">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">OutdatedLibrary</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.OutdatedLibrary" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">OutdatedLibrary</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.OutdatedLibrary" title="Permalink to this definition">#</a></dt>
 <dd><p>Information reported for an outdated library.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.OutdatedLibrary.library_name">
-<code class="descname">library_name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.OutdatedLibrary.library_name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">library_name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.OutdatedLibrary.library_name" title="Permalink to this definition">#</a></dt>
 <dd><p>The name of the outdated library.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.OutdatedLibrary.version">
-<code class="descname">version</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.OutdatedLibrary.version" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">version</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.OutdatedLibrary.version" title="Permalink to this definition">#</a></dt>
 <dd><p>The version number.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.OutdatedLibrary.learn_more_urls">
-<code class="descname">learn_more_urls</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.OutdatedLibrary.learn_more_urls" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">learn_more_urls</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.OutdatedLibrary.learn_more_urls" title="Permalink to this definition">#</a></dt>
 <dd><p>URLs to learn more information about the vulnerabilities in
 the library.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">learn_more_urls</code></dt>
+<code class="sig-name descname">learn_more_urls</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.OutdatedLibrary.learn_more_urls</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">library_name</code></dt>
+<code class="sig-name descname">library_name</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.OutdatedLibrary.library_name</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">version</code></dt>
+<code class="sig-name descname">version</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.OutdatedLibrary.version</p>
 </dd></dl>
 
@@ -908,11 +906,11 @@ the library.</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfig">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">ScanConfig</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">ScanConfig</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>A ScanConfig resource contains the configurations to launch a scan.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfig.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.name" title="Permalink to this definition">#</a></dt>
 <dd><p>The resource name of the ScanConfig. The name follows the
 format of ‘projects/{projectId}/scanConfigs/{scanConfigId}’.
 The ScanConfig IDs are generated by the system.</p>
@@ -920,13 +918,13 @@ The ScanConfig IDs are generated by the system.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfig.display_name">
-<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.display_name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">display_name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.display_name" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The user provided display name of the ScanConfig.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfig.max_qps">
-<code class="descname">max_qps</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.max_qps" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">max_qps</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.max_qps" title="Permalink to this definition">#</a></dt>
 <dd><p>The maximum QPS during scanning. A valid value ranges from 5
 to 20 inclusively. If the field is unspecified or its value is
 set 0, server will default to 15. Other values outside of [5,
@@ -935,98 +933,98 @@ set 0, server will default to 15. Other values outside of [5,
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfig.starting_urls">
-<code class="descname">starting_urls</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.starting_urls" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">starting_urls</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.starting_urls" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The starting URLs from which the scanner finds site
 pages.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfig.authentication">
-<code class="descname">authentication</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.authentication" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">authentication</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.authentication" title="Permalink to this definition">#</a></dt>
 <dd><p>The authentication configuration. If specified, service will
 use the authentication configuration during scanning.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfig.user_agent">
-<code class="descname">user_agent</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.user_agent" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">user_agent</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.user_agent" title="Permalink to this definition">#</a></dt>
 <dd><p>The user agent used during scanning.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfig.blacklist_patterns">
-<code class="descname">blacklist_patterns</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.blacklist_patterns" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">blacklist_patterns</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.blacklist_patterns" title="Permalink to this definition">#</a></dt>
 <dd><p>The blacklist URL patterns as described in
 <a class="reference external" href="https://cloud.google.com/security-scanner/docs/excluded-urls">https://cloud.google.com/security-scanner/docs/excluded-urls</a></p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfig.schedule">
-<code class="descname">schedule</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.schedule" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">schedule</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.schedule" title="Permalink to this definition">#</a></dt>
 <dd><p>The schedule of the ScanConfig.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfig.target_platforms">
-<code class="descname">target_platforms</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.target_platforms" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">target_platforms</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.target_platforms" title="Permalink to this definition">#</a></dt>
 <dd><p>Set of Cloud Platforms targeted by the scan. If empty,
 APP_ENGINE will be used as a default.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfig.export_to_security_command_center">
-<code class="descname">export_to_security_command_center</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.export_to_security_command_center" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">export_to_security_command_center</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.export_to_security_command_center" title="Permalink to this definition">#</a></dt>
 <dd><p>Controls export of scan configurations and results to Cloud
 Security Command Center.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfig.latest_run">
-<code class="descname">latest_run</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.latest_run" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">latest_run</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.latest_run" title="Permalink to this definition">#</a></dt>
 <dd><p>Latest ScanRun if available.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfig.risk_level">
-<code class="descname">risk_level</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.risk_level" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">risk_level</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.risk_level" title="Permalink to this definition">#</a></dt>
 <dd><p>The risk level selected for the scan</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication">
-<em class="property">class </em><code class="descname">Authentication</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-name descname">Authentication</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication" title="Permalink to this definition">#</a></dt>
 <dd><p>Scan authentication configuration.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.authentication">
-<code class="descname">authentication</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.authentication" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">authentication</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.authentication" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. Authentication configuration</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.google_account">
-<code class="descname">google_account</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.google_account" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">google_account</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.google_account" title="Permalink to this definition">#</a></dt>
 <dd><p>Authentication using a Google account.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.custom_account">
-<code class="descname">custom_account</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.custom_account" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">custom_account</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.custom_account" title="Permalink to this definition">#</a></dt>
 <dd><p>Authentication using a custom account.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.CustomAccount">
-<em class="property">class </em><code class="descname">CustomAccount</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.CustomAccount" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-name descname">CustomAccount</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.CustomAccount" title="Permalink to this definition">#</a></dt>
 <dd><p>Describes authentication configuration that uses a custom account.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.CustomAccount.username">
-<code class="descname">username</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.CustomAccount.username" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">username</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.CustomAccount.username" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The user name of the custom account.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.CustomAccount.password">
-<code class="descname">password</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.CustomAccount.password" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">password</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.CustomAccount.password" title="Permalink to this definition">#</a></dt>
 <dd><p>Input only. Required. The password of the custom account. The
 credential is stored encrypted and not returned in any
 response nor included in audit logs.</p>
@@ -1034,25 +1032,25 @@ response nor included in audit logs.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.CustomAccount.login_url">
-<code class="descname">login_url</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.CustomAccount.login_url" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">login_url</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.CustomAccount.login_url" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The login form URL of the website.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">login_url</code></dt>
+<code class="sig-name descname">login_url</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanConfig.Authentication.CustomAccount.login_url</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">password</code></dt>
+<code class="sig-name descname">password</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanConfig.Authentication.CustomAccount.password</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">username</code></dt>
+<code class="sig-name descname">username</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanConfig.Authentication.CustomAccount.username</p>
 </dd></dl>
 
@@ -1060,17 +1058,17 @@ response nor included in audit logs.</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.GoogleAccount">
-<em class="property">class </em><code class="descname">GoogleAccount</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.GoogleAccount" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-name descname">GoogleAccount</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.GoogleAccount" title="Permalink to this definition">#</a></dt>
 <dd><p>Describes authentication configuration that uses a Google account.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.GoogleAccount.username">
-<code class="descname">username</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.GoogleAccount.username" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">username</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.GoogleAccount.username" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The user name of the Google account.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.GoogleAccount.password">
-<code class="descname">password</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.GoogleAccount.password" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">password</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.GoogleAccount.password" title="Permalink to this definition">#</a></dt>
 <dd><p>Input only. Required. The password of the Google account. The
 credential is stored encrypted and not returned in any
 response nor included in audit logs.</p>
@@ -1078,13 +1076,13 @@ response nor included in audit logs.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">password</code></dt>
+<code class="sig-name descname">password</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanConfig.Authentication.GoogleAccount.password</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">username</code></dt>
+<code class="sig-name descname">username</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanConfig.Authentication.GoogleAccount.username</p>
 </dd></dl>
 
@@ -1092,13 +1090,13 @@ response nor included in audit logs.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">custom_account</code></dt>
+<code class="sig-name descname">custom_account</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanConfig.Authentication.custom_account</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">google_account</code></dt>
+<code class="sig-name descname">google_account</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanConfig.Authentication.google_account</p>
 </dd></dl>
 
@@ -1106,11 +1104,11 @@ response nor included in audit logs.</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfig.Schedule">
-<em class="property">class </em><code class="descname">Schedule</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Schedule" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-name descname">Schedule</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Schedule" title="Permalink to this definition">#</a></dt>
 <dd><p>Scan schedule configuration.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfig.Schedule.schedule_time">
-<code class="descname">schedule_time</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Schedule.schedule_time" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">schedule_time</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Schedule.schedule_time" title="Permalink to this definition">#</a></dt>
 <dd><p>A timestamp indicates when the next run will be scheduled. The
 value is refreshed by the server after each run. If
 unspecified, it will default to current server time, which
@@ -1119,19 +1117,19 @@ means the scan will be scheduled to start immediately.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfig.Schedule.interval_duration_days">
-<code class="descname">interval_duration_days</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Schedule.interval_duration_days" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">interval_duration_days</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfig.Schedule.interval_duration_days" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The duration of time between executions in days.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">interval_duration_days</code></dt>
+<code class="sig-name descname">interval_duration_days</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanConfig.Schedule.interval_duration_days</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">schedule_time</code></dt>
+<code class="sig-name descname">schedule_time</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanConfig.Schedule.schedule_time</p>
 </dd></dl>
 
@@ -1139,73 +1137,73 @@ means the scan will be scheduled to start immediately.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">authentication</code></dt>
+<code class="sig-name descname">authentication</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanConfig.authentication</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">blacklist_patterns</code></dt>
+<code class="sig-name descname">blacklist_patterns</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanConfig.blacklist_patterns</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">display_name</code></dt>
+<code class="sig-name descname">display_name</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanConfig.display_name</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">export_to_security_command_center</code></dt>
+<code class="sig-name descname">export_to_security_command_center</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanConfig.export_to_security_command_center</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">latest_run</code></dt>
+<code class="sig-name descname">latest_run</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanConfig.latest_run</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">max_qps</code></dt>
+<code class="sig-name descname">max_qps</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanConfig.max_qps</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">name</code></dt>
+<code class="sig-name descname">name</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanConfig.name</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">risk_level</code></dt>
+<code class="sig-name descname">risk_level</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanConfig.risk_level</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">schedule</code></dt>
+<code class="sig-name descname">schedule</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanConfig.schedule</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">starting_urls</code></dt>
+<code class="sig-name descname">starting_urls</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanConfig.starting_urls</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">target_platforms</code></dt>
+<code class="sig-name descname">target_platforms</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanConfig.target_platforms</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">user_agent</code></dt>
+<code class="sig-name descname">user_agent</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanConfig.user_agent</p>
 </dd></dl>
 
@@ -1213,21 +1211,21 @@ means the scan will be scheduled to start immediately.</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfigError">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">ScanConfigError</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfigError" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">ScanConfigError</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfigError" title="Permalink to this definition">#</a></dt>
 <dd><p>Defines a custom error message used by CreateScanConfig and
 UpdateScanConfig APIs when scan configuration validation fails. It is
 also reported as part of a ScanRunErrorTrace message if scan validation
 fails due to a scan configuration error.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfigError.code">
-<code class="descname">code</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfigError.code" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">code</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfigError.code" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. Indicates the reason code for a configuration
 failure.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanConfigError.field_name">
-<code class="descname">field_name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfigError.field_name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">field_name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanConfigError.field_name" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. Indicates the full name of the ScanConfig field
 that triggers this error, for example “scan_config.max_qps”.
 This field is provided for troubleshooting purposes only and
@@ -1236,13 +1234,13 @@ its actual value can change in the future.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">code</code></dt>
+<code class="sig-name descname">code</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanConfigError.code</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">field_name</code></dt>
+<code class="sig-name descname">field_name</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanConfigError.field_name</p>
 </dd></dl>
 
@@ -1250,12 +1248,12 @@ its actual value can change in the future.</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanRun">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">ScanRun</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRun" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">ScanRun</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRun" title="Permalink to this definition">#</a></dt>
 <dd><p>A ScanRun is a output-only resource representing an actual run of the
 scan. Next id: 12</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanRun.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRun.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRun.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The resource name of the ScanRun. The name
 follows the format of ‘projects/{projectId}/scanConfigs/{scanC
 onfigId}/scanRuns/{scanRunId}’. The ScanRun IDs are generated
@@ -1264,26 +1262,26 @@ by the system.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanRun.execution_state">
-<code class="descname">execution_state</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRun.execution_state" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">execution_state</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRun.execution_state" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The execution state of the ScanRun.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanRun.result_state">
-<code class="descname">result_state</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRun.result_state" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">result_state</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRun.result_state" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The result state of the ScanRun. This field is
 only available after the execution state reaches “FINISHED”.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanRun.start_time">
-<code class="descname">start_time</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRun.start_time" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">start_time</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRun.start_time" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The time at which the ScanRun started.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanRun.end_time">
-<code class="descname">end_time</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRun.end_time" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">end_time</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRun.end_time" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The time at which the ScanRun reached termination
 state - that the ScanRun is either finished or stopped by
 user.</p>
@@ -1291,7 +1289,7 @@ user.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanRun.urls_crawled_count">
-<code class="descname">urls_crawled_count</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRun.urls_crawled_count" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">urls_crawled_count</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRun.urls_crawled_count" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The number of URLs crawled during this ScanRun.
 If the scan is in progress, the value represents the number of
 URLs crawled up to now.</p>
@@ -1299,7 +1297,7 @@ URLs crawled up to now.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanRun.urls_tested_count">
-<code class="descname">urls_tested_count</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRun.urls_tested_count" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">urls_tested_count</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRun.urls_tested_count" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The number of URLs tested during this ScanRun. If
 the scan is in progress, the value represents the number of
 URLs tested up to now. The number of URLs tested is usually
@@ -1309,14 +1307,14 @@ crawled URL is tested with multiple test payloads.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanRun.has_vulnerabilities">
-<code class="descname">has_vulnerabilities</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRun.has_vulnerabilities" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">has_vulnerabilities</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRun.has_vulnerabilities" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. Whether the scan run has found any
 vulnerabilities.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanRun.progress_percent">
-<code class="descname">progress_percent</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRun.progress_percent" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">progress_percent</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRun.progress_percent" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The percentage of total completion ranging from 0
 to 100. If the scan is in queue, the value is 0. If the scan
 is running, the value ranges from 0 to 100. If the scan is
@@ -1325,7 +1323,7 @@ finished, the value is 100.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanRun.error_trace">
-<code class="descname">error_trace</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRun.error_trace" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">error_trace</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRun.error_trace" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. If result_state is an ERROR, this field provides
 the primary reason for scan’s termination and more details, if
 such are available.</p>
@@ -1333,74 +1331,74 @@ such are available.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanRun.warning_traces">
-<code class="descname">warning_traces</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRun.warning_traces" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">warning_traces</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRun.warning_traces" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. A list of warnings, if such are encountered
 during this scan run.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">end_time</code></dt>
+<code class="sig-name descname">end_time</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanRun.end_time</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">error_trace</code></dt>
+<code class="sig-name descname">error_trace</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanRun.error_trace</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">execution_state</code></dt>
+<code class="sig-name descname">execution_state</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanRun.execution_state</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">has_vulnerabilities</code></dt>
+<code class="sig-name descname">has_vulnerabilities</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanRun.has_vulnerabilities</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">name</code></dt>
+<code class="sig-name descname">name</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanRun.name</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">progress_percent</code></dt>
+<code class="sig-name descname">progress_percent</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanRun.progress_percent</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">result_state</code></dt>
+<code class="sig-name descname">result_state</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanRun.result_state</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">start_time</code></dt>
+<code class="sig-name descname">start_time</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanRun.start_time</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">urls_crawled_count</code></dt>
+<code class="sig-name descname">urls_crawled_count</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanRun.urls_crawled_count</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">urls_tested_count</code></dt>
+<code class="sig-name descname">urls_tested_count</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanRun.urls_tested_count</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">warning_traces</code></dt>
+<code class="sig-name descname">warning_traces</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanRun.warning_traces</p>
 </dd></dl>
 
@@ -1408,17 +1406,17 @@ during this scan run.</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanRunErrorTrace">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">ScanRunErrorTrace</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRunErrorTrace" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">ScanRunErrorTrace</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRunErrorTrace" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. Defines an error trace message for a ScanRun.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanRunErrorTrace.code">
-<code class="descname">code</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRunErrorTrace.code" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">code</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRunErrorTrace.code" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. Indicates the error reason code.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanRunErrorTrace.scan_config_error">
-<code class="descname">scan_config_error</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRunErrorTrace.scan_config_error" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">scan_config_error</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRunErrorTrace.scan_config_error" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. If the scan encounters SCAN_CONFIG_ISSUE error,
 this field has the error message encountered during scan
 configuration validation that is performed before each scan
@@ -1427,7 +1425,7 @@ run.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanRunErrorTrace.most_common_http_error_code">
-<code class="descname">most_common_http_error_code</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRunErrorTrace.most_common_http_error_code" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">most_common_http_error_code</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRunErrorTrace.most_common_http_error_code" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. If the scan encounters TOO_MANY_HTTP_ERRORS,
 this field indicates the most common HTTP error code, if such
 is available. For example, if this code is 404, the scan has
@@ -1436,19 +1434,19 @@ encountered too many NOT_FOUND responses.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">code</code></dt>
+<code class="sig-name descname">code</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanRunErrorTrace.code</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">most_common_http_error_code</code></dt>
+<code class="sig-name descname">most_common_http_error_code</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanRunErrorTrace.most_common_http_error_code</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">scan_config_error</code></dt>
+<code class="sig-name descname">scan_config_error</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanRunErrorTrace.scan_config_error</p>
 </dd></dl>
 
@@ -1456,19 +1454,19 @@ encountered too many NOT_FOUND responses.</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanRunWarningTrace">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">ScanRunWarningTrace</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRunWarningTrace" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">ScanRunWarningTrace</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRunWarningTrace" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. Defines a warning trace message for ScanRun. Warning traces
 provide customers with useful information that helps make the scanning
 process more effective.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ScanRunWarningTrace.code">
-<code class="descname">code</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRunWarningTrace.code" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">code</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ScanRunWarningTrace.code" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. Indicates the warning code.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">code</code></dt>
+<code class="sig-name descname">code</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ScanRunWarningTrace.code</p>
 </dd></dl>
 
@@ -1476,11 +1474,11 @@ process more effective.</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.StartScanRunRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">StartScanRunRequest</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.StartScanRunRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">StartScanRunRequest</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.StartScanRunRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request for the <code class="docutils literal notranslate"><span class="pre">StartScanRun</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.StartScanRunRequest.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.StartScanRunRequest.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.StartScanRunRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The resource name of the ScanConfig to be used. The
 name follows the format of
 ‘projects/{projectId}/scanConfigs/{scanConfigId}’.</p>
@@ -1488,7 +1486,7 @@ name follows the format of
 
 <dl class="attribute">
 <dt>
-<code class="descname">name</code></dt>
+<code class="sig-name descname">name</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.StartScanRunRequest.name</p>
 </dd></dl>
 
@@ -1496,11 +1494,11 @@ name follows the format of
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.StopScanRunRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">StopScanRunRequest</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.StopScanRunRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">StopScanRunRequest</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.StopScanRunRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request for the <code class="docutils literal notranslate"><span class="pre">StopScanRun</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.StopScanRunRequest.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.StopScanRunRequest.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.StopScanRunRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The resource name of the ScanRun to be stopped. The
 name follows the format of ‘projects/{projectId}/scanConfigs/{
 scanConfigId}/scanRuns/{scanRunId}’.</p>
@@ -1508,7 +1506,7 @@ scanConfigId}/scanRuns/{scanRunId}’.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">name</code></dt>
+<code class="sig-name descname">name</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.StopScanRunRequest.name</p>
 </dd></dl>
 
@@ -1516,16 +1514,16 @@ scanConfigId}/scanRuns/{scanRunId}’.</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.Timestamp">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Timestamp" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">Timestamp</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Timestamp" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.Timestamp.nanos">
-<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Timestamp.nanos" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">nanos</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Timestamp.nanos" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Timestamp.nanos</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.Timestamp.seconds">
-<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Timestamp.seconds" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">seconds</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Timestamp.seconds" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Timestamp.seconds</p>
 </dd></dl>
 
@@ -1533,11 +1531,11 @@ scanConfigId}/scanRuns/{scanRunId}’.</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.UpdateScanConfigRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">UpdateScanConfigRequest</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.UpdateScanConfigRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">UpdateScanConfigRequest</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.UpdateScanConfigRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request for the <code class="docutils literal notranslate"><span class="pre">UpdateScanConfigRequest</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.UpdateScanConfigRequest.scan_config">
-<code class="descname">scan_config</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.UpdateScanConfigRequest.scan_config" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">scan_config</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.UpdateScanConfigRequest.scan_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The ScanConfig to be updated. The name field must be
 set to identify the resource to be updated. The values of
 fields not covered by the mask will be ignored.</p>
@@ -1545,7 +1543,7 @@ fields not covered by the mask will be ignored.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.UpdateScanConfigRequest.update_mask">
-<code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.UpdateScanConfigRequest.update_mask" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">update_mask</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.UpdateScanConfigRequest.update_mask" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The update mask applies to the resource. For the
 <code class="docutils literal notranslate"><span class="pre">FieldMask</span></code> definition, see
 <a class="reference external" href="https://developers.google.com/protocol">https://developers.google.com/protocol</a>-
@@ -1554,13 +1552,13 @@ buffers/docs/reference/google.protobuf#fieldmask</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">scan_config</code></dt>
+<code class="sig-name descname">scan_config</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.UpdateScanConfigRequest.scan_config</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">update_mask</code></dt>
+<code class="sig-name descname">update_mask</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.UpdateScanConfigRequest.update_mask</p>
 </dd></dl>
 
@@ -1568,30 +1566,30 @@ buffers/docs/reference/google.protobuf#fieldmask</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ViolatingResource">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">ViolatingResource</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ViolatingResource" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">ViolatingResource</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ViolatingResource" title="Permalink to this definition">#</a></dt>
 <dd><p>Information regarding any resource causing the vulnerability such as
 JavaScript sources, image, audio files, etc.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ViolatingResource.content_type">
-<code class="descname">content_type</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ViolatingResource.content_type" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">content_type</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ViolatingResource.content_type" title="Permalink to this definition">#</a></dt>
 <dd><p>The MIME type of this resource.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.ViolatingResource.resource_url">
-<code class="descname">resource_url</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ViolatingResource.resource_url" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">resource_url</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.ViolatingResource.resource_url" title="Permalink to this definition">#</a></dt>
 <dd><p>URL of this violating resource.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">content_type</code></dt>
+<code class="sig-name descname">content_type</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ViolatingResource.content_type</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">resource_url</code></dt>
+<code class="sig-name descname">resource_url</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.ViolatingResource.resource_url</p>
 </dd></dl>
 
@@ -1599,45 +1597,45 @@ JavaScript sources, image, audio files, etc.</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.VulnerableHeaders">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">VulnerableHeaders</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.VulnerableHeaders" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">VulnerableHeaders</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.VulnerableHeaders" title="Permalink to this definition">#</a></dt>
 <dd><p>Information about vulnerable or missing HTTP Headers.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.VulnerableHeaders.headers">
-<code class="descname">headers</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.VulnerableHeaders.headers" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">headers</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.VulnerableHeaders.headers" title="Permalink to this definition">#</a></dt>
 <dd><p>List of vulnerable headers.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.VulnerableHeaders.missing_headers">
-<code class="descname">missing_headers</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.VulnerableHeaders.missing_headers" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">missing_headers</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.VulnerableHeaders.missing_headers" title="Permalink to this definition">#</a></dt>
 <dd><p>List of missing headers.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.VulnerableHeaders.Header">
-<em class="property">class </em><code class="descname">Header</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.VulnerableHeaders.Header" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-name descname">Header</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.VulnerableHeaders.Header" title="Permalink to this definition">#</a></dt>
 <dd><p>Describes a HTTP Header.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.VulnerableHeaders.Header.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.VulnerableHeaders.Header.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.VulnerableHeaders.Header.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Header name.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.VulnerableHeaders.Header.value">
-<code class="descname">value</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.VulnerableHeaders.Header.value" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">value</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.VulnerableHeaders.Header.value" title="Permalink to this definition">#</a></dt>
 <dd><p>Header value.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">name</code></dt>
+<code class="sig-name descname">name</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.VulnerableHeaders.Header.name</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">value</code></dt>
+<code class="sig-name descname">value</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.VulnerableHeaders.Header.value</p>
 </dd></dl>
 
@@ -1645,13 +1643,13 @@ JavaScript sources, image, audio files, etc.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">headers</code></dt>
+<code class="sig-name descname">headers</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.VulnerableHeaders.headers</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">missing_headers</code></dt>
+<code class="sig-name descname">missing_headers</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.VulnerableHeaders.missing_headers</p>
 </dd></dl>
 
@@ -1659,17 +1657,17 @@ JavaScript sources, image, audio files, etc.</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.VulnerableParameters">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">VulnerableParameters</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.VulnerableParameters" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">VulnerableParameters</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.VulnerableParameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Information about vulnerable request parameters.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.VulnerableParameters.parameter_names">
-<code class="descname">parameter_names</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.VulnerableParameters.parameter_names" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">parameter_names</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.VulnerableParameters.parameter_names" title="Permalink to this definition">#</a></dt>
 <dd><p>The vulnerable parameter names.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">parameter_names</code></dt>
+<code class="sig-name descname">parameter_names</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.VulnerableParameters.parameter_names</p>
 </dd></dl>
 
@@ -1677,29 +1675,29 @@ JavaScript sources, image, audio files, etc.</p>
 
 <dl class="class">
 <dt id="google.cloud.websecurityscanner_v1beta.types.Xss">
-<em class="property">class </em><code class="descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="descname">Xss</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Xss" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.websecurityscanner_v1beta.types.</code><code class="sig-name descname">Xss</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Xss" title="Permalink to this definition">#</a></dt>
 <dd><p>Information reported for an XSS.</p>
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.Xss.stack_traces">
-<code class="descname">stack_traces</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Xss.stack_traces" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">stack_traces</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Xss.stack_traces" title="Permalink to this definition">#</a></dt>
 <dd><p>Stack traces leading to the point where the XSS occurred.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.websecurityscanner_v1beta.types.Xss.error_message">
-<code class="descname">error_message</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Xss.error_message" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">error_message</code><a class="headerlink" href="#google.cloud.websecurityscanner_v1beta.types.Xss.error_message" title="Permalink to this definition">#</a></dt>
 <dd><p>An error message generated by a javascript breakage.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">error_message</code></dt>
+<code class="sig-name descname">error_message</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.Xss.error_message</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">stack_traces</code></dt>
+<code class="sig-name descname">stack_traces</code></dt>
 <dd><p>Field google.cloud.websecurityscanner.v1beta.Xss.stack_traces</p>
 </dd></dl>
 
@@ -1793,13 +1791,11 @@ JavaScript sources, image, audio files, etc.</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -1812,7 +1808,7 @@ JavaScript sources, image, audio files, etc.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

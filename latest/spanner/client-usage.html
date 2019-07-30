@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Spanner Client &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Spanner Client &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -42,7 +40,7 @@
 <p>To use the API, the <a class="reference internal" href="client-api.html#google.cloud.spanner_v1.client.Client" title="google.cloud.spanner_v1.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a>
 class defines a high-level interface which handles authorization
 and creating other objects:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_v1</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">spanner_v1</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">spanner_v1</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -60,40 +58,38 @@ requests made with the <code class="docutils literal notranslate"><span class="p
 <div class="section" id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">#</a></h2>
 <ul>
-<li><p class="first">For an overview of authentication in <code class="docutils literal notranslate"><span class="pre">google.cloud-python</span></code>,
-see <a class="reference external" href="https://googleapis.dev/python/google-api-core/latest/auth.html">Authentication</a>.</p>
-</li>
-<li><p class="first">In addition to any authentication configuration, you can also set the
+<li><p>For an overview of authentication in <code class="docutils literal notranslate"><span class="pre">google.cloud-python</span></code>,
+see <a class="reference external" href="https://googleapis.dev/python/google-api-core/latest/auth.html">Authentication</a>.</p></li>
+<li><p>In addition to any authentication configuration, you can also set the
 <span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">GCLOUD_PROJECT</span></code> environment variable for the Google Cloud Console
 project you’d like to interact with. If your code is running in Google App
 Engine or Google Compute Engine the project will be detected automatically.
 (Setting this environment variable is not required, you may instead pass the
 <code class="docutils literal notranslate"><span class="pre">project</span></code> explicitly when constructing a
-<a class="reference internal" href="client-api.html#google.cloud.spanner_v1.client.Client" title="google.cloud.spanner_v1.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a>).</p>
-</li>
-<li><p class="first">After configuring your environment, create a
+<a class="reference internal" href="client-api.html#google.cloud.spanner_v1.client.Client" title="google.cloud.spanner_v1.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a>).</p></li>
+<li><p>After configuring your environment, create a
 <a class="reference internal" href="client-api.html#google.cloud.spanner_v1.client.Client" title="google.cloud.spanner_v1.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a></p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_v1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">spanner_v1</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>or pass in <code class="docutils literal notranslate"><span class="pre">credentials</span></code> and <code class="docutils literal notranslate"><span class="pre">project</span></code> explicitly</p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_v1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_v1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">spanner_v1</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">creds</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
 </ul>
 <div class="admonition tip">
-<p class="first admonition-title">Tip</p>
-<p class="last">Be sure to use the <strong>Project ID</strong>, not the <strong>Project Number</strong>.</p>
+<p class="admonition-title">Tip</p>
+<p>Be sure to use the <strong>Project ID</strong>, not the <strong>Project Number</strong>.</p>
 </div>
 </div>
 <div class="section" id="warnings-about-multiprocessing">
 <h2>Warnings about Multiprocessing<a class="headerlink" href="#warnings-about-multiprocessing" title="Permalink to this headline">#</a></h2>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">When using multiprocessing, the application may hang if a
+<p class="admonition-title">Warning</p>
+<p>When using multiprocessing, the application may hang if a
 <a class="reference internal" href="client-api.html#google.cloud.spanner_v1.client.Client" title="google.cloud.spanner_v1.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> instance is created
 before <code class="xref py py-class docutils literal notranslate"><span class="pre">multiprocessing.Pool</span></code> or <a class="reference external" href="https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Process" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">multiprocessing.Process</span></code></a>
 invokes <a class="reference external" href="https://docs.python.org/3/library/os.html#os.fork" title="(in Python v3.7)"><code class="xref py py-func docutils literal notranslate"><span class="pre">os.fork()</span></code></a>.  The issue is under investigation, but may be only
@@ -196,13 +192,11 @@ You’ll need one before you can interact with databases.</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -215,7 +209,7 @@ You’ll need one before you can interact with databases.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

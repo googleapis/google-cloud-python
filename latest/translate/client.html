@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Translation Client &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Translation Client &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -40,177 +38,169 @@
 <p>Client for interacting with the Google Cloud Translation API.</p>
 <dl class="data">
 <dt id="google.cloud.translate_v2.client.BASE">
-<code class="descclassname">google.cloud.translate_v2.client.</code><code class="descname">BASE</code><em class="property"> = 'base'</em><a class="headerlink" href="#google.cloud.translate_v2.client.BASE" title="Permalink to this definition">#</a></dt>
+<code class="sig-prename descclassname">google.cloud.translate_v2.client.</code><code class="sig-name descname">BASE</code><em class="property"> = 'base'</em><a class="headerlink" href="#google.cloud.translate_v2.client.BASE" title="Permalink to this definition">#</a></dt>
 <dd><p>Base translation model.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.translate_v2.client.Client">
-<em class="property">class </em><code class="descclassname">google.cloud.translate_v2.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>target_language='en'</em>, <em>credentials=None</em>, <em>_http=None</em>, <em>client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/translate_v2/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.translate_v2.client.Client" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.translate_v2.client.</code><code class="sig-name descname">Client</code><span class="sig-paren">(</span><em class="sig-param">target_language='en'</em>, <em class="sig-param">credentials=None</em>, <em class="sig-param">_http=None</em>, <em class="sig-param">client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/translate_v2/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.translate_v2.client.Client" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../core/client.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.client.Client</span></code></a></p>
 <p>Client to bundle configuration needed for API requests.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>target_language</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) The target language used for
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target_language</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) The target language used for
 translations and language names. (Defaults to
-<a class="reference internal" href="#google.cloud.translate_v2.client.ENGLISH_ISO_639" title="google.cloud.translate_v2.client.ENGLISH_ISO_639"><code class="xref py py-data docutils literal notranslate"><span class="pre">ENGLISH_ISO_639</span></code></a>.)</li>
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.6.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
+<a class="reference internal" href="#google.cloud.translate_v2.client.ENGLISH_ISO_639" title="google.cloud.translate_v2.client.ENGLISH_ISO_639"><code class="xref py py-data docutils literal notranslate"><span class="pre">ENGLISH_ISO_639</span></code></a>.)</p></li>
+<li><p><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.6.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
 client. If not passed (and if no <code class="docutils literal notranslate"><span class="pre">_http</span></code> object is
 passed), falls back to the default inferred from the
-environment.</li>
-<li><strong>_http</strong> (<a class="reference external" href="https://2.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a>) – (Optional) HTTP object to make requests. Can be any object
+environment.</p></li>
+<li><p><strong>_http</strong> (<a class="reference external" href="https://2.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a>) – (Optional) HTTP object to make requests. Can be any object
 that defines <code class="docutils literal notranslate"><span class="pre">request()</span></code> with the same interface as
 <a class="reference external" href="https://2.python-requests.org/en/master/api/#requests.Session.request" title="(in Requests v2.22.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">requests.Session.request()</span></code></a>. If not passed, an
 <code class="docutils literal notranslate"><span class="pre">_http</span></code> object is created that is bound to the
 <code class="docutils literal notranslate"><span class="pre">credentials</span></code> for the current object.
 This parameter should be considered private, and could
-change in the future.</li>
-<li><strong>client_info</strong> (<a class="reference internal" href="../core/client_info.html#google.api_core.client_info.ClientInfo" title="google.api_core.client_info.ClientInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClientInfo</span></code></a>) – The client info used to send a user-agent string along with API
+change in the future.</p></li>
+<li><p><strong>client_info</strong> (<a class="reference internal" href="../core/client_info.html#google.api_core.client_info.ClientInfo" title="google.api_core.client_info.ClientInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClientInfo</span></code></a>) – The client info used to send a user-agent string along with API
 requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then default info will be used. Generally,
 you only need to set this if you’re developing your own library
-or partner tool.</li>
+or partner tool.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="attribute">
 <dt id="google.cloud.translate_v2.client.Client.SCOPE">
-<code class="descname">SCOPE</code><em class="property"> = ('https://www.googleapis.com/auth/cloud-platform',)</em><a class="headerlink" href="#google.cloud.translate_v2.client.Client.SCOPE" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">SCOPE</code><em class="property"> = ('https://www.googleapis.com/auth/cloud-platform',)</em><a class="headerlink" href="#google.cloud.translate_v2.client.Client.SCOPE" title="Permalink to this definition">#</a></dt>
 <dd><p>The scopes required for authenticating.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.translate_v2.client.Client.detect_language">
-<code class="descname">detect_language</code><span class="sig-paren">(</span><em>values</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/translate_v2/client.html#Client.detect_language"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.translate_v2.client.Client.detect_language" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">detect_language</code><span class="sig-paren">(</span><em class="sig-param">values</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/translate_v2/client.html#Client.detect_language"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.translate_v2.client.Client.detect_language" title="Permalink to this definition">#</a></dt>
 <dd><p>Detect the language of a string or list of strings.</p>
 <p>See <a class="reference external" href="https://cloud.google.com/translate/docs/detecting-language">https://cloud.google.com/translate/docs/detecting-language</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>values</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – String or list of strings that will have
-language detected.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list of dictionaries for each queried value. Each
-dictionary typically contains three keys<ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">confidence</span></code>: The confidence in language detection, a
-float between 0 and 1.</li>
-<li><code class="docutils literal notranslate"><span class="pre">input</span></code>: The corresponding input value.</li>
-<li><code class="docutils literal notranslate"><span class="pre">language</span></code>: The detected language (as an ISO 639-1
-language code).</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>values</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – String or list of strings that will have
+language detected.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><p>A list of dictionaries for each queried value. Each
+dictionary typically contains three keys</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">confidence</span></code>: The confidence in language detection, a
+float between 0 and 1.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">input</span></code>: The corresponding input value.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">language</span></code>: The detected language (as an ISO 639-1
+language code).</p></li>
 </ul>
 <p>though the key <code class="docutils literal notranslate"><span class="pre">confidence</span></code> may not always be present.</p>
 <p>If only a single value is passed, then only a single
 dictionary will be returned.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code> if the number of
+</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code> if the number of
 detections is not equal to the number of values.
 <code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code> if a value
 produces a list of detections with 0 or multiple results
-in it.</td>
-</tr>
-</tbody>
-</table>
+in it.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.translate_v2.client.Client.get_languages">
-<code class="descname">get_languages</code><span class="sig-paren">(</span><em>target_language=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/translate_v2/client.html#Client.get_languages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.translate_v2.client.Client.get_languages" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">get_languages</code><span class="sig-paren">(</span><em class="sig-param">target_language=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/translate_v2/client.html#Client.get_languages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.translate_v2.client.Client.get_languages" title="Permalink to this definition">#</a></dt>
 <dd><p>Get list of supported languages for translation.</p>
 <p>Response</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/translate/docs/discovering-supported-languages">https://cloud.google.com/translate/docs/discovering-supported-languages</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>target_language</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) The language used to localize
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>target_language</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) The language used to localize
 returned language names. Defaults to the
-target language on the current client.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of dictionaries. Each dictionary contains a supported
+target language on the current client.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List of dictionaries. Each dictionary contains a supported
 ISO 639-1 language code (using the dictionary key
 <code class="docutils literal notranslate"><span class="pre">language</span></code>). If <code class="docutils literal notranslate"><span class="pre">target_language</span></code> is passed, each
 dictionary will also contain the name of each supported
-language (localized to the target language).</td>
-</tr>
-</tbody>
-</table>
+language (localized to the target language).</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.translate_v2.client.Client.translate">
-<code class="descname">translate</code><span class="sig-paren">(</span><em>values</em>, <em>target_language=None</em>, <em>format_=None</em>, <em>source_language=None</em>, <em>customization_ids=()</em>, <em>model=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/translate_v2/client.html#Client.translate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.translate_v2.client.Client.translate" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">translate</code><span class="sig-paren">(</span><em class="sig-param">values</em>, <em class="sig-param">target_language=None</em>, <em class="sig-param">format_=None</em>, <em class="sig-param">source_language=None</em>, <em class="sig-param">customization_ids=()</em>, <em class="sig-param">model=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/translate_v2/client.html#Client.translate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.translate_v2.client.Client.translate" title="Permalink to this definition">#</a></dt>
 <dd><p>Translate a string or list of strings.</p>
 <p>See <a class="reference external" href="https://cloud.google.com/translate/docs/translating-text">https://cloud.google.com/translate/docs/translating-text</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>values</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – String or list of strings to translate.</li>
-<li><strong>target_language</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The language to translate results into. This
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>values</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – String or list of strings to translate.</p></li>
+<li><p><strong>target_language</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The language to translate results into. This
 is required by the API and defaults to
-the target language of the current instance.</li>
-<li><strong>format</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) One of <code class="docutils literal notranslate"><span class="pre">text</span></code> or <code class="docutils literal notranslate"><span class="pre">html</span></code>, to specify
-if the input text is plain text or HTML.</li>
-<li><strong>source_language</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) The language of the text to
-be translated.</li>
-<li><strong>customization_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – (Optional) ID or list of customization IDs
+the target language of the current instance.</p></li>
+<li><p><strong>format</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) One of <code class="docutils literal notranslate"><span class="pre">text</span></code> or <code class="docutils literal notranslate"><span class="pre">html</span></code>, to specify
+if the input text is plain text or HTML.</p></li>
+<li><p><strong>source_language</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) The language of the text to
+be translated.</p></li>
+<li><p><strong>customization_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – (Optional) ID or list of customization IDs
 for translation. Sets the <code class="docutils literal notranslate"><span class="pre">cid</span></code> parameter
-in the query.</li>
-<li><strong>model</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) The model used to translate the text, such
-as <code class="docutils literal notranslate"><span class="pre">'base'</span></code> or <code class="docutils literal notranslate"><span class="pre">'nmt'</span></code>.</li>
+in the query.</p></li>
+<li><p><strong>model</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) The model used to translate the text, such
+as <code class="docutils literal notranslate"><span class="pre">'base'</span></code> or <code class="docutils literal notranslate"><span class="pre">'nmt'</span></code>.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><p>A list of dictionaries for each queried value. Each
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><p>A list of dictionaries for each queried value. Each
 dictionary typically contains three keys (though not
 all will be present in all cases)</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">detectedSourceLanguage</span></code>: The detected language (as an
-ISO 639-1 language code) of the text.</li>
-<li><code class="docutils literal notranslate"><span class="pre">translatedText</span></code>: The translation of the text into the
-target language.</li>
-<li><code class="docutils literal notranslate"><span class="pre">input</span></code>: The corresponding input value.</li>
-<li><code class="docutils literal notranslate"><span class="pre">model</span></code>: The model used to translate the text.</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">detectedSourceLanguage</span></code>: The detected language (as an
+ISO 639-1 language code) of the text.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">translatedText</span></code>: The translation of the text into the
+target language.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">input</span></code>: The corresponding input value.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">model</span></code>: The model used to translate the text.</p></li>
 </ul>
 <p>If only a single value is passed, then only a single
 dictionary will be returned.</p>
 </p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code> if the number of
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code> if the number of
 values and translations differ.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="data">
 <dt id="google.cloud.translate_v2.client.ENGLISH_ISO_639">
-<code class="descclassname">google.cloud.translate_v2.client.</code><code class="descname">ENGLISH_ISO_639</code><em class="property"> = 'en'</em><a class="headerlink" href="#google.cloud.translate_v2.client.ENGLISH_ISO_639" title="Permalink to this definition">#</a></dt>
+<code class="sig-prename descclassname">google.cloud.translate_v2.client.</code><code class="sig-name descname">ENGLISH_ISO_639</code><em class="property"> = 'en'</em><a class="headerlink" href="#google.cloud.translate_v2.client.ENGLISH_ISO_639" title="Permalink to this definition">#</a></dt>
 <dd><p>ISO 639-1 language code for English.</p>
 </dd></dl>
 
 <dl class="data">
 <dt id="google.cloud.translate_v2.client.NMT">
-<code class="descclassname">google.cloud.translate_v2.client.</code><code class="descname">NMT</code><em class="property"> = 'nmt'</em><a class="headerlink" href="#google.cloud.translate_v2.client.NMT" title="Permalink to this definition">#</a></dt>
+<code class="sig-prename descclassname">google.cloud.translate_v2.client.</code><code class="sig-name descname">NMT</code><em class="property"> = 'nmt'</em><a class="headerlink" href="#google.cloud.translate_v2.client.NMT" title="Permalink to this definition">#</a></dt>
 <dd><p>Neural Machine Translation model.</p>
 </dd></dl>
 
@@ -302,13 +292,11 @@ values and translations differ.</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -321,7 +309,7 @@ values and translations differ.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

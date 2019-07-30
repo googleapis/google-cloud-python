@@ -5,6 +5,12 @@ google.cloud.bigquery.job.DestinationFormat
 
 
 
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+
 
 
 

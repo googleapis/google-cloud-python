@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Writing log entries &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Writing log entries &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -84,9 +82,9 @@ or
 <a class="reference internal" href="logger.html#google.cloud.logging.logger.Logger.list_entries" title="google.cloud.logging.logger.Logger.list_entries"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Logger.list_entries</span></code></a>
 will be instances of one of the following classes:</p>
 <ul class="simple">
-<li><a class="reference internal" href="entries.html#google.cloud.logging.entries.TextEntry" title="google.cloud.logging.entries.TextEntry"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextEntry</span></code></a></li>
-<li><a class="reference internal" href="entries.html#google.cloud.logging.entries.StructEntry" title="google.cloud.logging.entries.StructEntry"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructEntry</span></code></a></li>
-<li><a class="reference internal" href="entries.html#google.cloud.logging.entries.ProtobufEntry" title="google.cloud.logging.entries.ProtobufEntry"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProtobufEntry</span></code></a></li>
+<li><p><a class="reference internal" href="entries.html#google.cloud.logging.entries.TextEntry" title="google.cloud.logging.entries.TextEntry"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextEntry</span></code></a></p></li>
+<li><p><a class="reference internal" href="entries.html#google.cloud.logging.entries.StructEntry" title="google.cloud.logging.entries.StructEntry"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructEntry</span></code></a></p></li>
+<li><p><a class="reference internal" href="entries.html#google.cloud.logging.entries.ProtobufEntry" title="google.cloud.logging.entries.ProtobufEntry"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProtobufEntry</span></code></a></p></li>
 </ul>
 <p>Fetch entries across multiple projects.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">PROJECT_IDS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;one-project&quot;</span><span class="p">,</span> <span class="s2">&quot;another-project&quot;</span><span class="p">]</span>
@@ -281,8 +279,8 @@ to configure this automatically.</p>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">To reduce cost and quota usage, do not enable Stackdriver logging
+<p class="admonition-title">Note</p>
+<p>To reduce cost and quota usage, do not enable Stackdriver logging
 handlers while testing locally.</p>
 </div>
 <p>You can also exclude certain loggers:</p>
@@ -306,8 +304,8 @@ which will write directly to the API.</p>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This handler by default uses an asynchronous transport that sends log
+<p class="admonition-title">Note</p>
+<p>This handler by default uses an asynchronous transport that sends log
 entries on a background thread. However, the API call will still be made
 in the same process. For other transport options, see the transports
 section.</p>
@@ -326,13 +324,13 @@ logging handler can use different transports. The default is
 <code class="xref py py-class docutils literal notranslate"><span class="pre">BackgroundThreadTransport</span></code>.</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li><code class="xref py py-class docutils literal notranslate"><span class="pre">BackgroundThreadTransport</span></code> this is
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">BackgroundThreadTransport</span></code> this is
 the default. It writes entries on a background
-<code class="xref py py-class docutils literal notranslate"><span class="pre">python.threading.Thread</span></code>.</li>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">python.threading.Thread</span></code>.</p></li>
 </ol>
 <ol class="arabic simple">
-<li><code class="xref py py-class docutils literal notranslate"><span class="pre">SyncTransport</span></code> this handler does a
-direct API call on each logging statement to write the entry.</li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">SyncTransport</span></code> this handler does a
+direct API call on each logging statement to write the entry.</p></li>
 </ol>
 </div></blockquote>
 </div>
@@ -443,13 +441,11 @@ filtered accordingly.</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -462,7 +458,7 @@ filtered accordingly.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

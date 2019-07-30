@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Column Families &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Column Families &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -57,7 +55,7 @@ constructor. This value is then used in the
 <a class="reference internal" href="#google.cloud.bigtable.column_family.MaxAgeGCRule" title="google.cloud.bigtable.column_family.MaxAgeGCRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxAgeGCRule</span></code></a> or
 <a class="reference internal" href="#google.cloud.bigtable.column_family.MaxVersionsGCRule" title="google.cloud.bigtable.column_family.MaxVersionsGCRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxVersionsGCRule</span></code></a>
 at the lowest level of the nesting:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
 
 <span class="n">max_age</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">rule1</span> <span class="o">=</span> <span class="n">MaxAgeGCRule</span><span class="p">(</span><span class="n">max_age</span><span class="p">)</span>
@@ -77,33 +75,29 @@ at the lowest level of the nesting:</p>
 <span class="target" id="module-google.cloud.bigtable.column_family"></span><p>User friendly container for Google Cloud Bigtable Column Family.</p>
 <dl class="class">
 <dt id="google.cloud.bigtable.column_family.ColumnFamily">
-<em class="property">class </em><code class="descclassname">google.cloud.bigtable.column_family.</code><code class="descname">ColumnFamily</code><span class="sig-paren">(</span><em>column_family_id</em>, <em>table</em>, <em>gc_rule=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#ColumnFamily"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.ColumnFamily" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.bigtable.column_family.</code><code class="sig-name descname">ColumnFamily</code><span class="sig-paren">(</span><em class="sig-param">column_family_id</em>, <em class="sig-param">table</em>, <em class="sig-param">gc_rule=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#ColumnFamily"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.ColumnFamily" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Representation of a Google Cloud Bigtable Column Family.</p>
 <p>We can use a <a class="reference internal" href="#google.cloud.bigtable.column_family.ColumnFamily" title="google.cloud.bigtable.column_family.ColumnFamily"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColumnFamily</span></code></a> to:</p>
 <ul class="simple">
-<li><a class="reference internal" href="#google.cloud.bigtable.column_family.ColumnFamily.create" title="google.cloud.bigtable.column_family.ColumnFamily.create"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create()</span></code></a> itself</li>
-<li><a class="reference internal" href="#google.cloud.bigtable.column_family.ColumnFamily.update" title="google.cloud.bigtable.column_family.ColumnFamily.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code></a> itself</li>
-<li><a class="reference internal" href="#google.cloud.bigtable.column_family.ColumnFamily.delete" title="google.cloud.bigtable.column_family.ColumnFamily.delete"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete()</span></code></a> itself</li>
+<li><p><a class="reference internal" href="#google.cloud.bigtable.column_family.ColumnFamily.create" title="google.cloud.bigtable.column_family.ColumnFamily.create"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create()</span></code></a> itself</p></li>
+<li><p><a class="reference internal" href="#google.cloud.bigtable.column_family.ColumnFamily.update" title="google.cloud.bigtable.column_family.ColumnFamily.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code></a> itself</p></li>
+<li><p><a class="reference internal" href="#google.cloud.bigtable.column_family.ColumnFamily.delete" title="google.cloud.bigtable.column_family.ColumnFamily.delete"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete()</span></code></a> itself</p></li>
 </ul>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The ID of the column family. Must be of the
-form <code class="docutils literal notranslate"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
-<li><strong>table</strong> (<a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a>) – The table that owns the column family.</li>
-<li><strong>gc_rule</strong> (<a class="reference internal" href="#google.cloud.bigtable.column_family.GarbageCollectionRule" title="google.cloud.bigtable.column_family.GarbageCollectionRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">GarbageCollectionRule</span></code></a>) – (Optional) The garbage collection settings for this
-column family.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The ID of the column family. Must be of the
+form <code class="docutils literal notranslate"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</p></li>
+<li><p><strong>table</strong> (<a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a>) – The table that owns the column family.</p></li>
+<li><p><strong>gc_rule</strong> (<a class="reference internal" href="#google.cloud.bigtable.column_family.GarbageCollectionRule" title="google.cloud.bigtable.column_family.GarbageCollectionRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">GarbageCollectionRule</span></code></a>) – (Optional) The garbage collection settings for this
+column family.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="google.cloud.bigtable.column_family.ColumnFamily.create">
-<code class="descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#ColumnFamily.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.ColumnFamily.create" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#ColumnFamily.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.ColumnFamily.create" title="Permalink to this definition">#</a></dt>
 <dd><p>Create this column family.</p>
 <p>For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.bigtable</span> <span class="k">import</span> <span class="n">Client</span>
@@ -124,7 +118,7 @@ column family.</li>
 
 <dl class="method">
 <dt id="google.cloud.bigtable.column_family.ColumnFamily.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#ColumnFamily.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.ColumnFamily.delete" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#ColumnFamily.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.ColumnFamily.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>Delete this column family.</p>
 <p>For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.bigtable</span> <span class="k">import</span> <span class="n">Client</span>
@@ -141,9 +135,9 @@ column family.</li>
 </div>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigtable.column_family.ColumnFamily.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.bigtable.column_family.ColumnFamily.name" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.bigtable.column_family.ColumnFamily.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Column family name used in requests.</p>
 <p>For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.bigtable</span> <span class="k">import</span> <span class="n">Client</span>
@@ -158,44 +152,41 @@ column family.</li>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This property will not change if <code class="docutils literal notranslate"><span class="pre">column_family_id</span></code> does not, but
+<p class="admonition-title">Note</p>
+<p>This property will not change if <code class="docutils literal notranslate"><span class="pre">column_family_id</span></code> does not, but
 the return value is not cached.</p>
 </div>
 <p>The Column family name is of the form</p>
 <blockquote>
-<div><code class="docutils literal notranslate"><span class="pre">&quot;projects/../zones/../clusters/../tables/../columnFamilies/..&quot;</span></code></div></blockquote>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The column family name.</td>
-</tr>
-</tbody>
-</table>
+<div><p><code class="docutils literal notranslate"><span class="pre">&quot;projects/../zones/../clusters/../tables/../columnFamilies/..&quot;</span></code></p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The column family name.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigtable.column_family.ColumnFamily.to_pb">
-<code class="descname">to_pb</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#ColumnFamily.to_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.ColumnFamily.to_pb" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">to_pb</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#ColumnFamily.to_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.ColumnFamily.to_pb" title="Permalink to this definition">#</a></dt>
 <dd><p>Converts the column family to a protobuf.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">table_v2_pb2.ColumnFamily</span></code></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The converted current object.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">table_v2_pb2.ColumnFamily</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The converted current object.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigtable.column_family.ColumnFamily.update">
-<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#ColumnFamily.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.ColumnFamily.update" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#ColumnFamily.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.ColumnFamily.update" title="Permalink to this definition">#</a></dt>
 <dd><p>Update this column family.</p>
 <p>For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.bigtable</span> <span class="k">import</span> <span class="n">Client</span>
@@ -214,8 +205,8 @@ the return value is not cached.</p>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Only the GC rule can be updated. By changing the column family ID,
+<p class="admonition-title">Note</p>
+<p>Only the GC rule can be updated. By changing the column family ID,
 you will simply be referring to a different column family.</p>
 </div>
 </dd></dl>
@@ -224,7 +215,7 @@ you will simply be referring to a different column family.</p>
 
 <dl class="class">
 <dt id="google.cloud.bigtable.column_family.GCRuleIntersection">
-<em class="property">class </em><code class="descclassname">google.cloud.bigtable.column_family.</code><code class="descname">GCRuleIntersection</code><span class="sig-paren">(</span><em>rules</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#GCRuleIntersection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.GCRuleIntersection" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.bigtable.column_family.</code><code class="sig-name descname">GCRuleIntersection</code><span class="sig-paren">(</span><em class="sig-param">rules</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#GCRuleIntersection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.GCRuleIntersection" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#google.cloud.bigtable.column_family.GarbageCollectionRule" title="google.cloud.bigtable.column_family.GarbageCollectionRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.column_family.GarbageCollectionRule</span></code></a></p>
 <p>Intersection of garbage collection rules.</p>
 <p>For example:</p>
@@ -247,35 +238,30 @@ you will simply be referring to a different column family.</p>
 
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rules</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of <a class="reference internal" href="#google.cloud.bigtable.column_family.GarbageCollectionRule" title="google.cloud.bigtable.column_family.GarbageCollectionRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">GarbageCollectionRule</span></code></a>.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>rules</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of <a class="reference internal" href="#google.cloud.bigtable.column_family.GarbageCollectionRule" title="google.cloud.bigtable.column_family.GarbageCollectionRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">GarbageCollectionRule</span></code></a>.</p>
+</dd>
+</dl>
 <dl class="method">
 <dt id="google.cloud.bigtable.column_family.GCRuleIntersection.to_pb">
-<code class="descname">to_pb</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#GCRuleIntersection.to_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.GCRuleIntersection.to_pb" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">to_pb</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#GCRuleIntersection.to_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.GCRuleIntersection.to_pb" title="Permalink to this definition">#</a></dt>
 <dd><p>Converts the intersection into a single GC rule as a protobuf.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">table_v2_pb2.GcRule</span></code></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The converted current object.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">table_v2_pb2.GcRule</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The converted current object.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.bigtable.column_family.GCRuleUnion">
-<em class="property">class </em><code class="descclassname">google.cloud.bigtable.column_family.</code><code class="descname">GCRuleUnion</code><span class="sig-paren">(</span><em>rules</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#GCRuleUnion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.GCRuleUnion" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.bigtable.column_family.</code><code class="sig-name descname">GCRuleUnion</code><span class="sig-paren">(</span><em class="sig-param">rules</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#GCRuleUnion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.GCRuleUnion" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#google.cloud.bigtable.column_family.GarbageCollectionRule" title="google.cloud.bigtable.column_family.GarbageCollectionRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.column_family.GarbageCollectionRule</span></code></a></p>
 <p>Union of garbage collection rules.</p>
 <p>For example:</p>
@@ -296,46 +282,41 @@ you will simply be referring to a different column family.</p>
 
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rules</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of <a class="reference internal" href="#google.cloud.bigtable.column_family.GarbageCollectionRule" title="google.cloud.bigtable.column_family.GarbageCollectionRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">GarbageCollectionRule</span></code></a>.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>rules</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of <a class="reference internal" href="#google.cloud.bigtable.column_family.GarbageCollectionRule" title="google.cloud.bigtable.column_family.GarbageCollectionRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">GarbageCollectionRule</span></code></a>.</p>
+</dd>
+</dl>
 <dl class="method">
 <dt id="google.cloud.bigtable.column_family.GCRuleUnion.to_pb">
-<code class="descname">to_pb</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#GCRuleUnion.to_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.GCRuleUnion.to_pb" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">to_pb</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#GCRuleUnion.to_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.GCRuleUnion.to_pb" title="Permalink to this definition">#</a></dt>
 <dd><p>Converts the union into a single GC rule as a protobuf.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">table_v2_pb2.GcRule</span></code></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The converted current object.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">table_v2_pb2.GcRule</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The converted current object.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.bigtable.column_family.GarbageCollectionRule">
-<em class="property">class </em><code class="descclassname">google.cloud.bigtable.column_family.</code><code class="descname">GarbageCollectionRule</code><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#GarbageCollectionRule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.GarbageCollectionRule" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.bigtable.column_family.</code><code class="sig-name descname">GarbageCollectionRule</code><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#GarbageCollectionRule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.GarbageCollectionRule" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Garbage collection rule for column families within a table.</p>
 <p>Cells in the column family (within a table) fitting the rule will be
 deleted during garbage collection.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This class is a do-nothing base class for all GC rules.</p>
+<p class="admonition-title">Note</p>
+<p>This class is a do-nothing base class for all GC rules.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">A string <code class="docutils literal notranslate"><span class="pre">gc_expression</span></code> can also be used with API requests, but
+<p class="admonition-title">Note</p>
+<p>A string <code class="docutils literal notranslate"><span class="pre">gc_expression</span></code> can also be used with API requests, but
 that value would be superceded by a <code class="docutils literal notranslate"><span class="pre">gc_rule</span></code>. As a result, we
 don’t support that feature and instead support via native classes.</p>
 </div>
@@ -343,7 +324,7 @@ don’t support that feature and instead support via native classes.</p>
 
 <dl class="class">
 <dt id="google.cloud.bigtable.column_family.MaxAgeGCRule">
-<em class="property">class </em><code class="descclassname">google.cloud.bigtable.column_family.</code><code class="descname">MaxAgeGCRule</code><span class="sig-paren">(</span><em>max_age</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#MaxAgeGCRule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.MaxAgeGCRule" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.bigtable.column_family.</code><code class="sig-name descname">MaxAgeGCRule</code><span class="sig-paren">(</span><em class="sig-param">max_age</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#MaxAgeGCRule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.MaxAgeGCRule" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#google.cloud.bigtable.column_family.GarbageCollectionRule" title="google.cloud.bigtable.column_family.GarbageCollectionRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.column_family.GarbageCollectionRule</span></code></a></p>
 <p>Garbage collection limiting the age of a cell.</p>
 <p>For example:</p>
@@ -362,35 +343,30 @@ don’t support that feature and instead support via native classes.</p>
 
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>max_age</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.timedelta</span></code></a>) – The maximum age allowed for a cell in the table.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>max_age</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.timedelta</span></code></a>) – The maximum age allowed for a cell in the table.</p>
+</dd>
+</dl>
 <dl class="method">
 <dt id="google.cloud.bigtable.column_family.MaxAgeGCRule.to_pb">
-<code class="descname">to_pb</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#MaxAgeGCRule.to_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.MaxAgeGCRule.to_pb" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">to_pb</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#MaxAgeGCRule.to_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.MaxAgeGCRule.to_pb" title="Permalink to this definition">#</a></dt>
 <dd><p>Converts the garbage collection rule to a protobuf.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">table_v2_pb2.GcRule</span></code></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The converted current object.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">table_v2_pb2.GcRule</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The converted current object.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.bigtable.column_family.MaxVersionsGCRule">
-<em class="property">class </em><code class="descclassname">google.cloud.bigtable.column_family.</code><code class="descname">MaxVersionsGCRule</code><span class="sig-paren">(</span><em>max_num_versions</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#MaxVersionsGCRule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.MaxVersionsGCRule" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.bigtable.column_family.</code><code class="sig-name descname">MaxVersionsGCRule</code><span class="sig-paren">(</span><em class="sig-param">max_num_versions</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#MaxVersionsGCRule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.MaxVersionsGCRule" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#google.cloud.bigtable.column_family.GarbageCollectionRule" title="google.cloud.bigtable.column_family.GarbageCollectionRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.column_family.GarbageCollectionRule</span></code></a></p>
 <p>Garbage collection limiting the number of versions of a cell.</p>
 <p>For example:</p>
@@ -409,28 +385,23 @@ don’t support that feature and instead support via native classes.</p>
 
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>max_num_versions</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of versions</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>max_num_versions</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of versions</p>
+</dd>
+</dl>
 <dl class="method">
 <dt id="google.cloud.bigtable.column_family.MaxVersionsGCRule.to_pb">
-<code class="descname">to_pb</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#MaxVersionsGCRule.to_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.MaxVersionsGCRule.to_pb" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">to_pb</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/column_family.html#MaxVersionsGCRule.to_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.column_family.MaxVersionsGCRule.to_pb" title="Permalink to this definition">#</a></dt>
 <dd><p>Converts the garbage collection rule to a protobuf.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">table_v2_pb2.GcRule</span></code></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The converted current object.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">table_v2_pb2.GcRule</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The converted current object.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -525,13 +496,11 @@ don’t support that feature and instead support via native classes.</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -544,7 +513,7 @@ don’t support that feature and instead support via native classes.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

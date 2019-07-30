@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.dataset.AccessEntry &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>google.cloud.bigquery.dataset.AccessEntry &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -38,29 +36,29 @@
   <div class="section" id="google-cloud-bigquery-dataset-accessentry">
 <h1>google.cloud.bigquery.dataset.AccessEntry<a class="headerlink" href="#google-cloud-bigquery-dataset-accessentry" title="Permalink to this headline">#</a></h1>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.dataset.AccessEntry.from_api_repr" title="google.cloud.bigquery.dataset.AccessEntry.from_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_api_repr</span></code></a>(resource)</td>
-<td>Factory: construct an access entry given its API representation</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.dataset.AccessEntry.from_api_repr" title="google.cloud.bigquery.dataset.AccessEntry.from_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_api_repr</span></code></a>(resource)</p></td>
+<td><p>Factory: construct an access entry given its API representation</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.dataset.AccessEntry.to_api_repr" title="google.cloud.bigquery.dataset.AccessEntry.to_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_api_repr</span></code></a>()</td>
-<td>Construct the API resource representation of this access entry</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.dataset.AccessEntry.to_api_repr" title="google.cloud.bigquery.dataset.AccessEntry.to_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_api_repr</span></code></a>()</p></td>
+<td><p>Construct the API resource representation of this access entry</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ENTITY_TYPES</span></code></a></td>
-<td>Allowed entity types.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ENTITY_TYPES</span></code></a></p></td>
+<td><p>Allowed entity types.</p></td>
 </tr>
 </tbody>
 </table>
@@ -68,7 +66,7 @@
 <hr>
 <p><dl class="class">
 <dt id="google.cloud.bigquery.dataset.AccessEntry">
-<em class="property">class </em><code class="descclassname">google.cloud.bigquery.dataset.</code><code class="descname">AccessEntry</code><span class="sig-paren">(</span><em>role</em>, <em>entity_type</em>, <em>entity_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/dataset.html#AccessEntry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.bigquery.dataset.</code><code class="sig-name descname">AccessEntry</code><span class="sig-paren">(</span><em class="sig-param">role</em>, <em class="sig-param">entity_type</em>, <em class="sig-param">entity_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/dataset.html#AccessEntry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Represents grant of an access role to an entity.</p>
 <p>An entry must have exactly one of the allowed <a class="reference internal" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ENTITY_TYPES</span></code></a>. If
@@ -77,37 +75,31 @@ omitted for a <code class="docutils literal notranslate"><span class="pre">view<
 <p>See <a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets">https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets</a>.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery.dataset.AccessEntry.role">
-<code class="descname">role</code><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.role" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">role</code><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.role" title="Permalink to this definition">#</a></dt>
 <dd><p>Role granted to the entity. The following string values are
 supported: <cite>‘READER’</cite>, <cite>‘WRITER’</cite>, <cite>‘OWNER’</cite>. It may also be
 <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> if the <code class="docutils literal notranslate"><span class="pre">entity_type</span></code> is <code class="docutils literal notranslate"><span class="pre">view</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.bigquery.dataset.AccessEntry.entity_type">
-<code class="descname">entity_type</code><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.entity_type" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">entity_type</code><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.entity_type" title="Permalink to this definition">#</a></dt>
 <dd><p>Type of entity being granted the role. One of <a class="reference internal" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ENTITY_TYPES</span></code></a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.bigquery.dataset.AccessEntry.entity_id">
-<code class="descname">entity_id</code><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.entity_id" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">entity_id</code><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.entity_id" title="Permalink to this definition">#</a></dt>
 <dd><p>If the <code class="docutils literal notranslate"><span class="pre">entity_type</span></code> is not ‘view’, the <code class="docutils literal notranslate"><span class="pre">entity_id</span></code> is the
 <code class="docutils literal notranslate"><span class="pre">str</span></code> ID of the entity being granted the role. If the
 <code class="docutils literal notranslate"><span class="pre">entity_type</span></code> is ‘view’, the <code class="docutils literal notranslate"><span class="pre">entity_id</span></code> is a <code class="docutils literal notranslate"><span class="pre">dict</span></code>
@@ -120,26 +112,20 @@ in the following format:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>]]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>]]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the <code class="docutils literal notranslate"><span class="pre">entity_type</span></code> is not among <a class="reference internal" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ENTITY_TYPES</span></code></a>, or if a
-<code class="docutils literal notranslate"><span class="pre">view</span></code> has <code class="docutils literal notranslate"><span class="pre">role</span></code> set, or a non <code class="docutils literal notranslate"><span class="pre">view</span></code> <strong>does not</strong> have a
-<code class="docutils literal notranslate"><span class="pre">role</span></code> set.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the <code class="docutils literal notranslate"><span class="pre">entity_type</span></code> is not among <a class="reference internal" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ENTITY_TYPES</span></code></a>, or if a
+    <code class="docutils literal notranslate"><span class="pre">view</span></code> has <code class="docutils literal notranslate"><span class="pre">role</span></code> set, or a non <code class="docutils literal notranslate"><span class="pre">view</span></code> <strong>does not</strong> have a
+    <code class="docutils literal notranslate"><span class="pre">role</span></code> set.</p>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">AccessEntry</span><span class="p">(</span><span class="s1">&#39;OWNER&#39;</span><span class="p">,</span> <span class="s1">&#39;userByEmail&#39;</span><span class="p">,</span> <span class="s1">&#39;user@example.com&#39;</span><span class="p">)</span>
 </pre></div>
@@ -154,45 +140,43 @@ in the following format:</p>
 </div>
 <dl class="attribute">
 <dt id="google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES">
-<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset({'userByEmail', 'specialGroup', 'domain', 'view', 'groupByEmail'})</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">ENTITY_TYPES</code><em class="property"> = frozenset({'domain', 'groupByEmail', 'specialGroup', 'userByEmail', 'view'})</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
 <dd><p>Allowed entity types.</p>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="google.cloud.bigquery.dataset.AccessEntry.from_api_repr">
-<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/dataset.html#AccessEntry.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.from_api_repr" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">from_api_repr</code><span class="sig-paren">(</span><em class="sig-param">resource</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/dataset.html#AccessEntry.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.from_api_repr" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory: construct an access entry given its API representation</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><em>object</em></a><em>]</em>) – Access entry resource representation returned from the API</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Access entry parsed from <code class="docutils literal notranslate"><span class="pre">resource</span></code>.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.bigquery.dataset.AccessEntry" title="google.cloud.bigquery.dataset.AccessEntry">google.cloud.bigquery.dataset.AccessEntry</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the resource has more keys than <code class="docutils literal notranslate"><span class="pre">role</span></code> and one additional
-key.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>resource</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><em>object</em></a><em>]</em>) – Access entry resource representation returned from the API</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Access entry parsed from <code class="docutils literal notranslate"><span class="pre">resource</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#google.cloud.bigquery.dataset.AccessEntry" title="google.cloud.bigquery.dataset.AccessEntry">google.cloud.bigquery.dataset.AccessEntry</a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the resource has more keys than <code class="docutils literal notranslate"><span class="pre">role</span></code> and one additional
+    key.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigquery.dataset.AccessEntry.to_api_repr">
-<code class="descname">to_api_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/dataset.html#AccessEntry.to_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.to_api_repr" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">to_api_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/dataset.html#AccessEntry.to_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.to_api_repr" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct the API resource representation of this access entry</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Access entry represented as an API resource</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)">object</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Access entry represented as an API resource</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)">object</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -287,13 +271,11 @@ key.</td>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -306,7 +288,7 @@ key.</td>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

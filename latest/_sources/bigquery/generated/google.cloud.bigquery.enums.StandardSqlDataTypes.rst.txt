@@ -1,0 +1,39 @@
+google.cloud.bigquery.enums.StandardSqlDataTypes
+================================================
+
+.. currentmodule:: google.cloud.bigquery.enums
+
+
+
+
+
+
+
+.. rubric:: Attributes
+
+.. autosummary::
+
+   ~StandardSqlDataTypes.BOOL
+   ~StandardSqlDataTypes.BYTES
+   ~StandardSqlDataTypes.DATE
+   ~StandardSqlDataTypes.DATETIME
+   ~StandardSqlDataTypes.FLOAT64
+   ~StandardSqlDataTypes.GEOGRAPHY
+   ~StandardSqlDataTypes.INT64
+   ~StandardSqlDataTypes.NUMERIC
+   ~StandardSqlDataTypes.STRING
+   ~StandardSqlDataTypes.TIME
+   ~StandardSqlDataTypes.TIMESTAMP
+
+
+
+.. raw:: html
+
+    <p>
+    <hr>
+    <p>
+
+.. autoclass:: StandardSqlDataTypes
+   :show-inheritance:
+   :inherited-members:
+   :members:

@@ -5,6 +5,12 @@ google.cloud.bigquery.job.SchemaUpdateOption
 
 
 
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+
 
 
 

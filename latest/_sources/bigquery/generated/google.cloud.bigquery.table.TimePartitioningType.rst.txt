@@ -5,6 +5,12 @@ google.cloud.bigquery.table.TimePartitioningType
 
 
 
+.. rubric:: Methods
+
+.. autosummary::
+
+   
+
 
 
 

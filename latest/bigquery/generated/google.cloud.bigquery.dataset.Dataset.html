@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.dataset.Dataset &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>google.cloud.bigquery.dataset.Dataset &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -38,83 +36,83 @@
   <div class="section" id="google-cloud-bigquery-dataset-dataset">
 <h1>google.cloud.bigquery.dataset.Dataset<a class="headerlink" href="#google-cloud-bigquery-dataset-dataset" title="Permalink to this headline">#</a></h1>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.from_api_repr" title="google.cloud.bigquery.dataset.Dataset.from_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_api_repr</span></code></a>(resource)</td>
-<td>Factory: construct a dataset given its API representation</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.from_api_repr" title="google.cloud.bigquery.dataset.Dataset.from_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_api_repr</span></code></a>(resource)</p></td>
+<td><p>Factory: construct a dataset given its API representation</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.from_string" title="google.cloud.bigquery.dataset.Dataset.from_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_string</span></code></a>(full_dataset_id)</td>
-<td>Construct a dataset from fully-qualified dataset ID.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.from_string" title="google.cloud.bigquery.dataset.Dataset.from_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_string</span></code></a>(full_dataset_id)</p></td>
+<td><p>Construct a dataset from fully-qualified dataset ID.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.model" title="google.cloud.bigquery.dataset.Dataset.model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model</span></code></a>(model_id)</td>
-<td>Constructs a ModelReference.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.model" title="google.cloud.bigquery.dataset.Dataset.model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model</span></code></a>(model_id)</p></td>
+<td><p>Constructs a ModelReference.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.routine" title="google.cloud.bigquery.dataset.Dataset.routine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">routine</span></code></a>(routine_id)</td>
-<td>Constructs a RoutineReference.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.routine" title="google.cloud.bigquery.dataset.Dataset.routine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">routine</span></code></a>(routine_id)</p></td>
+<td><p>Constructs a RoutineReference.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.table" title="google.cloud.bigquery.dataset.Dataset.table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">table</span></code></a>(table_id)</td>
-<td>Constructs a TableReference.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.table" title="google.cloud.bigquery.dataset.Dataset.table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">table</span></code></a>(table_id)</p></td>
+<td><p>Constructs a TableReference.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.to_api_repr" title="google.cloud.bigquery.dataset.Dataset.to_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_api_repr</span></code></a>()</td>
-<td>Construct the API resource representation of this dataset</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.to_api_repr" title="google.cloud.bigquery.dataset.Dataset.to_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_api_repr</span></code></a>()</p></td>
+<td><p>Construct the API resource representation of this dataset</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.access_entries" title="google.cloud.bigquery.dataset.Dataset.access_entries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">access_entries</span></code></a></td>
-<td>Dataset’s access entries.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.access_entries" title="google.cloud.bigquery.dataset.Dataset.access_entries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">access_entries</span></code></a></p></td>
+<td><p>Dataset’s access entries.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.created" title="google.cloud.bigquery.dataset.Dataset.created"><code class="xref py py-obj docutils literal notranslate"><span class="pre">created</span></code></a></td>
-<td>Datetime at which the dataset was created (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.created" title="google.cloud.bigquery.dataset.Dataset.created"><code class="xref py py-obj docutils literal notranslate"><span class="pre">created</span></code></a></p></td>
+<td><p>Datetime at which the dataset was created (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.dataset_id" title="google.cloud.bigquery.dataset.Dataset.dataset_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dataset_id</span></code></a></td>
-<td>Dataset ID.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.dataset_id" title="google.cloud.bigquery.dataset.Dataset.dataset_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dataset_id</span></code></a></p></td>
+<td><p>Dataset ID.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.default_table_expiration_ms" title="google.cloud.bigquery.dataset.Dataset.default_table_expiration_ms"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_table_expiration_ms</span></code></a></td>
-<td>Default expiration time for tables in the dataset (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.default_table_expiration_ms" title="google.cloud.bigquery.dataset.Dataset.default_table_expiration_ms"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_table_expiration_ms</span></code></a></p></td>
+<td><p>Default expiration time for tables in the dataset (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.description" title="google.cloud.bigquery.dataset.Dataset.description"><code class="xref py py-obj docutils literal notranslate"><span class="pre">description</span></code></a></td>
-<td>Description of the dataset as set by the user (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.description" title="google.cloud.bigquery.dataset.Dataset.description"><code class="xref py py-obj docutils literal notranslate"><span class="pre">description</span></code></a></p></td>
+<td><p>Description of the dataset as set by the user (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.etag" title="google.cloud.bigquery.dataset.Dataset.etag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">etag</span></code></a></td>
-<td>ETag for the dataset resource (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.etag" title="google.cloud.bigquery.dataset.Dataset.etag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">etag</span></code></a></p></td>
+<td><p>ETag for the dataset resource (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.friendly_name" title="google.cloud.bigquery.dataset.Dataset.friendly_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">friendly_name</span></code></a></td>
-<td>Title of the dataset as set by the user (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.friendly_name" title="google.cloud.bigquery.dataset.Dataset.friendly_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">friendly_name</span></code></a></p></td>
+<td><p>Title of the dataset as set by the user (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.full_dataset_id" title="google.cloud.bigquery.dataset.Dataset.full_dataset_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">full_dataset_id</span></code></a></td>
-<td>ID for the dataset resource (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server)</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.full_dataset_id" title="google.cloud.bigquery.dataset.Dataset.full_dataset_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">full_dataset_id</span></code></a></p></td>
+<td><p>ID for the dataset resource (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server)</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.labels" title="google.cloud.bigquery.dataset.Dataset.labels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">labels</span></code></a></td>
-<td>Labels for the dataset.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.labels" title="google.cloud.bigquery.dataset.Dataset.labels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">labels</span></code></a></p></td>
+<td><p>Labels for the dataset.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.location" title="google.cloud.bigquery.dataset.Dataset.location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">location</span></code></a></td>
-<td>Location in which the dataset is hosted as set by the user (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.location" title="google.cloud.bigquery.dataset.Dataset.location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">location</span></code></a></p></td>
+<td><p>Location in which the dataset is hosted as set by the user (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.modified" title="google.cloud.bigquery.dataset.Dataset.modified"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modified</span></code></a></td>
-<td>Datetime at which the dataset was last modified (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.modified" title="google.cloud.bigquery.dataset.Dataset.modified"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modified</span></code></a></p></td>
+<td><p>Datetime at which the dataset was last modified (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.path" title="google.cloud.bigquery.dataset.Dataset.path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">path</span></code></a></td>
-<td>URL path for the dataset based on project and dataset ID.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.path" title="google.cloud.bigquery.dataset.Dataset.path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">path</span></code></a></p></td>
+<td><p>URL path for the dataset based on project and dataset ID.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.project" title="google.cloud.bigquery.dataset.Dataset.project"><code class="xref py py-obj docutils literal notranslate"><span class="pre">project</span></code></a></td>
-<td>Project ID of the project bound to the dataset.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.project" title="google.cloud.bigquery.dataset.Dataset.project"><code class="xref py py-obj docutils literal notranslate"><span class="pre">project</span></code></a></p></td>
+<td><p>Project ID of the project bound to the dataset.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.reference" title="google.cloud.bigquery.dataset.Dataset.reference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reference</span></code></a></td>
-<td>A reference to this dataset.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.reference" title="google.cloud.bigquery.dataset.Dataset.reference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reference</span></code></a></p></td>
+<td><p>A reference to this dataset.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.self_link" title="google.cloud.bigquery.dataset.Dataset.self_link"><code class="xref py py-obj docutils literal notranslate"><span class="pre">self_link</span></code></a></td>
-<td>URL for the dataset resource (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset.self_link" title="google.cloud.bigquery.dataset.Dataset.self_link"><code class="xref py py-obj docutils literal notranslate"><span class="pre">self_link</span></code></a></p></td>
+<td><p>URL for the dataset resource (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</p></td>
 </tr>
 </tbody>
 </table>
@@ -122,388 +120,334 @@
 <hr>
 <p><dl class="class">
 <dt id="google.cloud.bigquery.dataset.Dataset">
-<em class="property">class </em><code class="descclassname">google.cloud.bigquery.dataset.</code><code class="descname">Dataset</code><span class="sig-paren">(</span><em>dataset_ref</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/dataset.html#Dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.bigquery.dataset.</code><code class="sig-name descname">Dataset</code><span class="sig-paren">(</span><em class="sig-param">dataset_ref</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/dataset.html#Dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Datasets are containers for tables.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets">https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset_ref</strong> (Union[             <a class="reference internal" href="google.cloud.bigquery.dataset.DatasetReference.html#google.cloud.bigquery.dataset.DatasetReference" title="google.cloud.bigquery.dataset.DatasetReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">DatasetReference</span></code></a>,             str,         ]) – A pointer to a dataset. If <code class="docutils literal notranslate"><span class="pre">dataset_ref</span></code> is a string, it must
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dataset_ref</strong> (Union[             <a class="reference internal" href="google.cloud.bigquery.dataset.DatasetReference.html#google.cloud.bigquery.dataset.DatasetReference" title="google.cloud.bigquery.dataset.DatasetReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">DatasetReference</span></code></a>,             str,         ]) – A pointer to a dataset. If <code class="docutils literal notranslate"><span class="pre">dataset_ref</span></code> is a string, it must
 include both the project ID and the dataset ID, separated by
-<code class="docutils literal notranslate"><span class="pre">.</span></code>.</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
+<code class="docutils literal notranslate"><span class="pre">.</span></code>.</p>
+</dd>
+</dl>
+<dl class="method">
 <dt id="google.cloud.bigquery.dataset.Dataset.access_entries">
-<code class="descname">access_entries</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.access_entries" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">access_entries</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.access_entries" title="Permalink to this definition">#</a></dt>
 <dd><p>Dataset’s access
 entries.</p>
 <p><code class="docutils literal notranslate"><span class="pre">role</span></code> augments the entity type and must be present <strong>unless</strong> the
 entity type is <code class="docutils literal notranslate"><span class="pre">view</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first simple">
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code></a> – If ‘value’ is not a sequence</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If any item in the sequence is not an
-<a class="reference internal" href="google.cloud.bigquery.dataset.AccessEntry.html#google.cloud.bigquery.dataset.AccessEntry" title="google.cloud.bigquery.dataset.AccessEntry"><code class="xref py py-class docutils literal notranslate"><span class="pre">AccessEntry</span></code></a>.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.7)"><strong>TypeError</strong></a> – If ‘value’ is not a sequence</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If any item in the sequence is not an
+    <a class="reference internal" href="google.cloud.bigquery.dataset.AccessEntry.html#google.cloud.bigquery.dataset.AccessEntry" title="google.cloud.bigquery.dataset.AccessEntry"><code class="xref py py-class docutils literal notranslate"><span class="pre">AccessEntry</span></code></a>.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body"><p class="first last">List[<a class="reference internal" href="google.cloud.bigquery.dataset.AccessEntry.html#google.cloud.bigquery.dataset.AccessEntry" title="google.cloud.bigquery.dataset.AccessEntry">google.cloud.bigquery.dataset.AccessEntry</a>]</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p>List[<a class="reference internal" href="google.cloud.bigquery.dataset.AccessEntry.html#google.cloud.bigquery.dataset.AccessEntry" title="google.cloud.bigquery.dataset.AccessEntry">google.cloud.bigquery.dataset.AccessEntry</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.dataset.Dataset.created">
-<code class="descname">created</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.created" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">created</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.created" title="Permalink to this definition">#</a></dt>
 <dd><p>Datetime at which the dataset was
 created (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)">datetime.datetime</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)">datetime.datetime</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.dataset.Dataset.dataset_id">
-<code class="descname">dataset_id</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.dataset_id" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">dataset_id</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.dataset_id" title="Permalink to this definition">#</a></dt>
 <dd><p>Dataset ID.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.dataset.Dataset.default_table_expiration_ms">
-<code class="descname">default_table_expiration_ms</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.default_table_expiration_ms" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">default_table_expiration_ms</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.default_table_expiration_ms" title="Permalink to this definition">#</a></dt>
 <dd><p>Default expiration time for tables in the dataset
 (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – For invalid value types.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – For invalid value types.</p>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.dataset.Dataset.description">
-<code class="descname">description</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.description" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">description</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.description" title="Permalink to this definition">#</a></dt>
 <dd><p>Description of the dataset as set by the user
 (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – for invalid value types.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – for invalid value types.</p>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.dataset.Dataset.etag">
-<code class="descname">etag</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.etag" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">etag</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.etag" title="Permalink to this definition">#</a></dt>
 <dd><p>ETag for the dataset resource (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until
 set from the server).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.dataset.Dataset.friendly_name">
-<code class="descname">friendly_name</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.friendly_name" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">friendly_name</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.friendly_name" title="Permalink to this definition">#</a></dt>
 <dd><p>Title of the dataset as set by the user
 (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – for invalid value types.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – for invalid value types.</p>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="google.cloud.bigquery.dataset.Dataset.from_api_repr">
-<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/dataset.html#Dataset.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.from_api_repr" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">from_api_repr</code><span class="sig-paren">(</span><em class="sig-param">resource</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/dataset.html#Dataset.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.from_api_repr" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory: construct a dataset given its API representation</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>(</strong><strong>Dict</strong><strong>[</strong><strong>str</strong> (<em>resource</em>) – object]):
-Dataset resource representation returned from the API</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Dataset parsed from <code class="docutils literal notranslate"><span class="pre">resource</span></code>.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset" title="google.cloud.bigquery.dataset.Dataset">google.cloud.bigquery.dataset.Dataset</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>(</strong><strong>Dict</strong><strong>[</strong><strong>str</strong> (<em>resource</em>) – object]):
+Dataset resource representation returned from the API</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dataset parsed from <code class="docutils literal notranslate"><span class="pre">resource</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset" title="google.cloud.bigquery.dataset.Dataset">google.cloud.bigquery.dataset.Dataset</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="google.cloud.bigquery.dataset.Dataset.from_string">
-<em class="property">classmethod </em><code class="descname">from_string</code><span class="sig-paren">(</span><em>full_dataset_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/dataset.html#Dataset.from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.from_string" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">from_string</code><span class="sig-paren">(</span><em class="sig-param">full_dataset_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/dataset.html#Dataset.from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.from_string" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct a dataset from fully-qualified dataset ID.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>full_dataset_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – A fully-qualified dataset ID in standard SQL format. Must
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>full_dataset_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – A fully-qualified dataset ID in standard SQL format. Must
 included both the project ID and the dataset ID, separated by
-<code class="docutils literal notranslate"><span class="pre">.</span></code>.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Dataset parsed from <code class="docutils literal notranslate"><span class="pre">full_dataset_id</span></code>.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="../../automl/gapic/v1beta1/types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset">Dataset</a></td>
-</tr>
-</tbody>
-</table>
+<code class="docutils literal notranslate"><span class="pre">.</span></code>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dataset parsed from <code class="docutils literal notranslate"><span class="pre">full_dataset_id</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../automl/gapic/v1beta1/types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset">Dataset</a></p>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s1">&#39;my-project-id.some_dataset&#39;</span><span class="p">)</span>
 <span class="go">Dataset(DatasetReference(&#39;my-project-id&#39;, &#39;some_dataset&#39;))</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If <code class="docutils literal notranslate"><span class="pre">full_dataset_id</span></code> is not a fully-qualified dataset ID in
-standard SQL format.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">full_dataset_id</span></code> is not a fully-qualified dataset ID in
+    standard SQL format.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.dataset.Dataset.full_dataset_id">
-<code class="descname">full_dataset_id</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.full_dataset_id" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">full_dataset_id</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.full_dataset_id" title="Permalink to this definition">#</a></dt>
 <dd><p>ID for the dataset resource (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until
 set from the server)</p>
 <p>In the format <code class="docutils literal notranslate"><span class="pre">project_id:dataset_id</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.dataset.Dataset.labels">
-<code class="descname">labels</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.labels" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">labels</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.labels" title="Permalink to this definition">#</a></dt>
 <dd><p>Labels for the dataset.</p>
 <p>This method always returns a dict. To change a dataset’s labels,
 modify the dict, then call
 <a class="reference internal" href="google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.update_dataset" title="google.cloud.bigquery.client.Client.update_dataset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">google.cloud.bigquery.client.Client.update_dataset()</span></code></a>. To delete
 a label, set its value to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> before updating.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – for invalid value types.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – for invalid value types.</p>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.dataset.Dataset.location">
-<code class="descname">location</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.location" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">location</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.location" title="Permalink to this definition">#</a></dt>
 <dd><p>Location in which the dataset is hosted as set by
 the user (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – for invalid value types.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – for invalid value types.</p>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigquery.dataset.Dataset.model">
-<code class="descname">model</code><span class="sig-paren">(</span><em>model_id</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.model" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">model</code><span class="sig-paren">(</span><em class="sig-param">model_id</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.model" title="Permalink to this definition">#</a></dt>
 <dd><p>Constructs a ModelReference.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>model_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – the ID of the model.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A ModelReference for a model in this dataset.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="google.cloud.bigquery.model.ModelReference.html#google.cloud.bigquery.model.ModelReference" title="google.cloud.bigquery.model.ModelReference">google.cloud.bigquery.model.ModelReference</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>model_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – the ID of the model.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A ModelReference for a model in this dataset.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="google.cloud.bigquery.model.ModelReference.html#google.cloud.bigquery.model.ModelReference" title="google.cloud.bigquery.model.ModelReference">google.cloud.bigquery.model.ModelReference</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.dataset.Dataset.modified">
-<code class="descname">modified</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.modified" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">modified</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.modified" title="Permalink to this definition">#</a></dt>
 <dd><p>Datetime at which the dataset was
 last modified (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)">datetime.datetime</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)">datetime.datetime</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.dataset.Dataset.path">
-<code class="descname">path</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.path" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">path</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.path" title="Permalink to this definition">#</a></dt>
 <dd><p>URL path for the dataset based on project and dataset ID.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.dataset.Dataset.project">
-<code class="descname">project</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.project" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">project</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.project" title="Permalink to this definition">#</a></dt>
 <dd><p>Project ID of the project bound to the dataset.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.dataset.Dataset.reference">
-<code class="descname">reference</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.reference" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">reference</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.reference" title="Permalink to this definition">#</a></dt>
 <dd><p>A reference to this
 dataset.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="google.cloud.bigquery.dataset.DatasetReference.html#google.cloud.bigquery.dataset.DatasetReference" title="google.cloud.bigquery.dataset.DatasetReference">google.cloud.bigquery.dataset.DatasetReference</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="google.cloud.bigquery.dataset.DatasetReference.html#google.cloud.bigquery.dataset.DatasetReference" title="google.cloud.bigquery.dataset.DatasetReference">google.cloud.bigquery.dataset.DatasetReference</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigquery.dataset.Dataset.routine">
-<code class="descname">routine</code><span class="sig-paren">(</span><em>routine_id</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.routine" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">routine</code><span class="sig-paren">(</span><em class="sig-param">routine_id</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.routine" title="Permalink to this definition">#</a></dt>
 <dd><p>Constructs a RoutineReference.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>routine_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – the ID of the routine.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A RoutineReference for a routine in this dataset.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="google.cloud.bigquery.routine.RoutineReference.html#google.cloud.bigquery.routine.RoutineReference" title="google.cloud.bigquery.routine.RoutineReference">google.cloud.bigquery.routine.RoutineReference</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>routine_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – the ID of the routine.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A RoutineReference for a routine in this dataset.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="google.cloud.bigquery.routine.RoutineReference.html#google.cloud.bigquery.routine.RoutineReference" title="google.cloud.bigquery.routine.RoutineReference">google.cloud.bigquery.routine.RoutineReference</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.dataset.Dataset.self_link">
-<code class="descname">self_link</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.self_link" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">self_link</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.self_link" title="Permalink to this definition">#</a></dt>
 <dd><p>URL for the dataset resource (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until
 set from the server).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigquery.dataset.Dataset.table">
-<code class="descname">table</code><span class="sig-paren">(</span><em>table_id</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.table" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">table</code><span class="sig-paren">(</span><em class="sig-param">table_id</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.table" title="Permalink to this definition">#</a></dt>
 <dd><p>Constructs a TableReference.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>table_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The ID of the table.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A table reference for a table in this dataset.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference">google.cloud.bigquery.table.TableReference</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>table_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The ID of the table.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A table reference for a table in this dataset.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference">google.cloud.bigquery.table.TableReference</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigquery.dataset.Dataset.to_api_repr">
-<code class="descname">to_api_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/dataset.html#Dataset.to_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.to_api_repr" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">to_api_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/dataset.html#Dataset.to_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.to_api_repr" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct the API resource representation of this dataset</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The dataset represented as an API resource</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)">object</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The dataset represented as an API resource</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)">object</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -598,13 +542,11 @@ set from the server).</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -617,7 +559,7 @@ set from the server).</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

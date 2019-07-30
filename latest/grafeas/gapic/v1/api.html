@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Grafeas API &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Client for Grafeas API &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -39,7 +37,7 @@
 <span id="client-for-grafeas-api"></span><h1>Client for Grafeas API<a class="headerlink" href="#module-grafeas.grafeas_v1" title="Permalink to this headline">#</a></h1>
 <dl class="class">
 <dt id="grafeas.grafeas_v1.GrafeasClient">
-<em class="property">class </em><code class="descclassname">grafeas.grafeas_v1.</code><code class="descname">GrafeasClient</code><span class="sig-paren">(</span><em>transport</em>, <em>client_config=None</em>, <em>client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1.html#GrafeasClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">grafeas.grafeas_v1.</code><code class="sig-name descname">GrafeasClient</code><span class="sig-paren">(</span><em class="sig-param">transport</em>, <em class="sig-param">client_config=None</em>, <em class="sig-param">client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1.html#GrafeasClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient" title="Permalink to this definition">#</a></dt>
 <dd><p><a class="reference external" href="https://grafeas.io">Grafeas</a> API.</p>
 <p>Retrieves analysis results of Cloud components such as Docker container
 images.</p>
@@ -53,32 +51,28 @@ same note.</p>
 case, there would be one note for the vulnerability and an occurrence
 for each image with the vulnerability referring to that note.</p>
 <p>Constructor.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>transport</strong> (<em>GrafeasGrpcTransport</em>) – A transport
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>transport</strong> (<em>GrafeasGrpcTransport</em>) – A transport
 instance, responsible for actually making the API calls.
 The default transport uses the gRPC protocol.
 This argument may also be a callable which returns a
 transport instance. Callables will be sent the credentials
 as the first argument and the default transport class as
-the second argument.</li>
-<li><strong>client_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – DEPRECATED. A dictionary of call options for
-each method. If not specified, the default configuration is used.</li>
-<li><strong>client_info</strong> (<a class="reference internal" href="../../../core/client_info.html#google.api_core.gapic_v1.client_info.ClientInfo" title="google.api_core.gapic_v1.client_info.ClientInfo"><em>google.api_core.gapic_v1.client_info.ClientInfo</em></a>) – The client info used to send a user-agent string along with
+the second argument.</p></li>
+<li><p><strong>client_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – DEPRECATED. A dictionary of call options for
+each method. If not specified, the default configuration is used.</p></li>
+<li><p><strong>client_info</strong> (<a class="reference internal" href="../../../core/client_info.html#google.api_core.gapic_v1.client_info.ClientInfo" title="google.api_core.gapic_v1.client_info.ClientInfo"><em>google.api_core.gapic_v1.client_info.ClientInfo</em></a>) – The client info used to send a user-agent string along with
 API requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then default info will be used.
 Generally, you only need to set this if you’re developing
-your own client library.</li>
+your own client library.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="grafeas.grafeas_v1.GrafeasClient.batch_create_notes">
-<code class="descname">batch_create_notes</code><span class="sig-paren">(</span><em>parent</em>, <em>notes</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.batch_create_notes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.batch_create_notes" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">batch_create_notes</code><span class="sig-paren">(</span><em class="sig-param">parent</em>, <em class="sig-param">notes</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.batch_create_notes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.batch_create_notes" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates new notes in batch.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">grafeas</span> <span class="k">import</span> <span class="n">grafeas_v1</span>
@@ -97,47 +91,43 @@ your own client library.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">batch_create_notes</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">notes</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the project in the form of <code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]</span></code>, under
-which the notes are to be created.</li>
-<li><strong>notes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><em>str -&gt; Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Note" title="grafeas.grafeas_v1.types.Note"><em>Note</em></a><em>]</em><em>]</em>) – <p>The notes to create. Max allowed length is 1000.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the project in the form of <code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]</span></code>, under
+which the notes are to be created.</p></li>
+<li><p><strong>notes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><em>str -&gt; Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Note" title="grafeas.grafeas_v1.types.Note"><em>Note</em></a><em>]</em><em>]</em>) – <p>The notes to create. Max allowed length is 1000.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Note" title="grafeas.grafeas_v1.types.Note"><code class="xref py py-class docutils literal notranslate"><span class="pre">Note</span></code></a></p>
-</li>
-<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+</p></li>
+<li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</li>
-<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+be retried.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
-specified, the timeout applies to each individual attempt.</li>
-<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
-that is provided to the method.</li>
+specified, the timeout applies to each individual attempt.</p></li>
+<li><p><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.BatchCreateNotesResponse" title="grafeas.grafeas_v1.types.BatchCreateNotesResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">BatchCreateNotesResponse</span></code></a> instance.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
-failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
-to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.BatchCreateNotesResponse" title="grafeas.grafeas_v1.types.BatchCreateNotesResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">BatchCreateNotesResponse</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the parameters are invalid.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="grafeas.grafeas_v1.GrafeasClient.batch_create_occurrences">
-<code class="descname">batch_create_occurrences</code><span class="sig-paren">(</span><em>parent</em>, <em>occurrences</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.batch_create_occurrences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.batch_create_occurrences" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">batch_create_occurrences</code><span class="sig-paren">(</span><em class="sig-param">parent</em>, <em class="sig-param">occurrences</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.batch_create_occurrences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.batch_create_occurrences" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates new occurrences in batch.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">grafeas</span> <span class="k">import</span> <span class="n">grafeas_v1</span>
@@ -156,47 +146,43 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">batch_create_occurrences</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">occurrences</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the project in the form of <code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]</span></code>, under
-which the occurrences are to be created.</li>
-<li><strong>occurrences</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Occurrence" title="grafeas.grafeas_v1.types.Occurrence"><em>Occurrence</em></a><em>]</em><em>]</em>) – <p>The occurrences to create. Max allowed length is 1000.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the project in the form of <code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]</span></code>, under
+which the occurrences are to be created.</p></li>
+<li><p><strong>occurrences</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Occurrence" title="grafeas.grafeas_v1.types.Occurrence"><em>Occurrence</em></a><em>]</em><em>]</em>) – <p>The occurrences to create. Max allowed length is 1000.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Occurrence" title="grafeas.grafeas_v1.types.Occurrence"><code class="xref py py-class docutils literal notranslate"><span class="pre">Occurrence</span></code></a></p>
-</li>
-<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+</p></li>
+<li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</li>
-<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+be retried.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
-specified, the timeout applies to each individual attempt.</li>
-<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
-that is provided to the method.</li>
+specified, the timeout applies to each individual attempt.</p></li>
+<li><p><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.BatchCreateOccurrencesResponse" title="grafeas.grafeas_v1.types.BatchCreateOccurrencesResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">BatchCreateOccurrencesResponse</span></code></a> instance.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
-failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
-to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.BatchCreateOccurrencesResponse" title="grafeas.grafeas_v1.types.BatchCreateOccurrencesResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">BatchCreateOccurrencesResponse</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the parameters are invalid.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="grafeas.grafeas_v1.GrafeasClient.create_note">
-<code class="descname">create_note</code><span class="sig-paren">(</span><em>parent</em>, <em>note_id</em>, <em>note</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.create_note"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.create_note" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">create_note</code><span class="sig-paren">(</span><em class="sig-param">parent</em>, <em class="sig-param">note_id</em>, <em class="sig-param">note</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.create_note"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.create_note" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a new note.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">grafeas</span> <span class="k">import</span> <span class="n">grafeas_v1</span>
@@ -218,48 +204,44 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_note</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">note_id</span><span class="p">,</span> <span class="n">note</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the project in the form of <code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]</span></code>, under
-which the note is to be created.</li>
-<li><strong>note_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The ID to use for this note.</li>
-<li><strong>note</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Note" title="grafeas.grafeas_v1.types.Note"><em>Note</em></a><em>]</em>) – <p>The note to create.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the project in the form of <code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]</span></code>, under
+which the note is to be created.</p></li>
+<li><p><strong>note_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The ID to use for this note.</p></li>
+<li><p><strong>note</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Note" title="grafeas.grafeas_v1.types.Note"><em>Note</em></a><em>]</em>) – <p>The note to create.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Note" title="grafeas.grafeas_v1.types.Note"><code class="xref py py-class docutils literal notranslate"><span class="pre">Note</span></code></a></p>
-</li>
-<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+</p></li>
+<li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</li>
-<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+be retried.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
-specified, the timeout applies to each individual attempt.</li>
-<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
-that is provided to the method.</li>
+specified, the timeout applies to each individual attempt.</p></li>
+<li><p><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Note" title="grafeas.grafeas_v1.types.Note"><code class="xref py py-class docutils literal notranslate"><span class="pre">Note</span></code></a> instance.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
-failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
-to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Note" title="grafeas.grafeas_v1.types.Note"><code class="xref py py-class docutils literal notranslate"><span class="pre">Note</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the parameters are invalid.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="grafeas.grafeas_v1.GrafeasClient.create_occurrence">
-<code class="descname">create_occurrence</code><span class="sig-paren">(</span><em>parent</em>, <em>occurrence</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.create_occurrence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.create_occurrence" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">create_occurrence</code><span class="sig-paren">(</span><em class="sig-param">parent</em>, <em class="sig-param">occurrence</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.create_occurrence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.create_occurrence" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a new occurrence.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">grafeas</span> <span class="k">import</span> <span class="n">grafeas_v1</span>
@@ -278,47 +260,43 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_occurrence</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">occurrence</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the project in the form of <code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]</span></code>, under
-which the occurrence is to be created.</li>
-<li><strong>occurrence</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Occurrence" title="grafeas.grafeas_v1.types.Occurrence"><em>Occurrence</em></a><em>]</em>) – <p>The occurrence to create.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the project in the form of <code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]</span></code>, under
+which the occurrence is to be created.</p></li>
+<li><p><strong>occurrence</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Occurrence" title="grafeas.grafeas_v1.types.Occurrence"><em>Occurrence</em></a><em>]</em>) – <p>The occurrence to create.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Occurrence" title="grafeas.grafeas_v1.types.Occurrence"><code class="xref py py-class docutils literal notranslate"><span class="pre">Occurrence</span></code></a></p>
-</li>
-<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+</p></li>
+<li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</li>
-<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+be retried.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
-specified, the timeout applies to each individual attempt.</li>
-<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
-that is provided to the method.</li>
+specified, the timeout applies to each individual attempt.</p></li>
+<li><p><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Occurrence" title="grafeas.grafeas_v1.types.Occurrence"><code class="xref py py-class docutils literal notranslate"><span class="pre">Occurrence</span></code></a> instance.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
-failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
-to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Occurrence" title="grafeas.grafeas_v1.types.Occurrence"><code class="xref py py-class docutils literal notranslate"><span class="pre">Occurrence</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the parameters are invalid.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="grafeas.grafeas_v1.GrafeasClient.delete_note">
-<code class="descname">delete_note</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.delete_note"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.delete_note" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">delete_note</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.delete_note"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.delete_note" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes the specified note.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">grafeas</span> <span class="k">import</span> <span class="n">grafeas_v1</span>
@@ -334,40 +312,36 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">delete_note</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the note in the form of
-<code class="docutils literal notranslate"><span class="pre">projects/[PROVIDER_ID]/notes/[NOTE_ID]</span></code>.</li>
-<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the note in the form of
+<code class="docutils literal notranslate"><span class="pre">projects/[PROVIDER_ID]/notes/[NOTE_ID]</span></code>.</p></li>
+<li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</li>
-<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+be retried.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
-specified, the timeout applies to each individual attempt.</li>
-<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
-that is provided to the method.</li>
+specified, the timeout applies to each individual attempt.</p></li>
+<li><p><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
-failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
-to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the parameters are invalid.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="grafeas.grafeas_v1.GrafeasClient.delete_occurrence">
-<code class="descname">delete_occurrence</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.delete_occurrence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.delete_occurrence" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">delete_occurrence</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.delete_occurrence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.delete_occurrence" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes the specified occurrence. For example, use this method to delete an
 occurrence when the occurrence is no longer applicable for the given
 resource.</p>
@@ -385,45 +359,41 @@ resource.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">delete_occurrence</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the occurrence in the form of
-<code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]</span></code>.</li>
-<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the occurrence in the form of
+<code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]</span></code>.</p></li>
+<li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</li>
-<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+be retried.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
-specified, the timeout applies to each individual attempt.</li>
-<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
-that is provided to the method.</li>
+specified, the timeout applies to each individual attempt.</p></li>
+<li><p><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
-failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
-to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the parameters are invalid.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="grafeas.grafeas_v1.GrafeasClient.enums">
-<code class="descname">enums</code><em class="property"> = &lt;module 'grafeas.grafeas_v1.gapic.enums' from '/var/code/gcp/.nox/docs-3-6/lib/python3.6/site-packages/grafeas/grafeas_v1/gapic/enums.py'&gt;</em><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.enums" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">enums</code><em class="property"> = &lt;module 'grafeas.grafeas_v1.gapic.enums' from '/var/code/gcp/.nox/docs-3-6/lib/python3.6/site-packages/grafeas/grafeas_v1/gapic/enums.py'&gt;</em><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.enums" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="grafeas.grafeas_v1.GrafeasClient.get_note">
-<code class="descname">get_note</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.get_note"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.get_note" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">get_note</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.get_note"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.get_note" title="Permalink to this definition">#</a></dt>
 <dd><p>Gets the specified note.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">grafeas</span> <span class="k">import</span> <span class="n">grafeas_v1</span>
@@ -439,43 +409,39 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_note</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the note in the form of
-<code class="docutils literal notranslate"><span class="pre">projects/[PROVIDER_ID]/notes/[NOTE_ID]</span></code>.</li>
-<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the note in the form of
+<code class="docutils literal notranslate"><span class="pre">projects/[PROVIDER_ID]/notes/[NOTE_ID]</span></code>.</p></li>
+<li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</li>
-<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+be retried.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
-specified, the timeout applies to each individual attempt.</li>
-<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
-that is provided to the method.</li>
+specified, the timeout applies to each individual attempt.</p></li>
+<li><p><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Note" title="grafeas.grafeas_v1.types.Note"><code class="xref py py-class docutils literal notranslate"><span class="pre">Note</span></code></a> instance.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
-failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
-to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Note" title="grafeas.grafeas_v1.types.Note"><code class="xref py py-class docutils literal notranslate"><span class="pre">Note</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the parameters are invalid.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="grafeas.grafeas_v1.GrafeasClient.get_occurrence">
-<code class="descname">get_occurrence</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.get_occurrence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.get_occurrence" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">get_occurrence</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.get_occurrence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.get_occurrence" title="Permalink to this definition">#</a></dt>
 <dd><p>Gets the specified occurrence.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">grafeas</span> <span class="k">import</span> <span class="n">grafeas_v1</span>
@@ -491,43 +457,39 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_occurrence</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the occurrence in the form of
-<code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]</span></code>.</li>
-<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the occurrence in the form of
+<code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]</span></code>.</p></li>
+<li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</li>
-<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+be retried.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
-specified, the timeout applies to each individual attempt.</li>
-<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
-that is provided to the method.</li>
+specified, the timeout applies to each individual attempt.</p></li>
+<li><p><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Occurrence" title="grafeas.grafeas_v1.types.Occurrence"><code class="xref py py-class docutils literal notranslate"><span class="pre">Occurrence</span></code></a> instance.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
-failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
-to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Occurrence" title="grafeas.grafeas_v1.types.Occurrence"><code class="xref py py-class docutils literal notranslate"><span class="pre">Occurrence</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the parameters are invalid.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="grafeas.grafeas_v1.GrafeasClient.get_occurrence_note">
-<code class="descname">get_occurrence_note</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.get_occurrence_note"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.get_occurrence_note" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">get_occurrence_note</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.get_occurrence_note"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.get_occurrence_note" title="Permalink to this definition">#</a></dt>
 <dd><p>Gets the note attached to the specified occurrence. Consumer projects can
 use this method to get a note that belongs to a provider project.</p>
 <p class="rubric">Example</p>
@@ -544,43 +506,39 @@ use this method to get a note that belongs to a provider project.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_occurrence_note</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the occurrence in the form of
-<code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]</span></code>.</li>
-<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the occurrence in the form of
+<code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]</span></code>.</p></li>
+<li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</li>
-<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+be retried.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
-specified, the timeout applies to each individual attempt.</li>
-<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
-that is provided to the method.</li>
+specified, the timeout applies to each individual attempt.</p></li>
+<li><p><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Note" title="grafeas.grafeas_v1.types.Note"><code class="xref py py-class docutils literal notranslate"><span class="pre">Note</span></code></a> instance.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
-failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
-to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Note" title="grafeas.grafeas_v1.types.Note"><code class="xref py py-class docutils literal notranslate"><span class="pre">Note</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the parameters are invalid.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="grafeas.grafeas_v1.GrafeasClient.list_note_occurrences">
-<code class="descname">list_note_occurrences</code><span class="sig-paren">(</span><em>name</em>, <em>filter_=None</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.list_note_occurrences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.list_note_occurrences" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">list_note_occurrences</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">filter_=None</em>, <em class="sig-param">page_size=None</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.list_note_occurrences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.list_note_occurrences" title="Permalink to this definition">#</a></dt>
 <dd><p>Lists occurrences referencing the specified note. Provider projects can use
 this method to get all occurrences across consumer projects referencing the
 specified note.</p>
@@ -610,52 +568,48 @@ specified note.</p>
 <span class="gp">... </span>        <span class="k">pass</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the note to list occurrences for in the form of
-<code class="docutils literal notranslate"><span class="pre">projects/[PROVIDER_ID]/notes/[NOTE_ID]</span></code>.</li>
-<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The filter expression.</li>
-<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the note to list occurrences for in the form of
+<code class="docutils literal notranslate"><span class="pre">projects/[PROVIDER_ID]/notes/[NOTE_ID]</span></code>.</p></li>
+<li><p><strong>filter_</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The filter expression.</p></li>
+<li><p><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
 underlying API response. If page streaming is performed per-
 resource, this parameter does not affect the return value. If page
 streaming is performed per-page, this determines the maximum number
-of resources in a page.</li>
-<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+of resources in a page.</p></li>
+<li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</li>
-<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+be retried.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
-specified, the timeout applies to each individual attempt.</li>
-<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
-that is provided to the method.</li>
+specified, the timeout applies to each individual attempt.</p></li>
+<li><p><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code> instance.
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code> instance.
 An iterable of <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Occurrence" title="grafeas.grafeas_v1.types.Occurrence"><code class="xref py py-class docutils literal notranslate"><span class="pre">Occurrence</span></code></a> instances.
 You can also iterate over the pages of the response
 using its <cite>pages</cite> property.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
-failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
-to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the parameters are invalid.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="grafeas.grafeas_v1.GrafeasClient.list_notes">
-<code class="descname">list_notes</code><span class="sig-paren">(</span><em>parent</em>, <em>filter_=None</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.list_notes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.list_notes" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">list_notes</code><span class="sig-paren">(</span><em class="sig-param">parent</em>, <em class="sig-param">filter_=None</em>, <em class="sig-param">page_size=None</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.list_notes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.list_notes" title="Permalink to this definition">#</a></dt>
 <dd><p>Lists notes for the specified project.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">grafeas</span> <span class="k">import</span> <span class="n">grafeas_v1</span>
@@ -683,52 +637,48 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">... </span>        <span class="k">pass</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the project to list notes for in the form of
-<code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]</span></code>.</li>
-<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The filter expression.</li>
-<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the project to list notes for in the form of
+<code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]</span></code>.</p></li>
+<li><p><strong>filter_</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The filter expression.</p></li>
+<li><p><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
 underlying API response. If page streaming is performed per-
 resource, this parameter does not affect the return value. If page
 streaming is performed per-page, this determines the maximum number
-of resources in a page.</li>
-<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+of resources in a page.</p></li>
+<li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</li>
-<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+be retried.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
-specified, the timeout applies to each individual attempt.</li>
-<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
-that is provided to the method.</li>
+specified, the timeout applies to each individual attempt.</p></li>
+<li><p><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code> instance.
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code> instance.
 An iterable of <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Note" title="grafeas.grafeas_v1.types.Note"><code class="xref py py-class docutils literal notranslate"><span class="pre">Note</span></code></a> instances.
 You can also iterate over the pages of the response
 using its <cite>pages</cite> property.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
-failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
-to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the parameters are invalid.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="grafeas.grafeas_v1.GrafeasClient.list_occurrences">
-<code class="descname">list_occurrences</code><span class="sig-paren">(</span><em>parent</em>, <em>filter_=None</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.list_occurrences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.list_occurrences" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">list_occurrences</code><span class="sig-paren">(</span><em class="sig-param">parent</em>, <em class="sig-param">filter_=None</em>, <em class="sig-param">page_size=None</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.list_occurrences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.list_occurrences" title="Permalink to this definition">#</a></dt>
 <dd><p>Lists occurrences for the specified project.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">grafeas</span> <span class="k">import</span> <span class="n">grafeas_v1</span>
@@ -756,70 +706,66 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">... </span>        <span class="k">pass</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the project to list occurrences for in the form of
-<code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]</span></code>.</li>
-<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The filter expression.</li>
-<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the project to list occurrences for in the form of
+<code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]</span></code>.</p></li>
+<li><p><strong>filter_</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The filter expression.</p></li>
+<li><p><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of resources contained in the
 underlying API response. If page streaming is performed per-
 resource, this parameter does not affect the return value. If page
 streaming is performed per-page, this determines the maximum number
-of resources in a page.</li>
-<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+of resources in a page.</p></li>
+<li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</li>
-<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+be retried.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
-specified, the timeout applies to each individual attempt.</li>
-<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
-that is provided to the method.</li>
+specified, the timeout applies to each individual attempt.</p></li>
+<li><p><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code> instance.
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code> instance.
 An iterable of <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Occurrence" title="grafeas.grafeas_v1.types.Occurrence"><code class="xref py py-class docutils literal notranslate"><span class="pre">Occurrence</span></code></a> instances.
 You can also iterate over the pages of the response
 using its <cite>pages</cite> property.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
-failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
-to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the parameters are invalid.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="grafeas.grafeas_v1.GrafeasClient.note_path">
-<em class="property">classmethod </em><code class="descname">note_path</code><span class="sig-paren">(</span><em>project</em>, <em>note</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.note_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.note_path" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">note_path</code><span class="sig-paren">(</span><em class="sig-param">project</em>, <em class="sig-param">note</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.note_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.note_path" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a fully-qualified note string.</p>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="grafeas.grafeas_v1.GrafeasClient.occurrence_path">
-<em class="property">classmethod </em><code class="descname">occurrence_path</code><span class="sig-paren">(</span><em>project</em>, <em>occurrence</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.occurrence_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.occurrence_path" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">occurrence_path</code><span class="sig-paren">(</span><em class="sig-param">project</em>, <em class="sig-param">occurrence</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.occurrence_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.occurrence_path" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a fully-qualified occurrence string.</p>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="grafeas.grafeas_v1.GrafeasClient.project_path">
-<em class="property">classmethod </em><code class="descname">project_path</code><span class="sig-paren">(</span><em>project</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.project_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.project_path" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">project_path</code><span class="sig-paren">(</span><em class="sig-param">project</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.project_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.project_path" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a fully-qualified project string.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="grafeas.grafeas_v1.GrafeasClient.update_note">
-<code class="descname">update_note</code><span class="sig-paren">(</span><em>name</em>, <em>note</em>, <em>update_mask=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.update_note"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.update_note" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">update_note</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">note</em>, <em class="sig-param">update_mask=None</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.update_note"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.update_note" title="Permalink to this definition">#</a></dt>
 <dd><p>Updates the specified note.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">grafeas</span> <span class="k">import</span> <span class="n">grafeas_v1</span>
@@ -838,51 +784,47 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_note</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">note</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the note in the form of
-<code class="docutils literal notranslate"><span class="pre">projects/[PROVIDER_ID]/notes/[NOTE_ID]</span></code>.</li>
-<li><strong>note</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Note" title="grafeas.grafeas_v1.types.Note"><em>Note</em></a><em>]</em>) – <p>The updated note.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the note in the form of
+<code class="docutils literal notranslate"><span class="pre">projects/[PROVIDER_ID]/notes/[NOTE_ID]</span></code>.</p></li>
+<li><p><strong>note</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Note" title="grafeas.grafeas_v1.types.Note"><em>Note</em></a><em>]</em>) – <p>The updated note.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Note" title="grafeas.grafeas_v1.types.Note"><code class="xref py py-class docutils literal notranslate"><span class="pre">Note</span></code></a></p>
-</li>
-<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#grafeas.grafeas_v1.types.FieldMask" title="grafeas.grafeas_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>The fields to update.</p>
+</p></li>
+<li><p><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#grafeas.grafeas_v1.types.FieldMask" title="grafeas.grafeas_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>The fields to update.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.FieldMask" title="grafeas.grafeas_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
-</li>
-<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+</p></li>
+<li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</li>
-<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+be retried.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
-specified, the timeout applies to each individual attempt.</li>
-<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
-that is provided to the method.</li>
+specified, the timeout applies to each individual attempt.</p></li>
+<li><p><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Note" title="grafeas.grafeas_v1.types.Note"><code class="xref py py-class docutils literal notranslate"><span class="pre">Note</span></code></a> instance.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
-failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
-to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Note" title="grafeas.grafeas_v1.types.Note"><code class="xref py py-class docutils literal notranslate"><span class="pre">Note</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the parameters are invalid.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="grafeas.grafeas_v1.GrafeasClient.update_occurrence">
-<code class="descname">update_occurrence</code><span class="sig-paren">(</span><em>name</em>, <em>occurrence</em>, <em>update_mask=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.update_occurrence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.update_occurrence" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">update_occurrence</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">occurrence</em>, <em class="sig-param">update_mask=None</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/grafeas/grafeas_v1/gapic/grafeas_client.html#GrafeasClient.update_occurrence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grafeas.grafeas_v1.GrafeasClient.update_occurrence" title="Permalink to this definition">#</a></dt>
 <dd><p>Updates the specified occurrence.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">grafeas</span> <span class="k">import</span> <span class="n">grafeas_v1</span>
@@ -901,46 +843,42 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_occurrence</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">occurrence</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the occurrence in the form of
-<code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]</span></code>.</li>
-<li><strong>occurrence</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Occurrence" title="grafeas.grafeas_v1.types.Occurrence"><em>Occurrence</em></a><em>]</em>) – <p>The updated occurrence.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the occurrence in the form of
+<code class="docutils literal notranslate"><span class="pre">projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]</span></code>.</p></li>
+<li><p><strong>occurrence</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Occurrence" title="grafeas.grafeas_v1.types.Occurrence"><em>Occurrence</em></a><em>]</em>) – <p>The updated occurrence.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Occurrence" title="grafeas.grafeas_v1.types.Occurrence"><code class="xref py py-class docutils literal notranslate"><span class="pre">Occurrence</span></code></a></p>
-</li>
-<li><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#grafeas.grafeas_v1.types.FieldMask" title="grafeas.grafeas_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>The fields to update.</p>
+</p></li>
+<li><p><strong>update_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#grafeas.grafeas_v1.types.FieldMask" title="grafeas.grafeas_v1.types.FieldMask"><em>FieldMask</em></a><em>]</em>) – <p>The fields to update.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.FieldMask" title="grafeas.grafeas_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
-</li>
-<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+</p></li>
+<li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</li>
-<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+be retried.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
-specified, the timeout applies to each individual attempt.</li>
-<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
-that is provided to the method.</li>
+specified, the timeout applies to each individual attempt.</p></li>
+<li><p><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Occurrence" title="grafeas.grafeas_v1.types.Occurrence"><code class="xref py py-class docutils literal notranslate"><span class="pre">Occurrence</span></code></a> instance.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
-failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
-to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#grafeas.grafeas_v1.types.Occurrence" title="grafeas.grafeas_v1.types.Occurrence"><code class="xref py py-class docutils literal notranslate"><span class="pre">Occurrence</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the parameters are invalid.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -1033,13 +971,11 @@ to a retryable error and retry attempts failed.</li>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -1052,7 +988,7 @@ to a retryable error and retry attempts failed.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

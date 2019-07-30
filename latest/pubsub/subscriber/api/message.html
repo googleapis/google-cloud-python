@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Messages &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Messages &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -39,7 +37,7 @@
 <h1>Messages<a class="headerlink" href="#messages" title="Permalink to this headline">#</a></h1>
 <dl class="class">
 <dt id="google.cloud.pubsub_v1.subscriber.message.Message">
-<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.subscriber.message.</code><code class="descname">Message</code><span class="sig-paren">(</span><em>message</em>, <em>ack_id</em>, <em>request_queue</em>, <em>autolease=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/message.html#Message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.pubsub_v1.subscriber.message.</code><code class="sig-name descname">Message</code><span class="sig-paren">(</span><em class="sig-param">message</em>, <em class="sig-param">ack_id</em>, <em class="sig-param">request_queue</em>, <em class="sig-param">autolease=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/message.html#Message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message" title="Permalink to this definition">#</a></dt>
 <dd><p>A representation of a single Pub/Sub message.</p>
 <p>The common way to interact with
 <a class="reference internal" href="#google.cloud.pubsub_v1.subscriber.message.Message" title="google.cloud.pubsub_v1.subscriber.message.Message"><code class="xref py py-class docutils literal notranslate"><span class="pre">Message</span></code></a> objects is to receive
@@ -49,99 +47,83 @@ implementing a custom subclass to
 <code class="xref py py-class docutils literal notranslate"><span class="pre">Consumer</span></code>.)</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.subscriber.message.Message.message_id">
-<code class="descname">message_id</code><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.message_id" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">message_id</code><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.message_id" title="Permalink to this definition">#</a></dt>
 <dd><p>The message ID. In general, you should not need
 to use this directly.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.subscriber.message.Message.data">
-<code class="descname">data</code><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.data" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">data</code><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.data" title="Permalink to this definition">#</a></dt>
 <dd><p>The data in the message. Note that this will be a
 <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>, not a text string.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)">bytes</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)">bytes</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.subscriber.message.Message.attributes">
-<code class="descname">attributes</code><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.attributes" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">attributes</code><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.attributes" title="Permalink to this definition">#</a></dt>
 <dd><p>The attributes sent along with the
 message. See <a class="reference internal" href="#google.cloud.pubsub_v1.subscriber.message.Message.attributes" title="google.cloud.pubsub_v1.subscriber.message.Message.attributes"><code class="xref py py-attr docutils literal notranslate"><span class="pre">attributes</span></code></a> for more information on this type.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">ScalarMapContainer</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ScalarMapContainer</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.subscriber.message.Message.publish_time">
-<code class="descname">publish_time</code><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.publish_time" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">publish_time</code><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.publish_time" title="Permalink to this definition">#</a></dt>
 <dd><p>The time that this message was originally
 published.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">datetime</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>datetime</p>
+</dd>
+</dl>
 </dd></dl>
 
 <p>Construct the Message.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This class should not be constructed directly; it is the
+<p class="admonition-title">Note</p>
+<p>This class should not be constructed directly; it is the
 responsibility of <code class="xref py py-class docutils literal notranslate"><span class="pre">BasePolicy</span></code> subclasses to do so.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>message</strong> (<em>PubsubMessage</em>) – The message received
-from Pub/Sub.</li>
-<li><strong>ack_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The ack_id received from Pub/Sub.</li>
-<li><strong>request_queue</strong> (<a class="reference external" href="https://docs.python.org/3/library/queue.html#queue.Queue" title="(in Python v3.7)"><em>queue.Queue</em></a>) – A queue provided by the policy that
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> (<em>PubsubMessage</em>) – The message received
+from Pub/Sub.</p></li>
+<li><p><strong>ack_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The ack_id received from Pub/Sub.</p></li>
+<li><p><strong>request_queue</strong> (<a class="reference external" href="https://docs.python.org/3/library/queue.html#queue.Queue" title="(in Python v3.7)"><em>queue.Queue</em></a>) – A queue provided by the policy that
 can accept requests; the policy is responsible for handling
-those requests.</li>
-<li><strong>autolease</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – <p>An optional flag determining whether a new Message
+those requests.</p></li>
+<li><p><strong>autolease</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – <p>An optional flag determining whether a new Message
 instance should automatically lease itself upon creation.
 Defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a>.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<div class="last deprecated">
-<p><span class="versionmodified">Deprecated since version 0.44.0: </span>Parameter will be removed in future versions.</p>
+<p class="admonition-title">Note</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.44.0: </span>Parameter will be removed in future versions.</p>
 </div>
 </div>
-</li>
+</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.message.Message.ack">
-<code class="descname">ack</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/message.html#Message.ack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.ack" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">ack</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/message.html#Message.ack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.ack" title="Permalink to this definition">#</a></dt>
 <dd><p>Acknowledge the given message.</p>
 <p>Acknowledging a message in Pub/Sub means that you are done
 with it, and it will not be delivered to this subscription again.
@@ -149,83 +131,76 @@ You should avoid acknowledging messages until you have
 <em>finished</em> processing them, so that in the event of a failure,
 you receive the message again.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Acks in Pub/Sub are best effort. You should always
+<p class="admonition-title">Warning</p>
+<p>Acks in Pub/Sub are best effort. You should always
 ensure that your processing code is idempotent, as you may
 receive any given message more than once.</p>
 </div>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.message.Message.ack_id">
-<code class="descname">ack_id</code><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.ack_id" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">ack_id</code><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.ack_id" title="Permalink to this definition">#</a></dt>
 <dd><p>the ID used to ack the message.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt>
-<code class="descname">attributes</code></dt>
+<em class="property">property </em><code class="sig-name descname">attributes</code></dt>
 <dd><p>Return the attributes of the underlying Pub/Sub Message.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">A <code class="docutils literal notranslate"><span class="pre">ScalarMapContainer</span></code> behaves slightly differently than a
+<p class="admonition-title">Warning</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">ScalarMapContainer</span></code> behaves slightly differently than a
 <code class="docutils literal notranslate"><span class="pre">dict</span></code>. For a Pub / Sub message this is a <code class="docutils literal notranslate"><span class="pre">string-&gt;string</span></code> map.
 When trying to access a value via <code class="docutils literal notranslate"><span class="pre">map['key']</span></code>, if the key is
 not in the map, then the default value for the string type will
 be returned, which is an empty string. It may be more intuitive
 to just cast the map to a <code class="docutils literal notranslate"><span class="pre">dict</span></code> or to one use <code class="docutils literal notranslate"><span class="pre">map.get</span></code>.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The message’s attributes. This is a
-<code class="docutils literal notranslate"><span class="pre">dict</span></code>-like object provided by <code class="docutils literal notranslate"><span class="pre">google.protobuf</span></code>.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">ScalarMapContainer</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The message’s attributes. This is a
+<code class="docutils literal notranslate"><span class="pre">dict</span></code>-like object provided by <code class="docutils literal notranslate"><span class="pre">google.protobuf</span></code>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>ScalarMapContainer</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt>
-<code class="descname">data</code></dt>
+<em class="property">property </em><code class="sig-name descname">data</code></dt>
 <dd><p>Return the data for the underlying Pub/Sub Message.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
-<dt>The message data. This is always a bytestring; if you</dt>
-<dd>want a text string, call <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes.decode" title="(in Python v3.7)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">bytes.decode()</span></code></a>.</dd>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>The message data. This is always a bytestring; if you</dt><dd><p>want a text string, call <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes.decode" title="(in Python v3.7)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">bytes.decode()</span></code></a>.</p>
+</dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)">bytes</a></td>
-</tr>
-</tbody>
-</table>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)">bytes</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.message.Message.drop">
-<code class="descname">drop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/message.html#Message.drop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.drop" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">drop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/message.html#Message.drop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.drop" title="Permalink to this definition">#</a></dt>
 <dd><p>Release the message from lease management.</p>
 <p>This informs the policy to no longer hold on to the lease for this
 message. Pub/Sub will re-deliver the message if it is not acknowledged
 before the existing lease expires.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">For most use cases, the only reason to drop a message from
+<p class="admonition-title">Warning</p>
+<p>For most use cases, the only reason to drop a message from
 lease management is on <a class="reference internal" href="#google.cloud.pubsub_v1.subscriber.message.Message.ack" title="google.cloud.pubsub_v1.subscriber.message.Message.ack"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ack()</span></code></a> or <a class="reference internal" href="#google.cloud.pubsub_v1.subscriber.message.Message.nack" title="google.cloud.pubsub_v1.subscriber.message.Message.nack"><code class="xref py py-meth docutils literal notranslate"><span class="pre">nack()</span></code></a>; these methods
 both call this one. You probably do not want to call this method
 directly.</p>
@@ -234,67 +209,62 @@ directly.</p>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.message.Message.lease">
-<code class="descname">lease</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/message.html#Message.lease"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.lease" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">lease</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/message.html#Message.lease"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.lease" title="Permalink to this definition">#</a></dt>
 <dd><p>Inform the policy to lease this message continually.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>By default this method is called by the constructor, and you should
 never need to call it manually, unless the
 <a class="reference internal" href="#google.cloud.pubsub_v1.subscriber.message.Message" title="google.cloud.pubsub_v1.subscriber.message.Message"><code class="xref py py-class docutils literal notranslate"><span class="pre">Message</span></code></a> instance was
 created with <code class="docutils literal notranslate"><span class="pre">autolease=False</span></code>.</p>
-<div class="last deprecated">
-<p><span class="versionmodified">Deprecated since version 0.44.0: </span>Will be removed in future versions.</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.44.0: </span>Will be removed in future versions.</p>
 </div>
 </div>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.message.Message.modify_ack_deadline">
-<code class="descname">modify_ack_deadline</code><span class="sig-paren">(</span><em>seconds</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/message.html#Message.modify_ack_deadline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.modify_ack_deadline" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">modify_ack_deadline</code><span class="sig-paren">(</span><em class="sig-param">seconds</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/message.html#Message.modify_ack_deadline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.modify_ack_deadline" title="Permalink to this definition">#</a></dt>
 <dd><p>Resets the deadline for acknowledgement.</p>
 <p>New deadline will be the given value of seconds from now.</p>
 <p>The default implementation handles this for you; you should not need
 to manually deal with setting ack deadlines. The exception case is
 if you are implementing your own custom subclass of
 <code class="xref py py-class docutils literal notranslate"><span class="pre">Consumer</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>seconds</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The number of seconds to set the lease deadline
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>seconds</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The number of seconds to set the lease deadline
 to. This should be between 0 and 600. Due to network latency,
-values below 10 are advised against.</td>
-</tr>
-</tbody>
-</table>
+values below 10 are advised against.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.message.Message.nack">
-<code class="descname">nack</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/message.html#Message.nack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.nack" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">nack</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/message.html#Message.nack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.nack" title="Permalink to this definition">#</a></dt>
 <dd><p>Decline to acknowldge the given message.</p>
 <p>This will cause the message to be re-delivered to the subscription.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt>
-<code class="descname">publish_time</code></dt>
+<em class="property">property </em><code class="sig-name descname">publish_time</code></dt>
 <dd><p>Return the time that the message was originally published.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The date and time that the message was published.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">datetime</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The date and time that the message was published.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>datetime</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.message.Message.size">
-<code class="descname">size</code><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.size" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">size</code><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.size" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the size of the underlying message, in bytes.</p>
 </dd></dl>
 
@@ -390,13 +360,11 @@ values below 10 are advised against.</td>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -409,7 +377,7 @@ values below 10 are advised against.</td>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

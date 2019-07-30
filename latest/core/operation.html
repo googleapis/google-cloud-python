@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Long-Running Operations &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Long-Running Operations &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -55,222 +53,192 @@ long-running operation using <code class="xref py py-meth docutils literal notra
 </div>
 <dl class="class">
 <dt id="google.api_core.operation.Operation">
-<em class="property">class </em><code class="descclassname">google.api_core.operation.</code><code class="descname">Operation</code><span class="sig-paren">(</span><em>operation</em>, <em>refresh</em>, <em>cancel</em>, <em>result_type</em>, <em>metadata_type=None</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/operation.html#Operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.operation.Operation" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.api_core.operation.</code><code class="sig-name descname">Operation</code><span class="sig-paren">(</span><em class="sig-param">operation</em>, <em class="sig-param">refresh</em>, <em class="sig-param">cancel</em>, <em class="sig-param">result_type</em>, <em class="sig-param">metadata_type=None</em>, <em class="sig-param">retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/operation.html#Operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.operation.Operation" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.future.polling.PollingFuture</span></code></p>
 <p>A Future for interacting with a Google API Long-Running Operation.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>operation</strong> (<em>google.longrunning.operations_pb2.Operation</em>) – The
-initial operation.</li>
-<li><strong>refresh</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>Operation</em><em>]</em>) – A callable that
-returns the latest state of the operation.</li>
-<li><strong>cancel</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a><em>]</em>) – A callable that tries to cancel
-the operation.</li>
-<li><strong>(</strong><strong>func</strong> (<em>metadata_type</em>) – <cite>type</cite>): The protobuf type for the operation’s
-result.</li>
-<li><strong>(</strong><strong>func</strong> – <cite>type</cite>): The protobuf type for the operation’s
-metadata.</li>
-<li><strong>retry</strong> (<a class="reference internal" href="retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a>) – The retry configuration used
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>operation</strong> (<em>google.longrunning.operations_pb2.Operation</em>) – The
+initial operation.</p></li>
+<li><p><strong>refresh</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>Operation</em><em>]</em>) – A callable that
+returns the latest state of the operation.</p></li>
+<li><p><strong>cancel</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a><em>]</em>) – A callable that tries to cancel
+the operation.</p></li>
+<li><p><strong>(</strong><strong>func</strong> (<em>metadata_type</em>) – <cite>type</cite>): The protobuf type for the operation’s
+result.</p></li>
+<li><p><strong>(</strong><strong>func</strong> – <cite>type</cite>): The protobuf type for the operation’s
+metadata.</p></li>
+<li><p><strong>retry</strong> (<a class="reference internal" href="retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a>) – The retry configuration used
 when polling. This can be used to control how often <a class="reference internal" href="#google.api_core.operation.Operation.done" title="google.api_core.operation.Operation.done"><code class="xref py py-meth docutils literal notranslate"><span class="pre">done()</span></code></a>
 is polled. Regardless of the retry’s <code class="docutils literal notranslate"><span class="pre">deadline</span></code>, it will be
-overridden by the <code class="docutils literal notranslate"><span class="pre">timeout</span></code> argument to <code class="xref py py-meth docutils literal notranslate"><span class="pre">result()</span></code>.</li>
+overridden by the <code class="docutils literal notranslate"><span class="pre">timeout</span></code> argument to <code class="xref py py-meth docutils literal notranslate"><span class="pre">result()</span></code>.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="google.api_core.operation.Operation.cancel">
-<code class="descname">cancel</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/operation.html#Operation.cancel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.operation.Operation.cancel" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">cancel</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/operation.html#Operation.cancel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.operation.Operation.cancel" title="Permalink to this definition">#</a></dt>
 <dd><p>Attempt to cancel the operation.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
-<dt>True if the cancel RPC was made, False if the operation is</dt>
-<dd>already complete.</dd>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>True if the cancel RPC was made, False if the operation is</dt><dd><p>already complete.</p>
+</dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
-</tr>
-</tbody>
-</table>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.api_core.operation.Operation.cancelled">
-<code class="descname">cancelled</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/operation.html#Operation.cancelled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.operation.Operation.cancelled" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">cancelled</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/operation.html#Operation.cancelled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.operation.Operation.cancelled" title="Permalink to this definition">#</a></dt>
 <dd><p>True if the operation was cancelled.</p>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="google.api_core.operation.Operation.deserialize">
-<em class="property">classmethod </em><code class="descname">deserialize</code><span class="sig-paren">(</span><em>payload</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/operation.html#Operation.deserialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.operation.Operation.deserialize" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">deserialize</code><span class="sig-paren">(</span><em class="sig-param">payload</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/operation.html#Operation.deserialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.operation.Operation.deserialize" title="Permalink to this definition">#</a></dt>
 <dd><p>Deserialize a <code class="docutils literal notranslate"><span class="pre">google.longrunning.Operation</span></code> protocol buffer.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>payload</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)"><em>bytes</em></a>) – A serialized operation protocol buffer.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">An Operation protobuf object.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Operation</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>payload</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)"><em>bytes</em></a>) – A serialized operation protocol buffer.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An Operation protobuf object.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Operation</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.api_core.operation.Operation.done">
-<code class="descname">done</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/operation.html#Operation.done"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.operation.Operation.done" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">done</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/operation.html#Operation.done"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.operation.Operation.done" title="Permalink to this definition">#</a></dt>
 <dd><p>Checks to see if the operation is complete.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the operation is complete, False otherwise.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if the operation is complete, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.api_core.operation.Operation.metadata">
-<code class="descname">metadata</code><a class="headerlink" href="#google.api_core.operation.Operation.metadata" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">metadata</code><a class="headerlink" href="#google.api_core.operation.Operation.metadata" title="Permalink to this definition">#</a></dt>
 <dd><p>the current operation metadata.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">google.protobuf.Message</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>google.protobuf.Message</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.api_core.operation.Operation.operation">
-<code class="descname">operation</code><a class="headerlink" href="#google.api_core.operation.Operation.operation" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">operation</code><a class="headerlink" href="#google.api_core.operation.Operation.operation" title="Permalink to this definition">#</a></dt>
 <dd><p>The current long-running operation.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">google.longrunning.Operation</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>google.longrunning.Operation</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="google.api_core.operation.from_gapic">
-<code class="descclassname">google.api_core.operation.</code><code class="descname">from_gapic</code><span class="sig-paren">(</span><em>operation</em>, <em>operations_client</em>, <em>result_type</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/operation.html#from_gapic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.operation.from_gapic" title="Permalink to this definition">#</a></dt>
+<code class="sig-prename descclassname">google.api_core.operation.</code><code class="sig-name descname">from_gapic</code><span class="sig-paren">(</span><em class="sig-param">operation</em>, <em class="sig-param">operations_client</em>, <em class="sig-param">result_type</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/operation.html#from_gapic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.operation.from_gapic" title="Permalink to this definition">#</a></dt>
 <dd><p>Create an operation future from a gapic client.</p>
 <p>This interacts with the long-running operations <a class="reference external" href="https://github.com/googleapis/googleapis/blob/050400df0fdb16f63b63e9dee53819044bffc857/google/longrunning/operations.proto#L38">service</a> (specific
 to a given API) via a gapic client.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>operation</strong> (<em>google.longrunning.operations_pb2.Operation</em>) – The operation.</li>
-<li><strong>operations_client</strong> (<a class="reference internal" href="operations_client.html#google.api_core.operations_v1.OperationsClient" title="google.api_core.operations_v1.OperationsClient"><em>google.api_core.operations_v1.OperationsClient</em></a>) – The operations client.</li>
-<li><strong>result_type</strong> (<code class="xref py py-func docutils literal notranslate"><span class="pre">type()</span></code>) – The protobuf result type.</li>
-<li><strong>kwargs</strong> – Keyword args passed into the <a class="reference internal" href="#google.api_core.operation.Operation" title="google.api_core.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> constructor.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>operation</strong> (<em>google.longrunning.operations_pb2.Operation</em>) – The operation.</p></li>
+<li><p><strong>operations_client</strong> (<a class="reference internal" href="operations_client.html#google.api_core.operations_v1.OperationsClient" title="google.api_core.operations_v1.OperationsClient"><em>google.api_core.operations_v1.OperationsClient</em></a>) – The operations client.</p></li>
+<li><p><strong>result_type</strong> (<code class="xref py py-func docutils literal notranslate"><span class="pre">type()</span></code>) – The protobuf result type.</p></li>
+<li><p><strong>kwargs</strong> – Keyword args passed into the <a class="reference internal" href="#google.api_core.operation.Operation" title="google.api_core.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> constructor.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
-<dt>The operation future to track the given</dt>
-<dd><p class="first last">operation.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The operation future to track the given</dt><dd><p>operation.</p>
 </dd>
 </dl>
 </p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Operation</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Operation</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="google.api_core.operation.from_grpc">
-<code class="descclassname">google.api_core.operation.</code><code class="descname">from_grpc</code><span class="sig-paren">(</span><em>operation</em>, <em>operations_stub</em>, <em>result_type</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/operation.html#from_grpc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.operation.from_grpc" title="Permalink to this definition">#</a></dt>
+<code class="sig-prename descclassname">google.api_core.operation.</code><code class="sig-name descname">from_grpc</code><span class="sig-paren">(</span><em class="sig-param">operation</em>, <em class="sig-param">operations_stub</em>, <em class="sig-param">result_type</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/operation.html#from_grpc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.operation.from_grpc" title="Permalink to this definition">#</a></dt>
 <dd><p>Create an operation future using a gRPC client.</p>
 <p>This interacts with the long-running operations <a class="reference external" href="https://github.com/googleapis/googleapis/blob/050400df0fdb16f63b63e9dee53819044bffc857/google/longrunning/operations.proto#L38">service</a> (specific
 to a given API) via gRPC.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>operation</strong> (<em>google.longrunning.operations_pb2.Operation</em>) – The operation.</li>
-<li><strong>operations_stub</strong> (<em>google.longrunning.operations_pb2.OperationsStub</em>) – The operations stub.</li>
-<li><strong>result_type</strong> (<code class="xref py py-func docutils literal notranslate"><span class="pre">type()</span></code>) – The protobuf result type.</li>
-<li><strong>kwargs</strong> – Keyword args passed into the <a class="reference internal" href="#google.api_core.operation.Operation" title="google.api_core.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> constructor.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>operation</strong> (<em>google.longrunning.operations_pb2.Operation</em>) – The operation.</p></li>
+<li><p><strong>operations_stub</strong> (<em>google.longrunning.operations_pb2.OperationsStub</em>) – The operations stub.</p></li>
+<li><p><strong>result_type</strong> (<code class="xref py py-func docutils literal notranslate"><span class="pre">type()</span></code>) – The protobuf result type.</p></li>
+<li><p><strong>kwargs</strong> – Keyword args passed into the <a class="reference internal" href="#google.api_core.operation.Operation" title="google.api_core.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> constructor.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
-<dt>The operation future to track the given</dt>
-<dd><p class="first last">operation.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The operation future to track the given</dt><dd><p>operation.</p>
 </dd>
 </dl>
 </p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Operation</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Operation</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="google.api_core.operation.from_http_json">
-<code class="descclassname">google.api_core.operation.</code><code class="descname">from_http_json</code><span class="sig-paren">(</span><em>operation</em>, <em>api_request</em>, <em>result_type</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/operation.html#from_http_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.operation.from_http_json" title="Permalink to this definition">#</a></dt>
+<code class="sig-prename descclassname">google.api_core.operation.</code><code class="sig-name descname">from_http_json</code><span class="sig-paren">(</span><em class="sig-param">operation</em>, <em class="sig-param">api_request</em>, <em class="sig-param">result_type</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/operation.html#from_http_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.operation.from_http_json" title="Permalink to this definition">#</a></dt>
 <dd><p>Create an operation future using a HTTP/JSON client.</p>
 <p>This interacts with the long-running operations <a class="reference external" href="https://github.com/googleapis/googleapis/blob/050400df0fdb16f63b63e9dee53819044bffc857/google/longrunning/operations.proto#L38">service</a> (specific
 to a given API) via <a class="reference external" href="https://cloud.google.com/speech/reference/rest/v1beta1/operations#Operation">HTTP/JSON</a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>operation</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Operation as a dictionary.</li>
-<li><strong>api_request</strong> (<em>Callable</em>) – A callable used to make an API request. This
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>operation</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Operation as a dictionary.</p></li>
+<li><p><strong>api_request</strong> (<em>Callable</em>) – A callable used to make an API request. This
 should generally be
-<code class="xref py py-meth docutils literal notranslate"><span class="pre">google.cloud._http.Connection.api_request()</span></code>.</li>
-<li><strong>result_type</strong> (<code class="xref py py-func docutils literal notranslate"><span class="pre">type()</span></code>) – The protobuf result type.</li>
-<li><strong>kwargs</strong> – Keyword args passed into the <a class="reference internal" href="#google.api_core.operation.Operation" title="google.api_core.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> constructor.</li>
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">google.cloud._http.Connection.api_request()</span></code>.</p></li>
+<li><p><strong>result_type</strong> (<code class="xref py py-func docutils literal notranslate"><span class="pre">type()</span></code>) – The protobuf result type.</p></li>
+<li><p><strong>kwargs</strong> – Keyword args passed into the <a class="reference internal" href="#google.api_core.operation.Operation" title="google.api_core.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> constructor.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
-<dt>The operation future to track the given</dt>
-<dd><p class="first last">operation.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The operation future to track the given</dt><dd><p>operation.</p>
 </dd>
 </dl>
 </p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Operation</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Operation</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -361,13 +329,11 @@ should generally be
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -380,7 +346,7 @@ should generally be
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

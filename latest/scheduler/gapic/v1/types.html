@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Scheduler API Client &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Types for Cloud Scheduler API Client &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -39,16 +37,16 @@
 <span id="types-for-cloud-scheduler-api-client"></span><h1>Types for Cloud Scheduler API Client<a class="headerlink" href="#module-google.cloud.scheduler_v1.types" title="Permalink to this headline">#</a></h1>
 <dl class="class">
 <dt id="google.cloud.scheduler_v1.types.Any">
-<em class="property">class </em><code class="descclassname">google.cloud.scheduler_v1.types.</code><code class="descname">Any</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Any" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.scheduler_v1.types.</code><code class="sig-name descname">Any</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Any" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.Any.type_url">
-<code class="descname">type_url</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Any.type_url" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">type_url</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Any.type_url" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Any.type_url</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.Any.value">
-<code class="descname">value</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Any.value" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">value</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Any.value" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Any.value</p>
 </dd></dl>
 
@@ -56,7 +54,7 @@
 
 <dl class="class">
 <dt id="google.cloud.scheduler_v1.types.AppEngineHttpTarget">
-<em class="property">class </em><code class="descclassname">google.cloud.scheduler_v1.types.</code><code class="descname">AppEngineHttpTarget</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineHttpTarget" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.scheduler_v1.types.</code><code class="sig-name descname">AppEngineHttpTarget</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineHttpTarget" title="Permalink to this definition">#</a></dt>
 <dd><p>App Engine target. The job will be pushed to a job handler by means of
 an HTTP request via an
 [http_method][google.cloud.scheduler.v1.AppEngineHttpTarget.http_method]
@@ -69,20 +67,20 @@ failure to receive a response before the deadline, constitutes a failed
 attempt.</p>
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.AppEngineHttpTarget.http_method">
-<code class="descname">http_method</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineHttpTarget.http_method" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">http_method</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineHttpTarget.http_method" title="Permalink to this definition">#</a></dt>
 <dd><p>The HTTP method to use for the request. PATCH and OPTIONS are
 not permitted.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.AppEngineHttpTarget.app_engine_routing">
-<code class="descname">app_engine_routing</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineHttpTarget.app_engine_routing" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">app_engine_routing</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineHttpTarget.app_engine_routing" title="Permalink to this definition">#</a></dt>
 <dd><p>App Engine Routing setting for the job.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.AppEngineHttpTarget.relative_uri">
-<code class="descname">relative_uri</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineHttpTarget.relative_uri" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">relative_uri</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineHttpTarget.relative_uri" title="Permalink to this definition">#</a></dt>
 <dd><p>The relative URI.  The relative URL must begin with “/” and
 must be a valid HTTP relative URL. It can contain a path,
 query string arguments, and <code class="docutils literal notranslate"><span class="pre">#</span></code> fragments. If the relative
@@ -93,7 +91,7 @@ characters.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.AppEngineHttpTarget.headers">
-<code class="descname">headers</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineHttpTarget.headers" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">headers</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineHttpTarget.headers" title="Permalink to this definition">#</a></dt>
 <dd><p>HTTP request headers.  This map contains the header field
 names and values. Headers can be set when the job is created.
 Cloud Scheduler sets some headers to default values:  -
@@ -121,7 +119,7 @@ information, are also be sent to the job handler.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.AppEngineHttpTarget.body">
-<code class="descname">body</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineHttpTarget.body" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">body</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineHttpTarget.body" title="Permalink to this definition">#</a></dt>
 <dd><p>Body.  HTTP request body. A request body is allowed only if
 the HTTP method is POST or PUT. It will result in invalid
 argument error to set a body on a job with an incompatible
@@ -130,16 +128,16 @@ argument error to set a body on a job with an incompatible
 
 <dl class="class">
 <dt id="google.cloud.scheduler_v1.types.AppEngineHttpTarget.HeadersEntry">
-<em class="property">class </em><code class="descname">HeadersEntry</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineHttpTarget.HeadersEntry" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-name descname">HeadersEntry</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineHttpTarget.HeadersEntry" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.AppEngineHttpTarget.HeadersEntry.key">
-<code class="descname">key</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineHttpTarget.HeadersEntry.key" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">key</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineHttpTarget.HeadersEntry.key" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.cloud.scheduler.v1.AppEngineHttpTarget.HeadersEntry.key</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.AppEngineHttpTarget.HeadersEntry.value">
-<code class="descname">value</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineHttpTarget.HeadersEntry.value" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">value</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineHttpTarget.HeadersEntry.value" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.cloud.scheduler.v1.AppEngineHttpTarget.HeadersEntry.value</p>
 </dd></dl>
 
@@ -147,31 +145,31 @@ argument error to set a body on a job with an incompatible
 
 <dl class="attribute">
 <dt>
-<code class="descname">app_engine_routing</code></dt>
+<code class="sig-name descname">app_engine_routing</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.AppEngineHttpTarget.app_engine_routing</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">body</code></dt>
+<code class="sig-name descname">body</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.AppEngineHttpTarget.body</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">headers</code></dt>
+<code class="sig-name descname">headers</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.AppEngineHttpTarget.headers</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">http_method</code></dt>
+<code class="sig-name descname">http_method</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.AppEngineHttpTarget.http_method</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">relative_uri</code></dt>
+<code class="sig-name descname">relative_uri</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.AppEngineHttpTarget.relative_uri</p>
 </dd></dl>
 
@@ -179,7 +177,7 @@ argument error to set a body on a job with an incompatible
 
 <dl class="class">
 <dt id="google.cloud.scheduler_v1.types.AppEngineRouting">
-<em class="property">class </em><code class="descclassname">google.cloud.scheduler_v1.types.</code><code class="descname">AppEngineRouting</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineRouting" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.scheduler_v1.types.</code><code class="sig-name descname">AppEngineRouting</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineRouting" title="Permalink to this definition">#</a></dt>
 <dd><p>App Engine Routing.</p>
 <p>For more information about services, versions, and instances see <a class="reference external" href="https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine">An
 Overview of App
@@ -192,21 +190,21 @@ and <a class="reference external" href="https://cloud.google.com/appengine/docs/
 routing</a>.</p>
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.AppEngineRouting.service">
-<code class="descname">service</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineRouting.service" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">service</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineRouting.service" title="Permalink to this definition">#</a></dt>
 <dd><p>App service.  By default, the job is sent to the service which
 is the default service when the job is attempted.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.AppEngineRouting.version">
-<code class="descname">version</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineRouting.version" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">version</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineRouting.version" title="Permalink to this definition">#</a></dt>
 <dd><p>App version.  By default, the job is sent to the version which
 is the default version when the job is attempted.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.AppEngineRouting.instance">
-<code class="descname">instance</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineRouting.instance" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">instance</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineRouting.instance" title="Permalink to this definition">#</a></dt>
 <dd><p>App instance.  By default, the job is sent to an instance
 which is available when the job is attempted.  Requests can
 only be sent to a specific instance if <a class="reference external" href="https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine?hl=en_US#scaling_types_and_instance_classes">manual scaling is used
@@ -217,7 +215,7 @@ information, see <a class="reference external" href="https://cloud.google.com/ap
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.AppEngineRouting.host">
-<code class="descname">host</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineRouting.host" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">host</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.AppEngineRouting.host" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The host that the job is sent to.  For more
 information about how App Engine requests are routed, see
 <a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed">here</a>.  The host is constructed as:  -
@@ -270,25 +268,25 @@ version of the default service when the job is attempted.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">host</code></dt>
+<code class="sig-name descname">host</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.AppEngineRouting.host</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">instance</code></dt>
+<code class="sig-name descname">instance</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.AppEngineRouting.instance</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">service</code></dt>
+<code class="sig-name descname">service</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.AppEngineRouting.service</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">version</code></dt>
+<code class="sig-name descname">version</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.AppEngineRouting.version</p>
 </dd></dl>
 
@@ -296,19 +294,19 @@ version of the default service when the job is attempted.</p>
 
 <dl class="class">
 <dt id="google.cloud.scheduler_v1.types.CreateJobRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.scheduler_v1.types.</code><code class="descname">CreateJobRequest</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.CreateJobRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.scheduler_v1.types.</code><code class="sig-name descname">CreateJobRequest</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.CreateJobRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request message for
 [CreateJob][google.cloud.scheduler.v1.CloudScheduler.CreateJob].</p>
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.CreateJobRequest.parent">
-<code class="descname">parent</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.CreateJobRequest.parent" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">parent</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.CreateJobRequest.parent" title="Permalink to this definition">#</a></dt>
 <dd><p>Required.  The location name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.CreateJobRequest.job">
-<code class="descname">job</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.CreateJobRequest.job" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">job</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.CreateJobRequest.job" title="Permalink to this definition">#</a></dt>
 <dd><p>Required.  The job to add. The user can optionally specify a
 name for the job in
 [name][google.cloud.scheduler.v1.Job.name].
@@ -320,13 +318,13 @@ will generate a random unique name that will be returned
 
 <dl class="attribute">
 <dt>
-<code class="descname">job</code></dt>
+<code class="sig-name descname">job</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.CreateJobRequest.job</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">parent</code></dt>
+<code class="sig-name descname">parent</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.CreateJobRequest.parent</p>
 </dd></dl>
 
@@ -334,19 +332,19 @@ will generate a random unique name that will be returned
 
 <dl class="class">
 <dt id="google.cloud.scheduler_v1.types.DeleteJobRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.scheduler_v1.types.</code><code class="descname">DeleteJobRequest</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.DeleteJobRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.scheduler_v1.types.</code><code class="sig-name descname">DeleteJobRequest</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.DeleteJobRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request message for deleting a job using
 [DeleteJob][google.cloud.scheduler.v1.CloudScheduler.DeleteJob].</p>
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.DeleteJobRequest.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.DeleteJobRequest.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.DeleteJobRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Required.  The job name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">name</code></dt>
+<code class="sig-name descname">name</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.DeleteJobRequest.name</p>
 </dd></dl>
 
@@ -354,16 +352,16 @@ will generate a random unique name that will be returned
 
 <dl class="class">
 <dt id="google.cloud.scheduler_v1.types.Duration">
-<em class="property">class </em><code class="descclassname">google.cloud.scheduler_v1.types.</code><code class="descname">Duration</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Duration" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.scheduler_v1.types.</code><code class="sig-name descname">Duration</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Duration" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.Duration.nanos">
-<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Duration.nanos" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">nanos</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Duration.nanos" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Duration.nanos</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.Duration.seconds">
-<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Duration.seconds" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">seconds</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Duration.seconds" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Duration.seconds</p>
 </dd></dl>
 
@@ -371,15 +369,15 @@ will generate a random unique name that will be returned
 
 <dl class="class">
 <dt id="google.cloud.scheduler_v1.types.Empty">
-<em class="property">class </em><code class="descclassname">google.cloud.scheduler_v1.types.</code><code class="descname">Empty</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Empty" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.scheduler_v1.types.</code><code class="sig-name descname">Empty</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Empty" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.scheduler_v1.types.FieldMask">
-<em class="property">class </em><code class="descclassname">google.cloud.scheduler_v1.types.</code><code class="descname">FieldMask</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.FieldMask" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.scheduler_v1.types.</code><code class="sig-name descname">FieldMask</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.FieldMask" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.FieldMask.paths">
-<code class="descname">paths</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.FieldMask.paths" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">paths</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.FieldMask.paths" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.FieldMask.paths</p>
 </dd></dl>
 
@@ -387,19 +385,19 @@ will generate a random unique name that will be returned
 
 <dl class="class">
 <dt id="google.cloud.scheduler_v1.types.GetJobRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.scheduler_v1.types.</code><code class="descname">GetJobRequest</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.GetJobRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.scheduler_v1.types.</code><code class="sig-name descname">GetJobRequest</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.GetJobRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request message for
 [GetJob][google.cloud.scheduler.v1.CloudScheduler.GetJob].</p>
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.GetJobRequest.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.GetJobRequest.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.GetJobRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Required.  The job name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">name</code></dt>
+<code class="sig-name descname">name</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.GetJobRequest.name</p>
 </dd></dl>
 
@@ -407,7 +405,7 @@ will generate a random unique name that will be returned
 
 <dl class="class">
 <dt id="google.cloud.scheduler_v1.types.HttpTarget">
-<em class="property">class </em><code class="descclassname">google.cloud.scheduler_v1.types.</code><code class="descname">HttpTarget</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.HttpTarget" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.scheduler_v1.types.</code><code class="sig-name descname">HttpTarget</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.HttpTarget" title="Permalink to this definition">#</a></dt>
 <dd><p>Http target. The job will be pushed to the job handler by means of an
 HTTP request via an
 [http_method][google.cloud.scheduler.v1.HttpTarget.http_method] such
@@ -417,7 +415,7 @@ constitutes a failed execution. For a redirected request, the response
 returned by the redirected request is considered.</p>
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.HttpTarget.uri">
-<code class="descname">uri</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.HttpTarget.uri" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">uri</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.HttpTarget.uri" title="Permalink to this definition">#</a></dt>
 <dd><p>Required.  The full URI path that the request will be sent to.
 This string must begin with either “<a class="reference external" href="http://">http://</a>” or “<a class="reference external" href="https://">https://</a>”.
 Some examples of valid values for
@@ -430,13 +428,13 @@ characters after encoding.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.HttpTarget.http_method">
-<code class="descname">http_method</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.HttpTarget.http_method" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">http_method</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.HttpTarget.http_method" title="Permalink to this definition">#</a></dt>
 <dd><p>Which HTTP method to use for the request.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.HttpTarget.headers">
-<code class="descname">headers</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.HttpTarget.headers" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">headers</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.HttpTarget.headers" title="Permalink to this definition">#</a></dt>
 <dd><p>The user can specify HTTP request headers to send with the
 job’s HTTP request. This map contains the header field names
 and values. Repeated headers are not supported, but a header
@@ -455,7 +453,7 @@ of headers must be less than 80KB.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.HttpTarget.body">
-<code class="descname">body</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.HttpTarget.body" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">body</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.HttpTarget.body" title="Permalink to this definition">#</a></dt>
 <dd><p>HTTP request body. A request body is allowed only if the HTTP
 method is POST, PUT, or PATCH. It is an error to set body on a
 job with an incompatible
@@ -464,7 +462,7 @@ job with an incompatible
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.HttpTarget.authorization_header">
-<code class="descname">authorization_header</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.HttpTarget.authorization_header" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">authorization_header</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.HttpTarget.authorization_header" title="Permalink to this definition">#</a></dt>
 <dd><p>The mode for generating an <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> header for HTTP
 requests.  If specified, all <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> headers in the
 [HttpTarget.headers][google.cloud.scheduler.v1.HttpTarget.head
@@ -473,7 +471,7 @@ ers] field will be overridden.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.HttpTarget.oauth_token">
-<code class="descname">oauth_token</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.HttpTarget.oauth_token" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">oauth_token</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.HttpTarget.oauth_token" title="Permalink to this definition">#</a></dt>
 <dd><p>If specified, an <a class="reference external" href="https://developers.google.com/identity/protocols/OAuth2">OAuth token</a>
 will be generated and attached as an <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> header
 in the HTTP request.  This type of authorization should be
@@ -482,7 +480,7 @@ used when sending requests to a GCP endpoint.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.HttpTarget.oidc_token">
-<code class="descname">oidc_token</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.HttpTarget.oidc_token" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">oidc_token</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.HttpTarget.oidc_token" title="Permalink to this definition">#</a></dt>
 <dd><p>If specified, an <a class="reference external" href="https://developers.google.com/identity/protocols/OpenIDConnect">OIDC</a> token will be generated and
 attached as an <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> header in the HTTP request.
 This type of authorization should be used when sending
@@ -491,16 +489,16 @@ requests to third party endpoints or Cloud Run.</p>
 
 <dl class="class">
 <dt id="google.cloud.scheduler_v1.types.HttpTarget.HeadersEntry">
-<em class="property">class </em><code class="descname">HeadersEntry</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.HttpTarget.HeadersEntry" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-name descname">HeadersEntry</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.HttpTarget.HeadersEntry" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.HttpTarget.HeadersEntry.key">
-<code class="descname">key</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.HttpTarget.HeadersEntry.key" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">key</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.HttpTarget.HeadersEntry.key" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.cloud.scheduler.v1.HttpTarget.HeadersEntry.key</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.HttpTarget.HeadersEntry.value">
-<code class="descname">value</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.HttpTarget.HeadersEntry.value" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">value</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.HttpTarget.HeadersEntry.value" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.cloud.scheduler.v1.HttpTarget.HeadersEntry.value</p>
 </dd></dl>
 
@@ -508,37 +506,37 @@ requests to third party endpoints or Cloud Run.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">body</code></dt>
+<code class="sig-name descname">body</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.HttpTarget.body</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">headers</code></dt>
+<code class="sig-name descname">headers</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.HttpTarget.headers</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">http_method</code></dt>
+<code class="sig-name descname">http_method</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.HttpTarget.http_method</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">oauth_token</code></dt>
+<code class="sig-name descname">oauth_token</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.HttpTarget.oauth_token</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">oidc_token</code></dt>
+<code class="sig-name descname">oidc_token</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.HttpTarget.oidc_token</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">uri</code></dt>
+<code class="sig-name descname">uri</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.HttpTarget.uri</p>
 </dd></dl>
 
@@ -546,11 +544,11 @@ requests to third party endpoints or Cloud Run.</p>
 
 <dl class="class">
 <dt id="google.cloud.scheduler_v1.types.Job">
-<em class="property">class </em><code class="descclassname">google.cloud.scheduler_v1.types.</code><code class="descname">Job</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.scheduler_v1.types.</code><code class="sig-name descname">Job</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job" title="Permalink to this definition">#</a></dt>
 <dd><p>Configuration for a job. The maximum allowed size for a job is 100KB.</p>
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.Job.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Optionally caller-specified in [CreateJob][google.cloud.schedu
 ler.v1.CloudScheduler.CreateJob], after which it becomes
 output only.  The job name. For example:
@@ -570,7 +568,7 @@ characters.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.Job.description">
-<code class="descname">description</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.description" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">description</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.description" title="Permalink to this definition">#</a></dt>
 <dd><p>Optionally caller-specified in [CreateJob][google.cloud.schedu
 ler.v1.CloudScheduler.CreateJob] or [UpdateJob][google.cloud.s
 cheduler.v1.CloudScheduler.UpdateJob].  A human-readable
@@ -580,32 +578,32 @@ than 500 characters.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.Job.target">
-<code class="descname">target</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.target" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">target</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.target" title="Permalink to this definition">#</a></dt>
 <dd><p>Required.  Delivery settings containing destination and
 parameters.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.Job.pubsub_target">
-<code class="descname">pubsub_target</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.pubsub_target" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">pubsub_target</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.pubsub_target" title="Permalink to this definition">#</a></dt>
 <dd><p>Pub/Sub target.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.Job.app_engine_http_target">
-<code class="descname">app_engine_http_target</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.app_engine_http_target" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">app_engine_http_target</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.app_engine_http_target" title="Permalink to this definition">#</a></dt>
 <dd><p>App Engine HTTP target.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.Job.http_target">
-<code class="descname">http_target</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.http_target" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">http_target</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.http_target" title="Permalink to this definition">#</a></dt>
 <dd><p>HTTP target.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.Job.schedule">
-<code class="descname">schedule</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.schedule" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">schedule</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.schedule" title="Permalink to this definition">#</a></dt>
 <dd><p>Required, except when used with [UpdateJob][google.cloud.sched
 uler.v1.CloudScheduler.UpdateJob].  Describes the schedule on
 which the job will be executed.  The schedule can be either of
@@ -627,7 +625,7 @@ backoff, until the next scheduled start time.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.Job.time_zone">
-<code class="descname">time_zone</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.time_zone" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">time_zone</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.time_zone" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies the time zone to be used in interpreting
 [schedule][google.cloud.scheduler.v1.Job.schedule]. The value
 of this field must be a time zone name from the <a class="reference external" href="http://en.wikipedia.org/wiki/Tz_database">tz database</a>.  Note that some
@@ -639,26 +637,26 @@ specified, the default will be in UTC (also known as GMT).</p>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.Job.user_update_time">
-<code class="descname">user_update_time</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.user_update_time" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">user_update_time</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.user_update_time" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The creation time of the job.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.Job.state">
-<code class="descname">state</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.state" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">state</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.state" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. State of the job.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.Job.status">
-<code class="descname">status</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.status" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">status</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.status" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The response from the target for the last
 attempted execution.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.Job.schedule_time">
-<code class="descname">schedule_time</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.schedule_time" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">schedule_time</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.schedule_time" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The next time the job is scheduled. Note that
 this may be a retry of a previously failed attempt or the next
 execution time according to the schedule.</p>
@@ -666,19 +664,19 @@ execution time according to the schedule.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.Job.last_attempt_time">
-<code class="descname">last_attempt_time</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.last_attempt_time" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">last_attempt_time</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.last_attempt_time" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The time the last job attempt started.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.Job.retry_config">
-<code class="descname">retry_config</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.retry_config" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">retry_config</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.retry_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Settings that determine the retry behavior.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.Job.attempt_deadline">
-<code class="descname">attempt_deadline</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.attempt_deadline" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">attempt_deadline</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Job.attempt_deadline" title="Permalink to this definition">#</a></dt>
 <dd><p>The deadline for job attempts. If the request handler does not
 respond by this deadline then the request is cancelled and the
 attempt is marked as a <code class="docutils literal notranslate"><span class="pre">DEADLINE_EXCEEDED</span></code> failure. The
@@ -694,85 +692,85 @@ between 15 seconds and 24 hours.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">app_engine_http_target</code></dt>
+<code class="sig-name descname">app_engine_http_target</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.Job.app_engine_http_target</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">attempt_deadline</code></dt>
+<code class="sig-name descname">attempt_deadline</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.Job.attempt_deadline</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">description</code></dt>
+<code class="sig-name descname">description</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.Job.description</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">http_target</code></dt>
+<code class="sig-name descname">http_target</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.Job.http_target</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">last_attempt_time</code></dt>
+<code class="sig-name descname">last_attempt_time</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.Job.last_attempt_time</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">name</code></dt>
+<code class="sig-name descname">name</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.Job.name</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">pubsub_target</code></dt>
+<code class="sig-name descname">pubsub_target</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.Job.pubsub_target</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">retry_config</code></dt>
+<code class="sig-name descname">retry_config</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.Job.retry_config</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">schedule</code></dt>
+<code class="sig-name descname">schedule</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.Job.schedule</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">schedule_time</code></dt>
+<code class="sig-name descname">schedule_time</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.Job.schedule_time</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">state</code></dt>
+<code class="sig-name descname">state</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.Job.state</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">status</code></dt>
+<code class="sig-name descname">status</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.Job.status</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">time_zone</code></dt>
+<code class="sig-name descname">time_zone</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.Job.time_zone</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">user_update_time</code></dt>
+<code class="sig-name descname">user_update_time</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.Job.user_update_time</p>
 </dd></dl>
 
@@ -780,19 +778,19 @@ between 15 seconds and 24 hours.</p>
 
 <dl class="class">
 <dt id="google.cloud.scheduler_v1.types.ListJobsRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.scheduler_v1.types.</code><code class="descname">ListJobsRequest</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.ListJobsRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.scheduler_v1.types.</code><code class="sig-name descname">ListJobsRequest</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.ListJobsRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request message for listing jobs using
 [ListJobs][google.cloud.scheduler.v1.CloudScheduler.ListJobs].</p>
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.ListJobsRequest.parent">
-<code class="descname">parent</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.ListJobsRequest.parent" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">parent</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.ListJobsRequest.parent" title="Permalink to this definition">#</a></dt>
 <dd><p>Required.  The location name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.ListJobsRequest.page_size">
-<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.ListJobsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">page_size</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.ListJobsRequest.page_size" title="Permalink to this definition">#</a></dt>
 <dd><p>Requested page size.  The maximum page size is 500. If
 unspecified, the page size will be the maximum. Fewer jobs
 than requested might be returned, even if more jobs exist; use
@@ -801,7 +799,7 @@ next_page_token to determine if more jobs exist.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.ListJobsRequest.page_token">
-<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.ListJobsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">page_token</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.ListJobsRequest.page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>A token identifying a page of results the server will return.
 To request the first page results, page_token must be empty.
 To request the next page of results, page_token must be the
@@ -817,19 +815,19 @@ y] while iterating through pages.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">page_size</code></dt>
+<code class="sig-name descname">page_size</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.ListJobsRequest.page_size</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">page_token</code></dt>
+<code class="sig-name descname">page_token</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.ListJobsRequest.page_token</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">parent</code></dt>
+<code class="sig-name descname">parent</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.ListJobsRequest.parent</p>
 </dd></dl>
 
@@ -837,18 +835,18 @@ y] while iterating through pages.</p>
 
 <dl class="class">
 <dt id="google.cloud.scheduler_v1.types.ListJobsResponse">
-<em class="property">class </em><code class="descclassname">google.cloud.scheduler_v1.types.</code><code class="descname">ListJobsResponse</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.ListJobsResponse" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.scheduler_v1.types.</code><code class="sig-name descname">ListJobsResponse</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.ListJobsResponse" title="Permalink to this definition">#</a></dt>
 <dd><p>Response message for listing jobs using
 [ListJobs][google.cloud.scheduler.v1.CloudScheduler.ListJobs].</p>
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.ListJobsResponse.jobs">
-<code class="descname">jobs</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.ListJobsResponse.jobs" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">jobs</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.ListJobsResponse.jobs" title="Permalink to this definition">#</a></dt>
 <dd><p>The list of jobs.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.ListJobsResponse.next_page_token">
-<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.ListJobsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">next_page_token</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.ListJobsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>A token to retrieve next page of results. Pass this value in
 the [page_token][google.cloud.scheduler.v1.ListJobsRequest.pa
 ge_token] field in the subsequent call to
@@ -860,13 +858,13 @@ paginate.  The page token is valid for only 2 hours.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">jobs</code></dt>
+<code class="sig-name descname">jobs</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.ListJobsResponse.jobs</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">next_page_token</code></dt>
+<code class="sig-name descname">next_page_token</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.ListJobsResponse.next_page_token</p>
 </dd></dl>
 
@@ -874,14 +872,14 @@ paginate.  The page token is valid for only 2 hours.</p>
 
 <dl class="class">
 <dt id="google.cloud.scheduler_v1.types.OAuthToken">
-<em class="property">class </em><code class="descclassname">google.cloud.scheduler_v1.types.</code><code class="descname">OAuthToken</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.OAuthToken" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.scheduler_v1.types.</code><code class="sig-name descname">OAuthToken</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.OAuthToken" title="Permalink to this definition">#</a></dt>
 <dd><p>Contains information needed for generating an <a class="reference external" href="https://developers.google.com/identity/protocols/OAuth2">OAuth
 token</a>. This
 type of authorization should be used when sending requests to a GCP
 endpoint.</p>
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.OAuthToken.service_account_email">
-<code class="descname">service_account_email</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.OAuthToken.service_account_email" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">service_account_email</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.OAuthToken.service_account_email" title="Permalink to this definition">#</a></dt>
 <dd><p><a class="reference external" href="https://cloud.google.com/iam/docs/service-accounts">Service account email</a> to be
 used for generating OAuth token. The service account must be
 within the same project as the job. The caller must have
@@ -890,7 +888,7 @@ iam.serviceAccounts.actAs permission for the service account.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.OAuthToken.scope">
-<code class="descname">scope</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.OAuthToken.scope" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">scope</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.OAuthToken.scope" title="Permalink to this definition">#</a></dt>
 <dd><p>OAuth scope to be used for generating OAuth access token. If
 not specified, “<a class="reference external" href="https://www.googleapis.com/auth/cloud">https://www.googleapis.com/auth/cloud</a>-
 platform” will be used.</p>
@@ -898,13 +896,13 @@ platform” will be used.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">scope</code></dt>
+<code class="sig-name descname">scope</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.OAuthToken.scope</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">service_account_email</code></dt>
+<code class="sig-name descname">service_account_email</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.OAuthToken.service_account_email</p>
 </dd></dl>
 
@@ -912,14 +910,14 @@ platform” will be used.</p>
 
 <dl class="class">
 <dt id="google.cloud.scheduler_v1.types.OidcToken">
-<em class="property">class </em><code class="descclassname">google.cloud.scheduler_v1.types.</code><code class="descname">OidcToken</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.OidcToken" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.scheduler_v1.types.</code><code class="sig-name descname">OidcToken</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.OidcToken" title="Permalink to this definition">#</a></dt>
 <dd><p>Contains information needed for generating an <a class="reference external" href="https://developers.google.com/identity/protocols/OpenIDConnect">OpenID Connect
 token</a>.
 This type of authorization should be used when sending requests to third
 party endpoints or Cloud Run.</p>
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.OidcToken.service_account_email">
-<code class="descname">service_account_email</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.OidcToken.service_account_email" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">service_account_email</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.OidcToken.service_account_email" title="Permalink to this definition">#</a></dt>
 <dd><p><a class="reference external" href="https://cloud.google.com/iam/docs/service-accounts">Service account email</a> to be
 used for generating OIDC token. The service account must be
 within the same project as the job. The caller must have
@@ -928,20 +926,20 @@ iam.serviceAccounts.actAs permission for the service account.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.OidcToken.audience">
-<code class="descname">audience</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.OidcToken.audience" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">audience</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.OidcToken.audience" title="Permalink to this definition">#</a></dt>
 <dd><p>Audience to be used when generating OIDC token. If not
 specified, the URI specified in target will be used.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">audience</code></dt>
+<code class="sig-name descname">audience</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.OidcToken.audience</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">service_account_email</code></dt>
+<code class="sig-name descname">service_account_email</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.OidcToken.service_account_email</p>
 </dd></dl>
 
@@ -949,19 +947,19 @@ specified, the URI specified in target will be used.</p>
 
 <dl class="class">
 <dt id="google.cloud.scheduler_v1.types.PauseJobRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.scheduler_v1.types.</code><code class="descname">PauseJobRequest</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.PauseJobRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.scheduler_v1.types.</code><code class="sig-name descname">PauseJobRequest</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.PauseJobRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request message for
 [PauseJob][google.cloud.scheduler.v1.CloudScheduler.PauseJob].</p>
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.PauseJobRequest.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.PauseJobRequest.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.PauseJobRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Required.  The job name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">name</code></dt>
+<code class="sig-name descname">name</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.PauseJobRequest.name</p>
 </dd></dl>
 
@@ -969,12 +967,12 @@ specified, the URI specified in target will be used.</p>
 
 <dl class="class">
 <dt id="google.cloud.scheduler_v1.types.PubsubTarget">
-<em class="property">class </em><code class="descclassname">google.cloud.scheduler_v1.types.</code><code class="descname">PubsubTarget</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.PubsubTarget" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.scheduler_v1.types.</code><code class="sig-name descname">PubsubTarget</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.PubsubTarget" title="Permalink to this definition">#</a></dt>
 <dd><p>Pub/Sub target. The job will be delivered by publishing a message to the
 given Pub/Sub topic.</p>
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.PubsubTarget.topic_name">
-<code class="descname">topic_name</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.PubsubTarget.topic_name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">topic_name</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.PubsubTarget.topic_name" title="Permalink to this definition">#</a></dt>
 <dd><p>Required.  The name of the Cloud Pub/Sub topic to which
 messages will be published when a job is delivered. The topic
 name must be in the same format as required by PubSub’s
@@ -985,30 +983,30 @@ the same project as the Cloud Scheduler job.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.PubsubTarget.data">
-<code class="descname">data</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.PubsubTarget.data" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">data</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.PubsubTarget.data" title="Permalink to this definition">#</a></dt>
 <dd><p>The message payload for PubsubMessage.  Pubsub message must
 contain either non-empty data, or at least one attribute.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.PubsubTarget.attributes">
-<code class="descname">attributes</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.PubsubTarget.attributes" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">attributes</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.PubsubTarget.attributes" title="Permalink to this definition">#</a></dt>
 <dd><p>Attributes for PubsubMessage.  Pubsub message must contain
 either non-empty data, or at least one attribute.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.scheduler_v1.types.PubsubTarget.AttributesEntry">
-<em class="property">class </em><code class="descname">AttributesEntry</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.PubsubTarget.AttributesEntry" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-name descname">AttributesEntry</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.PubsubTarget.AttributesEntry" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.PubsubTarget.AttributesEntry.key">
-<code class="descname">key</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.PubsubTarget.AttributesEntry.key" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">key</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.PubsubTarget.AttributesEntry.key" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.cloud.scheduler.v1.PubsubTarget.AttributesEntry.key</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.PubsubTarget.AttributesEntry.value">
-<code class="descname">value</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.PubsubTarget.AttributesEntry.value" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">value</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.PubsubTarget.AttributesEntry.value" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.cloud.scheduler.v1.PubsubTarget.AttributesEntry.value</p>
 </dd></dl>
 
@@ -1016,19 +1014,19 @@ either non-empty data, or at least one attribute.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">attributes</code></dt>
+<code class="sig-name descname">attributes</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.PubsubTarget.attributes</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">data</code></dt>
+<code class="sig-name descname">data</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.PubsubTarget.data</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">topic_name</code></dt>
+<code class="sig-name descname">topic_name</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.PubsubTarget.topic_name</p>
 </dd></dl>
 
@@ -1036,19 +1034,19 @@ either non-empty data, or at least one attribute.</p>
 
 <dl class="class">
 <dt id="google.cloud.scheduler_v1.types.ResumeJobRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.scheduler_v1.types.</code><code class="descname">ResumeJobRequest</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.ResumeJobRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.scheduler_v1.types.</code><code class="sig-name descname">ResumeJobRequest</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.ResumeJobRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request message for
 [ResumeJob][google.cloud.scheduler.v1.CloudScheduler.ResumeJob].</p>
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.ResumeJobRequest.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.ResumeJobRequest.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.ResumeJobRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Required.  The job name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">name</code></dt>
+<code class="sig-name descname">name</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.ResumeJobRequest.name</p>
 </dd></dl>
 
@@ -1056,7 +1054,7 @@ either non-empty data, or at least one attribute.</p>
 
 <dl class="class">
 <dt id="google.cloud.scheduler_v1.types.RetryConfig">
-<em class="property">class </em><code class="descclassname">google.cloud.scheduler_v1.types.</code><code class="descname">RetryConfig</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.RetryConfig" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.scheduler_v1.types.</code><code class="sig-name descname">RetryConfig</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.RetryConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Settings that determine the retry behavior.</p>
 <p>By default, if a job does not complete successfully (meaning that an
 acknowledgement is not received from the handler, then it will be
@@ -1064,7 +1062,7 @@ retried with exponential backoff according to the settings in
 [RetryConfig][google.cloud.scheduler.v1.RetryConfig].</p>
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.RetryConfig.retry_count">
-<code class="descname">retry_count</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.RetryConfig.retry_count" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">retry_count</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.RetryConfig.retry_count" title="Permalink to this definition">#</a></dt>
 <dd><p>The number of attempts that the system will make to run a job
 using the exponential backoff procedure described by [max_dou
 blings][google.cloud.scheduler.v1.RetryConfig.max_doublings].
@@ -1080,7 +1078,7 @@ greater than 5 and negative values are not allowed.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.RetryConfig.max_retry_duration">
-<code class="descname">max_retry_duration</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.RetryConfig.max_retry_duration" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">max_retry_duration</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.RetryConfig.max_retry_duration" title="Permalink to this definition">#</a></dt>
 <dd><p>The time limit for retrying a failed job, measured from time
 when an execution was first attempted. If specified with [retr
 y_count][google.cloud.scheduler.v1.RetryConfig.retry_count],
@@ -1091,21 +1089,21 @@ retry duration is unlimited.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.RetryConfig.min_backoff_duration">
-<code class="descname">min_backoff_duration</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.RetryConfig.min_backoff_duration" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">min_backoff_duration</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.RetryConfig.min_backoff_duration" title="Permalink to this definition">#</a></dt>
 <dd><p>The minimum amount of time to wait before retrying a job after
 it fails.  The default value of this field is 5 seconds.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.RetryConfig.max_backoff_duration">
-<code class="descname">max_backoff_duration</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.RetryConfig.max_backoff_duration" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">max_backoff_duration</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.RetryConfig.max_backoff_duration" title="Permalink to this definition">#</a></dt>
 <dd><p>The maximum amount of time to wait before retrying a job after
 it fails.  The default value of this field is 1 hour.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.RetryConfig.max_doublings">
-<code class="descname">max_doublings</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.RetryConfig.max_doublings" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">max_doublings</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.RetryConfig.max_doublings" title="Permalink to this definition">#</a></dt>
 <dd><p>The time between retries will double <code class="docutils literal notranslate"><span class="pre">max_doublings</span></code> times.
 A job’s retry interval starts at [min_backoff_duration][goog
 le.cloud.scheduler.v1.RetryConfig.min_backoff_duration],
@@ -1130,31 +1128,31 @@ value of this field is 5.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">max_backoff_duration</code></dt>
+<code class="sig-name descname">max_backoff_duration</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.RetryConfig.max_backoff_duration</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">max_doublings</code></dt>
+<code class="sig-name descname">max_doublings</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.RetryConfig.max_doublings</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">max_retry_duration</code></dt>
+<code class="sig-name descname">max_retry_duration</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.RetryConfig.max_retry_duration</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">min_backoff_duration</code></dt>
+<code class="sig-name descname">min_backoff_duration</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.RetryConfig.min_backoff_duration</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">retry_count</code></dt>
+<code class="sig-name descname">retry_count</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.RetryConfig.retry_count</p>
 </dd></dl>
 
@@ -1162,19 +1160,19 @@ value of this field is 5.</p>
 
 <dl class="class">
 <dt id="google.cloud.scheduler_v1.types.RunJobRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.scheduler_v1.types.</code><code class="descname">RunJobRequest</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.RunJobRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.scheduler_v1.types.</code><code class="sig-name descname">RunJobRequest</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.RunJobRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request message for forcing a job to run now using
 [RunJob][google.cloud.scheduler.v1.CloudScheduler.RunJob].</p>
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.RunJobRequest.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.RunJobRequest.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.RunJobRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Required.  The job name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">name</code></dt>
+<code class="sig-name descname">name</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.RunJobRequest.name</p>
 </dd></dl>
 
@@ -1182,22 +1180,22 @@ value of this field is 5.</p>
 
 <dl class="class">
 <dt id="google.cloud.scheduler_v1.types.Status">
-<em class="property">class </em><code class="descclassname">google.cloud.scheduler_v1.types.</code><code class="descname">Status</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Status" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.scheduler_v1.types.</code><code class="sig-name descname">Status</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Status" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.Status.code">
-<code class="descname">code</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Status.code" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">code</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Status.code" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.rpc.Status.code</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.Status.details">
-<code class="descname">details</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Status.details" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">details</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Status.details" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.rpc.Status.details</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.Status.message">
-<code class="descname">message</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Status.message" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">message</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Status.message" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.rpc.Status.message</p>
 </dd></dl>
 
@@ -1205,16 +1203,16 @@ value of this field is 5.</p>
 
 <dl class="class">
 <dt id="google.cloud.scheduler_v1.types.Timestamp">
-<em class="property">class </em><code class="descclassname">google.cloud.scheduler_v1.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Timestamp" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.scheduler_v1.types.</code><code class="sig-name descname">Timestamp</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Timestamp" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.Timestamp.nanos">
-<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Timestamp.nanos" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">nanos</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Timestamp.nanos" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Timestamp.nanos</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.Timestamp.seconds">
-<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Timestamp.seconds" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">seconds</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.Timestamp.seconds" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Timestamp.seconds</p>
 </dd></dl>
 
@@ -1222,12 +1220,12 @@ value of this field is 5.</p>
 
 <dl class="class">
 <dt id="google.cloud.scheduler_v1.types.UpdateJobRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.scheduler_v1.types.</code><code class="descname">UpdateJobRequest</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.UpdateJobRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.scheduler_v1.types.</code><code class="sig-name descname">UpdateJobRequest</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.UpdateJobRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request message for
 [UpdateJob][google.cloud.scheduler.v1.CloudScheduler.UpdateJob].</p>
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.UpdateJobRequest.job">
-<code class="descname">job</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.UpdateJobRequest.job" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">job</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.UpdateJobRequest.job" title="Permalink to this definition">#</a></dt>
 <dd><p>Required.  The new job properties.
 [name][google.cloud.scheduler.v1.Job.name] must be specified.
 Output only fields cannot be modified using UpdateJob. Any
@@ -1236,20 +1234,20 @@ value specified for an output only field will be ignored.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.scheduler_v1.types.UpdateJobRequest.update_mask">
-<code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.UpdateJobRequest.update_mask" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">update_mask</code><a class="headerlink" href="#google.cloud.scheduler_v1.types.UpdateJobRequest.update_mask" title="Permalink to this definition">#</a></dt>
 <dd><p>A mask used to specify which fields of the job are being
 updated.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">job</code></dt>
+<code class="sig-name descname">job</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.UpdateJobRequest.job</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">update_mask</code></dt>
+<code class="sig-name descname">update_mask</code></dt>
 <dd><p>Field google.cloud.scheduler.v1.UpdateJobRequest.update_mask</p>
 </dd></dl>
 
@@ -1343,13 +1341,11 @@ updated.</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -1362,7 +1358,7 @@ updated.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

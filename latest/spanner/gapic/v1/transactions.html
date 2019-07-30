@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Transactions &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Transactions &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -44,14 +42,14 @@ session for each transaction.</p>
 <h1>Transaction Modes<a class="headerlink" href="#transaction-modes" title="Permalink to this headline">#</a></h1>
 <p>Cloud Spanner supports two transaction modes:</p>
 <ol class="arabic simple">
-<li>Locking read-write. This type of transaction is the only way to write
+<li><p>Locking read-write. This type of transaction is the only way to write
 data into Cloud Spanner. These transactions rely on pessimistic
 locking and, if necessary, two-phase commit. Locking read-write
-transactions may abort, requiring the application to retry.</li>
-<li>Snapshot read-only. This transaction type provides guaranteed
+transactions may abort, requiring the application to retry.</p></li>
+<li><p>Snapshot read-only. This transaction type provides guaranteed
 consistency across several reads, but does not allow writes. Snapshot
 read-only transactions can be configured to read at timestamps in the
-past. Snapshot read-only transactions do not need to be committed.</li>
+past. Snapshot read-only transactions do not need to be committed.</p></li>
 </ol>
 <p>For transactions that only read, snapshot read-only transactions provide
 simpler semantics and are almost always faster. In particular, read-only
@@ -141,9 +139,9 @@ permitted to do so).</p>
 bound, which tells Cloud Spanner how to choose a read timestamp.</p>
 <p>The types of timestamp bound are:</p>
 <ul class="simple">
-<li>Strong (the default).</li>
-<li>Bounded staleness.</li>
-<li>Exact staleness.</li>
+<li><p>Strong (the default).</p></li>
+<li><p>Bounded staleness.</p></li>
+<li><p>Exact staleness.</p></li>
 </ul>
 <p>If the Cloud Spanner database to be read is geographically distributed,
 stale read-only transactions can execute more quickly than strong or
@@ -306,13 +304,11 @@ timestamps fail with the error <code class="docutils literal notranslate"><span 
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -325,7 +321,7 @@ timestamps fail with the error <code class="docutils literal notranslate"><span 
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

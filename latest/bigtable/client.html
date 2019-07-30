@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Client &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -41,71 +39,67 @@
 <p>This is the base from which all interactions with the API occur.</p>
 <p>In the hierarchy of API concepts</p>
 <ul class="simple">
-<li>a <a class="reference internal" href="#google.cloud.bigtable.client.Client" title="google.cloud.bigtable.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> owns an
-<a class="reference internal" href="instance.html#google.cloud.bigtable.instance.Instance" title="google.cloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a></li>
-<li>an <a class="reference internal" href="instance.html#google.cloud.bigtable.instance.Instance" title="google.cloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a> owns a
-<a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a></li>
-<li>a <a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a> owns a
-<a class="reference internal" href="column-family.html#google.cloud.bigtable.column_family.ColumnFamily" title="google.cloud.bigtable.column_family.ColumnFamily"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColumnFamily</span></code></a></li>
-<li>a <a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a> owns a
-<a class="reference internal" href="row.html#google.cloud.bigtable.row.Row" title="google.cloud.bigtable.row.Row"><code class="xref py py-class docutils literal notranslate"><span class="pre">Row</span></code></a> (and all the cells in the row)</li>
+<li><p>a <a class="reference internal" href="#google.cloud.bigtable.client.Client" title="google.cloud.bigtable.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> owns an
+<a class="reference internal" href="instance.html#google.cloud.bigtable.instance.Instance" title="google.cloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a></p></li>
+<li><p>an <a class="reference internal" href="instance.html#google.cloud.bigtable.instance.Instance" title="google.cloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a> owns a
+<a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a></p></li>
+<li><p>a <a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a> owns a
+<a class="reference internal" href="column-family.html#google.cloud.bigtable.column_family.ColumnFamily" title="google.cloud.bigtable.column_family.ColumnFamily"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColumnFamily</span></code></a></p></li>
+<li><p>a <a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a> owns a
+<a class="reference internal" href="row.html#google.cloud.bigtable.row.Row" title="google.cloud.bigtable.row.Row"><code class="xref py py-class docutils literal notranslate"><span class="pre">Row</span></code></a> (and all the cells in the row)</p></li>
 </ul>
 <dl class="data">
 <dt id="google.cloud.bigtable.client.ADMIN_SCOPE">
-<code class="descclassname">google.cloud.bigtable.client.</code><code class="descname">ADMIN_SCOPE</code><em class="property"> = 'https://www.googleapis.com/auth/bigtable.admin'</em><a class="headerlink" href="#google.cloud.bigtable.client.ADMIN_SCOPE" title="Permalink to this definition">#</a></dt>
+<code class="sig-prename descclassname">google.cloud.bigtable.client.</code><code class="sig-name descname">ADMIN_SCOPE</code><em class="property"> = 'https://www.googleapis.com/auth/bigtable.admin'</em><a class="headerlink" href="#google.cloud.bigtable.client.ADMIN_SCOPE" title="Permalink to this definition">#</a></dt>
 <dd><p>Scope for interacting with the Cluster Admin and Table Admin APIs.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.bigtable.client.Client">
-<em class="property">class </em><code class="descclassname">google.cloud.bigtable.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>read_only=False</em>, <em>admin=False</em>, <em>client_info=&lt;google.api_core.gapic_v1.client_info.ClientInfo object&gt;</em>, <em>channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.client.Client" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.bigtable.client.</code><code class="sig-name descname">Client</code><span class="sig-paren">(</span><em class="sig-param">project=None</em>, <em class="sig-param">credentials=None</em>, <em class="sig-param">read_only=False</em>, <em class="sig-param">admin=False</em>, <em class="sig-param">client_info=&lt;google.api_core.gapic_v1.client_info.ClientInfo object&gt;</em>, <em class="sig-param">channel=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.client.Client" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../core/client.html#google.cloud.client.ClientWithProject" title="google.cloud.client.ClientWithProject"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.client.ClientWithProject</span></code></a></p>
 <p>Client for interacting with Google Cloud Bigtable API.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Since the Cloud Bigtable API requires the gRPC transport, no
+<p class="admonition-title">Note</p>
+<p>Since the Cloud Bigtable API requires the gRPC transport, no
 <code class="docutils literal notranslate"><span class="pre">_http</span></code> argument is accepted by this class.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> or <code class="xref py py-func docutils literal notranslate"><span class="pre">unicode</span></code>) – (Optional) The ID of the project which owns the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> or <code class="xref py py-func docutils literal notranslate"><span class="pre">unicode</span></code>) – (Optional) The ID of the project which owns the
 instances, tables and data. If not provided, will
-attempt to determine from the environment.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.6.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
+attempt to determine from the environment.</p></li>
+<li><p><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.6.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
 client. If not passed, falls back to the default
-inferred from the environment.</li>
-<li><strong>read_only</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – (Optional) Boolean indicating if the data scope should be
+inferred from the environment.</p></li>
+<li><p><strong>read_only</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – (Optional) Boolean indicating if the data scope should be
 for reading only (or for writing as well). Defaults to
-<a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">False</span></code></a>.</li>
-<li><strong>admin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – (Optional) Boolean indicating if the client will be used to
+<a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">False</span></code></a>.</p></li>
+<li><p><strong>admin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – (Optional) Boolean indicating if the client will be used to
 interact with the Instance Admin or Table Admin APIs. This
-requires the <a class="reference internal" href="#google.cloud.bigtable.client.ADMIN_SCOPE" title="google.cloud.bigtable.client.ADMIN_SCOPE"><code class="xref py py-const docutils literal notranslate"><span class="pre">ADMIN_SCOPE</span></code></a>. Defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">False</span></code></a>.</li>
-<li><strong>client_info</strong> – The client info used to send a user-agent string along with API
+requires the <a class="reference internal" href="#google.cloud.bigtable.client.ADMIN_SCOPE" title="google.cloud.bigtable.client.ADMIN_SCOPE"><code class="xref py py-const docutils literal notranslate"><span class="pre">ADMIN_SCOPE</span></code></a>. Defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">False</span></code></a>.</p></li>
+<li><p><strong>client_info</strong> – The client info used to send a user-agent string along with API
 requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then default info will be used. Generally,
 you only need to set this if you’re developing your own library
-or partner tool.</li>
-<li><strong>(</strong><strong>grpc.Channel</strong><strong>)</strong> (<em>channel</em>) – (Optional) DEPRECATED:
+or partner tool.</p></li>
+<li><p><strong>(</strong><strong>grpc.Channel</strong><strong>)</strong> (<em>channel</em>) – (Optional) DEPRECATED:
 A <code class="docutils literal notranslate"><span class="pre">Channel</span></code> instance through which to make calls.
 This argument is mutually exclusive with <code class="docutils literal notranslate"><span class="pre">credentials</span></code>;
-providing both will raise an exception. No longer used.</li>
+providing both will raise an exception. No longer used.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body"><p class="first">client_info: <a class="reference internal" href="../core/client_info.html#google.api_core.gapic_v1.client_info.ClientInfo" title="google.api_core.gapic_v1.client_info.ClientInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.gapic_v1.client_info.ClientInfo</span></code></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code> if both <code class="docutils literal notranslate"><span class="pre">read_only</span></code>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p>client_info: <a class="reference internal" href="../core/client_info.html#google.api_core.gapic_v1.client_info.ClientInfo" title="google.api_core.gapic_v1.client_info.ClientInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.api_core.gapic_v1.client_info.ClientInfo</span></code></a></p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code> if both <code class="docutils literal notranslate"><span class="pre">read_only</span></code>
 and <code class="docutils literal notranslate"><span class="pre">admin</span></code> are <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="google.cloud.bigtable.client.Client.instance">
-<code class="descname">instance</code><span class="sig-paren">(</span><em>instance_id</em>, <em>display_name=None</em>, <em>instance_type=None</em>, <em>labels=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/client.html#Client.instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.client.Client.instance" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">instance</code><span class="sig-paren">(</span><em class="sig-param">instance_id</em>, <em class="sig-param">display_name=None</em>, <em class="sig-param">instance_type=None</em>, <em class="sig-param">labels=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/client.html#Client.instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.client.Client.instance" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory to create a instance associated with this client.</p>
 <p>For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.bigtable</span> <span class="k">import</span> <span class="n">Client</span>
@@ -134,24 +128,22 @@ and <code class="docutils literal notranslate"><span class="pre">admin</span></c
 
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>instance_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The ID of the instance.</li>
-<li><strong>display_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) The display name for the instance in
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>instance_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The ID of the instance.</p></li>
+<li><p><strong>display_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) The display name for the instance in
 the Cloud Console UI. (Must be between 4 and 30
 characters.) If this value is not set in the
-constructor, will fall back to the instance ID.</li>
-<li><strong>instance_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – (Optional) The type of the instance.
+constructor, will fall back to the instance ID.</p></li>
+<li><p><strong>instance_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – (Optional) The type of the instance.
 Possible values are represented
 by the following constants:
 <code class="xref py py-data docutils literal notranslate"><span class="pre">google.cloud.bigtable.enums.InstanceType.PRODUCTION</span></code>.
 <code class="xref py py-data docutils literal notranslate"><span class="pre">google.cloud.bigtable.enums.InstanceType.DEVELOPMENT</span></code>,
 Defaults to
-<code class="xref py py-data docutils literal notranslate"><span class="pre">google.cloud.bigtable.enums.InstanceType.UNSPECIFIED</span></code>.</li>
-<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – (Optional) Labels are a flexible and lightweight
+<code class="xref py py-data docutils literal notranslate"><span class="pre">google.cloud.bigtable.enums.InstanceType.UNSPECIFIED</span></code>.</p></li>
+<li><p><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – (Optional) Labels are a flexible and lightweight
 mechanism for organizing cloud resources into groups
 that reflect a customer’s organizational needs and
 deployment strategies. They can be used to filter
@@ -159,23 +151,21 @@ resources and aggregate metrics. Label keys must be
 between 1 and 63 characters long. Maximum 64 labels can
 be associated with a given resource. Label values must
 be between 0 and 63 characters long. Keys and values
-must both be under 128 bytes.</li>
+must both be under 128 bytes.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="instance.html#google.cloud.bigtable.instance.Instance" title="google.cloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">an instance owned by this client.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="instance.html#google.cloud.bigtable.instance.Instance" title="google.cloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instance</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>an instance owned by this client.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigtable.client.Client.instance_admin_client">
-<code class="descname">instance_admin_client</code><a class="headerlink" href="#google.cloud.bigtable.client.Client.instance_admin_client" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">instance_admin_client</code><a class="headerlink" href="#google.cloud.bigtable.client.Client.instance_admin_client" title="Permalink to this definition">#</a></dt>
 <dd><p>Getter for the gRPC stub used for the Table Admin API.</p>
 <p>For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.bigtable</span> <span class="k">import</span> <span class="n">Client</span>
@@ -184,25 +174,24 @@ must both be under 128 bytes.</li>
     <span class="n">instance_admin_client</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance_admin_client</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">bigtable_admin_pb2.BigtableInstanceAdmin</span></code></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A BigtableInstanceAdmin instance.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code> if the current
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bigtable_admin_pb2.BigtableInstanceAdmin</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A BigtableInstanceAdmin instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code> if the current
 client is not an admin client or if it has not been
-<code class="xref py py-meth docutils literal notranslate"><span class="pre">start()</span></code>-ed.</td>
-</tr>
-</tbody>
-</table>
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">start()</span></code>-ed.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigtable.client.Client.list_clusters">
-<code class="descname">list_clusters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/client.html#Client.list_clusters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.client.Client.list_clusters" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">list_clusters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/client.html#Client.list_clusters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.client.Client.list_clusters" title="Permalink to this definition">#</a></dt>
 <dd><p>List the clusters in the project.</p>
 <p>For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.bigtable</span> <span class="k">import</span> <span class="n">Client</span>
@@ -211,24 +200,22 @@ client is not an admin client or if it has not been
     <span class="p">(</span><span class="n">clusters_list</span><span class="p">,</span> <span class="n">failed_locations_list</span><span class="p">)</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_clusters</span><span class="p">()</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(clusters, failed_locations), where ‘clusters’ is list of
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(clusters, failed_locations), where ‘clusters’ is list of
 <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.instance.Cluster</span></code>, and
 ‘failed_locations’ is a list of strings representing
-locations which could not be resolved.</td>
-</tr>
-</tbody>
-</table>
+locations which could not be resolved.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigtable.client.Client.list_instances">
-<code class="descname">list_instances</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/client.html#Client.list_instances"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.client.Client.list_instances" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">list_instances</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/client.html#Client.list_instances"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.client.Client.list_instances" title="Permalink to this definition">#</a></dt>
 <dd><p>List instances owned by the project.</p>
 <p>For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.bigtable</span> <span class="k">import</span> <span class="n">Client</span>
@@ -237,28 +224,26 @@ locations which could not be resolved.</td>
     <span class="p">(</span><span class="n">instances_list</span><span class="p">,</span> <span class="n">failed_locations_list</span><span class="p">)</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_instances</span><span class="p">()</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(instances, failed_locations), where ‘instances’ is list of
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(instances, failed_locations), where ‘instances’ is list of
 <a class="reference internal" href="instance.html#google.cloud.bigtable.instance.Instance" title="google.cloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigtable.instance.Instance</span></code></a>, and
 ‘failed_locations’ is a list of locations which could not
-be resolved.</td>
-</tr>
-</tbody>
-</table>
+be resolved.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigtable.client.Client.project_path">
-<code class="descname">project_path</code><a class="headerlink" href="#google.cloud.bigtable.client.Client.project_path" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">project_path</code><a class="headerlink" href="#google.cloud.bigtable.client.Client.project_path" title="Permalink to this definition">#</a></dt>
 <dd><p>Project name to be used with Instance Admin API.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This property will not change if <code class="docutils literal notranslate"><span class="pre">project</span></code> does not, but the
+<p class="admonition-title">Note</p>
+<p>This property will not change if <code class="docutils literal notranslate"><span class="pre">project</span></code> does not, but the
 return value is not cached.</p>
 </div>
 <p>For example:</p>
@@ -270,22 +255,21 @@ return value is not cached.</p>
 </div>
 <p>The project name is of the form</p>
 <blockquote>
-<div><code class="docutils literal notranslate"><span class="pre">&quot;projects/{project}&quot;</span></code></div></blockquote>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Return a fully-qualified project string.</td>
-</tr>
-</tbody>
-</table>
+<div><p><code class="docutils literal notranslate"><span class="pre">&quot;projects/{project}&quot;</span></code></p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Return a fully-qualified project string.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigtable.client.Client.table_admin_client">
-<code class="descname">table_admin_client</code><a class="headerlink" href="#google.cloud.bigtable.client.Client.table_admin_client" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">table_admin_client</code><a class="headerlink" href="#google.cloud.bigtable.client.Client.table_admin_client" title="Permalink to this definition">#</a></dt>
 <dd><p>Getter for the gRPC stub used for the Table Admin API.</p>
 <p>For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.bigtable</span> <span class="k">import</span> <span class="n">Client</span>
@@ -294,25 +278,24 @@ return value is not cached.</p>
     <span class="n">table_admin_client</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">table_admin_client</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">bigtable_admin_pb2.BigtableTableAdmin</span></code></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A BigtableTableAdmin instance.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code> if the current
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bigtable_admin_pb2.BigtableTableAdmin</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A BigtableTableAdmin instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code> if the current
 client is not an admin client or if it has not been
-<code class="xref py py-meth docutils literal notranslate"><span class="pre">start()</span></code>-ed.</td>
-</tr>
-</tbody>
-</table>
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">start()</span></code>-ed.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigtable.client.Client.table_data_client">
-<code class="descname">table_data_client</code><a class="headerlink" href="#google.cloud.bigtable.client.Client.table_data_client" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">table_data_client</code><a class="headerlink" href="#google.cloud.bigtable.client.Client.table_data_client" title="Permalink to this definition">#</a></dt>
 <dd><p>Getter for the gRPC stub used for the Table Admin API.</p>
 <p>For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.bigtable</span> <span class="k">import</span> <span class="n">Client</span>
@@ -321,29 +304,27 @@ client is not an admin client or if it has not been
     <span class="n">table_data_client</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">table_data_client</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">bigtable_v2.BigtableClient</span></code></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A BigtableClient object.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bigtable_v2.BigtableClient</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A BigtableClient object.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="data">
 <dt id="google.cloud.bigtable.client.DATA_SCOPE">
-<code class="descclassname">google.cloud.bigtable.client.</code><code class="descname">DATA_SCOPE</code><em class="property"> = 'https://www.googleapis.com/auth/bigtable.data'</em><a class="headerlink" href="#google.cloud.bigtable.client.DATA_SCOPE" title="Permalink to this definition">#</a></dt>
+<code class="sig-prename descclassname">google.cloud.bigtable.client.</code><code class="sig-name descname">DATA_SCOPE</code><em class="property"> = 'https://www.googleapis.com/auth/bigtable.data'</em><a class="headerlink" href="#google.cloud.bigtable.client.DATA_SCOPE" title="Permalink to this definition">#</a></dt>
 <dd><p>Scope for reading and writing table data.</p>
 </dd></dl>
 
 <dl class="data">
 <dt id="google.cloud.bigtable.client.READ_ONLY_SCOPE">
-<code class="descclassname">google.cloud.bigtable.client.</code><code class="descname">READ_ONLY_SCOPE</code><em class="property"> = 'https://www.googleapis.com/auth/bigtable.data.readonly'</em><a class="headerlink" href="#google.cloud.bigtable.client.READ_ONLY_SCOPE" title="Permalink to this definition">#</a></dt>
+<code class="sig-prename descclassname">google.cloud.bigtable.client.</code><code class="sig-name descname">READ_ONLY_SCOPE</code><em class="property"> = 'https://www.googleapis.com/auth/bigtable.data.readonly'</em><a class="headerlink" href="#google.cloud.bigtable.client.READ_ONLY_SCOPE" title="Permalink to this definition">#</a></dt>
 <dd><p>Scope for reading table data.</p>
 </dd></dl>
 
@@ -437,13 +418,11 @@ client is not an admin client or if it has not been
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -456,7 +435,7 @@ client is not an admin client or if it has not been
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Python Logging Handler Sync Transport &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Python Logging Handler Sync Transport &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -41,29 +39,25 @@
 <p>Logs directly to the the Stackdriver Logging API with a synchronous call.</p>
 <dl class="class">
 <dt id="google.cloud.logging.handlers.transports.sync.SyncTransport">
-<em class="property">class </em><code class="descclassname">google.cloud.logging.handlers.transports.sync.</code><code class="descname">SyncTransport</code><span class="sig-paren">(</span><em>client</em>, <em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/handlers/transports/sync.html#SyncTransport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.transports.sync.SyncTransport" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.logging.handlers.transports.sync.</code><code class="sig-name descname">SyncTransport</code><span class="sig-paren">(</span><em class="sig-param">client</em>, <em class="sig-param">name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/handlers/transports/sync.html#SyncTransport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.transports.sync.SyncTransport" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="transports-base.html#google.cloud.logging.handlers.transports.base.Transport" title="google.cloud.logging.handlers.transports.base.Transport"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.logging.handlers.transports.base.Transport</span></code></a></p>
 <p>Basic sychronous transport.</p>
 <p>Uses this library’s Logging client to directly make the API call.</p>
 <dl class="method">
 <dt id="google.cloud.logging.handlers.transports.sync.SyncTransport.send">
-<code class="descname">send</code><span class="sig-paren">(</span><em>record</em>, <em>message</em>, <em>resource=None</em>, <em>labels=None</em>, <em>trace=None</em>, <em>span_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/handlers/transports/sync.html#SyncTransport.send"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.transports.sync.SyncTransport.send" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">send</code><span class="sig-paren">(</span><em class="sig-param">record</em>, <em class="sig-param">message</em>, <em class="sig-param">resource=None</em>, <em class="sig-param">labels=None</em>, <em class="sig-param">trace=None</em>, <em class="sig-param">span_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/handlers/transports/sync.html#SyncTransport.send"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.transports.sync.SyncTransport.send" title="Permalink to this definition">#</a></dt>
 <dd><p>Overrides transport.send().</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>record</strong> (<a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.LogRecord" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">logging.LogRecord</span></code></a>) – Python log record that the handler was called with.</li>
-<li><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The message from the <code class="docutils literal notranslate"><span class="pre">LogRecord</span></code> after being
-formatted by the associated log formatters.</li>
-<li><strong>resource</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code>) – (Optional) Monitored resource of the entry.</li>
-<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – (Optional) Mapping of labels for the entry.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>record</strong> (<a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.LogRecord" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">logging.LogRecord</span></code></a>) – Python log record that the handler was called with.</p></li>
+<li><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The message from the <code class="docutils literal notranslate"><span class="pre">LogRecord</span></code> after being
+formatted by the associated log formatters.</p></li>
+<li><p><strong>resource</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code>) – (Optional) Monitored resource of the entry.</p></li>
+<li><p><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – (Optional) Mapping of labels for the entry.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -156,13 +150,11 @@ formatted by the associated log formatters.</li>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -175,7 +167,7 @@ formatted by the associated log formatters.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Changelog &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Changelog &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -44,37 +42,37 @@
 <div class="section" id="implementation-changes">
 <h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add missing transforms to ‘google.cloud.firestore’ shim. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8481">#8481</a>)</li>
-<li>Preserve reference to missing documents in ‘Client.get_all’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8472">#8472</a>)</li>
-<li>Add gRPC keepalive to gapic client initialization. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8264">#8264</a>)</li>
-<li>Add disclaimer to auto-generated template files. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8314">#8314</a>)</li>
-<li>Use correct environment variable to guard the ‘system’ part. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7912">#7912</a>)</li>
+<li><p>Add missing transforms to ‘google.cloud.firestore’ shim. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8481">#8481</a>)</p></li>
+<li><p>Preserve reference to missing documents in ‘Client.get_all’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8472">#8472</a>)</p></li>
+<li><p>Add gRPC keepalive to gapic client initialization. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8264">#8264</a>)</p></li>
+<li><p>Add disclaimer to auto-generated template files. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8314">#8314</a>)</p></li>
+<li><p>Use correct environment variable to guard the ‘system’ part. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7912">#7912</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="new-features">
 <h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add ‘client_options’ support, update list method docstrings (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8509">#8509</a>)</li>
-<li>Allow kwargs to be passed to create_channel (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8390">#8390</a>)</li>
-<li>Add ‘FieldPath.documentId()’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8543">#8543</a>)</li>
+<li><p>Add ‘client_options’ support, update list method docstrings (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8509">#8509</a>)</p></li>
+<li><p>Allow kwargs to be passed to create_channel (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8390">#8390</a>)</p></li>
+<li><p>Add ‘FieldPath.documentId()’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8543">#8543</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="documentation">
 <h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Fix docstring example for ‘Client.collection_group’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8438">#8438</a>)</li>
-<li>Normalize docstring class refs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8102">#8102</a>)</li>
+<li><p>Fix docstring example for ‘Client.collection_group’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8438">#8438</a>)</p></li>
+<li><p>Normalize docstring class refs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8102">#8102</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="internal-testing-changes">
 <h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Pin black version (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8583">#8583</a>)</li>
-<li>All: Add docs job to publish to googleapis.dev. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8464">#8464</a>)</li>
-<li>Declare encoding as utf-8 in pb2 files (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8352">#8352</a>)</li>
-<li>Suppress checking ‘cov-fail-under’ in nox default session (via synth).  (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8241">#8241</a>)</li>
-<li>Blacken noxfile.py, setup.py (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8123">#8123</a>)</li>
-<li>Add empty lines (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8058">#8058</a>)</li>
+<li><p>Pin black version (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8583">#8583</a>)</p></li>
+<li><p>All: Add docs job to publish to googleapis.dev. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8464">#8464</a>)</p></li>
+<li><p>Declare encoding as utf-8 in pb2 files (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8352">#8352</a>)</p></li>
+<li><p>Suppress checking ‘cov-fail-under’ in nox default session (via synth).  (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8241">#8241</a>)</p></li>
+<li><p>Blacken noxfile.py, setup.py (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8123">#8123</a>)</p></li>
+<li><p>Add empty lines (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8058">#8058</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -84,20 +82,20 @@
 <div class="section" id="id3">
 <h3>New Features<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add support for numeric transforms: <code class="docutils literal notranslate"><span class="pre">increment</span></code> / <code class="docutils literal notranslate"><span class="pre">maximum</span></code> / <code class="docutils literal notranslate"><span class="pre">minimum</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7989">#7989</a>)</li>
-<li>Add <code class="docutils literal notranslate"><span class="pre">client_info</span></code> support to V1 client. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7877">#7877</a>) and (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7898">#7898</a>)</li>
+<li><p>Add support for numeric transforms: <code class="docutils literal notranslate"><span class="pre">increment</span></code> / <code class="docutils literal notranslate"><span class="pre">maximum</span></code> / <code class="docutils literal notranslate"><span class="pre">minimum</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7989">#7989</a>)</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">client_info</span></code> support to V1 client. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7877">#7877</a>) and (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7898">#7898</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="dependencies">
 <h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Pin <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span> <span class="pre">&gt;=</span> <span class="pre">1.0.0,</span> <span class="pre">&lt;</span> <span class="pre">2.0dev</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7993">#7993</a>)</li>
+<li><p>Pin <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span> <span class="pre">&gt;=</span> <span class="pre">1.0.0,</span> <span class="pre">&lt;</span> <span class="pre">2.0dev</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7993">#7993</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id4">
 <h3>Internal / Testing Changes<a class="headerlink" href="#id4" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add nox session <code class="docutils literal notranslate"><span class="pre">docs</span></code>,  add routing header to method metadata, reorder methods (via synth).. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7771">#7771</a>)</li>
+<li><p>Add nox session <code class="docutils literal notranslate"><span class="pre">docs</span></code>,  add routing header to method metadata, reorder methods (via synth).. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7771">#7771</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -107,7 +105,7 @@
 <div class="section" id="id6">
 <h3>New Features<a class="headerlink" href="#id6" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add support for CollectionGroup queries. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7758">#7758</a>)</li>
+<li><p>Add support for CollectionGroup queries. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7758">#7758</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -117,8 +115,8 @@
 <div class="section" id="id8">
 <h3>Implementation Changes<a class="headerlink" href="#id8" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Use parent path for watch on queries. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7752">#7752</a>)</li>
-<li>Add routing header to method metadata (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7749">#7749</a>)</li>
+<li><p>Use parent path for watch on queries. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7752">#7752</a>)</p></li>
+<li><p>Add routing header to method metadata (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7749">#7749</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -128,7 +126,7 @@
 <div class="section" id="id10">
 <h3>Dependencies<a class="headerlink" href="#id10" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Update google-api-core dependency</li>
+<li><p>Update google-api-core dependency</p></li>
 </ul>
 </div>
 </div>
@@ -138,39 +136,39 @@
 <div class="section" id="id12">
 <h3>Implementation Changes<a class="headerlink" href="#id12" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Allow passing metadata as part of creating a bidi (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7514">#7514</a>)</li>
-<li>Remove classifier for Python 3.4 for end-of-life. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7535">#7535</a>)</li>
-<li>Rename ‘Query.get’ -&gt; ‘stream’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7284">#7284</a>)</li>
-<li>Remove bogus error checking of query response stream. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7206">#7206</a>)
--‘increment’ / ‘minimum’ / ‘maximum’ field transform attributes. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7129">#7129</a>)</li>
-<li>Respect transform values passed into collection.add (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7072">#7072</a>)</li>
-<li>Protoc-generated serialization update. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7083">#7083</a>)</li>
+<li><p>Allow passing metadata as part of creating a bidi (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7514">#7514</a>)</p></li>
+<li><p>Remove classifier for Python 3.4 for end-of-life. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7535">#7535</a>)</p></li>
+<li><p>Rename ‘Query.get’ -&gt; ‘stream’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7284">#7284</a>)</p></li>
+<li><p>Remove bogus error checking of query response stream. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7206">#7206</a>)
+-‘increment’ / ‘minimum’ / ‘maximum’ field transform attributes. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7129">#7129</a>)</p></li>
+<li><p>Respect transform values passed into collection.add (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7072">#7072</a>)</p></li>
+<li><p>Protoc-generated serialization update. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7083">#7083</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id13">
 <h3>New Features<a class="headerlink" href="#id13" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Firestore: Add v1 API version. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7494">#7494</a>)</li>
-<li>Add ‘Collection.list_documents’ method. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7221">#7221</a>)</li>
-<li>Add ‘DocumentReference.path’ property. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7219">#7219</a>)</li>
+<li><p>Firestore: Add v1 API version. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7494">#7494</a>)</p></li>
+<li><p>Add ‘Collection.list_documents’ method. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7221">#7221</a>)</p></li>
+<li><p>Add ‘DocumentReference.path’ property. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7219">#7219</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id14">
 <h3>Documentation<a class="headerlink" href="#id14" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Updated client library documentation URLs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7307">#7307</a>)</li>
-<li>Fix the docstring example for ‘Query.on_snapshot’.  (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7281">#7281</a>)</li>
-<li>Update copyright headers</li>
+<li><p>Updated client library documentation URLs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7307">#7307</a>)</p></li>
+<li><p>Fix the docstring example for ‘Query.on_snapshot’.  (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7281">#7281</a>)</p></li>
+<li><p>Update copyright headers</p></li>
 </ul>
 </div>
 <div class="section" id="id15">
 <h3>Internal / Testing Changes<a class="headerlink" href="#id15" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Fix typo in proto comments (via synth).</li>
-<li>Prep firestore unit tests for generation from ‘v1’ protos. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7437">#7437</a>)</li>
-<li>Copy lintified proto files (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7466">#7466</a>)</li>
-<li>Add clarifying comment to blacken nox target. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7392">#7392</a>)</li>
-<li>Add protos as an artifact to library (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7205">#7205</a>)</li>
+<li><p>Fix typo in proto comments (via synth).</p></li>
+<li><p>Prep firestore unit tests for generation from ‘v1’ protos. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7437">#7437</a>)</p></li>
+<li><p>Copy lintified proto files (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7466">#7466</a>)</p></li>
+<li><p>Add clarifying comment to blacken nox target. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7392">#7392</a>)</p></li>
+<li><p>Add protos as an artifact to library (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7205">#7205</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -180,72 +178,72 @@
 <div class="section" id="id17">
 <h3>Implementation Changes<a class="headerlink" href="#id17" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Implement equality semantics for public types (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6916">#6916</a>)</li>
-<li>Pick up stub docstring fix in GAPIC generator. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6988">#6988</a>)</li>
-<li>Use ‘DatetimeWithNanos’ for converting timestamp messages. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6920">#6920</a>)</li>
-<li>Enable use of ‘WriteBatch’ as a context manager. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6912">#6912</a>)</li>
-<li>Document timeouts for ‘Query.get’ / ‘Collection.get’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6853">#6853</a>)</li>
-<li>Normalize FieldPath parsing / escaping (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6904">#6904</a>)</li>
-<li>For queries ordered on <code class="docutils literal notranslate"><span class="pre">__name__</span></code>, expand field values to full paths. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6829">#6829</a>)</li>
-<li>Import <code class="docutils literal notranslate"><span class="pre">iam.policy</span></code> from <code class="docutils literal notranslate"><span class="pre">google.api_core</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6741">#6741</a>)</li>
-<li>Prevent use of transforms as values passed to ‘Query.where’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6703">#6703</a>)</li>
-<li>‘Query.select([])’ implies <code class="docutils literal notranslate"><span class="pre">__name__</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6735">#6735</a>)</li>
-<li>Reject invalid paths passed to ‘Query.{select,where,order_by}’ (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6770">#6770</a>)</li>
-<li>Prevent use of transforms as cursor values. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6706">#6706</a>)</li>
-<li>Refactor ‘Document.get’ to use the ‘GetDocument’ API. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6534">#6534</a>)</li>
-<li>Pick up enum fixes in the GAPIC generator. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6612">#6612</a>)</li>
-<li>Pick up changes to GAPIC client config. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6589">#6589</a>)</li>
-<li>Suppress deprecation warnings for ‘assertRaisesRegexp’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6543">#6543</a>)</li>
-<li>Firestore: pick up fixes to GAPIC generator. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6523">#6523</a>)</li>
-<li>Fix <code class="docutils literal notranslate"><span class="pre">client_info</span></code> bug, update docstrings. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6412">#6412</a>)</li>
-<li>Block calling ‘DocumentRef.get()’ with a single string. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6270">#6270</a>)</li>
+<li><p>Implement equality semantics for public types (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6916">#6916</a>)</p></li>
+<li><p>Pick up stub docstring fix in GAPIC generator. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6988">#6988</a>)</p></li>
+<li><p>Use ‘DatetimeWithNanos’ for converting timestamp messages. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6920">#6920</a>)</p></li>
+<li><p>Enable use of ‘WriteBatch’ as a context manager. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6912">#6912</a>)</p></li>
+<li><p>Document timeouts for ‘Query.get’ / ‘Collection.get’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6853">#6853</a>)</p></li>
+<li><p>Normalize FieldPath parsing / escaping (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6904">#6904</a>)</p></li>
+<li><p>For queries ordered on <code class="docutils literal notranslate"><span class="pre">__name__</span></code>, expand field values to full paths. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6829">#6829</a>)</p></li>
+<li><p>Import <code class="docutils literal notranslate"><span class="pre">iam.policy</span></code> from <code class="docutils literal notranslate"><span class="pre">google.api_core</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6741">#6741</a>)</p></li>
+<li><p>Prevent use of transforms as values passed to ‘Query.where’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6703">#6703</a>)</p></li>
+<li><p>‘Query.select([])’ implies <code class="docutils literal notranslate"><span class="pre">__name__</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6735">#6735</a>)</p></li>
+<li><p>Reject invalid paths passed to ‘Query.{select,where,order_by}’ (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6770">#6770</a>)</p></li>
+<li><p>Prevent use of transforms as cursor values. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6706">#6706</a>)</p></li>
+<li><p>Refactor ‘Document.get’ to use the ‘GetDocument’ API. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6534">#6534</a>)</p></li>
+<li><p>Pick up enum fixes in the GAPIC generator. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6612">#6612</a>)</p></li>
+<li><p>Pick up changes to GAPIC client config. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6589">#6589</a>)</p></li>
+<li><p>Suppress deprecation warnings for ‘assertRaisesRegexp’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6543">#6543</a>)</p></li>
+<li><p>Firestore: pick up fixes to GAPIC generator. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6523">#6523</a>)</p></li>
+<li><p>Fix <code class="docutils literal notranslate"><span class="pre">client_info</span></code> bug, update docstrings. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6412">#6412</a>)</p></li>
+<li><p>Block calling ‘DocumentRef.get()’ with a single string. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6270">#6270</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id18">
 <h3>New Features<a class="headerlink" href="#id18" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Impose required semantics for snapshots as cursors: (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6837">#6837</a>)</li>
-<li>Make cursor-related ‘Query’ methods accept lists (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6697">#6697</a>)</li>
-<li>Add ‘Client.collections’ method. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6650">#6650</a>)</li>
-<li>Add support for ‘ArrayRemove’ / ‘ArrayUnion’ transforms (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6651">#6651</a>)</li>
-<li>Add support for <code class="docutils literal notranslate"><span class="pre">array_contains</span></code> query operator. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6481">#6481</a>)</li>
-<li>Add Watch Support (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6191">#6191</a>)</li>
-<li>Remove use of deprecated ‘channel’ argument. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6271">#6271</a>)</li>
+<li><p>Impose required semantics for snapshots as cursors: (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6837">#6837</a>)</p></li>
+<li><p>Make cursor-related ‘Query’ methods accept lists (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6697">#6697</a>)</p></li>
+<li><p>Add ‘Client.collections’ method. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6650">#6650</a>)</p></li>
+<li><p>Add support for ‘ArrayRemove’ / ‘ArrayUnion’ transforms (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6651">#6651</a>)</p></li>
+<li><p>Add support for <code class="docutils literal notranslate"><span class="pre">array_contains</span></code> query operator. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6481">#6481</a>)</p></li>
+<li><p>Add Watch Support (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6191">#6191</a>)</p></li>
+<li><p>Remove use of deprecated ‘channel’ argument. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6271">#6271</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id19">
 <h3>Dependencies<a class="headerlink" href="#id19" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Pin ‘google-api_core &gt;= 1.7.0’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6937">#6937</a>)</li>
-<li>Update dependency to google-cloud-core (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6835">#6835</a>)</li>
-<li>Bump minimum ‘api_core’ version for all GAPIC libs to 1.4.1. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6391">#6391</a>)</li>
+<li><p>Pin ‘google-api_core &gt;= 1.7.0’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6937">#6937</a>)</p></li>
+<li><p>Update dependency to google-cloud-core (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6835">#6835</a>)</p></li>
+<li><p>Bump minimum ‘api_core’ version for all GAPIC libs to 1.4.1. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6391">#6391</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id20">
 <h3>Documentation<a class="headerlink" href="#id20" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Document Python 2 deprecation (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6910">#6910</a>)</li>
-<li>Nnormalize docs for <code class="docutils literal notranslate"><span class="pre">page_size</span></code> / <code class="docutils literal notranslate"><span class="pre">max_results</span></code> / <code class="docutils literal notranslate"><span class="pre">page_token</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6842">#6842</a>)</li>
-<li>Port changelog from 30.1 branch to master (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6903">#6903</a>)</li>
-<li>Normalize use of support level badges (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6159">#6159</a>)</li>
+<li><p>Document Python 2 deprecation (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6910">#6910</a>)</p></li>
+<li><p>Nnormalize docs for <code class="docutils literal notranslate"><span class="pre">page_size</span></code> / <code class="docutils literal notranslate"><span class="pre">max_results</span></code> / <code class="docutils literal notranslate"><span class="pre">page_token</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6842">#6842</a>)</p></li>
+<li><p>Port changelog from 30.1 branch to master (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6903">#6903</a>)</p></li>
+<li><p>Normalize use of support level badges (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6159">#6159</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id21">
 <h3>Internal / Testing Changes<a class="headerlink" href="#id21" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add driver for listen conformance tests. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6935">#6935</a>)</li>
-<li>Add driver for query conformance tests. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6839">#6839</a>)</li>
-<li>Update noxfile.</li>
-<li>Blacken libraries (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6794">#6794</a>)</li>
-<li>Omit local deps (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6701">#6701</a>)</li>
-<li>Run black at end of synth.py (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6698">#6698</a>)</li>
-<li>Add templates for flake8, coveragerc, noxfile, and black. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6642">#6642</a>)</li>
-<li>Fix delete conformance (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6559">#6559</a>)</li>
-<li>Add synth metadata. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6567">#6567</a>)</li>
-<li>Refactor conformance tests. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6291">#6291</a>)</li>
-<li>Import stdlib ABCs from ‘collections.abc’ rather than ‘collections’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6451">#6451</a>)</li>
-<li>Fix path of tests-to-include in MANIFEST.in (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6381">#6381</a>)</li>
-<li>Fix error from new flake8 version. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6320">#6320</a>)</li>
+<li><p>Add driver for listen conformance tests. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6935">#6935</a>)</p></li>
+<li><p>Add driver for query conformance tests. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6839">#6839</a>)</p></li>
+<li><p>Update noxfile.</p></li>
+<li><p>Blacken libraries (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6794">#6794</a>)</p></li>
+<li><p>Omit local deps (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6701">#6701</a>)</p></li>
+<li><p>Run black at end of synth.py (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6698">#6698</a>)</p></li>
+<li><p>Add templates for flake8, coveragerc, noxfile, and black. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6642">#6642</a>)</p></li>
+<li><p>Fix delete conformance (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6559">#6559</a>)</p></li>
+<li><p>Add synth metadata. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6567">#6567</a>)</p></li>
+<li><p>Refactor conformance tests. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6291">#6291</a>)</p></li>
+<li><p>Import stdlib ABCs from ‘collections.abc’ rather than ‘collections’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6451">#6451</a>)</p></li>
+<li><p>Fix path of tests-to-include in MANIFEST.in (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6381">#6381</a>)</p></li>
+<li><p>Fix error from new flake8 version. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6320">#6320</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -255,7 +253,7 @@
 <div class="section" id="id23">
 <h3>Dependencies<a class="headerlink" href="#id23" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Update <code class="docutils literal notranslate"><span class="pre">core</span></code> and <code class="docutils literal notranslate"><span class="pre">api_core</span></code> dependencies to latest versions.</li>
+<li><p>Update <code class="docutils literal notranslate"><span class="pre">core</span></code> and <code class="docutils literal notranslate"><span class="pre">api_core</span></code> dependencies to latest versions.</p></li>
 </ul>
 </div>
 </div>
@@ -265,44 +263,44 @@
 <div class="section" id="id25">
 <h3>New Features<a class="headerlink" href="#id25" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add <code class="docutils literal notranslate"><span class="pre">Document.collections</span></code> method. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5613">#5613</a>)</li>
-<li>Add <code class="docutils literal notranslate"><span class="pre">merge</span></code> as an option to <code class="docutils literal notranslate"><span class="pre">DocumentReference.set()</span></code> (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/4851">#4851</a>)</li>
-<li>Return emtpy snapshot instead of raising NotFound exception (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5007">#5007</a>)</li>
-<li>Add Field path class (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/4392">#4392</a>)</li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">Document.collections</span></code> method. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5613">#5613</a>)</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">merge</span></code> as an option to <code class="docutils literal notranslate"><span class="pre">DocumentReference.set()</span></code> (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/4851">#4851</a>)</p></li>
+<li><p>Return emtpy snapshot instead of raising NotFound exception (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5007">#5007</a>)</p></li>
+<li><p>Add Field path class (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/4392">#4392</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id26">
 <h3>Implementation Changes<a class="headerlink" href="#id26" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Avoid overwriting <code class="docutils literal notranslate"><span class="pre">__module__</span></code> of messages from shared modules. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5364">#5364</a>)</li>
-<li>Don’t omit originally-empty map values when processing timestamps. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6050">#6050</a>)</li>
+<li><p>Avoid overwriting <code class="docutils literal notranslate"><span class="pre">__module__</span></code> of messages from shared modules. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5364">#5364</a>)</p></li>
+<li><p>Don’t omit originally-empty map values when processing timestamps. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6050">#6050</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id27">
 <h3>Documentation<a class="headerlink" href="#id27" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Prep docs for repo split. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6000">#6000</a>)</li>
-<li>Docs: Replace links to <code class="docutils literal notranslate"><span class="pre">/stable/</span></code> with <code class="docutils literal notranslate"><span class="pre">/latest/</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5901">#5901</a>)</li>
-<li>Document <code class="docutils literal notranslate"><span class="pre">FieldPath.from_string</span></code> (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5121">#5121</a>)</li>
+<li><p>Prep docs for repo split. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6000">#6000</a>)</p></li>
+<li><p>Docs: Replace links to <code class="docutils literal notranslate"><span class="pre">/stable/</span></code> with <code class="docutils literal notranslate"><span class="pre">/latest/</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5901">#5901</a>)</p></li>
+<li><p>Document <code class="docutils literal notranslate"><span class="pre">FieldPath.from_string</span></code> (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5121">#5121</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id28">
 <h3>Internal / Testing Changes<a class="headerlink" href="#id28" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Use new Nox (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6175">#6175</a>)</li>
-<li>Add new conformance tests. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6124">#6124</a>)</li>
-<li>Add <code class="docutils literal notranslate"><span class="pre">synth.py</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6079">#6079</a>)</li>
-<li>Test document update w/ integer ids (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5895">#5895</a>)</li>
-<li>Nox: use inplace installs (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5865">#5865</a>)</li>
-<li>Re-sync with .proto / .textproto files from google-cloud-common. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5351">#5351</a>)</li>
-<li>Modify system tests to use prerelease versions of grpcio (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5304">#5304</a>)</li>
-<li>Add test runs for Python 3.7 and remove 3.4 (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5295">#5295</a>)</li>
-<li>Fix over-long line. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5129">#5129</a>)</li>
-<li>Distinguish <code class="docutils literal notranslate"><span class="pre">FieldPath</span></code> classes from field path strings (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/4466">#4466</a>)</li>
-<li>Fix bad trove classifier</li>
-<li>Cleanup <code class="docutils literal notranslate"><span class="pre">FieldPath</span></code> (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/4996">#4996</a>)</li>
-<li>Fix typo in <code class="docutils literal notranslate"><span class="pre">Document.collections</span></code> docstring. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5669">#5669</a>)</li>
-<li>Implement <code class="docutils literal notranslate"><span class="pre">FieldPath.__add__</span></code> (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5149">#5149</a>)</li>
+<li><p>Use new Nox (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6175">#6175</a>)</p></li>
+<li><p>Add new conformance tests. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6124">#6124</a>)</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">synth.py</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6079">#6079</a>)</p></li>
+<li><p>Test document update w/ integer ids (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5895">#5895</a>)</p></li>
+<li><p>Nox: use inplace installs (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5865">#5865</a>)</p></li>
+<li><p>Re-sync with .proto / .textproto files from google-cloud-common. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5351">#5351</a>)</p></li>
+<li><p>Modify system tests to use prerelease versions of grpcio (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5304">#5304</a>)</p></li>
+<li><p>Add test runs for Python 3.7 and remove 3.4 (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5295">#5295</a>)</p></li>
+<li><p>Fix over-long line. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5129">#5129</a>)</p></li>
+<li><p>Distinguish <code class="docutils literal notranslate"><span class="pre">FieldPath</span></code> classes from field path strings (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/4466">#4466</a>)</p></li>
+<li><p>Fix bad trove classifier</p></li>
+<li><p>Cleanup <code class="docutils literal notranslate"><span class="pre">FieldPath</span></code> (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/4996">#4996</a>)</p></li>
+<li><p>Fix typo in <code class="docutils literal notranslate"><span class="pre">Document.collections</span></code> docstring. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5669">#5669</a>)</p></li>
+<li><p>Implement <code class="docutils literal notranslate"><span class="pre">FieldPath.__add__</span></code> (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5149">#5149</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -311,40 +309,40 @@
 <div class="section" id="id30">
 <h3>New features<a class="headerlink" href="#id30" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>All non-simple field names are converted into unicode (#4859)</li>
+<li><p>All non-simple field names are converted into unicode (#4859)</p></li>
 </ul>
 </div>
 <div class="section" id="id31">
 <h3>Implementation changes<a class="headerlink" href="#id31" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>The underlying generated code has been re-generated to pick up new features and bugfixes. (#4916)</li>
-<li>The <code class="docutils literal notranslate"><span class="pre">Admin</span></code> API interface has been temporarily removed.</li>
+<li><p>The underlying generated code has been re-generated to pick up new features and bugfixes. (#4916)</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">Admin</span></code> API interface has been temporarily removed.</p></li>
 </ul>
 </div>
 <div class="section" id="id32">
 <h3>Dependencies<a class="headerlink" href="#id32" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Update dependency range for api-core to include v1.0.0 releases (#4944)</li>
-<li>The minimum version for <code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> has been updated to version 1.0.0. This may cause some incompatibility with older google-cloud libraries, you will need to update those libraries if you have a dependency conflict. (#4944, #4946)</li>
+<li><p>Update dependency range for api-core to include v1.0.0 releases (#4944)</p></li>
+<li><p>The minimum version for <code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> has been updated to version 1.0.0. This may cause some incompatibility with older google-cloud libraries, you will need to update those libraries if you have a dependency conflict. (#4944, #4946)</p></li>
 </ul>
 </div>
 <div class="section" id="id33">
 <h3>Documentation<a class="headerlink" href="#id33" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Fixing “Fore” -&gt; “For” typo in README docs. (#4317)</li>
+<li><p>Fixing “Fore” -&gt; “For” typo in README docs. (#4317)</p></li>
 </ul>
 </div>
 <div class="section" id="testing-and-internal-changes">
 <h3>Testing and internal changes<a class="headerlink" href="#testing-and-internal-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Install local dependencies when running lint (#4936)</li>
-<li>Re-enable lint for tests, remove usage of pylint (#4921)</li>
-<li>Normalize all setup.py files (#4909)</li>
-<li>System test fix, changed ALREADY_EXISTS and MISSING_ENTITY to DOCUMENT_EXISTS and MISSING_DOCUMENT and updated wording (#4803)</li>
-<li>Cross-language tests (#4359)</li>
-<li>Fix import column lengths pass 79 (#4464)</li>
-<li>Making a <code class="docutils literal notranslate"><span class="pre">nox</span> <span class="pre">-s</span> <span class="pre">default</span></code> session for all packages. (#4324)</li>
-<li>Shorten test names (#4321)</li>
+<li><p>Install local dependencies when running lint (#4936)</p></li>
+<li><p>Re-enable lint for tests, remove usage of pylint (#4921)</p></li>
+<li><p>Normalize all setup.py files (#4909)</p></li>
+<li><p>System test fix, changed ALREADY_EXISTS and MISSING_ENTITY to DOCUMENT_EXISTS and MISSING_DOCUMENT and updated wording (#4803)</p></li>
+<li><p>Cross-language tests (#4359)</p></li>
+<li><p>Fix import column lengths pass 79 (#4464)</p></li>
+<li><p>Making a <code class="docutils literal notranslate"><span class="pre">nox</span> <span class="pre">-s</span> <span class="pre">default</span></code> session for all packages. (#4324)</p></li>
+<li><p>Shorten test names (#4321)</p></li>
 </ul>
 </div>
 </div>
@@ -353,15 +351,15 @@
 <div class="section" id="id35">
 <h3>Documentation<a class="headerlink" href="#id35" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Added link to “Python Development Environment Setup Guide” in
-project README (#4187, h/t to &#64;michaelawyu)</li>
+<li><p>Added link to “Python Development Environment Setup Guide” in
+project README (#4187, h/t to &#64;michaelawyu)</p></li>
 </ul>
 </div>
 <div class="section" id="id36">
 <h3>Dependencies<a class="headerlink" href="#id36" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Upgrading to <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span> <span class="pre">&gt;=</span> <span class="pre">0.28.0</span></code> and adding dependency
-on <code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> (#4221, #4280)</li>
+<li><p>Upgrading to <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span> <span class="pre">&gt;=</span> <span class="pre">0.28.0</span></code> and adding dependency
+on <code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> (#4221, #4280)</p></li>
 </ul>
 <p>PyPI: https://pypi.org/project/google-cloud-firestore/0.28.0/</p>
 </div>
@@ -454,13 +452,11 @@ on <code class="docutils literal notranslate"><span class="pre">google-api-core<
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -473,7 +469,7 @@ on <code class="docutils literal notranslate"><span class="pre">google-api-core<
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

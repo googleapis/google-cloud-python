@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Error Reporting Utilities &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Error Reporting Utilities &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -40,11 +38,12 @@
 <p>Utility functions for Stackdriver Error Reporting.</p>
 <dl class="function">
 <dt id="google.cloud.error_reporting.util.build_flask_context">
-<code class="descclassname">google.cloud.error_reporting.util.</code><code class="descname">build_flask_context</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/error_reporting/util.html#build_flask_context"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.error_reporting.util.build_flask_context" title="Permalink to this definition">#</a></dt>
+<code class="sig-prename descclassname">google.cloud.error_reporting.util.</code><code class="sig-name descname">build_flask_context</code><span class="sig-paren">(</span><em class="sig-param">request</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/error_reporting/util.html#build_flask_context"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.error_reporting.util.build_flask_context" title="Permalink to this definition">#</a></dt>
 <dd><p>Builds an HTTP context object from a Flask (Werkzeug) request object.</p>
 <blockquote>
-<div>This helper method extracts the relevant HTTP context from a Flask request
-object into an object ready to be sent to Error Reporting.</div></blockquote>
+<div><p>This helper method extracts the relevant HTTP context from a Flask request
+object into an object ready to be sent to Error Reporting.</p>
+</div></blockquote>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@app.errorhandler</span><span class="p">(</span><span class="n">HTTPException</span><span class="p">)</span>
 <span class="gp">... </span><span class="k">def</span> <span class="nf">handle_error</span><span class="p">(</span><span class="n">exc</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="n">client</span><span class="o">.</span><span class="n">report_exception</span><span class="p">(</span>
@@ -52,19 +51,18 @@ object into an object ready to be sent to Error Reporting.</div></blockquote>
 <span class="gp">... </span>    <span class="c1"># rest of error response code here</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>request</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">werkzeug.wrappers.request</span></code>) – The Flask request object to convert.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="client.html#google.cloud.error_reporting.client.HTTPContext" title="google.cloud.error_reporting.client.HTTPContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPContext</span></code></a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An HTTPContext object ready to be sent to the Stackdriver Error
-Reporting API.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>request</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">werkzeug.wrappers.request</span></code>) – The Flask request object to convert.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="client.html#google.cloud.error_reporting.client.HTTPContext" title="google.cloud.error_reporting.client.HTTPContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPContext</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An HTTPContext object ready to be sent to the Stackdriver Error
+Reporting API.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -155,13 +153,11 @@ Reporting API.</td>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -174,7 +170,7 @@ Reporting API.</td>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

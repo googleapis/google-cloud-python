@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Configuration &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Configuration &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -48,16 +46,16 @@
 <p>When creating a client in this way, the project ID will be determined by
 searching these locations in the following order.</p>
 <ul class="simple">
-<li>GOOGLE_CLOUD_PROJECT environment variable</li>
-<li>GOOGLE_APPLICATION_CREDENTIALS JSON file</li>
-<li>Default service configuration path from
-<code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">gcloud</span> <span class="pre">beta</span> <span class="pre">auth</span> <span class="pre">application-default</span> <span class="pre">login</span></code>.</li>
-<li>Google App Engine application ID</li>
-<li>Google Compute Engine project ID (from metadata server)</li>
+<li><p>GOOGLE_CLOUD_PROJECT environment variable</p></li>
+<li><p>GOOGLE_APPLICATION_CREDENTIALS JSON file</p></li>
+<li><p>Default service configuration path from
+<code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">gcloud</span> <span class="pre">beta</span> <span class="pre">auth</span> <span class="pre">application-default</span> <span class="pre">login</span></code>.</p></li>
+<li><p>Google App Engine application ID</p></li>
+<li><p>Google Compute Engine project ID (from metadata server)</p></li>
 </ul>
-<dl class="docutils">
-<dt>You can override the detection of your default project by setting the</dt>
-<dd><code class="docutils literal notranslate"><span class="pre">project</span></code> parameter when creating client objects.</dd>
+<dl class="simple">
+<dt>You can override the detection of your default project by setting the</dt><dd><p><code class="docutils literal notranslate"><span class="pre">project</span></code> parameter when creating client objects.</p>
+</dd>
 </dl>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">)</span>
@@ -92,13 +90,13 @@ using the <code class="docutils literal notranslate"><span class="pre">gcloud</s
 and tests.</p>
 <dl class="data">
 <dt id="google.cloud.environment_vars.BIGTABLE_EMULATOR">
-<code class="descclassname">google.cloud.environment_vars.</code><code class="descname">BIGTABLE_EMULATOR</code><em class="property"> = 'BIGTABLE_EMULATOR_HOST'</em><a class="headerlink" href="#google.cloud.environment_vars.BIGTABLE_EMULATOR" title="Permalink to this definition">#</a></dt>
+<code class="sig-prename descclassname">google.cloud.environment_vars.</code><code class="sig-name descname">BIGTABLE_EMULATOR</code><em class="property"> = 'BIGTABLE_EMULATOR_HOST'</em><a class="headerlink" href="#google.cloud.environment_vars.BIGTABLE_EMULATOR" title="Permalink to this definition">#</a></dt>
 <dd><p>Environment variable defining host for Bigtable emulator.</p>
 </dd></dl>
 
 <dl class="data">
 <dt id="google.cloud.environment_vars.DISABLE_GRPC">
-<code class="descclassname">google.cloud.environment_vars.</code><code class="descname">DISABLE_GRPC</code><em class="property"> = 'GOOGLE_CLOUD_DISABLE_GRPC'</em><a class="headerlink" href="#google.cloud.environment_vars.DISABLE_GRPC" title="Permalink to this definition">#</a></dt>
+<code class="sig-prename descclassname">google.cloud.environment_vars.</code><code class="sig-name descname">DISABLE_GRPC</code><em class="property"> = 'GOOGLE_CLOUD_DISABLE_GRPC'</em><a class="headerlink" href="#google.cloud.environment_vars.DISABLE_GRPC" title="Permalink to this definition">#</a></dt>
 <dd><p>Environment variable acting as flag to disable gRPC.</p>
 <p>To be used for APIs where both an HTTP and gRPC implementation
 exist.</p>
@@ -106,19 +104,19 @@ exist.</p>
 
 <dl class="data">
 <dt id="google.cloud.environment_vars.GCD_DATASET">
-<code class="descclassname">google.cloud.environment_vars.</code><code class="descname">GCD_DATASET</code><em class="property"> = 'DATASTORE_DATASET'</em><a class="headerlink" href="#google.cloud.environment_vars.GCD_DATASET" title="Permalink to this definition">#</a></dt>
+<code class="sig-prename descclassname">google.cloud.environment_vars.</code><code class="sig-name descname">GCD_DATASET</code><em class="property"> = 'DATASTORE_DATASET'</em><a class="headerlink" href="#google.cloud.environment_vars.GCD_DATASET" title="Permalink to this definition">#</a></dt>
 <dd><p>Environment variable defining default dataset ID under GCD.</p>
 </dd></dl>
 
 <dl class="data">
 <dt id="google.cloud.environment_vars.GCD_HOST">
-<code class="descclassname">google.cloud.environment_vars.</code><code class="descname">GCD_HOST</code><em class="property"> = 'DATASTORE_EMULATOR_HOST'</em><a class="headerlink" href="#google.cloud.environment_vars.GCD_HOST" title="Permalink to this definition">#</a></dt>
+<code class="sig-prename descclassname">google.cloud.environment_vars.</code><code class="sig-name descname">GCD_HOST</code><em class="property"> = 'DATASTORE_EMULATOR_HOST'</em><a class="headerlink" href="#google.cloud.environment_vars.GCD_HOST" title="Permalink to this definition">#</a></dt>
 <dd><p>Environment variable defining host for GCD dataset server.</p>
 </dd></dl>
 
 <dl class="data">
 <dt id="google.cloud.environment_vars.PUBSUB_EMULATOR">
-<code class="descclassname">google.cloud.environment_vars.</code><code class="descname">PUBSUB_EMULATOR</code><em class="property"> = 'PUBSUB_EMULATOR_HOST'</em><a class="headerlink" href="#google.cloud.environment_vars.PUBSUB_EMULATOR" title="Permalink to this definition">#</a></dt>
+<code class="sig-prename descclassname">google.cloud.environment_vars.</code><code class="sig-name descname">PUBSUB_EMULATOR</code><em class="property"> = 'PUBSUB_EMULATOR_HOST'</em><a class="headerlink" href="#google.cloud.environment_vars.PUBSUB_EMULATOR" title="Permalink to this definition">#</a></dt>
 <dd><p>Environment variable defining host for Pub/Sub emulator.</p>
 </dd></dl>
 
@@ -211,13 +209,11 @@ exist.</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -230,7 +226,7 @@ exist.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

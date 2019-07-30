@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Projects &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Projects &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -40,12 +38,12 @@
 <p>Utility for managing projects via the Cloud Resource Manager API.</p>
 <dl class="class">
 <dt id="google.cloud.resource_manager.project.Project">
-<em class="property">class </em><code class="descclassname">google.cloud.resource_manager.project.</code><code class="descname">Project</code><span class="sig-paren">(</span><em>project_id</em>, <em>client</em>, <em>name=None</em>, <em>labels=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/resource_manager/project.html#Project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.resource_manager.project.Project" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.resource_manager.project.</code><code class="sig-name descname">Project</code><span class="sig-paren">(</span><em class="sig-param">project_id</em>, <em class="sig-param">client</em>, <em class="sig-param">name=None</em>, <em class="sig-param">labels=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/resource_manager/project.html#Project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.resource_manager.project.Project" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Projects are containers for your work on Google Cloud Platform.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">A <a class="reference internal" href="#google.cloud.resource_manager.project.Project" title="google.cloud.resource_manager.project.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a> can also be created via
+<p class="admonition-title">Note</p>
+<p>A <a class="reference internal" href="#google.cloud.resource_manager.project.Project" title="google.cloud.resource_manager.project.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a> can also be created via
 <a class="reference internal" href="client.html#google.cloud.resource_manager.client.Client.new_project" title="google.cloud.resource_manager.client.Client.new_project"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Client.new_project()</span></code></a></p>
 </div>
 <p>To manage labels on a <a class="reference internal" href="#google.cloud.resource_manager.project.Project" title="google.cloud.resource_manager.project.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a>:</p>
@@ -59,41 +57,34 @@
 </div>
 <p>See
 <a class="reference external" href="https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects">https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The globally unique ID of the project.</li>
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.resource_manager.client.Client" title="google.cloud.resource_manager.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.resource_manager.client.Client</span></code></a>) – The Client used with this project.</li>
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The display name of the project.</li>
-<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – A list of labels associated with the project.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The globally unique ID of the project.</p></li>
+<li><p><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.resource_manager.client.Client" title="google.cloud.resource_manager.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.resource_manager.client.Client</span></code></a>) – The Client used with this project.</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The display name of the project.</p></li>
+<li><p><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – A list of labels associated with the project.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="google.cloud.resource_manager.project.Project.create">
-<code class="descname">create</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/resource_manager/project.html#Project.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.resource_manager.project.Project.create" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/resource_manager/project.html#Project.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.resource_manager.project.Project.create" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  create the project via a <code class="docutils literal notranslate"><span class="pre">POST</span></code> request.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/create">https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/create</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.resource_manager.client.Client" title="google.cloud.resource_manager.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.resource_manager.client.Client</span></code></a> or
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.resource_manager.client.Client" title="google.cloud.resource_manager.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.resource_manager.client.Client</span></code></a> or
 <code class="xref py py-data docutils literal notranslate"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to
-the client stored on the current project.</td>
-</tr>
-</tbody>
-</table>
+the client stored on the current project.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.resource_manager.project.Project.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><em>client=None</em>, <em>reload_data=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/resource_manager/project.html#Project.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.resource_manager.project.Project.delete" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">delete</code><span class="sig-paren">(</span><em class="sig-param">client=None</em>, <em class="sig-param">reload_data=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/resource_manager/project.html#Project.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.resource_manager.project.Project.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  delete the project via a <code class="docutils literal notranslate"><span class="pre">DELETE</span></code> request.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/delete">https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/delete</a></p>
@@ -102,120 +93,108 @@ to <code class="docutils literal notranslate"><span class="pre">DELETE_REQUESTED
 Later (it’s not specified when), the project will move into the
 <code class="docutils literal notranslate"><span class="pre">DELETE_IN_PROGRESS</span></code> state, which means the deleting has actually
 begun.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.resource_manager.client.Client" title="google.cloud.resource_manager.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.resource_manager.client.Client</span></code></a> or
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.resource_manager.client.Client" title="google.cloud.resource_manager.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.resource_manager.client.Client</span></code></a> or
 <code class="xref py py-data docutils literal notranslate"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to
-the client stored on the current project.</li>
-<li><strong>reload_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to reload the project with the latest
+the client stored on the current project.</p></li>
+<li><p><strong>reload_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to reload the project with the latest
 state. If you want to get the updated status,
 you’ll want this set to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a> as the DELETE
 method doesn’t send back the updated project.
-Default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">False</span></code></a>.</li>
+Default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">False</span></code></a>.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.resource_manager.project.Project.exists">
-<code class="descname">exists</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/resource_manager/project.html#Project.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.resource_manager.project.Project.exists" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">exists</code><span class="sig-paren">(</span><em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/resource_manager/project.html#Project.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.resource_manager.project.Project.exists" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  test the existence of a project via a <code class="docutils literal notranslate"><span class="pre">GET</span></code> request.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/get">https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/get</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.resource_manager.client.Client" title="google.cloud.resource_manager.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.resource_manager.client.Client</span></code></a> or
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.resource_manager.client.Client" title="google.cloud.resource_manager.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.resource_manager.client.Client</span></code></a> or
 <code class="xref py py-data docutils literal notranslate"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to
-the client stored on the current project.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Boolean indicating existence of the project.</td>
-</tr>
-</tbody>
-</table>
+the client stored on the current project.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Boolean indicating existence of the project.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="google.cloud.resource_manager.project.Project.from_api_repr">
-<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em>, <em>client</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/resource_manager/project.html#Project.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.resource_manager.project.Project.from_api_repr" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">from_api_repr</code><span class="sig-paren">(</span><em class="sig-param">resource</em>, <em class="sig-param">client</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/resource_manager/project.html#Project.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.resource_manager.project.Project.from_api_repr" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory:  construct a project given its API representation.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – project resource representation returned from the API</li>
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.resource_manager.client.Client" title="google.cloud.resource_manager.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.resource_manager.client.Client</span></code></a>) – The Client used with this project.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – project resource representation returned from the API</p></li>
+<li><p><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.resource_manager.client.Client" title="google.cloud.resource_manager.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.resource_manager.client.Client</span></code></a>) – The Client used with this project.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#google.cloud.resource_manager.project.Project" title="google.cloud.resource_manager.project.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.resource_manager.project.Project</span></code></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The project created.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#google.cloud.resource_manager.project.Project" title="google.cloud.resource_manager.project.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.resource_manager.project.Project</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The project created.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.resource_manager.project.Project.full_name">
-<code class="descname">full_name</code><a class="headerlink" href="#google.cloud.resource_manager.project.Project.full_name" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">full_name</code><a class="headerlink" href="#google.cloud.resource_manager.project.Project.full_name" title="Permalink to this definition">#</a></dt>
 <dd><p>Fully-qualified name (ie, <code class="docutils literal notranslate"><span class="pre">'projects/purple-spaceship-123'</span></code>).</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.resource_manager.project.Project.path">
-<code class="descname">path</code><a class="headerlink" href="#google.cloud.resource_manager.project.Project.path" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">path</code><a class="headerlink" href="#google.cloud.resource_manager.project.Project.path" title="Permalink to this definition">#</a></dt>
 <dd><p>URL for the project (ie, <code class="docutils literal notranslate"><span class="pre">'/projects/purple-spaceship-123'</span></code>).</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.resource_manager.project.Project.reload">
-<code class="descname">reload</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/resource_manager/project.html#Project.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.resource_manager.project.Project.reload" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">reload</code><span class="sig-paren">(</span><em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/resource_manager/project.html#Project.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.resource_manager.project.Project.reload" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  reload the project via a <code class="docutils literal notranslate"><span class="pre">GET</span></code> request.</p>
 <p>This method will reload the newest metadata for the project. If you’ve
 created a new <a class="reference internal" href="#google.cloud.resource_manager.project.Project" title="google.cloud.resource_manager.project.Project"><code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code></a> instance via
 <a class="reference internal" href="client.html#google.cloud.resource_manager.client.Client.new_project" title="google.cloud.resource_manager.client.Client.new_project"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Client.new_project()</span></code></a>,
 this method will retrieve project metadata.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This will overwrite any local changes you’ve made and not saved
+<p class="admonition-title">Warning</p>
+<p>This will overwrite any local changes you’ve made and not saved
 via <a class="reference internal" href="#google.cloud.resource_manager.project.Project.update" title="google.cloud.resource_manager.project.Project.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code></a>.</p>
 </div>
 <p>See
 <a class="reference external" href="https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/get">https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/get</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.resource_manager.client.Client" title="google.cloud.resource_manager.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.resource_manager.client.Client</span></code></a> or
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.resource_manager.client.Client" title="google.cloud.resource_manager.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.resource_manager.client.Client</span></code></a> or
 <code class="xref py py-data docutils literal notranslate"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to
-the client stored on the current project.</td>
-</tr>
-</tbody>
-</table>
+the client stored on the current project.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.resource_manager.project.Project.set_properties_from_api_repr">
-<code class="descname">set_properties_from_api_repr</code><span class="sig-paren">(</span><em>resource</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/resource_manager/project.html#Project.set_properties_from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.resource_manager.project.Project.set_properties_from_api_repr" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">set_properties_from_api_repr</code><span class="sig-paren">(</span><em class="sig-param">resource</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/resource_manager/project.html#Project.set_properties_from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.resource_manager.project.Project.set_properties_from_api_repr" title="Permalink to this definition">#</a></dt>
 <dd><p>Update specific properties from its API representation.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.resource_manager.project.Project.undelete">
-<code class="descname">undelete</code><span class="sig-paren">(</span><em>client=None</em>, <em>reload_data=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/resource_manager/project.html#Project.undelete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.resource_manager.project.Project.undelete" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">undelete</code><span class="sig-paren">(</span><em class="sig-param">client=None</em>, <em class="sig-param">reload_data=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/resource_manager/project.html#Project.undelete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.resource_manager.project.Project.undelete" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  undelete the project via a <code class="docutils literal notranslate"><span class="pre">POST</span></code> request.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/undelete">https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/undelete</a></p>
@@ -223,42 +202,35 @@ the client stored on the current project.</td>
 <code class="docutils literal notranslate"><span class="pre">DELETE_REQUESTED</span></code> to <code class="docutils literal notranslate"><span class="pre">ACTIVE</span></code>.
 If the project has already reached a status of <code class="docutils literal notranslate"><span class="pre">DELETE_IN_PROGRESS</span></code>,
 this request will fail and the project cannot be restored.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.resource_manager.client.Client" title="google.cloud.resource_manager.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.resource_manager.client.Client</span></code></a> or
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.resource_manager.client.Client" title="google.cloud.resource_manager.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.resource_manager.client.Client</span></code></a> or
 <code class="xref py py-data docutils literal notranslate"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to
-the client stored on the current project.</li>
-<li><strong>reload_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to reload the project with the latest
+the client stored on the current project.</p></li>
+<li><p><strong>reload_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to reload the project with the latest
 state. If you want to get the updated status,
 you’ll want this set to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a> as the DELETE
 method doesn’t send back the updated project.
-Default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">False</span></code></a>.</li>
+Default: <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">False</span></code></a>.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.resource_manager.project.Project.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/resource_manager/project.html#Project.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.resource_manager.project.Project.update" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/resource_manager/project.html#Project.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.resource_manager.project.Project.update" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  update the project via a <code class="docutils literal notranslate"><span class="pre">PUT</span></code> request.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/update">https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/update</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.resource_manager.client.Client" title="google.cloud.resource_manager.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.resource_manager.client.Client</span></code></a> or
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.resource_manager.client.Client" title="google.cloud.resource_manager.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.resource_manager.client.Client</span></code></a> or
 <code class="xref py py-data docutils literal notranslate"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to
-the client stored on the current project.</td>
-</tr>
-</tbody>
-</table>
+the client stored on the current project.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -351,13 +323,11 @@ the client stored on the current project.</td>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -370,7 +340,7 @@ the client stored on the current project.</td>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

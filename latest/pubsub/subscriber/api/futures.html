@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Futures &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Futures &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -39,7 +37,7 @@
 <span id="futures"></span><h1>Futures<a class="headerlink" href="#module-google.cloud.pubsub_v1.subscriber.futures" title="Permalink to this headline">#</a></h1>
 <dl class="class">
 <dt id="google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture">
-<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.subscriber.futures.</code><code class="descname">StreamingPullFuture</code><span class="sig-paren">(</span><em>manager</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/futures.html#StreamingPullFuture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.pubsub_v1.subscriber.futures.</code><code class="sig-name descname">StreamingPullFuture</code><span class="sig-paren">(</span><em class="sig-param">manager</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/futures.html#StreamingPullFuture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture" title="Permalink to this definition">#</a></dt>
 <dd><p>Represents a process that asynchronously performs streaming pull and
 schedules messages to be processed.</p>
 <p>This future is resolved when the process is stopped (via <a class="reference internal" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.cancel" title="google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.cancel"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cancel()</span></code></a>) or
@@ -47,47 +45,43 @@ if it encounters an unrecoverable error. Calling <cite>.result()</cite> will cau
 the calling thread to block indefinitely.</p>
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.add_done_callback">
-<code class="descname">add_done_callback</code><span class="sig-paren">(</span><em>callback</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.add_done_callback" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">add_done_callback</code><span class="sig-paren">(</span><em class="sig-param">callback</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.add_done_callback" title="Permalink to this definition">#</a></dt>
 <dd><p>Attach the provided callable to the future.</p>
 <p>The provided function is called, with this future as its only argument,
 when the future finishes running.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>callback</strong> (<em>Callable</em>) – The function to call.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>callback</strong> (<em>Callable</em>) – The function to call.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.cancel">
-<code class="descname">cancel</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/futures.html#StreamingPullFuture.cancel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.cancel" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">cancel</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/futures.html#StreamingPullFuture.cancel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.cancel" title="Permalink to this definition">#</a></dt>
 <dd><p>Stops pulling messages and shutdowns the background thread consuming
 messages.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.cancelled">
-<code class="descname">cancelled</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/futures.html#StreamingPullFuture.cancelled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.cancelled" title="Permalink to this definition">#</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">True</span></code> if the subscription has been cancelled.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
-</tr>
-</tbody>
-</table>
+<code class="sig-name descname">cancelled</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/futures.html#StreamingPullFuture.cancelled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.cancelled" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the subscription has been cancelled.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.done">
-<code class="descname">done</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.done" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">done</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.done" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True the future is done, False otherwise.</p>
 <p>This still returns True in failure cases; checking <a class="reference internal" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.result" title="google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.result"><code class="xref py py-meth docutils literal notranslate"><span class="pre">result()</span></code></a> or
 <a class="reference internal" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.exception" title="google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.exception"><code class="xref py py-meth docutils literal notranslate"><span class="pre">exception()</span></code></a> is the canonical way to assess success or failure.</p>
@@ -95,94 +89,82 @@ messages.</p>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.exception">
-<code class="descname">exception</code><span class="sig-paren">(</span><em>timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.exception" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">exception</code><span class="sig-paren">(</span><em class="sig-param">timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.exception" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the exception raised by the call, if any.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The number of seconds before this call
-times out and raises TimeoutError.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TimeoutError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TimeoutError</span></code></a> – If the request times out.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The exception raised by the call, if any.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.7)">Exception</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>timeout</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The number of seconds before this call
+times out and raises TimeoutError.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TimeoutError" title="(in Python v3.7)"><strong>TimeoutError</strong></a> – If the request times out.</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The exception raised by the call, if any.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.7)">Exception</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.result">
-<code class="descname">result</code><span class="sig-paren">(</span><em>timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.result" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">result</code><span class="sig-paren">(</span><em class="sig-param">timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.result" title="Permalink to this definition">#</a></dt>
 <dd><p>Resolve the future and return a value where appropriate.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>timeout</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The number of seconds before this call
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>timeout</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The number of seconds before this call
 times out and raises TimeoutError.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">TimeoutError</span></code> – If the request times out.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">Exception</span></code></a> – For undefined exceptions in the underlying
-call execution.</li>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TimeoutError</strong> – If the request times out.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.7)"><strong>Exception</strong></a> – For undefined exceptions in the underlying
+    call execution.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.running">
-<code class="descname">running</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.running" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">running</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.running" title="Permalink to this definition">#</a></dt>
 <dd><p>Actions in Pub/Sub generally may not be canceled.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">True</span></code> if this method has not yet completed, or</dt>
-<dd><code class="docutils literal notranslate"><span class="pre">False</span></code> if it has completed.</dd>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">True</span></code> if this method has not yet completed, or</dt><dd><p><code class="docutils literal notranslate"><span class="pre">False</span></code> if it has completed.</p>
+</dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
-</tr>
-</tbody>
-</table>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.set_exception">
-<code class="descname">set_exception</code><span class="sig-paren">(</span><em>exception</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.set_exception" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">set_exception</code><span class="sig-paren">(</span><em class="sig-param">exception</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.set_exception" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the result of the future to the given exception.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>exception</strong> (<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">Exception</span></code></a>) – The exception raised.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>exception</strong> (<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">Exception</span></code></a>) – The exception raised.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.set_result">
-<code class="descname">set_result</code><span class="sig-paren">(</span><em>result</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.set_result" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">set_result</code><span class="sig-paren">(</span><em class="sig-param">result</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture.set_result" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the result of the future to the provided result.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>result</strong> (<a class="reference internal" href="../../../asset/gapic/v1/types.html#google.cloud.asset_v1.types.Any" title="google.cloud.asset_v1.types.Any"><em>Any</em></a>) – The result</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>result</strong> (<a class="reference internal" href="../../../asset/gapic/v1/types.html#google.cloud.asset_v1.types.Any" title="google.cloud.asset_v1.types.Any"><em>Any</em></a>) – The result</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -277,13 +259,11 @@ call execution.</li>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -296,7 +276,7 @@ call execution.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

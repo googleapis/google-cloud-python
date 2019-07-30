@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.table.Table &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>google.cloud.bigquery.table.Table &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -38,116 +36,116 @@
   <div class="section" id="google-cloud-bigquery-table-table">
 <h1>google.cloud.bigquery.table.Table<a class="headerlink" href="#google-cloud-bigquery-table-table" title="Permalink to this headline">#</a></h1>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.from_api_repr" title="google.cloud.bigquery.table.Table.from_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_api_repr</span></code></a>(resource)</td>
-<td>Factory: construct a table given its API representation</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.from_api_repr" title="google.cloud.bigquery.table.Table.from_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_api_repr</span></code></a>(resource)</p></td>
+<td><p>Factory: construct a table given its API representation</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.from_string" title="google.cloud.bigquery.table.Table.from_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_string</span></code></a>(full_table_id)</td>
-<td>Construct a table from fully-qualified table ID.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.from_string" title="google.cloud.bigquery.table.Table.from_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_string</span></code></a>(full_table_id)</p></td>
+<td><p>Construct a table from fully-qualified table ID.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.to_api_repr" title="google.cloud.bigquery.table.Table.to_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_api_repr</span></code></a>()</td>
-<td>Constructs the API resource of this table</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.to_api_repr" title="google.cloud.bigquery.table.Table.to_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_api_repr</span></code></a>()</p></td>
+<td><p>Constructs the API resource of this table</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.to_bqstorage" title="google.cloud.bigquery.table.Table.to_bqstorage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_bqstorage</span></code></a>()</td>
-<td>Construct a BigQuery Storage API representation of this table.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.to_bqstorage" title="google.cloud.bigquery.table.Table.to_bqstorage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_bqstorage</span></code></a>()</p></td>
+<td><p>Construct a BigQuery Storage API representation of this table.</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.clustering_fields" title="google.cloud.bigquery.table.Table.clustering_fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clustering_fields</span></code></a></td>
-<td>Fields defining clustering for the table</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.clustering_fields" title="google.cloud.bigquery.table.Table.clustering_fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clustering_fields</span></code></a></p></td>
+<td><p>Fields defining clustering for the table</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.created" title="google.cloud.bigquery.table.Table.created"><code class="xref py py-obj docutils literal notranslate"><span class="pre">created</span></code></a></td>
-<td>Datetime at which the table was created (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.created" title="google.cloud.bigquery.table.Table.created"><code class="xref py py-obj docutils literal notranslate"><span class="pre">created</span></code></a></p></td>
+<td><p>Datetime at which the table was created (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.dataset_id" title="google.cloud.bigquery.table.Table.dataset_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dataset_id</span></code></a></td>
-<td>ID of dataset containing the table.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.dataset_id" title="google.cloud.bigquery.table.Table.dataset_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dataset_id</span></code></a></p></td>
+<td><p>ID of dataset containing the table.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.description" title="google.cloud.bigquery.table.Table.description"><code class="xref py py-obj docutils literal notranslate"><span class="pre">description</span></code></a></td>
-<td>Description of the table (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.description" title="google.cloud.bigquery.table.Table.description"><code class="xref py py-obj docutils literal notranslate"><span class="pre">description</span></code></a></p></td>
+<td><p>Description of the table (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.encryption_configuration" title="google.cloud.bigquery.table.Table.encryption_configuration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">encryption_configuration</span></code></a></td>
-<td>Custom encryption configuration for the table.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.encryption_configuration" title="google.cloud.bigquery.table.Table.encryption_configuration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">encryption_configuration</span></code></a></p></td>
+<td><p>Custom encryption configuration for the table.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.etag" title="google.cloud.bigquery.table.Table.etag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">etag</span></code></a></td>
-<td>ETag for the table resource (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.etag" title="google.cloud.bigquery.table.Table.etag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">etag</span></code></a></p></td>
+<td><p>ETag for the table resource (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.expires" title="google.cloud.bigquery.table.Table.expires"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expires</span></code></a></td>
-<td>Datetime at which the table will be deleted.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.expires" title="google.cloud.bigquery.table.Table.expires"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expires</span></code></a></p></td>
+<td><p>Datetime at which the table will be deleted.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.external_data_configuration" title="google.cloud.bigquery.table.Table.external_data_configuration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">external_data_configuration</span></code></a></td>
-<td>Configuration for an external data source (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.external_data_configuration" title="google.cloud.bigquery.table.Table.external_data_configuration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">external_data_configuration</span></code></a></p></td>
+<td><p>Configuration for an external data source (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.friendly_name" title="google.cloud.bigquery.table.Table.friendly_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">friendly_name</span></code></a></td>
-<td>Title of the table (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.friendly_name" title="google.cloud.bigquery.table.Table.friendly_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">friendly_name</span></code></a></p></td>
+<td><p>Title of the table (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.full_table_id" title="google.cloud.bigquery.table.Table.full_table_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">full_table_id</span></code></a></td>
-<td>ID for the table (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.full_table_id" title="google.cloud.bigquery.table.Table.full_table_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">full_table_id</span></code></a></p></td>
+<td><p>ID for the table (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.labels" title="google.cloud.bigquery.table.Table.labels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">labels</span></code></a></td>
-<td>Labels for the table.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.labels" title="google.cloud.bigquery.table.Table.labels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">labels</span></code></a></p></td>
+<td><p>Labels for the table.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.location" title="google.cloud.bigquery.table.Table.location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">location</span></code></a></td>
-<td>Location in which the table is hosted</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.location" title="google.cloud.bigquery.table.Table.location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">location</span></code></a></p></td>
+<td><p>Location in which the table is hosted</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.modified" title="google.cloud.bigquery.table.Table.modified"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modified</span></code></a></td>
-<td>Datetime at which the table was last modified (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.modified" title="google.cloud.bigquery.table.Table.modified"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modified</span></code></a></p></td>
+<td><p>Datetime at which the table was last modified (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.num_bytes" title="google.cloud.bigquery.table.Table.num_bytes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_bytes</span></code></a></td>
-<td>The size of the table in bytes (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.num_bytes" title="google.cloud.bigquery.table.Table.num_bytes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_bytes</span></code></a></p></td>
+<td><p>The size of the table in bytes (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.num_rows" title="google.cloud.bigquery.table.Table.num_rows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_rows</span></code></a></td>
-<td>The number of rows in the table (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.num_rows" title="google.cloud.bigquery.table.Table.num_rows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_rows</span></code></a></p></td>
+<td><p>The number of rows in the table (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.partition_expiration" title="google.cloud.bigquery.table.Table.partition_expiration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partition_expiration</span></code></a></td>
-<td>Expiration time in milliseconds for a partition.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.partition_expiration" title="google.cloud.bigquery.table.Table.partition_expiration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partition_expiration</span></code></a></p></td>
+<td><p>Expiration time in milliseconds for a partition.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.partitioning_type" title="google.cloud.bigquery.table.Table.partitioning_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partitioning_type</span></code></a></td>
-<td>Time partitioning of the table if it is partitioned (Defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.partitioning_type" title="google.cloud.bigquery.table.Table.partitioning_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partitioning_type</span></code></a></p></td>
+<td><p>Time partitioning of the table if it is partitioned (Defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.path" title="google.cloud.bigquery.table.Table.path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">path</span></code></a></td>
-<td>URL path for the table’s APIs.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.path" title="google.cloud.bigquery.table.Table.path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">path</span></code></a></p></td>
+<td><p>URL path for the table’s APIs.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.project" title="google.cloud.bigquery.table.Table.project"><code class="xref py py-obj docutils literal notranslate"><span class="pre">project</span></code></a></td>
-<td>Project bound to the table.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.project" title="google.cloud.bigquery.table.Table.project"><code class="xref py py-obj docutils literal notranslate"><span class="pre">project</span></code></a></p></td>
+<td><p>Project bound to the table.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.reference" title="google.cloud.bigquery.table.Table.reference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reference</span></code></a></td>
-<td>A <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a> pointing to this table.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.reference" title="google.cloud.bigquery.table.Table.reference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reference</span></code></a></p></td>
+<td><p>A <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a> pointing to this table.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.schema" title="google.cloud.bigquery.table.Table.schema"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema</span></code></a></td>
-<td>Table’s schema.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.schema" title="google.cloud.bigquery.table.Table.schema"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema</span></code></a></p></td>
+<td><p>Table’s schema.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.self_link" title="google.cloud.bigquery.table.Table.self_link"><code class="xref py py-obj docutils literal notranslate"><span class="pre">self_link</span></code></a></td>
-<td>URL for the table resource (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.self_link" title="google.cloud.bigquery.table.Table.self_link"><code class="xref py py-obj docutils literal notranslate"><span class="pre">self_link</span></code></a></p></td>
+<td><p>URL for the table resource (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.streaming_buffer" title="google.cloud.bigquery.table.Table.streaming_buffer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">streaming_buffer</span></code></a></td>
-<td>Information about a table’s streaming buffer.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.streaming_buffer" title="google.cloud.bigquery.table.Table.streaming_buffer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">streaming_buffer</span></code></a></p></td>
+<td><p>Information about a table’s streaming buffer.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.table_id" title="google.cloud.bigquery.table.Table.table_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">table_id</span></code></a></td>
-<td>ID of the table.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.table_id" title="google.cloud.bigquery.table.Table.table_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">table_id</span></code></a></p></td>
+<td><p>ID of the table.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.table_type" title="google.cloud.bigquery.table.Table.table_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">table_type</span></code></a></td>
-<td>The type of the table (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.table_type" title="google.cloud.bigquery.table.Table.table_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">table_type</span></code></a></p></td>
+<td><p>The type of the table (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.time_partitioning" title="google.cloud.bigquery.table.Table.time_partitioning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time_partitioning</span></code></a></td>
-<td>Configures time-based partitioning for a table.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.time_partitioning" title="google.cloud.bigquery.table.Table.time_partitioning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time_partitioning</span></code></a></p></td>
+<td><p>Configures time-based partitioning for a table.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.view_query" title="google.cloud.bigquery.table.Table.view_query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">view_query</span></code></a></td>
-<td>SQL query defining the table as a view (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.view_query" title="google.cloud.bigquery.table.Table.view_query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">view_query</span></code></a></p></td>
+<td><p>SQL query defining the table as a view (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.table.Table.view_use_legacy_sql" title="google.cloud.bigquery.table.Table.view_use_legacy_sql"><code class="xref py py-obj docutils literal notranslate"><span class="pre">view_use_legacy_sql</span></code></a></td>
-<td>Specifies whether to execute the view with Legacy or Standard SQL.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.table.Table.view_use_legacy_sql" title="google.cloud.bigquery.table.Table.view_use_legacy_sql"><code class="xref py py-obj docutils literal notranslate"><span class="pre">view_use_legacy_sql</span></code></a></p></td>
+<td><p>Specifies whether to execute the view with Legacy or Standard SQL.</p></td>
 </tr>
 </tbody>
 </table>
@@ -155,574 +153,486 @@
 <hr>
 <p><dl class="class">
 <dt id="google.cloud.bigquery.table.Table">
-<em class="property">class </em><code class="descclassname">google.cloud.bigquery.table.</code><code class="descname">Table</code><span class="sig-paren">(</span><em>table_ref</em>, <em>schema=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/table.html#Table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.Table" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.bigquery.table.</code><code class="sig-name descname">Table</code><span class="sig-paren">(</span><em class="sig-param">table_ref</em>, <em class="sig-param">schema=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/table.html#Table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.Table" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Tables represent a set of rows whose values correspond to a schema.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tables">https://cloud.google.com/bigquery/docs/reference/rest/v2/tables</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>table_ref</strong> (Union[             <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>,             str,         ]) – A pointer to a table. If <code class="docutils literal notranslate"><span class="pre">table_ref</span></code> is a string, it must
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table_ref</strong> (Union[             <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>,             str,         ]) – A pointer to a table. If <code class="docutils literal notranslate"><span class="pre">table_ref</span></code> is a string, it must
 included a project ID, dataset ID, and table ID, each separated
-by <code class="docutils literal notranslate"><span class="pre">.</span></code>.</li>
-<li><strong>schema</strong> (<em>List</em><em>[</em><a class="reference internal" href="google.cloud.bigquery.schema.SchemaField.html#google.cloud.bigquery.schema.SchemaField" title="google.cloud.bigquery.schema.SchemaField"><em>google.cloud.bigquery.schema.SchemaField</em></a><em>]</em>) – The table’s schema</li>
+by <code class="docutils literal notranslate"><span class="pre">.</span></code>.</p></li>
+<li><p><strong>schema</strong> (<em>List</em><em>[</em><a class="reference internal" href="google.cloud.bigquery.schema.SchemaField.html#google.cloud.bigquery.schema.SchemaField" title="google.cloud.bigquery.schema.SchemaField"><em>google.cloud.bigquery.schema.SchemaField</em></a><em>]</em>) – The table’s schema</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
+</dd>
+</dl>
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.clustering_fields">
-<code class="descname">clustering_fields</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.clustering_fields" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">clustering_fields</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.clustering_fields" title="Permalink to this definition">#</a></dt>
 <dd><p>Fields defining clustering for the table</p>
 <p>(Defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</p>
 <p>Clustering fields are immutable after table creation.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">As of 2018-06-29, clustering fields cannot be set on a table
+<p class="admonition-title">Note</p>
+<p>As of 2018-06-29, clustering fields cannot be set on a table
 which does not also have time partioning defined.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Union[List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Union[List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.created">
-<code class="descname">created</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.created" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">created</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.created" title="Permalink to this definition">#</a></dt>
 <dd><p>Datetime at which the table was
 created (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)">datetime.datetime</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)">datetime.datetime</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.dataset_id">
-<code class="descname">dataset_id</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.dataset_id" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">dataset_id</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.dataset_id" title="Permalink to this definition">#</a></dt>
 <dd><p>ID of dataset containing the table.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.description">
-<code class="descname">description</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.description" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">description</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.description" title="Permalink to this definition">#</a></dt>
 <dd><p>Description of the table (defaults to
 <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – For invalid value types.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – For invalid value types.</p>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.encryption_configuration">
-<code class="descname">encryption_configuration</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.encryption_configuration" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">encryption_configuration</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.encryption_configuration" title="Permalink to this definition">#</a></dt>
 <dd><p>Custom
 encryption configuration for the table.</p>
 <p>Custom encryption configuration (e.g., Cloud KMS keys) or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>
 if using default encryption.</p>
 <p>See <a class="reference external" href="https://cloud.google.com/bigquery/docs/customer-managed-encryption">protecting data with Cloud KMS keys</a>
 in the BigQuery documentation.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="google.cloud.bigquery.table.EncryptionConfiguration.html#google.cloud.bigquery.table.EncryptionConfiguration" title="google.cloud.bigquery.table.EncryptionConfiguration">google.cloud.bigquery.table.EncryptionConfiguration</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="google.cloud.bigquery.table.EncryptionConfiguration.html#google.cloud.bigquery.table.EncryptionConfiguration" title="google.cloud.bigquery.table.EncryptionConfiguration">google.cloud.bigquery.table.EncryptionConfiguration</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.etag">
-<code class="descname">etag</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.etag" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">etag</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.etag" title="Permalink to this definition">#</a></dt>
 <dd><p>ETag for the table resource (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until
 set from the server).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.expires">
-<code class="descname">expires</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.expires" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">expires</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.expires" title="Permalink to this definition">#</a></dt>
 <dd><p>Datetime at which the table will be
 deleted.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – For invalid value types.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)">datetime.datetime</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – For invalid value types.</p>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)">datetime.datetime</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.external_data_configuration">
-<code class="descname">external_data_configuration</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.external_data_configuration" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">external_data_configuration</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.external_data_configuration" title="Permalink to this definition">#</a></dt>
 <dd><p>Configuration for
 an external data source (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – For invalid value types.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">Union[google.cloud.bigquery.ExternalConfig, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – For invalid value types.</p>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p>Union[google.cloud.bigquery.ExternalConfig, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.friendly_name">
-<code class="descname">friendly_name</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.friendly_name" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">friendly_name</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.friendly_name" title="Permalink to this definition">#</a></dt>
 <dd><p>Title of the table (defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – For invalid value types.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – For invalid value types.</p>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.from_api_repr">
-<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/table.html#Table.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.Table.from_api_repr" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">from_api_repr</code><span class="sig-paren">(</span><em class="sig-param">resource</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/table.html#Table.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.Table.from_api_repr" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory: construct a table given its API representation</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><em>object</em></a><em>]</em>) – Table resource representation from the API</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Table parsed from <code class="docutils literal notranslate"><span class="pre">resource</span></code>.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table">google.cloud.bigquery.table.Table</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#KeyError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">KeyError</span></code></a> – If the <code class="docutils literal notranslate"><span class="pre">resource</span></code> lacks the key <code class="docutils literal notranslate"><span class="pre">'tableReference'</span></code>, or if
-the <code class="docutils literal notranslate"><span class="pre">dict</span></code> stored within the key <code class="docutils literal notranslate"><span class="pre">'tableReference'</span></code> lacks
-the keys <code class="docutils literal notranslate"><span class="pre">'tableId'</span></code>, <code class="docutils literal notranslate"><span class="pre">'projectId'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'datasetId'</span></code>.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>resource</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><em>object</em></a><em>]</em>) – Table resource representation from the API</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Table parsed from <code class="docutils literal notranslate"><span class="pre">resource</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table">google.cloud.bigquery.table.Table</a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#KeyError" title="(in Python v3.7)"><strong>KeyError</strong></a> – If the <code class="docutils literal notranslate"><span class="pre">resource</span></code> lacks the key <code class="docutils literal notranslate"><span class="pre">'tableReference'</span></code>, or if
+    the <code class="docutils literal notranslate"><span class="pre">dict</span></code> stored within the key <code class="docutils literal notranslate"><span class="pre">'tableReference'</span></code> lacks
+    the keys <code class="docutils literal notranslate"><span class="pre">'tableId'</span></code>, <code class="docutils literal notranslate"><span class="pre">'projectId'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'datasetId'</span></code>.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.from_string">
-<em class="property">classmethod </em><code class="descname">from_string</code><span class="sig-paren">(</span><em>full_table_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/table.html#Table.from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.Table.from_string" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">from_string</code><span class="sig-paren">(</span><em class="sig-param">full_table_id</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/table.html#Table.from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.Table.from_string" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct a table from fully-qualified table ID.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>full_table_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – A fully-qualified table ID in standard SQL format. Must
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>full_table_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – A fully-qualified table ID in standard SQL format. Must
 included a project ID, dataset ID, and table ID, each
-separated by <code class="docutils literal notranslate"><span class="pre">.</span></code>.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Table parsed from <code class="docutils literal notranslate"><span class="pre">full_table_id</span></code>.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table">Table</a></td>
-</tr>
-</tbody>
-</table>
+separated by <code class="docutils literal notranslate"><span class="pre">.</span></code>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Table parsed from <code class="docutils literal notranslate"><span class="pre">full_table_id</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table">Table</a></p>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Table</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s1">&#39;my-project.mydataset.mytable&#39;</span><span class="p">)</span>
 <span class="go">Table(TableRef...(D...(&#39;my-project&#39;, &#39;mydataset&#39;), &#39;mytable&#39;))</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If <code class="docutils literal notranslate"><span class="pre">full_table_id</span></code> is not a fully-qualified table ID in
-standard SQL format.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">full_table_id</span></code> is not a fully-qualified table ID in
+    standard SQL format.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.full_table_id">
-<code class="descname">full_table_id</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.full_table_id" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">full_table_id</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.full_table_id" title="Permalink to this definition">#</a></dt>
 <dd><p>ID for the table (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the
 server).</p>
 <p>In the format <code class="docutils literal notranslate"><span class="pre">project_id:dataset_id.table_id</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.labels">
-<code class="descname">labels</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.labels" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">labels</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.labels" title="Permalink to this definition">#</a></dt>
 <dd><p>Labels for the table.</p>
 <p>This method always returns a dict. To change a table’s labels,
 modify the dict, then call <code class="docutils literal notranslate"><span class="pre">Client.update_table</span></code>. To delete a
 label, set its value to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> before updating.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If <code class="docutils literal notranslate"><span class="pre">value</span></code> type is invalid.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">value</span></code> type is invalid.</p>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.location">
-<code class="descname">location</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.location" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">location</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.location" title="Permalink to this definition">#</a></dt>
 <dd><p>Location in which the table is hosted</p>
 <p>Defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.modified">
-<code class="descname">modified</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.modified" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">modified</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.modified" title="Permalink to this definition">#</a></dt>
 <dd><p>Datetime at which the table was last
 modified (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from the server).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)">datetime.datetime</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)">datetime.datetime</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.num_bytes">
-<code class="descname">num_bytes</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.num_bytes" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">num_bytes</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.num_bytes" title="Permalink to this definition">#</a></dt>
 <dd><p>The size of the table in bytes (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until
 set from the server).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.num_rows">
-<code class="descname">num_rows</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.num_rows" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">num_rows</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.num_rows" title="Permalink to this definition">#</a></dt>
 <dd><p>The number of rows in the table (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>
 until set from the server).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.partition_expiration">
-<code class="descname">partition_expiration</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.partition_expiration" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">partition_expiration</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.partition_expiration" title="Permalink to this definition">#</a></dt>
 <dd><p>Expiration time in milliseconds for a partition.</p>
 <p>If <a class="reference internal" href="#google.cloud.bigquery.table.Table.partition_expiration" title="google.cloud.bigquery.table.Table.partition_expiration"><code class="xref py py-attr docutils literal notranslate"><span class="pre">partition_expiration</span></code></a> is set and <code class="xref py py-attr docutils literal notranslate"><span class="pre">type_</span></code> is
 not set, <code class="xref py py-attr docutils literal notranslate"><span class="pre">type_</span></code> will default to
 <a class="reference internal" href="google.cloud.bigquery.table.TimePartitioningType.html#google.cloud.bigquery.table.TimePartitioningType.DAY" title="google.cloud.bigquery.table.TimePartitioningType.DAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DAY</span></code></a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.partitioning_type">
-<code class="descname">partitioning_type</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.partitioning_type" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">partitioning_type</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.partitioning_type" title="Permalink to this definition">#</a></dt>
 <dd><p>Time partitioning of the table if it is
 partitioned (Defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</p>
 <p>The only partitioning type that is currently supported is
 <a class="reference internal" href="google.cloud.bigquery.table.TimePartitioningType.html#google.cloud.bigquery.table.TimePartitioningType.DAY" title="google.cloud.bigquery.table.TimePartitioningType.DAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DAY</span></code></a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.path">
-<code class="descname">path</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.path" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">path</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.path" title="Permalink to this definition">#</a></dt>
 <dd><p>URL path for the table’s APIs.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.project">
-<code class="descname">project</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.project" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">project</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.project" title="Permalink to this definition">#</a></dt>
 <dd><p>Project bound to the table.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.reference">
-<code class="descname">reference</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.reference" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">reference</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.reference" title="Permalink to this definition">#</a></dt>
 <dd><p>A <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a> pointing to
 this table.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">pointer to this table.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference">google.cloud.bigquery.table.TableReference</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>pointer to this table.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference">google.cloud.bigquery.table.TableReference</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.schema">
-<code class="descname">schema</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.schema" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">schema</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.schema" title="Permalink to this definition">#</a></dt>
 <dd><p>Table’s schema.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first simple">
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code></a> – If ‘value’ is not a sequence</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If any item in the sequence is not a
-<a class="reference internal" href="google.cloud.bigquery.schema.SchemaField.html#google.cloud.bigquery.schema.SchemaField" title="google.cloud.bigquery.schema.SchemaField"><code class="xref py py-class docutils literal notranslate"><span class="pre">SchemaField</span></code></a></li>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.7)"><strong>TypeError</strong></a> – If ‘value’ is not a sequence</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If any item in the sequence is not a
+    <a class="reference internal" href="google.cloud.bigquery.schema.SchemaField.html#google.cloud.bigquery.schema.SchemaField" title="google.cloud.bigquery.schema.SchemaField"><code class="xref py py-class docutils literal notranslate"><span class="pre">SchemaField</span></code></a></p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body"><p class="first last">List[<a class="reference internal" href="google.cloud.bigquery.schema.SchemaField.html#google.cloud.bigquery.schema.SchemaField" title="google.cloud.bigquery.schema.SchemaField">google.cloud.bigquery.schema.SchemaField</a>]</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p>List[<a class="reference internal" href="google.cloud.bigquery.schema.SchemaField.html#google.cloud.bigquery.schema.SchemaField" title="google.cloud.bigquery.schema.SchemaField">google.cloud.bigquery.schema.SchemaField</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.self_link">
-<code class="descname">self_link</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.self_link" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">self_link</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.self_link" title="Permalink to this definition">#</a></dt>
 <dd><p>URL for the table resource (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set
 from the server).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.streaming_buffer">
-<code class="descname">streaming_buffer</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.streaming_buffer" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">streaming_buffer</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.streaming_buffer" title="Permalink to this definition">#</a></dt>
 <dd><p>Information about a table’s
 streaming buffer.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">google.cloud.bigquery.StreamingBuffer</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>google.cloud.bigquery.StreamingBuffer</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.table_id">
-<code class="descname">table_id</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.table_id" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">table_id</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.table_id" title="Permalink to this definition">#</a></dt>
 <dd><p>ID of the table.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.table_type">
-<code class="descname">table_type</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.table_type" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">table_type</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.table_type" title="Permalink to this definition">#</a></dt>
 <dd><p>The type of the table (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> until set from
 the server).</p>
 <p>Possible values are <code class="docutils literal notranslate"><span class="pre">'TABLE'</span></code>, <code class="docutils literal notranslate"><span class="pre">'VIEW'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'EXTERNAL'</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.time_partitioning">
-<code class="descname">time_partitioning</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.time_partitioning" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">time_partitioning</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.time_partitioning" title="Permalink to this definition">#</a></dt>
 <dd><p>Configures time-based
 partitioning for a table.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the value is not <a class="reference internal" href="google.cloud.bigquery.table.TimePartitioning.html#google.cloud.bigquery.table.TimePartitioning" title="google.cloud.bigquery.table.TimePartitioning"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimePartitioning</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="google.cloud.bigquery.table.TimePartitioning.html#google.cloud.bigquery.table.TimePartitioning" title="google.cloud.bigquery.table.TimePartitioning">google.cloud.bigquery.table.TimePartitioning</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the value is not <a class="reference internal" href="google.cloud.bigquery.table.TimePartitioning.html#google.cloud.bigquery.table.TimePartitioning" title="google.cloud.bigquery.table.TimePartitioning"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimePartitioning</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>.</p>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p><a class="reference internal" href="google.cloud.bigquery.table.TimePartitioning.html#google.cloud.bigquery.table.TimePartitioning" title="google.cloud.bigquery.table.TimePartitioning">google.cloud.bigquery.table.TimePartitioning</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigquery.table.Table.to_api_repr">
-<code class="descname">to_api_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/table.html#Table.to_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.Table.to_api_repr" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">to_api_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/table.html#Table.to_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.Table.to_api_repr" title="Permalink to this definition">#</a></dt>
 <dd><p>Constructs the API resource of this table</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Table represented as an API resource</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)">object</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Table represented as an API resource</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)">object</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigquery.table.Table.to_bqstorage">
-<code class="descname">to_bqstorage</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/table.html#Table.to_bqstorage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.Table.to_bqstorage" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">to_bqstorage</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/table.html#Table.to_bqstorage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.Table.to_bqstorage" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct a BigQuery Storage API representation of this table.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A reference to this table in the BigQuery Storage API.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="../../bigquery_storage/gapic/v1beta1/types.html#google.cloud.bigquery_storage_v1beta1.types.TableReference" title="google.cloud.bigquery_storage_v1beta1.types.TableReference">google.cloud.bigquery_storage_v1beta1.types.TableReference</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A reference to this table in the BigQuery Storage API.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../bigquery_storage/gapic/v1beta1/types.html#google.cloud.bigquery_storage_v1beta1.types.TableReference" title="google.cloud.bigquery_storage_v1beta1.types.TableReference">google.cloud.bigquery_storage_v1beta1.types.TableReference</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.view_query">
-<code class="descname">view_query</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.view_query" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">view_query</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.view_query" title="Permalink to this definition">#</a></dt>
 <dd><p>SQL query defining the table as a view (defaults
 to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</p>
 <p>By default, the query is treated as Standard SQL. To use Legacy
 SQL, set <a class="reference internal" href="#google.cloud.bigquery.table.Table.view_use_legacy_sql" title="google.cloud.bigquery.table.Table.view_use_legacy_sql"><code class="xref py py-attr docutils literal notranslate"><span class="pre">view_use_legacy_sql</span></code></a> to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – For invalid value types.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – For invalid value types.</p>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p>Union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.table.Table.view_use_legacy_sql">
-<code class="descname">view_use_legacy_sql</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.view_use_legacy_sql" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">view_use_legacy_sql</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.view_use_legacy_sql" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies whether to execute the view with Legacy or Standard SQL.</p>
 <p>This boolean specifies whether to execute the view with Legacy SQL
 (<a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a>) or Standard SQL (<a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">False</span></code></a>). The client side default is
 <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">False</span></code></a>. The server-side default is <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a>. If this table is
 not a view, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> is returned.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – For invalid value types.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – For invalid value types.</p>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -817,13 +727,11 @@ not a view, <a class="reference external" href="https://docs.python.org/3/librar
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -836,7 +744,7 @@ not a view, <a class="reference external" href="https://docs.python.org/3/librar
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

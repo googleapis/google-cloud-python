@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Transforms &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Transforms &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -40,92 +38,77 @@
 <p>Helpful constants to use for Google Cloud Firestore.</p>
 <dl class="class">
 <dt id="google.cloud.firestore_v1.transforms.ArrayRemove">
-<em class="property">class </em><code class="descclassname">google.cloud.firestore_v1.transforms.</code><code class="descname">ArrayRemove</code><span class="sig-paren">(</span><em>values</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1/transforms.html#ArrayRemove"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1.transforms.ArrayRemove" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.firestore_v1.transforms.</code><code class="sig-name descname">ArrayRemove</code><span class="sig-paren">(</span><em class="sig-param">values</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1/transforms.html#ArrayRemove"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1.transforms.ArrayRemove" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.firestore_v1.transforms._ValueList</span></code></p>
 <p>Field transform: remove values from an array field.</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1#google.firestore.v1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1.ArrayValue.google.firestore.v1.DocumentTransform.FieldTransform.remove_all_from_array">https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1#google.firestore.v1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1.ArrayValue.google.firestore.v1.DocumentTransform.FieldTransform.remove_all_from_array</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>values</strong> (<em>List | Tuple</em>) – values to remove.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>values</strong> (<em>List | Tuple</em>) – values to remove.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.firestore_v1.transforms.ArrayUnion">
-<em class="property">class </em><code class="descclassname">google.cloud.firestore_v1.transforms.</code><code class="descname">ArrayUnion</code><span class="sig-paren">(</span><em>values</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1/transforms.html#ArrayUnion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1.transforms.ArrayUnion" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.firestore_v1.transforms.</code><code class="sig-name descname">ArrayUnion</code><span class="sig-paren">(</span><em class="sig-param">values</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1/transforms.html#ArrayUnion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1.transforms.ArrayUnion" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.firestore_v1.transforms._ValueList</span></code></p>
 <p>Field transform: appends missing values to an array field.</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1#google.firestore.v1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1.ArrayValue.google.firestore.v1.DocumentTransform.FieldTransform.append_missing_elements">https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1#google.firestore.v1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1.ArrayValue.google.firestore.v1.DocumentTransform.FieldTransform.append_missing_elements</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>values</strong> (<em>List | Tuple</em>) – values to append.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>values</strong> (<em>List | Tuple</em>) – values to append.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.firestore_v1.transforms.Increment">
-<em class="property">class </em><code class="descclassname">google.cloud.firestore_v1.transforms.</code><code class="descname">Increment</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1/transforms.html#Increment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1.transforms.Increment" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.firestore_v1.transforms.</code><code class="sig-name descname">Increment</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1/transforms.html#Increment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1.transforms.Increment" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.firestore_v1.transforms._NumericValue</span></code></p>
 <p>Field transform: increment a numeric field with specified value.</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1#google.firestore.v1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1.ArrayValue.google.firestore.v1.DocumentTransform.FieldTransform.increment">https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1#google.firestore.v1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1.ArrayValue.google.firestore.v1.DocumentTransform.FieldTransform.increment</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<em>int | float</em>) – value used to increment the field.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>int | float</em>) – value used to increment the field.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.firestore_v1.transforms.Maximum">
-<em class="property">class </em><code class="descclassname">google.cloud.firestore_v1.transforms.</code><code class="descname">Maximum</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1/transforms.html#Maximum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1.transforms.Maximum" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.firestore_v1.transforms.</code><code class="sig-name descname">Maximum</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1/transforms.html#Maximum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1.transforms.Maximum" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.firestore_v1.transforms._NumericValue</span></code></p>
 <p>Field transform: bound numeric field with specified value.</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1#google.firestore.v1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1.ArrayValue.google.firestore.v1.DocumentTransform.FieldTransform.maximum">https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1#google.firestore.v1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1.ArrayValue.google.firestore.v1.DocumentTransform.FieldTransform.maximum</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<em>int | float</em>) – value used to bound the field.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>int | float</em>) – value used to bound the field.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.firestore_v1.transforms.Minimum">
-<em class="property">class </em><code class="descclassname">google.cloud.firestore_v1.transforms.</code><code class="descname">Minimum</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1/transforms.html#Minimum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1.transforms.Minimum" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.firestore_v1.transforms.</code><code class="sig-name descname">Minimum</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1/transforms.html#Minimum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1.transforms.Minimum" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.firestore_v1.transforms._NumericValue</span></code></p>
 <p>Field transform: bound numeric field with specified value.</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1#google.firestore.v1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1.ArrayValue.google.firestore.v1.DocumentTransform.FieldTransform.minimum">https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1#google.firestore.v1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1.ArrayValue.google.firestore.v1.DocumentTransform.FieldTransform.minimum</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<em>int | float</em>) – value used to bound the field.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>int | float</em>) – value used to bound the field.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.firestore_v1.transforms.Sentinel">
-<em class="property">class </em><code class="descclassname">google.cloud.firestore_v1.transforms.</code><code class="descname">Sentinel</code><span class="sig-paren">(</span><em>description</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1/transforms.html#Sentinel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1.transforms.Sentinel" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.firestore_v1.transforms.</code><code class="sig-name descname">Sentinel</code><span class="sig-paren">(</span><em class="sig-param">description</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1/transforms.html#Sentinel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1.transforms.Sentinel" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Sentinel objects used to signal special handling.</p>
 </dd></dl>
@@ -218,13 +201,11 @@
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -237,7 +218,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

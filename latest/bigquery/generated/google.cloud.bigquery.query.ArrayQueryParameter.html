@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.query.ArrayQueryParameter &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>google.cloud.bigquery.query.ArrayQueryParameter &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -38,20 +36,20 @@
   <div class="section" id="google-cloud-bigquery-query-arrayqueryparameter">
 <h1>google.cloud.bigquery.query.ArrayQueryParameter<a class="headerlink" href="#google-cloud-bigquery-query-arrayqueryparameter" title="Permalink to this headline">#</a></h1>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.query.ArrayQueryParameter.from_api_repr" title="google.cloud.bigquery.query.ArrayQueryParameter.from_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_api_repr</span></code></a>(resource)</td>
-<td>Factory: construct parameter from JSON resource.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.query.ArrayQueryParameter.from_api_repr" title="google.cloud.bigquery.query.ArrayQueryParameter.from_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_api_repr</span></code></a>(resource)</p></td>
+<td><p>Factory: construct parameter from JSON resource.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.query.ArrayQueryParameter.positional" title="google.cloud.bigquery.query.ArrayQueryParameter.positional"><code class="xref py py-obj docutils literal notranslate"><span class="pre">positional</span></code></a>(array_type,&nbsp;values)</td>
-<td>Factory for positional parameters.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.query.ArrayQueryParameter.positional" title="google.cloud.bigquery.query.ArrayQueryParameter.positional"><code class="xref py py-obj docutils literal notranslate"><span class="pre">positional</span></code></a>(array_type, values)</p></td>
+<td><p>Factory for positional parameters.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.query.ArrayQueryParameter.to_api_repr" title="google.cloud.bigquery.query.ArrayQueryParameter.to_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_api_repr</span></code></a>()</td>
-<td>Construct JSON API representation for the parameter.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.query.ArrayQueryParameter.to_api_repr" title="google.cloud.bigquery.query.ArrayQueryParameter.to_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_api_repr</span></code></a>()</p></td>
+<td><p>Construct JSON API representation for the parameter.</p></td>
 </tr>
 </tbody>
 </table>
@@ -59,81 +57,70 @@
 <hr>
 <p><dl class="class">
 <dt id="google.cloud.bigquery.query.ArrayQueryParameter">
-<em class="property">class </em><code class="descclassname">google.cloud.bigquery.query.</code><code class="descname">ArrayQueryParameter</code><span class="sig-paren">(</span><em>name</em>, <em>array_type</em>, <em>values</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/query.html#ArrayQueryParameter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.query.ArrayQueryParameter" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.bigquery.query.</code><code class="sig-name descname">ArrayQueryParameter</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">array_type</em>, <em class="sig-param">values</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/query.html#ArrayQueryParameter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.query.ArrayQueryParameter" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigquery.query._AbstractQueryParameter</span></code></p>
 <p>Named / positional query parameters for array values.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – Parameter name, used via <code class="docutils literal notranslate"><span class="pre">&#64;foo</span></code> syntax.  If None, the
-parameter can only be addressed via position (<code class="docutils literal notranslate"><span class="pre">?</span></code>).</li>
-<li><strong>array_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – name of type of array elements.  One of <cite>‘STRING’</cite>, <cite>‘INT64’</cite>,
-<cite>‘FLOAT64’</cite>, <cite>‘NUMERIC’</cite>, <cite>‘BOOL’</cite>, <cite>‘TIMESTAMP’</cite>, or <cite>‘DATE’</cite>.</li>
-<li><strong>values</strong> (<em>list of appropriate scalar type.</em>) – the parameter array values.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – Parameter name, used via <code class="docutils literal notranslate"><span class="pre">&#64;foo</span></code> syntax.  If None, the
+parameter can only be addressed via position (<code class="docutils literal notranslate"><span class="pre">?</span></code>).</p></li>
+<li><p><strong>array_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – name of type of array elements.  One of <cite>‘STRING’</cite>, <cite>‘INT64’</cite>,
+<cite>‘FLOAT64’</cite>, <cite>‘NUMERIC’</cite>, <cite>‘BOOL’</cite>, <cite>‘TIMESTAMP’</cite>, or <cite>‘DATE’</cite>.</p></li>
+<li><p><strong>values</strong> (<em>list of appropriate scalar type.</em>) – the parameter array values.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="classmethod">
+</dd>
+</dl>
+<dl class="method">
 <dt id="google.cloud.bigquery.query.ArrayQueryParameter.from_api_repr">
-<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/query.html#ArrayQueryParameter.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.query.ArrayQueryParameter.from_api_repr" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">from_api_repr</code><span class="sig-paren">(</span><em class="sig-param">resource</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/query.html#ArrayQueryParameter.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.query.ArrayQueryParameter.from_api_repr" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory: construct parameter from JSON resource.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – JSON mapping of parameter</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.bigquery.query.ArrayQueryParameter" title="google.cloud.bigquery.query.ArrayQueryParameter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArrayQueryParameter</span></code></a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">instance</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – JSON mapping of parameter</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#google.cloud.bigquery.query.ArrayQueryParameter" title="google.cloud.bigquery.query.ArrayQueryParameter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArrayQueryParameter</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>instance</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="google.cloud.bigquery.query.ArrayQueryParameter.positional">
-<em class="property">classmethod </em><code class="descname">positional</code><span class="sig-paren">(</span><em>array_type</em>, <em>values</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/query.html#ArrayQueryParameter.positional"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.query.ArrayQueryParameter.positional" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">positional</code><span class="sig-paren">(</span><em class="sig-param">array_type</em>, <em class="sig-param">values</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/query.html#ArrayQueryParameter.positional"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.query.ArrayQueryParameter.positional" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory for positional parameters.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>array_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – name of type of array elements.  One of <cite>‘STRING’</cite>, <cite>‘INT64’</cite>,
-<cite>‘FLOAT64’</cite>, <cite>‘NUMERIC’</cite>, <cite>‘BOOL’</cite>, <cite>‘TIMESTAMP’</cite>, or <cite>‘DATE’</cite>.</li>
-<li><strong>values</strong> (<em>list of appropriate scalar type</em>) – the parameter array values.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>array_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – name of type of array elements.  One of <cite>‘STRING’</cite>, <cite>‘INT64’</cite>,
+<cite>‘FLOAT64’</cite>, <cite>‘NUMERIC’</cite>, <cite>‘BOOL’</cite>, <cite>‘TIMESTAMP’</cite>, or <cite>‘DATE’</cite>.</p></li>
+<li><p><strong>values</strong> (<em>list of appropriate scalar type</em>) – the parameter array values.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#google.cloud.bigquery.query.ArrayQueryParameter" title="google.cloud.bigquery.query.ArrayQueryParameter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArrayQueryParameter</span></code></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">instance without name</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#google.cloud.bigquery.query.ArrayQueryParameter" title="google.cloud.bigquery.query.ArrayQueryParameter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArrayQueryParameter</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>instance without name</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigquery.query.ArrayQueryParameter.to_api_repr">
-<code class="descname">to_api_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/query.html#ArrayQueryParameter.to_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.query.ArrayQueryParameter.to_api_repr" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">to_api_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/query.html#ArrayQueryParameter.to_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.query.ArrayQueryParameter.to_api_repr" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct JSON API representation for the parameter.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">JSON mapping</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>JSON mapping</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -228,13 +215,11 @@ parameter can only be addressed via position (<code class="docutils literal notr
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -247,7 +232,7 @@ parameter can only be addressed via position (<code class="docutils literal notr
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

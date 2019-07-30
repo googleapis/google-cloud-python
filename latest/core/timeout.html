@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Timeout &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Timeout &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -69,26 +67,23 @@ and the request times out, it’ll be retried - this time with a larger timeout.
 matches <code class="docutils literal notranslate"><span class="pre">api_method(request,</span> <span class="pre">timeout=None,</span> <span class="pre">retry=None)</span></code>.</p>
 <dl class="class">
 <dt id="google.api_core.timeout.ConstantTimeout">
-<em class="property">class </em><code class="descclassname">google.api_core.timeout.</code><code class="descname">ConstantTimeout</code><span class="sig-paren">(</span><em>timeout=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/timeout.html#ConstantTimeout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.timeout.ConstantTimeout" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.api_core.timeout.</code><code class="sig-name descname">ConstantTimeout</code><span class="sig-paren">(</span><em class="sig-param">timeout=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/timeout.html#ConstantTimeout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.timeout.ConstantTimeout" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>A decorator that adds a constant timeout argument.</p>
 <p>This is effectively equivalent to
 <code class="docutils literal notranslate"><span class="pre">functools.partial(func,</span> <span class="pre">timeout=timeout)</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – the timeout (in seconds) to applied to the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – the timeout (in seconds) to applied to the
 wrapped function. If <cite>None</cite>, the target function is expected to
-never timeout.</td>
-</tr>
-</tbody>
-</table>
+never timeout.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="class">
 <dt id="google.api_core.timeout.ExponentialTimeout">
-<em class="property">class </em><code class="descclassname">google.api_core.timeout.</code><code class="descname">ExponentialTimeout</code><span class="sig-paren">(</span><em>initial=5.0</em>, <em>maximum=30.0</em>, <em>multiplier=2.0</em>, <em>deadline=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/timeout.html#ExponentialTimeout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.timeout.ExponentialTimeout" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.api_core.timeout.</code><code class="sig-name descname">ExponentialTimeout</code><span class="sig-paren">(</span><em class="sig-param">initial=5.0</em>, <em class="sig-param">maximum=30.0</em>, <em class="sig-param">multiplier=2.0</em>, <em class="sig-param">deadline=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/timeout.html#ExponentialTimeout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.timeout.ExponentialTimeout" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>A decorator that adds an exponentially increasing timeout argument.</p>
 <p>This is useful if a function is called multiple times. Each time the
@@ -98,42 +93,37 @@ based on the the number of times the function has been called.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>initial</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The initial timeout to pass.</li>
-<li><strong>maximum</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The maximum timeout for any one call.</li>
-<li><strong>multiplier</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The multiplier applied to the timeout for each
-invocation.</li>
-<li><strong>deadline</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The overall deadline across all
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>initial</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The initial timeout to pass.</p></li>
+<li><p><strong>maximum</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The maximum timeout for any one call.</p></li>
+<li><p><strong>multiplier</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The multiplier applied to the timeout for each
+invocation.</p></li>
+<li><p><strong>deadline</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The overall deadline across all
 invocations. This is used to prevent a very large calculated
 timeout from pushing the overall execution time over the deadline.
 This is especially useful in conjuction with
 <a class="reference internal" href="retry.html#module-google.api_core.retry" title="google.api_core.retry"><code class="xref py py-mod docutils literal notranslate"><span class="pre">google.api_core.retry</span></code></a>. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the timeouts will not
-be adjusted to accomodate an overall deadline.</li>
+be adjusted to accomodate an overall deadline.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="google.api_core.timeout.ExponentialTimeout.with_deadline">
-<code class="descname">with_deadline</code><span class="sig-paren">(</span><em>deadline</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/timeout.html#ExponentialTimeout.with_deadline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.timeout.ExponentialTimeout.with_deadline" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">with_deadline</code><span class="sig-paren">(</span><em class="sig-param">deadline</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/timeout.html#ExponentialTimeout.with_deadline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.timeout.ExponentialTimeout.with_deadline" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a copy of this teimout with the given deadline.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>deadline</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The overall deadline across all invocations.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A new instance with the given deadline.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.api_core.timeout.ExponentialTimeout" title="google.api_core.timeout.ExponentialTimeout">ExponentialTimeout</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>deadline</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The overall deadline across all invocations.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A new instance with the given deadline.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#google.api_core.timeout.ExponentialTimeout" title="google.api_core.timeout.ExponentialTimeout">ExponentialTimeout</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -226,13 +216,11 @@ be adjusted to accomodate an overall deadline.</li>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -245,7 +233,7 @@ be adjusted to accomodate an overall deadline.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

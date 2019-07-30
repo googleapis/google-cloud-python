@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for Google Cloud Vision API &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Client for Google Cloud Vision API &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -39,50 +37,46 @@
 <span id="client-for-google-cloud-vision-api"></span><h1>Client for Google Cloud Vision API<a class="headerlink" href="#module-google.cloud.vision_v1p2beta1" title="Permalink to this headline">#</a></h1>
 <dl class="class">
 <dt id="google.cloud.vision_v1p2beta1.ImageAnnotatorClient">
-<em class="property">class </em><code class="descclassname">google.cloud.vision_v1p2beta1.</code><code class="descname">ImageAnnotatorClient</code><span class="sig-paren">(</span><em>transport=None</em>, <em>channel=None</em>, <em>credentials=None</em>, <em>client_config=None</em>, <em>client_info=None</em>, <em>client_options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1p2beta1.html#ImageAnnotatorClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.vision_v1p2beta1.</code><code class="sig-name descname">ImageAnnotatorClient</code><span class="sig-paren">(</span><em class="sig-param">transport=None</em>, <em class="sig-param">channel=None</em>, <em class="sig-param">credentials=None</em>, <em class="sig-param">client_config=None</em>, <em class="sig-param">client_info=None</em>, <em class="sig-param">client_options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1p2beta1.html#ImageAnnotatorClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient" title="Permalink to this definition">#</a></dt>
 <dd><p>Service that performs Google Cloud Vision API detection tasks over client
 images, such as face, landmark, logo, label, and text detection. The
 ImageAnnotator service returns detected entities from the images.</p>
 <p>Constructor.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>(</strong><strong>Union</strong><strong>[</strong><strong>ImageAnnotatorGrpcTransport</strong><strong>,</strong> (<em>transport</em>) – Callable[[~.Credentials, type], ~.ImageAnnotatorGrpcTransport]): A transport
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong><strong>Union</strong><strong>[</strong><strong>ImageAnnotatorGrpcTransport</strong><strong>,</strong> (<em>transport</em>) – Callable[[~.Credentials, type], ~.ImageAnnotatorGrpcTransport]): A transport
 instance, responsible for actually making the API calls.
 The default transport uses the gRPC protocol.
 This argument may also be a callable which returns a
 transport instance. Callables will be sent the credentials
 as the first argument and the default transport class as
-the second argument.</li>
-<li><strong>channel</strong> (<a class="reference external" href="https://grpc.github.io/grpc/python/grpc.html#grpc.Channel" title="(in gRPC Python v1.22.0)"><em>grpc.Channel</em></a>) – DEPRECATED. A <code class="docutils literal notranslate"><span class="pre">Channel</span></code> instance
+the second argument.</p></li>
+<li><p><strong>channel</strong> (<a class="reference external" href="https://grpc.github.io/grpc/python/grpc.html#grpc.Channel" title="(in gRPC Python v1.22.0)"><em>grpc.Channel</em></a>) – DEPRECATED. A <code class="docutils literal notranslate"><span class="pre">Channel</span></code> instance
 through which to make calls. This argument is mutually exclusive
-with <code class="docutils literal notranslate"><span class="pre">credentials</span></code>; providing both will raise an exception.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.6.2)"><em>google.auth.credentials.Credentials</em></a>) – The
+with <code class="docutils literal notranslate"><span class="pre">credentials</span></code>; providing both will raise an exception.</p></li>
+<li><p><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.6.2)"><em>google.auth.credentials.Credentials</em></a>) – The
 authorization credentials to attach to requests. These
 credentials identify this application to the service. If none
 are specified, the client will attempt to ascertain the
 credentials from the environment.
 This argument is mutually exclusive with providing a
 transport instance to <code class="docutils literal notranslate"><span class="pre">transport</span></code>; doing so will raise
-an exception.</li>
-<li><strong>client_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – DEPRECATED. A dictionary of call options for
-each method. If not specified, the default configuration is used.</li>
-<li><strong>client_info</strong> (<a class="reference internal" href="../../../core/client_info.html#google.api_core.gapic_v1.client_info.ClientInfo" title="google.api_core.gapic_v1.client_info.ClientInfo"><em>google.api_core.gapic_v1.client_info.ClientInfo</em></a>) – The client info used to send a user-agent string along with
+an exception.</p></li>
+<li><p><strong>client_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – DEPRECATED. A dictionary of call options for
+each method. If not specified, the default configuration is used.</p></li>
+<li><p><strong>client_info</strong> (<a class="reference internal" href="../../../core/client_info.html#google.api_core.gapic_v1.client_info.ClientInfo" title="google.api_core.gapic_v1.client_info.ClientInfo"><em>google.api_core.gapic_v1.client_info.ClientInfo</em></a>) – The client info used to send a user-agent string along with
 API requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then default info will be used.
 Generally, you only need to set this if you’re developing
-your own client library.</li>
-<li><strong>client_options</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>google.api_core.client_options.ClientOptions</em><em>]</em>) – Client options used to set user options on the client. API Endpoint
-should be set through client_options.</li>
+your own client library.</p></li>
+<li><p><strong>client_options</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>google.api_core.client_options.ClientOptions</em><em>]</em>) – Client options used to set user options on the client. API Endpoint
+should be set through client_options.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="google.cloud.vision_v1p2beta1.ImageAnnotatorClient.annotate_image">
-<code class="descname">annotate_image</code><span class="sig-paren">(</span><em>request</em>, <em>retry=None</em>, <em>timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.annotate_image" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">annotate_image</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">retry=None</em>, <em class="sig-param">timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.annotate_image" title="Permalink to this definition">#</a></dt>
 <dd><p>Run image detection and annotation for an image.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.vision_v1</span> <span class="k">import</span> <span class="n">ImageAnnotatorClient</span>
@@ -95,31 +89,27 @@ should be set through client_options.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">annotate_image</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>request</strong> (<a class="reference internal" href="../v1/types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>) – </li>
-<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<a class="reference internal" href="../v1/types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>) – </p></li>
+<li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</li>
-<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+be retried.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
-specified, the timeout applies to each individual attempt.</li>
+specified, the timeout applies to each individual attempt.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference internal" href="../v1/types.html#google.cloud.vision_v1.types.AnnotateImageResponse" title="google.cloud.vision_v1.types.AnnotateImageResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageResponse</span></code></a> The API response.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference internal" href="../v1/types.html#google.cloud.vision_v1.types.AnnotateImageResponse" title="google.cloud.vision_v1.types.AnnotateImageResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageResponse</span></code></a> The API response.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1p2beta1.ImageAnnotatorClient.async_batch_annotate_files">
-<code class="descname">async_batch_annotate_files</code><span class="sig-paren">(</span><em>requests</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1p2beta1/gapic/image_annotator_client.html#ImageAnnotatorClient.async_batch_annotate_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.async_batch_annotate_files" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">async_batch_annotate_files</code><span class="sig-paren">(</span><em class="sig-param">requests</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1p2beta1/gapic/image_annotator_client.html#ImageAnnotatorClient.async_batch_annotate_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.async_batch_annotate_files" title="Permalink to this definition">#</a></dt>
 <dd><p>Run async image detection and annotation for a list of generic files
 (e.g. PDF) which may contain multiple pages and multiple images per
 page. Progress and results can be retrieved through the
@@ -146,45 +136,41 @@ contains <code class="docutils literal notranslate"><span class="pre">AsyncBatch
 <span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">metadata</span><span class="p">()</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>requests</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AsyncAnnotateFileRequest" title="google.cloud.vision_v1p2beta1.types.AsyncAnnotateFileRequest"><em>AsyncAnnotateFileRequest</em></a><em>]</em><em>]</em>) – <p>Individual async file annotation requests for this batch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>requests</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AsyncAnnotateFileRequest" title="google.cloud.vision_v1p2beta1.types.AsyncAnnotateFileRequest"><em>AsyncAnnotateFileRequest</em></a><em>]</em><em>]</em>) – <p>Individual async file annotation requests for this batch.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AsyncAnnotateFileRequest" title="google.cloud.vision_v1p2beta1.types.AsyncAnnotateFileRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncAnnotateFileRequest</span></code></a></p>
-</li>
-<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+</p></li>
+<li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</li>
-<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+be retried.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
-specified, the timeout applies to each individual attempt.</li>
-<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
-that is provided to the method.</li>
+specified, the timeout applies to each individual attempt.</p></li>
+<li><p><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="xref py py-class docutils literal notranslate"><span class="pre">_OperationFuture</span></code> instance.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
-failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
-to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">_OperationFuture</span></code> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the parameters are invalid.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1p2beta1.ImageAnnotatorClient.batch_annotate_images">
-<code class="descname">batch_annotate_images</code><span class="sig-paren">(</span><em>requests</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1p2beta1/gapic/image_annotator_client.html#ImageAnnotatorClient.batch_annotate_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.batch_annotate_images" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">batch_annotate_images</code><span class="sig-paren">(</span><em class="sig-param">requests</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1p2beta1/gapic/image_annotator_client.html#ImageAnnotatorClient.batch_annotate_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.batch_annotate_images" title="Permalink to this definition">#</a></dt>
 <dd><p>Run image detection and annotation for a batch of images.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">vision_v1p2beta1</span>
@@ -197,389 +183,337 @@ to a retryable error and retry attempts failed.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">batch_annotate_images</span><span class="p">(</span><span class="n">requests</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>requests</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageRequest" title="google.cloud.vision_v1p2beta1.types.AnnotateImageRequest"><em>AnnotateImageRequest</em></a><em>]</em><em>]</em>) – <p>Individual image annotation requests for this batch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>requests</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageRequest" title="google.cloud.vision_v1p2beta1.types.AnnotateImageRequest"><em>AnnotateImageRequest</em></a><em>]</em><em>]</em>) – <p>Individual image annotation requests for this batch.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageRequest" title="google.cloud.vision_v1p2beta1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a></p>
-</li>
-<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+</p></li>
+<li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</li>
-<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+be retried.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
-specified, the timeout applies to each individual attempt.</li>
-<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
-that is provided to the method.</li>
+specified, the timeout applies to each individual attempt.</p></li>
+<li><p><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.BatchAnnotateImagesResponse" title="google.cloud.vision_v1p2beta1.types.BatchAnnotateImagesResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">BatchAnnotateImagesResponse</span></code></a> instance.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
-failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
-to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.BatchAnnotateImagesResponse" title="google.cloud.vision_v1p2beta1.types.BatchAnnotateImagesResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">BatchAnnotateImagesResponse</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the parameters are invalid.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1p2beta1.ImageAnnotatorClient.crop_hints">
-<code class="descname">crop_hints</code><span class="sig-paren">(</span><em>image</em>, <em>max_results=None</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.crop_hints" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">crop_hints</code><span class="sig-paren">(</span><em class="sig-param">image</em>, <em class="sig-param">max_results=None</em>, <em class="sig-param">retry=None</em>, <em class="sig-param">timeout=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.crop_hints" title="Permalink to this definition">#</a></dt>
 <dd><p>Return crop hints information.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.Image" title="google.cloud.vision_v1p2beta1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of results to return, does not apply for
-TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</li>
-<li><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of retries to do before giving up.</li>
-<li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of seconds before timing out.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Additional properties to be set on the
-<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageRequest" title="google.cloud.vision_v1p2beta1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.Image" title="google.cloud.vision_v1p2beta1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</p></li>
+<li><p><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of results to return, does not apply for
+TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</p></li>
+<li><p><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of retries to do before giving up.</p></li>
+<li><p><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of seconds before timing out.</p></li>
+<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Additional properties to be set on the
+<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageRequest" title="google.cloud.vision_v1p2beta1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The API response.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageResponse" title="google.cloud.vision_v1p2beta1.types.AnnotateImageResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageResponse</span></code></a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The API response.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageResponse" title="google.cloud.vision_v1p2beta1.types.AnnotateImageResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageResponse</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1p2beta1.ImageAnnotatorClient.document_text_detection">
-<code class="descname">document_text_detection</code><span class="sig-paren">(</span><em>image</em>, <em>max_results=None</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.document_text_detection" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">document_text_detection</code><span class="sig-paren">(</span><em class="sig-param">image</em>, <em class="sig-param">max_results=None</em>, <em class="sig-param">retry=None</em>, <em class="sig-param">timeout=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.document_text_detection" title="Permalink to this definition">#</a></dt>
 <dd><p>Perform document text detection.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.Image" title="google.cloud.vision_v1p2beta1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of results to return, does not apply for
-TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</li>
-<li><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of retries to do before giving up.</li>
-<li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of seconds before timing out.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Additional properties to be set on the
-<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageRequest" title="google.cloud.vision_v1p2beta1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.Image" title="google.cloud.vision_v1p2beta1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</p></li>
+<li><p><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of results to return, does not apply for
+TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</p></li>
+<li><p><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of retries to do before giving up.</p></li>
+<li><p><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of seconds before timing out.</p></li>
+<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Additional properties to be set on the
+<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageRequest" title="google.cloud.vision_v1p2beta1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The API response.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageResponse" title="google.cloud.vision_v1p2beta1.types.AnnotateImageResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageResponse</span></code></a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The API response.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageResponse" title="google.cloud.vision_v1p2beta1.types.AnnotateImageResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageResponse</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision_v1p2beta1.ImageAnnotatorClient.enums">
-<code class="descname">enums</code><em class="property"> = &lt;module 'google.cloud.vision_v1p2beta1.gapic.enums' from '/var/code/gcp/vision/google/cloud/vision_v1p2beta1/gapic/enums.py'&gt;</em><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.enums" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">enums</code><em class="property"> = &lt;module 'google.cloud.vision_v1p2beta1.gapic.enums' from '/var/code/gcp/vision/google/cloud/vision_v1p2beta1/gapic/enums.py'&gt;</em><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.enums" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1p2beta1.ImageAnnotatorClient.face_detection">
-<code class="descname">face_detection</code><span class="sig-paren">(</span><em>image</em>, <em>max_results=None</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.face_detection" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">face_detection</code><span class="sig-paren">(</span><em class="sig-param">image</em>, <em class="sig-param">max_results=None</em>, <em class="sig-param">retry=None</em>, <em class="sig-param">timeout=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.face_detection" title="Permalink to this definition">#</a></dt>
 <dd><p>Perform face detection.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.Image" title="google.cloud.vision_v1p2beta1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of results to return, does not apply for
-TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</li>
-<li><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of retries to do before giving up.</li>
-<li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of seconds before timing out.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Additional properties to be set on the
-<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageRequest" title="google.cloud.vision_v1p2beta1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.Image" title="google.cloud.vision_v1p2beta1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</p></li>
+<li><p><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of results to return, does not apply for
+TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</p></li>
+<li><p><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of retries to do before giving up.</p></li>
+<li><p><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of seconds before timing out.</p></li>
+<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Additional properties to be set on the
+<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageRequest" title="google.cloud.vision_v1p2beta1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The API response.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageResponse" title="google.cloud.vision_v1p2beta1.types.AnnotateImageResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageResponse</span></code></a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The API response.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageResponse" title="google.cloud.vision_v1p2beta1.types.AnnotateImageResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageResponse</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="google.cloud.vision_v1p2beta1.ImageAnnotatorClient.from_service_account_file">
-<em class="property">classmethod </em><code class="descname">from_service_account_file</code><span class="sig-paren">(</span><em>filename</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1p2beta1/gapic/image_annotator_client.html#ImageAnnotatorClient.from_service_account_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.from_service_account_file" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">from_service_account_file</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1p2beta1/gapic/image_annotator_client.html#ImageAnnotatorClient.from_service_account_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.from_service_account_file" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates an instance of this client using the provided credentials
 file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the service account private key json
-file.</li>
-<li><strong>args</strong> – Additional arguments to pass to the constructor.</li>
-<li><strong>kwargs</strong> – Additional arguments to pass to the constructor.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the service account private key json
+file.</p></li>
+<li><p><strong>args</strong> – Additional arguments to pass to the constructor.</p></li>
+<li><p><strong>kwargs</strong> – Additional arguments to pass to the constructor.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The constructed client.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="../v1/api.html#google.cloud.vision_v1.ImageAnnotatorClient" title="google.cloud.vision_v1.ImageAnnotatorClient">ImageAnnotatorClient</a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The constructed client.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../v1/api.html#google.cloud.vision_v1.ImageAnnotatorClient" title="google.cloud.vision_v1.ImageAnnotatorClient">ImageAnnotatorClient</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="google.cloud.vision_v1p2beta1.ImageAnnotatorClient.from_service_account_json">
-<em class="property">classmethod </em><code class="descname">from_service_account_json</code><span class="sig-paren">(</span><em>filename</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.from_service_account_json" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">from_service_account_json</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.from_service_account_json" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates an instance of this client using the provided credentials
 file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the service account private key json
-file.</li>
-<li><strong>args</strong> – Additional arguments to pass to the constructor.</li>
-<li><strong>kwargs</strong> – Additional arguments to pass to the constructor.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the service account private key json
+file.</p></li>
+<li><p><strong>args</strong> – Additional arguments to pass to the constructor.</p></li>
+<li><p><strong>kwargs</strong> – Additional arguments to pass to the constructor.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The constructed client.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="../v1/api.html#google.cloud.vision_v1.ImageAnnotatorClient" title="google.cloud.vision_v1.ImageAnnotatorClient">ImageAnnotatorClient</a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The constructed client.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../v1/api.html#google.cloud.vision_v1.ImageAnnotatorClient" title="google.cloud.vision_v1.ImageAnnotatorClient">ImageAnnotatorClient</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1p2beta1.ImageAnnotatorClient.image_properties">
-<code class="descname">image_properties</code><span class="sig-paren">(</span><em>image</em>, <em>max_results=None</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.image_properties" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">image_properties</code><span class="sig-paren">(</span><em class="sig-param">image</em>, <em class="sig-param">max_results=None</em>, <em class="sig-param">retry=None</em>, <em class="sig-param">timeout=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.image_properties" title="Permalink to this definition">#</a></dt>
 <dd><p>Return image properties information.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.Image" title="google.cloud.vision_v1p2beta1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of results to return, does not apply for
-TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</li>
-<li><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of retries to do before giving up.</li>
-<li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of seconds before timing out.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Additional properties to be set on the
-<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageRequest" title="google.cloud.vision_v1p2beta1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.Image" title="google.cloud.vision_v1p2beta1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</p></li>
+<li><p><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of results to return, does not apply for
+TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</p></li>
+<li><p><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of retries to do before giving up.</p></li>
+<li><p><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of seconds before timing out.</p></li>
+<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Additional properties to be set on the
+<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageRequest" title="google.cloud.vision_v1p2beta1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The API response.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageResponse" title="google.cloud.vision_v1p2beta1.types.AnnotateImageResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageResponse</span></code></a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The API response.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageResponse" title="google.cloud.vision_v1p2beta1.types.AnnotateImageResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageResponse</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1p2beta1.ImageAnnotatorClient.label_detection">
-<code class="descname">label_detection</code><span class="sig-paren">(</span><em>image</em>, <em>max_results=None</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.label_detection" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">label_detection</code><span class="sig-paren">(</span><em class="sig-param">image</em>, <em class="sig-param">max_results=None</em>, <em class="sig-param">retry=None</em>, <em class="sig-param">timeout=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.label_detection" title="Permalink to this definition">#</a></dt>
 <dd><p>Perform label detection.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.Image" title="google.cloud.vision_v1p2beta1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of results to return, does not apply for
-TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</li>
-<li><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of retries to do before giving up.</li>
-<li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of seconds before timing out.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Additional properties to be set on the
-<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageRequest" title="google.cloud.vision_v1p2beta1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.Image" title="google.cloud.vision_v1p2beta1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</p></li>
+<li><p><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of results to return, does not apply for
+TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</p></li>
+<li><p><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of retries to do before giving up.</p></li>
+<li><p><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of seconds before timing out.</p></li>
+<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Additional properties to be set on the
+<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageRequest" title="google.cloud.vision_v1p2beta1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The API response.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageResponse" title="google.cloud.vision_v1p2beta1.types.AnnotateImageResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageResponse</span></code></a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The API response.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageResponse" title="google.cloud.vision_v1p2beta1.types.AnnotateImageResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageResponse</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1p2beta1.ImageAnnotatorClient.landmark_detection">
-<code class="descname">landmark_detection</code><span class="sig-paren">(</span><em>image</em>, <em>max_results=None</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.landmark_detection" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">landmark_detection</code><span class="sig-paren">(</span><em class="sig-param">image</em>, <em class="sig-param">max_results=None</em>, <em class="sig-param">retry=None</em>, <em class="sig-param">timeout=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.landmark_detection" title="Permalink to this definition">#</a></dt>
 <dd><p>Perform landmark detection.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.Image" title="google.cloud.vision_v1p2beta1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of results to return, does not apply for
-TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</li>
-<li><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of retries to do before giving up.</li>
-<li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of seconds before timing out.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Additional properties to be set on the
-<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageRequest" title="google.cloud.vision_v1p2beta1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.Image" title="google.cloud.vision_v1p2beta1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</p></li>
+<li><p><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of results to return, does not apply for
+TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</p></li>
+<li><p><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of retries to do before giving up.</p></li>
+<li><p><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of seconds before timing out.</p></li>
+<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Additional properties to be set on the
+<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageRequest" title="google.cloud.vision_v1p2beta1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The API response.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageResponse" title="google.cloud.vision_v1p2beta1.types.AnnotateImageResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageResponse</span></code></a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The API response.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageResponse" title="google.cloud.vision_v1p2beta1.types.AnnotateImageResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageResponse</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1p2beta1.ImageAnnotatorClient.logo_detection">
-<code class="descname">logo_detection</code><span class="sig-paren">(</span><em>image</em>, <em>max_results=None</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.logo_detection" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">logo_detection</code><span class="sig-paren">(</span><em class="sig-param">image</em>, <em class="sig-param">max_results=None</em>, <em class="sig-param">retry=None</em>, <em class="sig-param">timeout=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.logo_detection" title="Permalink to this definition">#</a></dt>
 <dd><p>Perform logo detection.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.Image" title="google.cloud.vision_v1p2beta1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of results to return, does not apply for
-TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</li>
-<li><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of retries to do before giving up.</li>
-<li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of seconds before timing out.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Additional properties to be set on the
-<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageRequest" title="google.cloud.vision_v1p2beta1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.Image" title="google.cloud.vision_v1p2beta1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</p></li>
+<li><p><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of results to return, does not apply for
+TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</p></li>
+<li><p><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of retries to do before giving up.</p></li>
+<li><p><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of seconds before timing out.</p></li>
+<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Additional properties to be set on the
+<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageRequest" title="google.cloud.vision_v1p2beta1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The API response.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageResponse" title="google.cloud.vision_v1p2beta1.types.AnnotateImageResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageResponse</span></code></a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The API response.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageResponse" title="google.cloud.vision_v1p2beta1.types.AnnotateImageResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageResponse</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1p2beta1.ImageAnnotatorClient.safe_search_detection">
-<code class="descname">safe_search_detection</code><span class="sig-paren">(</span><em>image</em>, <em>max_results=None</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.safe_search_detection" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">safe_search_detection</code><span class="sig-paren">(</span><em class="sig-param">image</em>, <em class="sig-param">max_results=None</em>, <em class="sig-param">retry=None</em>, <em class="sig-param">timeout=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.safe_search_detection" title="Permalink to this definition">#</a></dt>
 <dd><p>Perform safe search detection.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.Image" title="google.cloud.vision_v1p2beta1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of results to return, does not apply for
-TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</li>
-<li><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of retries to do before giving up.</li>
-<li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of seconds before timing out.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Additional properties to be set on the
-<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageRequest" title="google.cloud.vision_v1p2beta1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.Image" title="google.cloud.vision_v1p2beta1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</p></li>
+<li><p><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of results to return, does not apply for
+TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</p></li>
+<li><p><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of retries to do before giving up.</p></li>
+<li><p><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of seconds before timing out.</p></li>
+<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Additional properties to be set on the
+<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageRequest" title="google.cloud.vision_v1p2beta1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The API response.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageResponse" title="google.cloud.vision_v1p2beta1.types.AnnotateImageResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageResponse</span></code></a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The API response.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageResponse" title="google.cloud.vision_v1p2beta1.types.AnnotateImageResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageResponse</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1p2beta1.ImageAnnotatorClient.text_detection">
-<code class="descname">text_detection</code><span class="sig-paren">(</span><em>image</em>, <em>max_results=None</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.text_detection" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">text_detection</code><span class="sig-paren">(</span><em class="sig-param">image</em>, <em class="sig-param">max_results=None</em>, <em class="sig-param">retry=None</em>, <em class="sig-param">timeout=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.text_detection" title="Permalink to this definition">#</a></dt>
 <dd><p>Perform text detection.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.Image" title="google.cloud.vision_v1p2beta1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of results to return, does not apply for
-TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</li>
-<li><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of retries to do before giving up.</li>
-<li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of seconds before timing out.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Additional properties to be set on the
-<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageRequest" title="google.cloud.vision_v1p2beta1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.Image" title="google.cloud.vision_v1p2beta1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</p></li>
+<li><p><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of results to return, does not apply for
+TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</p></li>
+<li><p><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of retries to do before giving up.</p></li>
+<li><p><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of seconds before timing out.</p></li>
+<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Additional properties to be set on the
+<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageRequest" title="google.cloud.vision_v1p2beta1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The API response.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageResponse" title="google.cloud.vision_v1p2beta1.types.AnnotateImageResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageResponse</span></code></a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The API response.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageResponse" title="google.cloud.vision_v1p2beta1.types.AnnotateImageResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageResponse</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1p2beta1.ImageAnnotatorClient.web_detection">
-<code class="descname">web_detection</code><span class="sig-paren">(</span><em>image</em>, <em>max_results=None</em>, <em>retry=None</em>, <em>timeout=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.web_detection" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">web_detection</code><span class="sig-paren">(</span><em class="sig-param">image</em>, <em class="sig-param">max_results=None</em>, <em class="sig-param">retry=None</em>, <em class="sig-param">timeout=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1p2beta1.ImageAnnotatorClient.web_detection" title="Permalink to this definition">#</a></dt>
 <dd><p>Perform web detection.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.Image" title="google.cloud.vision_v1p2beta1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of results to return, does not apply for
-TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</li>
-<li><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of retries to do before giving up.</li>
-<li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of seconds before timing out.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Additional properties to be set on the
-<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageRequest" title="google.cloud.vision_v1p2beta1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.Image" title="google.cloud.vision_v1p2beta1.types.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>) – The image to analyze.</p></li>
+<li><p><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of results to return, does not apply for
+TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</p></li>
+<li><p><strong>retry</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of retries to do before giving up.</p></li>
+<li><p><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of seconds before timing out.</p></li>
+<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Additional properties to be set on the
+<a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageRequest" title="google.cloud.vision_v1p2beta1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a>.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The API response.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageResponse" title="google.cloud.vision_v1p2beta1.types.AnnotateImageResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageResponse</span></code></a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The API response.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="types.html#google.cloud.vision_v1p2beta1.types.AnnotateImageResponse" title="google.cloud.vision_v1p2beta1.types.AnnotateImageResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageResponse</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -672,13 +606,11 @@ TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</li>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -691,7 +623,7 @@ TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

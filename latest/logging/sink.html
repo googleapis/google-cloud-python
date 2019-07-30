@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Sinks &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Sinks &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -40,192 +38,169 @@
 <p>Define Stackdriver Logging API Sinks.</p>
 <dl class="class">
 <dt id="google.cloud.logging.sink.Sink">
-<em class="property">class </em><code class="descclassname">google.cloud.logging.sink.</code><code class="descname">Sink</code><span class="sig-paren">(</span><em>name</em>, <em>filter_=None</em>, <em>destination=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/sink.html#Sink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.sink.Sink" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.logging.sink.</code><code class="sig-name descname">Sink</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">filter_=None</em>, <em class="sig-param">destination=None</em>, <em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/sink.html#Sink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.sink.Sink" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Sinks represent filtered exports for log entries.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks">https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – the name of the sink</li>
-<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (optional) the advanced logs filter expression defining
-the entries exported by the sink.</li>
-<li><strong>destination</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – destination URI for the entries exported by the sink.
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – the name of the sink</p></li>
+<li><p><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (optional) the advanced logs filter expression defining
+the entries exported by the sink.</p></li>
+<li><p><strong>destination</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – destination URI for the entries exported by the sink.
 If not passed, the instance should already exist, to
-be refreshed via <a class="reference internal" href="#google.cloud.logging.sink.Sink.reload" title="google.cloud.logging.sink.Sink.reload"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reload()</span></code></a>.</li>
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.logging.client.Client</span></code></a>) – A client which holds credentials and project configuration
-for the sink (which requires a project).</li>
+be refreshed via <a class="reference internal" href="#google.cloud.logging.sink.Sink.reload" title="google.cloud.logging.sink.Sink.reload"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reload()</span></code></a>.</p></li>
+<li><p><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.logging.client.Client</span></code></a>) – A client which holds credentials and project configuration
+for the sink (which requires a project).</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
+</dd>
+</dl>
+<dl class="method">
 <dt id="google.cloud.logging.sink.Sink.client">
-<code class="descname">client</code><a class="headerlink" href="#google.cloud.logging.sink.Sink.client" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">client</code><a class="headerlink" href="#google.cloud.logging.sink.Sink.client" title="Permalink to this definition">#</a></dt>
 <dd><p>Client bound to the sink.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.logging.sink.Sink.create">
-<code class="descname">create</code><span class="sig-paren">(</span><em>client=None</em>, <em>unique_writer_identity=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/sink.html#Sink.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.sink.Sink.create" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param">client=None</em>, <em class="sig-param">unique_writer_identity=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/sink.html#Sink.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.sink.Sink.create" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  create the sink via a PUT request</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/create">https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/create</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
 <code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
-<code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the current sink.</li>
-<li><strong>unique_writer_identity</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – (Optional) determines the kind of
+<code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the current sink.</p></li>
+<li><p><strong>unique_writer_identity</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – (Optional) determines the kind of
 IAM identity returned as
-writer_identity in the new sink.</li>
+writer_identity in the new sink.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.logging.sink.Sink.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/sink.html#Sink.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.sink.Sink.delete" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">delete</code><span class="sig-paren">(</span><em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/sink.html#Sink.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.sink.Sink.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  delete a sink via a DELETE request</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/delete">https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/delete</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
 <code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
-<code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the current sink.</td>
-</tr>
-</tbody>
-</table>
+<code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the current sink.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.logging.sink.Sink.exists">
-<code class="descname">exists</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/sink.html#Sink.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.sink.Sink.exists" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">exists</code><span class="sig-paren">(</span><em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/sink.html#Sink.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.sink.Sink.exists" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  test for the existence of the sink via a GET request</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/get">https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/get</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
 <code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
-<code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the current sink.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Boolean indicating existence of the sink.</td>
-</tr>
-</tbody>
-</table>
+<code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the current sink.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Boolean indicating existence of the sink.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="google.cloud.logging.sink.Sink.from_api_repr">
-<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em>, <em>client</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/sink.html#Sink.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.sink.Sink.from_api_repr" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">from_api_repr</code><span class="sig-paren">(</span><em class="sig-param">resource</em>, <em class="sig-param">client</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/sink.html#Sink.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.sink.Sink.from_api_repr" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory:  construct a sink given its API representation</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – sink resource representation returned from the API</li>
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.logging.client.Client</span></code></a>) – Client which holds credentials and project
-configuration for the sink.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – sink resource representation returned from the API</p></li>
+<li><p><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.logging.client.Client</span></code></a>) – Client which holds credentials and project
+configuration for the sink.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#google.cloud.logging.sink.Sink" title="google.cloud.logging.sink.Sink"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.logging.sink.Sink</span></code></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Sink parsed from <code class="docutils literal notranslate"><span class="pre">resource</span></code>.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></a> if <code class="docutils literal notranslate"><span class="pre">client</span></code> is not <code class="docutils literal notranslate"><span class="pre">None</span></code> and the
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#google.cloud.logging.sink.Sink" title="google.cloud.logging.sink.Sink"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.logging.sink.Sink</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Sink parsed from <code class="docutils literal notranslate"><span class="pre">resource</span></code>.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></a> if <code class="docutils literal notranslate"><span class="pre">client</span></code> is not <code class="docutils literal notranslate"><span class="pre">None</span></code> and the
 project from the resource does not agree with the project
 from the client.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.logging.sink.Sink.full_name">
-<code class="descname">full_name</code><a class="headerlink" href="#google.cloud.logging.sink.Sink.full_name" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">full_name</code><a class="headerlink" href="#google.cloud.logging.sink.Sink.full_name" title="Permalink to this definition">#</a></dt>
 <dd><p>Fully-qualified name used in sink APIs</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.logging.sink.Sink.path">
-<code class="descname">path</code><a class="headerlink" href="#google.cloud.logging.sink.Sink.path" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">path</code><a class="headerlink" href="#google.cloud.logging.sink.Sink.path" title="Permalink to this definition">#</a></dt>
 <dd><p>URL path for the sink’s APIs</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.logging.sink.Sink.project">
-<code class="descname">project</code><a class="headerlink" href="#google.cloud.logging.sink.Sink.project" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">project</code><a class="headerlink" href="#google.cloud.logging.sink.Sink.project" title="Permalink to this definition">#</a></dt>
 <dd><p>Project bound to the sink.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.logging.sink.Sink.reload">
-<code class="descname">reload</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/sink.html#Sink.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.sink.Sink.reload" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">reload</code><span class="sig-paren">(</span><em class="sig-param">client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/sink.html#Sink.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.sink.Sink.reload" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  sync local sink configuration via a GET request</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/get">https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/get</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
 <code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
-<code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the current sink.</td>
-</tr>
-</tbody>
-</table>
+<code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the current sink.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.logging.sink.Sink.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>client=None</em>, <em>unique_writer_identity=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/sink.html#Sink.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.sink.Sink.update" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">client=None</em>, <em class="sig-param">unique_writer_identity=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/sink.html#Sink.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.sink.Sink.update" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  update sink configuration via a PUT request</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/update">https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/update</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> or
 <code class="docutils literal notranslate"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
-<code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the current sink.</li>
-<li><strong>unique_writer_identity</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – (Optional) determines the kind of
+<code class="docutils literal notranslate"><span class="pre">client</span></code> stored on the current sink.</p></li>
+<li><p><strong>unique_writer_identity</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – (Optional) determines the kind of
 IAM identity returned as
-writer_identity in the new sink.</li>
+writer_identity in the new sink.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.logging.sink.Sink.writer_identity">
-<code class="descname">writer_identity</code><a class="headerlink" href="#google.cloud.logging.sink.Sink.writer_identity" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">writer_identity</code><a class="headerlink" href="#google.cloud.logging.sink.Sink.writer_identity" title="Permalink to this definition">#</a></dt>
 <dd><p>Identity used for exports via the sink</p>
 </dd></dl>
 
@@ -319,13 +294,11 @@ writer_identity in the new sink.</li>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -338,7 +311,7 @@ writer_identity in the new sink.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Text-to-Speech API Client &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Types for Cloud Text-to-Speech API Client &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -39,17 +37,17 @@
 <span id="types-for-cloud-text-to-speech-api-client"></span><h1>Types for Cloud Text-to-Speech API Client<a class="headerlink" href="#module-google.cloud.texttospeech_v1beta1.types" title="Permalink to this headline">#</a></h1>
 <dl class="class">
 <dt id="google.cloud.texttospeech_v1beta1.types.AudioConfig">
-<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">AudioConfig</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.AudioConfig" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="sig-name descname">AudioConfig</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.AudioConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Description of audio data to be synthesized.</p>
 <dl class="attribute">
 <dt id="google.cloud.texttospeech_v1beta1.types.AudioConfig.audio_encoding">
-<code class="descname">audio_encoding</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.AudioConfig.audio_encoding" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">audio_encoding</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.AudioConfig.audio_encoding" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The format of the requested audio byte stream.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.texttospeech_v1beta1.types.AudioConfig.speaking_rate">
-<code class="descname">speaking_rate</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.AudioConfig.speaking_rate" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">speaking_rate</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.AudioConfig.speaking_rate" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional speaking rate/speed, in the range [0.25, 4.0]. 1.0 is
 the normal native speed supported by the specific voice. 2.0
 is twice as fast, and 0.5 is half as fast. If unset(0.0),
@@ -59,7 +57,7 @@ defaults to the native 1.0 speed. Any other values &lt; 0.25 or &gt;
 
 <dl class="attribute">
 <dt id="google.cloud.texttospeech_v1beta1.types.AudioConfig.pitch">
-<code class="descname">pitch</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.AudioConfig.pitch" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">pitch</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.AudioConfig.pitch" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional speaking pitch, in the range [-20.0, 20.0]. 20 means
 increase 20 semitones from the original pitch. -20 means
 decrease 20 semitones from the original pitch.</p>
@@ -67,7 +65,7 @@ decrease 20 semitones from the original pitch.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.texttospeech_v1beta1.types.AudioConfig.volume_gain_db">
-<code class="descname">volume_gain_db</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.AudioConfig.volume_gain_db" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">volume_gain_db</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.AudioConfig.volume_gain_db" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional volume gain (in dB) of the normal native volume
 supported by the specific voice, in the range [-96.0, 16.0].
 If unset, or set to a value of 0.0 (dB), will play at normal
@@ -82,7 +80,7 @@ that.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.texttospeech_v1beta1.types.AudioConfig.sample_rate_hertz">
-<code class="descname">sample_rate_hertz</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.AudioConfig.sample_rate_hertz" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">sample_rate_hertz</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.AudioConfig.sample_rate_hertz" title="Permalink to this definition">#</a></dt>
 <dd><p>The synthesis sample rate (in hertz) for this audio. Optional.
 If this is different from the voice’s natural sample rate,
 then the synthesizer will honor this request by converting to
@@ -94,7 +92,7 @@ request and return [google.rpc.Code.INVALID_ARGUMENT][].</p>
 
 <dl class="attribute">
 <dt id="google.cloud.texttospeech_v1beta1.types.AudioConfig.effects_profile_id">
-<code class="descname">effects_profile_id</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.AudioConfig.effects_profile_id" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">effects_profile_id</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.AudioConfig.effects_profile_id" title="Permalink to this definition">#</a></dt>
 <dd><p>An identifier which selects ‘audio effects’ profiles that are
 applied on (post synthesized) text to speech. Effects are
 applied on top of each other in the order they are given.</p>
@@ -102,37 +100,37 @@ applied on top of each other in the order they are given.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">audio_encoding</code></dt>
+<code class="sig-name descname">audio_encoding</code></dt>
 <dd><p>Field google.cloud.texttospeech.v1beta1.AudioConfig.audio_encoding</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">effects_profile_id</code></dt>
+<code class="sig-name descname">effects_profile_id</code></dt>
 <dd><p>Field google.cloud.texttospeech.v1beta1.AudioConfig.effects_profile_id</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">pitch</code></dt>
+<code class="sig-name descname">pitch</code></dt>
 <dd><p>Field google.cloud.texttospeech.v1beta1.AudioConfig.pitch</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">sample_rate_hertz</code></dt>
+<code class="sig-name descname">sample_rate_hertz</code></dt>
 <dd><p>Field google.cloud.texttospeech.v1beta1.AudioConfig.sample_rate_hertz</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">speaking_rate</code></dt>
+<code class="sig-name descname">speaking_rate</code></dt>
 <dd><p>Field google.cloud.texttospeech.v1beta1.AudioConfig.speaking_rate</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">volume_gain_db</code></dt>
+<code class="sig-name descname">volume_gain_db</code></dt>
 <dd><p>Field google.cloud.texttospeech.v1beta1.AudioConfig.volume_gain_db</p>
 </dd></dl>
 
@@ -140,11 +138,11 @@ applied on top of each other in the order they are given.</p>
 
 <dl class="class">
 <dt id="google.cloud.texttospeech_v1beta1.types.ListVoicesRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">ListVoicesRequest</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.ListVoicesRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="sig-name descname">ListVoicesRequest</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.ListVoicesRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>The top-level message sent by the client for the <code class="docutils literal notranslate"><span class="pre">ListVoices</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.texttospeech_v1beta1.types.ListVoicesRequest.language_code">
-<code class="descname">language_code</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.ListVoicesRequest.language_code" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">language_code</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.ListVoicesRequest.language_code" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional (but recommended) <a class="reference external" href="https://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP-47</a> language tag. If specified,
 the ListVoices call will only return voices that can be used
 to synthesize this language_code. E.g. when specifying “en-
@@ -157,7 +155,7 @@ supported “yue-*” voices.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">language_code</code></dt>
+<code class="sig-name descname">language_code</code></dt>
 <dd><p>Field google.cloud.texttospeech.v1beta1.ListVoicesRequest.language_code</p>
 </dd></dl>
 
@@ -165,17 +163,17 @@ supported “yue-*” voices.</p>
 
 <dl class="class">
 <dt id="google.cloud.texttospeech_v1beta1.types.ListVoicesResponse">
-<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">ListVoicesResponse</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.ListVoicesResponse" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="sig-name descname">ListVoicesResponse</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.ListVoicesResponse" title="Permalink to this definition">#</a></dt>
 <dd><p>The message returned to the client by the <code class="docutils literal notranslate"><span class="pre">ListVoices</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.texttospeech_v1beta1.types.ListVoicesResponse.voices">
-<code class="descname">voices</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.ListVoicesResponse.voices" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">voices</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.ListVoicesResponse.voices" title="Permalink to this definition">#</a></dt>
 <dd><p>The list of voices.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">voices</code></dt>
+<code class="sig-name descname">voices</code></dt>
 <dd><p>Field google.cloud.texttospeech.v1beta1.ListVoicesResponse.voices</p>
 </dd></dl>
 
@@ -183,26 +181,26 @@ supported “yue-*” voices.</p>
 
 <dl class="class">
 <dt id="google.cloud.texttospeech_v1beta1.types.SynthesisInput">
-<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">SynthesisInput</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesisInput" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="sig-name descname">SynthesisInput</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesisInput" title="Permalink to this definition">#</a></dt>
 <dd><p>Contains text input to be synthesized. Either <code class="docutils literal notranslate"><span class="pre">text</span></code> or <code class="docutils literal notranslate"><span class="pre">ssml</span></code> must
 be supplied. Supplying both or neither returns
 [google.rpc.Code.INVALID_ARGUMENT][]. The input size is limited to 5000
 characters.</p>
 <dl class="attribute">
 <dt id="google.cloud.texttospeech_v1beta1.types.SynthesisInput.input_source">
-<code class="descname">input_source</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesisInput.input_source" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">input_source</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesisInput.input_source" title="Permalink to this definition">#</a></dt>
 <dd><p>The input source, which is either plain text or SSML.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.texttospeech_v1beta1.types.SynthesisInput.text">
-<code class="descname">text</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesisInput.text" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">text</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesisInput.text" title="Permalink to this definition">#</a></dt>
 <dd><p>The raw text to be synthesized.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.texttospeech_v1beta1.types.SynthesisInput.ssml">
-<code class="descname">ssml</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesisInput.ssml" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">ssml</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesisInput.ssml" title="Permalink to this definition">#</a></dt>
 <dd><p>The SSML document to be synthesized. The SSML document must be
 valid and well-formed. Otherwise the RPC will fail and return
 [google.rpc.Code.INVALID_ARGUMENT][]. For more information,
@@ -211,13 +209,13 @@ see <a class="reference external" href="/speech/text-to-speech/docs/ssml">SSML</
 
 <dl class="attribute">
 <dt>
-<code class="descname">ssml</code></dt>
+<code class="sig-name descname">ssml</code></dt>
 <dd><p>Field google.cloud.texttospeech.v1beta1.SynthesisInput.ssml</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">text</code></dt>
+<code class="sig-name descname">text</code></dt>
 <dd><p>Field google.cloud.texttospeech.v1beta1.SynthesisInput.text</p>
 </dd></dl>
 
@@ -225,43 +223,43 @@ see <a class="reference external" href="/speech/text-to-speech/docs/ssml">SSML</
 
 <dl class="class">
 <dt id="google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">SynthesizeSpeechRequest</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="sig-name descname">SynthesizeSpeechRequest</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>The top-level message sent by the client for the <code class="docutils literal notranslate"><span class="pre">SynthesizeSpeech</span></code>
 method.</p>
 <dl class="attribute">
 <dt id="google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest.input">
-<code class="descname">input</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest.input" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">input</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest.input" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The Synthesizer requires either plain text or SSML
 as input.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest.voice">
-<code class="descname">voice</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest.voice" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">voice</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest.voice" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The desired voice of the synthesized audio.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest.audio_config">
-<code class="descname">audio_config</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest.audio_config" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">audio_config</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest.audio_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The configuration of the synthesized audio.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">audio_config</code></dt>
+<code class="sig-name descname">audio_config</code></dt>
 <dd><p>Field google.cloud.texttospeech.v1beta1.SynthesizeSpeechRequest.audio_config</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">input</code></dt>
+<code class="sig-name descname">input</code></dt>
 <dd><p>Field google.cloud.texttospeech.v1beta1.SynthesizeSpeechRequest.input</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">voice</code></dt>
+<code class="sig-name descname">voice</code></dt>
 <dd><p>Field google.cloud.texttospeech.v1beta1.SynthesizeSpeechRequest.voice</p>
 </dd></dl>
 
@@ -269,11 +267,11 @@ as input.</p>
 
 <dl class="class">
 <dt id="google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechResponse">
-<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">SynthesizeSpeechResponse</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechResponse" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="sig-name descname">SynthesizeSpeechResponse</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechResponse" title="Permalink to this definition">#</a></dt>
 <dd><p>The message returned to the client by the <code class="docutils literal notranslate"><span class="pre">SynthesizeSpeech</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechResponse.audio_content">
-<code class="descname">audio_content</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechResponse.audio_content" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">audio_content</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechResponse.audio_content" title="Permalink to this definition">#</a></dt>
 <dd><p>The audio data bytes encoded as specified in the request,
 including the header (For LINEAR16 audio, we include the WAV
 header). Note: as with all bytes fields, protobuffers use a
@@ -283,7 +281,7 @@ base64.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">audio_content</code></dt>
+<code class="sig-name descname">audio_content</code></dt>
 <dd><p>Field google.cloud.texttospeech.v1beta1.SynthesizeSpeechResponse.audio_content</p>
 </dd></dl>
 
@@ -291,54 +289,54 @@ base64.</p>
 
 <dl class="class">
 <dt id="google.cloud.texttospeech_v1beta1.types.Voice">
-<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">Voice</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.Voice" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="sig-name descname">Voice</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.Voice" title="Permalink to this definition">#</a></dt>
 <dd><p>Description of a voice supported by the TTS service.</p>
 <dl class="attribute">
 <dt id="google.cloud.texttospeech_v1beta1.types.Voice.language_codes">
-<code class="descname">language_codes</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.Voice.language_codes" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">language_codes</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.Voice.language_codes" title="Permalink to this definition">#</a></dt>
 <dd><p>The languages that this voice supports, expressed as <a class="reference external" href="https://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP-47</a> language
 tags (e.g. “en-US”, “es-419”, “cmn-tw”).</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.texttospeech_v1beta1.types.Voice.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.Voice.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.Voice.name" title="Permalink to this definition">#</a></dt>
 <dd><p>The name of this voice. Each distinct voice has a unique name.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.texttospeech_v1beta1.types.Voice.ssml_gender">
-<code class="descname">ssml_gender</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.Voice.ssml_gender" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">ssml_gender</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.Voice.ssml_gender" title="Permalink to this definition">#</a></dt>
 <dd><p>The gender of this voice.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.texttospeech_v1beta1.types.Voice.natural_sample_rate_hertz">
-<code class="descname">natural_sample_rate_hertz</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.Voice.natural_sample_rate_hertz" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">natural_sample_rate_hertz</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.Voice.natural_sample_rate_hertz" title="Permalink to this definition">#</a></dt>
 <dd><p>The natural sample rate (in hertz) for this voice.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">language_codes</code></dt>
+<code class="sig-name descname">language_codes</code></dt>
 <dd><p>Field google.cloud.texttospeech.v1beta1.Voice.language_codes</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">name</code></dt>
+<code class="sig-name descname">name</code></dt>
 <dd><p>Field google.cloud.texttospeech.v1beta1.Voice.name</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">natural_sample_rate_hertz</code></dt>
+<code class="sig-name descname">natural_sample_rate_hertz</code></dt>
 <dd><p>Field google.cloud.texttospeech.v1beta1.Voice.natural_sample_rate_hertz</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">ssml_gender</code></dt>
+<code class="sig-name descname">ssml_gender</code></dt>
 <dd><p>Field google.cloud.texttospeech.v1beta1.Voice.ssml_gender</p>
 </dd></dl>
 
@@ -346,11 +344,11 @@ tags (e.g. “en-US”, “es-419”, “cmn-tw”).</p>
 
 <dl class="class">
 <dt id="google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams">
-<em class="property">class </em><code class="descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="descname">VoiceSelectionParams</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.texttospeech_v1beta1.types.</code><code class="sig-name descname">VoiceSelectionParams</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams" title="Permalink to this definition">#</a></dt>
 <dd><p>Description of which voice to use for a synthesis request.</p>
 <dl class="attribute">
 <dt id="google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams.language_code">
-<code class="descname">language_code</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams.language_code" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">language_code</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams.language_code" title="Permalink to this definition">#</a></dt>
 <dd><p>The language (and optionally also the region) of the voice
 expressed as a <a class="reference external" href="https://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP-47</a> language tag, e.g. “en-US”.
 Required. This should not include a script tag (e.g. use “cmn-
@@ -367,7 +365,7 @@ available), or even a different language, e.g. using “nb”
 
 <dl class="attribute">
 <dt id="google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams.name" title="Permalink to this definition">#</a></dt>
 <dd><p>The name of the voice. Optional; if not set, the service will
 choose a voice based on the other parameters such as
 language_code and gender.</p>
@@ -375,7 +373,7 @@ language_code and gender.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams.ssml_gender">
-<code class="descname">ssml_gender</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams.ssml_gender" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">ssml_gender</code><a class="headerlink" href="#google.cloud.texttospeech_v1beta1.types.VoiceSelectionParams.ssml_gender" title="Permalink to this definition">#</a></dt>
 <dd><p>The preferred gender of the voice. Optional; if not set, the
 service will choose a voice based on the other parameters such
 as language_code and name. Note that this is only a
@@ -386,19 +384,19 @@ voice with a different gender rather than failing the request.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">language_code</code></dt>
+<code class="sig-name descname">language_code</code></dt>
 <dd><p>Field google.cloud.texttospeech.v1beta1.VoiceSelectionParams.language_code</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">name</code></dt>
+<code class="sig-name descname">name</code></dt>
 <dd><p>Field google.cloud.texttospeech.v1beta1.VoiceSelectionParams.name</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">ssml_gender</code></dt>
+<code class="sig-name descname">ssml_gender</code></dt>
 <dd><p>Field google.cloud.texttospeech.v1beta1.VoiceSelectionParams.ssml_gender</p>
 </dd></dl>
 
@@ -494,13 +492,11 @@ voice with a different gender rather than failing the request.</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -513,7 +509,7 @@ voice with a different gender rather than failing the request.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

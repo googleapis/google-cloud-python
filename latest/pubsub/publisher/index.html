@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Publishing Messages &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Publishing Messages &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -63,12 +61,12 @@ attributes of the message.</p>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>The message data in Pub/Sub is an opaque blob of bytes, and as such, you
 <em>must</em> send a <code class="docutils literal notranslate"><span class="pre">bytes</span></code> object in Python 3 (<code class="docutils literal notranslate"><span class="pre">str</span></code> object in Python 2).
 If you send a text string (<code class="docutils literal notranslate"><span class="pre">str</span></code> in Python 3, <code class="docutils literal notranslate"><span class="pre">unicode</span></code> in Python 2),
 the method will raise <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code></a>.</p>
-<p class="last">The reason it works this way is because there is no reasonable guarantee
+<p>The reason it works this way is because there is no reasonable guarantee
 that the same language or environment is being used by the subscriber,
 and so it is the responsibility of the publisher to properly encode
 the payload.</p>
@@ -85,8 +83,8 @@ the payload.</p>
 messages over a small time window to avoid making too many separate requests to
 the service.  This helps increase throughput.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">By default, this uses <code class="docutils literal notranslate"><span class="pre">threading</span></code>, and you will need to be in an
+<p class="admonition-title">Note</p>
+<p>By default, this uses <code class="docutils literal notranslate"><span class="pre">threading</span></code>, and you will need to be in an
 environment with threading enabled. It is possible to provide an
 alternative batch class that uses another concurrency strategy.</p>
 </div>
@@ -114,8 +112,8 @@ batch can not exceed 10 megabytes.</p>
 <p>Every call to <a class="reference internal" href="api/client.html#google.cloud.pubsub_v1.publisher.client.Client.publish" title="google.cloud.pubsub_v1.publisher.client.Client.publish"><code class="xref py py-meth docutils literal notranslate"><span class="pre">publish()</span></code></a> returns
 an instance of <a class="reference internal" href="api/futures.html#google.cloud.pubsub_v1.publisher.futures.Future" title="google.cloud.pubsub_v1.publisher.futures.Future"><code class="xref py py-class docutils literal notranslate"><span class="pre">Future</span></code></a>.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The returned future conforms for the most part to the interface of
+<p class="admonition-title">Note</p>
+<p>The returned future conforms for the most part to the interface of
 the standard library’s <a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Future" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Future</span></code></a>, but might not
 be usable in all cases which expect that exact implementaton.</p>
 </div>
@@ -237,13 +235,11 @@ be usable in all cases which expect that exact implementaton.</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -256,7 +252,7 @@ be usable in all cases which expect that exact implementaton.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

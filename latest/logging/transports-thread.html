@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Python Logging Handler Threaded Transport &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Python Logging Handler Threaded Transport &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -41,58 +39,50 @@
 <p>Uses a background worker to log to Stackdriver Logging asynchronously.</p>
 <dl class="class">
 <dt id="google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport">
-<em class="property">class </em><code class="descclassname">google.cloud.logging.handlers.transports.background_thread.</code><code class="descname">BackgroundThreadTransport</code><span class="sig-paren">(</span><em>client</em>, <em>name</em>, <em>grace_period=5.0</em>, <em>batch_size=10</em>, <em>max_latency=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/handlers/transports/background_thread.html#BackgroundThreadTransport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.logging.handlers.transports.background_thread.</code><code class="sig-name descname">BackgroundThreadTransport</code><span class="sig-paren">(</span><em class="sig-param">client</em>, <em class="sig-param">name</em>, <em class="sig-param">grace_period=5.0</em>, <em class="sig-param">batch_size=10</em>, <em class="sig-param">max_latency=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/handlers/transports/background_thread.html#BackgroundThreadTransport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="transports-base.html#google.cloud.logging.handlers.transports.base.Transport" title="google.cloud.logging.handlers.transports.base.Transport"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.logging.handlers.transports.base.Transport</span></code></a></p>
 <p>Asynchronous transport that uses a background thread.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a>) – The Logging client.</li>
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – the name of the logger.</li>
-<li><strong>grace_period</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The amount of time to wait for pending logs to
-be submitted when the process is shutting down.</li>
-<li><strong>batch_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of items to send at a time in the
-background thread.</li>
-<li><strong>max_latency</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The amount of time to wait for new logs before
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a>) – The Logging client.</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – the name of the logger.</p></li>
+<li><p><strong>grace_period</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The amount of time to wait for pending logs to
+be submitted when the process is shutting down.</p></li>
+<li><p><strong>batch_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of items to send at a time in the
+background thread.</p></li>
+<li><p><strong>max_latency</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The amount of time to wait for new logs before
 sending a new batch. It is strongly recommended to keep this smaller
 than the grace_period. This means this is effectively the longest
 amount of time the background thread will hold onto log entries
-before sending them to the server.</li>
+before sending them to the server.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport.flush">
-<code class="descname">flush</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/handlers/transports/background_thread.html#BackgroundThreadTransport.flush"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport.flush" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">flush</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/handlers/transports/background_thread.html#BackgroundThreadTransport.flush"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport.flush" title="Permalink to this definition">#</a></dt>
 <dd><p>Submit any pending log records.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport.send">
-<code class="descname">send</code><span class="sig-paren">(</span><em>record</em>, <em>message</em>, <em>resource=None</em>, <em>labels=None</em>, <em>trace=None</em>, <em>span_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/handlers/transports/background_thread.html#BackgroundThreadTransport.send"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport.send" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">send</code><span class="sig-paren">(</span><em class="sig-param">record</em>, <em class="sig-param">message</em>, <em class="sig-param">resource=None</em>, <em class="sig-param">labels=None</em>, <em class="sig-param">trace=None</em>, <em class="sig-param">span_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/handlers/transports/background_thread.html#BackgroundThreadTransport.send"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport.send" title="Permalink to this definition">#</a></dt>
 <dd><p>Overrides Transport.send().</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>record</strong> (<a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.LogRecord" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">logging.LogRecord</span></code></a>) – Python log record that the handler was called with.</li>
-<li><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The message from the <code class="docutils literal notranslate"><span class="pre">LogRecord</span></code> after being
-formatted by the associated log formatters.</li>
-<li><strong>resource</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code>) – (Optional) Monitored resource of the entry.</li>
-<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – (Optional) Mapping of labels for the entry.</li>
-<li><strong>trace</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (optional) traceid to apply to the logging entry.</li>
-<li><strong>span_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (optional) span_id within the trace for the log entry.
-Specify the trace parameter if span_id is set.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>record</strong> (<a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.LogRecord" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">logging.LogRecord</span></code></a>) – Python log record that the handler was called with.</p></li>
+<li><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The message from the <code class="docutils literal notranslate"><span class="pre">LogRecord</span></code> after being
+formatted by the associated log formatters.</p></li>
+<li><p><strong>resource</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code>) – (Optional) Monitored resource of the entry.</p></li>
+<li><p><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – (Optional) Mapping of labels for the entry.</p></li>
+<li><p><strong>trace</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (optional) traceid to apply to the logging entry.</p></li>
+<li><p><strong>span_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (optional) span_id within the trace for the log entry.
+Specify the trace parameter if span_id is set.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -185,13 +175,11 @@ Specify the trace parameter if span_id is set.</li>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -204,7 +192,7 @@ Specify the trace parameter if span_id is set.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

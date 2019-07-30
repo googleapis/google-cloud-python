@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Changelog &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Changelog &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -44,13 +42,13 @@
 <div class="section" id="implementation-changes">
 <h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>PubSub: Deprecate several FlowControl settings and things in Message class (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8796">#8796</a>)</li>
+<li><p>PubSub: Deprecate several FlowControl settings and things in Message class (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8796">#8796</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="documentation">
 <h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Pub/Sub: document regional endpoint (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8789">#8789</a>)</li>
+<li><p>Pub/Sub: document regional endpoint (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8789">#8789</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -60,41 +58,41 @@
 <div class="section" id="id3">
 <h3>Implementation Changes<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Accomodate new location of ‘IAMPolicyStub’ (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8680">#8680</a>)</li>
-<li>Use kwargs in test_subscriber_client (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8414">#8414</a>)</li>
+<li><p>Accomodate new location of ‘IAMPolicyStub’ (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8680">#8680</a>)</p></li>
+<li><p>Use kwargs in test_subscriber_client (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8414">#8414</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="new-features">
 <h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add ‘options_’ argument to clients’ ‘get_iam_policy’; pin black version (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8657">#8657</a>)</li>
-<li>Add ‘client_options’ support, update list method docstrings (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8518">#8518</a>)</li>
+<li><p>Add ‘options_’ argument to clients’ ‘get_iam_policy’; pin black version (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8657">#8657</a>)</p></li>
+<li><p>Add ‘client_options’ support, update list method docstrings (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8518">#8518</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="dependencies">
 <h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Bump minimum version for google-api-core to 1.14.0. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8709">#8709</a>)</li>
-<li>Update pin for ‘grpc-google-iam-v1’ to 0.12.3+. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8647">#8647</a>)</li>
+<li><p>Bump minimum version for google-api-core to 1.14.0. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8709">#8709</a>)</p></li>
+<li><p>Update pin for ‘grpc-google-iam-v1’ to 0.12.3+. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8647">#8647</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id4">
 <h3>Documentation<a class="headerlink" href="#id4" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Link to googleapis.dev documentation in READMEs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8705">#8705</a>)</li>
-<li>Add compatibility check badges to READMEs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8288">#8288</a>)</li>
-<li>Fix typo in publisher index. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8619">#8619</a>)</li>
-<li>Document how to choose the PubSub auth method (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8429">#8429</a>)</li>
-<li>Document different PuSub received message types (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8468">#8468</a>)</li>
-<li>PubSub: Document batch settings, make synth operations idempotent (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8448">#8448</a>)</li>
-<li>Add custom docstrings for FlowControl enum and values (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8426">#8426</a>)</li>
+<li><p>Link to googleapis.dev documentation in READMEs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8705">#8705</a>)</p></li>
+<li><p>Add compatibility check badges to READMEs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8288">#8288</a>)</p></li>
+<li><p>Fix typo in publisher index. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8619">#8619</a>)</p></li>
+<li><p>Document how to choose the PubSub auth method (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8429">#8429</a>)</p></li>
+<li><p>Document different PuSub received message types (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8468">#8468</a>)</p></li>
+<li><p>PubSub: Document batch settings, make synth operations idempotent (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8448">#8448</a>)</p></li>
+<li><p>Add custom docstrings for FlowControl enum and values (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8426">#8426</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="internal-testing-changes">
 <h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add docs job to publish to googleapis.dev. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8464">#8464</a>)</li>
-<li>Add system tests for PubSub clients (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8277">#8277</a>)</li>
+<li><p>Add docs job to publish to googleapis.dev. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8464">#8464</a>)</p></li>
+<li><p>Add system tests for PubSub clients (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8277">#8277</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -104,8 +102,8 @@
 <div class="section" id="id6">
 <h3>Implementation Changes<a class="headerlink" href="#id6" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Increase the minimum allowed version for api core. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8419">#8419</a>)</li>
-<li>Allow kwargs to be passed to create_channel. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8399">#8399</a>)</li>
+<li><p>Increase the minimum allowed version for api core. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8419">#8419</a>)</p></li>
+<li><p>Allow kwargs to be passed to create_channel. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8399">#8399</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -115,30 +113,30 @@
 <div class="section" id="id8">
 <h3>Implementation Changes<a class="headerlink" href="#id8" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Core: Mitigate busy reopen loop in ResumableBidiRpc consuming 100% CPU (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8193">#8193</a>)</li>
-<li>Pub/Sub: Increase initial_rpc_timeout for messaging (via synth). (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8219">#8219</a>)</li>
-<li>PubSub: Release the state lock before calling the publish api (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8234">#8234</a>)</li>
-<li>Pub/Sub: Expose publish retry settings (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8231">#8231</a>)</li>
-<li>Prevent unhandled background error on SPM shutdown (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8111">#8111</a>)</li>
-<li>Update timeouts, blacken noxfile.py, setup.py (via synth). (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8128">#8128</a>)</li>
-<li>PubSub: Fix streaming pull incorrectly handling FlowControl max_messages setting (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7948">#7948</a>)</li>
+<li><p>Core: Mitigate busy reopen loop in ResumableBidiRpc consuming 100% CPU (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8193">#8193</a>)</p></li>
+<li><p>Pub/Sub: Increase initial_rpc_timeout for messaging (via synth). (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8219">#8219</a>)</p></li>
+<li><p>PubSub: Release the state lock before calling the publish api (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8234">#8234</a>)</p></li>
+<li><p>Pub/Sub: Expose publish retry settings (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8231">#8231</a>)</p></li>
+<li><p>Prevent unhandled background error on SPM shutdown (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8111">#8111</a>)</p></li>
+<li><p>Update timeouts, blacken noxfile.py, setup.py (via synth). (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8128">#8128</a>)</p></li>
+<li><p>PubSub: Fix streaming pull incorrectly handling FlowControl max_messages setting (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7948">#7948</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id9">
 <h3>Documentation<a class="headerlink" href="#id9" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Document PubSub FlowControl settings (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8293">#8293</a>)</li>
-<li>Replace readthedocs links with links to github docs. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8291">#8291</a>)</li>
-<li>Pub/Sub: surface publish future in documentation (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8229">#8229</a>)</li>
-<li>Pubsub: Separate subscriber and publish future documentation. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8205">#8205</a>)</li>
-<li>Drop mention of long-removed ‘policy’ object. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8081">#8081</a>)</li>
+<li><p>Document PubSub FlowControl settings (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8293">#8293</a>)</p></li>
+<li><p>Replace readthedocs links with links to github docs. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8291">#8291</a>)</p></li>
+<li><p>Pub/Sub: surface publish future in documentation (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8229">#8229</a>)</p></li>
+<li><p>Pubsub: Separate subscriber and publish future documentation. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8205">#8205</a>)</p></li>
+<li><p>Drop mention of long-removed ‘policy’ object. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8081">#8081</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id10">
 <h3>Internal / Testing Changes<a class="headerlink" href="#id10" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Pub/Sub: staticmethod check (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8091">#8091</a>)</li>
-<li>Add empty lines (via synth). (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8067">#8067</a>)</li>
+<li><p>Pub/Sub: staticmethod check (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8091">#8091</a>)</p></li>
+<li><p>Add empty lines (via synth). (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8067">#8067</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -148,25 +146,25 @@
 <div class="section" id="id12">
 <h3>New Features<a class="headerlink" href="#id12" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add <code class="docutils literal notranslate"><span class="pre">kms_key_name</span></code> arg to <code class="docutils literal notranslate"><span class="pre">create_topic</span></code>; remove BETA warnings (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7936">#7936</a>)</li>
-<li>Add message ordering (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7551">#7551</a>)</li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">kms_key_name</span></code> arg to <code class="docutils literal notranslate"><span class="pre">create_topic</span></code>; remove BETA warnings (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7936">#7936</a>)</p></li>
+<li><p>Add message ordering (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7551">#7551</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id13">
 <h3>Implementation Changes<a class="headerlink" href="#id13" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Propagate subscribe callback errors to main thread (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7954">#7954</a>)</li>
-<li>Fix pubsub Streaming Pull shutdown on RetryError (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7863">#7863</a>)</li>
-<li>Make PubSub subscriber Scheduler inherit from ABC (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7690">#7690</a>)</li>
-<li>Add routing header to method metadata (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7623">#7623</a>)</li>
+<li><p>Propagate subscribe callback errors to main thread (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7954">#7954</a>)</p></li>
+<li><p>Fix pubsub Streaming Pull shutdown on RetryError (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7863">#7863</a>)</p></li>
+<li><p>Make PubSub subscriber Scheduler inherit from ABC (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7690">#7690</a>)</p></li>
+<li><p>Add routing header to method metadata (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7623">#7623</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id14">
 <h3>Internal / Testing Changes<a class="headerlink" href="#id14" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Remove classifier for Python 3.4 for end-of-life. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7535">#7535</a>)</li>
-<li>Add nox session <code class="docutils literal notranslate"><span class="pre">docs</span></code> (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7778">#7778</a>)</li>
-<li>Pub/Sub (nit): wrong var name in sample (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7705">#7705</a>)</li>
+<li><p>Remove classifier for Python 3.4 for end-of-life. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7535">#7535</a>)</p></li>
+<li><p>Add nox session <code class="docutils literal notranslate"><span class="pre">docs</span></code> (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7778">#7778</a>)</p></li>
+<li><p>Pub/Sub (nit): wrong var name in sample (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7705">#7705</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -176,16 +174,16 @@
 <div class="section" id="id16">
 <h3>Implementation Changes<a class="headerlink" href="#id16" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Propagate ‘RetryError’ in ‘PublisherClient.publish’. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7071">#7071</a>)</li>
-<li>Protoc-generated serialization update.. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7091">#7091</a>)</li>
+<li><p>Propagate ‘RetryError’ in ‘PublisherClient.publish’. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7071">#7071</a>)</p></li>
+<li><p>Protoc-generated serialization update.. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7091">#7091</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id17">
 <h3>New Features<a class="headerlink" href="#id17" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add ‘authentication_method’ to ‘PushConfig’ (via synth). (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7512">#7512</a>)</li>
-<li>Add protos as an artifact to library (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7205">#7205</a>)</li>
-<li>Pub/sub: pass transport w/ custom channel to GAPIC API clients. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7008">#7008</a>)</li>
+<li><p>Add ‘authentication_method’ to ‘PushConfig’ (via synth). (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7512">#7512</a>)</p></li>
+<li><p>Add protos as an artifact to library (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7205">#7205</a>)</p></li>
+<li><p>Pub/sub: pass transport w/ custom channel to GAPIC API clients. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7008">#7008</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id18">
@@ -194,17 +192,17 @@
 <div class="section" id="id19">
 <h3>Documentation<a class="headerlink" href="#id19" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Updated client library documentation URLs. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7307">#7307</a>)</li>
-<li>Update copyright headers</li>
-<li>Fix broken docstring cross-reference links. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7132">#7132</a>)</li>
-<li>Docstring changes from updates to .proto files. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7054">#7054</a>)</li>
-<li>Pick up stub docstring fix in GAPIC generator. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6978">#6978</a>)</li>
+<li><p>Updated client library documentation URLs. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7307">#7307</a>)</p></li>
+<li><p>Update copyright headers</p></li>
+<li><p>Fix broken docstring cross-reference links. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7132">#7132</a>)</p></li>
+<li><p>Docstring changes from updates to .proto files. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/7054">#7054</a>)</p></li>
+<li><p>Pick up stub docstring fix in GAPIC generator. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6978">#6978</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id20">
 <h3>Internal / Testing Changes<a class="headerlink" href="#id20" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Copy proto files alongside protoc versions.</li>
+<li><p>Copy proto files alongside protoc versions.</p></li>
 </ul>
 </div>
 </div>
@@ -214,27 +212,27 @@
 <div class="section" id="id22">
 <h3>Implementation Changes<a class="headerlink" href="#id22" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Initialize <code class="docutils literal notranslate"><span class="pre">StreamingPullFuture._cancelled</span></code> as True. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6901">#6901</a>)</li>
-<li>Import <code class="docutils literal notranslate"><span class="pre">iam.policy</span></code> from <code class="docutils literal notranslate"><span class="pre">google.api_core</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6741">#6741</a>)</li>
+<li><p>Initialize <code class="docutils literal notranslate"><span class="pre">StreamingPullFuture._cancelled</span></code> as True. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6901">#6901</a>)</p></li>
+<li><p>Import <code class="docutils literal notranslate"><span class="pre">iam.policy</span></code> from <code class="docutils literal notranslate"><span class="pre">google.api_core</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6741">#6741</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id23">
 <h3>Documentation<a class="headerlink" href="#id23" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Document Python 2 deprecation (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6910">#6910</a>)</li>
-<li>Emphasize that returned futures may differ from stdlib futures. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6875">#6875</a>)</li>
+<li><p>Document Python 2 deprecation (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6910">#6910</a>)</p></li>
+<li><p>Emphasize that returned futures may differ from stdlib futures. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6875">#6875</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id24">
 <h3>Internal / Testing Changes<a class="headerlink" href="#id24" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add baseline for synth.metadata</li>
-<li>Update noxfile.</li>
-<li>blacken all gen’d libs (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6792">#6792</a>)</li>
-<li>omit local deps (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6701">#6701</a>)</li>
-<li>Run black at end of synth.py (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6698">#6698</a>)</li>
-<li>Run Black on Generated libraries (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6666">#6666</a>)</li>
-<li>Add templates for flake8, coveragerc, noxfile, and black. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6642">#6642</a>)</li>
+<li><p>Add baseline for synth.metadata</p></li>
+<li><p>Update noxfile.</p></li>
+<li><p>blacken all gen’d libs (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6792">#6792</a>)</p></li>
+<li><p>omit local deps (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6701">#6701</a>)</p></li>
+<li><p>Run black at end of synth.py (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6698">#6698</a>)</p></li>
+<li><p>Run Black on Generated libraries (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6666">#6666</a>)</p></li>
+<li><p>Add templates for flake8, coveragerc, noxfile, and black. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6642">#6642</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -244,44 +242,44 @@
 <div class="section" id="id26">
 <h3>Implementation Changes<a class="headerlink" href="#id26" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Pick up fixes to GAPIC generator. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6503">#6503</a>)</li>
-<li>Override client classmethod factories inherited from GAPIC. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6453">#6453</a>)</li>
-<li>Fix imports for hand-written client docstring examples. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6345">#6345</a>)</li>
-<li>Fix path for patch of ‘bidi’ elements. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6243">#6243</a>)</li>
-<li>Move bidi to api-core. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6211">#6211</a>)</li>
-<li>Re-generate library using pubsub/synth.py (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6059">#6059</a>)</li>
-<li>Re-generate library using pubsub/synth.py (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5978">#5978</a>)</li>
+<li><p>Pick up fixes to GAPIC generator. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6503">#6503</a>)</p></li>
+<li><p>Override client classmethod factories inherited from GAPIC. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6453">#6453</a>)</p></li>
+<li><p>Fix imports for hand-written client docstring examples. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6345">#6345</a>)</p></li>
+<li><p>Fix path for patch of ‘bidi’ elements. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6243">#6243</a>)</p></li>
+<li><p>Move bidi to api-core. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6211">#6211</a>)</p></li>
+<li><p>Re-generate library using pubsub/synth.py (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6059">#6059</a>)</p></li>
+<li><p>Re-generate library using pubsub/synth.py (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5978">#5978</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id27">
 <h3>New Features<a class="headerlink" href="#id27" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add ‘expiration_policy’ to subscriber client. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6223">#6223</a>)</li>
+<li><p>Add ‘expiration_policy’ to subscriber client. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6223">#6223</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id28">
 <h3>Dependencies<a class="headerlink" href="#id28" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Bump minimum ‘api_core’ version for all GAPIC libs to 1.4.1. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6391">#6391</a>)</li>
-<li>Update IAM version in dependencies. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6362">#6362</a>)</li>
-<li>Bump minimum ‘api_core’ version to ‘1.4.1’. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6134">#6134</a>)</li>
+<li><p>Bump minimum ‘api_core’ version for all GAPIC libs to 1.4.1. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6391">#6391</a>)</p></li>
+<li><p>Update IAM version in dependencies. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6362">#6362</a>)</p></li>
+<li><p>Bump minimum ‘api_core’ version to ‘1.4.1’. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6134">#6134</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id29">
 <h3>Documentation<a class="headerlink" href="#id29" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Fix client_info bug, update docstrings. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6418">#6418</a>)</li>
-<li>Fix docstring reference to wrong future class. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6382">#6382</a>)</li>
-<li>Normalize use of support level badges. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6159">#6159</a>)</li>
-<li>Update subscriber example in README to current patterns. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6194">#6194</a>)</li>
-<li>Prep pubsub docs for repo split. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6001">#6001</a>)</li>
+<li><p>Fix client_info bug, update docstrings. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6418">#6418</a>)</p></li>
+<li><p>Fix docstring reference to wrong future class. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6382">#6382</a>)</p></li>
+<li><p>Normalize use of support level badges. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6159">#6159</a>)</p></li>
+<li><p>Update subscriber example in README to current patterns. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6194">#6194</a>)</p></li>
+<li><p>Prep pubsub docs for repo split. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6001">#6001</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id30">
 <h3>Internal / Testing Changes<a class="headerlink" href="#id30" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Fix error from new flake8 version. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6346">#6346</a>)</li>
-<li>Use new Nox. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6175">#6175</a>)</li>
+<li><p>Fix error from new flake8 version. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6346">#6346</a>)</p></li>
+<li><p>Use new Nox. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6175">#6175</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -290,16 +288,16 @@
 <div class="section" id="id32">
 <h3>Implementation Changes<a class="headerlink" href="#id32" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Fix race condition in recv()’s usage of self.call. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5935">#5935</a>)</li>
-<li>Re-generate the underlying library from protos. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5953">#5953</a>)</li>
-<li>Change ‘BatchSettings.max_bytes’ default. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5899">#5899</a>)</li>
-<li>Fix race condition where pending Ack IDs can be modified by another thread. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5929">#5929</a>)</li>
+<li><p>Fix race condition in recv()’s usage of self.call. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5935">#5935</a>)</p></li>
+<li><p>Re-generate the underlying library from protos. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5953">#5953</a>)</p></li>
+<li><p>Change ‘BatchSettings.max_bytes’ default. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5899">#5899</a>)</p></li>
+<li><p>Fix race condition where pending Ack IDs can be modified by another thread. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5929">#5929</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id33">
 <h3>Internal / Testing Changes<a class="headerlink" href="#id33" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Nox: use inplace installs (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5865">#5865</a>)</li>
+<li><p>Nox: use inplace installs (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/5865">#5865</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -308,20 +306,20 @@
 <div class="section" id="id35">
 <h3>Implementation Changes<a class="headerlink" href="#id35" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Fix classmethod wrapping (#5826)</li>
+<li><p>Fix classmethod wrapping (#5826)</p></li>
 </ul>
 </div>
 <div class="section" id="id36">
 <h3>Documentation<a class="headerlink" href="#id36" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Fix Sphinx rendering for publisher client. (#5822)</li>
+<li><p>Fix Sphinx rendering for publisher client. (#5822)</p></li>
 </ul>
 </div>
 <div class="section" id="id37">
 <h3>Internal / Testing Changes<a class="headerlink" href="#id37" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Re-generate library, removing obsolete synth modifications. (#5825)</li>
-<li>Add test for testing invoking a wrapped class method on the class itself (#5828)</li>
+<li><p>Re-generate library, removing obsolete synth modifications. (#5825)</p></li>
+<li><p>Add test for testing invoking a wrapped class method on the class itself (#5828)</p></li>
 </ul>
 </div>
 </div>
@@ -330,7 +328,7 @@
 <div class="section" id="id39">
 <h3>Implementation Changes<a class="headerlink" href="#id39" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Make get_initial_request more resilient to race conditions. (#5803)</li>
+<li><p>Make get_initial_request more resilient to race conditions. (#5803)</p></li>
 </ul>
 </div>
 </div>
@@ -339,7 +337,7 @@
 <div class="section" id="id41">
 <h3>Implementation Changes<a class="headerlink" href="#id41" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Make Publisher batch-related interfaces private (#5784)</li>
+<li><p>Make Publisher batch-related interfaces private (#5784)</p></li>
 </ul>
 </div>
 </div>
@@ -348,15 +346,15 @@
 <div class="section" id="id43">
 <h3>Implementation Changes<a class="headerlink" href="#id43" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Pubsub: Make ‘Message.publish_time’ return datetime (#5633)</li>
-<li>Ensure SPM methods check that ‘self._consumer’ is not None before use. (#5758)</li>
+<li><p>Pubsub: Make ‘Message.publish_time’ return datetime (#5633)</p></li>
+<li><p>Ensure SPM methods check that ‘self._consumer’ is not None before use. (#5758)</p></li>
 </ul>
 </div>
 <div class="section" id="id44">
 <h3>New Features<a class="headerlink" href="#id44" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>PubSub: add geo-fencing support (#5769)</li>
-<li>Add ‘Message.ack_id’ property. (#5693)</li>
+<li><p>PubSub: add geo-fencing support (#5769)</p></li>
+<li><p>Add ‘Message.ack_id’ property. (#5693)</p></li>
 </ul>
 </div>
 </div>
@@ -365,8 +363,8 @@
 <div class="section" id="id46">
 <h3>Implementation Changes<a class="headerlink" href="#id46" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Recover streams during the gRPC error callback. (#5446)</li>
-<li>Use operational lock when checking for activity on streams. (#5445)</li>
+<li><p>Recover streams during the gRPC error callback. (#5446)</p></li>
+<li><p>Use operational lock when checking for activity on streams. (#5445)</p></li>
 </ul>
 </div>
 </div>
@@ -375,7 +373,7 @@
 <div class="section" id="id48">
 <h3>Implementation Changes<a class="headerlink" href="#id48" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add additional error handling to unary RPCs (#5438)</li>
+<li><p>Add additional error handling to unary RPCs (#5438)</p></li>
 </ul>
 </div>
 </div>
@@ -384,8 +382,8 @@
 <div class="section" id="id50">
 <h3>Implementation Changes<a class="headerlink" href="#id50" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add heartbeating to the streaming pull manager (#5413)</li>
-<li>Fix retrying of bidirectional RPCs and closing the streaming pull manager (#5412)</li>
+<li><p>Add heartbeating to the streaming pull manager (#5413)</p></li>
+<li><p>Fix retrying of bidirectional RPCs and closing the streaming pull manager (#5412)</p></li>
 </ul>
 </div>
 </div>
@@ -394,7 +392,7 @@
 <div class="section" id="id52">
 <h3>Implementation Changes<a class="headerlink" href="#id52" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Catch errors when re-retying send() or recv() in addition to open() (#5402)</li>
+<li><p>Catch errors when re-retying send() or recv() in addition to open() (#5402)</p></li>
 </ul>
 </div>
 </div>
@@ -403,34 +401,34 @@
 <div class="section" id="id54">
 <h3>Implementation Changes<a class="headerlink" href="#id54" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Send requests during streaming pull over a separate unary RPC (#5377)</li>
-<li>Initialize references to helper threads before starting them (#5374)</li>
-<li>Make leaser exit more quickly (#5373)</li>
-<li>Make re-open failures bubble to callbacks (#5372)</li>
-<li>Avoid overwriting ‘<strong>module</strong>’ of messages from shared modules. (#5364)</li>
-<li>Normalize overflow handling for max count and bytes (#5343)</li>
+<li><p>Send requests during streaming pull over a separate unary RPC (#5377)</p></li>
+<li><p>Initialize references to helper threads before starting them (#5374)</p></li>
+<li><p>Make leaser exit more quickly (#5373)</p></li>
+<li><p>Make re-open failures bubble to callbacks (#5372)</p></li>
+<li><p>Avoid overwriting ‘<strong>module</strong>’ of messages from shared modules. (#5364)</p></li>
+<li><p>Normalize overflow handling for max count and bytes (#5343)</p></li>
 </ul>
 </div>
 <div class="section" id="id55">
 <h3>New Features<a class="headerlink" href="#id55" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Restore the synchronous pull method (#5379)</li>
-<li>Promote subscribe_experimental() to subscribe(), remove old subscriber implementation. (#5274)</li>
-<li>Wire up scheduler argument for subscribe() (#5279)</li>
+<li><p>Restore the synchronous pull method (#5379)</p></li>
+<li><p>Promote subscribe_experimental() to subscribe(), remove old subscriber implementation. (#5274)</p></li>
+<li><p>Wire up scheduler argument for subscribe() (#5279)</p></li>
 </ul>
 </div>
 <div class="section" id="id56">
 <h3>Documentation<a class="headerlink" href="#id56" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add link to streaming pull behavior documentation (#5378)</li>
-<li>Fix example in subscribe’s documentation (#5375)</li>
+<li><p>Add link to streaming pull behavior documentation (#5378)</p></li>
+<li><p>Fix example in subscribe’s documentation (#5375)</p></li>
 </ul>
 </div>
 <div class="section" id="id57">
 <h3>Internal / Testing Changes<a class="headerlink" href="#id57" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add Test runs for Python 3.7 and remove 3.4 (#5295)</li>
-<li>Modify system tests to use prerelease versions of grpcio (#5304)</li>
+<li><p>Add Test runs for Python 3.7 and remove 3.4 (#5295)</p></li>
+<li><p>Modify system tests to use prerelease versions of grpcio (#5304)</p></li>
 </ul>
 </div>
 </div>
@@ -439,20 +437,20 @@
 <div class="section" id="id59">
 <h3>Implementation Changes<a class="headerlink" href="#id59" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Lower the flow control defaults. (#5248)</li>
+<li><p>Lower the flow control defaults. (#5248)</p></li>
 </ul>
 </div>
 <div class="section" id="id60">
 <h3>New Features<a class="headerlink" href="#id60" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>A new implementation of the subscriber has been added. This is available as <code class="docutils literal notranslate"><span class="pre">SubscriberClient.subscribe_experimental</span></code>. In the next release, this will be replace the current <code class="docutils literal notranslate"><span class="pre">subscribe</span></code> method. If you use this, please report your
-findings to us on GitHub. (#5189, #5201, #5210, #5229, #5230, #5237, #5256)</li>
+<li><p>A new implementation of the subscriber has been added. This is available as <code class="docutils literal notranslate"><span class="pre">SubscriberClient.subscribe_experimental</span></code>. In the next release, this will be replace the current <code class="docutils literal notranslate"><span class="pre">subscribe</span></code> method. If you use this, please report your
+findings to us on GitHub. (#5189, #5201, #5210, #5229, #5230, #5237, #5256)</p></li>
 </ul>
 </div>
 <div class="section" id="id61">
 <h3>Dependencies<a class="headerlink" href="#id61" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Remove psutil dependency. (#5248)</li>
+<li><p>Remove psutil dependency. (#5248)</p></li>
 </ul>
 </div>
 </div>
@@ -461,9 +459,9 @@ findings to us on GitHub. (#5189, #5201, #5210, #5229, #5230, #5237, #5256)</li>
 <div class="section" id="id63">
 <h3>Implementation changes<a class="headerlink" href="#id63" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Surface publish RPC errors back to the publish futures (#5124)</li>
-<li>Make the pausable response iterator aware of the RPC state to prevent deadlock (#5108)</li>
-<li>Properly handle graceful stop in request generator (#5097)</li>
+<li><p>Surface publish RPC errors back to the publish futures (#5124)</p></li>
+<li><p>Make the pausable response iterator aware of the RPC state to prevent deadlock (#5108)</p></li>
+<li><p>Properly handle graceful stop in request generator (#5097)</p></li>
 </ul>
 </div>
 </div>
@@ -472,20 +470,20 @@ findings to us on GitHub. (#5189, #5201, #5210, #5229, #5230, #5237, #5256)</li>
 <div class="section" id="id65">
 <h3>Implementation changes<a class="headerlink" href="#id65" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Drop leased messages after flow_control.max_lease_duration has passed. (#5020)</li>
-<li>Fix mantain leases to not modack messages it just dropped (#5045)</li>
-<li>Avoid race condition in maintain_leases by copying leased_messages (#5035)</li>
-<li>Retry subscription stream on InternalServerError, Unknown, and GatewayTimeout (#5021)</li>
-<li>Use the rpc’s status to determine when to exit the request generator thread (#5054)</li>
-<li>Fix missing iter on request stream (#5078)</li>
-<li>Nack messages when the subscriber callback errors (#5019)</li>
+<li><p>Drop leased messages after flow_control.max_lease_duration has passed. (#5020)</p></li>
+<li><p>Fix mantain leases to not modack messages it just dropped (#5045)</p></li>
+<li><p>Avoid race condition in maintain_leases by copying leased_messages (#5035)</p></li>
+<li><p>Retry subscription stream on InternalServerError, Unknown, and GatewayTimeout (#5021)</p></li>
+<li><p>Use the rpc’s status to determine when to exit the request generator thread (#5054)</p></li>
+<li><p>Fix missing iter on request stream (#5078)</p></li>
+<li><p>Nack messages when the subscriber callback errors (#5019)</p></li>
 </ul>
 </div>
 <div class="section" id="testing">
 <h3>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>pubsub nox.py cleanup (#5056)</li>
-<li>Fix test that checks for retryable exceptions (#5034)</li>
+<li><p>pubsub nox.py cleanup (#5056)</p></li>
+<li><p>Fix test that checks for retryable exceptions (#5034)</p></li>
 </ul>
 </div>
 </div>
@@ -494,14 +492,14 @@ findings to us on GitHub. (#5189, #5201, #5210, #5229, #5230, #5237, #5256)</li>
 <div class="section" id="id67">
 <h3>Dependencies<a class="headerlink" href="#id67" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Update dependency range for api-core to include v1.0.0 releases (#4944)</li>
+<li><p>Update dependency range for api-core to include v1.0.0 releases (#4944)</p></li>
 </ul>
 </div>
 <div class="section" id="testing-and-internal-changes">
 <h3>Testing and internal changes<a class="headerlink" href="#testing-and-internal-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Install local dependencies when running lint (#4936)</li>
-<li>Re-enable lint for tests, remove usage of pylint (#4921)</li>
+<li><p>Install local dependencies when running lint (#4936)</p></li>
+<li><p>Re-enable lint for tests, remove usage of pylint (#4921)</p></li>
 </ul>
 </div>
 </div>
@@ -510,7 +508,7 @@ findings to us on GitHub. (#5189, #5201, #5210, #5229, #5230, #5237, #5256)</li>
 <div class="section" id="id69">
 <h3>Implementation changes<a class="headerlink" href="#id69" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Added support for streaming pull receipts. (#4878)</li>
+<li><p>Added support for streaming pull receipts. (#4878)</p></li>
 </ul>
 </div>
 </div>
@@ -519,28 +517,28 @@ findings to us on GitHub. (#5189, #5201, #5210, #5229, #5230, #5237, #5256)</li>
 <div class="section" id="id71">
 <h3>New features<a class="headerlink" href="#id71" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Added the ability for subscriber to batch requests. (#4895)</li>
-<li>Added pending request backpressure for subscriber. (#4892)</li>
+<li><p>Added the ability for subscriber to batch requests. (#4895)</p></li>
+<li><p>Added pending request backpressure for subscriber. (#4892)</p></li>
 </ul>
 </div>
 <div class="section" id="id72">
 <h3>Implementation changes<a class="headerlink" href="#id72" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Raise <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> when a message is too large for a batch. (#4872)</li>
-<li>Updated the default batch size to 10 MB. (#4857)</li>
-<li>Allow a custom <code class="docutils literal notranslate"><span class="pre">Event</span></code> type in Pub / Sub futures. (#4643)</li>
+<li><p>Raise <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> when a message is too large for a batch. (#4872)</p></li>
+<li><p>Updated the default batch size to 10 MB. (#4857)</p></li>
+<li><p>Allow a custom <code class="docutils literal notranslate"><span class="pre">Event</span></code> type in Pub / Sub futures. (#4643)</p></li>
 </ul>
 </div>
 <div class="section" id="id73">
 <h3>Documentation<a class="headerlink" href="#id73" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Clarify that <code class="docutils literal notranslate"><span class="pre">modify_ack_deadline</span></code> resets the deadline. (#4822)</li>
+<li><p>Clarify that <code class="docutils literal notranslate"><span class="pre">modify_ack_deadline</span></code> resets the deadline. (#4822)</p></li>
 </ul>
 </div>
 <div class="section" id="id74">
 <h3>Testing<a class="headerlink" href="#id74" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Fix unit test for default <code class="docutils literal notranslate"><span class="pre">max_bytes</span></code> value. (#4860)</li>
+<li><p>Fix unit test for default <code class="docutils literal notranslate"><span class="pre">max_bytes</span></code> value. (#4860)</p></li>
 </ul>
 </div>
 </div>
@@ -549,20 +547,20 @@ findings to us on GitHub. (#5189, #5201, #5210, #5229, #5230, #5237, #5256)</li>
 <div class="section" id="notable-implementation-changes">
 <h3>Notable Implementation Changes<a class="headerlink" href="#notable-implementation-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Moving lock factory used in publisher client to the Batch
-implementation (#4628).</li>
-<li>Use a UUID (rather than a sentinel object) on <code class="docutils literal notranslate"><span class="pre">Future</span></code> (#4634).</li>
-<li>Apply scopes to explicitly provided credentials if needed (#4594).
-Fixes #4479. This feature comes as part of <code class="docutils literal notranslate"><span class="pre">google-api-core==0.1.3</span></code>.</li>
+<li><p>Moving lock factory used in publisher client to the Batch
+implementation (#4628).</p></li>
+<li><p>Use a UUID (rather than a sentinel object) on <code class="docutils literal notranslate"><span class="pre">Future</span></code> (#4634).</p></li>
+<li><p>Apply scopes to explicitly provided credentials if needed (#4594).
+Fixes #4479. This feature comes as part of <code class="docutils literal notranslate"><span class="pre">google-api-core==0.1.3</span></code>.</p></li>
 </ul>
 </div>
 <div class="section" id="id76">
 <h3>Dependencies<a class="headerlink" href="#id76" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Upgrading to <code class="docutils literal notranslate"><span class="pre">google-api-core==0.1.3</span></code> which depends on the latest
+<li><p>Upgrading to <code class="docutils literal notranslate"><span class="pre">google-api-core==0.1.3</span></code> which depends on the latest
 <code class="docutils literal notranslate"><span class="pre">grpcio==1.8.2</span></code> (#4642). This fixes #4600. For details, see related
 gRPC <a class="reference external" href="https://github.com/grpc/grpc/issues/9688">bug</a> and
-<a class="reference external" href="https://github.com/grpc/grpc/pull/13665">fix</a>.</li>
+<a class="reference external" href="https://github.com/grpc/grpc/pull/13665">fix</a>.</p></li>
 </ul>
 <p>PyPI: https://pypi.org/project/google-cloud-pubsub/0.30.1/</p>
 </div>
@@ -572,38 +570,39 @@ gRPC <a class="reference external" href="https://github.com/grpc/grpc/issues/968
 <div class="section" id="id78">
 <h3>Notable Implementation Changes<a class="headerlink" href="#id78" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Dropping redundant <code class="docutils literal notranslate"><span class="pre">Policy._paused</span></code> data member (#4568).</li>
-<li>Removing redundant “active” check in policy (#4603).</li>
-<li>Adding a <code class="docutils literal notranslate"><span class="pre">Consumer.active</span></code> property (#4604).</li>
-<li>Making it impossible to call <code class="docutils literal notranslate"><span class="pre">Policy.open()</span></code> on an already opened
-policy (#4606).</li>
-<li><strong>Bug fix</strong> (#4575): Fix bug with async publish for batches. There
+<li><p>Dropping redundant <code class="docutils literal notranslate"><span class="pre">Policy._paused</span></code> data member (#4568).</p></li>
+<li><p>Removing redundant “active” check in policy (#4603).</p></li>
+<li><p>Adding a <code class="docutils literal notranslate"><span class="pre">Consumer.active</span></code> property (#4604).</p></li>
+<li><p>Making it impossible to call <code class="docutils literal notranslate"><span class="pre">Policy.open()</span></code> on an already opened
+policy (#4606).</p></li>
+<li><p><strong>Bug fix</strong> (#4575): Fix bug with async publish for batches. There
 were two related bugs. The first: if a batch exceeds the <code class="docutils literal notranslate"><span class="pre">max_messages</span></code>
 from the batch settings, then the <code class="docutils literal notranslate"><span class="pre">commit()</span></code> will fail. The second:
 when a “monitor” worker calls <code class="docutils literal notranslate"><span class="pre">commit()</span></code> after <code class="docutils literal notranslate"><span class="pre">max_latency</span></code> seconds,
 a failure can occur if a new message is added to the batch <strong>during</strong>
-the commit. To fix, the following changes were implemented:<ul>
-<li>Adding a “STARTING” status for <code class="docutils literal notranslate"><span class="pre">Batch.commit()</span></code> (#4614). This
-fixes the issue when the batch exceeds <code class="docutils literal notranslate"><span class="pre">max_messages</span></code>.</li>
-<li>Adding extra check in <code class="docutils literal notranslate"><span class="pre">Batch.will_accept</span></code> for the number of
-messages (#4612).</li>
-<li>Moving <code class="docutils literal notranslate"><span class="pre">will_accept()</span></code> check out of <code class="docutils literal notranslate"><span class="pre">PublisherClient.batch()</span></code>
-factory (#4613).</li>
-<li>Checking <code class="docutils literal notranslate"><span class="pre">Batch.will_accept</span></code> in thread-safe way (#4616).</li>
+the commit. To fix, the following changes were implemented:</p>
+<ul>
+<li><p>Adding a “STARTING” status for <code class="docutils literal notranslate"><span class="pre">Batch.commit()</span></code> (#4614). This
+fixes the issue when the batch exceeds <code class="docutils literal notranslate"><span class="pre">max_messages</span></code>.</p></li>
+<li><p>Adding extra check in <code class="docutils literal notranslate"><span class="pre">Batch.will_accept</span></code> for the number of
+messages (#4612).</p></li>
+<li><p>Moving <code class="docutils literal notranslate"><span class="pre">will_accept()</span></code> check out of <code class="docutils literal notranslate"><span class="pre">PublisherClient.batch()</span></code>
+factory (#4613).</p></li>
+<li><p>Checking <code class="docutils literal notranslate"><span class="pre">Batch.will_accept</span></code> in thread-safe way (#4616).</p></li>
 </ul>
 </li>
-<li><strong>Breaking API change</strong>: As part of #4613, changing <code class="docutils literal notranslate"><span class="pre">PublisherClient.batch()</span></code>
+<li><p><strong>Breaking API change</strong>: As part of #4613, changing <code class="docutils literal notranslate"><span class="pre">PublisherClient.batch()</span></code>
 to no longer accept a <code class="docutils literal notranslate"><span class="pre">message</span></code> (since the <code class="docutils literal notranslate"><span class="pre">will_accept</span></code> check needs to
 happen in a more concurrency friendly way). In addition, changing the
 <code class="docutils literal notranslate"><span class="pre">create</span></code> argument so that it means “create even if batch already exists”
-rather than “create if missing”.</li>
+rather than “create if missing”.</p></li>
 </ul>
 </div>
 <div class="section" id="id79">
 <h3>Documentation<a class="headerlink" href="#id79" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add more explicit documentation for <code class="docutils literal notranslate"><span class="pre">Message.attributes</span></code> (#4601).</li>
-<li>Make <code class="docutils literal notranslate"><span class="pre">Message.__repr__</span></code> a bit prettier / more useful (#4602).</li>
+<li><p>Add more explicit documentation for <code class="docutils literal notranslate"><span class="pre">Message.attributes</span></code> (#4601).</p></li>
+<li><p>Make <code class="docutils literal notranslate"><span class="pre">Message.__repr__</span></code> a bit prettier / more useful (#4602).</p></li>
 </ul>
 <p>PyPI: https://pypi.org/project/google-cloud-pubsub/0.30.0/</p>
 </div>
@@ -613,11 +612,11 @@ rather than “create if missing”.</li>
 <div class="section" id="id81">
 <h3>Notable Implementation Changes<a class="headerlink" href="#id81" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><strong>Bug fix</strong>: Restore previous behavior of the subscription lease
+<li><p><strong>Bug fix</strong>: Restore previous behavior of the subscription lease
 maintenance worker. This was accidentally “stopped” in <code class="docutils literal notranslate"><span class="pre">0.29.3</span></code>
 due to a change in implementation that went from an <code class="docutils literal notranslate"><span class="pre">active</span></code>
 boolean to an “inactive” / <code class="docutils literal notranslate"><span class="pre">stopped</span></code> boolean, so <code class="docutils literal notranslate"><span class="pre">True</span></code> became
-<code class="docutils literal notranslate"><span class="pre">False</span></code> and vice-versa (#4564).</li>
+<code class="docutils literal notranslate"><span class="pre">False</span></code> and vice-versa (#4564).</p></li>
 </ul>
 <p>PyPI: https://pypi.org/project/google-cloud-pubsub/0.29.4/</p>
 </div>
@@ -627,38 +626,38 @@ boolean to an “inactive” / <code class="docutils literal notranslate"><span 
 <div class="section" id="id83">
 <h3>Notable Implementation Changes<a class="headerlink" href="#id83" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>In subscription consumer thread: Making sure the request generator
+<li><p>In subscription consumer thread: Making sure the request generator
 attached to an inactive bidirectional streaming pull is stopped before
 spawning a new request generator. This way we have a (fairly strong)
 guarantee that requests in the queue don’t get sent into an inactive
-stream (#4503, #4554).</li>
-<li>Adding <code class="docutils literal notranslate"><span class="pre">pause</span></code> / <code class="docutils literal notranslate"><span class="pre">resume</span></code> to subscription consumer thread and using these
+stream (#4503, #4554).</p></li>
+<li><p>Adding <code class="docutils literal notranslate"><span class="pre">pause</span></code> / <code class="docutils literal notranslate"><span class="pre">resume</span></code> to subscription consumer thread and using these
 methods during flow control. The previous implementation tried to close the
 subscription (which involved 3 worker threads and 10 executors in a thread
 pool) and then re-open a new subscription. But, this was not entirely
 possible to shut down correctly from <strong>within</strong> one of the worker threads.
 Instead, we only pause the worker (of the 3) that is pulling new responses
-from the bidirectional streaming pull (#4558).</li>
-<li><strong>Bug fix</strong> (#4516): Using <code class="docutils literal notranslate"><span class="pre">max</span></code> where <code class="docutils literal notranslate"><span class="pre">min</span></code> was used by mistake to
+from the bidirectional streaming pull (#4558).</p></li>
+<li><p><strong>Bug fix</strong> (#4516): Using <code class="docutils literal notranslate"><span class="pre">max</span></code> where <code class="docutils literal notranslate"><span class="pre">min</span></code> was used by mistake to
 ensure the number of bytes tracked for subscription flow control
-remained non-negative (#4514).</li>
-<li>Raising <code class="docutils literal notranslate"><span class="pre">TypeError</span></code> if <code class="docutils literal notranslate"><span class="pre">SubscriberClient.subscribe</span></code> receives a
-non-callable callback (#4497).</li>
-<li>Shutting down thread pool executor when closing a subscriber
-policy (#4522).</li>
-<li>Renaming <code class="docutils literal notranslate"><span class="pre">Policy.on_callback_request</span></code> to <code class="docutils literal notranslate"><span class="pre">Policy.dispatch_callback</span></code>
-and making the behavior much less dynamic (#4511).</li>
-<li>Make sure subscription consumer thread doesn’t try to join itself
-when exiting in error (#4540).</li>
+remained non-negative (#4514).</p></li>
+<li><p>Raising <code class="docutils literal notranslate"><span class="pre">TypeError</span></code> if <code class="docutils literal notranslate"><span class="pre">SubscriberClient.subscribe</span></code> receives a
+non-callable callback (#4497).</p></li>
+<li><p>Shutting down thread pool executor when closing a subscriber
+policy (#4522).</p></li>
+<li><p>Renaming <code class="docutils literal notranslate"><span class="pre">Policy.on_callback_request</span></code> to <code class="docutils literal notranslate"><span class="pre">Policy.dispatch_callback</span></code>
+and making the behavior much less dynamic (#4511).</p></li>
+<li><p>Make sure subscription consumer thread doesn’t try to join itself
+when exiting in error (#4540).</p></li>
 </ul>
 </div>
 <div class="section" id="id84">
 <h3>Dependencies<a class="headerlink" href="#id84" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Upgrading <code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> dependency to latest revision (<code class="docutils literal notranslate"><span class="pre">0.1.2</span></code>)
+<li><p>Upgrading <code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> dependency to latest revision (<code class="docutils literal notranslate"><span class="pre">0.1.2</span></code>)
 since we rely on the latest version of the <code class="docutils literal notranslate"><span class="pre">concurrent.futures</span></code> backport
 to provide the <code class="docutils literal notranslate"><span class="pre">thread_name_prefix</span></code> argument for thread pool
-executor (#4521, #4559).</li>
+executor (#4521, #4559).</p></li>
 </ul>
 <p>PyPI: https://pypi.org/project/google-cloud-pubsub/0.29.3/</p>
 </div>
@@ -668,22 +667,24 @@ executor (#4521, #4559).</li>
 <div class="section" id="id86">
 <h3>Notable Implementation Changes<a class="headerlink" href="#id86" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><strong>Bug fix</strong> (#4463): Making a subscription consumer actually stop
+<li><p><strong>Bug fix</strong> (#4463): Making a subscription consumer actually stop
 running after encountering an exception (#4472, #4498). This bug
-is the <strong>only</strong> reason for the <code class="docutils literal notranslate"><span class="pre">0.29.2</span></code> release.</li>
-<li>Thread Changes<ul>
-<li>Added names to all threads created directly by Pub / Sub (#4474,
+is the <strong>only</strong> reason for the <code class="docutils literal notranslate"><span class="pre">0.29.2</span></code> release.</p></li>
+<li><p>Thread Changes</p>
+<ul>
+<li><p>Added names to all threads created directly by Pub / Sub (#4474,
 #4476, #4480). Also removing spaces and colons from thread
-names (#4476).</li>
+names (#4476).</p></li>
 </ul>
 </li>
-<li>Logging changes<ul>
-<li>Adding debug logs when lease management exits (#4484)</li>
-<li>Adding debug logs when <code class="docutils literal notranslate"><span class="pre">QueueCallbackThread</span></code> exits (#4494).
+<li><p>Logging changes</p>
+<ul>
+<li><p>Adding debug logs when lease management exits (#4484)</p></li>
+<li><p>Adding debug logs when <code class="docutils literal notranslate"><span class="pre">QueueCallbackThread</span></code> exits (#4494).
 Instances handle the processing of messages in a
-subscription (e.g. to <code class="docutils literal notranslate"><span class="pre">ack</span></code>).</li>
-<li>Using a named logger in <code class="docutils literal notranslate"><span class="pre">publisher.batch.thread</span></code> (#4473)</li>
-<li>Adding newlines before logging protobuf payloads (#4471)</li>
+subscription (e.g. to <code class="docutils literal notranslate"><span class="pre">ack</span></code>).</p></li>
+<li><p>Using a named logger in <code class="docutils literal notranslate"><span class="pre">publisher.batch.thread</span></code> (#4473)</p></li>
+<li><p>Adding newlines before logging protobuf payloads (#4471)</p></li>
 </ul>
 </li>
 </ul>
@@ -695,27 +696,27 @@ subscription (e.g. to <code class="docutils literal notranslate"><span class="pr
 <div class="section" id="id88">
 <h3>Notable Implementation Changes<a class="headerlink" href="#id88" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><strong>Bug fix</strong> (#4234): Adding retries for connection <code class="docutils literal notranslate"><span class="pre">UNAVAILABLE</span></code>. This
+<li><p><strong>Bug fix</strong> (#4234): Adding retries for connection <code class="docutils literal notranslate"><span class="pre">UNAVAILABLE</span></code>. This
 bug made the Pub / Sub client mostly unusable for subscribers to topics
 that don’t have a steady stream of messages. After ~2 minutes of inactivity,
 the gRPC connection would timeout and raise <code class="docutils literal notranslate"><span class="pre">UNAVAILABLE</span></code> locally, i.e. not
-due to a response from the backend. (#4444)</li>
-<li>Updating autogenerated packages (#4438)</li>
+due to a response from the backend. (#4444)</p></li>
+<li><p>Updating autogenerated packages (#4438)</p></li>
 </ul>
 </div>
 <div class="section" id="id89">
 <h3>Documentation<a class="headerlink" href="#id89" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Fixing broken examples in quick start (#4398)</li>
-<li>Fixing broken example in README (#4402, h/t to &#64;mehmetboraezer)</li>
-<li>Updating old/dead link to usage doc in README (#4406, h/t to &#64;mehmetboraezer)</li>
+<li><p>Fixing broken examples in quick start (#4398)</p></li>
+<li><p>Fixing broken example in README (#4402, h/t to &#64;mehmetboraezer)</p></li>
+<li><p>Updating old/dead link to usage doc in README (#4406, h/t to &#64;mehmetboraezer)</p></li>
 </ul>
 </div>
 <div class="section" id="id90">
 <h3>Dependencies<a class="headerlink" href="#id90" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Dropping dependency on <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span></code> in exchange for
-<code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> (#4438)</li>
+<li><p>Dropping dependency on <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span></code> in exchange for
+<code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> (#4438)</p></li>
 </ul>
 <p>PyPI: https://pypi.org/project/google-cloud-pubsub/0.29.1/</p>
 </div>
@@ -725,25 +726,25 @@ due to a response from the backend. (#4444)</li>
 <div class="section" id="id92">
 <h3>Notable Implementation Changes<a class="headerlink" href="#id92" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Honor <code class="docutils literal notranslate"><span class="pre">max_messages</span></code> always (#4262)</li>
-<li>Add futures for subscriptions (#4265)</li>
-<li>Set gRPC message options and keepalive (#4269)</li>
+<li><p>Honor <code class="docutils literal notranslate"><span class="pre">max_messages</span></code> always (#4262)</p></li>
+<li><p>Add futures for subscriptions (#4265)</p></li>
+<li><p>Set gRPC message options and keepalive (#4269)</p></li>
 </ul>
 </div>
 <div class="section" id="id93">
 <h3>Documentation<a class="headerlink" href="#id93" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Added link to “Python Development Environment Setup Guide” in
-project README (#4187, h/t to &#64;michaelawyu)</li>
+<li><p>Added link to “Python Development Environment Setup Guide” in
+project README (#4187, h/t to &#64;michaelawyu)</p></li>
 </ul>
 </div>
 <div class="section" id="id94">
 <h3>Dependencies<a class="headerlink" href="#id94" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Upgrading to <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span> <span class="pre">&gt;=</span> <span class="pre">0.28.0</span></code> and adding dependency
-on <code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> (#4221, #4280)</li>
-<li>Deferring to <code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> for <code class="docutils literal notranslate"><span class="pre">grpcio</span></code> and
-<code class="docutils literal notranslate"><span class="pre">googleapis-common-protos</span></code>dependencies (#4096, #4098)</li>
+<li><p>Upgrading to <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span> <span class="pre">&gt;=</span> <span class="pre">0.28.0</span></code> and adding dependency
+on <code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> (#4221, #4280)</p></li>
+<li><p>Deferring to <code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> for <code class="docutils literal notranslate"><span class="pre">grpcio</span></code> and
+<code class="docutils literal notranslate"><span class="pre">googleapis-common-protos</span></code>dependencies (#4096, #4098)</p></li>
 </ul>
 <p>PyPI: https://pypi.org/project/google-cloud-pubsub/0.29.0/</p>
 </div>
@@ -836,13 +837,11 @@ on <code class="docutils literal notranslate"><span class="pre">google-api-core<
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -855,7 +854,7 @@ on <code class="docutils literal notranslate"><span class="pre">google-api-core<
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

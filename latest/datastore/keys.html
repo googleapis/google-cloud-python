@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Keys &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Keys &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -40,11 +38,11 @@
 <p>Create / interact with Google Cloud Datastore keys.</p>
 <dl class="class">
 <dt id="google.cloud.datastore.key.Key">
-<em class="property">class </em><code class="descclassname">google.cloud.datastore.key.</code><code class="descname">Key</code><span class="sig-paren">(</span><em>*path_args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/key.html#Key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.key.Key" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.datastore.key.</code><code class="sig-name descname">Key</code><span class="sig-paren">(</span><em class="sig-param">*path_args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/key.html#Key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.key.Key" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>An immutable representation of a datastore Key.</p>
 <p>To create a basic key directly:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s1">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">)</span>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s1">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">)</span>
 <span class="go">&lt;Key(&#39;EntityKind&#39;, 1234), project=...&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s1">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">)</span>
 <span class="go">&lt;Key(&#39;EntityKind&#39;, &#39;foo&#39;), project=...&gt;</span>
@@ -52,257 +50,232 @@
 </div>
 <p>Though typical usage comes via the
 <a class="reference internal" href="client.html#google.cloud.datastore.client.Client.key" title="google.cloud.datastore.client.Client.key"><code class="xref py py-meth docutils literal notranslate"><span class="pre">key()</span></code></a> factory:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">)</span>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">)</span>
 <span class="go">&lt;Key(&#39;EntityKind&#39;, 1234), project=...&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">)</span>
 <span class="go">&lt;Key(&#39;EntityKind&#39;, &#39;foo&#39;), project=...&gt;</span>
 </pre></div>
 </div>
 <p>To create a key with a parent:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;Parent&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;Child&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">)</span>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;Parent&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;Child&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">)</span>
 <span class="go">&lt;Key(&#39;Parent&#39;, &#39;foo&#39;, &#39;Child&#39;, 1234), project=...&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;Child&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent_key</span><span class="p">)</span>
 <span class="go">&lt;Key(&#39;Parent&#39;, &#39;foo&#39;, &#39;Child&#39;, 1234), project=...&gt;</span>
 </pre></div>
 </div>
 <p>To create a partial key:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;Parent&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;Child&#39;</span><span class="p">)</span>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;Parent&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;Child&#39;</span><span class="p">)</span>
 <span class="go">&lt;Key(&#39;Parent&#39;, &#39;foo&#39;, &#39;Child&#39;), project=...&gt;</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>path_args</strong> (<em>tuple of string and integer</em>) – May represent a partial (odd length) or full (even
-length) key path.</li>
-<li><strong>kwargs</strong> – Keyword arguments to be passed in.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path_args</strong> (<em>tuple of string and integer</em>) – May represent a partial (odd length) or full (even
+length) key path.</p></li>
+<li><p><strong>kwargs</strong> – Keyword arguments to be passed in.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p>Accepted keyword arguments are</p>
 <ul class="simple">
-<li>namespace (string): A namespace identifier for the key.</li>
-<li>project (string): The project associated with the key.</li>
-<li>parent (<a class="reference internal" href="#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">Key</span></code></a>): The parent of the key.</li>
+<li><p>namespace (string): A namespace identifier for the key.</p></li>
+<li><p>project (string): The project associated with the key.</p></li>
+<li><p>parent (<a class="reference internal" href="#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">Key</span></code></a>): The parent of the key.</p></li>
 </ul>
 <p>The project argument is required unless it has been set implicitly.</p>
 <dl class="method">
 <dt id="google.cloud.datastore.key.Key.completed_key">
-<code class="descname">completed_key</code><span class="sig-paren">(</span><em>id_or_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/key.html#Key.completed_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.key.Key.completed_key" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">completed_key</code><span class="sig-paren">(</span><em class="sig-param">id_or_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/key.html#Key.completed_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.key.Key.completed_key" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates new key from existing partial key by adding final ID/name.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id_or_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><em>integer</em>) – ID or name to be added to the key.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A new <code class="docutils literal notranslate"><span class="pre">Key</span></code> instance with the same data as the current one
-and an extra ID or name added.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></a> if the current key is not partial or if
-<code class="docutils literal notranslate"><span class="pre">id_or_name</span></code> is not a string or integer.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>id_or_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><em>integer</em>) – ID or name to be added to the key.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A new <code class="docutils literal notranslate"><span class="pre">Key</span></code> instance with the same data as the current one
+and an extra ID or name added.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></a> if the current key is not partial or if
+<code class="docutils literal notranslate"><span class="pre">id_or_name</span></code> is not a string or integer.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.datastore.key.Key.flat_path">
-<code class="descname">flat_path</code><a class="headerlink" href="#google.cloud.datastore.key.Key.flat_path" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">flat_path</code><a class="headerlink" href="#google.cloud.datastore.key.Key.flat_path" title="Permalink to this definition">#</a></dt>
 <dd><p>Getter for the key path as a tuple.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">tuple of string and integer</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The tuple of elements in the path.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple of string and integer</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The tuple of elements in the path.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="google.cloud.datastore.key.Key.from_legacy_urlsafe">
-<em class="property">classmethod </em><code class="descname">from_legacy_urlsafe</code><span class="sig-paren">(</span><em>urlsafe</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/key.html#Key.from_legacy_urlsafe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.key.Key.from_legacy_urlsafe" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">from_legacy_urlsafe</code><span class="sig-paren">(</span><em class="sig-param">urlsafe</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/key.html#Key.from_legacy_urlsafe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.key.Key.from_legacy_urlsafe" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert urlsafe string to <a class="reference internal" href="#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">Key</span></code></a>.</p>
 <p>This is intended to work with the “legacy” representation of a
 datastore “Key” used within Google App Engine (a so-called
 “Reference”). This assumes that <code class="docutils literal notranslate"><span class="pre">urlsafe</span></code> was created within an App
 Engine app via something like <code class="docutils literal notranslate"><span class="pre">ndb.Key(...).urlsafe()</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>urlsafe</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)"><em>bytes</em></a><em> or </em><em>unicode</em>) – The base64 encoded (ASCII) string corresponding to a
-datastore “Key” / “Reference”.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">Key</span></code></a>.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The key corresponding to <code class="docutils literal notranslate"><span class="pre">urlsafe</span></code>.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>urlsafe</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)"><em>bytes</em></a><em> or </em><em>unicode</em>) – The base64 encoded (ASCII) string corresponding to a
+datastore “Key” / “Reference”.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">Key</span></code></a>.</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The key corresponding to <code class="docutils literal notranslate"><span class="pre">urlsafe</span></code>.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.datastore.key.Key.id">
-<code class="descname">id</code><a class="headerlink" href="#google.cloud.datastore.key.Key.id" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">id</code><a class="headerlink" href="#google.cloud.datastore.key.Key.id" title="Permalink to this definition">#</a></dt>
 <dd><p>ID getter. Based on the last element of path.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The (integer) ID of the key.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The (integer) ID of the key.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.datastore.key.Key.id_or_name">
-<code class="descname">id_or_name</code><a class="headerlink" href="#google.cloud.datastore.key.Key.id_or_name" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">id_or_name</code><a class="headerlink" href="#google.cloud.datastore.key.Key.id_or_name" title="Permalink to this definition">#</a></dt>
 <dd><p>Getter. Based on the last element of path.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int (if <code class="docutils literal notranslate"><span class="pre">id</span></code>) or string (if <code class="docutils literal notranslate"><span class="pre">name</span></code>)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The last element of the key’s path if it is either an <code class="docutils literal notranslate"><span class="pre">id</span></code>
-or a <code class="docutils literal notranslate"><span class="pre">name</span></code>.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int (if <code class="docutils literal notranslate"><span class="pre">id</span></code>) or string (if <code class="docutils literal notranslate"><span class="pre">name</span></code>)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The last element of the key’s path if it is either an <code class="docutils literal notranslate"><span class="pre">id</span></code>
+or a <code class="docutils literal notranslate"><span class="pre">name</span></code>.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.datastore.key.Key.is_partial">
-<code class="descname">is_partial</code><a class="headerlink" href="#google.cloud.datastore.key.Key.is_partial" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">is_partial</code><a class="headerlink" href="#google.cloud.datastore.key.Key.is_partial" title="Permalink to this definition">#</a></dt>
 <dd><p>Boolean indicating if the key has an ID (or name).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">True</span></code> if the last element of the key’s path does not have
-an <code class="docutils literal notranslate"><span class="pre">id</span></code> or a <code class="docutils literal notranslate"><span class="pre">name</span></code>.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the last element of the key’s path does not have
+an <code class="docutils literal notranslate"><span class="pre">id</span></code> or a <code class="docutils literal notranslate"><span class="pre">name</span></code>.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.datastore.key.Key.kind">
-<code class="descname">kind</code><a class="headerlink" href="#google.cloud.datastore.key.Key.kind" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">kind</code><a class="headerlink" href="#google.cloud.datastore.key.Key.kind" title="Permalink to this definition">#</a></dt>
 <dd><p>Kind getter. Based on the last element of path.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The kind of the current key.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The kind of the current key.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.datastore.key.Key.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.datastore.key.Key.name" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.datastore.key.Key.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name getter. Based on the last element of path.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The (string) name of the key.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The (string) name of the key.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.datastore.key.Key.namespace">
-<code class="descname">namespace</code><a class="headerlink" href="#google.cloud.datastore.key.Key.namespace" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">namespace</code><a class="headerlink" href="#google.cloud.datastore.key.Key.namespace" title="Permalink to this definition">#</a></dt>
 <dd><p>Namespace getter.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The namespace of the current key.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The namespace of the current key.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.datastore.key.Key.parent">
-<code class="descname">parent</code><a class="headerlink" href="#google.cloud.datastore.key.Key.parent" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">parent</code><a class="headerlink" href="#google.cloud.datastore.key.Key.parent" title="Permalink to this definition">#</a></dt>
 <dd><p>The parent of the current key.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a> or <code class="xref py py-class docutils literal notranslate"><span class="pre">NoneType</span></code></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A new <code class="docutils literal notranslate"><span class="pre">Key</span></code> instance, whose path consists of all but the
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a> or <code class="xref py py-class docutils literal notranslate"><span class="pre">NoneType</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A new <code class="docutils literal notranslate"><span class="pre">Key</span></code> instance, whose path consists of all but the
 last element of current path. If the current key has only
-one path element, returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.</td>
-</tr>
-</tbody>
-</table>
+one path element, returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.datastore.key.Key.path">
-<code class="descname">path</code><a class="headerlink" href="#google.cloud.datastore.key.Key.path" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">path</code><a class="headerlink" href="#google.cloud.datastore.key.Key.path" title="Permalink to this definition">#</a></dt>
 <dd><p>Path getter.</p>
 <p>Returns a copy so that the key remains immutable.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The (key) path of the current key.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The (key) path of the current key.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.datastore.key.Key.project">
-<code class="descname">project</code><a class="headerlink" href="#google.cloud.datastore.key.Key.project" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">project</code><a class="headerlink" href="#google.cloud.datastore.key.Key.project" title="Permalink to this definition">#</a></dt>
 <dd><p>Project getter.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The key’s project.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The key’s project.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.datastore.key.Key.to_legacy_urlsafe">
-<code class="descname">to_legacy_urlsafe</code><span class="sig-paren">(</span><em>location_prefix=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/key.html#Key.to_legacy_urlsafe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.key.Key.to_legacy_urlsafe" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">to_legacy_urlsafe</code><span class="sig-paren">(</span><em class="sig-param">location_prefix=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/key.html#Key.to_legacy_urlsafe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.key.Key.to_legacy_urlsafe" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert to a base64 encode urlsafe string for App Engine.</p>
 <p>This is intended to work with the “legacy” representation of a
 datastore “Key” used within Google App Engine (a so-called
@@ -310,43 +283,40 @@ datastore “Key” used within Google App Engine (a so-called
 argument to <code class="docutils literal notranslate"><span class="pre">ndb.Key(urlsafe=...)</span></code>. The base64 encoded values
 will have padding removed.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The string returned by <code class="docutils literal notranslate"><span class="pre">to_legacy_urlsafe</span></code> is equivalent, but
+<p class="admonition-title">Note</p>
+<p>The string returned by <code class="docutils literal notranslate"><span class="pre">to_legacy_urlsafe</span></code> is equivalent, but
 not identical, to the string returned by <code class="docutils literal notranslate"><span class="pre">ndb</span></code>. The location
 prefix may need to be specified to obtain identical urlsafe
 keys.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>location_prefix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The location prefix of an App Engine project
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>location_prefix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The location prefix of an App Engine project
 ID. Often this value is ‘s~’, but may also be
 ‘e~’, or other location prefixes currently
-unknown.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)">bytes</a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A bytestring containing the key encoded as URL-safe base64.</td>
-</tr>
-</tbody>
-</table>
+unknown.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)">bytes</a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A bytestring containing the key encoded as URL-safe base64.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.datastore.key.Key.to_protobuf">
-<code class="descname">to_protobuf</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/key.html#Key.to_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.key.Key.to_protobuf" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">to_protobuf</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/key.html#Key.to_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.key.Key.to_protobuf" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a protobuf corresponding to the key.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">entity_pb2.Key</span></code></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The protobuf representing the key.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">entity_pb2.Key</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The protobuf representing the key.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -439,13 +409,11 @@ unknown.</td>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -458,7 +426,7 @@ unknown.</td>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

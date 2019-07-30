@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Helpers &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Helpers &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -41,125 +39,112 @@
 <p>The non-private functions are part of the API.</p>
 <dl class="class">
 <dt id="google.cloud.datastore.helpers.GeoPoint">
-<em class="property">class </em><code class="descclassname">google.cloud.datastore.helpers.</code><code class="descname">GeoPoint</code><span class="sig-paren">(</span><em>latitude</em>, <em>longitude</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/helpers.html#GeoPoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.helpers.GeoPoint" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.datastore.helpers.</code><code class="sig-name descname">GeoPoint</code><span class="sig-paren">(</span><em class="sig-param">latitude</em>, <em class="sig-param">longitude</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/helpers.html#GeoPoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.helpers.GeoPoint" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Simple container for a geo point value.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>latitude</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Latitude of a point.</li>
-<li><strong>longitude</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Longitude of a point.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>latitude</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Latitude of a point.</p></li>
+<li><p><strong>longitude</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Longitude of a point.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="google.cloud.datastore.helpers.GeoPoint.to_protobuf">
-<code class="descname">to_protobuf</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/helpers.html#GeoPoint.to_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.helpers.GeoPoint.to_protobuf" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">to_protobuf</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/helpers.html#GeoPoint.to_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.helpers.GeoPoint.to_protobuf" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert the current object to protobuf.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.type.latlng_pb2.LatLng</span></code>.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The current point as a protobuf.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">google.type.latlng_pb2.LatLng</span></code>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The current point as a protobuf.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="google.cloud.datastore.helpers.entity_from_protobuf">
-<code class="descclassname">google.cloud.datastore.helpers.</code><code class="descname">entity_from_protobuf</code><span class="sig-paren">(</span><em>pb</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/helpers.html#entity_from_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.helpers.entity_from_protobuf" title="Permalink to this definition">#</a></dt>
+<code class="sig-prename descclassname">google.cloud.datastore.helpers.</code><code class="sig-name descname">entity_from_protobuf</code><span class="sig-paren">(</span><em class="sig-param">pb</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/helpers.html#entity_from_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.helpers.entity_from_protobuf" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory method for creating an entity based on a protobuf.</p>
 <p>The protobuf should be one returned from the Cloud Datastore
 Protobuf API.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pb</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">entity_pb2.Entity</span></code>) – The Protobuf representing the entity.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.entity.Entity</span></code></a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The entity derived from the protobuf.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>pb</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">entity_pb2.Entity</span></code>) – The Protobuf representing the entity.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.entity.Entity</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The entity derived from the protobuf.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="google.cloud.datastore.helpers.entity_to_protobuf">
-<code class="descclassname">google.cloud.datastore.helpers.</code><code class="descname">entity_to_protobuf</code><span class="sig-paren">(</span><em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/helpers.html#entity_to_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.helpers.entity_to_protobuf" title="Permalink to this definition">#</a></dt>
+<code class="sig-prename descclassname">google.cloud.datastore.helpers.</code><code class="sig-name descname">entity_to_protobuf</code><span class="sig-paren">(</span><em class="sig-param">entity</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/helpers.html#entity_to_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.helpers.entity_to_protobuf" title="Permalink to this definition">#</a></dt>
 <dd><p>Converts an entity into a protobuf.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<a class="reference internal" href="entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.entity.Entity</span></code></a>) – The entity to be turned into a protobuf.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">entity_pb2.Entity</span></code></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The protobuf representing the entity.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>entity</strong> (<a class="reference internal" href="entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.entity.Entity</span></code></a>) – The entity to be turned into a protobuf.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">entity_pb2.Entity</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The protobuf representing the entity.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="google.cloud.datastore.helpers.get_read_options">
-<code class="descclassname">google.cloud.datastore.helpers.</code><code class="descname">get_read_options</code><span class="sig-paren">(</span><em>eventual</em>, <em>transaction_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/helpers.html#get_read_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.helpers.get_read_options" title="Permalink to this definition">#</a></dt>
+<code class="sig-prename descclassname">google.cloud.datastore.helpers.</code><code class="sig-name descname">get_read_options</code><span class="sig-paren">(</span><em class="sig-param">eventual</em>, <em class="sig-param">transaction_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/helpers.html#get_read_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.helpers.get_read_options" title="Permalink to this definition">#</a></dt>
 <dd><p>Validate rules for read options, and assign to the request.</p>
 <p>Helper method for <code class="docutils literal notranslate"><span class="pre">lookup()</span></code> and <code class="docutils literal notranslate"><span class="pre">run_query</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>eventual</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Flag indicating if <code class="docutils literal notranslate"><span class="pre">EVENTUAL</span></code> or <code class="docutils literal notranslate"><span class="pre">STRONG</span></code>
-consistency should be used.</li>
-<li><strong>transaction_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)"><em>bytes</em></a>) – A transaction identifier (may be null).</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eventual</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Flag indicating if <code class="docutils literal notranslate"><span class="pre">EVENTUAL</span></code> or <code class="docutils literal notranslate"><span class="pre">STRONG</span></code>
+consistency should be used.</p></li>
+<li><p><strong>transaction_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)"><em>bytes</em></a>) – A transaction identifier (may be null).</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">datastore_pb2.ReadOptions</span></code></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The read options corresponding to the inputs.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></a> if <code class="docutils literal notranslate"><span class="pre">eventual</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code> and the
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">datastore_pb2.ReadOptions</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The read options corresponding to the inputs.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></a> if <code class="docutils literal notranslate"><span class="pre">eventual</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code> and the
 <code class="docutils literal notranslate"><span class="pre">transaction_id</span></code> is not <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="google.cloud.datastore.helpers.key_from_protobuf">
-<code class="descclassname">google.cloud.datastore.helpers.</code><code class="descname">key_from_protobuf</code><span class="sig-paren">(</span><em>pb</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/helpers.html#key_from_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.helpers.key_from_protobuf" title="Permalink to this definition">#</a></dt>
+<code class="sig-prename descclassname">google.cloud.datastore.helpers.</code><code class="sig-name descname">key_from_protobuf</code><span class="sig-paren">(</span><em class="sig-param">pb</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/helpers.html#key_from_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.helpers.key_from_protobuf" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory method for creating a key based on a protobuf.</p>
 <p>The protobuf should be one returned from the Cloud Datastore
 Protobuf API.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pb</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">entity_pb2.Key</span></code>) – The Protobuf representing the key.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a new <cite>Key</cite> instance</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>pb</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">entity_pb2.Key</span></code>) – The Protobuf representing the key.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a new <cite>Key</cite> instance</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -250,13 +235,11 @@ Protobuf API.</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -269,7 +252,7 @@ Protobuf API.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

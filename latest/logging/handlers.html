@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Python Logging Module Handler &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Python Logging Module Handler &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -40,7 +38,7 @@
 <p>Python <a class="reference external" href="https://docs.python.org/3/library/logging.html#module-logging" title="(in Python v3.7)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">logging</span></code></a> handlers for Stackdriver Logging.</p>
 <dl class="class">
 <dt id="google.cloud.logging.handlers.handlers.CloudLoggingHandler">
-<em class="property">class </em><code class="descclassname">google.cloud.logging.handlers.handlers.</code><code class="descname">CloudLoggingHandler</code><span class="sig-paren">(</span><em>client</em>, <em>name='python'</em>, <em>transport=&lt;class 'google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport'&gt;</em>, <em>resource=Resource(type='global'</em>, <em>labels={})</em>, <em>labels=None</em>, <em>stream=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/handlers/handlers.html#CloudLoggingHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.handlers.CloudLoggingHandler" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.logging.handlers.handlers.</code><code class="sig-name descname">CloudLoggingHandler</code><span class="sig-paren">(</span><em class="sig-param">client</em>, <em class="sig-param">name='python'</em>, <em class="sig-param">transport=&lt;class 'google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport'&gt;</em>, <em class="sig-param">resource=Resource(type='global'</em>, <em class="sig-param">labels={})</em>, <em class="sig-param">labels=None</em>, <em class="sig-param">stream=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/handlers/handlers.html#CloudLoggingHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.handlers.CloudLoggingHandler" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/logging.handlers.html#logging.StreamHandler" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">logging.StreamHandler</span></code></a></p>
 <p>Handler that directly makes Stackdriver logging API calls.</p>
 <p>This is a Python standard <code class="docutils literal notranslate"><span class="pre">logging</span></code> handler using that can be used to
@@ -48,30 +46,26 @@ route Python standard logging messages directly to the Stackdriver
 Logging API.</p>
 <p>This handler is used when not in GAE or GKE environment.</p>
 <p>This handler supports both an asynchronous and synchronous transport.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.logging.client.Client</span></code></a>) – the authenticated Google Cloud Logging client for this
-handler to use</li>
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – the name of the custom log in Stackdriver Logging. Defaults
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.logging.client.Client</span></code></a>) – the authenticated Google Cloud Logging client for this
+handler to use</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – the name of the custom log in Stackdriver Logging. Defaults
 to ‘python’. The name of the Python logger will be represented
-in the <code class="docutils literal notranslate"><span class="pre">python_logger</span></code> field.</li>
-<li><strong>transport</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code></a>) – Class for creating new transport objects. It should
+in the <code class="docutils literal notranslate"><span class="pre">python_logger</span></code> field.</p></li>
+<li><p><strong>transport</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code></a>) – Class for creating new transport objects. It should
 extend from the base <a class="reference internal" href="transports-base.html#google.cloud.logging.handlers.transports.base.Transport" title="google.cloud.logging.handlers.transports.base.Transport"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transport</span></code></a> type and
 implement :meth`.Transport.send`. Defaults to
 <a class="reference internal" href="transports-thread.html#google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport" title="google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport"><code class="xref py py-class docutils literal notranslate"><span class="pre">BackgroundThreadTransport</span></code></a>. The other
-option is <a class="reference internal" href="transports-sync.html#google.cloud.logging.handlers.transports.sync.SyncTransport" title="google.cloud.logging.handlers.transports.sync.SyncTransport"><code class="xref py py-class docutils literal notranslate"><span class="pre">SyncTransport</span></code></a>.</li>
-<li><strong>resource</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code>) – (Optional) Monitored resource of the entry, defaults
-to the global resource type.</li>
-<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – (Optional) Mapping of labels for the entry.</li>
-<li><strong>stream</strong> (<em>file-like object</em>) – (optional) stream to be used by the handler.</li>
+option is <a class="reference internal" href="transports-sync.html#google.cloud.logging.handlers.transports.sync.SyncTransport" title="google.cloud.logging.handlers.transports.sync.SyncTransport"><code class="xref py py-class docutils literal notranslate"><span class="pre">SyncTransport</span></code></a>.</p></li>
+<li><p><strong>resource</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Resource</span></code>) – (Optional) Monitored resource of the entry, defaults
+to the global resource type.</p></li>
+<li><p><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – (Optional) Mapping of labels for the entry.</p></li>
+<li><p><strong>stream</strong> (<em>file-like object</em>) – (optional) stream to be used by the handler.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p>Example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">google.cloud.logging</span>
@@ -89,44 +83,37 @@ to the global resource type.</li>
 </div>
 <dl class="method">
 <dt id="google.cloud.logging.handlers.handlers.CloudLoggingHandler.emit">
-<code class="descname">emit</code><span class="sig-paren">(</span><em>record</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/handlers/handlers.html#CloudLoggingHandler.emit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.handlers.CloudLoggingHandler.emit" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">emit</code><span class="sig-paren">(</span><em class="sig-param">record</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/handlers/handlers.html#CloudLoggingHandler.emit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.handlers.CloudLoggingHandler.emit" title="Permalink to this definition">#</a></dt>
 <dd><p>Actually log the specified logging record.</p>
 <p>Overrides the default emit behavior of <code class="docutils literal notranslate"><span class="pre">StreamHandler</span></code>.</p>
 <p>See <a class="reference external" href="https://docs.python.org/2/library/logging.html#handler-objects">https://docs.python.org/2/library/logging.html#handler-objects</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>record</strong> (<a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.LogRecord" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">logging.LogRecord</span></code></a>) – The record to be logged.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>record</strong> (<a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.LogRecord" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">logging.LogRecord</span></code></a>) – The record to be logged.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="google.cloud.logging.handlers.handlers.setup_logging">
-<code class="descclassname">google.cloud.logging.handlers.handlers.</code><code class="descname">setup_logging</code><span class="sig-paren">(</span><em>handler</em>, <em>excluded_loggers=('google.cloud'</em>, <em>'google.auth'</em>, <em>'google_auth_httplib2')</em>, <em>log_level=20</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/handlers/handlers.html#setup_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.handlers.setup_logging" title="Permalink to this definition">#</a></dt>
+<code class="sig-prename descclassname">google.cloud.logging.handlers.handlers.</code><code class="sig-name descname">setup_logging</code><span class="sig-paren">(</span><em class="sig-param">handler</em>, <em class="sig-param">excluded_loggers=('google.cloud'</em>, <em class="sig-param">'google.auth'</em>, <em class="sig-param">'google_auth_httplib2')</em>, <em class="sig-param">log_level=20</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/handlers/handlers.html#setup_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.handlers.setup_logging" title="Permalink to this definition">#</a></dt>
 <dd><p>Attach a logging handler to the Python root logger</p>
 <p>Excludes loggers that this library itself uses to avoid
 infinite recursion.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>handler</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">logging.handler</span></code>) – the handler to attach to the global handler</li>
-<li><strong>excluded_loggers</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a>) – (Optional) The loggers to not attach the handler
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>handler</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">logging.handler</span></code>) – the handler to attach to the global handler</p></li>
+<li><p><strong>excluded_loggers</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a>) – (Optional) The loggers to not attach the handler
 to. This will always include the loggers in the
-path of the logging client itself.</li>
-<li><strong>log_level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – (Optional) Python logging log level. Defaults to
-<code class="xref py py-const docutils literal notranslate"><span class="pre">logging.INFO</span></code>.</li>
+path of the logging client itself.</p></li>
+<li><p><strong>log_level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – (Optional) Python logging log level. Defaults to
+<code class="xref py py-const docutils literal notranslate"><span class="pre">logging.INFO</span></code>.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p>Example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">google.cloud.logging</span>
@@ -230,13 +217,11 @@ path of the logging client itself.</li>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -249,7 +234,7 @@ path of the logging client itself.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client for BigQuery Storage API &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Client for BigQuery Storage API &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -39,49 +37,45 @@
 <span id="client-for-bigquery-storage-api"></span><h1>Client for BigQuery Storage API<a class="headerlink" href="#module-google.cloud.bigquery_storage_v1beta1" title="Permalink to this headline">#</a></h1>
 <dl class="class">
 <dt id="google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient">
-<em class="property">class </em><code class="descclassname">google.cloud.bigquery_storage_v1beta1.</code><code class="descname">BigQueryStorageClient</code><span class="sig-paren">(</span><em>transport=None</em>, <em>channel=None</em>, <em>credentials=None</em>, <em>client_config=None</em>, <em>client_info=None</em>, <em>client_options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1.html#BigQueryStorageClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.bigquery_storage_v1beta1.</code><code class="sig-name descname">BigQueryStorageClient</code><span class="sig-paren">(</span><em class="sig-param">transport=None</em>, <em class="sig-param">channel=None</em>, <em class="sig-param">credentials=None</em>, <em class="sig-param">client_config=None</em>, <em class="sig-param">client_info=None</em>, <em class="sig-param">client_options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1.html#BigQueryStorageClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient" title="Permalink to this definition">#</a></dt>
 <dd><p>Client for interacting with BigQuery Storage API.</p>
 <p>The BigQuery storage API can be used to read data stored in BigQuery.</p>
 <p>Constructor.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>(</strong><strong>Union</strong><strong>[</strong><strong>BigQueryStorageGrpcTransport</strong><strong>,</strong> (<em>transport</em>) – Callable[[~.Credentials, type], ~.BigQueryStorageGrpcTransport]): A transport
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong><strong>Union</strong><strong>[</strong><strong>BigQueryStorageGrpcTransport</strong><strong>,</strong> (<em>transport</em>) – Callable[[~.Credentials, type], ~.BigQueryStorageGrpcTransport]): A transport
 instance, responsible for actually making the API calls.
 The default transport uses the gRPC protocol.
 This argument may also be a callable which returns a
 transport instance. Callables will be sent the credentials
 as the first argument and the default transport class as
-the second argument.</li>
-<li><strong>channel</strong> (<a class="reference external" href="https://grpc.github.io/grpc/python/grpc.html#grpc.Channel" title="(in gRPC Python v1.22.0)"><em>grpc.Channel</em></a>) – DEPRECATED. A <code class="docutils literal notranslate"><span class="pre">Channel</span></code> instance
+the second argument.</p></li>
+<li><p><strong>channel</strong> (<a class="reference external" href="https://grpc.github.io/grpc/python/grpc.html#grpc.Channel" title="(in gRPC Python v1.22.0)"><em>grpc.Channel</em></a>) – DEPRECATED. A <code class="docutils literal notranslate"><span class="pre">Channel</span></code> instance
 through which to make calls. This argument is mutually exclusive
-with <code class="docutils literal notranslate"><span class="pre">credentials</span></code>; providing both will raise an exception.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.6.2)"><em>google.auth.credentials.Credentials</em></a>) – The
+with <code class="docutils literal notranslate"><span class="pre">credentials</span></code>; providing both will raise an exception.</p></li>
+<li><p><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.6.2)"><em>google.auth.credentials.Credentials</em></a>) – The
 authorization credentials to attach to requests. These
 credentials identify this application to the service. If none
 are specified, the client will attempt to ascertain the
 credentials from the environment.
 This argument is mutually exclusive with providing a
 transport instance to <code class="docutils literal notranslate"><span class="pre">transport</span></code>; doing so will raise
-an exception.</li>
-<li><strong>client_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – DEPRECATED. A dictionary of call options for
-each method. If not specified, the default configuration is used.</li>
-<li><strong>client_info</strong> (<a class="reference internal" href="../../../core/client_info.html#google.api_core.gapic_v1.client_info.ClientInfo" title="google.api_core.gapic_v1.client_info.ClientInfo"><em>google.api_core.gapic_v1.client_info.ClientInfo</em></a>) – The client info used to send a user-agent string along with
+an exception.</p></li>
+<li><p><strong>client_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – DEPRECATED. A dictionary of call options for
+each method. If not specified, the default configuration is used.</p></li>
+<li><p><strong>client_info</strong> (<a class="reference internal" href="../../../core/client_info.html#google.api_core.gapic_v1.client_info.ClientInfo" title="google.api_core.gapic_v1.client_info.ClientInfo"><em>google.api_core.gapic_v1.client_info.ClientInfo</em></a>) – The client info used to send a user-agent string along with
 API requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, then default info will be used.
 Generally, you only need to set this if you’re developing
-your own client library.</li>
-<li><strong>client_options</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>google.api_core.client_options.ClientOptions</em><em>]</em>) – Client options used to set user options on the client. API Endpoint
-should be set through client_options.</li>
+your own client library.</p></li>
+<li><p><strong>client_options</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>google.api_core.client_options.ClientOptions</em><em>]</em>) – Client options used to set user options on the client. API Endpoint
+should be set through client_options.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.batch_create_read_session_streams">
-<code class="descname">batch_create_read_session_streams</code><span class="sig-paren">(</span><em>session</em>, <em>requested_streams</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/gapic/big_query_storage_client.html#BigQueryStorageClient.batch_create_read_session_streams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.batch_create_read_session_streams" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">batch_create_read_session_streams</code><span class="sig-paren">(</span><em class="sig-param">session</em>, <em class="sig-param">requested_streams</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/gapic/big_query_storage_client.html#BigQueryStorageClient.batch_create_read_session_streams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.batch_create_read_session_streams" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates additional streams for a ReadSession. This API can be used to
 dynamically adjust the parallelism of a batch processing task upwards by
 adding additional workers.</p>
@@ -99,49 +93,45 @@ adding additional workers.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">batch_create_read_session_streams</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">requested_streams</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>session</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.ReadSession" title="google.cloud.bigquery_storage_v1beta1.types.ReadSession"><em>ReadSession</em></a><em>]</em>) – <p>Required. Must be a non-expired session obtained from a call to
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.ReadSession" title="google.cloud.bigquery_storage_v1beta1.types.ReadSession"><em>ReadSession</em></a><em>]</em>) – <p>Required. Must be a non-expired session obtained from a call to
 CreateReadSession. Only the name field needs to be set.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.ReadSession" title="google.cloud.bigquery_storage_v1beta1.types.ReadSession"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReadSession</span></code></a></p>
-</li>
-<li><strong>requested_streams</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Required. Number of new streams requested. Must be positive.
+</p></li>
+<li><p><strong>requested_streams</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Required. Number of new streams requested. Must be positive.
 Number of added streams may be less than this, see CreateReadSessionRequest
-for more information.</li>
-<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+for more information.</p></li>
+<li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</li>
-<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+be retried.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
-specified, the timeout applies to each individual attempt.</li>
-<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
-that is provided to the method.</li>
+specified, the timeout applies to each individual attempt.</p></li>
+<li><p><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.BatchCreateReadSessionStreamsResponse" title="google.cloud.bigquery_storage_v1beta1.types.BatchCreateReadSessionStreamsResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">BatchCreateReadSessionStreamsResponse</span></code></a> instance.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
-failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
-to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.BatchCreateReadSessionStreamsResponse" title="google.cloud.bigquery_storage_v1beta1.types.BatchCreateReadSessionStreamsResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">BatchCreateReadSessionStreamsResponse</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the parameters are invalid.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.create_read_session">
-<code class="descname">create_read_session</code><span class="sig-paren">(</span><em>table_reference</em>, <em>parent</em>, <em>table_modifiers=None</em>, <em>requested_streams=None</em>, <em>read_options=None</em>, <em>format_=None</em>, <em>sharding_strategy=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/gapic/big_query_storage_client.html#BigQueryStorageClient.create_read_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.create_read_session" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">create_read_session</code><span class="sig-paren">(</span><em class="sig-param">table_reference</em>, <em class="sig-param">parent</em>, <em class="sig-param">table_modifiers=None</em>, <em class="sig-param">requested_streams=None</em>, <em class="sig-param">read_options=None</em>, <em class="sig-param">format_=None</em>, <em class="sig-param">sharding_strategy=None</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/gapic/big_query_storage_client.html#BigQueryStorageClient.create_read_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.create_read_session" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a new read session. A read session divides the contents of a
 BigQuery table into one or more streams, which can then be used to read
 data from the table. The read session also specifies properties of the
@@ -166,71 +156,67 @@ not require manual clean-up by the caller.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_read_session</span><span class="p">(</span><span class="n">table_reference</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>table_reference</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.TableReference" title="google.cloud.bigquery_storage_v1beta1.types.TableReference"><em>TableReference</em></a><em>]</em>) – <p>Required. Reference to the table to read.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table_reference</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.TableReference" title="google.cloud.bigquery_storage_v1beta1.types.TableReference"><em>TableReference</em></a><em>]</em>) – <p>Required. Reference to the table to read.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.TableReference" title="google.cloud.bigquery_storage_v1beta1.types.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a></p>
-</li>
-<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. String of the form <code class="docutils literal notranslate"><span class="pre">projects/{project_id}</span></code> indicating the
+</p></li>
+<li><p><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. String of the form <code class="docutils literal notranslate"><span class="pre">projects/{project_id}</span></code> indicating the
 project this ReadSession is associated with. This is the project that
-will be billed for usage.</li>
-<li><strong>table_modifiers</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.TableModifiers" title="google.cloud.bigquery_storage_v1beta1.types.TableModifiers"><em>TableModifiers</em></a><em>]</em>) – <p>Optional. Any modifiers to the Table (e.g. snapshot timestamp).</p>
+will be billed for usage.</p></li>
+<li><p><strong>table_modifiers</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.TableModifiers" title="google.cloud.bigquery_storage_v1beta1.types.TableModifiers"><em>TableModifiers</em></a><em>]</em>) – <p>Optional. Any modifiers to the Table (e.g. snapshot timestamp).</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.TableModifiers" title="google.cloud.bigquery_storage_v1beta1.types.TableModifiers"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableModifiers</span></code></a></p>
-</li>
-<li><strong>requested_streams</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – <p>Optional. Initial number of streams. If unset or 0, we will
+</p></li>
+<li><p><strong>requested_streams</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – <p>Optional. Initial number of streams. If unset or 0, we will
 provide a value of streams so as to produce reasonable throughput. Must be
 non-negative. The number of streams may be lower than the requested number,
 depending on the amount parallelism that is reasonable for the table and
 the maximum amount of parallelism allowed by the system.</p>
 <p>Streams must be read starting from offset 0.</p>
-</li>
-<li><strong>read_options</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.TableReadOptions" title="google.cloud.bigquery_storage_v1beta1.types.TableReadOptions"><em>TableReadOptions</em></a><em>]</em>) – <p>Optional. Read options for this session (e.g. column selection, filters).</p>
+</p></li>
+<li><p><strong>read_options</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.TableReadOptions" title="google.cloud.bigquery_storage_v1beta1.types.TableReadOptions"><em>TableReadOptions</em></a><em>]</em>) – <p>Optional. Read options for this session (e.g. column selection, filters).</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.TableReadOptions" title="google.cloud.bigquery_storage_v1beta1.types.TableReadOptions"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReadOptions</span></code></a></p>
-</li>
-<li><strong>format</strong> (<em>DataFormat</em>) – Data output format. Currently default to Avro.</li>
-<li><strong>sharding_strategy</strong> (<em>ShardingStrategy</em>) – The strategy to use for distributing data among multiple streams. Currently
-defaults to liquid sharding.</li>
-<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+</p></li>
+<li><p><strong>format_</strong> (<em>DataFormat</em>) – Data output format. Currently default to Avro.</p></li>
+<li><p><strong>sharding_strategy</strong> (<em>ShardingStrategy</em>) – The strategy to use for distributing data among multiple streams. Currently
+defaults to liquid sharding.</p></li>
+<li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</li>
-<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+be retried.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
-specified, the timeout applies to each individual attempt.</li>
-<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
-that is provided to the method.</li>
+specified, the timeout applies to each individual attempt.</p></li>
+<li><p><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.ReadSession" title="google.cloud.bigquery_storage_v1beta1.types.ReadSession"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReadSession</span></code></a> instance.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
-failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
-to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.ReadSession" title="google.cloud.bigquery_storage_v1beta1.types.ReadSession"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReadSession</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the parameters are invalid.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.enums">
-<code class="descname">enums</code><em class="property"> = &lt;module 'google.cloud.bigquery_storage_v1beta1.gapic.enums' from '/var/code/gcp/bigquery_storage/google/cloud/bigquery_storage_v1beta1/gapic/enums.py'&gt;</em><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.enums" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">enums</code><em class="property"> = &lt;module 'google.cloud.bigquery_storage_v1beta1.gapic.enums' from '/var/code/gcp/bigquery_storage/google/cloud/bigquery_storage_v1beta1/gapic/enums.py'&gt;</em><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.enums" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.finalize_stream">
-<code class="descname">finalize_stream</code><span class="sig-paren">(</span><em>stream</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/gapic/big_query_storage_client.html#BigQueryStorageClient.finalize_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.finalize_stream" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">finalize_stream</code><span class="sig-paren">(</span><em class="sig-param">stream</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/gapic/big_query_storage_client.html#BigQueryStorageClient.finalize_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.finalize_stream" title="Permalink to this definition">#</a></dt>
 <dd><p>Triggers the graceful termination of a single stream in a ReadSession. This
 API can be used to dynamically adjust the parallelism of a batch processing
 task downwards without losing data.</p>
@@ -254,96 +240,84 @@ Stream.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">finalize_stream</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>stream</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.Stream" title="google.cloud.bigquery_storage_v1beta1.types.Stream"><em>Stream</em></a><em>]</em>) – <p>Stream to finalize.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stream</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.Stream" title="google.cloud.bigquery_storage_v1beta1.types.Stream"><em>Stream</em></a><em>]</em>) – <p>Stream to finalize.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.Stream" title="google.cloud.bigquery_storage_v1beta1.types.Stream"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stream</span></code></a></p>
-</li>
-<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+</p></li>
+<li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</li>
-<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+be retried.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
-specified, the timeout applies to each individual attempt.</li>
-<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
-that is provided to the method.</li>
+specified, the timeout applies to each individual attempt.</p></li>
+<li><p><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
-failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
-to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the parameters are invalid.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.from_service_account_file">
-<em class="property">classmethod </em><code class="descname">from_service_account_file</code><span class="sig-paren">(</span><em>filename</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/gapic/big_query_storage_client.html#BigQueryStorageClient.from_service_account_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.from_service_account_file" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">from_service_account_file</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/gapic/big_query_storage_client.html#BigQueryStorageClient.from_service_account_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.from_service_account_file" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates an instance of this client using the provided credentials
 file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the service account private key json
-file.</li>
-<li><strong>args</strong> – Additional arguments to pass to the constructor.</li>
-<li><strong>kwargs</strong> – Additional arguments to pass to the constructor.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the service account private key json
+file.</p></li>
+<li><p><strong>args</strong> – Additional arguments to pass to the constructor.</p></li>
+<li><p><strong>kwargs</strong> – Additional arguments to pass to the constructor.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The constructed client.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient" title="google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient">BigQueryStorageClient</a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The constructed client.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient" title="google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient">BigQueryStorageClient</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.from_service_account_json">
-<em class="property">classmethod </em><code class="descname">from_service_account_json</code><span class="sig-paren">(</span><em>filename</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.from_service_account_json" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">from_service_account_json</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.from_service_account_json" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates an instance of this client using the provided credentials
 file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the service account private key json
-file.</li>
-<li><strong>args</strong> – Additional arguments to pass to the constructor.</li>
-<li><strong>kwargs</strong> – Additional arguments to pass to the constructor.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the service account private key json
+file.</p></li>
+<li><p><strong>args</strong> – Additional arguments to pass to the constructor.</p></li>
+<li><p><strong>kwargs</strong> – Additional arguments to pass to the constructor.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The constructed client.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient" title="google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient">BigQueryStorageClient</a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The constructed client.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient" title="google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient">BigQueryStorageClient</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.read_rows">
-<code class="descname">read_rows</code><span class="sig-paren">(</span><em>read_position</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/client.html#BigQueryStorageClient.read_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.read_rows" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">read_rows</code><span class="sig-paren">(</span><em class="sig-param">read_position</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/client.html#BigQueryStorageClient.read_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.read_rows" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads rows from the table in the format prescribed by the read
 session. Each response contains one or more table rows, up to a
 maximum of 10 MiB per response; read requests which attempt to read
@@ -378,51 +352,47 @@ to read data.</p>
 <span class="gp">... </span>    <span class="k">pass</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>read_position</strong> (<em>Union</em><em>[                 </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>,                 </em><a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.StreamPosition" title="google.cloud.bigquery_storage_v1beta1.types.StreamPosition"><em>StreamPosition</em></a><em>             ]</em>) – Required. Identifier of the position in the stream to start
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>read_position</strong> (<em>Union</em><em>[                 </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>,                 </em><a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.StreamPosition" title="google.cloud.bigquery_storage_v1beta1.types.StreamPosition"><em>StreamPosition</em></a><em>             ]</em>) – Required. Identifier of the position in the stream to start
 reading from. The offset requested must be less than the last
 row read from ReadRows. Requesting a larger offset is
 undefined. If a dict is provided, it must be of the same form
 as the protobuf message
-<a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.StreamPosition" title="google.cloud.bigquery_storage_v1beta1.types.StreamPosition"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamPosition</span></code></a></li>
-<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+<a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.StreamPosition" title="google.cloud.bigquery_storage_v1beta1.types.StreamPosition"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamPosition</span></code></a></p></li>
+<li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</li>
-<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+be retried.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
-specified, the timeout applies to each individual attempt.</li>
-<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
-that is provided to the method.</li>
+specified, the timeout applies to each individual attempt.</p></li>
+<li><p><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">An iterable of
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An iterable of
 <a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse" title="google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReadRowsResponse</span></code></a>.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="reader.html#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream" title="google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream">ReadRowsStream</a></p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
-failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
-to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="reader.html#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream" title="google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream">ReadRowsStream</a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the parameters are invalid.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.split_read_stream">
-<code class="descname">split_read_stream</code><span class="sig-paren">(</span><em>original_stream</em>, <em>fraction=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/gapic/big_query_storage_client.html#BigQueryStorageClient.split_read_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.split_read_stream" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">split_read_stream</code><span class="sig-paren">(</span><em class="sig-param">original_stream</em>, <em class="sig-param">fraction=None</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/gapic/big_query_storage_client.html#BigQueryStorageClient.split_read_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient.split_read_stream" title="Permalink to this definition">#</a></dt>
 <dd><p>Splits a given read stream into two Streams. These streams are referred
 to as the primary and the residual of the split. The original stream can
 still be read from in the same manner as before. Both of the returned
@@ -445,47 +415,43 @@ completion.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">split_read_stream</span><span class="p">(</span><span class="n">original_stream</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>original_stream</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.Stream" title="google.cloud.bigquery_storage_v1beta1.types.Stream"><em>Stream</em></a><em>]</em>) – <p>Stream to split.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>original_stream</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.Stream" title="google.cloud.bigquery_storage_v1beta1.types.Stream"><em>Stream</em></a><em>]</em>) – <p>Stream to split.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.Stream" title="google.cloud.bigquery_storage_v1beta1.types.Stream"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stream</span></code></a></p>
-</li>
-<li><strong>fraction</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – A value in the range (0.0, 1.0) that specifies the fractional point at
+</p></li>
+<li><p><strong>fraction</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – A value in the range (0.0, 1.0) that specifies the fractional point at
 which the original stream should be split. The actual split point is
 evaluated on pre-filtered rows, so if a filter is provided, then there is
 no guarantee that the division of the rows between the new child streams
 will be proportional to this fractional value. Additionally, because the
 server-side unit for assigning data is collections of rows, this fraction
-will always map to to a data storage boundary on the server side.</li>
-<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+will always map to to a data storage boundary on the server side.</p></li>
+<li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</li>
-<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+be retried.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
-specified, the timeout applies to each individual attempt.</li>
-<li><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
-that is provided to the method.</li>
+specified, the timeout applies to each individual attempt.</p></li>
+<li><p><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.SplitReadStreamResponse" title="google.cloud.bigquery_storage_v1beta1.types.SplitReadStreamResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">SplitReadStreamResponse</span></code></a> instance.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
-failed for any reason.</li>
-<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
-to a retryable error and retry attempts failed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.SplitReadStreamResponse" title="google.cloud.bigquery_storage_v1beta1.types.SplitReadStreamResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">SplitReadStreamResponse</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the parameters are invalid.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -578,13 +544,11 @@ to a retryable error and retry attempts failed.</li>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -597,7 +561,7 @@ to a retryable error and retry attempts failed.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

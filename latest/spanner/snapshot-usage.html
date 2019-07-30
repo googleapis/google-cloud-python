@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Read-only Transactions via Snapshots &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Read-only Transactions via Snapshots &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -45,19 +43,19 @@ the results are consistent as of a particular point in time.</p>
 <p>To begin using a snapshot using the default “bound” (which is “strong”),
 meaning all reads are performed at a timestamp where all previously-committed
 transactions are visible:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">snapshot</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">snapshot</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">snapshot</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">snapshot</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>You can also specify a weaker bound, which can either be to perform all
 reads as of a given timestamp:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
-<span class="kn">from</span> <span class="nn">pytz</span> <span class="k">import</span> <span class="n">UTC</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">pytz</span> <span class="kn">import</span> <span class="n">UTC</span>
 <span class="n">TIMESTAMP</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">UTC</span><span class="p">)</span>
 <span class="n">snapshot</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">snapshot</span><span class="p">(</span><span class="n">read_timestamp</span><span class="o">=</span><span class="n">TIMESTAMP</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>or as of a given duration in the past:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
 <span class="n">DURATION</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">snapshot</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">snapshot</span><span class="p">(</span><span class="n">exact_staleness</span><span class="o">=</span><span class="n">DURATION</span><span class="p">)</span>
 </pre></div>
@@ -71,7 +69,7 @@ in the constructor of the snapshot.  However, <code class="docutils literal notr
 incompatible with either <code class="docutils literal notranslate"><span class="pre">max_staleness</span></code> and/or <code class="docutils literal notranslate"><span class="pre">min_read_timestamp</span></code>.</p>
 <p>Otherwise <code class="docutils literal notranslate"><span class="pre">multi_use</span></code> defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code> and the snapshot cannot be
 reused.</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">snapshot</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">snapshot</span><span class="p">(</span><span class="n">multi_use</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">snapshot</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">snapshot</span><span class="p">(</span><span class="n">multi_use</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><a class="reference internal" href="snapshot-api.html#google.cloud.spanner_v1.snapshot.Snapshot.begin" title="google.cloud.spanner_v1.snapshot.Snapshot.begin"><code class="xref py py-meth docutils literal notranslate"><span class="pre">begin()</span></code></a> can only be used on a
@@ -83,18 +81,18 @@ to call if you need to have multiple pending operations.</p>
 <p>Read data for selected rows from a table in the database.  Calls
 the <code class="docutils literal notranslate"><span class="pre">Read</span></code> API, which returns all rows specified in <code class="docutils literal notranslate"><span class="pre">key_set</span></code>, or else
 fails if the result set is too large,</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">database</span><span class="o">.</span><span class="n">snapshot</span><span class="p">()</span> <span class="k">as</span> <span class="n">snapshot</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">database</span><span class="o">.</span><span class="n">snapshot</span><span class="p">()</span> <span class="k">as</span> <span class="n">snapshot</span><span class="p">:</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
         <span class="n">table</span><span class="o">=</span><span class="s1">&#39;table-name&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">],</span>
         <span class="n">key_set</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;phred@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;bharney@example.com&#39;</span><span class="p">])</span>
 
     <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">rows</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Perform all iteration within the context of the <code class="docutils literal notranslate"><span class="pre">with</span> <span class="pre">database.snapshot()</span></code>
+<p class="admonition-title">Note</p>
+<p>Perform all iteration within the context of the <code class="docutils literal notranslate"><span class="pre">with</span> <span class="pre">database.snapshot()</span></code>
 block.</p>
 </div>
 </div>
@@ -103,7 +101,7 @@ block.</p>
 <p>Read data from a query against tables in the database.  Calls
 the <code class="docutils literal notranslate"><span class="pre">ExecuteSql</span></code> API, which returns all rows matching the query, or else
 fails if the result set is too large,</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">database</span><span class="o">.</span><span class="n">snapshot</span><span class="p">()</span> <span class="k">as</span> <span class="n">snapshot</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">database</span><span class="o">.</span><span class="n">snapshot</span><span class="p">()</span> <span class="k">as</span> <span class="n">snapshot</span><span class="p">:</span>
     <span class="n">QUERY</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s1">&#39;SELECT e.first_name, e.last_name, p.telephone &#39;</span>
         <span class="s1">&#39;FROM employees as e, phones as p &#39;</span>
@@ -111,12 +109,12 @@ fails if the result set is too large,</p>
     <span class="n">result</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">execute_sql</span><span class="p">(</span><span class="n">QUERY</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Perform all iteration within the context of the <code class="docutils literal notranslate"><span class="pre">with</span> <span class="pre">database.snapshot()</span></code>
+<p class="admonition-title">Note</p>
+<p>Perform all iteration within the context of the <code class="docutils literal notranslate"><span class="pre">with</span> <span class="pre">database.snapshot()</span></code>
 block.</p>
 </div>
 </div>
@@ -212,13 +210,11 @@ block.</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -231,7 +227,7 @@ block.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

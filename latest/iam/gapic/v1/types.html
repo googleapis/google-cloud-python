@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for IAM Service Account Credentials API Client &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Types for IAM Service Account Credentials API Client &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -39,16 +37,16 @@
 <span id="types-for-iam-service-account-credentials-api-client"></span><h1>Types for IAM Service Account Credentials API Client<a class="headerlink" href="#module-google.cloud.iam_credentials_v1.types" title="Permalink to this headline">#</a></h1>
 <dl class="class">
 <dt id="google.cloud.iam_credentials_v1.types.Duration">
-<em class="property">class </em><code class="descclassname">google.cloud.iam_credentials_v1.types.</code><code class="descname">Duration</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.Duration" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.iam_credentials_v1.types.</code><code class="sig-name descname">Duration</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.Duration" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.iam_credentials_v1.types.Duration.nanos">
-<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.Duration.nanos" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">nanos</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.Duration.nanos" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Duration.nanos</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.iam_credentials_v1.types.Duration.seconds">
-<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.Duration.seconds" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">seconds</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.Duration.seconds" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Duration.seconds</p>
 </dd></dl>
 
@@ -56,10 +54,10 @@
 
 <dl class="class">
 <dt id="google.cloud.iam_credentials_v1.types.GenerateAccessTokenRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.iam_credentials_v1.types.</code><code class="descname">GenerateAccessTokenRequest</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateAccessTokenRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.iam_credentials_v1.types.</code><code class="sig-name descname">GenerateAccessTokenRequest</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateAccessTokenRequest" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.iam_credentials_v1.types.GenerateAccessTokenRequest.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateAccessTokenRequest.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateAccessTokenRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>The resource name of the service account for which the
 credentials are requested, in the following format:
 <code class="docutils literal notranslate"><span class="pre">projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}</span></code>.</p>
@@ -67,7 +65,7 @@ credentials are requested, in the following format:
 
 <dl class="attribute">
 <dt id="google.cloud.iam_credentials_v1.types.GenerateAccessTokenRequest.delegates">
-<code class="descname">delegates</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateAccessTokenRequest.delegates" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">delegates</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateAccessTokenRequest.delegates" title="Permalink to this definition">#</a></dt>
 <dd><p>The sequence of service accounts in a delegation chain. Each
 service account must be granted the
 <code class="docutils literal notranslate"><span class="pre">roles/iam.serviceAccountTokenCreator</span></code> role on its next
@@ -81,7 +79,7 @@ request.  The delegates must have the following format:
 
 <dl class="attribute">
 <dt id="google.cloud.iam_credentials_v1.types.GenerateAccessTokenRequest.scope">
-<code class="descname">scope</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateAccessTokenRequest.scope" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">scope</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateAccessTokenRequest.scope" title="Permalink to this definition">#</a></dt>
 <dd><p>Code to identify the scopes to be included in the OAuth 2.0
 access token. See
 <a class="reference external" href="https://developers.google.com/identity/protocols/googlescopes">https://developers.google.com/identity/protocols/googlescopes</a>
@@ -90,7 +88,7 @@ for more information. At least one value required.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.iam_credentials_v1.types.GenerateAccessTokenRequest.lifetime">
-<code class="descname">lifetime</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateAccessTokenRequest.lifetime" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">lifetime</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateAccessTokenRequest.lifetime" title="Permalink to this definition">#</a></dt>
 <dd><p>The desired lifetime duration of the access token in seconds.
 Must be set to a value less than or equal to 3600 (1 hour). If
 a value is not specified, the token’s lifetime will be set to
@@ -99,25 +97,25 @@ a default value of one hour.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">delegates</code></dt>
+<code class="sig-name descname">delegates</code></dt>
 <dd><p>Field google.iam.credentials.v1.GenerateAccessTokenRequest.delegates</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">lifetime</code></dt>
+<code class="sig-name descname">lifetime</code></dt>
 <dd><p>Field google.iam.credentials.v1.GenerateAccessTokenRequest.lifetime</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">name</code></dt>
+<code class="sig-name descname">name</code></dt>
 <dd><p>Field google.iam.credentials.v1.GenerateAccessTokenRequest.name</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">scope</code></dt>
+<code class="sig-name descname">scope</code></dt>
 <dd><p>Field google.iam.credentials.v1.GenerateAccessTokenRequest.scope</p>
 </dd></dl>
 
@@ -125,28 +123,28 @@ a default value of one hour.</p>
 
 <dl class="class">
 <dt id="google.cloud.iam_credentials_v1.types.GenerateAccessTokenResponse">
-<em class="property">class </em><code class="descclassname">google.cloud.iam_credentials_v1.types.</code><code class="descname">GenerateAccessTokenResponse</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateAccessTokenResponse" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.iam_credentials_v1.types.</code><code class="sig-name descname">GenerateAccessTokenResponse</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateAccessTokenResponse" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.iam_credentials_v1.types.GenerateAccessTokenResponse.access_token">
-<code class="descname">access_token</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateAccessTokenResponse.access_token" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">access_token</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateAccessTokenResponse.access_token" title="Permalink to this definition">#</a></dt>
 <dd><p>The OAuth 2.0 access token.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.iam_credentials_v1.types.GenerateAccessTokenResponse.expire_time">
-<code class="descname">expire_time</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateAccessTokenResponse.expire_time" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">expire_time</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateAccessTokenResponse.expire_time" title="Permalink to this definition">#</a></dt>
 <dd><p>Token expiration time. The expiration time is always set.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">access_token</code></dt>
+<code class="sig-name descname">access_token</code></dt>
 <dd><p>Field google.iam.credentials.v1.GenerateAccessTokenResponse.access_token</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">expire_time</code></dt>
+<code class="sig-name descname">expire_time</code></dt>
 <dd><p>Field google.iam.credentials.v1.GenerateAccessTokenResponse.expire_time</p>
 </dd></dl>
 
@@ -154,10 +152,10 @@ a default value of one hour.</p>
 
 <dl class="class">
 <dt id="google.cloud.iam_credentials_v1.types.GenerateIdTokenRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.iam_credentials_v1.types.</code><code class="descname">GenerateIdTokenRequest</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateIdTokenRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.iam_credentials_v1.types.</code><code class="sig-name descname">GenerateIdTokenRequest</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateIdTokenRequest" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.iam_credentials_v1.types.GenerateIdTokenRequest.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateIdTokenRequest.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateIdTokenRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>The resource name of the service account for which the
 credentials are requested, in the following format:
 <code class="docutils literal notranslate"><span class="pre">projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}</span></code>.</p>
@@ -165,7 +163,7 @@ credentials are requested, in the following format:
 
 <dl class="attribute">
 <dt id="google.cloud.iam_credentials_v1.types.GenerateIdTokenRequest.delegates">
-<code class="descname">delegates</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateIdTokenRequest.delegates" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">delegates</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateIdTokenRequest.delegates" title="Permalink to this definition">#</a></dt>
 <dd><p>The sequence of service accounts in a delegation chain. Each
 service account must be granted the
 <code class="docutils literal notranslate"><span class="pre">roles/iam.serviceAccountTokenCreator</span></code> role on its next
@@ -179,14 +177,14 @@ request.  The delegates must have the following format:
 
 <dl class="attribute">
 <dt id="google.cloud.iam_credentials_v1.types.GenerateIdTokenRequest.audience">
-<code class="descname">audience</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateIdTokenRequest.audience" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">audience</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateIdTokenRequest.audience" title="Permalink to this definition">#</a></dt>
 <dd><p>The audience for the token, such as the API or account that
 this token grants access to.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.iam_credentials_v1.types.GenerateIdTokenRequest.include_email">
-<code class="descname">include_email</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateIdTokenRequest.include_email" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">include_email</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateIdTokenRequest.include_email" title="Permalink to this definition">#</a></dt>
 <dd><p>Include the service account email in the token. If set to
 <code class="docutils literal notranslate"><span class="pre">true</span></code>, the token will contain <code class="docutils literal notranslate"><span class="pre">email</span></code> and
 <code class="docutils literal notranslate"><span class="pre">email_verified</span></code> claims.</p>
@@ -194,25 +192,25 @@ this token grants access to.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">audience</code></dt>
+<code class="sig-name descname">audience</code></dt>
 <dd><p>Field google.iam.credentials.v1.GenerateIdTokenRequest.audience</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">delegates</code></dt>
+<code class="sig-name descname">delegates</code></dt>
 <dd><p>Field google.iam.credentials.v1.GenerateIdTokenRequest.delegates</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">include_email</code></dt>
+<code class="sig-name descname">include_email</code></dt>
 <dd><p>Field google.iam.credentials.v1.GenerateIdTokenRequest.include_email</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">name</code></dt>
+<code class="sig-name descname">name</code></dt>
 <dd><p>Field google.iam.credentials.v1.GenerateIdTokenRequest.name</p>
 </dd></dl>
 
@@ -220,16 +218,16 @@ this token grants access to.</p>
 
 <dl class="class">
 <dt id="google.cloud.iam_credentials_v1.types.GenerateIdTokenResponse">
-<em class="property">class </em><code class="descclassname">google.cloud.iam_credentials_v1.types.</code><code class="descname">GenerateIdTokenResponse</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateIdTokenResponse" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.iam_credentials_v1.types.</code><code class="sig-name descname">GenerateIdTokenResponse</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateIdTokenResponse" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.iam_credentials_v1.types.GenerateIdTokenResponse.token">
-<code class="descname">token</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateIdTokenResponse.token" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">token</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.GenerateIdTokenResponse.token" title="Permalink to this definition">#</a></dt>
 <dd><p>The OpenId Connect ID token.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">token</code></dt>
+<code class="sig-name descname">token</code></dt>
 <dd><p>Field google.iam.credentials.v1.GenerateIdTokenResponse.token</p>
 </dd></dl>
 
@@ -237,10 +235,10 @@ this token grants access to.</p>
 
 <dl class="class">
 <dt id="google.cloud.iam_credentials_v1.types.SignBlobRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.iam_credentials_v1.types.</code><code class="descname">SignBlobRequest</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignBlobRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.iam_credentials_v1.types.</code><code class="sig-name descname">SignBlobRequest</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignBlobRequest" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.iam_credentials_v1.types.SignBlobRequest.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignBlobRequest.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignBlobRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>The resource name of the service account for which the
 credentials are requested, in the following format:
 <code class="docutils literal notranslate"><span class="pre">projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}</span></code>.</p>
@@ -248,7 +246,7 @@ credentials are requested, in the following format:
 
 <dl class="attribute">
 <dt id="google.cloud.iam_credentials_v1.types.SignBlobRequest.delegates">
-<code class="descname">delegates</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignBlobRequest.delegates" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">delegates</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignBlobRequest.delegates" title="Permalink to this definition">#</a></dt>
 <dd><p>The sequence of service accounts in a delegation chain. Each
 service account must be granted the
 <code class="docutils literal notranslate"><span class="pre">roles/iam.serviceAccountTokenCreator</span></code> role on its next
@@ -262,25 +260,25 @@ request.  The delegates must have the following format:
 
 <dl class="attribute">
 <dt id="google.cloud.iam_credentials_v1.types.SignBlobRequest.payload">
-<code class="descname">payload</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignBlobRequest.payload" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">payload</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignBlobRequest.payload" title="Permalink to this definition">#</a></dt>
 <dd><p>The bytes to sign.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">delegates</code></dt>
+<code class="sig-name descname">delegates</code></dt>
 <dd><p>Field google.iam.credentials.v1.SignBlobRequest.delegates</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">name</code></dt>
+<code class="sig-name descname">name</code></dt>
 <dd><p>Field google.iam.credentials.v1.SignBlobRequest.name</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">payload</code></dt>
+<code class="sig-name descname">payload</code></dt>
 <dd><p>Field google.iam.credentials.v1.SignBlobRequest.payload</p>
 </dd></dl>
 
@@ -288,28 +286,28 @@ request.  The delegates must have the following format:
 
 <dl class="class">
 <dt id="google.cloud.iam_credentials_v1.types.SignBlobResponse">
-<em class="property">class </em><code class="descclassname">google.cloud.iam_credentials_v1.types.</code><code class="descname">SignBlobResponse</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignBlobResponse" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.iam_credentials_v1.types.</code><code class="sig-name descname">SignBlobResponse</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignBlobResponse" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.iam_credentials_v1.types.SignBlobResponse.key_id">
-<code class="descname">key_id</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignBlobResponse.key_id" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">key_id</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignBlobResponse.key_id" title="Permalink to this definition">#</a></dt>
 <dd><p>The ID of the key used to sign the blob.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.iam_credentials_v1.types.SignBlobResponse.signed_blob">
-<code class="descname">signed_blob</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignBlobResponse.signed_blob" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">signed_blob</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignBlobResponse.signed_blob" title="Permalink to this definition">#</a></dt>
 <dd><p>The signed blob.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">key_id</code></dt>
+<code class="sig-name descname">key_id</code></dt>
 <dd><p>Field google.iam.credentials.v1.SignBlobResponse.key_id</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">signed_blob</code></dt>
+<code class="sig-name descname">signed_blob</code></dt>
 <dd><p>Field google.iam.credentials.v1.SignBlobResponse.signed_blob</p>
 </dd></dl>
 
@@ -317,10 +315,10 @@ request.  The delegates must have the following format:
 
 <dl class="class">
 <dt id="google.cloud.iam_credentials_v1.types.SignJwtRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.iam_credentials_v1.types.</code><code class="descname">SignJwtRequest</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignJwtRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.iam_credentials_v1.types.</code><code class="sig-name descname">SignJwtRequest</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignJwtRequest" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.iam_credentials_v1.types.SignJwtRequest.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignJwtRequest.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignJwtRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>The resource name of the service account for which the
 credentials are requested, in the following format:
 <code class="docutils literal notranslate"><span class="pre">projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}</span></code>.</p>
@@ -328,7 +326,7 @@ credentials are requested, in the following format:
 
 <dl class="attribute">
 <dt id="google.cloud.iam_credentials_v1.types.SignJwtRequest.delegates">
-<code class="descname">delegates</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignJwtRequest.delegates" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">delegates</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignJwtRequest.delegates" title="Permalink to this definition">#</a></dt>
 <dd><p>The sequence of service accounts in a delegation chain. Each
 service account must be granted the
 <code class="docutils literal notranslate"><span class="pre">roles/iam.serviceAccountTokenCreator</span></code> role on its next
@@ -342,26 +340,26 @@ request.  The delegates must have the following format:
 
 <dl class="attribute">
 <dt id="google.cloud.iam_credentials_v1.types.SignJwtRequest.payload">
-<code class="descname">payload</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignJwtRequest.payload" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">payload</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignJwtRequest.payload" title="Permalink to this definition">#</a></dt>
 <dd><p>The JWT payload to sign: a JSON object that contains a JWT
 Claims Set.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">delegates</code></dt>
+<code class="sig-name descname">delegates</code></dt>
 <dd><p>Field google.iam.credentials.v1.SignJwtRequest.delegates</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">name</code></dt>
+<code class="sig-name descname">name</code></dt>
 <dd><p>Field google.iam.credentials.v1.SignJwtRequest.name</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">payload</code></dt>
+<code class="sig-name descname">payload</code></dt>
 <dd><p>Field google.iam.credentials.v1.SignJwtRequest.payload</p>
 </dd></dl>
 
@@ -369,28 +367,28 @@ Claims Set.</p>
 
 <dl class="class">
 <dt id="google.cloud.iam_credentials_v1.types.SignJwtResponse">
-<em class="property">class </em><code class="descclassname">google.cloud.iam_credentials_v1.types.</code><code class="descname">SignJwtResponse</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignJwtResponse" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.iam_credentials_v1.types.</code><code class="sig-name descname">SignJwtResponse</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignJwtResponse" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.iam_credentials_v1.types.SignJwtResponse.key_id">
-<code class="descname">key_id</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignJwtResponse.key_id" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">key_id</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignJwtResponse.key_id" title="Permalink to this definition">#</a></dt>
 <dd><p>The ID of the key used to sign the JWT.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.iam_credentials_v1.types.SignJwtResponse.signed_jwt">
-<code class="descname">signed_jwt</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignJwtResponse.signed_jwt" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">signed_jwt</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.SignJwtResponse.signed_jwt" title="Permalink to this definition">#</a></dt>
 <dd><p>The signed JWT.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">key_id</code></dt>
+<code class="sig-name descname">key_id</code></dt>
 <dd><p>Field google.iam.credentials.v1.SignJwtResponse.key_id</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">signed_jwt</code></dt>
+<code class="sig-name descname">signed_jwt</code></dt>
 <dd><p>Field google.iam.credentials.v1.SignJwtResponse.signed_jwt</p>
 </dd></dl>
 
@@ -398,16 +396,16 @@ Claims Set.</p>
 
 <dl class="class">
 <dt id="google.cloud.iam_credentials_v1.types.Timestamp">
-<em class="property">class </em><code class="descclassname">google.cloud.iam_credentials_v1.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.Timestamp" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.iam_credentials_v1.types.</code><code class="sig-name descname">Timestamp</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.Timestamp" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.iam_credentials_v1.types.Timestamp.nanos">
-<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.Timestamp.nanos" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">nanos</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.Timestamp.nanos" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Timestamp.nanos</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.iam_credentials_v1.types.Timestamp.seconds">
-<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.Timestamp.seconds" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">seconds</code><a class="headerlink" href="#google.cloud.iam_credentials_v1.types.Timestamp.seconds" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Timestamp.seconds</p>
 </dd></dl>
 
@@ -501,13 +499,11 @@ Claims Set.</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -520,7 +516,7 @@ Claims Set.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Entities &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Entities &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -40,7 +38,7 @@
 <p>Class for representing a single entity in the Cloud Datastore.</p>
 <dl class="class">
 <dt id="google.cloud.datastore.entity.Entity">
-<em class="property">class </em><code class="descclassname">google.cloud.datastore.entity.</code><code class="descname">Entity</code><span class="sig-paren">(</span><em>key=None</em>, <em>exclude_from_indexes=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/entity.html#Entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.entity.Entity" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.datastore.entity.</code><code class="sig-name descname">Entity</code><span class="sig-paren">(</span><em class="sig-param">key=None</em>, <em class="sig-param">exclude_from_indexes=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/entity.html#Entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.entity.Entity" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
 <p>Entities are akin to rows in a relational database</p>
 <p>An entity storing the actual instance of data.</p>
@@ -57,35 +55,35 @@ This means you could take an existing entity and change the key
 to duplicate the object.</p>
 <p>Use <a class="reference internal" href="client.html#google.cloud.datastore.client.Client.get" title="google.cloud.datastore.client.Client.get"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get()</span></code></a> to retrieve an
 existing entity:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 <span class="go">&lt;Entity(&#39;EntityKind&#39;, 1234) {&#39;property&#39;: &#39;value&#39;}&gt;</span>
 </pre></div>
 </div>
 <p>You can the set values on the entity just like you would on any
 other dictionary.</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;JJ&#39;</span>
 </pre></div>
 </div>
 <p>However, not all types are allowed as a value for a Google Cloud Datastore
 entity. The following basic types are supported by the API:</p>
 <ul class="simple">
-<li><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a></li>
-<li><a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">Key</span></code></a></li>
-<li><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></li>
-<li><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></li>
-<li><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> (as well as <code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> in Python 2)</li>
-<li><code class="docutils literal notranslate"><span class="pre">unicode</span></code> (called <code class="docutils literal notranslate"><span class="pre">str</span></code> in Python 3)</li>
-<li><code class="docutils literal notranslate"><span class="pre">bytes</span></code> (called <code class="docutils literal notranslate"><span class="pre">str</span></code> in Python 2)</li>
-<li><a class="reference internal" href="helpers.html#google.cloud.datastore.helpers.GeoPoint" title="google.cloud.datastore.helpers.GeoPoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeoPoint</span></code></a></li>
-<li><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a></p></li>
+<li><p><a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">Key</span></code></a></p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> (as well as <code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> in Python 2)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unicode</span></code> (called <code class="docutils literal notranslate"><span class="pre">str</span></code> in Python 3)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bytes</span></code> (called <code class="docutils literal notranslate"><span class="pre">str</span></code> in Python 2)</p></li>
+<li><p><a class="reference internal" href="helpers.html#google.cloud.datastore.helpers.GeoPoint" title="google.cloud.datastore.helpers.GeoPoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeoPoint</span></code></a></p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a></p></li>
 </ul>
 <p>In addition, three container types are supported:</p>
 <ul class="simple">
-<li><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a></li>
-<li><a class="reference internal" href="#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal notranslate"><span class="pre">Entity</span></code></a></li>
-<li><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> (will just be treated like an <code class="docutils literal notranslate"><span class="pre">Entity</span></code> without
-a key or <code class="docutils literal notranslate"><span class="pre">exclude_from_indexes</span></code>)</li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a></p></li>
+<li><p><a class="reference internal" href="#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal notranslate"><span class="pre">Entity</span></code></a></p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> (will just be treated like an <code class="docutils literal notranslate"><span class="pre">Entity</span></code> without
+a key or <code class="docutils literal notranslate"><span class="pre">exclude_from_indexes</span></code>)</p></li>
 </ul>
 <p>Each entry in a list must be one of the value types (basic or
 container) and each value in an
@@ -94,15 +92,15 @@ this case an <a class="reference internal" href="#google.cloud.datastore.entity.
 container</strong> acts as a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, but also has the special annotations
 of <code class="docutils literal notranslate"><span class="pre">key</span></code> and <code class="docutils literal notranslate"><span class="pre">exclude_from_indexes</span></code>.</p>
 <p>And you can treat an entity like a regular Python dictionary:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 <span class="go">[&#39;age&#39;, &#39;name&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
 <span class="go">[(&#39;age&#39;, 20), (&#39;name&#39;, &#39;JJ&#39;)]</span>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">When saving an entity to the backend, values which are “text”
+<p class="admonition-title">Note</p>
+<p>When saving an entity to the backend, values which are “text”
 (<code class="docutils literal notranslate"><span class="pre">unicode</span></code> in Python2, <code class="docutils literal notranslate"><span class="pre">str</span></code> in Python3) will be saved using
 the ‘text_value’ field, after being encoded to UTF-8.  When
 retrieved from the back-end, such values will be decoded to “text”
@@ -110,45 +108,41 @@ again.  Values which are “bytes” (<code class="docutils literal notranslate"
 Python3), will be saved using the ‘blob_value’ field, without
 any decoding / encoding step.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>key</strong> (<a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – Optional key to be set on entity.</li>
-<li><strong>exclude_from_indexes</strong> (<em>tuple of string</em>) – Names of fields whose values are not to be
-indexed for this entity.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – Optional key to be set on entity.</p></li>
+<li><p><strong>exclude_from_indexes</strong> (<em>tuple of string</em>) – Names of fields whose values are not to be
+indexed for this entity.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="attribute">
 <dt id="google.cloud.datastore.entity.Entity.exclude_from_indexes">
-<code class="descname">exclude_from_indexes</code><em class="property"> = None</em><a class="headerlink" href="#google.cloud.datastore.entity.Entity.exclude_from_indexes" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">exclude_from_indexes</code><em class="property"> = None</em><a class="headerlink" href="#google.cloud.datastore.entity.Entity.exclude_from_indexes" title="Permalink to this definition">#</a></dt>
 <dd><p>Names of fields which are <em>not</em> to be indexed for this entity.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.datastore.entity.Entity.id">
-<code class="descname">id</code><a class="headerlink" href="#google.cloud.datastore.entity.Entity.id" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">id</code><a class="headerlink" href="#google.cloud.datastore.entity.Entity.id" title="Permalink to this definition">#</a></dt>
 <dd><p>Get the ID of the current entity.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This relies entirely on the <a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a>
+<p class="admonition-title">Note</p>
+<p>This relies entirely on the <a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a>
 set on the entity.  That means that we’re not storing the ID
 of the entity at all, just the properties and a pointer to a
 Key which knows its ID.</p>
 </div>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.datastore.entity.Entity.kind">
-<code class="descname">kind</code><a class="headerlink" href="#google.cloud.datastore.entity.Entity.kind" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">kind</code><a class="headerlink" href="#google.cloud.datastore.entity.Entity.kind" title="Permalink to this definition">#</a></dt>
 <dd><p>Get the kind of the current entity.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This relies entirely on the <a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a>
+<p class="admonition-title">Note</p>
+<p>This relies entirely on the <a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.datastore.key.Key</span></code></a>
 set on the entity.  That means that we’re not storing the kind
 of the entity at all, just the properties and a pointer to a
 Key which knows its Kind.</p>
@@ -245,13 +239,11 @@ Key which knows its Kind.</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -264,7 +256,7 @@ Key which knows its Kind.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

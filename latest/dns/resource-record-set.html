@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Resource Record Sets &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Resource Record Sets &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -40,49 +38,41 @@
 <p>Define API ResourceRecordSets.</p>
 <dl class="class">
 <dt id="google.cloud.dns.resource_record_set.ResourceRecordSet">
-<em class="property">class </em><code class="descclassname">google.cloud.dns.resource_record_set.</code><code class="descname">ResourceRecordSet</code><span class="sig-paren">(</span><em>name</em>, <em>record_type</em>, <em>ttl</em>, <em>rrdatas</em>, <em>zone</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/dns/resource_record_set.html#ResourceRecordSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dns.resource_record_set.ResourceRecordSet" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.dns.resource_record_set.</code><code class="sig-name descname">ResourceRecordSet</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">record_type</em>, <em class="sig-param">ttl</em>, <em class="sig-param">rrdatas</em>, <em class="sig-param">zone</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/dns/resource_record_set.html#ResourceRecordSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dns.resource_record_set.ResourceRecordSet" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>ResourceRecordSets are DNS resource records.</p>
 <p>RRS are owned by a <a class="reference internal" href="zone.html#google.cloud.dns.zone.ManagedZone" title="google.cloud.dns.zone.ManagedZone"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.dns.zone.ManagedZone</span></code></a> instance.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/dns/api/v1/resourceRecordSets">https://cloud.google.com/dns/api/v1/resourceRecordSets</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – the name of the record set.</li>
-<li><strong>record_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – the RR type of the zone.</li>
-<li><strong>ttl</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – TTL (in seconds) for caching the record sets.</li>
-<li><strong>rrdatas</strong> (<em>list of string</em>) – one or more lines containing the resource data.</li>
-<li><strong>zone</strong> (<a class="reference internal" href="zone.html#google.cloud.dns.zone.ManagedZone" title="google.cloud.dns.zone.ManagedZone"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.dns.zone.ManagedZone</span></code></a>) – A zone which holds one or more record sets.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – the name of the record set.</p></li>
+<li><p><strong>record_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – the RR type of the zone.</p></li>
+<li><p><strong>ttl</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – TTL (in seconds) for caching the record sets.</p></li>
+<li><p><strong>rrdatas</strong> (<em>list of string</em>) – one or more lines containing the resource data.</p></li>
+<li><p><strong>zone</strong> (<a class="reference internal" href="zone.html#google.cloud.dns.zone.ManagedZone" title="google.cloud.dns.zone.ManagedZone"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.dns.zone.ManagedZone</span></code></a>) – A zone which holds one or more record sets.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="classmethod">
+</dd>
+</dl>
+<dl class="method">
 <dt id="google.cloud.dns.resource_record_set.ResourceRecordSet.from_api_repr">
-<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em>, <em>zone</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/dns/resource_record_set.html#ResourceRecordSet.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dns.resource_record_set.ResourceRecordSet.from_api_repr" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">from_api_repr</code><span class="sig-paren">(</span><em class="sig-param">resource</em>, <em class="sig-param">zone</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/dns/resource_record_set.html#ResourceRecordSet.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dns.resource_record_set.ResourceRecordSet.from_api_repr" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory:  construct a record set given its API representation</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – record sets representation returned from the API</li>
-<li><strong>zone</strong> (<a class="reference internal" href="zone.html#google.cloud.dns.zone.ManagedZone" title="google.cloud.dns.zone.ManagedZone"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.dns.zone.ManagedZone</span></code></a>) – A zone which holds one or more record sets.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – record sets representation returned from the API</p></li>
+<li><p><strong>zone</strong> (<a class="reference internal" href="zone.html#google.cloud.dns.zone.ManagedZone" title="google.cloud.dns.zone.ManagedZone"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.dns.zone.ManagedZone</span></code></a>) – A zone which holds one or more record sets.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.dns.zone.ResourceRecordSet</span></code></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">RRS parsed from <code class="docutils literal notranslate"><span class="pre">resource</span></code>.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.dns.zone.ResourceRecordSet</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>RRS parsed from <code class="docutils literal notranslate"><span class="pre">resource</span></code>.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -175,13 +165,11 @@
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -194,7 +182,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

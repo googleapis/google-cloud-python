@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Changelog &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Changelog &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -44,56 +42,56 @@
 <div class="section" id="implementation-changes">
 <h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Fix typos in deprecation warnings. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7858">#7858</a>)</li>
-<li>Add deprecation warnings for to-be-removed features. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7532">#7532</a>)</li>
-<li>Remove classifier for Python 3.4 for end-of-life. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7535">#7535</a>)</li>
-<li>Improve <code class="docutils literal notranslate"><span class="pre">Policy</span></code> interchange w/ JSON, gRPC payloads. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7378">#7378</a>)</li>
+<li><p>Fix typos in deprecation warnings. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7858">#7858</a>)</p></li>
+<li><p>Add deprecation warnings for to-be-removed features. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7532">#7532</a>)</p></li>
+<li><p>Remove classifier for Python 3.4 for end-of-life. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7535">#7535</a>)</p></li>
+<li><p>Improve <code class="docutils literal notranslate"><span class="pre">Policy</span></code> interchange w/ JSON, gRPC payloads. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7378">#7378</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="new-features">
 <h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add support for passing <code class="docutils literal notranslate"><span class="pre">client_info</span></code> to client. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7876">#7876</a>) and (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7898">#7898</a>)</li>
-<li>Add <code class="docutils literal notranslate"><span class="pre">Table.mutation_timeout</span></code>, allowing override of config timeouts. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7424">#7424</a>)</li>
+<li><p>Add support for passing <code class="docutils literal notranslate"><span class="pre">client_info</span></code> to client. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7876">#7876</a>) and (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7898">#7898</a>)</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">Table.mutation_timeout</span></code>, allowing override of config timeouts. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7424">#7424</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="dependencies">
 <h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Pin <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span> <span class="pre">&gt;=</span> <span class="pre">1.0.0,</span> <span class="pre">&lt;</span> <span class="pre">2.0dev</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7993">#7993</a>)</li>
+<li><p>Pin <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span> <span class="pre">&gt;=</span> <span class="pre">1.0.0,</span> <span class="pre">&lt;</span> <span class="pre">2.0dev</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7993">#7993</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="documentation">
 <h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Remove duplicate snippet tags for Delete cluster. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7860">#7860</a>)</li>
-<li>Fix rendering of instance admin snippets. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7797">#7797</a>)</li>
-<li>Avoid leaking instances from snippets. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7800">#7800</a>)</li>
-<li>Fix enum reference in documentation. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7724">#7724</a>)</li>
-<li>Remove duplicate snippets. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7528">#7528</a>)</li>
-<li>Add snippeds for Batcher, RowData, Row Operations, AppendRow. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7019">#7019</a>)</li>
-<li>Add column family snippets. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7014">#7014</a>)</li>
-<li>Add Row Set snippets. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7016">#7016</a>)</li>
-<li>Update client library documentation URLs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7307">#7307</a>)</li>
-<li>Fix typos in Table docstrings. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7261">#7261</a>)</li>
-<li>Update copyright headers (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7139">#7139</a>)</li>
-<li>Fix linked classes in generated docstrings (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7060">#7060</a>)</li>
+<li><p>Remove duplicate snippet tags for Delete cluster. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7860">#7860</a>)</p></li>
+<li><p>Fix rendering of instance admin snippets. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7797">#7797</a>)</p></li>
+<li><p>Avoid leaking instances from snippets. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7800">#7800</a>)</p></li>
+<li><p>Fix enum reference in documentation. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7724">#7724</a>)</p></li>
+<li><p>Remove duplicate snippets. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7528">#7528</a>)</p></li>
+<li><p>Add snippeds for Batcher, RowData, Row Operations, AppendRow. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7019">#7019</a>)</p></li>
+<li><p>Add column family snippets. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7014">#7014</a>)</p></li>
+<li><p>Add Row Set snippets. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7016">#7016</a>)</p></li>
+<li><p>Update client library documentation URLs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7307">#7307</a>)</p></li>
+<li><p>Fix typos in Table docstrings. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7261">#7261</a>)</p></li>
+<li><p>Update copyright headers (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7139">#7139</a>)</p></li>
+<li><p>Fix linked classes in generated docstrings (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7060">#7060</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="internal-testing-changes">
 <h3>Internal / Testing Changes<a class="headerlink" href="#internal-testing-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Run <code class="docutils literal notranslate"><span class="pre">instance_admin</span></code> system tests on a separate instance from <code class="docutils literal notranslate"><span class="pre">table_admin</span></code> and <code class="docutils literal notranslate"><span class="pre">data</span></code> system tests. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6579">#6579</a>)</li>
-<li>Re-blacken. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7462">#7462</a>)</li>
-<li>Copy lintified proto files (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7445">#7445</a>)</li>
-<li>Remove unused message exports (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7264">#7264</a>)</li>
-<li>Compare 0 using ‘!=’, rather than ‘is not’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7312">#7312</a>)</li>
-<li>Add protos as an artifact to library (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7205">#7205</a>)</li>
-<li>Protoc-generated serialization update. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7077">#7077</a>)</li>
-<li>Blacken snippets. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7048">#7048</a>)</li>
-<li>Bigtable client snippets (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7020">#7020</a>)</li>
-<li>Pick up order-of-enum fix from GAPIC generator. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6879">#6879</a>)</li>
-<li>Plug systest instance leaks (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7004">#7004</a>)</li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">instance_admin</span></code> system tests on a separate instance from <code class="docutils literal notranslate"><span class="pre">table_admin</span></code> and <code class="docutils literal notranslate"><span class="pre">data</span></code> system tests. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6579">#6579</a>)</p></li>
+<li><p>Re-blacken. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7462">#7462</a>)</p></li>
+<li><p>Copy lintified proto files (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7445">#7445</a>)</p></li>
+<li><p>Remove unused message exports (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7264">#7264</a>)</p></li>
+<li><p>Compare 0 using ‘!=’, rather than ‘is not’. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7312">#7312</a>)</p></li>
+<li><p>Add protos as an artifact to library (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7205">#7205</a>)</p></li>
+<li><p>Protoc-generated serialization update. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7077">#7077</a>)</p></li>
+<li><p>Blacken snippets. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7048">#7048</a>)</p></li>
+<li><p>Bigtable client snippets (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7020">#7020</a>)</p></li>
+<li><p>Pick up order-of-enum fix from GAPIC generator. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6879">#6879</a>)</p></li>
+<li><p>Plug systest instance leaks (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7004">#7004</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -103,8 +101,8 @@
 <div class="section" id="id3">
 <h3>Documentation<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Document Python 2 deprecation (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6910">#6910</a>)</li>
-<li>Add snippets for table operations. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6484">#6484</a>)</li>
+<li><p>Document Python 2 deprecation (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6910">#6910</a>)</p></li>
+<li><p>Add snippets for table operations. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6484">#6484</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -114,25 +112,25 @@
 <div class="section" id="id5">
 <h3>Implementation Changes<a class="headerlink" href="#id5" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Import <code class="docutils literal notranslate"><span class="pre">iam.policy</span></code> from <code class="docutils literal notranslate"><span class="pre">google.api_core</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6741">#6741</a>)</li>
-<li>Remove <code class="docutils literal notranslate"><span class="pre">deepcopy</span></code> from <code class="docutils literal notranslate"><span class="pre">PartialRowData.cells</span></code> property. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6648">#6648</a>)</li>
-<li>Pick up fixes to GAPIC generator. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6630">#6630</a>)</li>
+<li><p>Import <code class="docutils literal notranslate"><span class="pre">iam.policy</span></code> from <code class="docutils literal notranslate"><span class="pre">google.api_core</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6741">#6741</a>)</p></li>
+<li><p>Remove <code class="docutils literal notranslate"><span class="pre">deepcopy</span></code> from <code class="docutils literal notranslate"><span class="pre">PartialRowData.cells</span></code> property. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6648">#6648</a>)</p></li>
+<li><p>Pick up fixes to GAPIC generator. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6630">#6630</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id6">
 <h3>Dependencies<a class="headerlink" href="#id6" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Update dependency to google-cloud-core (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6835">#6835</a>)</li>
+<li><p>Update dependency to google-cloud-core (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6835">#6835</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id7">
 <h3>Internal / Testing Changes<a class="headerlink" href="#id7" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Blacken all gen’d libs (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6792">#6792</a>)</li>
-<li>Omit local deps (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6701">#6701</a>)</li>
-<li>Run black at end of synth.py (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6698">#6698</a>)</li>
-<li>Blackening Continued… (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6667">#6667</a>)</li>
-<li>Add templates for flake8, coveragerc, noxfile, and black. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6642">#6642</a>)</li>
+<li><p>Blacken all gen’d libs (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6792">#6792</a>)</p></li>
+<li><p>Omit local deps (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6701">#6701</a>)</p></li>
+<li><p>Run black at end of synth.py (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6698">#6698</a>)</p></li>
+<li><p>Blackening Continued… (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6667">#6667</a>)</p></li>
+<li><p>Add templates for flake8, coveragerc, noxfile, and black. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6642">#6642</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -142,37 +140,37 @@
 <div class="section" id="id9">
 <h3>Implementation Changes<a class="headerlink" href="#id9" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Fix anonymous usage under Bigtable emulator (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6385">#6385</a>)</li>
-<li>Support <code class="docutils literal notranslate"><span class="pre">DirectRow</span></code> without a <code class="docutils literal notranslate"><span class="pre">Table</span></code> (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6336">#6336</a>)</li>
-<li>Add retry parameter to <code class="docutils literal notranslate"><span class="pre">Table.read_rows()</span></code>. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6281">#6281</a>)</li>
-<li>Fix <code class="docutils literal notranslate"><span class="pre">ConditionalRow</span></code> interaction with <code class="docutils literal notranslate"><span class="pre">check_and_mutate_row</span></code> (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6296">#6296</a>)</li>
-<li>Deprecate <code class="docutils literal notranslate"><span class="pre">channel</span></code> arg to <code class="docutils literal notranslate"><span class="pre">Client</span></code> (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6279">#6279</a>)</li>
+<li><p>Fix anonymous usage under Bigtable emulator (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6385">#6385</a>)</p></li>
+<li><p>Support <code class="docutils literal notranslate"><span class="pre">DirectRow</span></code> without a <code class="docutils literal notranslate"><span class="pre">Table</span></code> (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6336">#6336</a>)</p></li>
+<li><p>Add retry parameter to <code class="docutils literal notranslate"><span class="pre">Table.read_rows()</span></code>. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6281">#6281</a>)</p></li>
+<li><p>Fix <code class="docutils literal notranslate"><span class="pre">ConditionalRow</span></code> interaction with <code class="docutils literal notranslate"><span class="pre">check_and_mutate_row</span></code> (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6296">#6296</a>)</p></li>
+<li><p>Deprecate <code class="docutils literal notranslate"><span class="pre">channel</span></code> arg to <code class="docutils literal notranslate"><span class="pre">Client</span></code> (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6279">#6279</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id10">
 <h3>Dependencies<a class="headerlink" href="#id10" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Update dependency: <code class="docutils literal notranslate"><span class="pre">google-api-core</span> <span class="pre">&gt;=</span> <span class="pre">1.4.1</span></code> (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6391">#6391</a>)</li>
-<li>Update IAM version in dependencies (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6362">#6362</a>)</li>
+<li><p>Update dependency: <code class="docutils literal notranslate"><span class="pre">google-api-core</span> <span class="pre">&gt;=</span> <span class="pre">1.4.1</span></code> (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6391">#6391</a>)</p></li>
+<li><p>Update IAM version in dependencies (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6362">#6362</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id11">
 <h3>Documentation<a class="headerlink" href="#id11" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add <code class="docutils literal notranslate"><span class="pre">docs/snippets.py</span></code> and test (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6012">#6012</a>)</li>
-<li>Normalize use of support level badges (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6159">#6159</a>)</li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">docs/snippets.py</span></code> and test (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6012">#6012</a>)</p></li>
+<li><p>Normalize use of support level badges (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6159">#6159</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id12">
 <h3>Internal / Testing Changes<a class="headerlink" href="#id12" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Fix client_info bug, update docstrings and timeouts. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6406">#6406)</a>)</li>
-<li>Remove now-spurious fixup from ‘synth.py’. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6400">#6400</a>)</li>
-<li>Fix flaky systests / snippets (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6367">#6367</a>)</li>
-<li>Add explicit coverage for <code class="docutils literal notranslate"><span class="pre">row_data._retry_read_rows_exception</span></code>. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6364">#6364</a>)</li>
-<li>Fix instance IAM test methods (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6343">#6343</a>)</li>
-<li>Fix error from new flake8 version. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6309">#6309</a>)</li>
-<li>Use new Nox (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6175">#6175</a>)</li>
+<li><p>Fix client_info bug, update docstrings and timeouts. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6406">#6406)</a>)</p></li>
+<li><p>Remove now-spurious fixup from ‘synth.py’. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6400">#6400</a>)</p></li>
+<li><p>Fix flaky systests / snippets (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6367">#6367</a>)</p></li>
+<li><p>Add explicit coverage for <code class="docutils literal notranslate"><span class="pre">row_data._retry_read_rows_exception</span></code>. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6364">#6364</a>)</p></li>
+<li><p>Fix instance IAM test methods (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6343">#6343</a>)</p></li>
+<li><p>Fix error from new flake8 version. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6309">#6309</a>)</p></li>
+<li><p>Use new Nox (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6175">#6175</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -181,28 +179,28 @@
 <div class="section" id="id14">
 <h3>New Features<a class="headerlink" href="#id14" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Upgrade support level from <code class="docutils literal notranslate"><span class="pre">alpha</span></code> to <code class="docutils literal notranslate"><span class="pre">beta</span></code>.  (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6129">#6129</a>)</li>
+<li><p>Upgrade support level from <code class="docutils literal notranslate"><span class="pre">alpha</span></code> to <code class="docutils literal notranslate"><span class="pre">beta</span></code>.  (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6129">#6129</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id15">
 <h3>Implementation Changes<a class="headerlink" href="#id15" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Improve admin operation timeouts. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6010">#6010</a>)</li>
+<li><p>Improve admin operation timeouts. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6010">#6010</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id16">
 <h3>Documentation<a class="headerlink" href="#id16" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Prepare docs for repo split. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6014">#6014</a>)</li>
+<li><p>Prepare docs for repo split. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6014">#6014</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id17">
 <h3>Internal / Testing Changes<a class="headerlink" href="#id17" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Refactor <code class="docutils literal notranslate"><span class="pre">read_row</span></code> to call <code class="docutils literal notranslate"><span class="pre">read_rows</span></code> (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6102">#6137</a>)</li>
-<li>Harden instance teardown against ‘429 Too Many Requests’. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6102">#6102</a>)</li>
-<li>Add <code class="docutils literal notranslate"><span class="pre">{RowSet,RowRange}.{__eq__,.__ne__}</span></code> (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6025">#6025</a>)</li>
-<li>Regenerate low-level GAPIC code (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6036">#6036</a>)</li>
+<li><p>Refactor <code class="docutils literal notranslate"><span class="pre">read_row</span></code> to call <code class="docutils literal notranslate"><span class="pre">read_rows</span></code> (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6102">#6137</a>)</p></li>
+<li><p>Harden instance teardown against ‘429 Too Many Requests’. (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6102">#6102</a>)</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">{RowSet,RowRange}.{__eq__,.__ne__}</span></code> (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6025">#6025</a>)</p></li>
+<li><p>Regenerate low-level GAPIC code (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/pull/6036">#6036</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -211,26 +209,26 @@
 <div class="section" id="id19">
 <h3>New Features<a class="headerlink" href="#id19" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add iam policy implementation for an instance. (#5838)</li>
+<li><p>Add iam policy implementation for an instance. (#5838)</p></li>
 </ul>
 </div>
 <div class="section" id="id20">
 <h3>Implementation Changes<a class="headerlink" href="#id20" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Fix smart retries for ‘read_rows()’ when reading the full table (#5966)</li>
+<li><p>Fix smart retries for ‘read_rows()’ when reading the full table (#5966)</p></li>
 </ul>
 </div>
 <div class="section" id="id21">
 <h3>Documentation<a class="headerlink" href="#id21" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Replace links to <code class="docutils literal notranslate"><span class="pre">/stable/</span></code> with <code class="docutils literal notranslate"><span class="pre">/latest/</span></code>. (#5901)</li>
+<li><p>Replace links to <code class="docutils literal notranslate"><span class="pre">/stable/</span></code> with <code class="docutils literal notranslate"><span class="pre">/latest/</span></code>. (#5901)</p></li>
 </ul>
 </div>
 <div class="section" id="id22">
 <h3>Internal / Testing Changes<a class="headerlink" href="#id22" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Re-generate library using bigtable/synth.py (#5974)</li>
-<li>Refactor <code class="docutils literal notranslate"><span class="pre">read_rows</span></code> infrastructure (#5963)</li>
+<li><p>Re-generate library using bigtable/synth.py (#5974)</p></li>
+<li><p>Refactor <code class="docutils literal notranslate"><span class="pre">read_rows</span></code> infrastructure (#5963)</p></li>
 </ul>
 </div>
 </div>
@@ -239,14 +237,14 @@
 <div class="section" id="id24">
 <h3>Implementation changes<a class="headerlink" href="#id24" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Fix non-admin access to table data. (#5875)</li>
-<li>Synth bigtable and bigtable admin GAPIC clients. (#5867)</li>
+<li><p>Fix non-admin access to table data. (#5875)</p></li>
+<li><p>Synth bigtable and bigtable admin GAPIC clients. (#5867)</p></li>
 </ul>
 </div>
 <div class="section" id="testing-and-internal-changes">
 <h3>Testing and internal changes<a class="headerlink" href="#testing-and-internal-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Nox: use in-place installs for local packages. (#5865)</li>
+<li><p>Nox: use in-place installs for local packages. (#5865)</p></li>
 </ul>
 </div>
 </div>
@@ -255,47 +253,51 @@
 <div class="section" id="id26">
 <h3>New Features<a class="headerlink" href="#id26" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Improve performance and capabilities of reads.  <code class="docutils literal notranslate"><span class="pre">read_rows</span></code> now returns a generator; has automatic retries; and can read an arbitrary set of keys and ranges<ul>
-<li>Consolidate read_rows and yield_rows (#5840)</li>
-<li>Implement row set for yield_rows  (#5506)</li>
-<li>Improve read rows validation performance (#5390)</li>
-<li>Add retry for yield_rows (#4882)</li>
-<li>Require TimestampRanges to be milliseconds granularity (#5002)</li>
-<li>Provide better access to cell values (#4908)</li>
-<li>Add data app profile id  (#5369)</li>
+<li><p>Improve performance and capabilities of reads.  <code class="docutils literal notranslate"><span class="pre">read_rows</span></code> now returns a generator; has automatic retries; and can read an arbitrary set of keys and ranges</p>
+<ul>
+<li><p>Consolidate read_rows and yield_rows (#5840)</p></li>
+<li><p>Implement row set for yield_rows  (#5506)</p></li>
+<li><p>Improve read rows validation performance (#5390)</p></li>
+<li><p>Add retry for yield_rows (#4882)</p></li>
+<li><p>Require TimestampRanges to be milliseconds granularity (#5002)</p></li>
+<li><p>Provide better access to cell values (#4908)</p></li>
+<li><p>Add data app profile id  (#5369)</p></li>
 </ul>
 </li>
-<li>Improve writes: Writes are usable in Beam<ul>
-<li>Create MutationBatcher for bigtable (#5651)</li>
-<li>Allow DirectRow to be created without a table (#5567)</li>
-<li>Add data app profile id  (#5369)</li>
+<li><p>Improve writes: Writes are usable in Beam</p>
+<ul>
+<li><p>Create MutationBatcher for bigtable (#5651)</p></li>
+<li><p>Allow DirectRow to be created without a table (#5567)</p></li>
+<li><p>Add data app profile id  (#5369)</p></li>
 </ul>
 </li>
-<li>Improve table admin: Table creation now can also create families in a single RPC.  Add an <code class="docutils literal notranslate"><span class="pre">exist()</span></code> method.  Add <code class="docutils literal notranslate"><span class="pre">get_cluster_states</span></code> for information about replication<ul>
-<li>Add ‘Table.get_cluster_states’ method (#5790)</li>
-<li>Optimize ‘Table.exists’ performance (#5749)</li>
-<li>Add column creation in ‘Table.create()’. (#5576)</li>
-<li>Add ‘Table.exists’ method (#5545)</li>
-<li>Add split keys on create table - v2 (#5513)</li>
-<li>Avoid sharing table names across unrelated systests. (#5421)</li>
-<li>Add truncate table and drop by prefix on top of GAPIC integration (#5360)</li>
+<li><p>Improve table admin: Table creation now can also create families in a single RPC.  Add an <code class="docutils literal notranslate"><span class="pre">exist()</span></code> method.  Add <code class="docutils literal notranslate"><span class="pre">get_cluster_states</span></code> for information about replication</p>
+<ul>
+<li><p>Add ‘Table.get_cluster_states’ method (#5790)</p></li>
+<li><p>Optimize ‘Table.exists’ performance (#5749)</p></li>
+<li><p>Add column creation in ‘Table.create()’. (#5576)</p></li>
+<li><p>Add ‘Table.exists’ method (#5545)</p></li>
+<li><p>Add split keys on create table - v2 (#5513)</p></li>
+<li><p>Avoid sharing table names across unrelated systests. (#5421)</p></li>
+<li><p>Add truncate table and drop by prefix on top of GAPIC integration (#5360)</p></li>
 </ul>
 </li>
-<li>Improve instance admin: Instance creation allows for the creation of multiple clusters.  Instance label management is now enabled.<ul>
-<li>Create app_profile_object (#5782)</li>
-<li>Add ‘Instance.exists’ method (#5802)</li>
-<li>Add ‘InstanceAdminClient.list_clusters’ method (#5715)</li>
-<li>Add ‘Instance._state’ property (#5736)</li>
-<li>Convert ‘instance.labels’ to return a dictionary (#5728)</li>
-<li>Reshape cluster.py, adding cluster() factory to instance.py (#5663)</li>
-<li>Convert ‘Instance.update’ to use ‘instance.partial_instance_update’ API (#5643)</li>
-<li>Refactor ‘InstanceAdminClient.update_app_profile’ to remove update_mask argument (#5684)</li>
-<li>Add the ability to create an instance with multiple clusters (#5622)</li>
-<li>Add ‘instance_type’, ‘labels’ to ‘Instance’ ctor (#5614)</li>
-<li>Add optional app profile to ‘Instance.table’ (#5605)</li>
-<li>Clean up Instance creation. (#5542)</li>
-<li>Make ‘InstanceAdminClient.list_instances’ return actual instance objects, not protos. (#5420)</li>
-<li>Add admin app profile methods on Instance (#5315)</li>
+<li><p>Improve instance admin: Instance creation allows for the creation of multiple clusters.  Instance label management is now enabled.</p>
+<ul>
+<li><p>Create app_profile_object (#5782)</p></li>
+<li><p>Add ‘Instance.exists’ method (#5802)</p></li>
+<li><p>Add ‘InstanceAdminClient.list_clusters’ method (#5715)</p></li>
+<li><p>Add ‘Instance._state’ property (#5736)</p></li>
+<li><p>Convert ‘instance.labels’ to return a dictionary (#5728)</p></li>
+<li><p>Reshape cluster.py, adding cluster() factory to instance.py (#5663)</p></li>
+<li><p>Convert ‘Instance.update’ to use ‘instance.partial_instance_update’ API (#5643)</p></li>
+<li><p>Refactor ‘InstanceAdminClient.update_app_profile’ to remove update_mask argument (#5684)</p></li>
+<li><p>Add the ability to create an instance with multiple clusters (#5622)</p></li>
+<li><p>Add ‘instance_type’, ‘labels’ to ‘Instance’ ctor (#5614)</p></li>
+<li><p>Add optional app profile to ‘Instance.table’ (#5605)</p></li>
+<li><p>Clean up Instance creation. (#5542)</p></li>
+<li><p>Make ‘InstanceAdminClient.list_instances’ return actual instance objects, not protos. (#5420)</p></li>
+<li><p>Add admin app profile methods on Instance (#5315)</p></li>
 </ul>
 </li>
 </ul>
@@ -303,25 +305,25 @@
 <div class="section" id="id27">
 <h3>Internal / Testing Changes<a class="headerlink" href="#id27" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Rename releases to changelog and include from CHANGELOG.md (#5191)</li>
-<li>Fix bad trove classifier</li>
-<li>Integrate new generated low-level client (#5178)</li>
-<li>Override gRPC max message lengths. (#5498)</li>
-<li>Use client properties rather than private attrs (#5398)</li>
-<li>Fix the broken Bigtable system test. (#5607)</li>
-<li>Fix Py3 breakage in new system test. (#5474)</li>
-<li>Modify system test for new GAPIC code (#5302)</li>
-<li>Add Test runs for Python 3.7 and remove 3.4 (#5295)</li>
-<li>Disable Bigtable system tests (#5381)</li>
-<li>Modify system tests to use prerelease versions of grpcio (#5304)</li>
-<li>Pass through ‘session.posargs’ when running Bigtable system tests. (#5418)</li>
-<li>Harden ‘test_list_instances’ against simultaneous test runs. (#5476)</li>
-<li>Shorten instance / cluster name to fix CI breakage. (#5641)</li>
-<li>Fix failing systest: ‘test_create_instance_w_two_clusters’. (#5836)</li>
-<li>Add labels {‘python-system’: ISO-timestamp} to systest instances (#5729)</li>
-<li>Shorten cluster ID in system test (#5719)</li>
-<li>Harden ‘test_list_instances’ further. (#5696)</li>
-<li>Improve testing of create instance (#5544)</li>
+<li><p>Rename releases to changelog and include from CHANGELOG.md (#5191)</p></li>
+<li><p>Fix bad trove classifier</p></li>
+<li><p>Integrate new generated low-level client (#5178)</p></li>
+<li><p>Override gRPC max message lengths. (#5498)</p></li>
+<li><p>Use client properties rather than private attrs (#5398)</p></li>
+<li><p>Fix the broken Bigtable system test. (#5607)</p></li>
+<li><p>Fix Py3 breakage in new system test. (#5474)</p></li>
+<li><p>Modify system test for new GAPIC code (#5302)</p></li>
+<li><p>Add Test runs for Python 3.7 and remove 3.4 (#5295)</p></li>
+<li><p>Disable Bigtable system tests (#5381)</p></li>
+<li><p>Modify system tests to use prerelease versions of grpcio (#5304)</p></li>
+<li><p>Pass through ‘session.posargs’ when running Bigtable system tests. (#5418)</p></li>
+<li><p>Harden ‘test_list_instances’ against simultaneous test runs. (#5476)</p></li>
+<li><p>Shorten instance / cluster name to fix CI breakage. (#5641)</p></li>
+<li><p>Fix failing systest: ‘test_create_instance_w_two_clusters’. (#5836)</p></li>
+<li><p>Add labels {‘python-system’: ISO-timestamp} to systest instances (#5729)</p></li>
+<li><p>Shorten cluster ID in system test (#5719)</p></li>
+<li><p>Harden ‘test_list_instances’ further. (#5696)</p></li>
+<li><p>Improve testing of create instance (#5544)</p></li>
 </ul>
 </div>
 </div>
@@ -330,39 +332,39 @@
 <div class="section" id="id29">
 <h3>New features<a class="headerlink" href="#id29" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Use <code class="docutils literal notranslate"><span class="pre">api_core.retry</span></code> for <code class="docutils literal notranslate"><span class="pre">mutate_row</span></code> (#4665, #4341)</li>
-<li>Added a row generator on a table. (#4679)</li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">api_core.retry</span></code> for <code class="docutils literal notranslate"><span class="pre">mutate_row</span></code> (#4665, #4341)</p></li>
+<li><p>Added a row generator on a table. (#4679)</p></li>
 </ul>
 </div>
 <div class="section" id="id30">
 <h3>Implementation changes<a class="headerlink" href="#id30" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Remove gax usage from BigTable (#4873)</li>
-<li>BigTable: Cell.from_pb() performance improvement (#4745)</li>
+<li><p>Remove gax usage from BigTable (#4873)</p></li>
+<li><p>BigTable: Cell.from_pb() performance improvement (#4745)</p></li>
 </ul>
 </div>
 <div class="section" id="id31">
 <h3>Dependencies<a class="headerlink" href="#id31" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Update dependency range for api-core to include v1.0.0 releases (#4944)</li>
+<li><p>Update dependency range for api-core to include v1.0.0 releases (#4944)</p></li>
 </ul>
 </div>
 <div class="section" id="id32">
 <h3>Documentation<a class="headerlink" href="#id32" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Minor typo (#4758)</li>
-<li>Row filter end points documentation error (#4667)</li>
-<li>Removing “rename” from bigtable table.py comments (#4526)</li>
-<li>Small docs/hygiene tweaks after #4256. (#4333)</li>
+<li><p>Minor typo (#4758)</p></li>
+<li><p>Row filter end points documentation error (#4667)</p></li>
+<li><p>Removing “rename” from bigtable table.py comments (#4526)</p></li>
+<li><p>Small docs/hygiene tweaks after #4256. (#4333)</p></li>
 </ul>
 </div>
 <div class="section" id="id33">
 <h3>Testing and internal changes<a class="headerlink" href="#id33" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Install local dependencies when running lint (#4936)</li>
-<li>Re-enable lint for tests, remove usage of pylint (#4921)</li>
-<li>Normalize all setup.py files (#4909)</li>
-<li>Timestamp system test fix (#4765)</li>
+<li><p>Install local dependencies when running lint (#4936)</p></li>
+<li><p>Re-enable lint for tests, remove usage of pylint (#4921)</p></li>
+<li><p>Normalize all setup.py files (#4909)</p></li>
+<li><p>Timestamp system test fix (#4765)</p></li>
 </ul>
 </div>
 </div>
@@ -371,16 +373,16 @@
 <div class="section" id="id35">
 <h3>Implementation Changes<a class="headerlink" href="#id35" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Bugfix: Distinguish between an unset column qualifier and an empty string
-column qualifier while parsing a <code class="docutils literal notranslate"><span class="pre">ReadRows</span></code> response (#4252)</li>
+<li><p>Bugfix: Distinguish between an unset column qualifier and an empty string
+column qualifier while parsing a <code class="docutils literal notranslate"><span class="pre">ReadRows</span></code> response (#4252)</p></li>
 </ul>
 </div>
 <div class="section" id="features-added">
 <h3>Features added<a class="headerlink" href="#features-added" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Add a <code class="docutils literal notranslate"><span class="pre">retry</span></code> strategy that will be used for retry-able errors
+<li><p>Add a <code class="docutils literal notranslate"><span class="pre">retry</span></code> strategy that will be used for retry-able errors
 in <code class="docutils literal notranslate"><span class="pre">Table.mutate_rows</span></code>. This will be used for gRPC errors of type
-<code class="docutils literal notranslate"><span class="pre">ABORTED</span></code>, <code class="docutils literal notranslate"><span class="pre">DEADLINE_EXCEEDED</span></code> and <code class="docutils literal notranslate"><span class="pre">SERVICE_UNAVAILABLE</span></code>. (#4256)</li>
+<code class="docutils literal notranslate"><span class="pre">ABORTED</span></code>, <code class="docutils literal notranslate"><span class="pre">DEADLINE_EXCEEDED</span></code> and <code class="docutils literal notranslate"><span class="pre">SERVICE_UNAVAILABLE</span></code>. (#4256)</p></li>
 </ul>
 <p>PyPI: https://pypi.org/project/google-cloud-bigtable/0.28.1/</p>
 </div>
@@ -390,17 +392,17 @@ in <code class="docutils literal notranslate"><span class="pre">Table.mutate_row
 <div class="section" id="id37">
 <h3>Documentation<a class="headerlink" href="#id37" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Fixed referenced types in <code class="docutils literal notranslate"><span class="pre">Table.row</span></code> docstring (#3934, h/t to
-&#64;MichaelTamm)</li>
-<li>Added link to “Python Development Environment Setup Guide” in
-project README (#4187, h/t to &#64;michaelawyu)</li>
+<li><p>Fixed referenced types in <code class="docutils literal notranslate"><span class="pre">Table.row</span></code> docstring (#3934, h/t to
+&#64;MichaelTamm)</p></li>
+<li><p>Added link to “Python Development Environment Setup Guide” in
+project README (#4187, h/t to &#64;michaelawyu)</p></li>
 </ul>
 </div>
 <div class="section" id="id38">
 <h3>Dependencies<a class="headerlink" href="#id38" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li>Upgrading to <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span> <span class="pre">&gt;=</span> <span class="pre">0.28.0</span></code> and adding dependency
-on <code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> (#4221, #4280)</li>
+<li><p>Upgrading to <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span> <span class="pre">&gt;=</span> <span class="pre">0.28.0</span></code> and adding dependency
+on <code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> (#4221, #4280)</p></li>
 </ul>
 <p>PyPI: https://pypi.org/project/google-cloud-bigtable/0.28.0/</p>
 </div>
@@ -493,13 +495,11 @@ on <code class="docutils literal notranslate"><span class="pre">google-api-core<
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -512,7 +512,7 @@ on <code class="docutils literal notranslate"><span class="pre">google-api-core<
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

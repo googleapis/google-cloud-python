@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Reader for BigQuery Storage API &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Reader for BigQuery Storage API &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -39,199 +37,174 @@
 <span id="reader-for-bigquery-storage-api"></span><h1>Reader for BigQuery Storage API<a class="headerlink" href="#module-google.cloud.bigquery_storage_v1beta1.reader" title="Permalink to this headline">#</a></h1>
 <dl class="class">
 <dt id="google.cloud.bigquery_storage_v1beta1.reader.ReadRowsIterable">
-<em class="property">class </em><code class="descclassname">google.cloud.bigquery_storage_v1beta1.reader.</code><code class="descname">ReadRowsIterable</code><span class="sig-paren">(</span><em>reader</em>, <em>read_session</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/reader.html#ReadRowsIterable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsIterable" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.bigquery_storage_v1beta1.reader.</code><code class="sig-name descname">ReadRowsIterable</code><span class="sig-paren">(</span><em class="sig-param">reader</em>, <em class="sig-param">read_session</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/reader.html#ReadRowsIterable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsIterable" title="Permalink to this definition">#</a></dt>
 <dd><p>An iterable of rows from a read session.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>reader</strong> (<a class="reference internal" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream" title="google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream"><em>google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream</em></a>) – A read rows stream.</li>
-<li><strong>read_session</strong> (<a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.ReadSession" title="google.cloud.bigquery_storage_v1beta1.types.ReadSession"><em>google.cloud.bigquery_storage_v1beta1.types.ReadSession</em></a>) – A read session. This is required because it contains the schema
-used in the stream messages.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>reader</strong> (<a class="reference internal" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream" title="google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream"><em>google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream</em></a>) – A read rows stream.</p></li>
+<li><p><strong>read_session</strong> (<a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.ReadSession" title="google.cloud.bigquery_storage_v1beta1.types.ReadSession"><em>google.cloud.bigquery_storage_v1beta1.types.ReadSession</em></a>) – A read session. This is required because it contains the schema
+used in the stream messages.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
+</dd>
+</dl>
+<dl class="method">
 <dt id="google.cloud.bigquery_storage_v1beta1.reader.ReadRowsIterable.pages">
-<code class="descname">pages</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsIterable.pages" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">pages</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsIterable.pages" title="Permalink to this definition">#</a></dt>
 <dd><p>A generator of all pages in the stream.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A generator of pages.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">types.GeneratorType[google.cloud.bigquery_storage_v1beta1.ReadRowsPage]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A generator of pages.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>types.GeneratorType[google.cloud.bigquery_storage_v1beta1.ReadRowsPage]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigquery_storage_v1beta1.reader.ReadRowsIterable.to_arrow">
-<code class="descname">to_arrow</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/reader.html#ReadRowsIterable.to_arrow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsIterable.to_arrow" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">to_arrow</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/reader.html#ReadRowsIterable.to_arrow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsIterable.to_arrow" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a <code class="xref py py-class docutils literal notranslate"><span class="pre">pyarrow.Table</span></code> of all rows in the stream.</p>
 <p>This method requires the pyarrow library and a stream using the Arrow
 format.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A table of all rows in the stream.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">pyarrow.Table</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A table of all rows in the stream.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pyarrow.Table</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigquery_storage_v1beta1.reader.ReadRowsIterable.to_dataframe">
-<code class="descname">to_dataframe</code><span class="sig-paren">(</span><em>dtypes=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/reader.html#ReadRowsIterable.to_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsIterable.to_dataframe" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">to_dataframe</code><span class="sig-paren">(</span><em class="sig-param">dtypes=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/reader.html#ReadRowsIterable.to_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsIterable.to_dataframe" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> of all rows in the stream.</p>
 <p>This method requires the pandas libary to create a data frame and the
 fastavro library to parse row messages.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">DATETIME columns are not supported. They are currently parsed as
+<p class="admonition-title">Warning</p>
+<p>DATETIME columns are not supported. They are currently parsed as
 strings in the fastavro library.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dtypes</strong> (<em>Map</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>pandas.Series.dtype</em><em>]</em><em>]</em>) – Optional. A dictionary of column names pandas <code class="docutils literal notranslate"><span class="pre">dtype``s.</span> <span class="pre">The</span>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dtypes</strong> (<em>Map</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>pandas.Series.dtype</em><em>]</em><em>]</em>) – Optional. A dictionary of column names pandas <code class="docutils literal notranslate"><span class="pre">dtype``s.</span> <span class="pre">The</span>
 <span class="pre">provided</span> <span class="pre">``dtype</span></code> is used when constructing the series for
 the column specified. Otherwise, the default pandas behavior
-is used.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A data frame of all rows in the stream.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)">pandas.DataFrame</a></td>
-</tr>
-</tbody>
-</table>
+is used.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A data frame of all rows in the stream.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)">pandas.DataFrame</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery_storage_v1beta1.reader.ReadRowsIterable.total_rows">
-<code class="descname">total_rows</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsIterable.total_rows" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">total_rows</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsIterable.total_rows" title="Permalink to this definition">#</a></dt>
 <dd><p>Number of estimated rows in the current stream.</p>
 <p>May change over time.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.bigquery_storage_v1beta1.reader.ReadRowsPage">
-<em class="property">class </em><code class="descclassname">google.cloud.bigquery_storage_v1beta1.reader.</code><code class="descname">ReadRowsPage</code><span class="sig-paren">(</span><em>stream_parser</em>, <em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/reader.html#ReadRowsPage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsPage" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.bigquery_storage_v1beta1.reader.</code><code class="sig-name descname">ReadRowsPage</code><span class="sig-paren">(</span><em class="sig-param">stream_parser</em>, <em class="sig-param">message</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/reader.html#ReadRowsPage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsPage" title="Permalink to this definition">#</a></dt>
 <dd><p>An iterator of rows from a read session message.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>stream_parser</strong> (<em>google.cloud.bigquery_storage_v1beta1.reader._StreamParser</em>) – A helper for parsing messages into rows.</li>
-<li><strong>message</strong> (<a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse" title="google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse"><em>google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse</em></a>) – A message of data from a read rows stream.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stream_parser</strong> (<em>google.cloud.bigquery_storage_v1beta1.reader._StreamParser</em>) – A helper for parsing messages into rows.</p></li>
+<li><p><strong>message</strong> (<a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse" title="google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse"><em>google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse</em></a>) – A message of data from a read rows stream.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="google.cloud.bigquery_storage_v1beta1.reader.ReadRowsPage.next">
-<code class="descname">next</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/reader.html#ReadRowsPage.next"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsPage.next" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">next</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/reader.html#ReadRowsPage.next"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsPage.next" title="Permalink to this definition">#</a></dt>
 <dd><p>Get the next row in the page.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery_storage_v1beta1.reader.ReadRowsPage.num_items">
-<code class="descname">num_items</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsPage.num_items" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">num_items</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsPage.num_items" title="Permalink to this definition">#</a></dt>
 <dd><p>Total items in the page.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery_storage_v1beta1.reader.ReadRowsPage.remaining">
-<code class="descname">remaining</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsPage.remaining" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">remaining</code><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsPage.remaining" title="Permalink to this definition">#</a></dt>
 <dd><p>Remaining items in the page.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigquery_storage_v1beta1.reader.ReadRowsPage.to_arrow">
-<code class="descname">to_arrow</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/reader.html#ReadRowsPage.to_arrow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsPage.to_arrow" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">to_arrow</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/reader.html#ReadRowsPage.to_arrow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsPage.to_arrow" title="Permalink to this definition">#</a></dt>
 <dd><p>Create an <code class="xref py py-class docutils literal notranslate"><span class="pre">pyarrow.RecordBatch</span></code> of rows in the page.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Rows from the message, as an Arrow record batch.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">pyarrow.RecordBatch</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Rows from the message, as an Arrow record batch.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pyarrow.RecordBatch</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigquery_storage_v1beta1.reader.ReadRowsPage.to_dataframe">
-<code class="descname">to_dataframe</code><span class="sig-paren">(</span><em>dtypes=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/reader.html#ReadRowsPage.to_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsPage.to_dataframe" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">to_dataframe</code><span class="sig-paren">(</span><em class="sig-param">dtypes=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/reader.html#ReadRowsPage.to_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsPage.to_dataframe" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> of rows in the page.</p>
 <p>This method requires the pandas libary to create a data frame and the
 fastavro library to parse row messages.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">DATETIME columns are not supported. They are currently parsed as
+<p class="admonition-title">Warning</p>
+<p>DATETIME columns are not supported. They are currently parsed as
 strings in the fastavro library.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dtypes</strong> (<em>Map</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>pandas.Series.dtype</em><em>]</em><em>]</em>) – Optional. A dictionary of column names pandas <code class="docutils literal notranslate"><span class="pre">dtype``s.</span> <span class="pre">The</span>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dtypes</strong> (<em>Map</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>pandas.Series.dtype</em><em>]</em><em>]</em>) – Optional. A dictionary of column names pandas <code class="docutils literal notranslate"><span class="pre">dtype``s.</span> <span class="pre">The</span>
 <span class="pre">provided</span> <span class="pre">``dtype</span></code> is used when constructing the series for
 the column specified. Otherwise, the default pandas behavior
-is used.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A data frame of all rows in the stream.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)">pandas.DataFrame</a></td>
-</tr>
-</tbody>
-</table>
+is used.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A data frame of all rows in the stream.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)">pandas.DataFrame</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream">
-<em class="property">class </em><code class="descclassname">google.cloud.bigquery_storage_v1beta1.reader.</code><code class="descname">ReadRowsStream</code><span class="sig-paren">(</span><em>wrapped</em>, <em>client</em>, <em>read_position</em>, <em>read_rows_kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/reader.html#ReadRowsStream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.bigquery_storage_v1beta1.reader.</code><code class="sig-name descname">ReadRowsStream</code><span class="sig-paren">(</span><em class="sig-param">wrapped</em>, <em class="sig-param">client</em>, <em class="sig-param">read_position</em>, <em class="sig-param">read_rows_kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/reader.html#ReadRowsStream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream" title="Permalink to this definition">#</a></dt>
 <dd><p>A stream of results from a read rows request.</p>
 <p>This stream is an iterable of
 <a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse" title="google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReadRowsResponse</span></code></a>.
@@ -243,117 +216,107 @@ method to parse all messages into a stream of row dictionaries.</p>
 <a class="reference internal" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream.to_dataframe" title="google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream.to_dataframe"><code class="xref py py-func docutils literal notranslate"><span class="pre">to_dataframe()</span></code></a>
 method to parse all messages into a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>.</p>
 <p>Construct a ReadRowsStream.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>wrapped</strong> (<em>Iterable</em><em>[                 </em><a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse" title="google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse"><em>ReadRowsResponse</em></a><em>             ]</em>) – The ReadRows stream to read.</li>
-<li><strong>client</strong> (<em>BigQueryStorageClient</em>) – A GAPIC client used to reconnect to a ReadRows stream. This
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wrapped</strong> (<em>Iterable</em><em>[                 </em><a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse" title="google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse"><em>ReadRowsResponse</em></a><em>             ]</em>) – The ReadRows stream to read.</p></li>
+<li><p><strong>client</strong> (<em>BigQueryStorageClient</em>) – A GAPIC client used to reconnect to a ReadRows stream. This
 must be the GAPIC client to avoid a circular dependency on
-this class.</li>
-<li><strong>read_position</strong> (<em>Union</em><em>[                 </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>,                 </em><a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.StreamPosition" title="google.cloud.bigquery_storage_v1beta1.types.StreamPosition"><em>StreamPosition</em></a><em>             ]</em>) – Required. Identifier of the position in the stream to start
+this class.</p></li>
+<li><p><strong>read_position</strong> (<em>Union</em><em>[                 </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>,                 </em><a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.StreamPosition" title="google.cloud.bigquery_storage_v1beta1.types.StreamPosition"><em>StreamPosition</em></a><em>             ]</em>) – Required. Identifier of the position in the stream to start
 reading from. The offset requested must be less than the last
 row read from ReadRows. Requesting a larger offset is
 undefined. If a dict is provided, it must be of the same form
 as the protobuf message
-<a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.StreamPosition" title="google.cloud.bigquery_storage_v1beta1.types.StreamPosition"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamPosition</span></code></a></li>
-<li><strong>read_rows_kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Keyword arguments to use when reconnecting to a ReadRows
-stream.</li>
+<a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.StreamPosition" title="google.cloud.bigquery_storage_v1beta1.types.StreamPosition"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamPosition</span></code></a></p></li>
+<li><p><strong>read_rows_kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Keyword arguments to use when reconnecting to a ReadRows
+stream.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A sequence of row messages.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Iterable[                 <a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse" title="google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse">ReadRowsResponse</a>             ]</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A sequence of row messages.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Iterable[                 <a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse" title="google.cloud.bigquery_storage_v1beta1.types.ReadRowsResponse">ReadRowsResponse</a>             ]</p>
+</dd>
+</dl>
 <dl class="method">
 <dt id="google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream.rows">
-<code class="descname">rows</code><span class="sig-paren">(</span><em>read_session</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/reader.html#ReadRowsStream.rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream.rows" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">rows</code><span class="sig-paren">(</span><em class="sig-param">read_session</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/reader.html#ReadRowsStream.rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream.rows" title="Permalink to this definition">#</a></dt>
 <dd><p>Iterate over all rows in the stream.</p>
 <p>This method requires the fastavro library in order to parse row
 messages.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">DATETIME columns are not supported. They are currently parsed as
+<p class="admonition-title">Warning</p>
+<p>DATETIME columns are not supported. They are currently parsed as
 strings in the fastavro library.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>read_session</strong> (<a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.ReadSession" title="google.cloud.bigquery_storage_v1beta1.types.ReadSession"><em>ReadSession</em></a>) – The read session associated with this read rows stream. This
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>read_session</strong> (<a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.ReadSession" title="google.cloud.bigquery_storage_v1beta1.types.ReadSession"><em>ReadSession</em></a>) – The read session associated with this read rows stream. This
 contains the schema, which is required to parse the data
-messages.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A sequence of rows, represented as dictionaries.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Iterable[Mapping]</td>
-</tr>
-</tbody>
-</table>
+messages.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A sequence of rows, represented as dictionaries.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Iterable[Mapping]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream.to_arrow">
-<code class="descname">to_arrow</code><span class="sig-paren">(</span><em>read_session</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/reader.html#ReadRowsStream.to_arrow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream.to_arrow" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">to_arrow</code><span class="sig-paren">(</span><em class="sig-param">read_session</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/reader.html#ReadRowsStream.to_arrow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream.to_arrow" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a <code class="xref py py-class docutils literal notranslate"><span class="pre">pyarrow.Table</span></code> of all rows in the stream.</p>
 <p>This method requires the pyarrow library and a stream using the Arrow
 format.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>read_session</strong> (<a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.ReadSession" title="google.cloud.bigquery_storage_v1beta1.types.ReadSession"><em>ReadSession</em></a>) – The read session associated with this read rows stream. This
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>read_session</strong> (<a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.ReadSession" title="google.cloud.bigquery_storage_v1beta1.types.ReadSession"><em>ReadSession</em></a>) – The read session associated with this read rows stream. This
 contains the schema, which is required to parse the data
-messages.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A table of all rows in the stream.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">pyarrow.Table</td>
-</tr>
-</tbody>
-</table>
+messages.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A table of all rows in the stream.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pyarrow.Table</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream.to_dataframe">
-<code class="descname">to_dataframe</code><span class="sig-paren">(</span><em>read_session</em>, <em>dtypes=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/reader.html#ReadRowsStream.to_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream.to_dataframe" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">to_dataframe</code><span class="sig-paren">(</span><em class="sig-param">read_session</em>, <em class="sig-param">dtypes=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/reader.html#ReadRowsStream.to_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream.to_dataframe" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> of all rows in the stream.</p>
 <p>This method requires the pandas libary to create a data frame and the
 fastavro library to parse row messages.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">DATETIME columns are not supported. They are currently parsed as
+<p class="admonition-title">Warning</p>
+<p>DATETIME columns are not supported. They are currently parsed as
 strings.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>read_session</strong> (<a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.ReadSession" title="google.cloud.bigquery_storage_v1beta1.types.ReadSession"><em>ReadSession</em></a>) – The read session associated with this read rows stream. This
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>read_session</strong> (<a class="reference internal" href="types.html#google.cloud.bigquery_storage_v1beta1.types.ReadSession" title="google.cloud.bigquery_storage_v1beta1.types.ReadSession"><em>ReadSession</em></a>) – The read session associated with this read rows stream. This
 contains the schema, which is required to parse the data
-messages.</li>
-<li><strong>dtypes</strong> (<em>Map</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>pandas.Series.dtype</em><em>]</em><em>]</em>) – Optional. A dictionary of column names pandas <code class="docutils literal notranslate"><span class="pre">dtype``s.</span> <span class="pre">The</span>
+messages.</p></li>
+<li><p><strong>dtypes</strong> (<em>Map</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>pandas.Series.dtype</em><em>]</em><em>]</em>) – Optional. A dictionary of column names pandas <code class="docutils literal notranslate"><span class="pre">dtype``s.</span> <span class="pre">The</span>
 <span class="pre">provided</span> <span class="pre">``dtype</span></code> is used when constructing the series for
 the column specified. Otherwise, the default pandas behavior
-is used.</li>
+is used.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A data frame of all rows in the stream.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)">pandas.DataFrame</a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A data frame of all rows in the stream.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)">pandas.DataFrame</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -446,13 +409,11 @@ is used.</li>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -465,7 +426,7 @@ is used.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

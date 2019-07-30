@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.model.ModelReference &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>google.cloud.bigquery.model.ModelReference &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -38,41 +36,41 @@
   <div class="section" id="google-cloud-bigquery-model-modelreference">
 <h1>google.cloud.bigquery.model.ModelReference<a class="headerlink" href="#google-cloud-bigquery-model-modelreference" title="Permalink to this headline">#</a></h1>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.model.ModelReference.from_api_repr" title="google.cloud.bigquery.model.ModelReference.from_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_api_repr</span></code></a>(resource)</td>
-<td>Factory:  construct a model reference given its API representation</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.model.ModelReference.from_api_repr" title="google.cloud.bigquery.model.ModelReference.from_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_api_repr</span></code></a>(resource)</p></td>
+<td><p>Factory:  construct a model reference given its API representation</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.model.ModelReference.from_string" title="google.cloud.bigquery.model.ModelReference.from_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_string</span></code></a>(model_id[,&nbsp;default_project])</td>
-<td>Construct a model reference from model ID string.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.model.ModelReference.from_string" title="google.cloud.bigquery.model.ModelReference.from_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_string</span></code></a>(model_id[, default_project])</p></td>
+<td><p>Construct a model reference from model ID string.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.model.ModelReference.to_api_repr" title="google.cloud.bigquery.model.ModelReference.to_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_api_repr</span></code></a>()</td>
-<td>Construct the API resource representation of this model reference.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.model.ModelReference.to_api_repr" title="google.cloud.bigquery.model.ModelReference.to_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_api_repr</span></code></a>()</p></td>
+<td><p>Construct the API resource representation of this model reference.</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.model.ModelReference.dataset_id" title="google.cloud.bigquery.model.ModelReference.dataset_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dataset_id</span></code></a></td>
-<td>ID of dataset containing the model.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.model.ModelReference.dataset_id" title="google.cloud.bigquery.model.ModelReference.dataset_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dataset_id</span></code></a></p></td>
+<td><p>ID of dataset containing the model.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.model.ModelReference.model_id" title="google.cloud.bigquery.model.ModelReference.model_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_id</span></code></a></td>
-<td>The model ID.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.model.ModelReference.model_id" title="google.cloud.bigquery.model.ModelReference.model_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_id</span></code></a></p></td>
+<td><p>The model ID.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.model.ModelReference.path" title="google.cloud.bigquery.model.ModelReference.path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">path</span></code></a></td>
-<td>URL path for the model’s APIs.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.model.ModelReference.path" title="google.cloud.bigquery.model.ModelReference.path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">path</span></code></a></p></td>
+<td><p>URL path for the model’s APIs.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.model.ModelReference.project" title="google.cloud.bigquery.model.ModelReference.project"><code class="xref py py-obj docutils literal notranslate"><span class="pre">project</span></code></a></td>
-<td>Project bound to the model</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.model.ModelReference.project" title="google.cloud.bigquery.model.ModelReference.project"><code class="xref py py-obj docutils literal notranslate"><span class="pre">project</span></code></a></p></td>
+<td><p>Project bound to the model</p></td>
 </tr>
 </tbody>
 </table>
@@ -80,130 +78,111 @@
 <hr>
 <p><dl class="class">
 <dt id="google.cloud.bigquery.model.ModelReference">
-<em class="property">class </em><code class="descclassname">google.cloud.bigquery.model.</code><code class="descname">ModelReference</code><a class="reference internal" href="../../_modules/google/cloud/bigquery/model.html#ModelReference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.model.ModelReference" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.bigquery.model.</code><code class="sig-name descname">ModelReference</code><a class="reference internal" href="../../_modules/google/cloud/bigquery/model.html#ModelReference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.model.ModelReference" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>ModelReferences are pointers to models.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/models">https://cloud.google.com/bigquery/docs/reference/rest/v2/models</a></p>
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.model.ModelReference.dataset_id">
-<code class="descname">dataset_id</code><a class="headerlink" href="#google.cloud.bigquery.model.ModelReference.dataset_id" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">dataset_id</code><a class="headerlink" href="#google.cloud.bigquery.model.ModelReference.dataset_id" title="Permalink to this definition">#</a></dt>
 <dd><p>ID of dataset containing the model.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="google.cloud.bigquery.model.ModelReference.from_api_repr">
-<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/model.html#ModelReference.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.model.ModelReference.from_api_repr" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">from_api_repr</code><span class="sig-paren">(</span><em class="sig-param">resource</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/model.html#ModelReference.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.model.ModelReference.from_api_repr" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory:  construct a model reference given its API representation</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><em>object</em></a><em>]</em>) – Model reference representation returned from the API</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Model reference parsed from <code class="docutils literal notranslate"><span class="pre">resource</span></code>.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.bigquery.model.ModelReference" title="google.cloud.bigquery.model.ModelReference">google.cloud.bigquery.model.ModelReference</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>resource</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><em>object</em></a><em>]</em>) – Model reference representation returned from the API</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Model reference parsed from <code class="docutils literal notranslate"><span class="pre">resource</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#google.cloud.bigquery.model.ModelReference" title="google.cloud.bigquery.model.ModelReference">google.cloud.bigquery.model.ModelReference</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="google.cloud.bigquery.model.ModelReference.from_string">
-<em class="property">classmethod </em><code class="descname">from_string</code><span class="sig-paren">(</span><em>model_id</em>, <em>default_project=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/model.html#ModelReference.from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.model.ModelReference.from_string" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">from_string</code><span class="sig-paren">(</span><em class="sig-param">model_id</em>, <em class="sig-param">default_project=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/model.html#ModelReference.from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.model.ModelReference.from_string" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct a model reference from model ID string.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>model_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – A model ID in standard SQL format. If <code class="docutils literal notranslate"><span class="pre">default_project</span></code>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – A model ID in standard SQL format. If <code class="docutils literal notranslate"><span class="pre">default_project</span></code>
 is not specified, this must included a project ID, dataset
-ID, and model ID, each separated by <code class="docutils literal notranslate"><span class="pre">.</span></code>.</li>
-<li><strong>default_project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional. The project ID to use when <code class="docutils literal notranslate"><span class="pre">model_id</span></code> does not
-include a project ID.</li>
+ID, and model ID, each separated by <code class="docutils literal notranslate"><span class="pre">.</span></code>.</p></li>
+<li><p><strong>default_project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional. The project ID to use when <code class="docutils literal notranslate"><span class="pre">model_id</span></code> does not
+include a project ID.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Model reference parsed from <code class="docutils literal notranslate"><span class="pre">model_id</span></code>.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#google.cloud.bigquery.model.ModelReference" title="google.cloud.bigquery.model.ModelReference">google.cloud.bigquery.model.ModelReference</a></p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If <code class="docutils literal notranslate"><span class="pre">model_id</span></code> is not a fully-qualified table ID in
-standard SQL format.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Model reference parsed from <code class="docutils literal notranslate"><span class="pre">model_id</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#google.cloud.bigquery.model.ModelReference" title="google.cloud.bigquery.model.ModelReference">google.cloud.bigquery.model.ModelReference</a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">model_id</span></code> is not a fully-qualified table ID in
+    standard SQL format.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.model.ModelReference.model_id">
-<code class="descname">model_id</code><a class="headerlink" href="#google.cloud.bigquery.model.ModelReference.model_id" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">model_id</code><a class="headerlink" href="#google.cloud.bigquery.model.ModelReference.model_id" title="Permalink to this definition">#</a></dt>
 <dd><p>The model ID.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.model.ModelReference.path">
-<code class="descname">path</code><a class="headerlink" href="#google.cloud.bigquery.model.ModelReference.path" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">path</code><a class="headerlink" href="#google.cloud.bigquery.model.ModelReference.path" title="Permalink to this definition">#</a></dt>
 <dd><p>URL path for the model’s APIs.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.model.ModelReference.project">
-<code class="descname">project</code><a class="headerlink" href="#google.cloud.bigquery.model.ModelReference.project" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">project</code><a class="headerlink" href="#google.cloud.bigquery.model.ModelReference.project" title="Permalink to this definition">#</a></dt>
 <dd><p>Project bound to the model</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigquery.model.ModelReference.to_api_repr">
-<code class="descname">to_api_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/model.html#ModelReference.to_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.model.ModelReference.to_api_repr" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">to_api_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/model.html#ModelReference.to_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.model.ModelReference.to_api_repr" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct the API resource representation of this model reference.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Model reference represented as an API resource</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)">object</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Model reference represented as an API resource</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)">object</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -298,13 +277,11 @@ standard SQL format.</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -317,7 +294,7 @@ standard SQL format.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

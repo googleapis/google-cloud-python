@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Video Intelligence API Client &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Types for Cloud Video Intelligence API Client &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -39,20 +37,20 @@
 <span id="types-for-cloud-video-intelligence-api-client"></span><h1>Types for Cloud Video Intelligence API Client<a class="headerlink" href="#module-google.cloud.videointelligence_v1p3beta1.types" title="Permalink to this headline">#</a></h1>
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoProgress">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">AnnotateVideoProgress</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoProgress" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">AnnotateVideoProgress</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoProgress" title="Permalink to this definition">#</a></dt>
 <dd><p>Video annotation progress. Included in the <code class="docutils literal notranslate"><span class="pre">metadata</span></code> field of the
 <code class="docutils literal notranslate"><span class="pre">Operation</span></code> returned by the <code class="docutils literal notranslate"><span class="pre">GetOperation</span></code> call of the
 <code class="docutils literal notranslate"><span class="pre">google::longrunning::Operations</span></code> service.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoProgress.annotation_progress">
-<code class="descname">annotation_progress</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoProgress.annotation_progress" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">annotation_progress</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoProgress.annotation_progress" title="Permalink to this definition">#</a></dt>
 <dd><p>Progress metadata for all videos specified in
 <code class="docutils literal notranslate"><span class="pre">AnnotateVideoRequest</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">annotation_progress</code></dt>
+<code class="sig-name descname">annotation_progress</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.AnnotateVideoProgress.annotation_progress</p>
 </dd></dl>
 
@@ -60,11 +58,11 @@
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">AnnotateVideoRequest</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">AnnotateVideoRequest</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Video annotation request.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoRequest.input_uri">
-<code class="descname">input_uri</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoRequest.input_uri" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">input_uri</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoRequest.input_uri" title="Permalink to this definition">#</a></dt>
 <dd><p>Input video location. Currently, only <a class="reference external" href="https://cloud.google.com/storage/">Google Cloud Storage</a> URIs are supported,
 which must be specified in the following format:
 <code class="docutils literal notranslate"><span class="pre">gs://bucket-id/object-id</span></code> (other URI formats return [google
@@ -79,7 +77,7 @@ embedded in the request as <code class="docutils literal notranslate"><span clas
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoRequest.input_content">
-<code class="descname">input_content</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoRequest.input_content" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">input_content</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoRequest.input_content" title="Permalink to this definition">#</a></dt>
 <dd><p>The video data bytes. If unset, the input video(s) should be
 specified via <code class="docutils literal notranslate"><span class="pre">input_uri</span></code>. If set, <code class="docutils literal notranslate"><span class="pre">input_uri</span></code> should be
 unset.</p>
@@ -87,19 +85,19 @@ unset.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoRequest.features">
-<code class="descname">features</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoRequest.features" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">features</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoRequest.features" title="Permalink to this definition">#</a></dt>
 <dd><p>Requested video annotation features.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoRequest.video_context">
-<code class="descname">video_context</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoRequest.video_context" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">video_context</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoRequest.video_context" title="Permalink to this definition">#</a></dt>
 <dd><p>Additional video context and/or feature-specific parameters.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoRequest.output_uri">
-<code class="descname">output_uri</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoRequest.output_uri" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">output_uri</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoRequest.output_uri" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional location where the output (in JSON format) should be
 stored. Currently, only <a class="reference external" href="https://cloud.google.com/storage/">Google Cloud Storage</a> URIs are supported,
 which must be specified in the following format:
@@ -110,7 +108,7 @@ which must be specified in the following format:
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoRequest.location_id">
-<code class="descname">location_id</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoRequest.location_id" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">location_id</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoRequest.location_id" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional cloud region where annotation should take place.
 Supported cloud regions: <code class="docutils literal notranslate"><span class="pre">us-east1</span></code>, <code class="docutils literal notranslate"><span class="pre">us-west1</span></code>, <code class="docutils literal notranslate"><span class="pre">europe-</span>
 <span class="pre">west1</span></code>, <code class="docutils literal notranslate"><span class="pre">asia-east1</span></code>. If no region is specified, a region
@@ -119,37 +117,37 @@ will be determined based on video file location.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">features</code></dt>
+<code class="sig-name descname">features</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.AnnotateVideoRequest.features</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">input_content</code></dt>
+<code class="sig-name descname">input_content</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.AnnotateVideoRequest.input_content</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">input_uri</code></dt>
+<code class="sig-name descname">input_uri</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.AnnotateVideoRequest.input_uri</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">location_id</code></dt>
+<code class="sig-name descname">location_id</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.AnnotateVideoRequest.location_id</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">output_uri</code></dt>
+<code class="sig-name descname">output_uri</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.AnnotateVideoRequest.output_uri</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">video_context</code></dt>
+<code class="sig-name descname">video_context</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.AnnotateVideoRequest.video_context</p>
 </dd></dl>
 
@@ -157,20 +155,20 @@ will be determined based on video file location.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoResponse">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">AnnotateVideoResponse</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoResponse" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">AnnotateVideoResponse</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoResponse" title="Permalink to this definition">#</a></dt>
 <dd><p>Video annotation response. Included in the <code class="docutils literal notranslate"><span class="pre">response</span></code> field of the
 <code class="docutils literal notranslate"><span class="pre">Operation</span></code> returned by the <code class="docutils literal notranslate"><span class="pre">GetOperation</span></code> call of the
 <code class="docutils literal notranslate"><span class="pre">google::longrunning::Operations</span></code> service.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoResponse.annotation_results">
-<code class="descname">annotation_results</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoResponse.annotation_results" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">annotation_results</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.AnnotateVideoResponse.annotation_results" title="Permalink to this definition">#</a></dt>
 <dd><p>Annotation results for all videos specified in
 <code class="docutils literal notranslate"><span class="pre">AnnotateVideoRequest</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">annotation_results</code></dt>
+<code class="sig-name descname">annotation_results</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.AnnotateVideoResponse.annotation_results</p>
 </dd></dl>
 
@@ -178,16 +176,16 @@ will be determined based on video file location.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Any">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">Any</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Any" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">Any</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Any" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Any.type_url">
-<code class="descname">type_url</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Any.type_url" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">type_url</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Any.type_url" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Any.type_url</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Any.value">
-<code class="descname">value</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Any.value" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">value</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Any.value" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Any.value</p>
 </dd></dl>
 
@@ -195,10 +193,10 @@ will be determined based on video file location.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.CancelOperationRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">CancelOperationRequest</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.CancelOperationRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">CancelOperationRequest</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.CancelOperationRequest" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.CancelOperationRequest.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.CancelOperationRequest.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.CancelOperationRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.CancelOperationRequest.name</p>
 </dd></dl>
 
@@ -206,10 +204,10 @@ will be determined based on video file location.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.DeleteOperationRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">DeleteOperationRequest</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.DeleteOperationRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">DeleteOperationRequest</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.DeleteOperationRequest" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.DeleteOperationRequest.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.DeleteOperationRequest.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.DeleteOperationRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.DeleteOperationRequest.name</p>
 </dd></dl>
 
@@ -217,11 +215,11 @@ will be determined based on video file location.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.DetectedAttribute">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">DetectedAttribute</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.DetectedAttribute" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">DetectedAttribute</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.DetectedAttribute" title="Permalink to this definition">#</a></dt>
 <dd><p>A generic detected attribute represented by name in string format.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.DetectedAttribute.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.DetectedAttribute.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.DetectedAttribute.name" title="Permalink to this definition">#</a></dt>
 <dd><p>The name of the attribute, i.e. glasses, dark_glasses,
 mouth_open etc. A full list of supported type names will be
 provided in the document.</p>
@@ -229,32 +227,32 @@ provided in the document.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.DetectedAttribute.confidence">
-<code class="descname">confidence</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.DetectedAttribute.confidence" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">confidence</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.DetectedAttribute.confidence" title="Permalink to this definition">#</a></dt>
 <dd><p>Detected attribute confidence. Range [0, 1].</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.DetectedAttribute.value">
-<code class="descname">value</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.DetectedAttribute.value" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">value</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.DetectedAttribute.value" title="Permalink to this definition">#</a></dt>
 <dd><p>Text value of the detection result. For example, the value for
 “HairColor” can be “black”, “blonde”, etc.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">confidence</code></dt>
+<code class="sig-name descname">confidence</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.DetectedAttribute.confidence</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">name</code></dt>
+<code class="sig-name descname">name</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.DetectedAttribute.name</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">value</code></dt>
+<code class="sig-name descname">value</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.DetectedAttribute.value</p>
 </dd></dl>
 
@@ -262,16 +260,16 @@ provided in the document.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Duration">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">Duration</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Duration" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">Duration</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Duration" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Duration.nanos">
-<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Duration.nanos" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">nanos</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Duration.nanos" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Duration.nanos</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Duration.seconds">
-<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Duration.seconds" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">seconds</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Duration.seconds" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Duration.seconds</p>
 </dd></dl>
 
@@ -279,42 +277,42 @@ provided in the document.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Entity">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">Entity</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Entity" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">Entity</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Entity" title="Permalink to this definition">#</a></dt>
 <dd><p>Detected entity from video analysis.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Entity.entity_id">
-<code class="descname">entity_id</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Entity.entity_id" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">entity_id</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Entity.entity_id" title="Permalink to this definition">#</a></dt>
 <dd><p>Opaque entity ID. Some IDs may be available in <a class="reference external" href="https://developers.google.com/knowledge-graph/">Google
 Knowledge Graph Search API</a>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Entity.description">
-<code class="descname">description</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Entity.description" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">description</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Entity.description" title="Permalink to this definition">#</a></dt>
 <dd><p>Textual description, e.g. <code class="docutils literal notranslate"><span class="pre">Fixed-gear</span> <span class="pre">bicycle</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Entity.language_code">
-<code class="descname">language_code</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Entity.language_code" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">language_code</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Entity.language_code" title="Permalink to this definition">#</a></dt>
 <dd><p>Language code for <code class="docutils literal notranslate"><span class="pre">description</span></code> in BCP-47 format.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">description</code></dt>
+<code class="sig-name descname">description</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.Entity.description</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">entity_id</code></dt>
+<code class="sig-name descname">entity_id</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.Entity.entity_id</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">language_code</code></dt>
+<code class="sig-name descname">language_code</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.Entity.language_code</p>
 </dd></dl>
 
@@ -322,19 +320,19 @@ Knowledge Graph Search API</a>.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ExplicitContentAnnotation">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">ExplicitContentAnnotation</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ExplicitContentAnnotation" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">ExplicitContentAnnotation</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ExplicitContentAnnotation" title="Permalink to this definition">#</a></dt>
 <dd><p>Explicit content annotation (based on per-frame visual signals only). If
 no explicit content has been detected in a frame, no annotations are
 present for that frame.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ExplicitContentAnnotation.frames">
-<code class="descname">frames</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ExplicitContentAnnotation.frames" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">frames</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ExplicitContentAnnotation.frames" title="Permalink to this definition">#</a></dt>
 <dd><p>All video frames where explicit content was detected.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">frames</code></dt>
+<code class="sig-name descname">frames</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.ExplicitContentAnnotation.frames</p>
 </dd></dl>
 
@@ -342,18 +340,18 @@ present for that frame.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ExplicitContentDetectionConfig">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">ExplicitContentDetectionConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ExplicitContentDetectionConfig" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">ExplicitContentDetectionConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ExplicitContentDetectionConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for EXPLICIT_CONTENT_DETECTION.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ExplicitContentDetectionConfig.model">
-<code class="descname">model</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ExplicitContentDetectionConfig.model" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">model</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ExplicitContentDetectionConfig.model" title="Permalink to this definition">#</a></dt>
 <dd><p>Model to use for explicit content detection. Supported values:
 “builtin/stable” (the default if unset) and “builtin/latest”.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">model</code></dt>
+<code class="sig-name descname">model</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.ExplicitContentDetectionConfig.model</p>
 </dd></dl>
 
@@ -361,30 +359,30 @@ present for that frame.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ExplicitContentFrame">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">ExplicitContentFrame</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ExplicitContentFrame" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">ExplicitContentFrame</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ExplicitContentFrame" title="Permalink to this definition">#</a></dt>
 <dd><p>Video frame level annotation results for explicit content.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ExplicitContentFrame.time_offset">
-<code class="descname">time_offset</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ExplicitContentFrame.time_offset" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">time_offset</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ExplicitContentFrame.time_offset" title="Permalink to this definition">#</a></dt>
 <dd><p>Time-offset, relative to the beginning of the video,
 corresponding to the video frame for this location.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ExplicitContentFrame.pornography_likelihood">
-<code class="descname">pornography_likelihood</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ExplicitContentFrame.pornography_likelihood" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">pornography_likelihood</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ExplicitContentFrame.pornography_likelihood" title="Permalink to this definition">#</a></dt>
 <dd><p>Likelihood of the pornography content..</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">pornography_likelihood</code></dt>
+<code class="sig-name descname">pornography_likelihood</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.ExplicitContentFrame.pornography_likelihood</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">time_offset</code></dt>
+<code class="sig-name descname">time_offset</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.ExplicitContentFrame.time_offset</p>
 </dd></dl>
 
@@ -392,10 +390,10 @@ corresponding to the video frame for this location.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.GetOperationRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">GetOperationRequest</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.GetOperationRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">GetOperationRequest</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.GetOperationRequest" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.GetOperationRequest.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.GetOperationRequest.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.GetOperationRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.GetOperationRequest.name</p>
 </dd></dl>
 
@@ -403,17 +401,17 @@ corresponding to the video frame for this location.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.LabelAnnotation">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">LabelAnnotation</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelAnnotation" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">LabelAnnotation</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelAnnotation" title="Permalink to this definition">#</a></dt>
 <dd><p>Label annotation.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.LabelAnnotation.entity">
-<code class="descname">entity</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelAnnotation.entity" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">entity</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelAnnotation.entity" title="Permalink to this definition">#</a></dt>
 <dd><p>Detected entity.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.LabelAnnotation.category_entities">
-<code class="descname">category_entities</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelAnnotation.category_entities" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">category_entities</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelAnnotation.category_entities" title="Permalink to this definition">#</a></dt>
 <dd><p>Common categories for the detected entity. E.g. when the label
 is <code class="docutils literal notranslate"><span class="pre">Terrier</span></code> the category is likely <code class="docutils literal notranslate"><span class="pre">dog</span></code>. And in some
 cases there might be more than one categories e.g. <code class="docutils literal notranslate"><span class="pre">Terrier</span></code>
@@ -422,37 +420,37 @@ could also be a <code class="docutils literal notranslate"><span class="pre">pet
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.LabelAnnotation.segments">
-<code class="descname">segments</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelAnnotation.segments" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">segments</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelAnnotation.segments" title="Permalink to this definition">#</a></dt>
 <dd><p>All video segments where a label was detected.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.LabelAnnotation.frames">
-<code class="descname">frames</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelAnnotation.frames" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">frames</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelAnnotation.frames" title="Permalink to this definition">#</a></dt>
 <dd><p>All video frames where a label was detected.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">category_entities</code></dt>
+<code class="sig-name descname">category_entities</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.LabelAnnotation.category_entities</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">entity</code></dt>
+<code class="sig-name descname">entity</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.LabelAnnotation.entity</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">frames</code></dt>
+<code class="sig-name descname">frames</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.LabelAnnotation.frames</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">segments</code></dt>
+<code class="sig-name descname">segments</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.LabelAnnotation.segments</p>
 </dd></dl>
 
@@ -460,11 +458,11 @@ could also be a <code class="docutils literal notranslate"><span class="pre">pet
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.LabelDetectionConfig">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">LabelDetectionConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelDetectionConfig" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">LabelDetectionConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelDetectionConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for LABEL_DETECTION.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.LabelDetectionConfig.label_detection_mode">
-<code class="descname">label_detection_mode</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelDetectionConfig.label_detection_mode" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">label_detection_mode</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelDetectionConfig.label_detection_mode" title="Permalink to this definition">#</a></dt>
 <dd><p>What labels should be detected with LABEL_DETECTION, in
 addition to video-level labels or segment-level labels. If
 unspecified, defaults to <code class="docutils literal notranslate"><span class="pre">SHOT_MODE</span></code>.</p>
@@ -472,7 +470,7 @@ unspecified, defaults to <code class="docutils literal notranslate"><span class=
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.LabelDetectionConfig.stationary_camera">
-<code class="descname">stationary_camera</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelDetectionConfig.stationary_camera" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">stationary_camera</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelDetectionConfig.stationary_camera" title="Permalink to this definition">#</a></dt>
 <dd><p>Whether the video has been shot from a stationary (i.e. non-
 moving) camera. When set to true, might improve detection
 accuracy for moving objects. Should be used with
@@ -481,14 +479,14 @@ accuracy for moving objects. Should be used with
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.LabelDetectionConfig.model">
-<code class="descname">model</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelDetectionConfig.model" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">model</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelDetectionConfig.model" title="Permalink to this definition">#</a></dt>
 <dd><p>Model to use for label detection. Supported values:
 “builtin/stable” (the default if unset) and “builtin/latest”.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.LabelDetectionConfig.frame_confidence_threshold">
-<code class="descname">frame_confidence_threshold</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelDetectionConfig.frame_confidence_threshold" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">frame_confidence_threshold</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelDetectionConfig.frame_confidence_threshold" title="Permalink to this definition">#</a></dt>
 <dd><p>The confidence threshold we perform filtering on the labels
 from frame-level detection. If not set, it is set to 0.4 by
 default. The valid range for this threshold is [0.1, 0.9]. Any
@@ -500,7 +498,7 @@ model.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.LabelDetectionConfig.video_confidence_threshold">
-<code class="descname">video_confidence_threshold</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelDetectionConfig.video_confidence_threshold" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">video_confidence_threshold</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelDetectionConfig.video_confidence_threshold" title="Permalink to this definition">#</a></dt>
 <dd><p>The confidence threshold we perform filtering on the labels
 from video-level and shot-level detections. If not set, it is
 set to 0.3 by default. The valid range for this threshold is
@@ -512,31 +510,31 @@ we release a new model.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">frame_confidence_threshold</code></dt>
+<code class="sig-name descname">frame_confidence_threshold</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.LabelDetectionConfig.frame_confidence_threshold</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">label_detection_mode</code></dt>
+<code class="sig-name descname">label_detection_mode</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.LabelDetectionConfig.label_detection_mode</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">model</code></dt>
+<code class="sig-name descname">model</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.LabelDetectionConfig.model</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">stationary_camera</code></dt>
+<code class="sig-name descname">stationary_camera</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.LabelDetectionConfig.stationary_camera</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">video_confidence_threshold</code></dt>
+<code class="sig-name descname">video_confidence_threshold</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.LabelDetectionConfig.video_confidence_threshold</p>
 </dd></dl>
 
@@ -544,30 +542,30 @@ we release a new model.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.LabelFrame">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">LabelFrame</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelFrame" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">LabelFrame</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelFrame" title="Permalink to this definition">#</a></dt>
 <dd><p>Video frame level annotation results for label detection.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.LabelFrame.time_offset">
-<code class="descname">time_offset</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelFrame.time_offset" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">time_offset</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelFrame.time_offset" title="Permalink to this definition">#</a></dt>
 <dd><p>Time-offset, relative to the beginning of the video,
 corresponding to the video frame for this location.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.LabelFrame.confidence">
-<code class="descname">confidence</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelFrame.confidence" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">confidence</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelFrame.confidence" title="Permalink to this definition">#</a></dt>
 <dd><p>Confidence that the label is accurate. Range: [0, 1].</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">confidence</code></dt>
+<code class="sig-name descname">confidence</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.LabelFrame.confidence</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">time_offset</code></dt>
+<code class="sig-name descname">time_offset</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.LabelFrame.time_offset</p>
 </dd></dl>
 
@@ -575,29 +573,29 @@ corresponding to the video frame for this location.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.LabelSegment">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">LabelSegment</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelSegment" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">LabelSegment</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelSegment" title="Permalink to this definition">#</a></dt>
 <dd><p>Video segment level annotation results for label detection.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.LabelSegment.segment">
-<code class="descname">segment</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelSegment.segment" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">segment</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelSegment.segment" title="Permalink to this definition">#</a></dt>
 <dd><p>Video segment where a label was detected.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.LabelSegment.confidence">
-<code class="descname">confidence</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelSegment.confidence" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">confidence</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LabelSegment.confidence" title="Permalink to this definition">#</a></dt>
 <dd><p>Confidence that the label is accurate. Range: [0, 1].</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">confidence</code></dt>
+<code class="sig-name descname">confidence</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.LabelSegment.confidence</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">segment</code></dt>
+<code class="sig-name descname">segment</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.LabelSegment.segment</p>
 </dd></dl>
 
@@ -605,28 +603,28 @@ corresponding to the video frame for this location.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ListOperationsRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">ListOperationsRequest</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ListOperationsRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">ListOperationsRequest</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ListOperationsRequest" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ListOperationsRequest.filter">
-<code class="descname">filter</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ListOperationsRequest.filter" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">filter</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ListOperationsRequest.filter" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.ListOperationsRequest.filter</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ListOperationsRequest.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ListOperationsRequest.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ListOperationsRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.ListOperationsRequest.name</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ListOperationsRequest.page_size">
-<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ListOperationsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">page_size</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ListOperationsRequest.page_size" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.ListOperationsRequest.page_size</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ListOperationsRequest.page_token">
-<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ListOperationsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">page_token</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ListOperationsRequest.page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.ListOperationsRequest.page_token</p>
 </dd></dl>
 
@@ -634,16 +632,16 @@ corresponding to the video frame for this location.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ListOperationsResponse">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">ListOperationsResponse</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ListOperationsResponse" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">ListOperationsResponse</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ListOperationsResponse" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ListOperationsResponse.next_page_token">
-<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ListOperationsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">next_page_token</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ListOperationsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.ListOperationsResponse.next_page_token</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ListOperationsResponse.operations">
-<code class="descname">operations</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ListOperationsResponse.operations" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">operations</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ListOperationsResponse.operations" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.ListOperationsResponse.operations</p>
 </dd></dl>
 
@@ -651,12 +649,12 @@ corresponding to the video frame for this location.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.LogoRecognitionAnnotation">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">LogoRecognitionAnnotation</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LogoRecognitionAnnotation" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">LogoRecognitionAnnotation</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LogoRecognitionAnnotation" title="Permalink to this definition">#</a></dt>
 <dd><p>Annotation corresponding to one detected, tracked and recognized logo
 class.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.LogoRecognitionAnnotation.entity">
-<code class="descname">entity</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LogoRecognitionAnnotation.entity" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">entity</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LogoRecognitionAnnotation.entity" title="Permalink to this definition">#</a></dt>
 <dd><p>Entity category information to specify the logo class that all
 the logo tracks within this LogoRecognitionAnnotation are
 recognized as.</p>
@@ -664,7 +662,7 @@ recognized as.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.LogoRecognitionAnnotation.tracks">
-<code class="descname">tracks</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LogoRecognitionAnnotation.tracks" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">tracks</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LogoRecognitionAnnotation.tracks" title="Permalink to this definition">#</a></dt>
 <dd><p>All logo tracks where the recognized logo appears. Each track
 corresponds to one logo instance appearing in consecutive
 frames.</p>
@@ -672,7 +670,7 @@ frames.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.LogoRecognitionAnnotation.segments">
-<code class="descname">segments</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LogoRecognitionAnnotation.segments" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">segments</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.LogoRecognitionAnnotation.segments" title="Permalink to this definition">#</a></dt>
 <dd><p>All video segments where the recognized logo appears. There
 might be multiple instances of the same logo class appearing
 in one VideoSegment.</p>
@@ -680,19 +678,19 @@ in one VideoSegment.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">entity</code></dt>
+<code class="sig-name descname">entity</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.LogoRecognitionAnnotation.entity</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">segments</code></dt>
+<code class="sig-name descname">segments</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.LogoRecognitionAnnotation.segments</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">tracks</code></dt>
+<code class="sig-name descname">tracks</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.LogoRecognitionAnnotation.tracks</p>
 </dd></dl>
 
@@ -700,54 +698,54 @@ in one VideoSegment.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.NormalizedBoundingBox">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">NormalizedBoundingBox</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.NormalizedBoundingBox" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">NormalizedBoundingBox</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.NormalizedBoundingBox" title="Permalink to this definition">#</a></dt>
 <dd><p>Normalized bounding box. The normalized vertex coordinates are relative
 to the original image. Range: [0, 1].</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.NormalizedBoundingBox.left">
-<code class="descname">left</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.NormalizedBoundingBox.left" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">left</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.NormalizedBoundingBox.left" title="Permalink to this definition">#</a></dt>
 <dd><p>Left X coordinate.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.NormalizedBoundingBox.top">
-<code class="descname">top</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.NormalizedBoundingBox.top" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">top</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.NormalizedBoundingBox.top" title="Permalink to this definition">#</a></dt>
 <dd><p>Top Y coordinate.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.NormalizedBoundingBox.right">
-<code class="descname">right</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.NormalizedBoundingBox.right" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">right</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.NormalizedBoundingBox.right" title="Permalink to this definition">#</a></dt>
 <dd><p>Right X coordinate.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.NormalizedBoundingBox.bottom">
-<code class="descname">bottom</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.NormalizedBoundingBox.bottom" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">bottom</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.NormalizedBoundingBox.bottom" title="Permalink to this definition">#</a></dt>
 <dd><p>Bottom Y coordinate.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">bottom</code></dt>
+<code class="sig-name descname">bottom</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.NormalizedBoundingBox.bottom</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">left</code></dt>
+<code class="sig-name descname">left</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.NormalizedBoundingBox.left</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">right</code></dt>
+<code class="sig-name descname">right</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.NormalizedBoundingBox.right</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">top</code></dt>
+<code class="sig-name descname">top</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.NormalizedBoundingBox.top</p>
 </dd></dl>
 
@@ -755,7 +753,7 @@ to the original image. Range: [0, 1].</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.NormalizedBoundingPoly">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">NormalizedBoundingPoly</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.NormalizedBoundingPoly" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">NormalizedBoundingPoly</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.NormalizedBoundingPoly" title="Permalink to this definition">#</a></dt>
 <dd><p>Normalized bounding polygon for text (that might not be aligned with
 axis). Contains list of the corner points in clockwise order starting
 from top-left corner. For example, for a rectangular bounding box: When
@@ -767,13 +765,13 @@ less than 0, or greater than 1 due to trignometric calculations for
 location of the box.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.NormalizedBoundingPoly.vertices">
-<code class="descname">vertices</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.NormalizedBoundingPoly.vertices" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">vertices</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.NormalizedBoundingPoly.vertices" title="Permalink to this definition">#</a></dt>
 <dd><p>Normalized vertices of the bounding polygon.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">vertices</code></dt>
+<code class="sig-name descname">vertices</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.NormalizedBoundingPoly.vertices</p>
 </dd></dl>
 
@@ -781,23 +779,23 @@ location of the box.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.NormalizedVertex">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">NormalizedVertex</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.NormalizedVertex" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">NormalizedVertex</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.NormalizedVertex" title="Permalink to this definition">#</a></dt>
 <dd><p>X coordinate.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.NormalizedVertex.y">
-<code class="descname">y</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.NormalizedVertex.y" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">y</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.NormalizedVertex.y" title="Permalink to this definition">#</a></dt>
 <dd><p>Y coordinate.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.NormalizedVertex.x">
-<code class="descname">x</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.NormalizedVertex.x" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">x</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.NormalizedVertex.x" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.NormalizedVertex.x</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">y</code></dt>
+<code class="sig-name descname">y</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.NormalizedVertex.y</p>
 </dd></dl>
 
@@ -805,24 +803,24 @@ location of the box.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingAnnotation">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">ObjectTrackingAnnotation</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingAnnotation" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">ObjectTrackingAnnotation</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingAnnotation" title="Permalink to this definition">#</a></dt>
 <dd><p>Annotations corresponding to one tracked object.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingAnnotation.entity">
-<code class="descname">entity</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingAnnotation.entity" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">entity</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingAnnotation.entity" title="Permalink to this definition">#</a></dt>
 <dd><p>Entity to specify the object category that this track is
 labeled as.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingAnnotation.confidence">
-<code class="descname">confidence</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingAnnotation.confidence" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">confidence</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingAnnotation.confidence" title="Permalink to this definition">#</a></dt>
 <dd><p>Object category’s labeling confidence of this track.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingAnnotation.frames">
-<code class="descname">frames</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingAnnotation.frames" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">frames</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingAnnotation.frames" title="Permalink to this definition">#</a></dt>
 <dd><p>Information corresponding to all frames where this object
 track appears. Non-streaming batch mode: it may be one or
 multiple ObjectTrackingFrame messages in frames. Streaming
@@ -832,21 +830,21 @@ frames.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingAnnotation.track_info">
-<code class="descname">track_info</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingAnnotation.track_info" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">track_info</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingAnnotation.track_info" title="Permalink to this definition">#</a></dt>
 <dd><p>Different representation of tracking info in non-streaming
 batch and streaming modes.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingAnnotation.segment">
-<code class="descname">segment</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingAnnotation.segment" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">segment</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingAnnotation.segment" title="Permalink to this definition">#</a></dt>
 <dd><p>Non-streaming batch mode ONLY. Each object track corresponds
 to one video segment where it appears.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingAnnotation.track_id">
-<code class="descname">track_id</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingAnnotation.track_id" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">track_id</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingAnnotation.track_id" title="Permalink to this definition">#</a></dt>
 <dd><p>Streaming mode ONLY. In streaming mode, we do not know the end
 time of a tracked object before it is completed. Hence, there
 is no VideoSegment info returned. Instead, we provide a unique
@@ -857,31 +855,31 @@ the same track_id over time.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">confidence</code></dt>
+<code class="sig-name descname">confidence</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.ObjectTrackingAnnotation.confidence</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">entity</code></dt>
+<code class="sig-name descname">entity</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.ObjectTrackingAnnotation.entity</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">frames</code></dt>
+<code class="sig-name descname">frames</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.ObjectTrackingAnnotation.frames</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">segment</code></dt>
+<code class="sig-name descname">segment</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.ObjectTrackingAnnotation.segment</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">track_id</code></dt>
+<code class="sig-name descname">track_id</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.ObjectTrackingAnnotation.track_id</p>
 </dd></dl>
 
@@ -889,18 +887,18 @@ the same track_id over time.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingConfig">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">ObjectTrackingConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingConfig" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">ObjectTrackingConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for OBJECT_TRACKING.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingConfig.model">
-<code class="descname">model</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingConfig.model" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">model</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingConfig.model" title="Permalink to this definition">#</a></dt>
 <dd><p>Model to use for object tracking. Supported values:
 “builtin/stable” (the default if unset) and “builtin/latest”.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">model</code></dt>
+<code class="sig-name descname">model</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.ObjectTrackingConfig.model</p>
 </dd></dl>
 
@@ -908,31 +906,31 @@ the same track_id over time.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingFrame">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">ObjectTrackingFrame</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingFrame" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">ObjectTrackingFrame</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingFrame" title="Permalink to this definition">#</a></dt>
 <dd><p>Video frame level annotations for object detection and tracking. This
 field stores per frame location, time offset, and confidence.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingFrame.normalized_bounding_box">
-<code class="descname">normalized_bounding_box</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingFrame.normalized_bounding_box" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">normalized_bounding_box</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingFrame.normalized_bounding_box" title="Permalink to this definition">#</a></dt>
 <dd><p>The normalized bounding box location of this object track for
 the frame.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingFrame.time_offset">
-<code class="descname">time_offset</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingFrame.time_offset" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">time_offset</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ObjectTrackingFrame.time_offset" title="Permalink to this definition">#</a></dt>
 <dd><p>The timestamp of the frame in microseconds.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">normalized_bounding_box</code></dt>
+<code class="sig-name descname">normalized_bounding_box</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.ObjectTrackingFrame.normalized_bounding_box</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">time_offset</code></dt>
+<code class="sig-name descname">time_offset</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.ObjectTrackingFrame.time_offset</p>
 </dd></dl>
 
@@ -940,40 +938,40 @@ the frame.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Operation">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">Operation</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Operation" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">Operation</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Operation" title="Permalink to this definition">#</a></dt>
 <dd><dl class="method">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Operation.deserialize">
-<code class="descname">deserialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Operation.deserialize" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">deserialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Operation.deserialize" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates new method instance from given serialized data.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Operation.done">
-<code class="descname">done</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Operation.done" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">done</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Operation.done" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.Operation.done</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Operation.error">
-<code class="descname">error</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Operation.error" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">error</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Operation.error" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.Operation.error</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Operation.metadata">
-<code class="descname">metadata</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Operation.metadata" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">metadata</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Operation.metadata" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.Operation.metadata</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Operation.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Operation.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Operation.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.Operation.name</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Operation.response">
-<code class="descname">response</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Operation.response" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">response</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Operation.response" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.Operation.response</p>
 </dd></dl>
 
@@ -981,16 +979,16 @@ the frame.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.OperationInfo">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">OperationInfo</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.OperationInfo" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">OperationInfo</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.OperationInfo" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.OperationInfo.metadata_type">
-<code class="descname">metadata_type</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.OperationInfo.metadata_type" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">metadata_type</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.OperationInfo.metadata_type" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.OperationInfo.metadata_type</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.OperationInfo.response_type">
-<code class="descname">response_type</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.OperationInfo.response_type" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">response_type</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.OperationInfo.response_type" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.OperationInfo.response_type</p>
 </dd></dl>
 
@@ -998,18 +996,18 @@ the frame.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ShotChangeDetectionConfig">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">ShotChangeDetectionConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ShotChangeDetectionConfig" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">ShotChangeDetectionConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ShotChangeDetectionConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for SHOT_CHANGE_DETECTION.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.ShotChangeDetectionConfig.model">
-<code class="descname">model</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ShotChangeDetectionConfig.model" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">model</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.ShotChangeDetectionConfig.model" title="Permalink to this definition">#</a></dt>
 <dd><p>Model to use for shot change detection. Supported values:
 “builtin/stable” (the default if unset) and “builtin/latest”.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">model</code></dt>
+<code class="sig-name descname">model</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.ShotChangeDetectionConfig.model</p>
 </dd></dl>
 
@@ -1017,12 +1015,12 @@ the frame.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.SpeechContext">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">SpeechContext</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechContext" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">SpeechContext</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechContext" title="Permalink to this definition">#</a></dt>
 <dd><p>Provides “hints” to the speech recognizer to favor specific words and
 phrases in the results.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.SpeechContext.phrases">
-<code class="descname">phrases</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechContext.phrases" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">phrases</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechContext.phrases" title="Permalink to this definition">#</a></dt>
 <dd><p><em>Optional</em> A list of strings containing words and phrases
 “hints” so that the speech recognition is more likely to
 recognize them. This can be used to improve the accuracy for
@@ -1034,7 +1032,7 @@ additional words to the vocabulary of the recognizer. See
 
 <dl class="attribute">
 <dt>
-<code class="descname">phrases</code></dt>
+<code class="sig-name descname">phrases</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.SpeechContext.phrases</p>
 </dd></dl>
 
@@ -1042,17 +1040,17 @@ additional words to the vocabulary of the recognizer. See
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.SpeechRecognitionAlternative">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">SpeechRecognitionAlternative</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechRecognitionAlternative" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">SpeechRecognitionAlternative</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechRecognitionAlternative" title="Permalink to this definition">#</a></dt>
 <dd><p>Alternative hypotheses (a.k.a. n-best list).</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.SpeechRecognitionAlternative.transcript">
-<code class="descname">transcript</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechRecognitionAlternative.transcript" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">transcript</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechRecognitionAlternative.transcript" title="Permalink to this definition">#</a></dt>
 <dd><p>Transcript text representing the words that the user spoke.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.SpeechRecognitionAlternative.confidence">
-<code class="descname">confidence</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechRecognitionAlternative.confidence" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">confidence</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechRecognitionAlternative.confidence" title="Permalink to this definition">#</a></dt>
 <dd><p>The confidence estimate between 0.0 and 1.0. A higher number
 indicates an estimated greater likelihood that the recognized
 words are correct. This field is typically provided only for
@@ -1064,25 +1062,25 @@ not guaranteed to be accurate or consistent. The default of
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.SpeechRecognitionAlternative.words">
-<code class="descname">words</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechRecognitionAlternative.words" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">words</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechRecognitionAlternative.words" title="Permalink to this definition">#</a></dt>
 <dd><p>A list of word-specific information for each recognized word.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">confidence</code></dt>
+<code class="sig-name descname">confidence</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.SpeechRecognitionAlternative.confidence</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">transcript</code></dt>
+<code class="sig-name descname">transcript</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.SpeechRecognitionAlternative.transcript</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">words</code></dt>
+<code class="sig-name descname">words</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.SpeechRecognitionAlternative.words</p>
 </dd></dl>
 
@@ -1090,11 +1088,11 @@ not guaranteed to be accurate or consistent. The default of
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.SpeechTranscription">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">SpeechTranscription</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechTranscription" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">SpeechTranscription</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechTranscription" title="Permalink to this definition">#</a></dt>
 <dd><p>A speech recognition result corresponding to a portion of the audio.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.SpeechTranscription.alternatives">
-<code class="descname">alternatives</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechTranscription.alternatives" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">alternatives</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechTranscription.alternatives" title="Permalink to this definition">#</a></dt>
 <dd><p>May contain one or more recognition hypotheses (up to the
 maximum specified in <code class="docutils literal notranslate"><span class="pre">max_alternatives</span></code>). These alternatives
 are ordered in terms of accuracy, with the top (first)
@@ -1104,7 +1102,7 @@ recognizer.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.SpeechTranscription.language_code">
-<code class="descname">language_code</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechTranscription.language_code" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">language_code</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechTranscription.language_code" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The <a class="reference external" href="https://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP-47</a> language tag of the language
 in this result. This language code was detected to have the
 most likelihood of being spoken in the audio.</p>
@@ -1112,13 +1110,13 @@ most likelihood of being spoken in the audio.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">alternatives</code></dt>
+<code class="sig-name descname">alternatives</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.SpeechTranscription.alternatives</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">language_code</code></dt>
+<code class="sig-name descname">language_code</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.SpeechTranscription.language_code</p>
 </dd></dl>
 
@@ -1126,11 +1124,11 @@ most likelihood of being spoken in the audio.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">SpeechTranscriptionConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">SpeechTranscriptionConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for SPEECH_TRANSCRIPTION.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig.language_code">
-<code class="descname">language_code</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig.language_code" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">language_code</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig.language_code" title="Permalink to this definition">#</a></dt>
 <dd><p><em>Required</em> The language of the supplied audio as a <a class="reference external" href="https://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP-47</a> language
 tag. Example: “en-US”. See <a class="reference external" href="https://cloud.google.com/speech/docs/languages">Language Support</a> for a list
 of the currently supported language codes.</p>
@@ -1138,7 +1136,7 @@ of the currently supported language codes.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig.max_alternatives">
-<code class="descname">max_alternatives</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig.max_alternatives" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">max_alternatives</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig.max_alternatives" title="Permalink to this definition">#</a></dt>
 <dd><p><em>Optional</em> Maximum number of recognition hypotheses to be
 returned. Specifically, the maximum number of
 <code class="docutils literal notranslate"><span class="pre">SpeechRecognitionAlternative</span></code> messages within each
@@ -1150,7 +1148,7 @@ will return a maximum of one.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig.filter_profanity">
-<code class="descname">filter_profanity</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig.filter_profanity" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">filter_profanity</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig.filter_profanity" title="Permalink to this definition">#</a></dt>
 <dd><p><em>Optional</em> If set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the server will attempt to
 filter out profanities, replacing all but the initial
 character in each filtered word with asterisks, e.g.
@@ -1160,14 +1158,14 @@ be filtered out.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig.speech_contexts">
-<code class="descname">speech_contexts</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig.speech_contexts" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">speech_contexts</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig.speech_contexts" title="Permalink to this definition">#</a></dt>
 <dd><p><em>Optional</em> A means to provide context to assist the speech
 recognition.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig.enable_automatic_punctuation">
-<code class="descname">enable_automatic_punctuation</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig.enable_automatic_punctuation" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">enable_automatic_punctuation</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig.enable_automatic_punctuation" title="Permalink to this definition">#</a></dt>
 <dd><p><em>Optional</em> If ‘true’, adds punctuation to recognition result
 hypotheses. This feature is only available in select
 languages. Setting this for requests in other languages has no
@@ -1180,7 +1178,7 @@ premium feature.”</p>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig.audio_tracks">
-<code class="descname">audio_tracks</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig.audio_tracks" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">audio_tracks</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig.audio_tracks" title="Permalink to this definition">#</a></dt>
 <dd><p><em>Optional</em> For file formats, such as MXF or MKV, supporting
 multiple audio tracks, specify up to two tracks. Default:
 track 0.</p>
@@ -1188,7 +1186,7 @@ track 0.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig.enable_speaker_diarization">
-<code class="descname">enable_speaker_diarization</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig.enable_speaker_diarization" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">enable_speaker_diarization</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig.enable_speaker_diarization" title="Permalink to this definition">#</a></dt>
 <dd><p><em>Optional</em> If ‘true’, enables speaker detection for each
 recognized word in the top alternative of the recognition
 result using a speaker_tag provided in the WordInfo. Note:
@@ -1201,7 +1199,7 @@ conversation over time.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig.diarization_speaker_count">
-<code class="descname">diarization_speaker_count</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig.diarization_speaker_count" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">diarization_speaker_count</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig.diarization_speaker_count" title="Permalink to this definition">#</a></dt>
 <dd><p><em>Optional</em> If set, specifies the estimated number of speakers
 in the conversation. If not set, defaults to ‘2’. Ignored
 unless enable_speaker_diarization is set to true.</p>
@@ -1209,7 +1207,7 @@ unless enable_speaker_diarization is set to true.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig.enable_word_confidence">
-<code class="descname">enable_word_confidence</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig.enable_word_confidence" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">enable_word_confidence</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.SpeechTranscriptionConfig.enable_word_confidence" title="Permalink to this definition">#</a></dt>
 <dd><p><em>Optional</em> If <code class="docutils literal notranslate"><span class="pre">true</span></code>, the top result includes a list of
 words and the confidence for those words. If <code class="docutils literal notranslate"><span class="pre">false</span></code>, no
 word-level confidence information is returned. The default is
@@ -1218,55 +1216,55 @@ word-level confidence information is returned. The default is
 
 <dl class="attribute">
 <dt>
-<code class="descname">audio_tracks</code></dt>
+<code class="sig-name descname">audio_tracks</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.SpeechTranscriptionConfig.audio_tracks</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">diarization_speaker_count</code></dt>
+<code class="sig-name descname">diarization_speaker_count</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.SpeechTranscriptionConfig.diarization_speaker_count</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">enable_automatic_punctuation</code></dt>
+<code class="sig-name descname">enable_automatic_punctuation</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.SpeechTranscriptionConfig.enable_automatic_punctuation</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">enable_speaker_diarization</code></dt>
+<code class="sig-name descname">enable_speaker_diarization</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.SpeechTranscriptionConfig.enable_speaker_diarization</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">enable_word_confidence</code></dt>
+<code class="sig-name descname">enable_word_confidence</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.SpeechTranscriptionConfig.enable_word_confidence</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">filter_profanity</code></dt>
+<code class="sig-name descname">filter_profanity</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.SpeechTranscriptionConfig.filter_profanity</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">language_code</code></dt>
+<code class="sig-name descname">language_code</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.SpeechTranscriptionConfig.language_code</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">max_alternatives</code></dt>
+<code class="sig-name descname">max_alternatives</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.SpeechTranscriptionConfig.max_alternatives</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">speech_contexts</code></dt>
+<code class="sig-name descname">speech_contexts</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.SpeechTranscriptionConfig.speech_contexts</p>
 </dd></dl>
 
@@ -1274,22 +1272,22 @@ word-level confidence information is returned. The default is
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Status">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">Status</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Status" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">Status</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Status" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Status.code">
-<code class="descname">code</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Status.code" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">code</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Status.code" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.rpc.Status.code</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Status.details">
-<code class="descname">details</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Status.details" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">details</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Status.details" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.rpc.Status.details</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Status.message">
-<code class="descname">message</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Status.message" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">message</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Status.message" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.rpc.Status.message</p>
 </dd></dl>
 
@@ -1297,7 +1295,7 @@ word-level confidence information is returned. The default is
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">StreamingAnnotateVideoRequest</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">StreamingAnnotateVideoRequest</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>The top-level message sent by the client for the
 <code class="docutils literal notranslate"><span class="pre">StreamingAnnotateVideo</span></code> method. Multiple
 <code class="docutils literal notranslate"><span class="pre">StreamingAnnotateVideoRequest</span></code> messages are sent. The first message
@@ -1305,14 +1303,14 @@ must only contain a <code class="docutils literal notranslate"><span class="pre"
 messages must only contain <code class="docutils literal notranslate"><span class="pre">input_content</span></code> data.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoRequest.streaming_request">
-<code class="descname">streaming_request</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoRequest.streaming_request" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">streaming_request</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoRequest.streaming_request" title="Permalink to this definition">#</a></dt>
 <dd><p><em>Required</em> The streaming request, which is either a streaming
 config or video content.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoRequest.video_config">
-<code class="descname">video_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoRequest.video_config" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">video_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoRequest.video_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Provides information to the annotator, specifing how to
 process the request. The first
 <code class="docutils literal notranslate"><span class="pre">AnnotateStreamingVideoRequest</span></code> message must only contain a
@@ -1321,7 +1319,7 @@ process the request. The first
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoRequest.input_content">
-<code class="descname">input_content</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoRequest.input_content" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">input_content</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoRequest.input_content" title="Permalink to this definition">#</a></dt>
 <dd><p>The video data to be annotated. Chunks of video data are
 sequentially sent in <code class="docutils literal notranslate"><span class="pre">StreamingAnnotateVideoRequest</span></code>
 messages. Except the initial <code class="docutils literal notranslate"><span class="pre">StreamingAnnotateVideoRequest</span></code>
@@ -1333,13 +1331,13 @@ protobuffers use a pure binary representation (not base64).</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">input_content</code></dt>
+<code class="sig-name descname">input_content</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.StreamingAnnotateVideoRequest.input_content</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">video_config</code></dt>
+<code class="sig-name descname">video_config</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.StreamingAnnotateVideoRequest.video_config</p>
 </dd></dl>
 
@@ -1347,27 +1345,27 @@ protobuffers use a pure binary representation (not base64).</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoResponse">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">StreamingAnnotateVideoResponse</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoResponse" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">StreamingAnnotateVideoResponse</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoResponse" title="Permalink to this definition">#</a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">StreamingAnnotateVideoResponse</span></code> is the only message returned to the
 client by <code class="docutils literal notranslate"><span class="pre">StreamingAnnotateVideo</span></code>. A series of zero or more
 <code class="docutils literal notranslate"><span class="pre">StreamingAnnotateVideoResponse</span></code> messages are streamed back to the
 client.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoResponse.error">
-<code class="descname">error</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoResponse.error" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">error</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoResponse.error" title="Permalink to this definition">#</a></dt>
 <dd><p>If set, returns a [google.rpc.Status][google.rpc.Status]
 message that specifies the error for the operation.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoResponse.annotation_results">
-<code class="descname">annotation_results</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoResponse.annotation_results" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">annotation_results</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoResponse.annotation_results" title="Permalink to this definition">#</a></dt>
 <dd><p>Streaming annotation results.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoResponse.annotation_results_uri">
-<code class="descname">annotation_results_uri</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoResponse.annotation_results_uri" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">annotation_results_uri</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoResponse.annotation_results_uri" title="Permalink to this definition">#</a></dt>
 <dd><p>GCS URI that stores annotation results of one streaming
 session. It is a directory that can hold multiple files in
 JSON format. Example uri format:
@@ -1376,19 +1374,19 @@ gs://bucket_id/object_id/cloud_project_name-session_id</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">annotation_results</code></dt>
+<code class="sig-name descname">annotation_results</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.StreamingAnnotateVideoResponse.annotation_results</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">annotation_results_uri</code></dt>
+<code class="sig-name descname">annotation_results_uri</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.StreamingAnnotateVideoResponse.annotation_results_uri</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">error</code></dt>
+<code class="sig-name descname">error</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.StreamingAnnotateVideoResponse.error</p>
 </dd></dl>
 
@@ -1396,18 +1394,18 @@ gs://bucket_id/object_id/cloud_project_name-session_id</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingAutomlClassificationConfig">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">StreamingAutomlClassificationConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAutomlClassificationConfig" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">StreamingAutomlClassificationConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAutomlClassificationConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for AUTOML_CLASSIFICATION in streaming mode.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingAutomlClassificationConfig.model_name">
-<code class="descname">model_name</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAutomlClassificationConfig.model_name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">model_name</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAutomlClassificationConfig.model_name" title="Permalink to this definition">#</a></dt>
 <dd><p>Resource name of AutoML model. Format: <code class="docutils literal notranslate"><span class="pre">projects/{project_id}</span>
 <span class="pre">/locations/{location_id}/models/{model_id}</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">model_name</code></dt>
+<code class="sig-name descname">model_name</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.StreamingAutomlClassificationConfig.model_name</p>
 </dd></dl>
 
@@ -1415,18 +1413,18 @@ gs://bucket_id/object_id/cloud_project_name-session_id</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingAutomlObjectTrackingConfig">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">StreamingAutomlObjectTrackingConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAutomlObjectTrackingConfig" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">StreamingAutomlObjectTrackingConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAutomlObjectTrackingConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for AUTOML_OBJECT_TRACKING in streaming mode.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingAutomlObjectTrackingConfig.model_name">
-<code class="descname">model_name</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAutomlObjectTrackingConfig.model_name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">model_name</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingAutomlObjectTrackingConfig.model_name" title="Permalink to this definition">#</a></dt>
 <dd><p>Resource name of AutoML model. Format: <code class="docutils literal notranslate"><span class="pre">projects/{project_id}</span>
 <span class="pre">/locations/{location_id}/models/{model_id}</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">model_name</code></dt>
+<code class="sig-name descname">model_name</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.StreamingAutomlObjectTrackingConfig.model_name</p>
 </dd></dl>
 
@@ -1434,18 +1432,18 @@ gs://bucket_id/object_id/cloud_project_name-session_id</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingExplicitContentDetectionConfig">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">StreamingExplicitContentDetectionConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingExplicitContentDetectionConfig" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">StreamingExplicitContentDetectionConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingExplicitContentDetectionConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for EXPLICIT_CONTENT_DETECTION in streaming mode.</p>
 <p>No customized config support.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingLabelDetectionConfig">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">StreamingLabelDetectionConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingLabelDetectionConfig" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">StreamingLabelDetectionConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingLabelDetectionConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for LABEL_DETECTION in streaming mode.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingLabelDetectionConfig.stationary_camera">
-<code class="descname">stationary_camera</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingLabelDetectionConfig.stationary_camera" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">stationary_camera</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingLabelDetectionConfig.stationary_camera" title="Permalink to this definition">#</a></dt>
 <dd><p>Whether the video has been captured from a stationary (i.e.
 non-moving) camera. When set to true, might improve detection
 accuracy for moving objects. Default: false.</p>
@@ -1453,7 +1451,7 @@ accuracy for moving objects. Default: false.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">stationary_camera</code></dt>
+<code class="sig-name descname">stationary_camera</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.StreamingLabelDetectionConfig.stationary_camera</p>
 </dd></dl>
 
@@ -1461,31 +1459,31 @@ accuracy for moving objects. Default: false.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingObjectTrackingConfig">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">StreamingObjectTrackingConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingObjectTrackingConfig" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">StreamingObjectTrackingConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingObjectTrackingConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for STREAMING_OBJECT_TRACKING.</p>
 <p>No customized config support.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingShotChangeDetectionConfig">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">StreamingShotChangeDetectionConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingShotChangeDetectionConfig" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">StreamingShotChangeDetectionConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingShotChangeDetectionConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for SHOT_CHANGE_DETECTION in streaming mode.</p>
 <p>No customized config support.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingStorageConfig">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">StreamingStorageConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingStorageConfig" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">StreamingStorageConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingStorageConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for streaming storage option.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingStorageConfig.enable_storage_annotation_result">
-<code class="descname">enable_storage_annotation_result</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingStorageConfig.enable_storage_annotation_result" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">enable_storage_annotation_result</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingStorageConfig.enable_storage_annotation_result" title="Permalink to this definition">#</a></dt>
 <dd><p>Enable streaming storage. Default: false.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingStorageConfig.annotation_result_storage_directory">
-<code class="descname">annotation_result_storage_directory</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingStorageConfig.annotation_result_storage_directory" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">annotation_result_storage_directory</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingStorageConfig.annotation_result_storage_directory" title="Permalink to this definition">#</a></dt>
 <dd><p>GCS URI to store all annotation results for one client. Client
 should specify this field as the top-level storage directory.
 Annotation results of different sessions will be put into
@@ -1502,13 +1500,13 @@ and cause GCS write failure.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">annotation_result_storage_directory</code></dt>
+<code class="sig-name descname">annotation_result_storage_directory</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.StreamingStorageConfig.annotation_result_storage_directory</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">enable_storage_annotation_result</code></dt>
+<code class="sig-name descname">enable_storage_annotation_result</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.StreamingStorageConfig.enable_storage_annotation_result</p>
 </dd></dl>
 
@@ -1516,55 +1514,55 @@ and cause GCS write failure.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingVideoAnnotationResults">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">StreamingVideoAnnotationResults</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoAnnotationResults" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">StreamingVideoAnnotationResults</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoAnnotationResults" title="Permalink to this definition">#</a></dt>
 <dd><p>Streaming annotation results corresponding to a portion of the video
 that is currently being processed.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingVideoAnnotationResults.shot_annotations">
-<code class="descname">shot_annotations</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoAnnotationResults.shot_annotations" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">shot_annotations</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoAnnotationResults.shot_annotations" title="Permalink to this definition">#</a></dt>
 <dd><p>Shot annotation results. Each shot is represented as a video
 segment.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingVideoAnnotationResults.label_annotations">
-<code class="descname">label_annotations</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoAnnotationResults.label_annotations" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">label_annotations</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoAnnotationResults.label_annotations" title="Permalink to this definition">#</a></dt>
 <dd><p>Label annotation results.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingVideoAnnotationResults.explicit_annotation">
-<code class="descname">explicit_annotation</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoAnnotationResults.explicit_annotation" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">explicit_annotation</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoAnnotationResults.explicit_annotation" title="Permalink to this definition">#</a></dt>
 <dd><p>Explicit content annotation results.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingVideoAnnotationResults.object_annotations">
-<code class="descname">object_annotations</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoAnnotationResults.object_annotations" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">object_annotations</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoAnnotationResults.object_annotations" title="Permalink to this definition">#</a></dt>
 <dd><p>Object tracking results.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">explicit_annotation</code></dt>
+<code class="sig-name descname">explicit_annotation</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.StreamingVideoAnnotationResults.explicit_annotation</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">label_annotations</code></dt>
+<code class="sig-name descname">label_annotations</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.StreamingVideoAnnotationResults.label_annotations</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">object_annotations</code></dt>
+<code class="sig-name descname">object_annotations</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.StreamingVideoAnnotationResults.object_annotations</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">shot_annotations</code></dt>
+<code class="sig-name descname">shot_annotations</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.StreamingVideoAnnotationResults.shot_annotations</p>
 </dd></dl>
 
@@ -1572,108 +1570,108 @@ segment.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">StreamingVideoConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">StreamingVideoConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Provides information to the annotator that specifies how to process the
 request.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.feature">
-<code class="descname">feature</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.feature" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">feature</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.feature" title="Permalink to this definition">#</a></dt>
 <dd><p>Requested annotation feature.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.streaming_config">
-<code class="descname">streaming_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.streaming_config" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">streaming_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.streaming_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for requested annotation feature.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.shot_change_detection_config">
-<code class="descname">shot_change_detection_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.shot_change_detection_config" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">shot_change_detection_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.shot_change_detection_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for STREAMING_SHOT_CHANGE_DETECTION.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.label_detection_config">
-<code class="descname">label_detection_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.label_detection_config" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">label_detection_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.label_detection_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for STREAMING_LABEL_DETECTION.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.explicit_content_detection_config">
-<code class="descname">explicit_content_detection_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.explicit_content_detection_config" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">explicit_content_detection_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.explicit_content_detection_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for STREAMING_EXPLICIT_CONTENT_DETECTION.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.object_tracking_config">
-<code class="descname">object_tracking_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.object_tracking_config" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">object_tracking_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.object_tracking_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for STREAMING_OBJECT_TRACKING.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.automl_classification_config">
-<code class="descname">automl_classification_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.automl_classification_config" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">automl_classification_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.automl_classification_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for STREAMING_AUTOML_CLASSIFICATION.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.automl_object_tracking_config">
-<code class="descname">automl_object_tracking_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.automl_object_tracking_config" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">automl_object_tracking_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.automl_object_tracking_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for STREAMING_AUTOML_OBJECT_TRACKING.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.storage_config">
-<code class="descname">storage_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.storage_config" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">storage_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig.storage_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Streaming storage option. By default: storage is disabled.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">automl_classification_config</code></dt>
+<code class="sig-name descname">automl_classification_config</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.StreamingVideoConfig.automl_classification_config</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">automl_object_tracking_config</code></dt>
+<code class="sig-name descname">automl_object_tracking_config</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.StreamingVideoConfig.automl_object_tracking_config</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">explicit_content_detection_config</code></dt>
+<code class="sig-name descname">explicit_content_detection_config</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.StreamingVideoConfig.explicit_content_detection_config</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">feature</code></dt>
+<code class="sig-name descname">feature</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.StreamingVideoConfig.feature</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">label_detection_config</code></dt>
+<code class="sig-name descname">label_detection_config</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.StreamingVideoConfig.label_detection_config</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">object_tracking_config</code></dt>
+<code class="sig-name descname">object_tracking_config</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.StreamingVideoConfig.object_tracking_config</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">shot_change_detection_config</code></dt>
+<code class="sig-name descname">shot_change_detection_config</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.StreamingVideoConfig.shot_change_detection_config</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">storage_config</code></dt>
+<code class="sig-name descname">storage_config</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.StreamingVideoConfig.storage_config</p>
 </dd></dl>
 
@@ -1681,31 +1679,31 @@ request.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.TextAnnotation">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">TextAnnotation</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TextAnnotation" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">TextAnnotation</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TextAnnotation" title="Permalink to this definition">#</a></dt>
 <dd><p>Annotations related to one detected OCR text snippet. This will contain
 the corresponding text, confidence value, and frame level information
 for each detection.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.TextAnnotation.text">
-<code class="descname">text</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TextAnnotation.text" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">text</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TextAnnotation.text" title="Permalink to this definition">#</a></dt>
 <dd><p>The detected text.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.TextAnnotation.segments">
-<code class="descname">segments</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TextAnnotation.segments" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">segments</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TextAnnotation.segments" title="Permalink to this definition">#</a></dt>
 <dd><p>All video segments where OCR detected text appears.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">segments</code></dt>
+<code class="sig-name descname">segments</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.TextAnnotation.segments</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">text</code></dt>
+<code class="sig-name descname">text</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.TextAnnotation.text</p>
 </dd></dl>
 
@@ -1713,11 +1711,11 @@ for each detection.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.TextDetectionConfig">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">TextDetectionConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TextDetectionConfig" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">TextDetectionConfig</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TextDetectionConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for TEXT_DETECTION.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.TextDetectionConfig.language_hints">
-<code class="descname">language_hints</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TextDetectionConfig.language_hints" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">language_hints</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TextDetectionConfig.language_hints" title="Permalink to this definition">#</a></dt>
 <dd><p>Language hint can be specified if the language to be detected
 is known a priori. It can increase the accuracy of the
 detection. Language hint must be language code in BCP-47
@@ -1727,20 +1725,20 @@ is provided.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.TextDetectionConfig.model">
-<code class="descname">model</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TextDetectionConfig.model" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">model</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TextDetectionConfig.model" title="Permalink to this definition">#</a></dt>
 <dd><p>Model to use for text detection. Supported values:
 “builtin/stable” (the default if unset) and “builtin/latest”.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">language_hints</code></dt>
+<code class="sig-name descname">language_hints</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.TextDetectionConfig.language_hints</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">model</code></dt>
+<code class="sig-name descname">model</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.TextDetectionConfig.model</p>
 </dd></dl>
 
@@ -1748,31 +1746,31 @@ is provided.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.TextFrame">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">TextFrame</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TextFrame" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">TextFrame</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TextFrame" title="Permalink to this definition">#</a></dt>
 <dd><p>Video frame level annotation results for text annotation (OCR). Contains
 information regarding timestamp and bounding box locations for the
 frames containing detected OCR text snippets.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.TextFrame.rotated_bounding_box">
-<code class="descname">rotated_bounding_box</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TextFrame.rotated_bounding_box" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">rotated_bounding_box</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TextFrame.rotated_bounding_box" title="Permalink to this definition">#</a></dt>
 <dd><p>Bounding polygon of the detected text for this frame.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.TextFrame.time_offset">
-<code class="descname">time_offset</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TextFrame.time_offset" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">time_offset</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TextFrame.time_offset" title="Permalink to this definition">#</a></dt>
 <dd><p>Timestamp of this frame.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">rotated_bounding_box</code></dt>
+<code class="sig-name descname">rotated_bounding_box</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.TextFrame.rotated_bounding_box</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">time_offset</code></dt>
+<code class="sig-name descname">time_offset</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.TextFrame.time_offset</p>
 </dd></dl>
 
@@ -1780,43 +1778,43 @@ frames containing detected OCR text snippets.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.TextSegment">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">TextSegment</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TextSegment" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">TextSegment</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TextSegment" title="Permalink to this definition">#</a></dt>
 <dd><p>Video segment level annotation results for text detection.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.TextSegment.segment">
-<code class="descname">segment</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TextSegment.segment" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">segment</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TextSegment.segment" title="Permalink to this definition">#</a></dt>
 <dd><p>Video segment where a text snippet was detected.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.TextSegment.confidence">
-<code class="descname">confidence</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TextSegment.confidence" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">confidence</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TextSegment.confidence" title="Permalink to this definition">#</a></dt>
 <dd><p>Confidence for the track of detected text. It is calculated as
 the highest over all frames where OCR detected text appears.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.TextSegment.frames">
-<code class="descname">frames</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TextSegment.frames" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">frames</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TextSegment.frames" title="Permalink to this definition">#</a></dt>
 <dd><p>Information related to the frames where OCR detected text
 appears.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">confidence</code></dt>
+<code class="sig-name descname">confidence</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.TextSegment.confidence</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">frames</code></dt>
+<code class="sig-name descname">frames</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.TextSegment.frames</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">segment</code></dt>
+<code class="sig-name descname">segment</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.TextSegment.segment</p>
 </dd></dl>
 
@@ -1824,16 +1822,16 @@ appears.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Timestamp">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Timestamp" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">Timestamp</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Timestamp" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Timestamp.nanos">
-<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Timestamp.nanos" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">nanos</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Timestamp.nanos" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Timestamp.nanos</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Timestamp.seconds">
-<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Timestamp.seconds" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">seconds</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Timestamp.seconds" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Timestamp.seconds</p>
 </dd></dl>
 
@@ -1841,46 +1839,46 @@ appears.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.TimestampedObject">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">TimestampedObject</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TimestampedObject" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">TimestampedObject</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TimestampedObject" title="Permalink to this definition">#</a></dt>
 <dd><p>For tracking related features, such as LOGO_RECOGNITION,
 FACE_DETECTION, CELEBRITY_RECOGNITION, PERSON_DETECTION. An object at
 time_offset with attributes, and located with
 normalized_bounding_box.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.TimestampedObject.normalized_bounding_box">
-<code class="descname">normalized_bounding_box</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TimestampedObject.normalized_bounding_box" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">normalized_bounding_box</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TimestampedObject.normalized_bounding_box" title="Permalink to this definition">#</a></dt>
 <dd><p>Normalized Bounding box in a frame, where the object is
 located.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.TimestampedObject.time_offset">
-<code class="descname">time_offset</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TimestampedObject.time_offset" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">time_offset</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TimestampedObject.time_offset" title="Permalink to this definition">#</a></dt>
 <dd><p>Time-offset, relative to the beginning of the video,
 corresponding to the video frame for this object.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.TimestampedObject.attributes">
-<code class="descname">attributes</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TimestampedObject.attributes" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">attributes</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.TimestampedObject.attributes" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The attributes of the object in the bounding box.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">attributes</code></dt>
+<code class="sig-name descname">attributes</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.TimestampedObject.attributes</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">normalized_bounding_box</code></dt>
+<code class="sig-name descname">normalized_bounding_box</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.TimestampedObject.normalized_bounding_box</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">time_offset</code></dt>
+<code class="sig-name descname">time_offset</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.TimestampedObject.time_offset</p>
 </dd></dl>
 
@@ -1888,54 +1886,54 @@ corresponding to the video frame for this object.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Track">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">Track</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Track" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">Track</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Track" title="Permalink to this definition">#</a></dt>
 <dd><p>A track of an object instance.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Track.segment">
-<code class="descname">segment</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Track.segment" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">segment</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Track.segment" title="Permalink to this definition">#</a></dt>
 <dd><p>Video segment of a track.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Track.timestamped_objects">
-<code class="descname">timestamped_objects</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Track.timestamped_objects" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">timestamped_objects</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Track.timestamped_objects" title="Permalink to this definition">#</a></dt>
 <dd><p>The object with timestamp and attributes per frame in the
 track.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Track.attributes">
-<code class="descname">attributes</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Track.attributes" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">attributes</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Track.attributes" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. Attributes in the track level.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.Track.confidence">
-<code class="descname">confidence</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Track.confidence" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">confidence</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.Track.confidence" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The confidence score of the tracked object.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">attributes</code></dt>
+<code class="sig-name descname">attributes</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.Track.attributes</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">confidence</code></dt>
+<code class="sig-name descname">confidence</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.Track.confidence</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">segment</code></dt>
+<code class="sig-name descname">segment</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.Track.segment</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">timestamped_objects</code></dt>
+<code class="sig-name descname">timestamped_objects</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.Track.timestamped_objects</p>
 </dd></dl>
 
@@ -1943,54 +1941,54 @@ track.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationProgress">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">VideoAnnotationProgress</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationProgress" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">VideoAnnotationProgress</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationProgress" title="Permalink to this definition">#</a></dt>
 <dd><p>Annotation progress for a single video.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationProgress.input_uri">
-<code class="descname">input_uri</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationProgress.input_uri" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">input_uri</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationProgress.input_uri" title="Permalink to this definition">#</a></dt>
 <dd><p>Video file location in <a class="reference external" href="https://cloud.google.com/storage/">Google Cloud Storage</a>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationProgress.progress_percent">
-<code class="descname">progress_percent</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationProgress.progress_percent" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">progress_percent</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationProgress.progress_percent" title="Permalink to this definition">#</a></dt>
 <dd><p>Approximate percentage processed thus far. Guaranteed to be
 100 when fully processed.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationProgress.start_time">
-<code class="descname">start_time</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationProgress.start_time" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">start_time</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationProgress.start_time" title="Permalink to this definition">#</a></dt>
 <dd><p>Time when the request was received.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationProgress.update_time">
-<code class="descname">update_time</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationProgress.update_time" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">update_time</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationProgress.update_time" title="Permalink to this definition">#</a></dt>
 <dd><p>Time of the most recent update.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">input_uri</code></dt>
+<code class="sig-name descname">input_uri</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.VideoAnnotationProgress.input_uri</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">progress_percent</code></dt>
+<code class="sig-name descname">progress_percent</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.VideoAnnotationProgress.progress_percent</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">start_time</code></dt>
+<code class="sig-name descname">start_time</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.VideoAnnotationProgress.start_time</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">update_time</code></dt>
+<code class="sig-name descname">update_time</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.VideoAnnotationProgress.update_time</p>
 </dd></dl>
 
@@ -1998,56 +1996,56 @@ track.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">VideoAnnotationResults</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">VideoAnnotationResults</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults" title="Permalink to this definition">#</a></dt>
 <dd><p>Annotation results for a single video.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.input_uri">
-<code class="descname">input_uri</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.input_uri" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">input_uri</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.input_uri" title="Permalink to this definition">#</a></dt>
 <dd><p>Video file location in <a class="reference external" href="https://cloud.google.com/storage/">Google Cloud Storage</a>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.segment_label_annotations">
-<code class="descname">segment_label_annotations</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.segment_label_annotations" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">segment_label_annotations</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.segment_label_annotations" title="Permalink to this definition">#</a></dt>
 <dd><p>Label annotations on video level or user specified segment
 level. There is exactly one element for each unique label.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.shot_label_annotations">
-<code class="descname">shot_label_annotations</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.shot_label_annotations" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">shot_label_annotations</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.shot_label_annotations" title="Permalink to this definition">#</a></dt>
 <dd><p>Label annotations on shot level. There is exactly one element
 for each unique label.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.frame_label_annotations">
-<code class="descname">frame_label_annotations</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.frame_label_annotations" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">frame_label_annotations</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.frame_label_annotations" title="Permalink to this definition">#</a></dt>
 <dd><p>Label annotations on frame level. There is exactly one element
 for each unique label.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.shot_annotations">
-<code class="descname">shot_annotations</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.shot_annotations" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">shot_annotations</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.shot_annotations" title="Permalink to this definition">#</a></dt>
 <dd><p>Shot annotations. Each shot is represented as a video segment.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.explicit_annotation">
-<code class="descname">explicit_annotation</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.explicit_annotation" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">explicit_annotation</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.explicit_annotation" title="Permalink to this definition">#</a></dt>
 <dd><p>Explicit content annotation.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.speech_transcriptions">
-<code class="descname">speech_transcriptions</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.speech_transcriptions" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">speech_transcriptions</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.speech_transcriptions" title="Permalink to this definition">#</a></dt>
 <dd><p>Speech transcription.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.text_annotations">
-<code class="descname">text_annotations</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.text_annotations" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">text_annotations</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.text_annotations" title="Permalink to this definition">#</a></dt>
 <dd><p>OCR text detection and tracking. Annotations for list of
 detected text snippets. Each will have list of frame
 information associated with it.</p>
@@ -2055,20 +2053,20 @@ information associated with it.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.object_annotations">
-<code class="descname">object_annotations</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.object_annotations" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">object_annotations</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.object_annotations" title="Permalink to this definition">#</a></dt>
 <dd><p>Annotations for list of objects detected and tracked in video.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.logo_recognition_annotations">
-<code class="descname">logo_recognition_annotations</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.logo_recognition_annotations" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">logo_recognition_annotations</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.logo_recognition_annotations" title="Permalink to this definition">#</a></dt>
 <dd><p>Annotations for list of logos detected, tracked and recognized
 in video.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.error">
-<code class="descname">error</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.error" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">error</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoAnnotationResults.error" title="Permalink to this definition">#</a></dt>
 <dd><p>If set, indicates an error. Note that for a single
 <code class="docutils literal notranslate"><span class="pre">AnnotateVideoRequest</span></code> some videos may succeed and some may
 fail.</p>
@@ -2076,67 +2074,67 @@ fail.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">error</code></dt>
+<code class="sig-name descname">error</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.VideoAnnotationResults.error</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">explicit_annotation</code></dt>
+<code class="sig-name descname">explicit_annotation</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.VideoAnnotationResults.explicit_annotation</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">frame_label_annotations</code></dt>
+<code class="sig-name descname">frame_label_annotations</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.VideoAnnotationResults.frame_label_annotations</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">input_uri</code></dt>
+<code class="sig-name descname">input_uri</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.VideoAnnotationResults.input_uri</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">logo_recognition_annotations</code></dt>
+<code class="sig-name descname">logo_recognition_annotations</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.VideoAnnotationResults.logo_recognition_annotations</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">object_annotations</code></dt>
+<code class="sig-name descname">object_annotations</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.VideoAnnotationResults.object_annotations</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">segment_label_annotations</code></dt>
+<code class="sig-name descname">segment_label_annotations</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.VideoAnnotationResults.segment_label_annotations</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">shot_annotations</code></dt>
+<code class="sig-name descname">shot_annotations</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.VideoAnnotationResults.shot_annotations</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">shot_label_annotations</code></dt>
+<code class="sig-name descname">shot_label_annotations</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.VideoAnnotationResults.shot_label_annotations</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">speech_transcriptions</code></dt>
+<code class="sig-name descname">speech_transcriptions</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.VideoAnnotationResults.speech_transcriptions</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">text_annotations</code></dt>
+<code class="sig-name descname">text_annotations</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.VideoAnnotationResults.text_annotations</p>
 </dd></dl>
 
@@ -2144,11 +2142,11 @@ fail.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoContext">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">VideoContext</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoContext" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">VideoContext</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoContext" title="Permalink to this definition">#</a></dt>
 <dd><p>Video context and/or feature-specific parameters.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoContext.segments">
-<code class="descname">segments</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoContext.segments" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">segments</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoContext.segments" title="Permalink to this definition">#</a></dt>
 <dd><p>Video segments to annotate. The segments may overlap and are
 not required to be contiguous or span the whole video. If
 unspecified, each video is treated as a single segment.</p>
@@ -2156,79 +2154,79 @@ unspecified, each video is treated as a single segment.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoContext.label_detection_config">
-<code class="descname">label_detection_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoContext.label_detection_config" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">label_detection_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoContext.label_detection_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for LABEL_DETECTION.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoContext.shot_change_detection_config">
-<code class="descname">shot_change_detection_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoContext.shot_change_detection_config" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">shot_change_detection_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoContext.shot_change_detection_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for SHOT_CHANGE_DETECTION.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoContext.explicit_content_detection_config">
-<code class="descname">explicit_content_detection_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoContext.explicit_content_detection_config" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">explicit_content_detection_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoContext.explicit_content_detection_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for EXPLICIT_CONTENT_DETECTION.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoContext.speech_transcription_config">
-<code class="descname">speech_transcription_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoContext.speech_transcription_config" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">speech_transcription_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoContext.speech_transcription_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for SPEECH_TRANSCRIPTION.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoContext.text_detection_config">
-<code class="descname">text_detection_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoContext.text_detection_config" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">text_detection_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoContext.text_detection_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for TEXT_DETECTION.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoContext.object_tracking_config">
-<code class="descname">object_tracking_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoContext.object_tracking_config" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">object_tracking_config</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoContext.object_tracking_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for OBJECT_TRACKING.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">explicit_content_detection_config</code></dt>
+<code class="sig-name descname">explicit_content_detection_config</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.VideoContext.explicit_content_detection_config</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">label_detection_config</code></dt>
+<code class="sig-name descname">label_detection_config</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.VideoContext.label_detection_config</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">object_tracking_config</code></dt>
+<code class="sig-name descname">object_tracking_config</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.VideoContext.object_tracking_config</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">segments</code></dt>
+<code class="sig-name descname">segments</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.VideoContext.segments</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">shot_change_detection_config</code></dt>
+<code class="sig-name descname">shot_change_detection_config</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.VideoContext.shot_change_detection_config</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">speech_transcription_config</code></dt>
+<code class="sig-name descname">speech_transcription_config</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.VideoContext.speech_transcription_config</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">text_detection_config</code></dt>
+<code class="sig-name descname">text_detection_config</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.VideoContext.text_detection_config</p>
 </dd></dl>
 
@@ -2236,31 +2234,31 @@ unspecified, each video is treated as a single segment.</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoSegment">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">VideoSegment</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoSegment" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">VideoSegment</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoSegment" title="Permalink to this definition">#</a></dt>
 <dd><p>Video segment.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoSegment.start_time_offset">
-<code class="descname">start_time_offset</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoSegment.start_time_offset" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">start_time_offset</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoSegment.start_time_offset" title="Permalink to this definition">#</a></dt>
 <dd><p>Time-offset, relative to the beginning of the video,
 corresponding to the start of the segment (inclusive).</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.VideoSegment.end_time_offset">
-<code class="descname">end_time_offset</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoSegment.end_time_offset" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">end_time_offset</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.VideoSegment.end_time_offset" title="Permalink to this definition">#</a></dt>
 <dd><p>Time-offset, relative to the beginning of the video,
 corresponding to the end of the segment (inclusive).</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">end_time_offset</code></dt>
+<code class="sig-name descname">end_time_offset</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.VideoSegment.end_time_offset</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">start_time_offset</code></dt>
+<code class="sig-name descname">start_time_offset</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.VideoSegment.start_time_offset</p>
 </dd></dl>
 
@@ -2268,13 +2266,13 @@ corresponding to the end of the segment (inclusive).</p>
 
 <dl class="class">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.WordInfo">
-<em class="property">class </em><code class="descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="descname">WordInfo</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.WordInfo" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.videointelligence_v1p3beta1.types.</code><code class="sig-name descname">WordInfo</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.WordInfo" title="Permalink to this definition">#</a></dt>
 <dd><p>Word-specific information for recognized words. Word information is only
 included in the response when certain request parameters are set, such
 as <code class="docutils literal notranslate"><span class="pre">enable_word_time_offsets</span></code>.</p>
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.WordInfo.start_time">
-<code class="descname">start_time</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.WordInfo.start_time" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">start_time</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.WordInfo.start_time" title="Permalink to this definition">#</a></dt>
 <dd><p>Time offset relative to the beginning of the audio, and
 corresponding to the start of the spoken word. This field is
 only set if <code class="docutils literal notranslate"><span class="pre">enable_word_time_offsets=true</span></code> and only in the
@@ -2284,7 +2282,7 @@ accuracy of the time offset can vary.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.WordInfo.end_time">
-<code class="descname">end_time</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.WordInfo.end_time" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">end_time</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.WordInfo.end_time" title="Permalink to this definition">#</a></dt>
 <dd><p>Time offset relative to the beginning of the audio, and
 corresponding to the end of the spoken word. This field is
 only set if <code class="docutils literal notranslate"><span class="pre">enable_word_time_offsets=true</span></code> and only in the
@@ -2294,13 +2292,13 @@ accuracy of the time offset can vary.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.WordInfo.word">
-<code class="descname">word</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.WordInfo.word" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">word</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.WordInfo.word" title="Permalink to this definition">#</a></dt>
 <dd><p>The word corresponding to this set of information.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.WordInfo.confidence">
-<code class="descname">confidence</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.WordInfo.confidence" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">confidence</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.WordInfo.confidence" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The confidence estimate between 0.0 and 1.0. A
 higher number indicates an estimated greater likelihood that
 the recognized words are correct. This field is set only for
@@ -2312,7 +2310,7 @@ provided. The default of 0.0 is a sentinel value indicating
 
 <dl class="attribute">
 <dt id="google.cloud.videointelligence_v1p3beta1.types.WordInfo.speaker_tag">
-<code class="descname">speaker_tag</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.WordInfo.speaker_tag" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">speaker_tag</code><a class="headerlink" href="#google.cloud.videointelligence_v1p3beta1.types.WordInfo.speaker_tag" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. A distinct integer value is assigned for every
 speaker within the audio. This field specifies which one of
 those speakers was detected to have spoken this word. Value
@@ -2322,31 +2320,31 @@ set if speaker diarization is enabled.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">confidence</code></dt>
+<code class="sig-name descname">confidence</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.WordInfo.confidence</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">end_time</code></dt>
+<code class="sig-name descname">end_time</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.WordInfo.end_time</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">speaker_tag</code></dt>
+<code class="sig-name descname">speaker_tag</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.WordInfo.speaker_tag</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">start_time</code></dt>
+<code class="sig-name descname">start_time</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.WordInfo.start_time</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">word</code></dt>
+<code class="sig-name descname">word</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1p3beta1.WordInfo.word</p>
 </dd></dl>
 
@@ -2440,13 +2438,11 @@ set if speaker diarization is enabled.</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -2459,7 +2455,7 @@ set if speaker diarization is enabled.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

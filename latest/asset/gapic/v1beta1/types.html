@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Cloud Asset API Client &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Types for Cloud Asset API Client &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -39,16 +37,16 @@
 <span id="types-for-cloud-asset-api-client"></span><h1>Types for Cloud Asset API Client<a class="headerlink" href="#module-google.cloud.asset_v1beta1.types" title="Permalink to this headline">#</a></h1>
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.Any">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">Any</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Any" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">Any</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Any" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Any.type_url">
-<code class="descname">type_url</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Any.type_url" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">type_url</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Any.type_url" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Any.type_url</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Any.value">
-<code class="descname">value</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Any.value" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">value</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Any.value" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Any.value</p>
 </dd></dl>
 
@@ -56,12 +54,12 @@
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.Asset">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">Asset</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Asset" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">Asset</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Asset" title="Permalink to this definition">#</a></dt>
 <dd><p>Cloud asset. This includes all Google Cloud Platform resources, Cloud
 IAM policies, and other non-GCP assets.</p>
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Asset.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Asset.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Asset.name" title="Permalink to this definition">#</a></dt>
 <dd><p>The full name of the asset. For example:
 <code class="docutils literal notranslate"><span class="pre">//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1</span></code>.
 See <a class="reference external" href="https://cloud.google.com/apis/design/resource_names#full_resource_name">https://cloud.google.com/apis/design/resource_names#full_resource_name</a>
@@ -70,19 +68,19 @@ for more information.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Asset.asset_type">
-<code class="descname">asset_type</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Asset.asset_type" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">asset_type</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Asset.asset_type" title="Permalink to this definition">#</a></dt>
 <dd><p>Type of the asset. Example: “google.compute.Disk”.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Asset.resource">
-<code class="descname">resource</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Asset.resource" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">resource</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Asset.resource" title="Permalink to this definition">#</a></dt>
 <dd><p>Representation of the resource.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Asset.iam_policy">
-<code class="descname">iam_policy</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Asset.iam_policy" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">iam_policy</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Asset.iam_policy" title="Permalink to this definition">#</a></dt>
 <dd><p>Representation of the actual Cloud IAM policy set on a cloud
 resource. For each resource, there must be at most one Cloud
 IAM policy set on it.</p>
@@ -90,25 +88,25 @@ IAM policy set on it.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">asset_type</code></dt>
+<code class="sig-name descname">asset_type</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.Asset.asset_type</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">iam_policy</code></dt>
+<code class="sig-name descname">iam_policy</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.Asset.iam_policy</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">name</code></dt>
+<code class="sig-name descname">name</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.Asset.name</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">resource</code></dt>
+<code class="sig-name descname">resource</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.Asset.resource</p>
 </dd></dl>
 
@@ -116,20 +114,20 @@ IAM policy set on it.</p>
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.AuditConfigDelta">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">AuditConfigDelta</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.AuditConfigDelta" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">AuditConfigDelta</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.AuditConfigDelta" title="Permalink to this definition">#</a></dt>
 <dd><p>One delta entry for AuditConfig. Each individual change (only one
 exempted_member in each entry) to a AuditConfig will be a separate
 entry.</p>
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.AuditConfigDelta.action">
-<code class="descname">action</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.AuditConfigDelta.action" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">action</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.AuditConfigDelta.action" title="Permalink to this definition">#</a></dt>
 <dd><p>The action that was performed on an audit configuration in a
 policy. Required</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.AuditConfigDelta.service">
-<code class="descname">service</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.AuditConfigDelta.service" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">service</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.AuditConfigDelta.service" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies a service that was configured for Cloud Audit
 Logging. For example, <code class="docutils literal notranslate"><span class="pre">storage.googleapis.com</span></code>,
 <code class="docutils literal notranslate"><span class="pre">cloudsql.googleapis.com</span></code>. <code class="docutils literal notranslate"><span class="pre">allServices</span></code> is a special
@@ -138,7 +136,7 @@ value that covers all services. Required</p>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.AuditConfigDelta.exempted_member">
-<code class="descname">exempted_member</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.AuditConfigDelta.exempted_member" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">exempted_member</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.AuditConfigDelta.exempted_member" title="Permalink to this definition">#</a></dt>
 <dd><p>A single identity that is exempted from “data access” audit
 logging for the <code class="docutils literal notranslate"><span class="pre">service</span></code> specified above. Follows the same
 format of Binding.members.</p>
@@ -146,32 +144,32 @@ format of Binding.members.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.AuditConfigDelta.log_type">
-<code class="descname">log_type</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.AuditConfigDelta.log_type" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">log_type</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.AuditConfigDelta.log_type" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies the log_type that was be enabled. ADMIN_ACTIVITY is
 always enabled, and cannot be configured. Required</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">action</code></dt>
+<code class="sig-name descname">action</code></dt>
 <dd><p>Field google.iam.v1.AuditConfigDelta.action</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">exempted_member</code></dt>
+<code class="sig-name descname">exempted_member</code></dt>
 <dd><p>Field google.iam.v1.AuditConfigDelta.exempted_member</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">log_type</code></dt>
+<code class="sig-name descname">log_type</code></dt>
 <dd><p>Field google.iam.v1.AuditConfigDelta.log_type</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">service</code></dt>
+<code class="sig-name descname">service</code></dt>
 <dd><p>Field google.iam.v1.AuditConfigDelta.service</p>
 </dd></dl>
 
@@ -179,11 +177,11 @@ always enabled, and cannot be configured. Required</p>
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.BatchGetAssetsHistoryRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">BatchGetAssetsHistoryRequest</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.BatchGetAssetsHistoryRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">BatchGetAssetsHistoryRequest</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.BatchGetAssetsHistoryRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Batch get assets history request.</p>
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.BatchGetAssetsHistoryRequest.parent">
-<code class="descname">parent</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.BatchGetAssetsHistoryRequest.parent" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">parent</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.BatchGetAssetsHistoryRequest.parent" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The relative name of the root asset. It can only be
 an organization number (such as “organizations/123”), a
 project ID (such as “projects/my-project-id”)”, or a project
@@ -192,7 +190,7 @@ number (such as “projects/12345”).</p>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.BatchGetAssetsHistoryRequest.asset_names">
-<code class="descname">asset_names</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.BatchGetAssetsHistoryRequest.asset_names" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">asset_names</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.BatchGetAssetsHistoryRequest.asset_names" title="Permalink to this definition">#</a></dt>
 <dd><p>A list of the full names of the assets. For example: <code class="docutils literal notranslate"><span class="pre">//compu</span>
 <span class="pre">te.googleapis.com/projects/my_project_123/zones/zone1/instance</span>
 <span class="pre">s/instance1</span></code>. See <a class="reference external" href="https://cloud.google.com/apis/design/resource_names#full_resource_name">Resource Names</a> for more
@@ -203,13 +201,13 @@ request.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.BatchGetAssetsHistoryRequest.content_type">
-<code class="descname">content_type</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.BatchGetAssetsHistoryRequest.content_type" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">content_type</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.BatchGetAssetsHistoryRequest.content_type" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The content type.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.BatchGetAssetsHistoryRequest.read_time_window">
-<code class="descname">read_time_window</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.BatchGetAssetsHistoryRequest.read_time_window" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">read_time_window</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.BatchGetAssetsHistoryRequest.read_time_window" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The time window for the asset history. Both
 start_time and end_time are optional and if set, it must be
 after 2018-10-02 UTC. If end_time is not set, it is default
@@ -221,25 +219,25 @@ with read_time_window.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">asset_names</code></dt>
+<code class="sig-name descname">asset_names</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.BatchGetAssetsHistoryRequest.asset_names</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">content_type</code></dt>
+<code class="sig-name descname">content_type</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.BatchGetAssetsHistoryRequest.content_type</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">parent</code></dt>
+<code class="sig-name descname">parent</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.BatchGetAssetsHistoryRequest.parent</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">read_time_window</code></dt>
+<code class="sig-name descname">read_time_window</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.BatchGetAssetsHistoryRequest.read_time_window</p>
 </dd></dl>
 
@@ -247,17 +245,17 @@ with read_time_window.</p>
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.BatchGetAssetsHistoryResponse">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">BatchGetAssetsHistoryResponse</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.BatchGetAssetsHistoryResponse" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">BatchGetAssetsHistoryResponse</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.BatchGetAssetsHistoryResponse" title="Permalink to this definition">#</a></dt>
 <dd><p>Batch get assets history response.</p>
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.BatchGetAssetsHistoryResponse.assets">
-<code class="descname">assets</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.BatchGetAssetsHistoryResponse.assets" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">assets</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.BatchGetAssetsHistoryResponse.assets" title="Permalink to this definition">#</a></dt>
 <dd><p>A list of assets with valid time windows.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">assets</code></dt>
+<code class="sig-name descname">assets</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.BatchGetAssetsHistoryResponse.assets</p>
 </dd></dl>
 
@@ -265,18 +263,18 @@ with read_time_window.</p>
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.Binding">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">Binding</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Binding" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">Binding</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Binding" title="Permalink to this definition">#</a></dt>
 <dd><p>Associates <code class="docutils literal notranslate"><span class="pre">members</span></code> with a <code class="docutils literal notranslate"><span class="pre">role</span></code>.</p>
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Binding.role">
-<code class="descname">role</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Binding.role" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">role</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Binding.role" title="Permalink to this definition">#</a></dt>
 <dd><p>Role that is assigned to <code class="docutils literal notranslate"><span class="pre">members</span></code>. For example,
 <code class="docutils literal notranslate"><span class="pre">roles/viewer</span></code>, <code class="docutils literal notranslate"><span class="pre">roles/editor</span></code>, or <code class="docutils literal notranslate"><span class="pre">roles/owner</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Binding.members">
-<code class="descname">members</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Binding.members" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">members</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Binding.members" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies the identities requesting access for a Cloud
 Platform resource. <code class="docutils literal notranslate"><span class="pre">members</span></code> can have the following values:
 -  <code class="docutils literal notranslate"><span class="pre">allUsers</span></code>: A special identifier that represents anyone
@@ -297,7 +295,7 @@ domain. For example, <code class="docutils literal notranslate"><span class="pre
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Binding.condition">
-<code class="descname">condition</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Binding.condition" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">condition</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Binding.condition" title="Permalink to this definition">#</a></dt>
 <dd><p>The condition that is associated with this binding. NOTE: An
 unsatisfied condition will not allow user access via current
 binding. Different bindings, including their conditions, are
@@ -306,19 +304,19 @@ examined independently.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">condition</code></dt>
+<code class="sig-name descname">condition</code></dt>
 <dd><p>Field google.iam.v1.Binding.condition</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">members</code></dt>
+<code class="sig-name descname">members</code></dt>
 <dd><p>Field google.iam.v1.Binding.members</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">role</code></dt>
+<code class="sig-name descname">role</code></dt>
 <dd><p>Field google.iam.v1.Binding.role</p>
 </dd></dl>
 
@@ -326,18 +324,18 @@ examined independently.</p>
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.BindingDelta">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">BindingDelta</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.BindingDelta" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">BindingDelta</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.BindingDelta" title="Permalink to this definition">#</a></dt>
 <dd><p>One delta entry for Binding. Each individual change (only one member in
 each entry) to a binding will be a separate entry.</p>
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.BindingDelta.action">
-<code class="descname">action</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.BindingDelta.action" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">action</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.BindingDelta.action" title="Permalink to this definition">#</a></dt>
 <dd><p>The action that was performed on a Binding. Required</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.BindingDelta.role">
-<code class="descname">role</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.BindingDelta.role" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">role</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.BindingDelta.role" title="Permalink to this definition">#</a></dt>
 <dd><p>Role that is assigned to <code class="docutils literal notranslate"><span class="pre">members</span></code>. For example,
 <code class="docutils literal notranslate"><span class="pre">roles/viewer</span></code>, <code class="docutils literal notranslate"><span class="pre">roles/editor</span></code>, or <code class="docutils literal notranslate"><span class="pre">roles/owner</span></code>.
 Required</p>
@@ -345,39 +343,39 @@ Required</p>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.BindingDelta.member">
-<code class="descname">member</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.BindingDelta.member" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">member</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.BindingDelta.member" title="Permalink to this definition">#</a></dt>
 <dd><p>A single identity requesting access for a Cloud Platform
 resource. Follows the same format of Binding.members. Required</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.BindingDelta.condition">
-<code class="descname">condition</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.BindingDelta.condition" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">condition</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.BindingDelta.condition" title="Permalink to this definition">#</a></dt>
 <dd><p>Unimplemented. The condition that is associated with this
 binding. This field is logged only for Cloud Audit Logging.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">action</code></dt>
+<code class="sig-name descname">action</code></dt>
 <dd><p>Field google.iam.v1.BindingDelta.action</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">condition</code></dt>
+<code class="sig-name descname">condition</code></dt>
 <dd><p>Field google.iam.v1.BindingDelta.condition</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">member</code></dt>
+<code class="sig-name descname">member</code></dt>
 <dd><p>Field google.iam.v1.BindingDelta.member</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">role</code></dt>
+<code class="sig-name descname">role</code></dt>
 <dd><p>Field google.iam.v1.BindingDelta.role</p>
 </dd></dl>
 
@@ -385,10 +383,10 @@ binding. This field is logged only for Cloud Audit Logging.</p>
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.CancelOperationRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">CancelOperationRequest</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.CancelOperationRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">CancelOperationRequest</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.CancelOperationRequest" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.CancelOperationRequest.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.CancelOperationRequest.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.CancelOperationRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.CancelOperationRequest.name</p>
 </dd></dl>
 
@@ -396,10 +394,10 @@ binding. This field is logged only for Cloud Audit Logging.</p>
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.DeleteOperationRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">DeleteOperationRequest</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.DeleteOperationRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">DeleteOperationRequest</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.DeleteOperationRequest" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.DeleteOperationRequest.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.DeleteOperationRequest.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.DeleteOperationRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.DeleteOperationRequest.name</p>
 </dd></dl>
 
@@ -407,11 +405,11 @@ binding. This field is logged only for Cloud Audit Logging.</p>
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.ExportAssetsRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">ExportAssetsRequest</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ExportAssetsRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">ExportAssetsRequest</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ExportAssetsRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Export asset request.</p>
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.ExportAssetsRequest.parent">
-<code class="descname">parent</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ExportAssetsRequest.parent" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">parent</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ExportAssetsRequest.parent" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The relative name of the root asset. This can only
 be an organization number (such as “organizations/123”), a
 project ID (such as “projects/my-project-id”), a project
@@ -421,7 +419,7 @@ number (such as “projects/12345”), or a folder number (such as
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.ExportAssetsRequest.read_time">
-<code class="descname">read_time</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ExportAssetsRequest.read_time" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">read_time</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ExportAssetsRequest.read_time" title="Permalink to this definition">#</a></dt>
 <dd><p>Timestamp to take an asset snapshot. This can only be set to a
 timestamp between 2018-10-02 UTC (inclusive) and the current
 time. If not specified, the current time will be used. Due to
@@ -432,7 +430,7 @@ different results.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.ExportAssetsRequest.asset_types">
-<code class="descname">asset_types</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ExportAssetsRequest.asset_types" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">asset_types</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ExportAssetsRequest.asset_types" title="Permalink to this definition">#</a></dt>
 <dd><p>A list of asset types of which to take a snapshot for. For
 example: “google.compute.Disk”. If specified, only matching
 assets will be returned. See <a class="reference external" href="https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/overview">Introduction to Cloud Asset
@@ -442,14 +440,14 @@ supported asset types.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.ExportAssetsRequest.content_type">
-<code class="descname">content_type</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ExportAssetsRequest.content_type" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">content_type</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ExportAssetsRequest.content_type" title="Permalink to this definition">#</a></dt>
 <dd><p>Asset content type. If not specified, no content but the asset
 name will be returned.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.ExportAssetsRequest.output_config">
-<code class="descname">output_config</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ExportAssetsRequest.output_config" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">output_config</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ExportAssetsRequest.output_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. Output configuration indicating where the results
 will be output to. All results will be in newline delimited
 JSON format.</p>
@@ -457,31 +455,31 @@ JSON format.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">asset_types</code></dt>
+<code class="sig-name descname">asset_types</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.ExportAssetsRequest.asset_types</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">content_type</code></dt>
+<code class="sig-name descname">content_type</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.ExportAssetsRequest.content_type</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">output_config</code></dt>
+<code class="sig-name descname">output_config</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.ExportAssetsRequest.output_config</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">parent</code></dt>
+<code class="sig-name descname">parent</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.ExportAssetsRequest.parent</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">read_time</code></dt>
+<code class="sig-name descname">read_time</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.ExportAssetsRequest.read_time</p>
 </dd></dl>
 
@@ -489,7 +487,7 @@ JSON format.</p>
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.ExportAssetsResponse">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">ExportAssetsResponse</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ExportAssetsResponse" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">ExportAssetsResponse</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ExportAssetsResponse" title="Permalink to this definition">#</a></dt>
 <dd><p>The export asset response. This message is returned by the
 [google.longrunning.Operations.GetOperation][google.longrunning.Operations.GetOperation]
 method in the returned
@@ -497,26 +495,26 @@ method in the returned
 field.</p>
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.ExportAssetsResponse.read_time">
-<code class="descname">read_time</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ExportAssetsResponse.read_time" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">read_time</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ExportAssetsResponse.read_time" title="Permalink to this definition">#</a></dt>
 <dd><p>Time the snapshot was taken.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.ExportAssetsResponse.output_config">
-<code class="descname">output_config</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ExportAssetsResponse.output_config" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">output_config</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ExportAssetsResponse.output_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Output configuration indicating where the results were output
 to. All results are in JSON format.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">output_config</code></dt>
+<code class="sig-name descname">output_config</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.ExportAssetsResponse.output_config</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">read_time</code></dt>
+<code class="sig-name descname">read_time</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.ExportAssetsResponse.read_time</p>
 </dd></dl>
 
@@ -524,28 +522,28 @@ to. All results are in JSON format.</p>
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.Expr">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">Expr</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Expr" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">Expr</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Expr" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Expr.description">
-<code class="descname">description</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Expr.description" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">description</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Expr.description" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.type.Expr.description</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Expr.expression">
-<code class="descname">expression</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Expr.expression" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">expression</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Expr.expression" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.type.Expr.expression</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Expr.location">
-<code class="descname">location</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Expr.location" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">location</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Expr.location" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.type.Expr.location</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Expr.title">
-<code class="descname">title</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Expr.title" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">title</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Expr.title" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.type.Expr.title</p>
 </dd></dl>
 
@@ -553,17 +551,17 @@ to. All results are in JSON format.</p>
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.GcsDestination">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">GcsDestination</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.GcsDestination" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">GcsDestination</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.GcsDestination" title="Permalink to this definition">#</a></dt>
 <dd><p>A Cloud Storage location.</p>
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.GcsDestination.object_uri">
-<code class="descname">object_uri</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.GcsDestination.object_uri" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">object_uri</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.GcsDestination.object_uri" title="Permalink to this definition">#</a></dt>
 <dd><p>Required.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.GcsDestination.uri">
-<code class="descname">uri</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.GcsDestination.uri" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">uri</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.GcsDestination.uri" title="Permalink to this definition">#</a></dt>
 <dd><p>The uri of the Cloud Storage object. It’s the same uri that is
 used by gsutil. For example: “gs://bucket_name/object_name”.
 See <a class="reference external" href="https://cloud.google.com/storage/docs/viewing-editing-metadata">Viewing and Editing Object Metadata</a> for more information.</p>
@@ -571,7 +569,7 @@ See <a class="reference external" href="https://cloud.google.com/storage/docs/vi
 
 <dl class="attribute">
 <dt>
-<code class="descname">uri</code></dt>
+<code class="sig-name descname">uri</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.GcsDestination.uri</p>
 </dd></dl>
 
@@ -579,10 +577,10 @@ See <a class="reference external" href="https://cloud.google.com/storage/docs/vi
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.GetOperationRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">GetOperationRequest</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.GetOperationRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">GetOperationRequest</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.GetOperationRequest" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.GetOperationRequest.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.GetOperationRequest.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.GetOperationRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.GetOperationRequest.name</p>
 </dd></dl>
 
@@ -590,28 +588,28 @@ See <a class="reference external" href="https://cloud.google.com/storage/docs/vi
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.ListOperationsRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">ListOperationsRequest</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ListOperationsRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">ListOperationsRequest</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ListOperationsRequest" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.ListOperationsRequest.filter">
-<code class="descname">filter</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ListOperationsRequest.filter" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">filter</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ListOperationsRequest.filter" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.ListOperationsRequest.filter</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.ListOperationsRequest.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ListOperationsRequest.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ListOperationsRequest.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.ListOperationsRequest.name</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.ListOperationsRequest.page_size">
-<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ListOperationsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">page_size</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ListOperationsRequest.page_size" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.ListOperationsRequest.page_size</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.ListOperationsRequest.page_token">
-<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ListOperationsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">page_token</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ListOperationsRequest.page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.ListOperationsRequest.page_token</p>
 </dd></dl>
 
@@ -619,16 +617,16 @@ See <a class="reference external" href="https://cloud.google.com/storage/docs/vi
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.ListOperationsResponse">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">ListOperationsResponse</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ListOperationsResponse" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">ListOperationsResponse</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ListOperationsResponse" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.ListOperationsResponse.next_page_token">
-<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ListOperationsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">next_page_token</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ListOperationsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.ListOperationsResponse.next_page_token</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.ListOperationsResponse.operations">
-<code class="descname">operations</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ListOperationsResponse.operations" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">operations</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ListOperationsResponse.operations" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.ListOperationsResponse.operations</p>
 </dd></dl>
 
@@ -636,10 +634,10 @@ See <a class="reference external" href="https://cloud.google.com/storage/docs/vi
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.ListValue">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">ListValue</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ListValue" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">ListValue</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ListValue" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.ListValue.values">
-<code class="descname">values</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ListValue.values" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">values</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.ListValue.values" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.ListValue.values</p>
 </dd></dl>
 
@@ -647,40 +645,40 @@ See <a class="reference external" href="https://cloud.google.com/storage/docs/vi
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.Operation">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">Operation</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Operation" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">Operation</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Operation" title="Permalink to this definition">#</a></dt>
 <dd><dl class="method">
 <dt id="google.cloud.asset_v1beta1.types.Operation.deserialize">
-<code class="descname">deserialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Operation.deserialize" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">deserialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Operation.deserialize" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates new method instance from given serialized data.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Operation.done">
-<code class="descname">done</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Operation.done" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">done</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Operation.done" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.Operation.done</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Operation.error">
-<code class="descname">error</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Operation.error" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">error</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Operation.error" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.Operation.error</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Operation.metadata">
-<code class="descname">metadata</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Operation.metadata" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">metadata</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Operation.metadata" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.Operation.metadata</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Operation.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Operation.name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Operation.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.Operation.name</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Operation.response">
-<code class="descname">response</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Operation.response" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">response</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Operation.response" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.Operation.response</p>
 </dd></dl>
 
@@ -688,16 +686,16 @@ See <a class="reference external" href="https://cloud.google.com/storage/docs/vi
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.OperationInfo">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">OperationInfo</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.OperationInfo" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">OperationInfo</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.OperationInfo" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.OperationInfo.metadata_type">
-<code class="descname">metadata_type</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.OperationInfo.metadata_type" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">metadata_type</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.OperationInfo.metadata_type" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.OperationInfo.metadata_type</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.OperationInfo.response_type">
-<code class="descname">response_type</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.OperationInfo.response_type" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">response_type</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.OperationInfo.response_type" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.longrunning.OperationInfo.response_type</p>
 </dd></dl>
 
@@ -705,23 +703,23 @@ See <a class="reference external" href="https://cloud.google.com/storage/docs/vi
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.OutputConfig">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">OutputConfig</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.OutputConfig" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">OutputConfig</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.OutputConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Output configuration for export assets destination.</p>
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.OutputConfig.destination">
-<code class="descname">destination</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.OutputConfig.destination" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">destination</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.OutputConfig.destination" title="Permalink to this definition">#</a></dt>
 <dd><p>Asset export destination.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.OutputConfig.gcs_destination">
-<code class="descname">gcs_destination</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.OutputConfig.gcs_destination" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">gcs_destination</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.OutputConfig.gcs_destination" title="Permalink to this definition">#</a></dt>
 <dd><p>Destination on Cloud Storage.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">gcs_destination</code></dt>
+<code class="sig-name descname">gcs_destination</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.OutputConfig.gcs_destination</p>
 </dd></dl>
 
@@ -729,7 +727,7 @@ See <a class="reference external" href="https://cloud.google.com/storage/docs/vi
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.Policy">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">Policy</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Policy" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">Policy</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Policy" title="Permalink to this definition">#</a></dt>
 <dd><p>Defines an Identity and Access Management (IAM) policy. It is used to
 specify access control policies for Cloud Platform resources.</p>
 <p>A <code class="docutils literal notranslate"><span class="pre">Policy</span></code> consists of a list of <code class="docutils literal notranslate"><span class="pre">bindings</span></code>. A <code class="docutils literal notranslate"><span class="pre">binding</span></code> binds a
@@ -773,20 +771,20 @@ accounts, Google groups, Google domains, and service accounts. A
 guide</a>.</p>
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Policy.version">
-<code class="descname">version</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Policy.version" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">version</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Policy.version" title="Permalink to this definition">#</a></dt>
 <dd><p>Deprecated.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Policy.bindings">
-<code class="descname">bindings</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Policy.bindings" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">bindings</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Policy.bindings" title="Permalink to this definition">#</a></dt>
 <dd><p>Associates a list of <code class="docutils literal notranslate"><span class="pre">members</span></code> to a <code class="docutils literal notranslate"><span class="pre">role</span></code>. <code class="docutils literal notranslate"><span class="pre">bindings</span></code>
 with no members will result in an error.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Policy.etag">
-<code class="descname">etag</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Policy.etag" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">etag</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Policy.etag" title="Permalink to this definition">#</a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">etag</span></code> is used for optimistic concurrency control as a way
 to help prevent simultaneous updates of a policy from
 overwriting each other. It is strongly suggested that systems
@@ -802,19 +800,19 @@ overwritten blindly.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">bindings</code></dt>
+<code class="sig-name descname">bindings</code></dt>
 <dd><p>Field google.iam.v1.Policy.bindings</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">etag</code></dt>
+<code class="sig-name descname">etag</code></dt>
 <dd><p>Field google.iam.v1.Policy.etag</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">version</code></dt>
+<code class="sig-name descname">version</code></dt>
 <dd><p>Field google.iam.v1.Policy.version</p>
 </dd></dl>
 
@@ -822,29 +820,29 @@ overwritten blindly.</p>
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.PolicyDelta">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">PolicyDelta</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.PolicyDelta" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">PolicyDelta</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.PolicyDelta" title="Permalink to this definition">#</a></dt>
 <dd><p>The difference delta between two policies.</p>
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.PolicyDelta.binding_deltas">
-<code class="descname">binding_deltas</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.PolicyDelta.binding_deltas" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">binding_deltas</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.PolicyDelta.binding_deltas" title="Permalink to this definition">#</a></dt>
 <dd><p>The delta for Bindings between two policies.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.PolicyDelta.audit_config_deltas">
-<code class="descname">audit_config_deltas</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.PolicyDelta.audit_config_deltas" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">audit_config_deltas</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.PolicyDelta.audit_config_deltas" title="Permalink to this definition">#</a></dt>
 <dd><p>The delta for AuditConfigs between two policies.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">audit_config_deltas</code></dt>
+<code class="sig-name descname">audit_config_deltas</code></dt>
 <dd><p>Field google.iam.v1.PolicyDelta.audit_config_deltas</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">binding_deltas</code></dt>
+<code class="sig-name descname">binding_deltas</code></dt>
 <dd><p>Field google.iam.v1.PolicyDelta.binding_deltas</p>
 </dd></dl>
 
@@ -852,17 +850,17 @@ overwritten blindly.</p>
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.Resource">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">Resource</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Resource" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">Resource</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Resource" title="Permalink to this definition">#</a></dt>
 <dd><p>Representation of a cloud resource.</p>
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Resource.version">
-<code class="descname">version</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Resource.version" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">version</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Resource.version" title="Permalink to this definition">#</a></dt>
 <dd><p>The API version. Example: “v1”.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Resource.discovery_document_uri">
-<code class="descname">discovery_document_uri</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Resource.discovery_document_uri" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">discovery_document_uri</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Resource.discovery_document_uri" title="Permalink to this definition">#</a></dt>
 <dd><p>The URL of the discovery document containing the resource’s
 JSON schema. For example: <code class="docutils literal notranslate"><span class="pre">&quot;https://www.googleapis.com/discov</span>
 <span class="pre">ery/v1/apis/compute/v1/rest&quot;</span></code>. It will be left unspecified
@@ -872,7 +870,7 @@ Bigtable.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Resource.discovery_name">
-<code class="descname">discovery_name</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Resource.discovery_name" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">discovery_name</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Resource.discovery_name" title="Permalink to this definition">#</a></dt>
 <dd><p>The JSON schema name listed in the discovery document.
 Example: “Project”. It will be left unspecified for resources
 (such as Cloud Bigtable) without a discovery-based API.</p>
@@ -880,7 +878,7 @@ Example: “Project”. It will be left unspecified for resources
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Resource.resource_url">
-<code class="descname">resource_url</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Resource.resource_url" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">resource_url</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Resource.resource_url" title="Permalink to this definition">#</a></dt>
 <dd><p>The REST URL for accessing the resource. An HTTP GET operation
 using this URL returns the resource itself. Example:
 <code class="docutils literal notranslate"><span class="pre">https://cloudresourcemanager.googleapis.com/v1/projects/my-</span>
@@ -890,7 +888,7 @@ without a REST API.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Resource.parent">
-<code class="descname">parent</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Resource.parent" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">parent</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Resource.parent" title="Permalink to this definition">#</a></dt>
 <dd><p>The full name of the immediate parent of this resource. See
 <a class="reference external" href="https://cloud.google.com/apis/design/resource_names#full_resource_name">Resource Names</a> for more information.  For GCP
 assets, it is the parent resource defined in the <a class="reference external" href="https://cloud.google.com/iam/docs/overview#policy_hierarchy">Cloud IAM
@@ -901,44 +899,44 @@ assets, it is up to the users to define.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Resource.data">
-<code class="descname">data</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Resource.data" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">data</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Resource.data" title="Permalink to this definition">#</a></dt>
 <dd><p>The content of the resource, in which some sensitive fields
 are scrubbed away and may not be present.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">data</code></dt>
+<code class="sig-name descname">data</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.Resource.data</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">discovery_document_uri</code></dt>
+<code class="sig-name descname">discovery_document_uri</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.Resource.discovery_document_uri</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">discovery_name</code></dt>
+<code class="sig-name descname">discovery_name</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.Resource.discovery_name</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">parent</code></dt>
+<code class="sig-name descname">parent</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.Resource.parent</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">resource_url</code></dt>
+<code class="sig-name descname">resource_url</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.Resource.resource_url</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">version</code></dt>
+<code class="sig-name descname">version</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.Resource.version</p>
 </dd></dl>
 
@@ -946,22 +944,22 @@ are scrubbed away and may not be present.</p>
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.Status">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">Status</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Status" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">Status</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Status" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Status.code">
-<code class="descname">code</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Status.code" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">code</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Status.code" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.rpc.Status.code</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Status.details">
-<code class="descname">details</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Status.details" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">details</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Status.details" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.rpc.Status.details</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Status.message">
-<code class="descname">message</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Status.message" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">message</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Status.message" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.rpc.Status.message</p>
 </dd></dl>
 
@@ -969,19 +967,19 @@ are scrubbed away and may not be present.</p>
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.Struct">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">Struct</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Struct" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">Struct</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Struct" title="Permalink to this definition">#</a></dt>
 <dd><dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.Struct.FieldsEntry">
-<em class="property">class </em><code class="descname">FieldsEntry</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Struct.FieldsEntry" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-name descname">FieldsEntry</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Struct.FieldsEntry" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Struct.FieldsEntry.key">
-<code class="descname">key</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Struct.FieldsEntry.key" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">key</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Struct.FieldsEntry.key" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Struct.FieldsEntry.key</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Struct.FieldsEntry.value">
-<code class="descname">value</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Struct.FieldsEntry.value" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">value</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Struct.FieldsEntry.value" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Struct.FieldsEntry.value</p>
 </dd></dl>
 
@@ -989,7 +987,7 @@ are scrubbed away and may not be present.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Struct.fields">
-<code class="descname">fields</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Struct.fields" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">fields</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Struct.fields" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Struct.fields</p>
 </dd></dl>
 
@@ -997,42 +995,42 @@ are scrubbed away and may not be present.</p>
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.TemporalAsset">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">TemporalAsset</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.TemporalAsset" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">TemporalAsset</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.TemporalAsset" title="Permalink to this definition">#</a></dt>
 <dd><p>Temporal asset. In addition to the asset, the temporal asset includes
 the status of the asset and valid from and to time of it.</p>
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.TemporalAsset.window">
-<code class="descname">window</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.TemporalAsset.window" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">window</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.TemporalAsset.window" title="Permalink to this definition">#</a></dt>
 <dd><p>The time window when the asset data and state was observed.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.TemporalAsset.deleted">
-<code class="descname">deleted</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.TemporalAsset.deleted" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">deleted</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.TemporalAsset.deleted" title="Permalink to this definition">#</a></dt>
 <dd><p>If the asset is deleted or not.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.TemporalAsset.asset">
-<code class="descname">asset</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.TemporalAsset.asset" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">asset</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.TemporalAsset.asset" title="Permalink to this definition">#</a></dt>
 <dd><p>Asset.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">asset</code></dt>
+<code class="sig-name descname">asset</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.TemporalAsset.asset</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">deleted</code></dt>
+<code class="sig-name descname">deleted</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.TemporalAsset.deleted</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">window</code></dt>
+<code class="sig-name descname">window</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.TemporalAsset.window</p>
 </dd></dl>
 
@@ -1040,30 +1038,30 @@ the status of the asset and valid from and to time of it.</p>
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.TimeWindow">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">TimeWindow</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.TimeWindow" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">TimeWindow</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.TimeWindow" title="Permalink to this definition">#</a></dt>
 <dd><p>A time window of (start_time, end_time].</p>
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.TimeWindow.start_time">
-<code class="descname">start_time</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.TimeWindow.start_time" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">start_time</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.TimeWindow.start_time" title="Permalink to this definition">#</a></dt>
 <dd><p>Start time of the time window (exclusive).</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.TimeWindow.end_time">
-<code class="descname">end_time</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.TimeWindow.end_time" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">end_time</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.TimeWindow.end_time" title="Permalink to this definition">#</a></dt>
 <dd><p>End time of the time window (inclusive). Current timestamp if
 not specified.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">end_time</code></dt>
+<code class="sig-name descname">end_time</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.TimeWindow.end_time</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">start_time</code></dt>
+<code class="sig-name descname">start_time</code></dt>
 <dd><p>Field google.cloud.asset.v1beta1.TimeWindow.start_time</p>
 </dd></dl>
 
@@ -1071,16 +1069,16 @@ not specified.</p>
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.Timestamp">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Timestamp" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">Timestamp</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Timestamp" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Timestamp.nanos">
-<code class="descname">nanos</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Timestamp.nanos" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">nanos</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Timestamp.nanos" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Timestamp.nanos</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Timestamp.seconds">
-<code class="descname">seconds</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Timestamp.seconds" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">seconds</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Timestamp.seconds" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Timestamp.seconds</p>
 </dd></dl>
 
@@ -1088,40 +1086,40 @@ not specified.</p>
 
 <dl class="class">
 <dt id="google.cloud.asset_v1beta1.types.Value">
-<em class="property">class </em><code class="descclassname">google.cloud.asset_v1beta1.types.</code><code class="descname">Value</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Value" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.asset_v1beta1.types.</code><code class="sig-name descname">Value</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Value" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Value.bool_value">
-<code class="descname">bool_value</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Value.bool_value" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">bool_value</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Value.bool_value" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Value.bool_value</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Value.list_value">
-<code class="descname">list_value</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Value.list_value" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">list_value</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Value.list_value" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Value.list_value</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Value.null_value">
-<code class="descname">null_value</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Value.null_value" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">null_value</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Value.null_value" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Value.null_value</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Value.number_value">
-<code class="descname">number_value</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Value.number_value" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">number_value</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Value.number_value" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Value.number_value</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Value.string_value">
-<code class="descname">string_value</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Value.string_value" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">string_value</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Value.string_value" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Value.string_value</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.asset_v1beta1.types.Value.struct_value">
-<code class="descname">struct_value</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Value.struct_value" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">struct_value</code><a class="headerlink" href="#google.cloud.asset_v1beta1.types.Value.struct_value" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.protobuf.Value.struct_value</p>
 </dd></dl>
 
@@ -1215,13 +1213,11 @@ not specified.</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -1234,7 +1230,7 @@ not specified.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

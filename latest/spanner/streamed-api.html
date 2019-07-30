@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>StreamedResultSet API &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>StreamedResultSet API &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -40,127 +38,110 @@
 <p>Wrapper for streaming results.</p>
 <dl class="class">
 <dt id="google.cloud.spanner_v1.streamed.StreamedResultSet">
-<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.streamed.</code><code class="descname">StreamedResultSet</code><span class="sig-paren">(</span><em>response_iterator</em>, <em>source=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/streamed.html#StreamedResultSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.streamed.StreamedResultSet" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.spanner_v1.streamed.</code><code class="sig-name descname">StreamedResultSet</code><span class="sig-paren">(</span><em class="sig-param">response_iterator</em>, <em class="sig-param">source=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/streamed.html#StreamedResultSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.streamed.StreamedResultSet" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Process a sequence of partial result sets into a single set of row data.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>response_iterator</strong> – Iterator yielding
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response_iterator</strong> – Iterator yielding
 <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.spanner_v1.proto.result_set_pb2.PartialResultSet</span></code>
-instances.</li>
-<li><strong>source</strong> (<a class="reference internal" href="snapshot-api.html#google.cloud.spanner_v1.snapshot.Snapshot" title="google.cloud.spanner_v1.snapshot.Snapshot"><code class="xref py py-class docutils literal notranslate"><span class="pre">Snapshot</span></code></a>) – Snapshot from which the result set was fetched.</li>
+instances.</p></li>
+<li><p><strong>source</strong> (<a class="reference internal" href="snapshot-api.html#google.cloud.spanner_v1.snapshot.Snapshot" title="google.cloud.spanner_v1.snapshot.Snapshot"><code class="xref py py-class docutils literal notranslate"><span class="pre">Snapshot</span></code></a>) – Snapshot from which the result set was fetched.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
+</dd>
+</dl>
+<dl class="method">
 <dt id="google.cloud.spanner_v1.streamed.StreamedResultSet.fields">
-<code class="descname">fields</code><a class="headerlink" href="#google.cloud.spanner_v1.streamed.StreamedResultSet.fields" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">fields</code><a class="headerlink" href="#google.cloud.spanner_v1.streamed.StreamedResultSet.fields" title="Permalink to this definition">#</a></dt>
 <dd><p>Field descriptors for result set columns.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of fields describing column names / types.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of fields describing column names / types.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.spanner_v1.streamed.StreamedResultSet.metadata">
-<code class="descname">metadata</code><a class="headerlink" href="#google.cloud.spanner_v1.streamed.StreamedResultSet.metadata" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">metadata</code><a class="headerlink" href="#google.cloud.spanner_v1.streamed.StreamedResultSet.metadata" title="Permalink to this definition">#</a></dt>
 <dd><p>Result set metadata</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResultSetMetadata</span></code></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">structure describing the results</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ResultSetMetadata</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>structure describing the results</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.spanner_v1.streamed.StreamedResultSet.one">
-<code class="descname">one</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/streamed.html#StreamedResultSet.one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.streamed.StreamedResultSet.one" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">one</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/streamed.html#StreamedResultSet.one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.streamed.StreamedResultSet.one" title="Permalink to this definition">#</a></dt>
 <dd><p>Return exactly one result, or raise an exception.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">NotFound</span></code>: If there are no results.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a>: If there are multiple results.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">RuntimeError</span></code></a>: If consumption has already occurred,
-in whole or in part.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><code class="xref py py-exc docutils literal notranslate"><span class="pre">NotFound</span></code>: If there are no results.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a>: If there are multiple results.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">RuntimeError</span></code></a>: If consumption has already occurred,
+in whole or in part.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.spanner_v1.streamed.StreamedResultSet.one_or_none">
-<code class="descname">one_or_none</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/streamed.html#StreamedResultSet.one_or_none"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.streamed.StreamedResultSet.one_or_none" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">one_or_none</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/streamed.html#StreamedResultSet.one_or_none"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.streamed.StreamedResultSet.one_or_none" title="Permalink to this definition">#</a></dt>
 <dd><p>Return exactly one result, or None if there are no results.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a>: If there are multiple results.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">RuntimeError</span></code></a>: If consumption has already occurred,
-in whole or in part.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a>: If there are multiple results.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">RuntimeError</span></code></a>: If consumption has already occurred,
+in whole or in part.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.spanner_v1.streamed.StreamedResultSet.stats">
-<code class="descname">stats</code><a class="headerlink" href="#google.cloud.spanner_v1.streamed.StreamedResultSet.stats" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">stats</code><a class="headerlink" href="#google.cloud.spanner_v1.streamed.StreamedResultSet.stats" title="Permalink to this definition">#</a></dt>
 <dd><p>Result set statistics</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResultSetStats</span></code></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">structure describing status about the response</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ResultSetStats</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>structure describing status about the response</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="exception">
 <dt id="google.cloud.spanner_v1.streamed.Unmergeable">
-<em class="property">exception </em><code class="descclassname">google.cloud.spanner_v1.streamed.</code><code class="descname">Unmergeable</code><span class="sig-paren">(</span><em>lhs</em>, <em>rhs</em>, <em>type_</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/streamed.html#Unmergeable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.streamed.Unmergeable" title="Permalink to this definition">#</a></dt>
+<em class="property">exception </em><code class="sig-prename descclassname">google.cloud.spanner_v1.streamed.</code><code class="sig-name descname">Unmergeable</code><span class="sig-paren">(</span><em class="sig-param">lhs</em>, <em class="sig-param">rhs</em>, <em class="sig-param">type_</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/streamed.html#Unmergeable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.streamed.Unmergeable" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></a></p>
 <p>Unable to merge two values.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>lhs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.struct_pb2.Value</span></code>) – pending value to be merged</li>
-<li><strong>rhs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.struct_pb2.Value</span></code>) – remaining value to be merged</li>
-<li><strong>type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.spanner_v1.proto.type_pb2.Type</span></code>) – field type of values being merged</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lhs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.struct_pb2.Value</span></code>) – pending value to be merged</p></li>
+<li><p><strong>rhs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">google.protobuf.struct_pb2.Value</span></code>) – remaining value to be merged</p></li>
+<li><p><strong>type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.spanner_v1.proto.type_pb2.Type</span></code>) – field type of values being merged</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -253,13 +234,11 @@ in whole or in part.</td>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -272,7 +251,7 @@ in whole or in part.</td>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

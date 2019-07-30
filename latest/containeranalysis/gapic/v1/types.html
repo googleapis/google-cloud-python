@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Types for Container Analysis API Client &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Types for Container Analysis API Client &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -39,20 +37,20 @@
 <span id="types-for-container-analysis-api-client"></span><h1>Types for Container Analysis API Client<a class="headerlink" href="#module-google.cloud.devtools.containeranalysis_v1.types" title="Permalink to this headline">#</a></h1>
 <dl class="class">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.AuditConfigDelta">
-<em class="property">class </em><code class="descclassname">google.cloud.devtools.containeranalysis_v1.types.</code><code class="descname">AuditConfigDelta</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.AuditConfigDelta" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.devtools.containeranalysis_v1.types.</code><code class="sig-name descname">AuditConfigDelta</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.AuditConfigDelta" title="Permalink to this definition">#</a></dt>
 <dd><p>One delta entry for AuditConfig. Each individual change (only one
 exempted_member in each entry) to a AuditConfig will be a separate
 entry.</p>
 <dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.AuditConfigDelta.action">
-<code class="descname">action</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.AuditConfigDelta.action" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">action</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.AuditConfigDelta.action" title="Permalink to this definition">#</a></dt>
 <dd><p>The action that was performed on an audit configuration in a
 policy. Required</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.AuditConfigDelta.service">
-<code class="descname">service</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.AuditConfigDelta.service" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">service</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.AuditConfigDelta.service" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies a service that was configured for Cloud Audit
 Logging. For example, <code class="docutils literal notranslate"><span class="pre">storage.googleapis.com</span></code>,
 <code class="docutils literal notranslate"><span class="pre">cloudsql.googleapis.com</span></code>. <code class="docutils literal notranslate"><span class="pre">allServices</span></code> is a special
@@ -61,7 +59,7 @@ value that covers all services. Required</p>
 
 <dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.AuditConfigDelta.exempted_member">
-<code class="descname">exempted_member</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.AuditConfigDelta.exempted_member" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">exempted_member</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.AuditConfigDelta.exempted_member" title="Permalink to this definition">#</a></dt>
 <dd><p>A single identity that is exempted from “data access” audit
 logging for the <code class="docutils literal notranslate"><span class="pre">service</span></code> specified above. Follows the same
 format of Binding.members.</p>
@@ -69,32 +67,32 @@ format of Binding.members.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.AuditConfigDelta.log_type">
-<code class="descname">log_type</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.AuditConfigDelta.log_type" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">log_type</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.AuditConfigDelta.log_type" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies the log_type that was be enabled. ADMIN_ACTIVITY is
 always enabled, and cannot be configured. Required</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">action</code></dt>
+<code class="sig-name descname">action</code></dt>
 <dd><p>Field google.iam.v1.AuditConfigDelta.action</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">exempted_member</code></dt>
+<code class="sig-name descname">exempted_member</code></dt>
 <dd><p>Field google.iam.v1.AuditConfigDelta.exempted_member</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">log_type</code></dt>
+<code class="sig-name descname">log_type</code></dt>
 <dd><p>Field google.iam.v1.AuditConfigDelta.log_type</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">service</code></dt>
+<code class="sig-name descname">service</code></dt>
 <dd><p>Field google.iam.v1.AuditConfigDelta.service</p>
 </dd></dl>
 
@@ -102,18 +100,18 @@ always enabled, and cannot be configured. Required</p>
 
 <dl class="class">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.Binding">
-<em class="property">class </em><code class="descclassname">google.cloud.devtools.containeranalysis_v1.types.</code><code class="descname">Binding</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.Binding" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.devtools.containeranalysis_v1.types.</code><code class="sig-name descname">Binding</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.Binding" title="Permalink to this definition">#</a></dt>
 <dd><p>Associates <code class="docutils literal notranslate"><span class="pre">members</span></code> with a <code class="docutils literal notranslate"><span class="pre">role</span></code>.</p>
 <dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.Binding.role">
-<code class="descname">role</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.Binding.role" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">role</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.Binding.role" title="Permalink to this definition">#</a></dt>
 <dd><p>Role that is assigned to <code class="docutils literal notranslate"><span class="pre">members</span></code>. For example,
 <code class="docutils literal notranslate"><span class="pre">roles/viewer</span></code>, <code class="docutils literal notranslate"><span class="pre">roles/editor</span></code>, or <code class="docutils literal notranslate"><span class="pre">roles/owner</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.Binding.members">
-<code class="descname">members</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.Binding.members" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">members</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.Binding.members" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies the identities requesting access for a Cloud
 Platform resource. <code class="docutils literal notranslate"><span class="pre">members</span></code> can have the following values:
 -  <code class="docutils literal notranslate"><span class="pre">allUsers</span></code>: A special identifier that represents anyone
@@ -134,7 +132,7 @@ domain. For example, <code class="docutils literal notranslate"><span class="pre
 
 <dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.Binding.condition">
-<code class="descname">condition</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.Binding.condition" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">condition</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.Binding.condition" title="Permalink to this definition">#</a></dt>
 <dd><p>The condition that is associated with this binding. NOTE: An
 unsatisfied condition will not allow user access via current
 binding. Different bindings, including their conditions, are
@@ -143,19 +141,19 @@ examined independently.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">condition</code></dt>
+<code class="sig-name descname">condition</code></dt>
 <dd><p>Field google.iam.v1.Binding.condition</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">members</code></dt>
+<code class="sig-name descname">members</code></dt>
 <dd><p>Field google.iam.v1.Binding.members</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">role</code></dt>
+<code class="sig-name descname">role</code></dt>
 <dd><p>Field google.iam.v1.Binding.role</p>
 </dd></dl>
 
@@ -163,18 +161,18 @@ examined independently.</p>
 
 <dl class="class">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.BindingDelta">
-<em class="property">class </em><code class="descclassname">google.cloud.devtools.containeranalysis_v1.types.</code><code class="descname">BindingDelta</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.BindingDelta" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.devtools.containeranalysis_v1.types.</code><code class="sig-name descname">BindingDelta</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.BindingDelta" title="Permalink to this definition">#</a></dt>
 <dd><p>One delta entry for Binding. Each individual change (only one member in
 each entry) to a binding will be a separate entry.</p>
 <dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.BindingDelta.action">
-<code class="descname">action</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.BindingDelta.action" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">action</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.BindingDelta.action" title="Permalink to this definition">#</a></dt>
 <dd><p>The action that was performed on a Binding. Required</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.BindingDelta.role">
-<code class="descname">role</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.BindingDelta.role" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">role</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.BindingDelta.role" title="Permalink to this definition">#</a></dt>
 <dd><p>Role that is assigned to <code class="docutils literal notranslate"><span class="pre">members</span></code>. For example,
 <code class="docutils literal notranslate"><span class="pre">roles/viewer</span></code>, <code class="docutils literal notranslate"><span class="pre">roles/editor</span></code>, or <code class="docutils literal notranslate"><span class="pre">roles/owner</span></code>.
 Required</p>
@@ -182,39 +180,39 @@ Required</p>
 
 <dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.BindingDelta.member">
-<code class="descname">member</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.BindingDelta.member" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">member</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.BindingDelta.member" title="Permalink to this definition">#</a></dt>
 <dd><p>A single identity requesting access for a Cloud Platform
 resource. Follows the same format of Binding.members. Required</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.BindingDelta.condition">
-<code class="descname">condition</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.BindingDelta.condition" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">condition</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.BindingDelta.condition" title="Permalink to this definition">#</a></dt>
 <dd><p>Unimplemented. The condition that is associated with this
 binding. This field is logged only for Cloud Audit Logging.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">action</code></dt>
+<code class="sig-name descname">action</code></dt>
 <dd><p>Field google.iam.v1.BindingDelta.action</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">condition</code></dt>
+<code class="sig-name descname">condition</code></dt>
 <dd><p>Field google.iam.v1.BindingDelta.condition</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">member</code></dt>
+<code class="sig-name descname">member</code></dt>
 <dd><p>Field google.iam.v1.BindingDelta.member</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">role</code></dt>
+<code class="sig-name descname">role</code></dt>
 <dd><p>Field google.iam.v1.BindingDelta.role</p>
 </dd></dl>
 
@@ -222,28 +220,28 @@ binding. This field is logged only for Cloud Audit Logging.</p>
 
 <dl class="class">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.Expr">
-<em class="property">class </em><code class="descclassname">google.cloud.devtools.containeranalysis_v1.types.</code><code class="descname">Expr</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.Expr" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.devtools.containeranalysis_v1.types.</code><code class="sig-name descname">Expr</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.Expr" title="Permalink to this definition">#</a></dt>
 <dd><dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.Expr.description">
-<code class="descname">description</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.Expr.description" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">description</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.Expr.description" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.type.Expr.description</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.Expr.expression">
-<code class="descname">expression</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.Expr.expression" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">expression</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.Expr.expression" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.type.Expr.expression</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.Expr.location">
-<code class="descname">location</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.Expr.location" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">location</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.Expr.location" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.type.Expr.location</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.Expr.title">
-<code class="descname">title</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.Expr.title" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">title</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.Expr.title" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.type.Expr.title</p>
 </dd></dl>
 
@@ -251,11 +249,11 @@ binding. This field is logged only for Cloud Audit Logging.</p>
 
 <dl class="class">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.GetIamPolicyRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.devtools.containeranalysis_v1.types.</code><code class="descname">GetIamPolicyRequest</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.GetIamPolicyRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.devtools.containeranalysis_v1.types.</code><code class="sig-name descname">GetIamPolicyRequest</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.GetIamPolicyRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request message for <code class="docutils literal notranslate"><span class="pre">GetIamPolicy</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.GetIamPolicyRequest.resource">
-<code class="descname">resource</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.GetIamPolicyRequest.resource" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">resource</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.GetIamPolicyRequest.resource" title="Permalink to this definition">#</a></dt>
 <dd><p>REQUIRED: The resource for which the policy is being
 requested. See the operation documentation for the appropriate
 value for this field.</p>
@@ -263,20 +261,20 @@ value for this field.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.GetIamPolicyRequest.options">
-<code class="descname">options</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.GetIamPolicyRequest.options" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">options</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.GetIamPolicyRequest.options" title="Permalink to this definition">#</a></dt>
 <dd><p>OPTIONAL: A <code class="docutils literal notranslate"><span class="pre">GetPolicyOptions</span></code> object for specifying options
 to <code class="docutils literal notranslate"><span class="pre">GetIamPolicy</span></code>. This field is only used by Cloud IAM.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">options</code></dt>
+<code class="sig-name descname">options</code></dt>
 <dd><p>Field google.iam.v1.GetIamPolicyRequest.options</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">resource</code></dt>
+<code class="sig-name descname">resource</code></dt>
 <dd><p>Field google.iam.v1.GetIamPolicyRequest.resource</p>
 </dd></dl>
 
@@ -284,11 +282,11 @@ to <code class="docutils literal notranslate"><span class="pre">GetIamPolicy</sp
 
 <dl class="class">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.GetPolicyOptions">
-<em class="property">class </em><code class="descclassname">google.cloud.devtools.containeranalysis_v1.types.</code><code class="descname">GetPolicyOptions</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.GetPolicyOptions" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.devtools.containeranalysis_v1.types.</code><code class="sig-name descname">GetPolicyOptions</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.GetPolicyOptions" title="Permalink to this definition">#</a></dt>
 <dd><p>Encapsulates settings provided to GetIamPolicy.</p>
 <dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.GetPolicyOptions.requested_policy_version">
-<code class="descname">requested_policy_version</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.GetPolicyOptions.requested_policy_version" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">requested_policy_version</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.GetPolicyOptions.requested_policy_version" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The policy format version to be returned. Acceptable
 values are 0 and 1. If the value is 0, or the field is
 omitted, policy format version 1 will be returned.</p>
@@ -296,7 +294,7 @@ omitted, policy format version 1 will be returned.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">requested_policy_version</code></dt>
+<code class="sig-name descname">requested_policy_version</code></dt>
 <dd><p>Field google.iam.v1.GetPolicyOptions.requested_policy_version</p>
 </dd></dl>
 
@@ -304,7 +302,7 @@ omitted, policy format version 1 will be returned.</p>
 
 <dl class="class">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.Policy">
-<em class="property">class </em><code class="descclassname">google.cloud.devtools.containeranalysis_v1.types.</code><code class="descname">Policy</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.Policy" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.devtools.containeranalysis_v1.types.</code><code class="sig-name descname">Policy</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.Policy" title="Permalink to this definition">#</a></dt>
 <dd><p>Defines an Identity and Access Management (IAM) policy. It is used to
 specify access control policies for Cloud Platform resources.</p>
 <p>A <code class="docutils literal notranslate"><span class="pre">Policy</span></code> consists of a list of <code class="docutils literal notranslate"><span class="pre">bindings</span></code>. A <code class="docutils literal notranslate"><span class="pre">binding</span></code> binds a
@@ -348,20 +346,20 @@ accounts, Google groups, Google domains, and service accounts. A
 guide</a>.</p>
 <dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.Policy.version">
-<code class="descname">version</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.Policy.version" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">version</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.Policy.version" title="Permalink to this definition">#</a></dt>
 <dd><p>Deprecated.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.Policy.bindings">
-<code class="descname">bindings</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.Policy.bindings" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">bindings</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.Policy.bindings" title="Permalink to this definition">#</a></dt>
 <dd><p>Associates a list of <code class="docutils literal notranslate"><span class="pre">members</span></code> to a <code class="docutils literal notranslate"><span class="pre">role</span></code>. <code class="docutils literal notranslate"><span class="pre">bindings</span></code>
 with no members will result in an error.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.Policy.etag">
-<code class="descname">etag</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.Policy.etag" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">etag</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.Policy.etag" title="Permalink to this definition">#</a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">etag</span></code> is used for optimistic concurrency control as a way
 to help prevent simultaneous updates of a policy from
 overwriting each other. It is strongly suggested that systems
@@ -377,19 +375,19 @@ overwritten blindly.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">bindings</code></dt>
+<code class="sig-name descname">bindings</code></dt>
 <dd><p>Field google.iam.v1.Policy.bindings</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">etag</code></dt>
+<code class="sig-name descname">etag</code></dt>
 <dd><p>Field google.iam.v1.Policy.etag</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">version</code></dt>
+<code class="sig-name descname">version</code></dt>
 <dd><p>Field google.iam.v1.Policy.version</p>
 </dd></dl>
 
@@ -397,29 +395,29 @@ overwritten blindly.</p>
 
 <dl class="class">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.PolicyDelta">
-<em class="property">class </em><code class="descclassname">google.cloud.devtools.containeranalysis_v1.types.</code><code class="descname">PolicyDelta</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.PolicyDelta" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.devtools.containeranalysis_v1.types.</code><code class="sig-name descname">PolicyDelta</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.PolicyDelta" title="Permalink to this definition">#</a></dt>
 <dd><p>The difference delta between two policies.</p>
 <dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.PolicyDelta.binding_deltas">
-<code class="descname">binding_deltas</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.PolicyDelta.binding_deltas" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">binding_deltas</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.PolicyDelta.binding_deltas" title="Permalink to this definition">#</a></dt>
 <dd><p>The delta for Bindings between two policies.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.PolicyDelta.audit_config_deltas">
-<code class="descname">audit_config_deltas</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.PolicyDelta.audit_config_deltas" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">audit_config_deltas</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.PolicyDelta.audit_config_deltas" title="Permalink to this definition">#</a></dt>
 <dd><p>The delta for AuditConfigs between two policies.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">audit_config_deltas</code></dt>
+<code class="sig-name descname">audit_config_deltas</code></dt>
 <dd><p>Field google.iam.v1.PolicyDelta.audit_config_deltas</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">binding_deltas</code></dt>
+<code class="sig-name descname">binding_deltas</code></dt>
 <dd><p>Field google.iam.v1.PolicyDelta.binding_deltas</p>
 </dd></dl>
 
@@ -427,11 +425,11 @@ overwritten blindly.</p>
 
 <dl class="class">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.SetIamPolicyRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.devtools.containeranalysis_v1.types.</code><code class="descname">SetIamPolicyRequest</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.SetIamPolicyRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.devtools.containeranalysis_v1.types.</code><code class="sig-name descname">SetIamPolicyRequest</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.SetIamPolicyRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request message for <code class="docutils literal notranslate"><span class="pre">SetIamPolicy</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.SetIamPolicyRequest.resource">
-<code class="descname">resource</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.SetIamPolicyRequest.resource" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">resource</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.SetIamPolicyRequest.resource" title="Permalink to this definition">#</a></dt>
 <dd><p>REQUIRED: The resource for which the policy is being
 specified. See the operation documentation for the appropriate
 value for this field.</p>
@@ -439,7 +437,7 @@ value for this field.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.SetIamPolicyRequest.policy">
-<code class="descname">policy</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.SetIamPolicyRequest.policy" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">policy</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.SetIamPolicyRequest.policy" title="Permalink to this definition">#</a></dt>
 <dd><p>REQUIRED: The complete policy to be applied to the
 <code class="docutils literal notranslate"><span class="pre">resource</span></code>. The size of the policy is limited to a few 10s
 of KB. An empty policy is a valid policy but certain Cloud
@@ -448,13 +446,13 @@ Platform services (such as Projects) might reject them.</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">policy</code></dt>
+<code class="sig-name descname">policy</code></dt>
 <dd><p>Field google.iam.v1.SetIamPolicyRequest.policy</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">resource</code></dt>
+<code class="sig-name descname">resource</code></dt>
 <dd><p>Field google.iam.v1.SetIamPolicyRequest.resource</p>
 </dd></dl>
 
@@ -462,11 +460,11 @@ Platform services (such as Projects) might reject them.</p>
 
 <dl class="class">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.TestIamPermissionsRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.devtools.containeranalysis_v1.types.</code><code class="descname">TestIamPermissionsRequest</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.TestIamPermissionsRequest" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.devtools.containeranalysis_v1.types.</code><code class="sig-name descname">TestIamPermissionsRequest</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.TestIamPermissionsRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request message for <code class="docutils literal notranslate"><span class="pre">TestIamPermissions</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.TestIamPermissionsRequest.resource">
-<code class="descname">resource</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.TestIamPermissionsRequest.resource" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">resource</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.TestIamPermissionsRequest.resource" title="Permalink to this definition">#</a></dt>
 <dd><p>REQUIRED: The resource for which the policy detail is being
 requested. See the operation documentation for the appropriate
 value for this field.</p>
@@ -474,7 +472,7 @@ value for this field.</p>
 
 <dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.TestIamPermissionsRequest.permissions">
-<code class="descname">permissions</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.TestIamPermissionsRequest.permissions" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">permissions</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.TestIamPermissionsRequest.permissions" title="Permalink to this definition">#</a></dt>
 <dd><p>The set of permissions to check for the <code class="docutils literal notranslate"><span class="pre">resource</span></code>.
 Permissions with wildcards (such as ‘*’ or ’storage.*’) are
 not allowed. For more information see <a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM Overview</a>.</p>
@@ -482,13 +480,13 @@ not allowed. For more information see <a class="reference external" href="https:
 
 <dl class="attribute">
 <dt>
-<code class="descname">permissions</code></dt>
+<code class="sig-name descname">permissions</code></dt>
 <dd><p>Field google.iam.v1.TestIamPermissionsRequest.permissions</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">resource</code></dt>
+<code class="sig-name descname">resource</code></dt>
 <dd><p>Field google.iam.v1.TestIamPermissionsRequest.resource</p>
 </dd></dl>
 
@@ -496,18 +494,18 @@ not allowed. For more information see <a class="reference external" href="https:
 
 <dl class="class">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.TestIamPermissionsResponse">
-<em class="property">class </em><code class="descclassname">google.cloud.devtools.containeranalysis_v1.types.</code><code class="descname">TestIamPermissionsResponse</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.TestIamPermissionsResponse" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.devtools.containeranalysis_v1.types.</code><code class="sig-name descname">TestIamPermissionsResponse</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.TestIamPermissionsResponse" title="Permalink to this definition">#</a></dt>
 <dd><p>Response message for <code class="docutils literal notranslate"><span class="pre">TestIamPermissions</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.devtools.containeranalysis_v1.types.TestIamPermissionsResponse.permissions">
-<code class="descname">permissions</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.TestIamPermissionsResponse.permissions" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">permissions</code><a class="headerlink" href="#google.cloud.devtools.containeranalysis_v1.types.TestIamPermissionsResponse.permissions" title="Permalink to this definition">#</a></dt>
 <dd><p>A subset of <code class="docutils literal notranslate"><span class="pre">TestPermissionsRequest.permissions</span></code> that the
 caller is allowed.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">permissions</code></dt>
+<code class="sig-name descname">permissions</code></dt>
 <dd><p>Field google.iam.v1.TestIamPermissionsResponse.permissions</p>
 </dd></dl>
 
@@ -601,13 +599,11 @@ caller is allowed.</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -620,7 +616,7 @@ caller is allowed.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

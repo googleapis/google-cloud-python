@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Using the Language Client &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>Using the Language Client &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -41,11 +39,11 @@
 <h2>Documents<a class="headerlink" href="#documents" title="Permalink to this headline">#</a></h2>
 <p>The Google Natural Language API has the following supported methods:</p>
 <ul class="simple">
-<li><a class="reference external" href="https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/analyzeEntities">analyzeEntities</a></li>
-<li><a class="reference external" href="https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/analyzeSentiment">analyzeSentiment</a></li>
-<li><a class="reference external" href="https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/analyzeEntitySentiment">analyzeEntitySentiment</a></li>
-<li><a class="reference external" href="https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/annotateText">annotateText</a></li>
-<li><a class="reference external" href="https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/classifyText">classifyText</a></li>
+<li><p><a class="reference external" href="https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/analyzeEntities">analyzeEntities</a></p></li>
+<li><p><a class="reference external" href="https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/analyzeSentiment">analyzeSentiment</a></p></li>
+<li><p><a class="reference external" href="https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/analyzeEntitySentiment">analyzeEntitySentiment</a></p></li>
+<li><p><a class="reference external" href="https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/annotateText">annotateText</a></p></li>
+<li><p><a class="reference external" href="https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/classifyText">classifyText</a></p></li>
 </ul>
 <p>and each method uses a <a class="reference internal" href="gapic/v1/types.html#google.cloud.language_v1.types.Document" title="google.cloud.language_v1.types.Document"><code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code></a> for representing
 text.</p>
@@ -136,8 +134,8 @@ returns a <a class="reference internal" href="gapic/v1/types.html#google.cloud.l
 </div>
 </div></blockquote>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">It is recommended to send an <code class="docutils literal notranslate"><span class="pre">encoding_type</span></code> argument to Natural
+<p class="admonition-title">Note</p>
+<p>It is recommended to send an <code class="docutils literal notranslate"><span class="pre">encoding_type</span></code> argument to Natural
 Language methods, so they provide useful offsets for the data they return.
 While the correct value varies by environment, in Python you <em>usually</em>
 want <code class="docutils literal notranslate"><span class="pre">UTF32</span></code>.</p>
@@ -166,8 +164,8 @@ analyzes the sentiment of the provided text. This method returns a
 </div>
 </div></blockquote>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">It is recommended to send an <code class="docutils literal notranslate"><span class="pre">encoding_type</span></code> argument to Natural
+<p class="admonition-title">Note</p>
+<p>It is recommended to send an <code class="docutils literal notranslate"><span class="pre">encoding_type</span></code> argument to Natural
 Language methods, so they provide useful offsets for the data they return.
 While the correct value varies by environment, in Python you <em>usually</em>
 want <code class="docutils literal notranslate"><span class="pre">UTF32</span></code>.</p>
@@ -201,8 +199,8 @@ This method returns a
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">It is recommended to send an <code class="docutils literal notranslate"><span class="pre">encoding_type</span></code> argument to Natural
+<p class="admonition-title">Note</p>
+<p>It is recommended to send an <code class="docutils literal notranslate"><span class="pre">encoding_type</span></code> argument to Natural
 Language methods, so they provide useful offsets for the data they return.
 While the correct value varies by environment, in Python you <em>usually</em>
 want <code class="docutils literal notranslate"><span class="pre">UTF32</span></code>.</p>
@@ -303,13 +301,11 @@ returns a <a class="reference internal" href="gapic/v1/types.html#google.cloud.l
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -322,7 +318,7 @@ returns a <a class="reference internal" href="gapic/v1/types.html#google.cloud.l
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

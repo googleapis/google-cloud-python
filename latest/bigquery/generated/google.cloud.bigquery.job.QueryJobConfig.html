@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job.QueryJobConfig &#8212; google-cloud ce5a8df documentation</title>
+    <meta charset="utf-8" />
+    <title>google.cloud.bigquery.job.QueryJobConfig &#8212; google-cloud 7e6f83d documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -38,86 +36,86 @@
   <div class="section" id="google-cloud-bigquery-job-queryjobconfig">
 <h1>google.cloud.bigquery.job.QueryJobConfig<a class="headerlink" href="#google-cloud-bigquery-job-queryjobconfig" title="Permalink to this headline">#</a></h1>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.from_api_repr" title="google.cloud.bigquery.job.QueryJobConfig.from_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_api_repr</span></code></a>(resource)</td>
-<td>Factory: construct a job configuration given its API representation</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.from_api_repr" title="google.cloud.bigquery.job.QueryJobConfig.from_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_api_repr</span></code></a>(resource)</p></td>
+<td><p>Factory: construct a job configuration given its API representation</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.to_api_repr" title="google.cloud.bigquery.job.QueryJobConfig.to_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_api_repr</span></code></a>()</td>
-<td>Build an API representation of the query job config.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.to_api_repr" title="google.cloud.bigquery.job.QueryJobConfig.to_api_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_api_repr</span></code></a>()</p></td>
+<td><p>Build an API representation of the query job config.</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.allow_large_results" title="google.cloud.bigquery.job.QueryJobConfig.allow_large_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">allow_large_results</span></code></a></td>
-<td>Allow large query results tables (legacy SQL, only)</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.allow_large_results" title="google.cloud.bigquery.job.QueryJobConfig.allow_large_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">allow_large_results</span></code></a></p></td>
+<td><p>Allow large query results tables (legacy SQL, only)</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.clustering_fields" title="google.cloud.bigquery.job.QueryJobConfig.clustering_fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clustering_fields</span></code></a></td>
-<td>Fields defining clustering for the table</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.clustering_fields" title="google.cloud.bigquery.job.QueryJobConfig.clustering_fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clustering_fields</span></code></a></p></td>
+<td><p>Fields defining clustering for the table</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.create_disposition" title="google.cloud.bigquery.job.QueryJobConfig.create_disposition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_disposition</span></code></a></td>
-<td>Specifies behavior for creating tables.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.create_disposition" title="google.cloud.bigquery.job.QueryJobConfig.create_disposition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_disposition</span></code></a></p></td>
+<td><p>Specifies behavior for creating tables.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.default_dataset" title="google.cloud.bigquery.job.QueryJobConfig.default_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_dataset</span></code></a></td>
-<td>the default dataset to use for unqualified table names in the query or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> if not set.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.default_dataset" title="google.cloud.bigquery.job.QueryJobConfig.default_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_dataset</span></code></a></p></td>
+<td><p>the default dataset to use for unqualified table names in the query or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> if not set.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.destination" title="google.cloud.bigquery.job.QueryJobConfig.destination"><code class="xref py py-obj docutils literal notranslate"><span class="pre">destination</span></code></a></td>
-<td>table where results are written or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> if not set.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.destination" title="google.cloud.bigquery.job.QueryJobConfig.destination"><code class="xref py py-obj docutils literal notranslate"><span class="pre">destination</span></code></a></p></td>
+<td><p>table where results are written or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> if not set.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.destination_encryption_configuration" title="google.cloud.bigquery.job.QueryJobConfig.destination_encryption_configuration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">destination_encryption_configuration</span></code></a></td>
-<td>Custom encryption configuration for the destination table.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.destination_encryption_configuration" title="google.cloud.bigquery.job.QueryJobConfig.destination_encryption_configuration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">destination_encryption_configuration</span></code></a></p></td>
+<td><p>Custom encryption configuration for the destination table.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.dry_run" title="google.cloud.bigquery.job.QueryJobConfig.dry_run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dry_run</span></code></a></td>
-<td><a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a> if this query should be a dry run to estimate costs.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.dry_run" title="google.cloud.bigquery.job.QueryJobConfig.dry_run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dry_run</span></code></a></p></td>
+<td><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a> if this query should be a dry run to estimate costs.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.flatten_results" title="google.cloud.bigquery.job.QueryJobConfig.flatten_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flatten_results</span></code></a></td>
-<td>Flatten nested/repeated fields in results.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.flatten_results" title="google.cloud.bigquery.job.QueryJobConfig.flatten_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flatten_results</span></code></a></p></td>
+<td><p>Flatten nested/repeated fields in results.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.labels" title="google.cloud.bigquery.job.QueryJobConfig.labels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">labels</span></code></a></td>
-<td>Labels for the job.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.labels" title="google.cloud.bigquery.job.QueryJobConfig.labels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">labels</span></code></a></p></td>
+<td><p>Labels for the job.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.maximum_billing_tier" title="google.cloud.bigquery.job.QueryJobConfig.maximum_billing_tier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maximum_billing_tier</span></code></a></td>
-<td>Deprecated.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.maximum_billing_tier" title="google.cloud.bigquery.job.QueryJobConfig.maximum_billing_tier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maximum_billing_tier</span></code></a></p></td>
+<td><p>Deprecated.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.maximum_bytes_billed" title="google.cloud.bigquery.job.QueryJobConfig.maximum_bytes_billed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maximum_bytes_billed</span></code></a></td>
-<td>Maximum bytes to be billed for this job or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> if not set.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.maximum_bytes_billed" title="google.cloud.bigquery.job.QueryJobConfig.maximum_bytes_billed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maximum_bytes_billed</span></code></a></p></td>
+<td><p>Maximum bytes to be billed for this job or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> if not set.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.priority" title="google.cloud.bigquery.job.QueryJobConfig.priority"><code class="xref py py-obj docutils literal notranslate"><span class="pre">priority</span></code></a></td>
-<td>Priority of the query.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.priority" title="google.cloud.bigquery.job.QueryJobConfig.priority"><code class="xref py py-obj docutils literal notranslate"><span class="pre">priority</span></code></a></p></td>
+<td><p>Priority of the query.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.query_parameters" title="google.cloud.bigquery.job.QueryJobConfig.query_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query_parameters</span></code></a></td>
-<td>list of parameters for parameterized query (empty by default)</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.query_parameters" title="google.cloud.bigquery.job.QueryJobConfig.query_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query_parameters</span></code></a></p></td>
+<td><p>list of parameters for parameterized query (empty by default)</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.schema_update_options" title="google.cloud.bigquery.job.QueryJobConfig.schema_update_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema_update_options</span></code></a></td>
-<td>Specifies updates to the destination table schema to allow as a side effect of the query job.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.schema_update_options" title="google.cloud.bigquery.job.QueryJobConfig.schema_update_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema_update_options</span></code></a></p></td>
+<td><p>Specifies updates to the destination table schema to allow as a side effect of the query job.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.table_definitions" title="google.cloud.bigquery.job.QueryJobConfig.table_definitions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">table_definitions</span></code></a></td>
-<td>Definitions for external tables or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> if not set.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.table_definitions" title="google.cloud.bigquery.job.QueryJobConfig.table_definitions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">table_definitions</span></code></a></p></td>
+<td><p>Dict[str, google.cloud.bigquery.external_config.ExternalConfig]: Definitions for external tables or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> if not set.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.time_partitioning" title="google.cloud.bigquery.job.QueryJobConfig.time_partitioning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time_partitioning</span></code></a></td>
-<td>Specifies time-based partitioning for the destination table.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.time_partitioning" title="google.cloud.bigquery.job.QueryJobConfig.time_partitioning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time_partitioning</span></code></a></p></td>
+<td><p>Specifies time-based partitioning for the destination table.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.udf_resources" title="google.cloud.bigquery.job.QueryJobConfig.udf_resources"><code class="xref py py-obj docutils literal notranslate"><span class="pre">udf_resources</span></code></a></td>
-<td>user defined function resources (empty by default)</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.udf_resources" title="google.cloud.bigquery.job.QueryJobConfig.udf_resources"><code class="xref py py-obj docutils literal notranslate"><span class="pre">udf_resources</span></code></a></p></td>
+<td><p>user defined function resources (empty by default)</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.use_legacy_sql" title="google.cloud.bigquery.job.QueryJobConfig.use_legacy_sql"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_legacy_sql</span></code></a></td>
-<td>Use legacy SQL syntax.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.use_legacy_sql" title="google.cloud.bigquery.job.QueryJobConfig.use_legacy_sql"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_legacy_sql</span></code></a></p></td>
+<td><p>Use legacy SQL syntax.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.use_query_cache" title="google.cloud.bigquery.job.QueryJobConfig.use_query_cache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_query_cache</span></code></a></td>
-<td>Look for the query result in the cache.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.use_query_cache" title="google.cloud.bigquery.job.QueryJobConfig.use_query_cache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_query_cache</span></code></a></p></td>
+<td><p>Look for the query result in the cache.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.write_disposition" title="google.cloud.bigquery.job.QueryJobConfig.write_disposition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_disposition</span></code></a></td>
-<td>Action that occurs if the destination table already exists.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.write_disposition" title="google.cloud.bigquery.job.QueryJobConfig.write_disposition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_disposition</span></code></a></p></td>
+<td><p>Action that occurs if the destination table already exists.</p></td>
 </tr>
 </tbody>
 </table>
@@ -125,401 +123,335 @@
 <hr>
 <p><dl class="class">
 <dt id="google.cloud.bigquery.job.QueryJobConfig">
-<em class="property">class </em><code class="descclassname">google.cloud.bigquery.job.</code><code class="descname">QueryJobConfig</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/job.html#QueryJobConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.bigquery.job.</code><code class="sig-name descname">QueryJobConfig</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/job.html#QueryJobConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigquery.job._JobConfig</span></code></p>
 <p>Configuration options for query jobs.</p>
 <p>All properties in this class are optional. Values which are <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> -&gt;
 server defaults. Set properties on the constructed configuration by using
 the property name as the name of a keyword argument.</p>
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.job.QueryJobConfig.allow_large_results">
-<code class="descname">allow_large_results</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.allow_large_results" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">allow_large_results</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.allow_large_results" title="Permalink to this definition">#</a></dt>
 <dd><p>Allow large query results tables (legacy SQL, only)</p>
 <p>See
 <a class="reference external" href="https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.allowLargeResults">https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.allowLargeResults</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.job.QueryJobConfig.clustering_fields">
-<code class="descname">clustering_fields</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.clustering_fields" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">clustering_fields</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.clustering_fields" title="Permalink to this definition">#</a></dt>
 <dd><p>Fields defining clustering for the table</p>
 <p>(Defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>).</p>
 <p>Clustering fields are immutable after table creation.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">As of 2018-06-29, clustering fields cannot be set on a table
+<p class="admonition-title">Note</p>
+<p>As of 2018-06-29, clustering fields cannot be set on a table
 which does not also have time partioning defined.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Union[List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Union[List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.job.QueryJobConfig.create_disposition">
-<code class="descname">create_disposition</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.create_disposition" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">create_disposition</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.create_disposition" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies behavior
 for creating tables.</p>
 <p>See
 <a class="reference external" href="https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.createDisposition">https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.createDisposition</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="google.cloud.bigquery.job.CreateDisposition.html#google.cloud.bigquery.job.CreateDisposition" title="google.cloud.bigquery.job.CreateDisposition">google.cloud.bigquery.job.CreateDisposition</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="google.cloud.bigquery.job.CreateDisposition.html#google.cloud.bigquery.job.CreateDisposition" title="google.cloud.bigquery.job.CreateDisposition">google.cloud.bigquery.job.CreateDisposition</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.job.QueryJobConfig.default_dataset">
-<code class="descname">default_dataset</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.default_dataset" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">default_dataset</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.default_dataset" title="Permalink to this definition">#</a></dt>
 <dd><p>the default dataset
 to use for unqualified table names in the query or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> if not
 set.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">default_dataset</span></code> setter accepts:</p>
 <ul class="simple">
-<li>a <a class="reference internal" href="google.cloud.bigquery.dataset.Dataset.html#google.cloud.bigquery.dataset.Dataset" title="google.cloud.bigquery.dataset.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a>, or</li>
-<li>a <a class="reference internal" href="google.cloud.bigquery.dataset.DatasetReference.html#google.cloud.bigquery.dataset.DatasetReference" title="google.cloud.bigquery.dataset.DatasetReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">DatasetReference</span></code></a>, or</li>
-<li>a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> of the fully-qualified dataset ID in standard SQL
+<li><p>a <a class="reference internal" href="google.cloud.bigquery.dataset.Dataset.html#google.cloud.bigquery.dataset.Dataset" title="google.cloud.bigquery.dataset.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a>, or</p></li>
+<li><p>a <a class="reference internal" href="google.cloud.bigquery.dataset.DatasetReference.html#google.cloud.bigquery.dataset.DatasetReference" title="google.cloud.bigquery.dataset.DatasetReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">DatasetReference</span></code></a>, or</p></li>
+<li><p>a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> of the fully-qualified dataset ID in standard SQL
 format. The value must included a project ID and dataset ID
-separated by <code class="docutils literal notranslate"><span class="pre">.</span></code>. For example: <code class="docutils literal notranslate"><span class="pre">your-project.your_dataset</span></code>.</li>
+separated by <code class="docutils literal notranslate"><span class="pre">.</span></code>. For example: <code class="docutils literal notranslate"><span class="pre">your-project.your_dataset</span></code>.</p></li>
 </ul>
 <p>See
 <a class="reference external" href="https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset">https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="google.cloud.bigquery.dataset.DatasetReference.html#google.cloud.bigquery.dataset.DatasetReference" title="google.cloud.bigquery.dataset.DatasetReference">google.cloud.bigquery.dataset.DatasetReference</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="google.cloud.bigquery.dataset.DatasetReference.html#google.cloud.bigquery.dataset.DatasetReference" title="google.cloud.bigquery.dataset.DatasetReference">google.cloud.bigquery.dataset.DatasetReference</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.job.QueryJobConfig.destination">
-<code class="descname">destination</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.destination" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">destination</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.destination" title="Permalink to this definition">#</a></dt>
 <dd><p>table where results are
 written or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> if not set.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">destination</span></code> setter accepts:</p>
 <ul class="simple">
-<li>a <a class="reference internal" href="google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a>, or</li>
-<li>a <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>, or</li>
-<li>a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> of the fully-qualified table ID in standard SQL
+<li><p>a <a class="reference internal" href="google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a>, or</p></li>
+<li><p>a <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>, or</p></li>
+<li><p>a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> of the fully-qualified table ID in standard SQL
 format. The value must included a project ID, dataset ID, and table
 ID, each separated by <code class="docutils literal notranslate"><span class="pre">.</span></code>. For example:
-<code class="docutils literal notranslate"><span class="pre">your-project.your_dataset.your_table</span></code>.</li>
+<code class="docutils literal notranslate"><span class="pre">your-project.your_dataset.your_table</span></code>.</p></li>
 </ul>
 <p>See
 <a class="reference external" href="https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationTable">https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationTable</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference">google.cloud.bigquery.table.TableReference</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference">google.cloud.bigquery.table.TableReference</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.job.QueryJobConfig.destination_encryption_configuration">
-<code class="descname">destination_encryption_configuration</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.destination_encryption_configuration" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">destination_encryption_configuration</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.destination_encryption_configuration" title="Permalink to this definition">#</a></dt>
 <dd><p>Custom
 encryption configuration for the destination table.</p>
 <p>Custom encryption configuration (e.g., Cloud KMS keys) or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>
 if using default encryption.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationEncryptionConfiguration">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationEncryptionConfiguration</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="google.cloud.bigquery.table.EncryptionConfiguration.html#google.cloud.bigquery.table.EncryptionConfiguration" title="google.cloud.bigquery.table.EncryptionConfiguration">google.cloud.bigquery.table.EncryptionConfiguration</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="google.cloud.bigquery.table.EncryptionConfiguration.html#google.cloud.bigquery.table.EncryptionConfiguration" title="google.cloud.bigquery.table.EncryptionConfiguration">google.cloud.bigquery.table.EncryptionConfiguration</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.job.QueryJobConfig.dry_run">
-<code class="descname">dry_run</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.dry_run" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">dry_run</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.dry_run" title="Permalink to this definition">#</a></dt>
 <dd><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a> if this query should be a dry run to estimate
 costs.</p>
 <p>See
 <a class="reference external" href="https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.dryRun">https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.dryRun</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.job.QueryJobConfig.flatten_results">
-<code class="descname">flatten_results</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.flatten_results" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">flatten_results</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.flatten_results" title="Permalink to this definition">#</a></dt>
 <dd><p>Flatten nested/repeated fields in results. (Legacy SQL only)</p>
 <p>See
 <a class="reference external" href="https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.flattenResults">https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.flattenResults</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="google.cloud.bigquery.job.QueryJobConfig.from_api_repr">
-<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.from_api_repr" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">from_api_repr</code><span class="sig-paren">(</span><em class="sig-param">resource</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.from_api_repr" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory: construct a job configuration given its API representation</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – An extract job configuration in the same representation as is
-returned from the API.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigquery.job._JobConfig</span></code></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Configuration parsed from <code class="docutils literal notranslate"><span class="pre">resource</span></code>.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – An extract job configuration in the same representation as is
+returned from the API.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">google.cloud.bigquery.job._JobConfig</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Configuration parsed from <code class="docutils literal notranslate"><span class="pre">resource</span></code>.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.job.QueryJobConfig.labels">
-<code class="descname">labels</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.labels" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">labels</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.labels" title="Permalink to this definition">#</a></dt>
 <dd><p>Labels for the job.</p>
 <p>This method always returns a dict. To change a job’s labels,
 modify the dict, then call <code class="docutils literal notranslate"><span class="pre">Client.update_job</span></code>. To delete a
 label, set its value to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> before updating.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – If <code class="docutils literal notranslate"><span class="pre">value</span></code> type is invalid.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">value</span></code> type is invalid.</p>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p>Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.job.QueryJobConfig.maximum_billing_tier">
-<code class="descname">maximum_billing_tier</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.maximum_billing_tier" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">maximum_billing_tier</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.maximum_billing_tier" title="Permalink to this definition">#</a></dt>
 <dd><p>Deprecated. Changes the billing tier to allow high-compute
 queries.</p>
 <p>See
 <a class="reference external" href="https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBillingTier">https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBillingTier</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.job.QueryJobConfig.maximum_bytes_billed">
-<code class="descname">maximum_bytes_billed</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.maximum_bytes_billed" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">maximum_bytes_billed</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.maximum_bytes_billed" title="Permalink to this definition">#</a></dt>
 <dd><p>Maximum bytes to be billed for this job or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> if not set.</p>
 <p>See
 <a class="reference external" href="https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBytesBilled">https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBytesBilled</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.job.QueryJobConfig.priority">
-<code class="descname">priority</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.priority" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">priority</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.priority" title="Permalink to this definition">#</a></dt>
 <dd><p>Priority of the query.</p>
 <p>See
 <a class="reference external" href="https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.priority">https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.priority</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="google.cloud.bigquery.job.QueryPriority.html#google.cloud.bigquery.job.QueryPriority" title="google.cloud.bigquery.job.QueryPriority">google.cloud.bigquery.job.QueryPriority</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="google.cloud.bigquery.job.QueryPriority.html#google.cloud.bigquery.job.QueryPriority" title="google.cloud.bigquery.job.QueryPriority">google.cloud.bigquery.job.QueryPriority</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.job.QueryJobConfig.query_parameters">
-<code class="descname">query_parameters</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.query_parameters" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">query_parameters</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.query_parameters" title="Permalink to this definition">#</a></dt>
 <dd><p>list of parameters
 for parameterized query (empty by default)</p>
 <p>See:
 <a class="reference external" href="https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.queryParameters">https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.queryParameters</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">List[Union[<a class="reference internal" href="google.cloud.bigquery.query.ArrayQueryParameter.html#google.cloud.bigquery.query.ArrayQueryParameter" title="google.cloud.bigquery.query.ArrayQueryParameter">google.cloud.bigquery.query.ArrayQueryParameter</a>,         <a class="reference internal" href="google.cloud.bigquery.query.ScalarQueryParameter.html#google.cloud.bigquery.query.ScalarQueryParameter" title="google.cloud.bigquery.query.ScalarQueryParameter">google.cloud.bigquery.query.ScalarQueryParameter</a>,         <a class="reference internal" href="google.cloud.bigquery.query.StructQueryParameter.html#google.cloud.bigquery.query.StructQueryParameter" title="google.cloud.bigquery.query.StructQueryParameter">google.cloud.bigquery.query.StructQueryParameter</a>]]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>List[Union[<a class="reference internal" href="google.cloud.bigquery.query.ArrayQueryParameter.html#google.cloud.bigquery.query.ArrayQueryParameter" title="google.cloud.bigquery.query.ArrayQueryParameter">google.cloud.bigquery.query.ArrayQueryParameter</a>,         <a class="reference internal" href="google.cloud.bigquery.query.ScalarQueryParameter.html#google.cloud.bigquery.query.ScalarQueryParameter" title="google.cloud.bigquery.query.ScalarQueryParameter">google.cloud.bigquery.query.ScalarQueryParameter</a>,         <a class="reference internal" href="google.cloud.bigquery.query.StructQueryParameter.html#google.cloud.bigquery.query.StructQueryParameter" title="google.cloud.bigquery.query.StructQueryParameter">google.cloud.bigquery.query.StructQueryParameter</a>]]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.job.QueryJobConfig.schema_update_options">
-<code class="descname">schema_update_options</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.schema_update_options" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">schema_update_options</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.schema_update_options" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies
 updates to the destination table schema to allow as a side effect of
 the query job.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">List[<a class="reference internal" href="google.cloud.bigquery.job.SchemaUpdateOption.html#google.cloud.bigquery.job.SchemaUpdateOption" title="google.cloud.bigquery.job.SchemaUpdateOption">google.cloud.bigquery.job.SchemaUpdateOption</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="google.cloud.bigquery.job.SchemaUpdateOption.html#google.cloud.bigquery.job.SchemaUpdateOption" title="google.cloud.bigquery.job.SchemaUpdateOption">google.cloud.bigquery.job.SchemaUpdateOption</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.job.QueryJobConfig.table_definitions">
-<code class="descname">table_definitions</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.table_definitions" title="Permalink to this definition">#</a></dt>
-<dd><p>Definitions for external tables or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> if not set.</p>
+<em class="property">property </em><code class="sig-name descname">table_definitions</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.table_definitions" title="Permalink to this definition">#</a></dt>
+<dd><p>Dict[str, google.cloud.bigquery.external_config.ExternalConfig]:
+Definitions for external tables or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> if not set.</p>
 <p>See
 <a class="reference external" href="https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions">https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference internal" href="google.cloud.bigquery.external_config.ExternalConfig.html#google.cloud.bigquery.external_config.ExternalConfig" title="google.cloud.bigquery.external_config.ExternalConfig">google.cloud.bigquery.external_config.ExternalConfig</a>]</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.job.QueryJobConfig.time_partitioning">
-<code class="descname">time_partitioning</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.time_partitioning" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">time_partitioning</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.time_partitioning" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies time-based
 partitioning for the destination table.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="google.cloud.bigquery.table.TimePartitioning.html#google.cloud.bigquery.table.TimePartitioning" title="google.cloud.bigquery.table.TimePartitioning">google.cloud.bigquery.table.TimePartitioning</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="google.cloud.bigquery.table.TimePartitioning.html#google.cloud.bigquery.table.TimePartitioning" title="google.cloud.bigquery.table.TimePartitioning">google.cloud.bigquery.table.TimePartitioning</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigquery.job.QueryJobConfig.to_api_repr">
-<code class="descname">to_api_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/job.html#QueryJobConfig.to_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.to_api_repr" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">to_api_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/job.html#QueryJobConfig.to_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.to_api_repr" title="Permalink to this definition">#</a></dt>
 <dd><p>Build an API representation of the query job config.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A dictionary in the format used by the BigQuery API.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A dictionary in the format used by the BigQuery API.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.job.QueryJobConfig.udf_resources">
-<code class="descname">udf_resources</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.udf_resources" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">udf_resources</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.udf_resources" title="Permalink to this definition">#</a></dt>
 <dd><p>user
 defined function resources (empty by default)</p>
 <p>See:
 <a class="reference external" href="https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.userDefinedFunctionResources">https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.userDefinedFunctionResources</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">List[<a class="reference internal" href="google.cloud.bigquery.query.UDFResource.html#google.cloud.bigquery.query.UDFResource" title="google.cloud.bigquery.query.UDFResource">google.cloud.bigquery.query.UDFResource</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="google.cloud.bigquery.query.UDFResource.html#google.cloud.bigquery.query.UDFResource" title="google.cloud.bigquery.query.UDFResource">google.cloud.bigquery.query.UDFResource</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.job.QueryJobConfig.use_legacy_sql">
-<code class="descname">use_legacy_sql</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.use_legacy_sql" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">use_legacy_sql</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.use_legacy_sql" title="Permalink to this definition">#</a></dt>
 <dd><p>Use legacy SQL syntax.</p>
 <p>See
 <a class="reference external" href="https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.query.useLegacySql">https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.query.useLegacySql</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.job.QueryJobConfig.use_query_cache">
-<code class="descname">use_query_cache</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.use_query_cache" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">use_query_cache</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.use_query_cache" title="Permalink to this definition">#</a></dt>
 <dd><p>Look for the query result in the cache.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.useQueryCache">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.useQueryCache</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="google.cloud.bigquery.job.QueryJobConfig.write_disposition">
-<code class="descname">write_disposition</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.write_disposition" title="Permalink to this definition">#</a></dt>
+<em class="property">property </em><code class="sig-name descname">write_disposition</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJobConfig.write_disposition" title="Permalink to this definition">#</a></dt>
 <dd><p>Action that occurs if
 the destination table already exists.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.writeDisposition">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.writeDisposition</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="google.cloud.bigquery.job.WriteDisposition.html#google.cloud.bigquery.job.WriteDisposition" title="google.cloud.bigquery.job.WriteDisposition">google.cloud.bigquery.job.WriteDisposition</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="google.cloud.bigquery.job.WriteDisposition.html#google.cloud.bigquery.job.WriteDisposition" title="google.cloud.bigquery.job.WriteDisposition">google.cloud.bigquery.job.WriteDisposition</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -614,13 +546,11 @@ the destination table already exists.</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -633,7 +563,7 @@ the destination table already exists.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
