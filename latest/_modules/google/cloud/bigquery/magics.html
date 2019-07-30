@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.bigquery.magics &#8212; google-cloud 14049b2 documentation</title>
+    <title>google.cloud.bigquery.magics &#8212; google-cloud bb353b9 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -173,15 +173,15 @@
     <span class="kn">from</span> <span class="nn">IPython.core</span> <span class="k">import</span> <span class="n">magic_arguments</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: NO COVER</span>
     <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;This module can only be loaded in IPython.&quot;</span><span class="p">)</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">bigquery_storage_v1beta1</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: NO COVER</span>
-    <span class="n">bigquery_storage_v1beta1</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">client_info</span>
 <span class="kn">import</span> <span class="nn">google.auth</span>
 <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">bigquery</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.dbapi</span> <span class="k">import</span> <span class="n">_helpers</span>
+<span class="kn">import</span> <span class="nn">six</span>
+
+
+<span class="n">IPYTHON_USER_AGENT</span> <span class="o">=</span> <span class="s2">&quot;ipython-</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">IPython</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Context"><a class="viewcode-back" href="../../../../bigquery/magics.html#google.cloud.bigquery.magics.Context">[docs]</a><span class="k">class</span> <span class="nc">Context</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -433,9 +433,7 @@
         <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
         <span class="n">credentials</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">credentials</span><span class="p">,</span>
         <span class="n">default_query_job_config</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">default_query_job_config</span><span class="p">,</span>
-        <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
-            <span class="n">user_agent</span><span class="o">=</span><span class="s2">&quot;ipython-</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">IPython</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
-        <span class="p">),</span>
+        <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span><span class="n">user_agent</span><span class="o">=</span><span class="n">IPYTHON_USER_AGENT</span><span class="p">),</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">_connection</span><span class="p">:</span>
         <span class="n">client</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">_connection</span>
@@ -467,13 +465,27 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">use_bqstorage_api</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">if</span> <span class="n">bigquery_storage_v1beta1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
-            <span class="s2">&quot;Install the google-cloud-bigquery-storage and fastavro packages &quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">bigquery_storage_v1beta1</span>
+    <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+        <span class="n">customized_error</span> <span class="o">=</span> <span class="ne">ImportError</span><span class="p">(</span>
+            <span class="s2">&quot;Install the google-cloud-bigquery-storage and pyarrow packages &quot;</span>
             <span class="s2">&quot;to use the BigQuery Storage API.&quot;</span>
         <span class="p">)</span>
+        <span class="n">six</span><span class="o">.</span><span class="n">raise_from</span><span class="p">(</span><span class="n">customized_error</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">bigquery_storage_v1beta1</span><span class="o">.</span><span class="n">BigQueryStorageClient</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">google.api_core.gapic_v1</span> <span class="k">import</span> <span class="n">client_info</span> <span class="k">as</span> <span class="n">gapic_client_info</span>
+    <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+        <span class="n">customized_error</span> <span class="o">=</span> <span class="ne">ImportError</span><span class="p">(</span>
+            <span class="s2">&quot;Install the grpcio package to use the BigQuery Storage API.&quot;</span>
+        <span class="p">)</span>
+        <span class="n">six</span><span class="o">.</span><span class="n">raise_from</span><span class="p">(</span><span class="n">customized_error</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">bigquery_storage_v1beta1</span><span class="o">.</span><span class="n">BigQueryStorageClient</span><span class="p">(</span>
+        <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
+        <span class="n">client_info</span><span class="o">=</span><span class="n">gapic_client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span><span class="n">user_agent</span><span class="o">=</span><span class="n">IPYTHON_USER_AGENT</span><span class="p">),</span>
+    <span class="p">)</span>
 </pre></div>
 
           </div>
