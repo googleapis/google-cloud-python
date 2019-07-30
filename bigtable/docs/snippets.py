@@ -403,7 +403,18 @@ def test_bigtable_create_table():
     table = instance.table("table_my")
     # Define the GC policy to retain only the most recent 2 versions.
     max_versions_rule = column_family.MaxVersionsGCRule(2)
-    table.create(column_families={"cf1": max_versions_rule})
+
+    RETRIES = 4
+    # Retry if deadline exceed error.
+    for retry in range(RETRIES):
+        try:
+            table.create(column_families={"cf1": max_versions_rule})
+            break
+        except Exception as e:
+            if retry == RETRIES - 1:
+                raise e
+            else:
+                time.sleep(2 ** (retry - 1))
     # [END bigtable_create_table]
 
     try:
