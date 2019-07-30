@@ -38,7 +38,6 @@ def default(session):
     for local_dep in LOCAL_DEPS:
         session.install("-e", local_dep)
 
-    # Pyarrow does not support Python 3.7
     dev_install = ".[all]"
     session.install("-e", dev_install)
 

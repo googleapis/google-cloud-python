@@ -322,6 +322,13 @@ class TestWatch(unittest.TestCase):
         self.assertTrue(inst._rpc.callbacks, [inst._on_rpc_done])
         self.assertEqual(inst._targets["query"], "dummy query target")
 
+    def test_on_snapshot_target_w_none(self):
+        inst = self._makeOne()
+        proto = None
+        inst.on_snapshot(proto)  # nothing to assert, no mutations, no rtnval
+        self.assertTrue(inst._consumer is None)
+        self.assertTrue(inst._rpc is None)
+
     def test_on_snapshot_target_no_change_no_target_ids_not_current(self):
         inst = self._makeOne()
         proto = DummyProto()
