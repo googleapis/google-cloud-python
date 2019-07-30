@@ -46,7 +46,7 @@ class Dispatcher(object):
             worker = helper_threads.QueueCallbackWorker(
                 self._queue,
                 self.dispatch_callback,
-                max_items=flow_control.max_request_batch_size,
+                max_items=100,
                 max_latency=flow_control.max_request_batch_latency,
             )
             # Create and start the helper thread.
