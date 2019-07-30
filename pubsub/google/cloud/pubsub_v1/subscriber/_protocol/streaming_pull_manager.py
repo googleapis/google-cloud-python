@@ -252,7 +252,7 @@ class StreamingPullManager(object):
             # currently on hold, if the current load allows for it.
             self._maybe_release_messages()
 
-            if self.load < self.flow_control.resume_threshold:
+            if self.load < 0.8:
                 _LOGGER.debug("Current load is %.2f, resuming consumer.", self.load)
                 self._consumer.resume()
             else:
