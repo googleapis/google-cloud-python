@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Messages &#8212; google-cloud 5916b6b documentation</title>
+    <title>Messages &#8212; google-cloud 7e16c08 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -37,7 +37,7 @@
 <h1>Messages<a class="headerlink" href="#messages" title="Permalink to this headline">#</a></h1>
 <dl class="class">
 <dt id="google.cloud.pubsub_v1.subscriber.message.Message">
-<em class="property">class </em><code class="sig-prename descclassname">google.cloud.pubsub_v1.subscriber.message.</code><code class="sig-name descname">Message</code><span class="sig-paren">(</span><em class="sig-param">message</em>, <em class="sig-param">ack_id</em>, <em class="sig-param">request_queue</em>, <em class="sig-param">autolease=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/message.html#Message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.pubsub_v1.subscriber.message.</code><code class="sig-name descname">Message</code><span class="sig-paren">(</span><em class="sig-param">message</em>, <em class="sig-param">ack_id</em>, <em class="sig-param">request_queue</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/message.html#Message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message" title="Permalink to this definition">#</a></dt>
 <dd><p>A representation of a single Pub/Sub message.</p>
 <p>The common way to interact with
 <a class="reference internal" href="#google.cloud.pubsub_v1.subscriber.message.Message" title="google.cloud.pubsub_v1.subscriber.message.Message"><code class="xref py py-class docutils literal notranslate"><span class="pre">Message</span></code></a> objects is to receive
@@ -108,16 +108,6 @@ from Pub/Sub.</p></li>
 <li><p><strong>request_queue</strong> (<a class="reference external" href="https://docs.python.org/3/library/queue.html#queue.Queue" title="(in Python v3.7)"><em>queue.Queue</em></a>) – A queue provided by the policy that
 can accept requests; the policy is responsible for handling
 those requests.</p></li>
-<li><p><strong>autolease</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – <p>An optional flag determining whether a new Message
-instance should automatically lease itself upon creation.
-Defaults to <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">True</span></code></a>.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<div class="deprecated">
-<p><span class="versionmodified deprecated">Deprecated since version 0.44.0: </span>Parameter will be removed in future versions.</p>
-</div>
-</div>
-</p></li>
 </ul>
 </dd>
 </dl>
@@ -204,22 +194,6 @@ before the existing lease expires.</p>
 lease management is on <a class="reference internal" href="#google.cloud.pubsub_v1.subscriber.message.Message.ack" title="google.cloud.pubsub_v1.subscriber.message.Message.ack"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ack()</span></code></a> or <a class="reference internal" href="#google.cloud.pubsub_v1.subscriber.message.Message.nack" title="google.cloud.pubsub_v1.subscriber.message.Message.nack"><code class="xref py py-meth docutils literal notranslate"><span class="pre">nack()</span></code></a>; these methods
 both call this one. You probably do not want to call this method
 directly.</p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="google.cloud.pubsub_v1.subscriber.message.Message.lease">
-<code class="sig-name descname">lease</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/message.html#Message.lease"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.message.Message.lease" title="Permalink to this definition">#</a></dt>
-<dd><p>Inform the policy to lease this message continually.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>By default this method is called by the constructor, and you should
-never need to call it manually, unless the
-<a class="reference internal" href="#google.cloud.pubsub_v1.subscriber.message.Message" title="google.cloud.pubsub_v1.subscriber.message.Message"><code class="xref py py-class docutils literal notranslate"><span class="pre">Message</span></code></a> instance was
-created with <code class="docutils literal notranslate"><span class="pre">autolease=False</span></code>.</p>
-<div class="deprecated">
-<p><span class="versionmodified deprecated">Deprecated since version 0.44.0: </span>Will be removed in future versions.</p>
-</div>
 </div>
 </dd></dl>
 

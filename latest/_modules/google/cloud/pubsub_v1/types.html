@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.pubsub_v1.types &#8212; google-cloud 5916b6b documentation</title>
+    <title>google.cloud.pubsub_v1.types &#8212; google-cloud 7e16c08 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -49,7 +49,6 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
 <span class="kn">import</span> <span class="nn">collections</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">textwrap</span>
 
 <span class="kn">from</span> <span class="nn">google.api</span> <span class="k">import</span> <span class="n">http_pb2</span>
 <span class="kn">from</span> <span class="nn">google.iam.v1</span> <span class="k">import</span> <span class="n">iam_policy_pb2</span>
@@ -101,24 +100,11 @@
 <span class="c1"># these settings can be altered to tweak Pub/Sub behavior.</span>
 <span class="c1"># The defaults should be fine for most use cases.</span>
 <span class="n">FlowControl</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span>
-    <span class="s2">&quot;FlowControl&quot;</span><span class="p">,</span>
-    <span class="p">[</span>
-        <span class="s2">&quot;max_bytes&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;max_messages&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;resume_threshold&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;max_requests&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;max_request_batch_size&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;max_request_batch_latency&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;max_lease_duration&quot;</span><span class="p">,</span>
-    <span class="p">],</span>
+    <span class="s2">&quot;FlowControl&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;max_bytes&quot;</span><span class="p">,</span> <span class="s2">&quot;max_messages&quot;</span><span class="p">,</span> <span class="s2">&quot;max_lease_duration&quot;</span><span class="p">]</span>
 <span class="p">)</span>
 <span class="n">FlowControl</span><span class="o">.</span><span class="fm">__new__</span><span class="o">.</span><span class="vm">__defaults__</span> <span class="o">=</span> <span class="p">(</span>
     <span class="mi">100</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">,</span>  <span class="c1"># max_bytes: 100mb</span>
     <span class="mi">100</span><span class="p">,</span>  <span class="c1"># max_messages: 100</span>
-    <span class="mf">0.8</span><span class="p">,</span>  <span class="c1"># resume_threshold: 80%</span>
-    <span class="mi">100</span><span class="p">,</span>  <span class="c1"># max_requests: 100</span>
-    <span class="mi">100</span><span class="p">,</span>  <span class="c1"># max_request_batch_size: 100</span>
-    <span class="mf">0.01</span><span class="p">,</span>  <span class="c1"># max_request_batch_latency: 0.01s</span>
     <span class="mi">2</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span><span class="p">,</span>  <span class="c1"># max_lease_duration: 2 hours.</span>
 <span class="p">)</span>
 
@@ -134,42 +120,6 @@
     <span class="n">FlowControl</span><span class="o">.</span><span class="n">max_messages</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s2">&quot;The maximum number of received - but not yet processed - messages before &quot;</span>
         <span class="s2">&quot;pausing the message stream.&quot;</span>
-    <span class="p">)</span>
-    <span class="n">FlowControl</span><span class="o">.</span><span class="n">resume_threshold</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The relative threshold of the ``max_bytes`` and ``max_messages`` limits</span>
-<span class="sd">        below which to resume the message stream. Must be a positive number not</span>
-<span class="sd">        greater than ``1.0``.</span>
-
-<span class="sd">        .. note::</span>
-<span class="sd">            .. deprecated:: 0.44.0</span>
-<span class="sd">                Will be removed in future versions.&quot;&quot;&quot;</span>
-    <span class="p">)</span>
-    <span class="n">FlowControl</span><span class="o">.</span><span class="n">max_requests</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Currently not in use.</span>
-
-<span class="sd">        .. note::</span>
-<span class="sd">            .. deprecated:: 0.44.0</span>
-<span class="sd">                Will be removed in future versions.&quot;&quot;&quot;</span>
-    <span class="p">)</span>
-    <span class="n">FlowControl</span><span class="o">.</span><span class="n">max_request_batch_size</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The maximum number of requests scheduled by callbacks to process and</span>
-<span class="sd">        dispatch at a time.</span>
-
-<span class="sd">        .. note::</span>
-<span class="sd">            .. deprecated:: 0.44.0</span>
-<span class="sd">                Will be removed in future versions.&quot;&quot;&quot;</span>
-    <span class="p">)</span>
-    <span class="n">FlowControl</span><span class="o">.</span><span class="n">max_request_batch_latency</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The maximum amount of time in seconds to wait for additional request</span>
-<span class="sd">        items before processing the next batch of requests.</span>
-
-<span class="sd">        .. note::</span>
-<span class="sd">            .. deprecated:: 0.44.0</span>
-<span class="sd">                Will be removed in future versions.&quot;&quot;&quot;</span>
     <span class="p">)</span>
     <span class="n">FlowControl</span><span class="o">.</span><span class="n">max_lease_duration</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s2">&quot;The maximum amount of time in seconds to hold a lease on a message &quot;</span>

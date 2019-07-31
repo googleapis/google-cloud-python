@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.pubsub_v1.subscriber.message &#8212; google-cloud 5916b6b documentation</title>
+    <title>google.cloud.pubsub_v1.subscriber.message &#8212; google-cloud 7e16c08 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -52,7 +52,6 @@
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">datetime_helpers</span>
 <span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1.subscriber._protocol</span> <span class="k">import</span> <span class="n">requests</span>
@@ -105,7 +104,7 @@
 <span class="sd">            published.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">ack_id</span><span class="p">,</span> <span class="n">request_queue</span><span class="p">,</span> <span class="n">autolease</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">ack_id</span><span class="p">,</span> <span class="n">request_queue</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct the Message.</span>
 
 <span class="sd">        .. note::</span>
@@ -120,13 +119,6 @@
 <span class="sd">            request_queue (queue.Queue): A queue provided by the policy that</span>
 <span class="sd">                can accept requests; the policy is responsible for handling</span>
 <span class="sd">                those requests.</span>
-<span class="sd">            autolease (bool): An optional flag determining whether a new Message</span>
-<span class="sd">                instance should automatically lease itself upon creation.</span>
-<span class="sd">                Defaults to :data:`True`.</span>
-
-<span class="sd">                .. note::</span>
-<span class="sd">                    .. deprecated:: 0.44.0</span>
-<span class="sd">                        Parameter will be removed in future versions.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_message</span> <span class="o">=</span> <span class="n">message</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ack_id</span> <span class="o">=</span> <span class="n">ack_id</span>
@@ -137,11 +129,6 @@
         <span class="c1"># was received. Tracking this provides us a way to be smart about</span>
         <span class="c1"># the default lease deadline.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_received_timestamp</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-
-        <span class="c1"># The policy should lease this message, telling PubSub that it has</span>
-        <span class="c1"># it until it is acked or otherwise dropped.</span>
-        <span class="k">if</span> <span class="n">autolease</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">lease</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Get an abbreviated version of the data.</span>
@@ -245,26 +232,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
             <span class="n">requests</span><span class="o">.</span><span class="n">DropRequest</span><span class="p">(</span><span class="n">ack_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ack_id</span><span class="p">,</span> <span class="n">byte_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
-        <span class="p">)</span></div>
-
-<div class="viewcode-block" id="Message.lease"><a class="viewcode-back" href="../../../../../pubsub/subscriber/api/message.html#google.cloud.pubsub_v1.subscriber.message.Message.lease">[docs]</a>    <span class="k">def</span> <span class="nf">lease</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Inform the policy to lease this message continually.</span>
-
-<span class="sd">        .. note::</span>
-<span class="sd">            By default this method is called by the constructor, and you should</span>
-<span class="sd">            never need to call it manually, unless the</span>
-<span class="sd">            :class:`~.pubsub_v1.subscriber.message.Message` instance was</span>
-<span class="sd">            created with ``autolease=False``.</span>
-
-<span class="sd">            .. deprecated:: 0.44.0</span>
-<span class="sd">                Will be removed in future versions.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="s2">&quot;lease() is deprecated since 0.44.0, and will be removed in future versions.&quot;</span><span class="p">,</span>
-            <span class="n">category</span><span class="o">=</span><span class="ne">DeprecationWarning</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
-            <span class="n">requests</span><span class="o">.</span><span class="n">LeaseRequest</span><span class="p">(</span><span class="n">ack_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ack_id</span><span class="p">,</span> <span class="n">byte_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Message.modify_ack_deadline"><a class="viewcode-back" href="../../../../../pubsub/subscriber/api/message.html#google.cloud.pubsub_v1.subscriber.message.Message.modify_ack_deadline">[docs]</a>    <span class="k">def</span> <span class="nf">modify_ack_deadline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seconds</span><span class="p">):</span>
