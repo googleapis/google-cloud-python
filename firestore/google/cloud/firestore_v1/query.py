@@ -390,6 +390,15 @@ class Query(object):
             all_descendants=self._all_descendants,
         )
 
+    def _has_relation_with(self, snapshot):
+        """
+        Check if given snapshot have relation with the
+        collection that this query applies to.
+        """
+        is_same_collection = snapshot.reference._path[:-1] == self._parent._path
+        has_same_segment = snapshot.reference._path[-2] == self._parent._path[0]
+        return is_same_collection or (self._all_descendants and has_same_segment)
+
     def _cursor_helper(self, document_fields, before, start):
         """Set values to be used for a ``start_at`` or ``end_at`` cursor.
 
@@ -419,7 +428,7 @@ class Query(object):
         if isinstance(document_fields, tuple):
             document_fields = list(document_fields)
         elif isinstance(document_fields, document.DocumentSnapshot):
-            if document_fields.reference._path[:-1] != self._parent._path:
+            if not self._has_relation_with(document_fields):
                 raise ValueError(
                     "Cannot use snapshot from another collection as a cursor."
                 )

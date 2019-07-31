@@ -415,6 +415,25 @@ class TestCollectionReference(unittest.TestCase):
         self.assertIs(query._parent, collection)
         self.assertEqual(query._start_at, (doc_fields, False))
 
+    def test_start_after_snapshot(self):
+        from google.cloud.firestore_v1.query import Query
+
+        client = _make_client()
+        parent_ref = self._make_one("parents", client=client).document("parent")
+
+        child_col = parent_ref.collection("children")
+        child_snapshot = child_col.document("child").get()
+
+        query = (
+            client.collection_group("children")
+            .where("d", "==", "Foo")
+            .start_after(child_snapshot)
+        )
+
+        self.assertIsInstance(query, Query)
+        self.assertEqual(query._parent._path, ("children",))
+        self.assertEqual(query._start_at, (child_snapshot, False))
+
     def test_end_before(self):
         from google.cloud.firestore_v1.query import Query
 
