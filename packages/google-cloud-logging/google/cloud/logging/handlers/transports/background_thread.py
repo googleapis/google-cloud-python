@@ -28,6 +28,7 @@ import time
 
 from six.moves import queue
 
+from google.cloud.logging import _helpers
 from google.cloud.logging.handlers.transports.base import Transport
 
 _DEFAULT_GRACE_PERIOD = 5.0  # Seconds
@@ -254,17 +255,16 @@ class _Worker(object):
         :param span_id: (optional) span_id within the trace for the log entry.
                         Specify the trace parameter if span_id is set.
         """
-        self._queue.put_nowait(
-            {
-                "info": {"message": message, "python_logger": record.name},
-                "severity": record.levelname,
-                "resource": resource,
-                "labels": labels,
-                "trace": trace,
-                "span_id": span_id,
-                "timestamp": datetime.datetime.utcfromtimestamp(record.created),
-            }
-        )
+        queue_entry = {
+            "info": {"message": message, "python_logger": record.name},
+            "severity": _helpers._normalize_severity(record.levelno),
+            "resource": resource,
+            "labels": labels,
+            "trace": trace,
+            "span_id": span_id,
+            "timestamp": datetime.datetime.utcfromtimestamp(record.created),
+        }
+        self._queue.put_nowait(queue_entry)
 
     def flush(self):
         """Submit any pending log records."""
