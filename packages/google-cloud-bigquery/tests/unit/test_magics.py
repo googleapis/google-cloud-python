@@ -42,7 +42,7 @@ from google.cloud.bigquery import job
 from google.cloud.bigquery import table
 from google.cloud.bigquery import magics
 from tests.unit.helpers import make_connection
-from tests.unit.helpers import maybe_fail_import
+from test_utils.imports import maybe_fail_import
 
 
 pytestmark = pytest.mark.skipif(IPython is None, reason="Requires `ipython`")

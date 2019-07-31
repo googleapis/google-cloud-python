@@ -12,9 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import mock
-import six
-
 
 def make_connection(*responses):
     import google.cloud.bigquery._http
@@ -25,25 +22,3 @@ def make_connection(*responses):
     mock_conn.user_agent = "testing 1.2.3"
     mock_conn.api_request.side_effect = list(responses) + [NotFound("miss")]
     return mock_conn
-
-
-def maybe_fail_import(predicate):
-    """Create and return a patcher that conditionally makes an import fail.
-
-    Args:
-        predicate (Callable[[...], bool]): A callable that, if it returns `True`,
-            triggers an `ImportError`. It must accept the same arguments as the
-            built-in `__import__` function.
-            https://docs.python.org/3/library/functions.html#__import__
-
-    Returns:
-        A mock patcher object that can be used to enable patched import behavior.
-    """
-    orig_import = six.moves.builtins.__import__
-
-    def custom_import(name, globals=None, locals=None, fromlist=(), level=0):
-        if predicate(name, globals, locals, fromlist, level):
-            raise ImportError
-        return orig_import(name, globals, locals, fromlist, level)
-
-    return mock.patch.object(six.moves.builtins, "__import__", new=custom_import)
