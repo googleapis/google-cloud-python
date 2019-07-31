@@ -20,7 +20,11 @@ import shutil
 import nox
 
 
-LOCAL_DEPS = (os.path.join("..", "api_core[grpc]"), os.path.join("..", "core"))
+LOCAL_DEPS = (
+    os.path.join("..", "api_core[grpc]"),
+    os.path.join("..", "core"),
+    os.path.join("..", "test_utils"),
+)
 
 BLACK_PATHS = ("docs", "google", "samples", "tests", "noxfile.py", "setup.py")
 
@@ -40,7 +44,6 @@ def default(session):
 
     dev_install = ".[all]"
     session.install("-e", dev_install)
-    session.install("-e", os.path.join("..", "test_utils"))
 
     # IPython does not support Python 2 after version 5.x
     if session.python == "2.7":
