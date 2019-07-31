@@ -839,6 +839,7 @@ def test_bigquery_magic_omits_tracebacks_from_error_message():
     with run_query_patch, default_patch, io.capture_output() as captured_io:
         ip.run_cell_magic("bigquery", "", "SELECT foo FROM WHERE LIMIT bar")
 
-    output = captured_io.stdout
+    output = captured_io.stderr
     assert "400 Syntax error in SQL query" in output
     assert "Traceback (most recent call last)" not in output
+    assert "Syntax error" not in captured_io.stdout

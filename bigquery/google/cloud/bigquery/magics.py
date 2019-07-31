@@ -130,6 +130,7 @@
 from __future__ import print_function
 
 import ast
+import sys
 import time
 from concurrent import futures
 
@@ -428,7 +429,7 @@ def _cell_magic(line, query):
         display.clear_output()
 
     if error:
-        print("\nERROR:\n", error)
+        print("\nERROR:\n", error, file=sys.stderr)
         return
 
     result = query_job.to_dataframe(bqstorage_client=bqstorage_client)
