@@ -14,6 +14,27 @@
 
 """Schemas for BigQuery tables / queries."""
 
+from google.cloud.bigquery_v2 import types
+
+
+# SQL types reference:
+# https://cloud.google.com/bigquery/data-types#legacy_sql_data_types
+# https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types
+LEGACY_TO_STANDARD_TYPES = {
+    "STRING": types.StandardSqlDataType.STRING,
+    "BYTES": types.StandardSqlDataType.BYTES,
+    "INTEGER": types.StandardSqlDataType.INT64,
+    "FLOAT": types.StandardSqlDataType.FLOAT64,
+    "NUMERIC": types.StandardSqlDataType.NUMERIC,
+    "BOOLEAN": types.StandardSqlDataType.BOOL,
+    "RECORD": types.StandardSqlDataType.STRUCT,
+    "TIMESTAMP": types.StandardSqlDataType.TIMESTAMP,
+    "DATE": types.StandardSqlDataType.DATE,
+    "TIME": types.StandardSqlDataType.TIME,
+    "DATETIME": types.StandardSqlDataType.DATETIME,
+}
+"""String names of the legacy SQL types to integer codes of Standard SQL types."""
+
 
 class SchemaField(object):
     """Describe a single field within a table schema.
@@ -145,6 +166,26 @@ class SchemaField(object):
             self._description,
             self._fields,
         )
+
+    def to_standard_sql(self):
+        """Return the field as the standard SQL field representation object.
+
+        Returns:
+            An instance of :class:`~google.cloud.bigquery_v2.types.StandardSqlField`.
+        """
+        sql_type = types.StandardSqlDataType()
+        sql_type.type_kind = LEGACY_TO_STANDARD_TYPES.get(
+            self.field_type, types.StandardSqlDataType.TYPE_KIND_UNSPECIFIED
+        )
+
+        # NOTE: No need to also handle the "ARRAY" composed type, the latter
+        # does not exist in legacy SQL types.
+        if sql_type.type_kind == types.StandardSqlDataType.STRUCT:  # noqa: E721
+            sql_type.struct_type.fields.extend(
+                field.to_standard_sql() for field in self.fields
+            )
+
+        return types.StandardSqlField(name=self.name, type=sql_type)
 
     def __eq__(self, other):
         if not isinstance(other, SchemaField):
