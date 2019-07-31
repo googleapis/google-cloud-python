@@ -20,7 +20,11 @@ import shutil
 import nox
 
 
-LOCAL_DEPS = (os.path.join("..", "api_core[grpc]"), os.path.join("..", "core"))
+LOCAL_DEPS = (
+    os.path.join("..", "api_core[grpc]"),
+    os.path.join("..", "core"),
+    os.path.join("..", "test_utils"),
+)
 
 BLACK_PATHS = ("docs", "google", "samples", "tests", "noxfile.py", "setup.py")
 
