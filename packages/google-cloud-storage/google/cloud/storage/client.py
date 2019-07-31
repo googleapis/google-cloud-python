@@ -475,7 +475,7 @@ class Client(ClientWithProject):
             versions=versions,
             projection=projection,
             fields=fields,
-            client=self
+            client=self,
         )
 
     def list_buckets(
