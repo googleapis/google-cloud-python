@@ -2,7 +2,7 @@
   "name": "bigquerystorage",
   "name_pretty": "Google BigQuery Storage",
   "product_documentation": "https://cloud.google.com/bigquery/docs/reference/storage/",
-  "client_documentation": "https://googleapis.dev/python/bigquery-storage/latest",
+  "client_documentation": "https://googleapis.dev/python/bigquerystorage/latest",
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559654",
   "release_level": "beta",
   "language": "python",
