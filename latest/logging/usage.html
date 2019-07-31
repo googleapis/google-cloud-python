@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Writing log entries &#8212; google-cloud 52c89b6 documentation</title>
+    <title>Writing log entries &#8212; google-cloud a699d86 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -88,7 +88,7 @@ will be instances of one of the following classes:</p>
 </ul>
 <p>Fetch entries across multiple projects.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">PROJECT_IDS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;one-project&quot;</span><span class="p">,</span> <span class="s2">&quot;another-project&quot;</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">(</span><span class="n">project_ids</span><span class="o">=</span><span class="n">PROJECT_IDS</span><span class="p">):</span>  <span class="c1"># API call(s)</span>
+<span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">(</span><span class="n">projects</span><span class="o">=</span><span class="n">PROJECT_IDS</span><span class="p">):</span>  <span class="c1"># API call(s)</span>
     <span class="n">do_something_with</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
 </pre></div>
 </div>
