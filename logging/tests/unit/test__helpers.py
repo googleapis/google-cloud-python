@@ -18,8 +18,6 @@ import unittest
 
 import mock
 
-from google.cloud.logging_v2.gapic.enums import LogSeverity
-
 
 class Test_entry_from_resource(unittest.TestCase):
     @staticmethod
