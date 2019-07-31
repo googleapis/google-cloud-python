@@ -11,7 +11,7 @@
 
 ### Implementation Changes
 
-- PubSub: Remove deprecated methods and settings ([#8836](https://github.com/googleapis/google-cloud-python/pull/8836))
+- Remove deprecated methods and settings ([#8836](https://github.com/googleapis/google-cloud-python/pull/8836))
 
 
 ### Documentation
