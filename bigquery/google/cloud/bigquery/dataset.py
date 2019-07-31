@@ -31,7 +31,6 @@ _W_PREFIX = re.compile(
     r"""
     (\S*)\:(?P<ref>\S*)
 """,
-    # re.VERBOSE,
 )
 
 
