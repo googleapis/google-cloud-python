@@ -40,6 +40,7 @@ def default(session):
 
     dev_install = ".[all]"
     session.install("-e", dev_install)
+    session.install("-e", os.path.join("..", "test_utils"))
 
     # IPython does not support Python 2 after version 5.x
     if session.python == "2.7":
