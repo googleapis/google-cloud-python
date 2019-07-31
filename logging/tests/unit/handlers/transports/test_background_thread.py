@@ -322,7 +322,6 @@ class Test_Worker(unittest.TestCase):
         self.assertIsInstance(entry["timestamp"], datetime.datetime)
 
     def test__thread_main(self):
-        import datetime
         from google.cloud.logging.handlers.transports import background_thread
 
         worker = self._make_one(_Logger(self.NAME))
