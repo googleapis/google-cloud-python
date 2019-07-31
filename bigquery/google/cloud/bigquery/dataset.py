@@ -29,8 +29,9 @@ from google.cloud.bigquery.table import TableReference
 
 _W_PREFIX = re.compile(
     r"""
-    (\S*)\:(?P<ref>\S*)""",
-    re.VERBOSE,
+    (\S*)\:(?P<ref>\S*)
+""",
+    # re.VERBOSE,
 )
 
 
@@ -277,7 +278,7 @@ class DatasetReference(object):
         Args:
             dataset_id (str):
                 A dataset ID in standard SQL format. If ``default_project``
-                is not specified, this must included both the project ID and
+                is not specified, this must include both the project ID and
                 the dataset ID, separated by ``.`` or, single prefix usage is
                 also permitted.
             default_project (str):
@@ -311,9 +312,9 @@ class DatasetReference(object):
         if len(parts) == 1 and not default_project:
             raise ValueError(
                 "When default_project is not set, dataset_id must be a "
-                "fully-qualified dataset ID in standard SQL format. "
-                'e.g. "project.dataset_id" or, single prefix usage '
-                'is also permitted e.g. "prefix:project.dataset_id" '
+                "fully-qualified dataset ID in standard SQL format, "
+                'e.g., "project.dataset_id" or, single prefix usage '
+                'is also permitted, e.g., "prefix:project.dataset_id" '
                 "got {}".format(dataset_id)
             )
         elif len(parts) == 2:
@@ -321,8 +322,8 @@ class DatasetReference(object):
         elif len(parts) > 2:
             raise ValueError(
                 "Too many parts in dataset_id. Expected a fully-qualified "
-                'dataset ID in standard SQL format. e.g. "project.dataset_id" '
-                "or, single prefix usage is also permitted e.g. "
+                'dataset ID in standard SQL format, e.g., "project.dataset_id" '
+                "or, single prefix usage is also permitted, e.g., "
                 '"prefix:project.dataset_id" got {}'.format(dataset_id)
             )
 
@@ -573,7 +574,7 @@ class Dataset(object):
         Args:
             full_dataset_id (str):
                 A fully-qualified dataset ID in standard SQL format. Must
-                included both the project ID and the dataset ID, separated by
+                include both the project ID and the dataset ID, separated by
                 ``.`` or, single prefix usage is also permitted.
 
         Returns:
