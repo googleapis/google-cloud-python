@@ -735,6 +735,38 @@ class TestWatch(unittest.TestCase):
             doc_tree, doc_map, delete_changes, add_changes, update_changes
         )
         self.assertEqual(updated_map, doc_map)  # no change
+        
+    def test__compute_snapshot_deletes_w_real_comparator(self):
+        from google.cloud.firestore_v1.watch import WatchDocTree
+
+        doc_tree = WatchDocTree()
+
+        class DummyDoc(object):
+            update_time = mock.sentinel
+
+        def _comparator(doc1, doc2):
+            if doc1.field > doc2.field:
+                return 1
+            if doc1.field < doc2.field:
+                return -1
+            return 0
+
+        deleted_doc_1 = DummyDoc()
+        deleted_doc_2 = DummyDoc()
+        doc_tree = doc_tree.insert(deleted_doc_1, None)
+        doc_tree = doc_tree.insert(deleted_doc_2, None)
+        doc_map = {
+            "/deleted_1": deleted_doc_1,
+            "/deleted_2": deleted_doc_2,
+        }
+        delete_changes = ["/deleted_1", "/deleted_2"]
+        add_changes = []
+        update_changes = []
+        inst = self._makeOne(comparator=_comparator)
+        updated_tree, updated_map, applied_changes = inst._compute_snapshot(
+            doc_tree, doc_map, delete_changes, add_changes, update_changes
+        )
+        self.assertEqual(updated_map, {})
 
     def test__reset_docs(self):
         from google.cloud.firestore_v1.watch import ChangeType
