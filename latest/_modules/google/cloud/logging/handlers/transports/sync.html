@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.logging.handlers.transports.sync &#8212; google-cloud e688b0e documentation</title>
+    <title>google.cloud.logging.handlers.transports.sync &#8212; google-cloud 52c89b6 documentation</title>
     <link rel="stylesheet" href="../../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../../" src="../../../../../../_static/documentation_options.js"></script>
@@ -51,6 +51,7 @@
 <span class="sd">Logs directly to the the Stackdriver Logging API with a synchronous call.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">from</span> <span class="nn">google.cloud.logging</span> <span class="k">import</span> <span class="n">_helpers</span>
 <span class="kn">from</span> <span class="nn">google.cloud.logging.handlers.transports.base</span> <span class="k">import</span> <span class="n">Transport</span>
 
 
@@ -84,7 +85,7 @@
         <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span> <span class="s2">&quot;python_logger&quot;</span><span class="p">:</span> <span class="n">record</span><span class="o">.</span><span class="n">name</span><span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_struct</span><span class="p">(</span>
             <span class="n">info</span><span class="p">,</span>
-            <span class="n">severity</span><span class="o">=</span><span class="n">record</span><span class="o">.</span><span class="n">levelname</span><span class="p">,</span>
+            <span class="n">severity</span><span class="o">=</span><span class="n">_helpers</span><span class="o">.</span><span class="n">_normalize_severity</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">levelno</span><span class="p">),</span>
             <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
             <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
             <span class="n">trace</span><span class="o">=</span><span class="n">trace</span><span class="p">,</span>

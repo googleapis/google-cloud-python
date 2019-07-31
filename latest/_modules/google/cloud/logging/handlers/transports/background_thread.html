@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.logging.handlers.transports.background_thread &#8212; google-cloud e688b0e documentation</title>
+    <title>google.cloud.logging.handlers.transports.background_thread &#8212; google-cloud 52c89b6 documentation</title>
     <link rel="stylesheet" href="../../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../../" src="../../../../../../_static/documentation_options.js"></script>
@@ -62,6 +62,7 @@
 
 <span class="kn">from</span> <span class="nn">six.moves</span> <span class="k">import</span> <span class="n">queue</span>
 
+<span class="kn">from</span> <span class="nn">google.cloud.logging</span> <span class="k">import</span> <span class="n">_helpers</span>
 <span class="kn">from</span> <span class="nn">google.cloud.logging.handlers.transports.base</span> <span class="k">import</span> <span class="n">Transport</span>
 
 <span class="n">_DEFAULT_GRACE_PERIOD</span> <span class="o">=</span> <span class="mf">5.0</span>  <span class="c1"># Seconds</span>
@@ -288,17 +289,16 @@
 <span class="sd">        :param span_id: (optional) span_id within the trace for the log entry.</span>
 <span class="sd">                        Specify the trace parameter if span_id is set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="o">.</span><span class="n">put_nowait</span><span class="p">(</span>
-            <span class="p">{</span>
-                <span class="s2">&quot;info&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span> <span class="s2">&quot;python_logger&quot;</span><span class="p">:</span> <span class="n">record</span><span class="o">.</span><span class="n">name</span><span class="p">},</span>
-                <span class="s2">&quot;severity&quot;</span><span class="p">:</span> <span class="n">record</span><span class="o">.</span><span class="n">levelname</span><span class="p">,</span>
-                <span class="s2">&quot;resource&quot;</span><span class="p">:</span> <span class="n">resource</span><span class="p">,</span>
-                <span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="n">labels</span><span class="p">,</span>
-                <span class="s2">&quot;trace&quot;</span><span class="p">:</span> <span class="n">trace</span><span class="p">,</span>
-                <span class="s2">&quot;span_id&quot;</span><span class="p">:</span> <span class="n">span_id</span><span class="p">,</span>
-                <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">created</span><span class="p">),</span>
-            <span class="p">}</span>
-        <span class="p">)</span>
+        <span class="n">queue_entry</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;info&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span> <span class="s2">&quot;python_logger&quot;</span><span class="p">:</span> <span class="n">record</span><span class="o">.</span><span class="n">name</span><span class="p">},</span>
+            <span class="s2">&quot;severity&quot;</span><span class="p">:</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_normalize_severity</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">levelno</span><span class="p">),</span>
+            <span class="s2">&quot;resource&quot;</span><span class="p">:</span> <span class="n">resource</span><span class="p">,</span>
+            <span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="n">labels</span><span class="p">,</span>
+            <span class="s2">&quot;trace&quot;</span><span class="p">:</span> <span class="n">trace</span><span class="p">,</span>
+            <span class="s2">&quot;span_id&quot;</span><span class="p">:</span> <span class="n">span_id</span><span class="p">,</span>
+            <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">created</span><span class="p">),</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="o">.</span><span class="n">put_nowait</span><span class="p">(</span><span class="n">queue_entry</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Submit any pending log records.&quot;&quot;&quot;</span>
