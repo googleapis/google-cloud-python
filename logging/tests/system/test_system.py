@@ -112,7 +112,7 @@ class TestLogging(unittest.TestCase):
                 retry_not_found(retry_other(doomed.delete))()
             except AttributeError:
                 client, dataset = doomed
-                retry(client.delete_dataset)(dataset)
+                retry_not_found(retry_other(client.delete_dataset))(dataset)
             except NotFound:
                 pass
         logging.getLogger().handlers = self._handlers_cache[:]
