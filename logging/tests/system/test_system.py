@@ -105,10 +105,11 @@ class TestLogging(unittest.TestCase):
         self._handlers_cache = logging.getLogger().handlers[:]
 
     def tearDown(self):
-        retry = RetryErrors((NotFound, TooManyRequests, RetryError), max_tries=9)
+        retry_not_found = RetryErrors((NotFound), max_tries=4)
+        retry_other = RetryErrors((TooManyRequests, RetryError))
         for doomed in self.to_delete:
             try:
-                retry(doomed.delete)()
+                retry_not_found(retry_other(doomed.delete))()
             except AttributeError:
                 client, dataset = doomed
                 retry(client.delete_dataset)(dataset)
