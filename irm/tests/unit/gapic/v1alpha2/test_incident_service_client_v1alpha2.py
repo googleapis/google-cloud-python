@@ -302,7 +302,12 @@ class TestIncidentServiceClient(object):
         # Setup Expected Response
         name = "name3373707"
         content = "content951530617"
-        expected_response = {"name": name, "content": content}
+        content_type = "contentType831846208"
+        expected_response = {
+            "name": name,
+            "content": content,
+            "content_type": content_type,
+        }
         expected_response = incidents_pb2.Annotation(**expected_response)
 
         # Mock the API response
@@ -654,6 +659,50 @@ class TestIncidentServiceClient(object):
 
         with pytest.raises(CustomException):
             client.get_signal(name)
+
+    def test_lookup_signal(self):
+        # Setup Expected Response
+        name = "name3373707"
+        etag = "etag3123477"
+        incident = "incident86983890"
+        title = "title110371416"
+        content_type = "contentType831846208"
+        content = "content951530617"
+        expected_response = {
+            "name": name,
+            "etag": etag,
+            "incident": incident,
+            "title": title,
+            "content_type": content_type,
+            "content": content,
+        }
+        expected_response = incidents_pb2.Signal(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = irm_v1alpha2.IncidentServiceClient()
+
+        response = client.lookup_signal()
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = incidents_service_pb2.LookupSignalRequest()
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_lookup_signal_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = irm_v1alpha2.IncidentServiceClient()
+
+        with pytest.raises(CustomException):
+            client.lookup_signal()
 
     def test_update_signal(self):
         # Setup Expected Response

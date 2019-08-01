@@ -17,6 +17,7 @@
 Logs directly to the the Stackdriver Logging API with a synchronous call.
 """
 
+from google.cloud.logging import _helpers
 from google.cloud.logging.handlers.transports.base import Transport
 
 
@@ -50,7 +51,7 @@ class SyncTransport(Transport):
         info = {"message": message, "python_logger": record.name}
         self.logger.log_struct(
             info,
-            severity=record.levelname,
+            severity=_helpers._normalize_severity(record.levelno),
             resource=resource,
             labels=labels,
             trace=trace,

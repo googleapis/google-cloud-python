@@ -25,6 +25,7 @@ from google.cloud.tasks_v2.proto import queue_pb2
 from google.cloud.tasks_v2.proto import target_pb2
 from google.cloud.tasks_v2.proto import task_pb2
 from google.iam.v1 import iam_policy_pb2
+from google.iam.v1 import options_pb2
 from google.iam.v1 import policy_pb2
 from google.protobuf import any_pb2
 from google.protobuf import duration_pb2
@@ -37,6 +38,7 @@ from google.type import expr_pb2
 
 _shared_modules = [
     iam_policy_pb2,
+    options_pb2,
     policy_pb2,
     any_pb2,
     duration_pb2,

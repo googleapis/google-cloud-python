@@ -18,27 +18,27 @@ config = {
             },
             "methods": {
                 "CreateTenant": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "GetTenant": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "UpdateTenant": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "DeleteTenant": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "ListTenants": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },

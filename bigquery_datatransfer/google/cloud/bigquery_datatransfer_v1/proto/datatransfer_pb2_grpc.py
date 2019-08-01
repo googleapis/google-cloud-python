@@ -63,6 +63,11 @@ class DataTransferServiceStub(object):
             request_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ScheduleTransferRunsRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ScheduleTransferRunsResponse.FromString,
         )
+        self.StartManualTransferRuns = channel.unary_unary(
+            "/google.cloud.bigquery.datatransfer.v1.DataTransferService/StartManualTransferRuns",
+            request_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.StartManualTransferRunsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.StartManualTransferRunsResponse.FromString,
+        )
         self.GetTransferRun = channel.unary_unary(
             "/google.cloud.bigquery.datatransfer.v1.DataTransferService/GetTransferRun",
             request_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.GetTransferRunRequest.SerializeToString,
@@ -155,6 +160,17 @@ class DataTransferServiceServicer(object):
     For each date - or whatever granularity the data source supports - in the
     range, one transfer run is created.
     Note that runs are created per UTC time in the time range.
+    DEPRECATED: use StartManualTransferRuns instead.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def StartManualTransferRuns(self, request, context):
+        """Start manual transfer runs to be executed now with schedule_time equal to
+    current time. The transfer runs can be created for a time range where the
+    run_time is between start_time (inclusive) and end_time (exclusive), or for
+    a specific run_time.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -242,6 +258,11 @@ def add_DataTransferServiceServicer_to_server(servicer, server):
             servicer.ScheduleTransferRuns,
             request_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ScheduleTransferRunsRequest.FromString,
             response_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ScheduleTransferRunsResponse.SerializeToString,
+        ),
+        "StartManualTransferRuns": grpc.unary_unary_rpc_method_handler(
+            servicer.StartManualTransferRuns,
+            request_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.StartManualTransferRunsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.StartManualTransferRunsResponse.SerializeToString,
         ),
         "GetTransferRun": grpc.unary_unary_rpc_method_handler(
             servicer.GetTransferRun,

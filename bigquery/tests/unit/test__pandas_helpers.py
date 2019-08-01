@@ -78,7 +78,7 @@ def all_(*functions):
     return functools.partial(do_all, functions)
 
 
-@pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
 def test_is_datetime():
     assert is_datetime(pyarrow.timestamp("us", tz=None))
     assert not is_datetime(pyarrow.timestamp("ms", tz=None))
@@ -242,7 +242,7 @@ def test_all_():
         ("UNKNOWN_TYPE", "REPEATED", is_none),
     ],
 )
-@pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
 def test_bq_to_arrow_data_type(module_under_test, bq_type, bq_mode, is_correct_type):
     field = schema.SchemaField("ignored_name", bq_type, mode=bq_mode)
     actual = module_under_test.bq_to_arrow_data_type(field)
@@ -250,7 +250,7 @@ def test_bq_to_arrow_data_type(module_under_test, bq_type, bq_mode, is_correct_t
 
 
 @pytest.mark.parametrize("bq_type", ["RECORD", "record", "STRUCT", "struct"])
-@pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
 def test_bq_to_arrow_data_type_w_struct(module_under_test, bq_type):
     fields = (
         schema.SchemaField("field01", "STRING"),
@@ -293,7 +293,52 @@ def test_bq_to_arrow_data_type_w_struct(module_under_test, bq_type):
     assert actual.equals(expected)
 
 
-@pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
+@pytest.mark.parametrize("bq_type", ["RECORD", "record", "STRUCT", "struct"])
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_bq_to_arrow_data_type_w_array_struct(module_under_test, bq_type):
+    fields = (
+        schema.SchemaField("field01", "STRING"),
+        schema.SchemaField("field02", "BYTES"),
+        schema.SchemaField("field03", "INTEGER"),
+        schema.SchemaField("field04", "INT64"),
+        schema.SchemaField("field05", "FLOAT"),
+        schema.SchemaField("field06", "FLOAT64"),
+        schema.SchemaField("field07", "NUMERIC"),
+        schema.SchemaField("field08", "BOOLEAN"),
+        schema.SchemaField("field09", "BOOL"),
+        schema.SchemaField("field10", "TIMESTAMP"),
+        schema.SchemaField("field11", "DATE"),
+        schema.SchemaField("field12", "TIME"),
+        schema.SchemaField("field13", "DATETIME"),
+        schema.SchemaField("field14", "GEOGRAPHY"),
+    )
+    field = schema.SchemaField("ignored_name", bq_type, mode="REPEATED", fields=fields)
+    actual = module_under_test.bq_to_arrow_data_type(field)
+    expected_value_type = pyarrow.struct(
+        (
+            pyarrow.field("field01", pyarrow.string()),
+            pyarrow.field("field02", pyarrow.binary()),
+            pyarrow.field("field03", pyarrow.int64()),
+            pyarrow.field("field04", pyarrow.int64()),
+            pyarrow.field("field05", pyarrow.float64()),
+            pyarrow.field("field06", pyarrow.float64()),
+            pyarrow.field("field07", module_under_test.pyarrow_numeric()),
+            pyarrow.field("field08", pyarrow.bool_()),
+            pyarrow.field("field09", pyarrow.bool_()),
+            pyarrow.field("field10", module_under_test.pyarrow_timestamp()),
+            pyarrow.field("field11", pyarrow.date32()),
+            pyarrow.field("field12", module_under_test.pyarrow_time()),
+            pyarrow.field("field13", module_under_test.pyarrow_datetime()),
+            pyarrow.field("field14", pyarrow.string()),
+        )
+    )
+    assert pyarrow.types.is_list(actual)
+    assert pyarrow.types.is_struct(actual.value_type)
+    assert actual.value_type.num_children == len(fields)
+    assert actual.value_type.equals(expected_value_type)
+
+
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
 def test_bq_to_arrow_data_type_w_struct_unknown_subfield(module_under_test):
     fields = (
         schema.SchemaField("field1", "STRING"),
@@ -303,8 +348,14 @@ def test_bq_to_arrow_data_type_w_struct_unknown_subfield(module_under_test):
         schema.SchemaField("field3", "UNKNOWN_TYPE"),
     )
     field = schema.SchemaField("ignored_name", "RECORD", mode="NULLABLE", fields=fields)
-    actual = module_under_test.bq_to_arrow_data_type(field)
+
+    with warnings.catch_warnings(record=True) as warned:
+        actual = module_under_test.bq_to_arrow_data_type(field)
+
     assert actual is None
+    assert len(warned) == 1
+    warning = warned[0]
+    assert "field3" in str(warning)
 
 
 @pytest.mark.parametrize(
@@ -383,8 +434,8 @@ def test_bq_to_arrow_data_type_w_struct_unknown_subfield(module_under_test):
         ),
     ],
 )
-@pytest.mark.skipIf(pandas is None, "Requires `pandas`")
-@pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
 def test_bq_to_arrow_array_w_nullable_scalars(module_under_test, bq_type, rows):
     series = pandas.Series(rows, dtype="object")
     bq_field = schema.SchemaField("field_name", bq_type)
@@ -393,8 +444,8 @@ def test_bq_to_arrow_array_w_nullable_scalars(module_under_test, bq_type, rows):
     assert rows == roundtrip
 
 
-@pytest.mark.skipIf(pandas is None, "Requires `pandas`")
-@pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
 def test_bq_to_arrow_array_w_arrays(module_under_test):
     rows = [[1, 2, 3], [], [4, 5, 6]]
     series = pandas.Series(rows, dtype="object")
@@ -405,8 +456,8 @@ def test_bq_to_arrow_array_w_arrays(module_under_test):
 
 
 @pytest.mark.parametrize("bq_type", ["RECORD", "record", "STRUCT", "struct"])
-@pytest.mark.skipIf(pandas is None, "Requires `pandas`")
-@pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
 def test_bq_to_arrow_array_w_structs(module_under_test, bq_type):
     rows = [
         {"int_col": 123, "string_col": "abc"},
@@ -427,8 +478,8 @@ def test_bq_to_arrow_array_w_structs(module_under_test, bq_type):
     assert rows == roundtrip
 
 
-@pytest.mark.skipIf(pandas is None, "Requires `pandas`")
-@pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
 def test_bq_to_arrow_array_w_special_floats(module_under_test):
     bq_field = schema.SchemaField("field_name", "FLOAT64")
     rows = [float("-inf"), float("nan"), float("inf"), None]
@@ -437,14 +488,30 @@ def test_bq_to_arrow_array_w_special_floats(module_under_test):
     roundtrip = arrow_array.to_pylist()
     assert len(rows) == len(roundtrip)
     assert roundtrip[0] == float("-inf")
-    assert roundtrip[1] != roundtrip[1]  # NaN doesn't equal itself.
+    # Since we are converting from pandas, NaN is treated as NULL in pyarrow
+    # due to pandas conventions.
+    # https://arrow.apache.org/docs/python/data.html#none-values-and-nan-handling
+    assert roundtrip[1] is None
     assert roundtrip[2] == float("inf")
     assert roundtrip[3] is None
 
 
-@pytest.mark.skipIf(pandas is None, "Requires `pandas`")
-@pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
-def test_to_arrow_w_required_fields(module_under_test):
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_bq_to_arrow_schema_w_unknown_type(module_under_test):
+    fields = (
+        schema.SchemaField("field1", "STRING"),
+        schema.SchemaField("field2", "INTEGER"),
+        # Don't know what to convert UNKNOWN_TYPE to, let type inference work,
+        # instead.
+        schema.SchemaField("field3", "UNKNOWN_TYPE"),
+    )
+    actual = module_under_test.bq_to_arrow_schema(fields)
+    assert actual is None
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_dataframe_to_arrow_w_required_fields(module_under_test):
     bq_schema = (
         schema.SchemaField("field01", "STRING", mode="REQUIRED"),
         schema.SchemaField("field02", "BYTES", mode="REQUIRED"),
@@ -489,7 +556,7 @@ def test_to_arrow_w_required_fields(module_under_test):
         }
     )
 
-    arrow_table = module_under_test.to_arrow(dataframe, bq_schema)
+    arrow_table = module_under_test.dataframe_to_arrow(dataframe, bq_schema)
     arrow_schema = arrow_table.schema
 
     assert len(arrow_schema) == len(bq_schema)
@@ -497,9 +564,9 @@ def test_to_arrow_w_required_fields(module_under_test):
         assert not arrow_field.nullable
 
 
-@pytest.mark.skipIf(pandas is None, "Requires `pandas`")
-@pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
-def test_to_arrow_w_unknown_type(module_under_test):
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_dataframe_to_arrow_w_unknown_type(module_under_test):
     bq_schema = (
         schema.SchemaField("field00", "UNKNOWN_TYPE"),
         schema.SchemaField("field01", "STRING"),
@@ -516,7 +583,7 @@ def test_to_arrow_w_unknown_type(module_under_test):
     )
 
     with warnings.catch_warnings(record=True) as warned:
-        arrow_table = module_under_test.to_arrow(dataframe, bq_schema)
+        arrow_table = module_under_test.dataframe_to_arrow(dataframe, bq_schema)
     arrow_schema = arrow_table.schema
 
     assert len(warned) == 1
@@ -530,19 +597,19 @@ def test_to_arrow_w_unknown_type(module_under_test):
     assert arrow_schema[3].name == "field03"
 
 
-@pytest.mark.skipIf(pandas is None, "Requires `pandas`")
-def test_to_parquet_without_pyarrow(module_under_test, monkeypatch):
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_dataframe_to_parquet_without_pyarrow(module_under_test, monkeypatch):
     monkeypatch.setattr(module_under_test, "pyarrow", None)
-    with pytest.raises(ValueError) as exc:
-        module_under_test.to_parquet(pandas.DataFrame(), (), None)
-    assert "pyarrow is required" in str(exc)
+    with pytest.raises(ValueError) as exc_context:
+        module_under_test.dataframe_to_parquet(pandas.DataFrame(), (), None)
+    assert "pyarrow is required" in str(exc_context.value)
 
 
-@pytest.mark.skipIf(pandas is None, "Requires `pandas`")
-@pytest.mark.skipIf(pyarrow is None, "Requires `pyarrow`")
-def test_to_parquet_w_missing_columns(module_under_test, monkeypatch):
-    with pytest.raises(ValueError) as exc:
-        module_under_test.to_parquet(
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_dataframe_to_parquet_w_missing_columns(module_under_test, monkeypatch):
+    with pytest.raises(ValueError) as exc_context:
+        module_under_test.dataframe_to_parquet(
             pandas.DataFrame(), (schema.SchemaField("not_found", "STRING"),), None
         )
-    assert "columns in schema must match" in str(exc)
+    assert "columns in schema must match" in str(exc_context.value)

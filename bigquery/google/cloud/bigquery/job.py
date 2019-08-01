@@ -34,6 +34,7 @@ from google.cloud.bigquery.query import ScalarQueryParameter
 from google.cloud.bigquery.query import StructQueryParameter
 from google.cloud.bigquery.query import UDFResource
 from google.cloud.bigquery.retry import DEFAULT_RETRY
+from google.cloud.bigquery.routine import RoutineReference
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import _EmptyRowIterator
 from google.cloud.bigquery.table import EncryptionConfiguration
@@ -2667,8 +2668,21 @@ class QueryJob(_AsyncJob):
         return self._job_statistics().get("ddlOperationPerformed")
 
     @property
+    def ddl_target_routine(self):
+        """Optional[google.cloud.bigquery.routine.RoutineReference]: Return the DDL target routine, present
+            for CREATE/DROP FUNCTION/PROCEDURE  queries.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/JobStatistics
+        """
+        prop = self._job_statistics().get("ddlTargetRoutine")
+        if prop is not None:
+            prop = RoutineReference.from_api_repr(prop)
+        return prop
+
+    @property
     def ddl_target_table(self):
-        """Optional[TableReference]: Return the DDL target table, present
+        """Optional[google.cloud.bigquery.table.TableReference]: Return the DDL target table, present
             for CREATE/DROP TABLE/VIEW queries.
 
         See:
@@ -2832,6 +2846,36 @@ class QueryJob(_AsyncJob):
         self._done_timeout = timeout
         super(QueryJob, self)._blocking_poll(timeout=timeout)
 
+    @staticmethod
+    def _format_for_exception(query, job_id):
+        """Format a query for the output in exception message.
+
+        Args:
+            query (str): The SQL query to format.
+            job_id (str): The ID of the job that ran the query.
+
+        Returns: (str)
+            A formatted query text.
+        """
+        template = "\n\n(job ID: {job_id})\n\n{header}\n\n{ruler}\n{body}\n{ruler}"
+
+        lines = query.splitlines()
+        max_line_len = max(len(l) for l in lines)
+
+        header = "-----Query Job SQL Follows-----"
+        header = "{:^{total_width}}".format(header, total_width=max_line_len + 5)
+
+        # Print out a "ruler" above and below the SQL so we can judge columns.
+        # Left pad for the line numbers (4 digits plus ":").
+        ruler = "    |" + "    .    |" * (max_line_len // 10)
+
+        # Put line numbers next to the SQL.
+        body = "\n".join(
+            "{:4}:{}".format(n, line) for n, line in enumerate(lines, start=1)
+        )
+
+        return template.format(job_id=job_id, header=header, ruler=ruler, body=body)
+
     def result(self, timeout=None, page_size=None, retry=DEFAULT_RETRY):
         """Start the job and wait for it to complete and get the result.
 
@@ -2860,12 +2904,17 @@ class QueryJob(_AsyncJob):
             concurrent.futures.TimeoutError:
                 If the job did not complete in the given timeout.
         """
-        super(QueryJob, self).result(timeout=timeout)
-        # Return an iterator instead of returning the job.
-        if not self._query_results:
-            self._query_results = self._client._get_query_results(
-                self.job_id, retry, project=self.project, location=self.location
-            )
+        try:
+            super(QueryJob, self).result(timeout=timeout)
+
+            # Return an iterator instead of returning the job.
+            if not self._query_results:
+                self._query_results = self._client._get_query_results(
+                    self.job_id, retry, project=self.project, location=self.location
+                )
+        except exceptions.GoogleCloudError as exc:
+            exc.message += self._format_for_exception(self.query, self.job_id)
+            raise
 
         # If the query job is complete but there are no query results, this was
         # special job, such as a DDL query. Return an empty result set to
@@ -2882,6 +2931,62 @@ class QueryJob(_AsyncJob):
         rows._preserve_order = _contains_order_by(self.query)
         return rows
 
+    # If changing the signature of this method, make sure to apply the same
+    # changes to table.RowIterator.to_arrow()
+    def to_arrow(self, progress_bar_type=None, bqstorage_client=None):
+        """[Beta] Create a class:`pyarrow.Table` by loading all pages of a
+        table or query.
+
+        Args:
+            progress_bar_type (Optional[str]):
+                If set, use the `tqdm <https://tqdm.github.io/>`_ library to
+                display a progress bar while the data downloads. Install the
+                ``tqdm`` package to use this feature.
+
+                Possible values of ``progress_bar_type`` include:
+
+                ``None``
+                  No progress bar.
+                ``'tqdm'``
+                  Use the :func:`tqdm.tqdm` function to print a progress bar
+                  to :data:`sys.stderr`.
+                ``'tqdm_notebook'``
+                  Use the :func:`tqdm.tqdm_notebook` function to display a
+                  progress bar as a Jupyter notebook widget.
+                ``'tqdm_gui'``
+                  Use the :func:`tqdm.tqdm_gui` function to display a
+                  progress bar as a graphical dialog box.
+            bqstorage_client ( \
+                google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient \
+            ):
+                **Beta Feature** Optional. A BigQuery Storage API client. If
+                supplied, use the faster BigQuery Storage API to fetch rows
+                from BigQuery. This API is a billable API.
+
+                This method requires the ``pyarrow`` and
+                ``google-cloud-bigquery-storage`` libraries.
+
+                Reading from a specific partition or snapshot is not
+                currently supported by this method.
+
+        Returns:
+            pyarrow.Table
+                A :class:`pyarrow.Table` populated with row data and column
+                headers from the query results. The column headers are derived
+                from the destination table's schema.
+
+        Raises:
+            ValueError:
+                If the :mod:`pyarrow` library cannot be imported.
+
+        ..versionadded:: 1.17.0
+        """
+        return self.result().to_arrow(
+            progress_bar_type=progress_bar_type, bqstorage_client=bqstorage_client
+        )
+
+    # If changing the signature of this method, make sure to apply the same
+    # changes to table.RowIterator.to_dataframe()
     def to_dataframe(self, bqstorage_client=None, dtypes=None, progress_bar_type=None):
         """Return a pandas DataFrame from a QueryJob
 

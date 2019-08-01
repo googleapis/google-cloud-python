@@ -89,12 +89,15 @@ class FileType(enum.IntEnum):
         xml, xsl, xsd, yml, yaml.
       IMAGE (int): Included file extensions: bmp, gif, jpg, jpeg, jpe, png.
       bytes\_limit\_per\_file has no effect on image files.
+      AVRO (int): Included file extensions:
+        avro
     """
 
     FILE_TYPE_UNSPECIFIED = 0
     BINARY_FILE = 1
     TEXT_FILE = 2
     IMAGE = 3
+    AVRO = 7
 
 
 class InfoTypeSupportedBy(enum.IntEnum):
@@ -241,6 +244,7 @@ class ByteContentItem(object):
           IMAGE_PNG (int)
           IMAGE_SVG (int)
           TEXT_UTF8 (int)
+          AVRO (int)
         """
 
         BYTES_TYPE_UNSPECIFIED = 0
@@ -250,6 +254,7 @@ class ByteContentItem(object):
         IMAGE_PNG = 3
         IMAGE_SVG = 4
         TEXT_UTF8 = 5
+        AVRO = 11
 
 
 class CharsToIgnore(object):

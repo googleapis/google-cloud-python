@@ -1,6 +1,1 @@
-Base Client
-===========
-
-.. automodule:: google.cloud.client
-  :members:
-  :show-inheritance:
+../../core/docs/client.rst

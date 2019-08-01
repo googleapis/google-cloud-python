@@ -1,14 +1,20 @@
 Python Client for Phishing Protection API (`Alpha`_)
 ====================================================
 
+|compat_check_pypi| |compat_check_github|
+
 `Phishing Protection API`_:
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
+.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-phishing-protection
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-phishing-protection
+.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dphishingprotection
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dphishingprotection
 .. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
 .. _Phishing Protection API: https://cloud.google.com/phishing-protection
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/phishingprotection/usage.html
+.. _Client Library Documentation: https://googleapis.dev/python/phishingprotection/latest/
 .. _Product Documentation:  https://cloud.google.com/phishing-protection
 
 Quick Start
@@ -24,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Phishing Protection API.:  https://cloud.google.com/phishing-protection
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~

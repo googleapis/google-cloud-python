@@ -1,5 +1,5 @@
 setuptools >= 36.4.0
-sphinx >= 1.6.3, < 2.0dev
+sphinx>=1.6.3, <2.2
 ipython >= 4
 recommonmark >= 0.4.0
 grpcio-gcp >= 0.2.2
@@ -14,6 +14,7 @@ grpcio-gcp >= 0.2.2
 -e bigquery_storage/
 -e bigtable/
 -e container/
+-e containeranalysis/
 -e datacatalog/
 -e datalabeling/
 -e dataproc/
@@ -21,6 +22,7 @@ grpcio-gcp >= 0.2.2
 -e dlp/
 -e dns/
 -e firestore/
+-e grafeas/
 -e iam/
 -e iot/
 -e irm/

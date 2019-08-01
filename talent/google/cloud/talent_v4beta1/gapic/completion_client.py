@@ -20,6 +20,7 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -87,6 +88,20 @@ class CompletionClient(object):
         )
 
     @classmethod
+    def company_without_tenant_path(cls, project, company):
+        """Return a fully-qualified company_without_tenant string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/companies/{company}", project=project, company=company
+        )
+
+    @classmethod
+    def project_path(cls, project):
+        """Return a fully-qualified project string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}", project=project
+        )
+
+    @classmethod
     def tenant_path(cls, project, tenant):
         """Return a fully-qualified tenant string."""
         return google.api_core.path_template.expand(
@@ -100,6 +115,7 @@ class CompletionClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -130,6 +146,9 @@ class CompletionClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -148,6 +167,15 @@ class CompletionClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -156,6 +184,7 @@ class CompletionClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=completion_grpc_transport.CompletionGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -166,7 +195,7 @@ class CompletionClient(object):
                 self.transport = transport
         else:
             self.transport = completion_grpc_transport.CompletionGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -225,30 +254,22 @@ class CompletionClient(object):
             >>> response = client.complete_query(parent, query, page_size)
 
         Args:
-            parent (str): Required.
-
-                Resource name of tenant the completion is performed within.
+            parent (str): Required. Resource name of tenant the completion is performed within.
 
                 The format is "projects/{project\_id}/tenants/{tenant\_id}", for
                 example, "projects/api-test-project/tenant/foo".
 
                 Tenant id is optional and the default tenant is used if unspecified, for
                 example, "projects/api-test-project".
-            query (str): Required.
-
-                The query used to generate suggestions.
+            query (str): Required. The query used to generate suggestions.
 
                 The maximum number of allowed characters is 255.
-            page_size (int): Required.
-
-                Completion result count.
+            page_size (int): Required. Completion result count.
 
                 The maximum allowed page size is 10.
-            language_codes (list[str]): Optional.
-
-                The list of languages of the query. This is the BCP-47 language code,
-                such as "en-US" or "sr-Latn". For more information, see `Tags for
-                Identifying Languages <https://tools.ietf.org/html/bcp47>`__.
+            language_codes (list[str]): Optional. The list of languages of the query. This is the BCP-47
+                language code, such as "en-US" or "sr-Latn". For more information, see
+                `Tags for Identifying Languages <https://tools.ietf.org/html/bcp47>`__.
 
                 For ``CompletionType.JOB_TITLE`` type, only open jobs with the same
                 ``language_codes`` are returned.
@@ -261,9 +282,7 @@ class CompletionClient(object):
                 ``language_codes`` are returned.
 
                 The maximum number of allowed characters is 255.
-            company (str): Optional.
-
-                If provided, restricts completion to specified company.
+            company (str): Optional. If provided, restricts completion to specified company.
 
                 The format is
                 "projects/{project\_id}/tenants/{tenant\_id}/companies/{company\_id}",
@@ -271,12 +290,10 @@ class CompletionClient(object):
 
                 Tenant id is optional and the default tenant is used if unspecified, for
                 example, "projects/api-test-project/companies/bar".
-            scope (~google.cloud.talent_v4beta1.types.CompletionScope): Optional.
-
-                The scope of the completion. The defaults is ``CompletionScope.PUBLIC``.
-            type_ (~google.cloud.talent_v4beta1.types.CompletionType): Optional.
-
-                The completion topic. The default is ``CompletionType.COMBINED``.
+            scope (~google.cloud.talent_v4beta1.types.CompletionScope): Optional. The scope of the completion. The defaults is
+                ``CompletionScope.PUBLIC``.
+            type_ (~google.cloud.talent_v4beta1.types.CompletionType): Optional. The completion topic. The default is
+                ``CompletionType.COMBINED``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.

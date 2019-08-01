@@ -108,7 +108,7 @@ def client_list_entries_multi_project(
 
     # [START client_list_entries_multi_project]
     PROJECT_IDS = ["one-project", "another-project"]
-    for entry in client.list_entries(project_ids=PROJECT_IDS):  # API call(s)
+    for entry in client.list_entries(projects=PROJECT_IDS):  # API call(s)
         do_something_with(entry)
     # [END client_list_entries_multi_project]
 

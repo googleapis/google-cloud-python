@@ -552,6 +552,23 @@ class TestStorageWriteFiles(TestStorageFiles):
         copied_contents = new_blob.download_as_string()
         self.assertEqual(base_contents, copied_contents)
 
+    def test_download_blob_w_uri(self):
+        blob = self.bucket.blob("MyBuffer")
+        file_contents = b"Hello World"
+        blob.upload_from_string(file_contents)
+        self.case_blobs_to_delete.append(blob)
+
+        temp_filename = tempfile.mktemp()
+        with open(temp_filename, "wb") as file_obj:
+            Config.CLIENT.download_blob_to_file(
+                "gs://" + self.bucket.name + "/MyBuffer", file_obj
+            )
+
+        with open(temp_filename, "rb") as file_obj:
+            stored_contents = file_obj.read()
+
+        self.assertEqual(file_contents, stored_contents)
+
 
 class TestUnicode(unittest.TestCase):
     @unittest.skipIf(RUNNING_IN_VPCSC, "Test is not VPCSC compatible.")
@@ -737,7 +754,7 @@ class TestStorageSignURLs(unittest.TestCase):
             cls.skipTest("Signing tests requires a service account credential")
 
         bucket_name = "gcp-signing" + unique_resource_id()
-        cls.bucket = Config.CLIENT.create_bucket(bucket_name)
+        cls.bucket = retry_429(Config.CLIENT.create_bucket)(bucket_name)
         cls.blob = cls.bucket.blob("README.txt")
         cls.blob.upload_from_string(cls.BLOB_CONTENT)
 
@@ -1666,6 +1683,7 @@ class TestIAMConfiguration(unittest.TestCase):
         with self.assertRaises(exceptions.BadRequest):
             blob_acl.save()
 
+    @unittest.skipUnless(False, "Back-end fix for BPO/UBLA expected 2019-07-12")
     def test_bpo_set_unset_preserves_acls(self):
         new_bucket_name = "bpo-acls" + unique_resource_id("-")
         self.assertRaises(
@@ -1686,6 +1704,8 @@ class TestIAMConfiguration(unittest.TestCase):
         # Set BPO
         bucket.iam_configuration.bucket_policy_only_enabled = True
         bucket.patch()
+
+        self.assertTrue(bucket.iam_configuration.bucket_policy_only_enabled)
 
         # While BPO is set, cannot get / set ACLs
         with self.assertRaises(exceptions.BadRequest):

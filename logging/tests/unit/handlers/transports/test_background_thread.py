@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import time
 import logging
 import unittest
 
@@ -243,7 +244,9 @@ class Test_Worker(unittest.TestCase):
         worker = self._make_one(_Logger(self.NAME))
 
         self._start_with_thread_patch(worker)
-        worker.enqueue(mock.Mock(), "")
+        record = mock.Mock()
+        record.created = time.time()
+        worker.enqueue(record, "")
         worker._main_thread_terminated()
 
         self.assertFalse(worker.is_alive)
@@ -253,17 +256,70 @@ class Test_Worker(unittest.TestCase):
 
         self._start_with_thread_patch(worker)
         worker._thread._terminate_on_join = False
-        worker.enqueue(mock.Mock(), "")
+        record = mock.Mock()
+        record.created = time.time()
+        worker.enqueue(record, "")
         worker._main_thread_terminated()
 
         self.assertFalse(worker.is_alive)
 
     @staticmethod
-    def _enqueue_record(worker, message):
-        record = logging.LogRecord(
-            "python_logger", logging.INFO, None, None, message, None, None
+    def _enqueue_record(worker, message, levelno=logging.INFO, **kw):
+        record = logging.LogRecord("testing", levelno, None, None, message, None, None)
+        worker.enqueue(record, message, **kw)
+
+    def test_enqueue_defaults(self):
+        import datetime
+        from google.cloud.logging._helpers import LogSeverity
+
+        worker = self._make_one(_Logger(self.NAME))
+        self.assertTrue(worker._queue.empty())
+        message = "TEST SEVERITY"
+
+        self._enqueue_record(worker, message)
+
+        entry = worker._queue.get_nowait()
+        expected_info = {"message": message, "python_logger": "testing"}
+        self.assertEqual(entry["info"], expected_info)
+        self.assertEqual(entry["severity"], LogSeverity.INFO)
+        self.assertIsNone(entry["resource"])
+        self.assertIsNone(entry["labels"])
+        self.assertIsNone(entry["trace"])
+        self.assertIsNone(entry["span_id"])
+        self.assertIsInstance(entry["timestamp"], datetime.datetime)
+
+    def test_enqueue_explicit(self):
+        import datetime
+        from google.cloud.logging._helpers import LogSeverity
+
+        worker = self._make_one(_Logger(self.NAME))
+        self.assertTrue(worker._queue.empty())
+        message = "TEST SEVERITY"
+        resource = object()
+        labels = {"foo": "bar"}
+        trace = "TRACE"
+        span_id = "SPAN_ID"
+
+        self._enqueue_record(
+            worker,
+            message,
+            levelno=logging.ERROR,
+            resource=resource,
+            labels=labels,
+            trace=trace,
+            span_id=span_id,
         )
-        worker.enqueue(record, message)
+
+        entry = worker._queue.get_nowait()
+
+        expected_info = {"message": message, "python_logger": "testing"}
+        self.assertEqual(entry["info"], expected_info)
+        self.assertEqual(entry["severity"], LogSeverity.ERROR)
+        self.assertIs(entry["resource"], resource)
+        self.assertIs(entry["labels"], labels)
+        self.assertIs(entry["trace"], trace)
+        self.assertIs(entry["span_id"], span_id)
+        self.assertIsInstance(entry["timestamp"], datetime.datetime)
 
     def test__thread_main(self):
         from google.cloud.logging.handlers.transports import background_thread
@@ -431,6 +487,7 @@ class _Batch(object):
         labels=None,
         trace=None,
         span_id=None,
+        timestamp=None,
     ):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
 

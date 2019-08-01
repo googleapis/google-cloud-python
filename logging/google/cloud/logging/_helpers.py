@@ -14,12 +14,41 @@
 
 """Common logging helpers."""
 
+import logging
+
 import requests
 
 from google.cloud.logging.entries import LogEntry
 from google.cloud.logging.entries import ProtobufEntry
 from google.cloud.logging.entries import StructEntry
 from google.cloud.logging.entries import TextEntry
+
+try:
+    from google.cloud.logging_v2.gapic.enums import LogSeverity
+except ImportError:  # pragma: NO COVER
+
+    class LogSeverity(object):
+        """Map severities for non-GAPIC usage."""
+
+        DEFAULT = 0
+        DEBUG = 100
+        INFO = 200
+        NOTICE = 300
+        WARNING = 400
+        ERROR = 500
+        CRITICAL = 600
+        ALERT = 700
+        EMERGENCY = 800
+
+
+_NORMALIZED_SEVERITIES = {
+    logging.CRITICAL: LogSeverity.CRITICAL,
+    logging.ERROR: LogSeverity.ERROR,
+    logging.WARNING: LogSeverity.WARNING,
+    logging.INFO: LogSeverity.INFO,
+    logging.DEBUG: LogSeverity.DEBUG,
+    logging.NOTSET: LogSeverity.DEFAULT,
+}
 
 METADATA_URL = "http://metadata.google.internal./computeMetadata/v1/"
 METADATA_HEADERS = {"Metadata-Flavor": "Google"}
@@ -82,3 +111,15 @@ def retrieve_metadata_server(metadata_key):
         pass
 
     return None
+
+
+def _normalize_severity(stdlib_level):
+    """Normalize a Python stdlib severity to LogSeverity enum.
+
+    :type stdlib_level: int
+    :param stdlib_level: 'levelno' from a :class:`logging.LogRecord`
+
+    :rtype: int
+    :returns: Corresponding Stackdriver severity.
+    """
+    return _NORMALIZED_SEVERITIES.get(stdlib_level, stdlib_level)

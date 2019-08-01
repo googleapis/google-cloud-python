@@ -1,0 +1,13 @@
+{
+  "name": "vision",
+  "name_pretty": "Cloud Vision",
+  "product_documentation": "https://cloud.google.com/vision/docs/",
+  "client_documentation": "https://googleapis.dev/python/vision/latest",
+  "issue_tracker": "https://issuetracker.google.com/issues?q=status:open%20componentid:187174",
+  "release_level": "beta",
+  "language": "python",
+  "repo": "googleapis/google-cloud-python",
+  "distribution_name": "google-cloud-vision",
+  "api_id": "vision.googleapis.com",
+  "requires_billing": false
+}

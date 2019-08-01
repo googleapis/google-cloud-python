@@ -20,27 +20,30 @@ import os
 import mock
 import pytest
 
-from google.protobuf import text_format
+from google.protobuf import json_format
 from google.cloud.firestore_v1.proto import document_pb2
 from google.cloud.firestore_v1.proto import firestore_pb2
-from google.cloud.firestore_v1.proto import test_v1_pb2
+from google.cloud.firestore_v1.proto import tests_pb2
 from google.cloud.firestore_v1.proto import write_pb2
 
 
-def _load_testproto(filename):
+def _load_test_json(filename):
     with open(filename, "r") as tp_file:
-        tp_text = tp_file.read()
-    test_proto = test_v1_pb2.Test()
-    text_format.Merge(tp_text, test_proto)
+        tp_json = json.load(tp_file)
+    test_file = tests_pb2.TestFile()
+    json_format.ParseDict(tp_json, test_file)
     shortname = os.path.split(filename)[-1]
-    test_proto.description = test_proto.description + " (%s)" % shortname
-    return test_proto
+    for test_proto in test_file.tests:
+        test_proto.description = test_proto.description + " (%s)" % shortname
+        yield test_proto
 
 
 _here = os.path.dirname(__file__)
-_glob_expr = "{}/testdata/*.textproto".format(_here)
+_glob_expr = "{}/testdata/*.json".format(_here)
 _globs = glob.glob(_glob_expr)
-ALL_TESTPROTOS = [_load_testproto(filename) for filename in sorted(_globs)]
+ALL_TESTPROTOS = []
+for filename in sorted(_globs):
+    ALL_TESTPROTOS.extend(_load_test_json(filename))
 
 _CREATE_TESTPROTOS = [
     test_proto
@@ -343,10 +346,18 @@ def convert_precondition(precond):
 
 
 class DummyRpc(object):  # pragma: NO COVER
-    def __init__(self, listen, initial_request, should_recover, metadata=None):
+    def __init__(
+        self,
+        listen,
+        should_recover,
+        should_terminate=None,
+        initial_request=None,
+        metadata=None,
+    ):
         self.listen = listen
         self.initial_request = initial_request
         self.should_recover = should_recover
+        self.should_terminate = should_terminate
         self.closed = False
         self.callbacks = []
         self._metadata = metadata

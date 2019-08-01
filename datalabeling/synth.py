@@ -63,6 +63,14 @@ s.replace(
     "longrunning_operations_pb2.Operation(",
 )
 
+# Fix docstrings with no summary line
+s.replace(
+    "google/cloud/**/proto/*_pb2.py",
+    '''__doc__ = """Attributes:''',
+    '''__doc__ = """
+    Attributes:''',
+)
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------

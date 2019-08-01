@@ -33,14 +33,19 @@ import datetime
 import pytest
 
 from test_utils.system import unique_resource_id
+from test_utils.retry import RetryErrors
 from google.api_core.exceptions import NotFound
+from google.api_core.exceptions import TooManyRequests
 from google.cloud._helpers import UTC
 from google.cloud.bigtable import Client
 from google.cloud.bigtable import enums
 
 
-INSTANCE_ID = "snippet-tests" + unique_resource_id("-")
-CLUSTER_ID = "clus-1-" + unique_resource_id("-")
+UNIQUE_SUFFIX = unique_resource_id("-")
+INSTANCE_ID = "snippet-tests" + UNIQUE_SUFFIX
+CLUSTER_ID = "clus-1-" + UNIQUE_SUFFIX
+APP_PROFILE_ID = "app-prof" + UNIQUE_SUFFIX
+ROUTING_POLICY_TYPE = enums.RoutingPolicyType.ANY
 LOCATION_ID = "us-central1-f"
 ALT_LOCATION_ID = "us-central1-a"
 PRODUCTION = enums.Instance.Type.PRODUCTION
@@ -54,6 +59,8 @@ LABEL_STAMP = (
 )
 LABELS = {LABEL_KEY: str(LABEL_STAMP)}
 INSTANCES_TO_DELETE = []
+
+retry_429 = RetryErrors(TooManyRequests, max_tries=9)
 
 
 class Config(object):
@@ -81,13 +88,14 @@ def setup_module():
     operation = Config.INSTANCE.create(clusters=[cluster])
     # We want to make sure the operation completes.
     operation.result(timeout=100)
-    INSTANCES_TO_DELETE.append(Config.INSTANCE)
 
 
 def teardown_module():
+    retry_429(Config.INSTANCE.delete)()
+
     for instance in INSTANCES_TO_DELETE:
         try:
-            instance.delete()
+            retry_429(instance.delete)()
         except NotFound:
             pass
 
@@ -97,8 +105,8 @@ def test_bigtable_create_instance():
     from google.cloud.bigtable import Client
     from google.cloud.bigtable import enums
 
-    my_instance_id = "inst-my-" + unique_resource_id("-")
-    my_cluster_id = "clus-my-" + unique_resource_id("-")
+    my_instance_id = "inst-my-" + UNIQUE_SUFFIX
+    my_cluster_id = "clus-my-" + UNIQUE_SUFFIX
     location_id = "us-central1-f"
     serve_nodes = 3
     storage_type = enums.StorageType.SSD
@@ -115,15 +123,15 @@ def test_bigtable_create_instance():
     )
     operation = instance.create(clusters=[cluster])
 
-    # Make sure this instance gets deleted after the test case.
-    INSTANCES_TO_DELETE.append(instance)
-
     # We want to make sure the operation completes.
     operation.result(timeout=100)
+
     # [END bigtable_create_prod_instance]
 
-    assert instance.exists()
-    instance.delete()
+    try:
+        assert instance.exists()
+    finally:
+        retry_429(instance.delete)()
 
 
 def test_bigtable_create_additional_cluster():
@@ -139,7 +147,7 @@ def test_bigtable_create_additional_cluster():
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
 
-    cluster_id = "clus-my-" + unique_resource_id("-")
+    cluster_id = "clus-my-" + UNIQUE_SUFFIX
     location_id = "us-central1-a"
     serve_nodes = 3
     storage_type = enums.StorageType.SSD
@@ -154,24 +162,29 @@ def test_bigtable_create_additional_cluster():
     # We want to make sure the operation completes.
     operation.result(timeout=100)
     # [END bigtable_create_cluster]
-    assert cluster.exists()
 
-    cluster.delete()
+    try:
+        assert cluster.exists()
+    finally:
+        retry_429(cluster.delete)()
 
 
-def test_bigtable_create_app_profile():
+def test_bigtable_create_reload_delete_app_profile():
+    import re
+
     # [START bigtable_create_app_profile]
     from google.cloud.bigtable import Client
+    from google.cloud.bigtable import enums
+
+    routing_policy_type = enums.RoutingPolicyType.ANY
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
 
-    app_profile_id = "app-prof-" + unique_resource_id("-")
     description = "routing policy-multy"
-    routing_policy_type = enums.RoutingPolicyType.ANY
 
     app_profile = instance.app_profile(
-        app_profile_id=app_profile_id,
+        app_profile_id=APP_PROFILE_ID,
         routing_policy_type=routing_policy_type,
         description=description,
         cluster_id=CLUSTER_ID,
@@ -179,9 +192,71 @@ def test_bigtable_create_app_profile():
 
     app_profile = app_profile.create(ignore_warnings=True)
     # [END bigtable_create_app_profile]
-    assert app_profile.exists()
+
+    # [START bigtable_app_profile_name]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    app_profile = instance.app_profile(APP_PROFILE_ID)
+
+    app_profile_name = app_profile.name
+    # [END bigtable_app_profile_name]
+    _profile_name_re = re.compile(
+        r"^projects/(?P<project>[^/]+)/"
+        r"instances/(?P<instance>[^/]+)/"
+        r"appProfiles/(?P<appprofile_id>"
+        r"[_a-zA-Z0-9][-_.a-zA-Z0-9]*)$"
+    )
+    assert _profile_name_re.match(app_profile_name)
+
+    # [START bigtable_app_profile_exists]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    app_profile = instance.app_profile(APP_PROFILE_ID)
+
+    app_profile_exists = app_profile.exists()
+    # [END bigtable_app_profile_exists]
+    assert app_profile_exists
+
+    # [START bigtable_reload_app_profile]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    app_profile = instance.app_profile(APP_PROFILE_ID)
+
+    app_profile.reload()
+    # [END bigtable_reload_app_profile]
+    assert app_profile.routing_policy_type == ROUTING_POLICY_TYPE
+
+    # [START bigtable_update_app_profile]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    app_profile = instance.app_profile(APP_PROFILE_ID)
+    app_profile.reload()
+
+    description = "My new app profile"
+    app_profile.description = description
+    app_profile.update()
+    # [END bigtable_update_app_profile]
+    assert app_profile.description == description
+
+    # [START bigtable_delete_app_profile]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    app_profile = instance.app_profile(APP_PROFILE_ID)
+    app_profile.reload()
 
     app_profile.delete(ignore_warnings=True)
+    # [END bigtable_delete_app_profile]
+    assert not app_profile.exists()
 
 
 def test_bigtable_list_instances():
@@ -191,6 +266,7 @@ def test_bigtable_list_instances():
     client = Client(admin=True)
     (instances_list, failed_locations_list) = client.list_instances()
     # [END bigtable_list_instances]
+
     assert len(instances_list) > 0
 
 
@@ -202,6 +278,7 @@ def test_bigtable_list_clusters_on_instance():
     instance = client.instance(INSTANCE_ID)
     (clusters_list, failed_locations_list) = instance.list_clusters()
     # [END bigtable_list_clusters_on_instance]
+
     assert len(clusters_list) > 0
 
 
@@ -212,12 +289,13 @@ def test_bigtable_list_clusters_in_project():
     client = Client(admin=True)
     (clusters_list, failed_locations_list) = client.list_clusters()
     # [END bigtable_list_clusters_in_project]
+
     assert len(clusters_list) > 0
 
 
 def test_bigtable_list_app_profiles():
     app_profile = Config.INSTANCE.app_profile(
-        app_profile_id="app-prof-" + unique_resource_id("-"),
+        app_profile_id="app-prof-" + UNIQUE_SUFFIX,
         routing_policy_type=enums.RoutingPolicyType.ANY,
     )
     app_profile = app_profile.create(ignore_warnings=True)
@@ -230,7 +308,11 @@ def test_bigtable_list_app_profiles():
 
     app_profiles_list = instance.list_app_profiles()
     # [END bigtable_list_app_profiles]
-    assert len(app_profiles_list) > 0
+
+    try:
+        assert len(app_profiles_list) > 0
+    finally:
+        retry_429(app_profile.delete)(ignore_warnings=True)
 
 
 def test_bigtable_instance_exists():
@@ -241,6 +323,7 @@ def test_bigtable_instance_exists():
     instance = client.instance(INSTANCE_ID)
     instance_exists = instance.exists()
     # [END bigtable_check_instance_exists]
+
     assert instance_exists
 
 
@@ -253,6 +336,7 @@ def test_bigtable_cluster_exists():
     cluster = instance.cluster(CLUSTER_ID)
     cluster_exists = cluster.exists()
     # [END bigtable_check_cluster_exists]
+
     assert cluster_exists
 
 
@@ -264,6 +348,7 @@ def test_bigtable_reload_instance():
     instance = client.instance(INSTANCE_ID)
     instance.reload()
     # [END bigtable_reload_instance]
+
     assert instance.type_ == PRODUCTION.value
 
 
@@ -276,6 +361,7 @@ def test_bigtable_reload_cluster():
     cluster = instance.cluster(CLUSTER_ID)
     cluster.reload()
     # [END bigtable_reload_cluster]
+
     assert cluster.serve_nodes == SERVER_NODES
 
 
@@ -289,10 +375,8 @@ def test_bigtable_update_instance():
     instance.display_name = display_name
     instance.update()
     # [END bigtable_update_instance]
-    assert instance.display_name == display_name
 
-    # Make sure this instance gets deleted after the test case.
-    INSTANCES_TO_DELETE.append(instance)
+    assert instance.display_name == display_name
 
 
 def test_bigtable_update_cluster():
@@ -305,6 +389,7 @@ def test_bigtable_update_cluster():
     cluster.serve_nodes = 4
     cluster.update()
     # [END bigtable_update_cluster]
+
     assert cluster.serve_nodes == 4
 
 
@@ -320,10 +405,23 @@ def test_bigtable_create_table():
     max_versions_rule = column_family.MaxVersionsGCRule(2)
     table.create(column_families={"cf1": max_versions_rule})
     # [END bigtable_create_table]
-    assert table.exists()
+
+    try:
+        assert table.exists()
+    finally:
+        retry_429(table.delete)()
 
 
 def test_bigtable_list_tables():
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable import column_family
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table("to_list")
+    max_versions_rule = column_family.MaxVersionsGCRule(2)
+    table.create(column_families={"cf1": max_versions_rule})
+
     # [START bigtable_list_tables]
     from google.cloud.bigtable import Client
 
@@ -331,7 +429,12 @@ def test_bigtable_list_tables():
     instance = client.instance(INSTANCE_ID)
     tables_list = instance.list_tables()
     # [END bigtable_list_tables]
-    assert len(tables_list) > 0
+
+    table_names = [table.name for table in tables_list]
+    try:
+        assert table.name in table_names
+    finally:
+        retry_429(table.delete)()
 
 
 def test_bigtable_delete_cluster():
@@ -339,7 +442,7 @@ def test_bigtable_delete_cluster():
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
-    cluster_id = "clus-my-" + unique_resource_id("-")
+    cluster_id = "clus-my-" + UNIQUE_SUFFIX
     cluster = instance.cluster(
         cluster_id,
         location_id=ALT_LOCATION_ID,
@@ -359,6 +462,7 @@ def test_bigtable_delete_cluster():
 
     cluster_to_delete.delete()
     # [END bigtable_delete_cluster]
+
     assert not cluster_to_delete.exists()
 
 
@@ -376,11 +480,11 @@ def test_bigtable_delete_instance():
     )
     operation = instance.create(clusters=[cluster])
 
-    # Make sure this instance gets deleted after the test case.
-    INSTANCES_TO_DELETE.append(instance)
-
     # We want to make sure the operation completes.
     operation.result(timeout=100)
+
+    # Make sure this instance gets deleted after the test case.
+    INSTANCES_TO_DELETE.append(instance)
 
     # [START bigtable_delete_instance]
     from google.cloud.bigtable import Client
@@ -393,6 +497,9 @@ def test_bigtable_delete_instance():
     # [END bigtable_delete_instance]
 
     assert not instance_to_delete.exists()
+
+    # Skip deleting it during module teardown if the assertion succeeds.
+    INSTANCES_TO_DELETE.remove(instance)
 
 
 def test_bigtable_test_iam_permissions():
@@ -449,10 +556,6 @@ def test_bigtable_project_path():
     project_path = client.project_path
     # [END bigtable_project_path]
 
-    _project_path = r"^projects/(?P<project_id>[_a-zA-Z0-9][-_.a-zA-Z0-9]*)$"
-    _project_path_re = re.compile(_project_path)
-    assert _project_path_re.match(project_path)
-
 
 def test_bigtable_table_data_client():
     # [START bigtable_table_data_client]
@@ -461,7 +564,6 @@ def test_bigtable_table_data_client():
     client = Client(admin=True)
     table_data_client = client.table_data_client
     # [END bigtable_table_data_client]
-    assert "BigtableClient" in str(table_data_client)
 
 
 def test_bigtable_table_admin_client():
@@ -471,7 +573,6 @@ def test_bigtable_table_admin_client():
     client = Client(admin=True)
     table_admin_client = client.table_admin_client
     # [END bigtable_table_admin_client]
-    assert "BigtableTableAdmin" in str(table_admin_client)
 
 
 def test_bigtable_instance_admin_client():
@@ -481,7 +582,6 @@ def test_bigtable_instance_admin_client():
     client = Client(admin=True)
     instance_admin_client = client.instance_admin_client
     # [END bigtable_instance_admin_client]
-    assert "BigtableInstanceAdmin" in str(instance_admin_client)
 
 
 def test_bigtable_admins_policy():
@@ -579,13 +679,6 @@ def test_bigtable_instance_name():
     instance_name = instance.name
     # [END bigtable_instance_name]
 
-    _instance_name_re = re.compile(
-        r"^projects/(?P<project>[^/]+)/"
-        r"instances/(?P<instance_id>"
-        r"[a-z][-a-z0-9]*)$"
-    )
-    assert _instance_name_re.match(instance_name)
-
 
 def test_bigtable_cluster_name():
     import re
@@ -598,15 +691,6 @@ def test_bigtable_cluster_name():
     cluster = instance.cluster(CLUSTER_ID)
     cluster_name = cluster.name
     # [END bigtable_cluster_name]
-
-    _cluster_name_re = re.compile(
-        r"^projects/(?P<project>[^/]+)/"
-        r"instances/(?P<instance>[^/]+)/"
-        r"clusters/(?P<cluster_id>"
-        r"[_a-zA-Z0-9][-_.a-zA-Z0-9]*)$"
-    )
-
-    assert _cluster_name_re.match(cluster_name)
 
 
 def test_bigtable_instance_from_pb():
@@ -624,6 +708,7 @@ def test_bigtable_instance_from_pb():
 
     instance2 = instance.from_pb(instance_pb, client)
     # [END bigtable_instance_from_pb]
+
     assert instance2.name == instance.name
 
 
@@ -648,6 +733,7 @@ def test_bigtable_cluster_from_pb():
 
     cluster2 = cluster.from_pb(cluster_pb, instance)
     # [END bigtable_cluster_from_pb]
+
     assert cluster2.name == cluster.name
 
 
@@ -659,6 +745,7 @@ def test_bigtable_instance_state():
     instance = client.instance(INSTANCE_ID)
     instance_state = instance.state
     # [END bigtable_instance_state]
+
     assert not instance_state
 
 

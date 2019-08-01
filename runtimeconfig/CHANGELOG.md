@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-runtimeconfig/#history
 
+## 0.29.2
+
+07-24-2019 17:26 PDT
+
+
+### Documentation
+- Fix docs navigation issues. ([#8723](https://github.com/googleapis/google-cloud-python/pull/8723))
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+
+### Internal / Testing Changes
+- Add nox session 'docs' to remaining manual clients. ([#8478](https://github.com/googleapis/google-cloud-python/pull/8478))
+- Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+
 ## 0.29.1
 
 06-04-2019 11:15 PDT
