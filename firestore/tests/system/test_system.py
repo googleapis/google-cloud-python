@@ -865,6 +865,7 @@ def test_batch(client, cleanup):
     assert not document3.get().exists
 
 
+# This test would hang with an earlier version of the patch for #7817.
 def test_watch_document(client, cleanup):
     db = client
     collection_ref = db.collection(u"wd-users" + UNIQUE_RESOURCE_ID)
