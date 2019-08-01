@@ -16,6 +16,7 @@
 
 import concurrent.futures
 import functools
+import logging
 import warnings
 
 from six.moves import queue
@@ -38,6 +39,8 @@ except ImportError:  # pragma: NO COVER
 
 from google.cloud.bigquery import schema
 
+
+_LOGGER = logging.getLogger(__name__)
 
 _NO_BQSTORAGE_ERROR = (
     "The google-cloud-bigquery-storage library is not installed, "
@@ -340,6 +343,11 @@ def _download_table_bqstorage(
         format_=bigquery_storage_v1beta1.enums.DataFormat.ARROW,
         read_options=read_options,
         requested_streams=requested_streams,
+    )
+    _LOGGER.debug(
+        "Started reading table '{}.{}.{}' with BQ Storage API session '{}'.".format(
+            table.project, table.dataset_id, table.table_id, session.name
+        )
     )
 
     # Avoid reading rows from an empty table.
