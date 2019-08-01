@@ -38,7 +38,7 @@ s.move(library / "tests/unit/gapic/v2")
 # https://github.com/googleapis/gapic-generator/issues/2097
 s.replace("google/**/proto/*_pb2.py", r"(^.*$\n)*", r"# -*- coding: utf-8 -*-\n\g<0>")
 
-# the metric service grpc transport channel shouldn't limit the size of a grpc message at the default 4mb
+# the logging service grpc transport channel shouldn't limit the size of a grpc message at the default 4mb
 s.replace("google/cloud/logging_v2/gapic/transports/*_service_v2_grpc_transport.py",
     "channel =.*\n(\s+)address=.*\n\s+credentials=.*,\n",
     "\g<0>\g<1>options={\n"
