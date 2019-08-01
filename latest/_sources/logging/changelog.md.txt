@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## 1.12.1
+
+08-01-2019 09:45 PDT
+
+
+### Implementation Changes
+- Remove gRPC size restrictions (4MB default) ([#8860](https://github.com/googleapis/google-cloud-python/pull/8860))
+- Map stdlib loglevels to Stackdriver severity enum values. ([#8837](https://github.com/googleapis/google-cloud-python/pull/8837))
+
+### Documentation
+- Fix 'list_entries' example with projects. ([#8858](https://github.com/googleapis/google-cloud-python/pull/8858))
+
+### Internal / Testing Changes
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
 ## 1.12.0
 
 07-24-2019 16:47 PDT
