@@ -735,7 +735,7 @@ class TestWatch(unittest.TestCase):
             doc_tree, doc_map, delete_changes, add_changes, update_changes
         )
         self.assertEqual(updated_map, doc_map)  # no change
-        
+
     def test__compute_snapshot_deletes_w_real_comparator(self):
         from google.cloud.firestore_v1.watch import WatchDocTree
 
