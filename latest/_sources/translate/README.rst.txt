@@ -25,7 +25,7 @@ Cloud Translation is available as a paid service. See the `Pricing`_ and
 .. _Google Cloud Translation: https://cloud.google.com/translate/
 .. _Pricing: https://cloud.google.com/translate/pricing
 .. _FAQ: https://cloud.google.com/translate/faq
-.. _Client Library Documentation: https://googleapis.dev/python/translate/latest
+.. _Client Library Documentation: https://googleapis.dev/python/translation/latest
 .. _Product Documentation: https://cloud.google.com/translate/docs
 
 Quick Start
