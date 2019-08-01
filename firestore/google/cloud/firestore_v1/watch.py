@@ -667,7 +667,7 @@ class Watch(object):
         key = functools.cmp_to_key(self._comparator)
 
         # Deletes are sorted based on the order of the existing document.
-        delete_changes = sorted(delete_changes, key=key)
+        delete_changes = sorted(delete_changes)
         for name in delete_changes:
             change, updated_tree, updated_map = delete_doc(
                 name, updated_tree, updated_map
