@@ -114,10 +114,10 @@ development environment:
 1. Make sure you have `virtualenv`_ installed and activated as shown above.
 2. Run the following one-time setup (it will be persisted in your virtualenv):
 
-.. code-block:: console
+   .. code-block:: console
 
-    pip install -r ../docs/requirements.txt
-    pip install -U nox mock pytest
+       pip install -r ../docs/requirements.txt
+       pip install -U nox mock pytest
 
 3. If you want to run all tests, you will need a billing-enabled 
    `GCP project`_, and a `service account`_ with access to the AutoML APIs.

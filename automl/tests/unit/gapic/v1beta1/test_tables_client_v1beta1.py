@@ -70,12 +70,8 @@ class TestTablesClient(object):
     def test_get_dataset_no_value(self):
         dataset_actual = "dataset"
         client = self.tables_client({}, {})
-        error = None
-        try:
+        with pytest.raises(ValueError):
             dataset = client.get_dataset()
-        except ValueError as e:
-            error = e
-        assert error is not None
         client.auto_ml_client.get_dataset.assert_not_called()
 
     def test_get_dataset_name(self):
@@ -89,33 +85,21 @@ class TestTablesClient(object):
         client = self.tables_client(
             {"get_dataset.side_effect": exceptions.NotFound("err")}, {}
         )
-        error = None
-        try:
+        with pytest.raises(exceptions.NotFound):
             client.get_dataset(dataset_name="my_dataset")
-        except exceptions.NotFound as e:
-            error = e
-        assert error is not None
         client.auto_ml_client.get_dataset.assert_called_with("my_dataset")
 
     def test_get_dataset_from_empty_list(self):
         client = self.tables_client({"list_datasets.return_value": []}, {})
-        error = None
-        try:
+        with pytest.raises(exceptions.NotFound):
             client.get_dataset(dataset_display_name="my_dataset")
-        except exceptions.NotFound as e:
-            error = e
-        assert error is not None
 
     def test_get_dataset_from_list_not_found(self):
         client = self.tables_client(
             {"list_datasets.return_value": [mock.Mock(display_name="not_it")]}, {}
         )
-        error = None
-        try:
+        with pytest.raises(exceptions.NotFound):
             client.get_dataset(dataset_display_name="my_dataset")
-        except exceptions.NotFound as e:
-            error = e
-        assert error is not None
 
     def test_get_dataset_from_list(self):
         client = self.tables_client(
@@ -165,12 +149,8 @@ class TestTablesClient(object):
 
     def test_export_not_found(self):
         client = self.tables_client({"list_datasets.return_value": []}, {})
-        error = None
-        try:
+        with pytest.raises(exceptions.NotFound):
             client.export_data(dataset_display_name="name", gcs_input_uris="uri")
-        except exceptions.NotFound as e:
-            error = e
-        assert error is not None
 
         client.auto_ml_client.export_data.assert_not_called()
 
@@ -190,12 +170,8 @@ class TestTablesClient(object):
 
     def test_import_not_found(self):
         client = self.tables_client({"list_datasets.return_value": []}, {})
-        error = None
-        try:
+        with pytest.raises(exceptions.NotFound):
             client.import_data(dataset_display_name="name", gcs_input_uris="uri")
-        except exceptions.NotFound as e:
-            error = e
-        assert error is not None
 
         client.auto_ml_client.import_data.assert_not_called()
 
@@ -229,12 +205,8 @@ class TestTablesClient(object):
         client = self.tables_client(
             {"list_table_specs.side_effect": exceptions.NotFound("not found")}, {}
         )
-        error = None
-        try:
+        with pytest.raises(exceptions.NotFound):
             client.list_table_specs(dataset_name="name")
-        except exceptions.NotFound as e:
-            error = e
-        assert error is not None
         client.auto_ml_client.list_table_specs.assert_called_with("name")
 
     def test_get_table_spec(self):
@@ -278,12 +250,8 @@ class TestTablesClient(object):
             },
             {},
         )
-        error = None
-        try:
+        with pytest.raises(exceptions.NotFound):
             client.update_column_spec(dataset_name="name", column_spec_name="column2")
-        except exceptions.NotFound as e:
-            error = e
-        assert error is not None
         client.auto_ml_client.list_table_specs.assert_called_with("name")
         client.auto_ml_client.list_column_specs.assert_called_with("table")
         client.auto_ml_client.update_column_spec.assert_not_called()
@@ -304,14 +272,10 @@ class TestTablesClient(object):
             },
             {},
         )
-        error = None
-        try:
+        with pytest.raises(exceptions.NotFound):
             client.update_column_spec(
                 dataset_name="name", column_spec_display_name="column2"
             )
-        except exceptions.NotFound as e:
-            error = e
-        assert error is not None
         client.auto_ml_client.list_table_specs.assert_called_with("name")
         client.auto_ml_client.list_column_specs.assert_called_with("table")
         client.auto_ml_client.update_column_spec.assert_not_called()
@@ -485,14 +449,10 @@ class TestTablesClient(object):
         client = self.tables_client(
             {"list_table_specs.side_effect": exceptions.NotFound("err")}, {}
         )
-        error = None
-        try:
+        with pytest.raises(exceptions.NotFound):
             client.set_target_column(
                 dataset_name="name", column_spec_display_name="column2"
             )
-        except exceptions.NotFound as e:
-            error = e
-        assert error is not None
         client.auto_ml_client.list_table_specs.assert_called_with("name")
         client.auto_ml_client.list_column_specs.assert_not_called()
         client.auto_ml_client.update_dataset.assert_not_called()
@@ -510,14 +470,10 @@ class TestTablesClient(object):
             },
             {},
         )
-        error = None
-        try:
+        with pytest.raises(exceptions.NotFound):
             client.set_target_column(
                 dataset_name="name", column_spec_display_name="column2"
             )
-        except exceptions.NotFound as e:
-            error = e
-        assert error is not None
         client.auto_ml_client.list_table_specs.assert_called_with("name")
         client.auto_ml_client.list_column_specs.assert_called_with("table")
         client.auto_ml_client.update_dataset.assert_not_called()
@@ -587,14 +543,10 @@ class TestTablesClient(object):
             },
             {},
         )
-        error = None
-        try:
+        with pytest.raises(exceptions.NotFound):
             client.set_weight_column(
                 dataset_name="name", column_spec_display_name="column2"
             )
-        except exceptions.NotFound as e:
-            error = e
-        assert error is not None
         client.auto_ml_client.list_table_specs.assert_called_with("name")
         client.auto_ml_client.list_column_specs.assert_called_with("table")
         client.auto_ml_client.update_dataset.assert_not_called()
@@ -665,14 +617,10 @@ class TestTablesClient(object):
         client = self.tables_client(
             {"list_table_specs.side_effect": exceptions.NotFound("err")}, {}
         )
-        error = None
-        try:
+        with pytest.raises(exceptions.NotFound):
             client.set_test_train_column(
                 dataset_name="name", column_spec_display_name="column2"
             )
-        except exceptions.NotFound as e:
-            error = e
-        assert error is not None
         client.auto_ml_client.list_table_specs.assert_called_with("name")
         client.auto_ml_client.list_column_specs.assert_not_called()
         client.auto_ml_client.update_dataset.assert_not_called()
@@ -690,14 +638,10 @@ class TestTablesClient(object):
             },
             {},
         )
-        error = None
-        try:
+        with pytest.raises(exceptions.NotFound):
             client.set_test_train_column(
                 dataset_name="name", column_spec_display_name="column2"
             )
-        except exceptions.NotFound as e:
-            error = e
-        assert error is not None
         client.auto_ml_client.list_table_specs.assert_called_with("name")
         client.auto_ml_client.list_column_specs.assert_called_with("table")
         client.auto_ml_client.update_dataset.assert_not_called()
@@ -871,33 +815,21 @@ class TestTablesClient(object):
         client = self.tables_client(
             {"get_model.side_effect": exceptions.NotFound("err")}, {}
         )
-        error = None
-        try:
+        with pytest.raises(exceptions.NotFound):
             client.get_model(model_name="my_model")
-        except exceptions.NotFound as e:
-            error = e
-        assert error is not None
         client.auto_ml_client.get_model.assert_called_with("my_model")
 
     def test_get_model_from_empty_list(self):
         client = self.tables_client({"list_models.return_value": []}, {})
-        error = None
-        try:
+        with pytest.raises(exceptions.NotFound):
             client.get_model(model_display_name="my_model")
-        except exceptions.NotFound as e:
-            error = e
-        assert error is not None
 
     def test_get_model_from_list_not_found(self):
         client = self.tables_client(
             {"list_models.return_value": [mock.Mock(display_name="not_it")]}, {}
         )
-        error = None
-        try:
+        with pytest.raises(exceptions.NotFound):
             client.get_model(model_display_name="my_model")
-        except exceptions.NotFound as e:
-            error = e
-        assert error is not None
 
     def test_get_model_from_list(self):
         client = self.tables_client(
@@ -931,12 +863,8 @@ class TestTablesClient(object):
 
     def test_deploy_model_no_args(self):
         client = self.tables_client({}, {})
-        error = None
-        try:
+        with pytest.raises(ValueError):
             client.deploy_model()
-        except ValueError as e:
-            error = e
-        assert error is not None
         client.auto_ml_client.deploy_model.assert_not_called()
 
     def test_deploy_model(self):
@@ -946,12 +874,8 @@ class TestTablesClient(object):
 
     def test_deploy_model_not_found(self):
         client = self.tables_client({"list_models.return_value": []}, {})
-        error = None
-        try:
+        with pytest.raises(exceptions.NotFound):
             client.deploy_model(model_display_name="name")
-        except exceptions.NotFound as e:
-            error = e
-        assert error is not None
         client.auto_ml_client.deploy_model.assert_not_called()
 
     def test_undeploy_model(self):
@@ -961,12 +885,8 @@ class TestTablesClient(object):
 
     def test_undeploy_model_not_found(self):
         client = self.tables_client({"list_models.return_value": []}, {})
-        error = None
-        try:
+        with pytest.raises(exceptions.NotFound):
             client.undeploy_model(model_display_name="name")
-        except exceptions.NotFound as e:
-            error = e
-        assert error is not None
         client.auto_ml_client.undeploy_model.assert_not_called()
 
     def test_create_model(self):
@@ -1071,45 +991,32 @@ class TestTablesClient(object):
 
     def test_create_model_invalid_hours_small(self):
         client = self.tables_client({}, {})
-        error = None
-        try:
+        with pytest.raises(ValueError):
             client.create_model(
                 "my_model", dataset_name="my_dataset", train_budget_milli_node_hours=1
             )
-        except ValueError as e:
-            error = e
-        assert error is not None
         client.auto_ml_client.create_model.assert_not_called()
 
     def test_create_model_invalid_hours_large(self):
         client = self.tables_client({}, {})
-        error = None
-        try:
+        with pytest.raises(ValueError):
             client.create_model(
                 "my_model",
                 dataset_name="my_dataset",
                 train_budget_milli_node_hours=1000000,
             )
-        except ValueError as e:
-            error = e
-        assert error is not None
         client.auto_ml_client.create_model.assert_not_called()
 
     def test_create_model_invalid_no_dataset(self):
         client = self.tables_client({}, {})
-        error = None
-        try:
+        with pytest.raises(ValueError):
             client.create_model("my_model", train_budget_milli_node_hours=1000)
-        except ValueError as e:
-            error = e
-        assert error is not None
         client.auto_ml_client.get_dataset.assert_not_called()
         client.auto_ml_client.create_model.assert_not_called()
 
     def test_create_model_invalid_include_exclude(self):
         client = self.tables_client({}, {})
-        error = None
-        try:
+        with pytest.raises(ValueError):
             client.create_model(
                 "my_model",
                 dataset_name="my_dataset",
@@ -1117,9 +1024,6 @@ class TestTablesClient(object):
                 exclude_column_spec_names=["b"],
                 train_budget_milli_node_hours=1000,
             )
-        except ValueError as e:
-            error = e
-        assert error is not None
         client.auto_ml_client.get_dataset.assert_not_called()
         client.auto_ml_client.create_model.assert_not_called()
 
@@ -1234,12 +1138,8 @@ class TestTablesClient(object):
         model = mock.Mock()
         model.configure_mock(tables_model_metadata=model_metadata, name="my_model")
         client = self.tables_client({"get_model.return_value": model}, {})
-        error = None
-        try:
+        with pytest.raises(ValueError):
             client.predict([], model_name="my_model")
-        except ValueError as e:
-            error = e
-        assert error is not None
         client.prediction_client.predict.assert_not_called()
 
     def test_batch_predict_gcs(self):
@@ -1283,83 +1183,59 @@ class TestTablesClient(object):
 
     def test_batch_predict_missing_input_gcs_uri(self):
         client = self.tables_client({}, {})
-        error = None
-        try:
+        with pytest.raises(ValueError):
             client.batch_predict(
                 model_name="my_model",
                 gcs_input_uris=None,
                 gcs_output_uri_prefix="gs://output",
             )
-        except ValueError as e:
-            error = e
-        assert error is not None
         client.prediction_client.batch_predict.assert_not_called()
 
     def test_batch_predict_missing_input_bigquery_uri(self):
         client = self.tables_client({}, {})
-        error = None
-        try:
+        with pytest.raises(ValueError):
             client.batch_predict(
                 model_name="my_model",
                 bigquery_input_uri=None,
                 gcs_output_uri_prefix="gs://output",
             )
-        except ValueError as e:
-            error = e
-        assert error is not None
         client.prediction_client.batch_predict.assert_not_called()
 
     def test_batch_predict_missing_output_gcs_uri(self):
         client = self.tables_client({}, {})
-        error = None
-        try:
+        with pytest.raises(ValueError):
             client.batch_predict(
                 model_name="my_model",
                 gcs_input_uris="gs://input",
                 gcs_output_uri_prefix=None,
             )
-        except ValueError as e:
-            error = e
-        assert error is not None
         client.prediction_client.batch_predict.assert_not_called()
 
     def test_batch_predict_missing_output_bigquery_uri(self):
         client = self.tables_client({}, {})
-        error = None
-        try:
+        with pytest.raises(ValueError):
             client.batch_predict(
                 model_name="my_model",
                 gcs_input_uris="gs://input",
                 bigquery_output_uri=None,
             )
-        except ValueError as e:
-            error = e
-        assert error is not None
         client.prediction_client.batch_predict.assert_not_called()
 
     def test_batch_predict_missing_model(self):
         client = self.tables_client({"list_models.return_value": []}, {})
-        error = None
-        try:
+        with pytest.raises(exceptions.NotFound):
             client.batch_predict(
                 model_display_name="my_model",
                 gcs_input_uris="gs://input",
                 gcs_output_uri_prefix="gs://output",
             )
-        except exceptions.NotFound as e:
-            error = e
-        assert error is not None
         client.prediction_client.batch_predict.assert_not_called()
 
     def test_batch_predict_no_model(self):
         client = self.tables_client({}, {})
-        error = None
-        try:
+        with pytest.raises(ValueError):
             client.batch_predict(
                 gcs_input_uris="gs://input", gcs_output_uri_prefix="gs://output"
             )
-        except ValueError as e:
-            error = e
-        assert error is not None
         client.auto_ml_client.list_models.assert_not_called()
         client.prediction_client.batch_predict.assert_not_called()
