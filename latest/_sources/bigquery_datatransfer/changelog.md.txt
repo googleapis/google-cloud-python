@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## 0.4.1
+
+07-31-2019 17:50 PDT
+
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+
+### Documentation
+- Fix links to BigQuery Datatransfer documentation. ([#8859](https://github.com/googleapis/google-cloud-python/pull/8859))
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+
+### Internal / Testing Changes
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
 ## 0.4.0
 
 07-16-2019 17:11 PDT
