@@ -56,6 +56,7 @@ from google.cloud.monitoring_v3.proto import uptime_service_pb2
 from google.cloud.monitoring_v3.proto import uptime_service_pb2_grpc
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
+from google.protobuf import timestamp_pb2
 
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
