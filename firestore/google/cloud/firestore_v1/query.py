@@ -390,6 +390,19 @@ class Query(object):
             all_descendants=self._all_descendants,
         )
 
+    def _check_snapshot(self, document_fields):
+        """Validate local snapshots for non-collection-group queries.
+
+        Raises:
+            ValueError: for non-collection-group queries, if the snapshot
+                is from a different collection.
+        """
+        if self._all_descendants:
+            return
+
+        if document_fields.reference._path[:-1] != self._parent._path:
+            raise ValueError("Cannot use snapshot from another collection as a cursor.")
+
     def _cursor_helper(self, document_fields, before, start):
         """Set values to be used for a ``start_at`` or ``end_at`` cursor.
 
@@ -419,10 +432,7 @@ class Query(object):
         if isinstance(document_fields, tuple):
             document_fields = list(document_fields)
         elif isinstance(document_fields, document.DocumentSnapshot):
-            if document_fields.reference._path[:-1] != self._parent._path:
-                raise ValueError(
-                    "Cannot use snapshot from another collection as a cursor."
-                )
+            self._check_snapshot(document_fields)
         else:
             # NOTE: We copy so that the caller can't modify after calling.
             document_fields = copy.deepcopy(document_fields)
