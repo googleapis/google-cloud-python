@@ -32,6 +32,7 @@ try:
 except ImportError:  # pragma: NO COVER
     IPython = None
 
+from google.api_core import exceptions
 import google.auth.credentials
 
 try:
@@ -862,3 +863,30 @@ def test_bigquery_magic_with_improperly_formatted_params():
 
     with pytest.raises(SyntaxError):
         ip.run_cell_magic("bigquery", "--params {17}", sql)
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+def test_bigquery_magic_omits_tracebacks_from_error_message():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    default_patch = mock.patch(
+        "google.auth.default", return_value=(credentials_mock, "general-project")
+    )
+
+    run_query_patch = mock.patch(
+        "google.cloud.bigquery.magics._run_query",
+        autospec=True,
+        side_effect=exceptions.BadRequest("Syntax error in SQL query"),
+    )
+
+    with run_query_patch, default_patch, io.capture_output() as captured_io:
+        ip.run_cell_magic("bigquery", "", "SELECT foo FROM WHERE LIMIT bar")
+
+    output = captured_io.stderr
+    assert "400 Syntax error in SQL query" in output
+    assert "Traceback (most recent call last)" not in output
+    assert "Syntax error" not in captured_io.stdout
