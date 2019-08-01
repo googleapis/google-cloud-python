@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## 0.7.0
+
+07-31-2019 17:48 PDT
+
+
+### New Features
+- Support faster Arrow data format in `to_dataframe` and `to_arrow` when using BigQuery Storage API. ([#8551](https://github.com/googleapis/google-cloud-python/pull/8551))
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+- Update pins of 'googleapis-common-protos. ([#8688](https://github.com/googleapis/google-cloud-python/pull/8688))
+
+### Documentation
+- Update quickstart sample with data format and sharding options. ([#8665](https://github.com/googleapis/google-cloud-python/pull/8665))
+- Fix links to bigquery storage documentation. ([#8859](https://github.com/googleapis/google-cloud-python/pull/8859))
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+
+### Internal / Testing Changes
+- Pin black version. (via synth). ([#8672](https://github.com/googleapis/google-cloud-python/pull/8672))
+
 ## 0.6.0
 
 07-11-2019 13:15 PDT
