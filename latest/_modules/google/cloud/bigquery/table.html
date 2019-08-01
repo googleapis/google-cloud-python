@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.bigquery.table &#8212; google-cloud 4ed725f documentation</title>
+    <title>google.cloud.bigquery.table &#8212; google-cloud a964956 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -53,6 +53,7 @@
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">operator</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
@@ -89,6 +90,8 @@
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.schema</span> <span class="k">import</span> <span class="n">_parse_schema_resource</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.external_config</span> <span class="k">import</span> <span class="n">ExternalConfig</span>
 
+
+<span class="n">_LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="n">_NO_BQSTORAGE_ERROR</span> <span class="o">=</span> <span class="p">(</span>
     <span class="s2">&quot;The google-cloud-bigquery-storage library is not installed, &quot;</span>
@@ -1460,6 +1463,11 @@
                 <span class="c1"># with the tabledata.list API.</span>
                 <span class="k">pass</span>
 
+        <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="s2">&quot;Started reading table &#39;</span><span class="si">{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">&#39; with tabledata.list.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">table_id</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">tabledata_list_download</span><span class="p">():</span>
             <span class="k">yield</span> <span class="n">item</span>
 

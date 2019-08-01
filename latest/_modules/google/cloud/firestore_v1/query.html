@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.firestore_v1.query &#8212; google-cloud 4ed725f documentation</title>
+    <title>google.cloud.firestore_v1.query &#8212; google-cloud a964956 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -424,6 +424,19 @@
             <span class="n">all_descendants</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_all_descendants</span><span class="p">,</span>
         <span class="p">)</span></div>
 
+    <span class="k">def</span> <span class="nf">_check_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_fields</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Validate local snapshots for non-collection-group queries.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: for non-collection-group queries, if the snapshot</span>
+<span class="sd">                is from a different collection.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_descendants</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">document_fields</span><span class="o">.</span><span class="n">reference</span><span class="o">.</span><span class="n">_path</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">_path</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot use snapshot from another collection as a cursor.&quot;</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">_cursor_helper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_fields</span><span class="p">,</span> <span class="n">before</span><span class="p">,</span> <span class="n">start</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set values to be used for a ``start_at`` or ``end_at`` cursor.</span>
 
@@ -453,10 +466,7 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">document_fields</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
             <span class="n">document_fields</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">document_fields</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">document_fields</span><span class="p">,</span> <span class="n">document</span><span class="o">.</span><span class="n">DocumentSnapshot</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">document_fields</span><span class="o">.</span><span class="n">reference</span><span class="o">.</span><span class="n">_path</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">_path</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s2">&quot;Cannot use snapshot from another collection as a cursor.&quot;</span>
-                <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_check_snapshot</span><span class="p">(</span><span class="n">document_fields</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># NOTE: We copy so that the caller can&#39;t modify after calling.</span>
             <span class="n">document_fields</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">document_fields</span><span class="p">)</span>
