@@ -20,7 +20,7 @@ SaaS applications to Google BigQuery on a scheduled, managed basis.
 .. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dbigquery_datatransfer
    :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dbigquery_datatransfer
 .. _BigQuery Data Transfer API: https://cloud.google.com/bigquery/transfer
-.. _Client Library Documentation: https://googleapis.dev/python/bigquery-datatransfer/latest
+.. _Client Library Documentation: https://googleapis.dev/python/bigquerydatatransfer/latest
 .. _Product Documentation:  https://cloud.google.com/bigquery/docs/transfer-service-overview
 
 Quick Start
