@@ -14,6 +14,7 @@
 
 import itertools
 import json
+import logging
 import time
 import unittest
 import warnings
@@ -1445,8 +1446,16 @@ class TestRowIterator(unittest.TestCase):
         return RowIterator
 
     def _make_one(
-        self, client=None, api_request=None, path=None, schema=None, **kwargs
+        self,
+        client=None,
+        api_request=None,
+        path=None,
+        schema=None,
+        table=None,
+        **kwargs
     ):
+        from google.cloud.bigquery.table import TableReference
+
         if client is None:
             client = _mock_client()
 
@@ -1459,7 +1468,12 @@ class TestRowIterator(unittest.TestCase):
         if schema is None:
             schema = []
 
-        return self._class_under_test()(client, api_request, path, schema, **kwargs)
+        if table is None:
+            table = TableReference.from_string("my-project.my_dataset.my_table")
+
+        return self._class_under_test()(
+            client, api_request, path, schema, table=table, **kwargs
+        )
 
     def test_constructor(self):
         from google.cloud.bigquery.table import _item_to_row
@@ -2071,15 +2085,31 @@ class TestRowIterator(unittest.TestCase):
             SchemaField("name", "STRING", mode="REQUIRED"),
             SchemaField("age", "INTEGER", mode="REQUIRED"),
         ]
-        path = "/foo"
         api_request = mock.Mock(return_value={"rows": []})
-        row_iterator = self._make_one(_mock_client(), api_request, path, schema)
+        row_iterator = self._make_one(_mock_client(), api_request, schema=schema)
 
         df = row_iterator.to_dataframe()
 
         self.assertIsInstance(df, pandas.DataFrame)
         self.assertEqual(len(df), 0)  # verify the number of rows
         self.assertEqual(list(df), ["name", "age"])  # verify the column names
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_to_dataframe_logs_tabledata_list(self):
+        from google.cloud.bigquery.table import Table
+
+        mock_logger = mock.create_autospec(logging.Logger)
+        api_request = mock.Mock(return_value={"rows": []})
+        row_iterator = self._make_one(
+            _mock_client(), api_request, table=Table("debug-proj.debug_dset.debug_tbl")
+        )
+
+        with mock.patch("google.cloud.bigquery.table._LOGGER", mock_logger):
+            row_iterator.to_dataframe()
+
+        mock_logger.debug.assert_any_call(
+            "Started reading table 'debug-proj.debug_dset.debug_tbl' with tabledata.list."
+        )
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe_w_various_types_nullable(self):
@@ -2191,23 +2221,13 @@ class TestRowIterator(unittest.TestCase):
             bigquery_storage_v1beta1.BigQueryStorageClient
         )
         session = bigquery_storage_v1beta1.types.ReadSession()
-        session.avro_schema.schema = json.dumps(
-            {
-                "fields": [
-                    {"name": "colA"},
-                    # Not alphabetical to test column order.
-                    {"name": "colC"},
-                    {"name": "colB"},
-                ]
-            }
-        )
         bqstorage_client.create_read_session.return_value = session
 
         row_iterator = mut.RowIterator(
             _mock_client(),
-            None,  # api_request: ignored
-            None,  # path: ignored
-            [
+            api_request=None,
+            path=None,
+            schema=[
                 schema.SchemaField("colA", "IGNORED"),
                 schema.SchemaField("colC", "IGNORED"),
                 schema.SchemaField("colB", "IGNORED"),
@@ -2219,6 +2239,33 @@ class TestRowIterator(unittest.TestCase):
         column_names = ["colA", "colC", "colB"]
         self.assertEqual(list(got), column_names)
         self.assertTrue(got.empty)
+
+    @unittest.skipIf(
+        bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+    )
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_to_dataframe_w_bqstorage_logs_session(self):
+        from google.cloud.bigquery.table import Table
+
+        bqstorage_client = mock.create_autospec(
+            bigquery_storage_v1beta1.BigQueryStorageClient
+        )
+        session = bigquery_storage_v1beta1.types.ReadSession()
+        session.name = "projects/test-proj/locations/us/sessions/SOMESESSION"
+        bqstorage_client.create_read_session.return_value = session
+        mock_logger = mock.create_autospec(logging.Logger)
+        row_iterator = self._make_one(
+            _mock_client(), table=Table("debug-proj.debug_dset.debug_tbl")
+        )
+
+        with mock.patch("google.cloud.bigquery._pandas_helpers._LOGGER", mock_logger):
+            row_iterator.to_dataframe(bqstorage_client=bqstorage_client)
+
+        mock_logger.debug.assert_any_call(
+            "Started reading table 'debug-proj.debug_dset.debug_tbl' "
+            "with BQ Storage API session 'projects/test-proj/locations/us/sessions/SOMESESSION'."
+        )
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(
