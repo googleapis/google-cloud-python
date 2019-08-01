@@ -37,10 +37,11 @@ DummyMethod = namedtuple(
 
 DummyMethod.__new__.__defaults__ = (False,) * len(DummyMethod._fields)
 
-DummyMessage = namedtuple("DummyMessage", ["fields", "type"])
+DummyMessage = namedtuple("DummyMessage", ["fields", "type", "options"])
 DummyMessage.__new__.__defaults__ = (False,) * len(DummyMessage._fields)
 
-DummyField = namedtuple("DummyField", ["message", "enum", "repeated"])
+DummyField = namedtuple("DummyField",
+                        ["message", "enum", "repeated", "field_pb", "meta"])
 DummyField.__new__.__defaults__ = (False,) * len(DummyField._fields)
 
 DummyService = namedtuple("DummyService", ["methods"])

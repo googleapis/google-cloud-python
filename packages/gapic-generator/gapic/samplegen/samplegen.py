@@ -26,6 +26,8 @@ from collections import (defaultdict, namedtuple, ChainMap as chainmap)
 from textwrap import dedent
 from typing import (ChainMap, Dict, List, Mapping, Optional, Set, Tuple, Union)
 
+from google.protobuf import descriptor_pb2
+
 # Outstanding issues:
 # * In real sample configs, many variables are
 #   defined with an _implicit_ $resp variable.
@@ -319,7 +321,8 @@ class Validator:
 
             input_parameter = duplicate.get("input_parameter")
             if input_parameter:
-                self._handle_lvalue(input_parameter, str)
+                self._handle_lvalue(input_parameter, wrappers.Field(
+                    field_pb=descriptor_pb2.FieldDescriptorProto()))
 
             attr_chain = field.split(".")
             base = self.request_type_
@@ -434,52 +437,81 @@ class Validator:
         Returns:
             wrappers.Field: The final field in the chain.
         """
-        # TODO: handle mapping attributes, i.e. {}
         # TODO: Add resource name handling, i.e. %
-        indexed_exp_re = re.compile(
-            r"^(?P<attr_name>\$?\w+)(?:\[(?P<index>\d+)\])?$")
+        chain_link_re = re.compile(
+            r"""
+            (?P<attr_name>\$?\w+)(?:\[(?P<index>\d+)\]|\{["'](?P<key>[^"']+)["']\})?$
+            """.strip())
 
-        toks = exp.split(".")
-        match = indexed_exp_re.match(toks[0])
-        if not match:
-            raise BadAttributeLookup(
-                f"Badly formatted attribute expression: {exp}")
-
-        base_tok, previous_was_indexed = (match.groupdict()["attr_name"],
-                                          bool(match.groupdict()["index"]))
-        base = self.var_field(base_tok)
-        if not base:
-            raise UndefinedVariableReference(
-                "Reference to undefined variable: {}".format(base_tok))
-        if previous_was_indexed and not base.repeated:
-            raise BadAttributeLookup(
-                "Cannot index non-repeated attribute: {}".format(base_tok))
-
-        for tok in toks[1:]:
-            match = indexed_exp_re.match(tok)
+        def validate_recursively(expression, scope, depth=0):
+            first_dot = expression.find(".")
+            base = expression[:first_dot] if first_dot > 0 else expression
+            match = chain_link_re.match(base)
             if not match:
                 raise BadAttributeLookup(
-                    f"Badly formatted attribute expression: {tok}")
+                    f"Badly formed attribute expression: {expression}")
 
-            attr_name, lookup_token = match.groups()
-            if base.repeated and not previous_was_indexed:
+            name, idxed, mapped = (match.groupdict()["attr_name"],
+                                   bool(match.groupdict()["index"]),
+                                   bool(match.groupdict()["key"]))
+            field = scope.get(name)
+            if not field:
+                exception_class = (BadAttributeLookup if depth else
+                                   UndefinedVariableReference)
+                raise exception_class(f"No such variable or attribute: {name}")
+
+            # Invalid input
+            if (idxed or mapped) and not field.repeated:
                 raise BadAttributeLookup(
-                    "Cannot access attributes through repeated field: {}".format(attr_name))
-            if previous_was_indexed and not base.repeated:
+                    f"Collection lookup on non-repeated field: {base}")
+
+            # Can only ignore indexing or mapping in an indexed (or mapped) field
+            # if it is the terminal point in the expression.
+            if field.repeated and not (idxed or mapped) and first_dot != -1:
                 raise BadAttributeLookup(
-                    "Cannot index non-repeated attribute: {}".format(attr_name))
+                    ("Accessing attribute on a non-terminal collection without"
+                     f"indexing into the collection: {base}")
+                )
 
-            # TODO: handle enums, primitives, and so forth.
-            attr = base.message.fields.get(attr_name)  # type: ignore
-            if not attr:
+            message = field.message
+            scope = dict(message.fields) if message else {}
+            # Can only map message types, not enums
+            if mapped:
+                # See https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/descriptor.proto#L496
+                # for a better understanding of how map attributes are handled in protobuf
+                if not message or not message.options.map_field:
+                    raise BadAttributeLookup(
+                        f"Badly formed mapped field: {base}")
+
+                value_field = message.fields.get("value")
+                if not value_field:
+                    raise BadAttributeLookup(
+                        f"Mapped attribute has no value field: {base}")
+
+                value_message = value_field.message
+                if not value_message:
+                    raise BadAttributeLookup(
+                        f"Mapped value field is not a message: {base}")
+
+                if first_dot != -1:
+                    scope = value_message.fields
+
+            # Terminus of the expression.
+            if first_dot == -1:
+                return field
+
+            # Enums and primitives are only allowed at the tail of an expression.
+            if not message:
                 raise BadAttributeLookup(
-                    "No such attribute in type '{}': {}".format(base, attr_name))
+                    f"Non-terminal attribute is not a message: {base}")
 
-            base, previous_was_indexed = attr, bool(lookup_token)
+            return validate_recursively(expression[first_dot + 1:],
+                                        scope,
+                                        depth + 1)
 
-        return base
+        return validate_recursively(exp, self.var_defs_)
 
-    def _handle_lvalue(self, lval: str, type_=None):
+    def _handle_lvalue(self, lval: str, type_: wrappers.Field):
         """Conducts safety checks on an lvalue and adds it to the lexical scope.
 
         Raises:
@@ -505,9 +537,6 @@ class Validator:
          The number of format tokens in the string must equal the
          number of arguments, and each argument must be a defined variable.
 
-         TODO: the attributes of the variable must correspond to attributes
-               of the variable's type.
-
          Raises:
              MismatchedFormatSpecifier: If the number of format string segments ("%s") in
                                         a "print" or "comment" block does not equal the
@@ -525,11 +554,7 @@ class Validator:
             )
 
         for expression in body[1:]:
-            var = expression.split(".")[0]
-            if var not in self.var_defs_:
-                raise UndefinedVariableReference(
-                    "Reference to undefined variable: {}".format(var)
-                )
+            self.validate_expression(expression)
 
     def _validate_define(self, body: str):
         """"Validates 'define' statements.
@@ -542,11 +567,6 @@ class Validator:
              UndefinedVariableReference: If an attempted rvalue base is a previously
                                          undeclared variable.
         """
-        # TODO: Need to check the defined variables
-        #       if the rhs references a non-response variable.
-        # TODO: Need to rework the regex to allow for subfields,
-        #       indexing, and so forth.
-        #
         # Note: really checking for safety would be equivalent to
         #       re-implementing the python interpreter.
         m = re.match(r"^([a-zA-Z]\w*)=([^=]+)$", body)
@@ -586,14 +606,18 @@ class Validator:
             raise InvalidStatement(
                 "Missing key in 'write_file' statement: 'contents'")
 
-        # TODO: check the rest of the elements for valid subfield attribute
-        base = contents_var.split(".")[0]
-        if base not in self.var_defs_:
-            raise UndefinedVariableReference(
-                "Reference to undefined variable: {}".format(base)
-            )
+        self.validate_expression(contents_var)
 
-    def _validate_loop(self, body):
+    @dataclasses.dataclass(frozen=True)
+    class LoopParameterField(wrappers.Field):
+        # This class is a hack for assigning the iteration variable in a collection loop.
+        # In protobuf, the concept of collection<T> is manifested as a repeated
+        # field of message type T. Therefore, in order to assign the correct type
+        # to a loop iteration parameter, we copy the field that is the collection
+        # but remove 'repeated'.
+        repeated: bool = False
+
+    def _validate_loop(self, loop):
         """Validates loop headers and statement bodies.
 
         Checks for correctly defined loop constructs,
@@ -613,7 +637,7 @@ class Validator:
                      or keyword combinatations.
 
         """
-        segments = set(body.keys())
+        segments = set(loop.keys())
         map_args = {self.MAP_KWORD, self.BODY_KWORD}
 
         # Even though it's valid python to use a variable outside of the lexical
@@ -629,20 +653,31 @@ class Validator:
         self.var_defs_ = self.var_defs_.new_child()
 
         if {self.COLL_KWORD, self.VAR_KWORD, self.BODY_KWORD} == segments:
-            tokens = body[self.COLL_KWORD].split(".")
+            tokens = loop[self.COLL_KWORD].split(".")
 
             # TODO: resolve the implicit $resp dilemma
             # if collection_name.startswith("."):
             #     collection_name = "$resp" + collection_name
             collection_field = self.validate_expression(
-                body[self.COLL_KWORD])
+                loop[self.COLL_KWORD])
 
             if not collection_field.repeated:
                 raise BadLoop(
-                    "Tried to use a non-repeated field as a collection: {}".format(tokens[-1]))
+                    "Tried to use a non-repeated field as a collection: {}".format(
+                        tokens[-1]))
 
-            var = body[self.VAR_KWORD]
-            self._handle_lvalue(var)
+            var = loop[self.VAR_KWORD]
+            # The collection_field is repeated,
+            # but the iteration parameter should not be.
+            self._handle_lvalue(
+                var,
+                self.LoopParameterField(
+                    field_pb=collection_field.field_pb,
+                    message=collection_field.message,
+                    enum=collection_field.enum,
+                    meta=collection_field.meta
+                )
+            )
 
         elif map_args <= segments:
             segments -= map_args
@@ -653,19 +688,15 @@ class Validator:
                         segments)
                 )
 
-            map_name_base = body[self.MAP_KWORD].split(".")[0]
-            if map_name_base not in self.var_defs_:
-                raise UndefinedVariableReference(
-                    "Reference to undefined variable: {}".format(map_name_base)
-                )
+            map_field = self.validate_expression(loop[self.MAP_KWORD])
 
-            key = body.get(self.KEY_KWORD)
+            key = loop.get(self.KEY_KWORD)
             if key:
-                self._handle_lvalue(key)
+                self._handle_lvalue(key, map_field.message.fields["key"])
 
-            val = body.get(self.VAL_KWORD)
+            val = loop.get(self.VAL_KWORD)
             if val:
-                self._handle_lvalue(val)
+                self._handle_lvalue(val, map_field.message.fields["value"])
 
             if not (key or val):
                 raise BadLoop(
@@ -674,7 +705,7 @@ class Validator:
         else:
             raise BadLoop("Unexpected loop form: {}".format(segments))
 
-        self.validate_response(body[self.BODY_KWORD])
+        self.validate_response(loop[self.BODY_KWORD])
         # Restore the previous lexical scope.
         # This is stricter than python scope rules
         # because the samplegen spec mandates it.

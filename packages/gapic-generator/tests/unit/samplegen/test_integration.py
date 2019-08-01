@@ -46,9 +46,17 @@ def test_generate_sample_basic():
     # or in features that are sufficiently small and trivial that it doesn't make sense
     # to have standalone tests.
     schema = DummyApiSchema(
-        {"animalia.mollusca.v1.Mollusc": DummyService(
-            {"Classify": DummyMethod(
-                input=message_factory("mollusc.classify_request.video"))})},
+        {
+            "animalia.mollusca.v1.Mollusc": DummyService(
+                {
+                    "Classify": DummyMethod(
+                        input=message_factory(
+                            "mollusc.classify_request.video"),
+                        output=message_factory("$resp.taxonomy")
+                    )
+                }
+            )
+        },
         DummyNaming("molluscs-v1-mollusc"))
 
     sample = {"service": "animalia.mollusca.v1.Mollusc",

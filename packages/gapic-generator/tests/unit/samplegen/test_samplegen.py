@@ -15,7 +15,7 @@
 import yaml
 import pytest
 
-from typing import (Iterable, TypeVar)
+from typing import (TypeVar)
 from collections import namedtuple
 from google.protobuf import descriptor_pb2
 
@@ -148,8 +148,9 @@ def test_comment():
 
 
 def test_comment_fmt_str():
-    comment = {"comment": ["This is a mollusc of class %s", "$resp.class"]}
-    samplegen.Validator(DummyMethod()).validate_response([comment])
+    comment = {"comment": ["This is a mollusc of class %s", "$resp.klass"]}
+    v = samplegen.Validator(DummyMethod(output=message_factory("$resp.klass")))
+    v.validate_response([comment])
 
 
 def test_comment_fmt_undefined_var():
@@ -181,8 +182,9 @@ def test_loop_collection():
             "body": [{"print": ["Mollusc of class: %s", "m.class"]}],
         }
     }
-    v = samplegen.Validator(DummyMethod(output=message_factory(
-        "$resp.molluscs", repeated_iter=[True])))
+    OutputType = message_factory(
+        "$resp.molluscs.class", repeated_iter=[True, False])
+    v = samplegen.Validator(DummyMethod(output=OutputType))
     v.validate_response([loop])
 
 
@@ -265,7 +267,29 @@ def test_loop_map():
             "body": [{"print": ["A %s is a %s", "mollusc", "cls"]}],
         }
     }
-    samplegen.Validator(DummyMethod()).validate_response([loop])
+    OutputType = DummyMessage(
+        fields={
+            "molluscs": DummyField(
+                message=DummyMessage(
+                    fields={
+                        "key": DummyField(),
+                        "value": DummyField(
+                            message=DummyMessage(
+                                fields={},
+                                type="MOLLUSC_TYPE"
+                            )
+                        )
+                    },
+                    type="MOLLUSCS_TYPE",
+                    options=namedtuple("MessageOptions", ["map_field"])(True)
+                ),
+                repeated=True
+            ),
+        },
+        type="RESPONSE_TYPE"
+    )
+    v = samplegen.Validator(DummyMethod(output=OutputType))
+    v.validate_response([loop])
 
 
 def test_collection_loop_lexical_scope_variable():
@@ -308,13 +332,37 @@ def test_map_loop_lexical_scope_key():
             "loop": {
                 "map": "$resp.molluscs",
                 "key": "cls",
-                "value": "order",
+                "value": "mollusc",
                 "body": [{"define": "tmp=cls"}],
             }
         },
+        # 'cls' is outside the visible lexical scope according to strict
+        # samplegen rules, even though it is valid python.
         {"define": "last_cls=cls"},
     ]
-    v = samplegen.Validator(DummyMethod())
+    OutputType = DummyMessage(
+        fields={
+            "molluscs": DummyField(
+                message=DummyMessage(
+                    fields={
+                        "key": DummyField(),
+                        "value": DummyField(
+                            message=DummyMessage(
+                                fields={},
+                                type="MOLLUSC_TYPE"
+                            )
+                        )
+                    },
+                    type="MOLLUSCS_TYPE",
+                    options=namedtuple("MessageOptions", ["map_field"])(True)
+                ),
+                repeated=True
+            ),
+        },
+        type="RESPONSE_TYPE"
+    )
+
+    v = samplegen.Validator(DummyMethod(output=OutputType))
     with pytest.raises(samplegen.UndefinedVariableReference):
         v.validate_response(statements)
 
@@ -325,13 +373,37 @@ def test_map_loop_lexical_scope_value():
             "loop": {
                 "map": "$resp.molluscs",
                 "key": "cls",
-                "value": "order",
-                "body": [{"define": "tmp=order"}],
+                "value": "mollusc",
+                "body": [{"define": "tmp=mollusc"}],
             }
         },
-        {"define": "last_order=order"},
+        # 'mollusc' is outside the visible lexical scope according to strict
+        # samplegen rules, even though it is valid python.
+        {"define": "last_mollusc=mollusc"},
     ]
-    v = samplegen.Validator(DummyMethod())
+    OutputType = DummyMessage(
+        fields={
+            "molluscs": DummyField(
+                message=DummyMessage(
+                    fields={
+                        "key": DummyField(),
+                        "value": DummyField(
+                            message=DummyMessage(
+                                fields={},
+                                type="MOLLUSC_TYPE"
+                            )
+                        )
+                    },
+                    type="MOLLUSCS_TYPE",
+                    options=namedtuple("MessageOptions", ["map_field"])(True)
+                ),
+                repeated=True
+            ),
+        },
+        type="RESPONSE_TYPE"
+    )
+
+    v = samplegen.Validator(DummyMethod(output=OutputType))
     with pytest.raises(samplegen.UndefinedVariableReference):
         v.validate_response(statements)
 
@@ -342,13 +414,36 @@ def test_map_loop_lexical_scope_inline():
             "loop": {
                 "map": "$resp.molluscs",
                 "key": "cls",
-                "value": "order",
-                "body": [{"define": "tmp=order"}],
+                "value": "mollusc",
+                "body": [{"define": "tmp=mollusc"}],
             }
         },
-        {"define": "last_order=tmp"},
+        # 'tmp' is outside the visible lexical scope according to strict
+        # samplegen rules, even though it is valid python.
+        {"define": "last_mollusc=tmp"},
     ]
-    v = samplegen.Validator(DummyMethod())
+    OutputType = DummyMessage(
+        fields={
+            "molluscs": DummyField(
+                message=DummyMessage(
+                    fields={
+                        "key": DummyField(),
+                        "value": DummyField(
+                            message=DummyMessage(
+                                fields={},
+                                type="MOLLUSC_TYPE"
+                            )
+                        )
+                    },
+                    type="MOLLUSCS_TYPE",
+                    options=namedtuple("MessageOptions", ["map_field"])(True)
+                ),
+                repeated=True
+            ),
+        },
+        type="RESPONSE_TYPE"
+    )
+    v = samplegen.Validator(DummyMethod(output=OutputType))
     with pytest.raises(samplegen.UndefinedVariableReference):
         v.validate_response(statements)
 
@@ -357,12 +452,35 @@ def test_loop_map_reserved_key():
     loop = {
         "loop": {
             "map": "$resp.molluscs",
+            # Can't use 'class' since it's a reserved keyword
             "key": "class",
             "value": "mollusc",
             "body": [{"print": ["A %s is a %s", "mollusc", "class"]}],
         }
     }
-    v = samplegen.Validator(DummyMethod())
+    OutputType = DummyMessage(
+        fields={
+            "molluscs": DummyField(
+                message=DummyMessage(
+                    fields={
+                        "key": DummyField(),
+                        "value": DummyField(
+                            message=DummyMessage(
+                                fields={},
+                                type="MOLLUSC_TYPE"
+                            )
+                        )
+                    },
+                    type="MOLLUSCS_TYPE",
+                    options=namedtuple("MessageOptions", ["map_field"])(True)
+                ),
+                repeated=True
+            ),
+        },
+        type="RESPONSE_TYPE"
+    )
+
+    v = samplegen.Validator(DummyMethod(output=OutputType))
     with pytest.raises(samplegen.ReservedVariableName):
         v.validate_response([loop])
 
@@ -372,11 +490,34 @@ def test_loop_map_reserved_val():
         "loop": {
             "map": "$resp.molluscs",
             "key": "m",
+            # Can't use 'class' since it's a reserved keyword
             "value": "class",
             "body": [{"print": ["A %s is a %s", "m", "class"]}],
         }
     }
-    v = samplegen.Validator(DummyMethod())
+    OutputType = DummyMessage(
+        fields={
+            "molluscs": DummyField(
+                message=DummyMessage(
+                    fields={
+                        "key": DummyField(),
+                        "value": DummyField(
+                            message=DummyMessage(
+                                fields={},
+                                type="CLASS_TYPE"
+                            )
+                        )
+                    },
+                    type="MOLLUSCS_TYPE",
+                    options=namedtuple("MessageOptions", ["map_field"])(True)
+                ),
+                repeated=True
+            ),
+        },
+        type="RESPONSE_TYPE"
+    )
+
+    v = samplegen.Validator(DummyMethod(output=OutputType))
     with pytest.raises(samplegen.ReservedVariableName):
         v.validate_response([loop])
 
@@ -403,7 +544,30 @@ def test_loop_map_no_key():
             "body": [{"print": ["Mollusc: %s", "mollusc"]}],
         }
     }
-    samplegen.Validator(DummyMethod()).validate_response([loop])
+    OutputType = DummyMessage(
+        fields={
+            "molluscs": DummyField(
+                message=DummyMessage(
+                    fields={
+                        "key": DummyField(),
+                        "value": DummyField(
+                            message=DummyMessage(
+                                fields={},
+                                type="CLASS_TYPE"
+                            )
+                        )
+                    },
+                    type="MOLLUSCS_TYPE",
+                    options=namedtuple("MessageOptions", ["map_field"])(True)
+                ),
+                repeated=True
+            ),
+        },
+        type="RESPONSE_TYPE"
+    )
+
+    v = samplegen.Validator(DummyMethod(output=OutputType))
+    v.validate_response([loop])
 
 
 def test_loop_map_no_value():
@@ -414,13 +578,59 @@ def test_loop_map_no_value():
             "body": [{"print": ["Mollusc: %s", "mollusc"]}],
         }
     }
-    samplegen.Validator(DummyMethod()).validate_response([loop])
+    OutputType = DummyMessage(
+        fields={
+            "molluscs": DummyField(
+                message=DummyMessage(
+                    fields={
+                        "key": DummyField(),
+                        "value": DummyField(
+                            message=DummyMessage(
+                                fields={},
+                                type="CLASS_TYPE"
+                            )
+                        )
+                    },
+                    type="MOLLUSCS_TYPE",
+                    options=namedtuple("MessageOptions", ["map_field"])(True)
+                ),
+                repeated=True
+            ),
+        },
+        type="RESPONSE_TYPE"
+    )
+
+    v = samplegen.Validator(DummyMethod(output=OutputType))
+    v.validate_response([loop])
 
 
 def test_loop_map_no_key_or_value():
     loop = {"loop": {"map": "$resp.molluscs",
+                     # Need at least one of 'key' or 'value'
                      "body": [{"print": ["Dead loop"]}]}}
-    v = samplegen.Validator(DummyMethod())
+    OutputType = DummyMessage(
+        fields={
+            "molluscs": DummyField(
+                message=DummyMessage(
+                    fields={
+                        "key": DummyField(),
+                        "value": DummyField(
+                            message=DummyMessage(
+                                fields={},
+                                type="CLASS_TYPE"
+                            )
+                        )
+                    },
+                    type="MOLLUSCS_TYPE",
+                    options=namedtuple("MessageOptions", ["map_field"])(True)
+                ),
+                repeated=True
+            ),
+        },
+        type="RESPONSE_TYPE"
+    )
+
+    v = samplegen.Validator(DummyMethod(output=OutputType))
     with pytest.raises(samplegen.BadLoop):
         v.validate_response([loop])
 
@@ -466,13 +676,35 @@ def test_loop_map_redefined_key():
         {
             "loop": {
                 "map": "$resp.molluscs",
+                # Can't redefine mollusc, which was defined one statement above.
                 "key": "mollusc",
                 "body": [{"print": ["Mollusc: %s", "mollusc"]}],
             }
         },
     ]
-    v = samplegen.Validator(DummyMethod(
-        output=message_factory("mollusc.molluscs")))
+    OutputType = DummyMessage(
+        fields={
+            "molluscs": DummyField(
+                message=DummyMessage(
+                    fields={
+                        "key": DummyField(),
+                        "value": DummyField(
+                            message=DummyMessage(
+                                fields={},
+                                type="CLASS_TYPE"
+                            )
+                        )
+                    },
+                    type="MOLLUSCS_TYPE",
+                    options=namedtuple("MessageOptions", ["map_field"])(True)
+                ),
+                repeated=True
+            ),
+        },
+        type="RESPONSE_TYPE"
+    )
+
+    v = samplegen.Validator(DummyMethod(output=OutputType))
     with pytest.raises(samplegen.RedefinedVariable):
         v.validate_response(statements)
 
@@ -483,13 +715,35 @@ def test_loop_map_redefined_value():
         {
             "loop": {
                 "map": "$resp.molluscs",
+                # Can't redefine 'mollusc', which was defined one statement above.
                 "value": "mollusc",
                 "body": [{"print": ["Mollusc: %s", "mollusc"]}],
             }
         },
     ]
-    v = samplegen.Validator(DummyMethod(
-        output=message_factory("mollusc.molluscs")))
+    OutputType = DummyMessage(
+        fields={
+            "molluscs": DummyField(
+                message=DummyMessage(
+                    fields={
+                        "key": DummyField(),
+                        "value": DummyField(
+                            message=DummyMessage(
+                                fields={},
+                                type="CLASS_TYPE"
+                            )
+                        )
+                    },
+                    type="MOLLUSCS_TYPE",
+                    options=namedtuple("MessageOptions", ["map_field"])(True)
+                ),
+                repeated=True
+            ),
+        },
+        type="RESPONSE_TYPE"
+    )
+
+    v = samplegen.Validator(DummyMethod(output=OutputType))
     with pytest.raises(samplegen.RedefinedVariable):
         v.validate_response(statements)
 
@@ -503,7 +757,14 @@ def test_validate_write_file():
             }
         }
     ]
-    samplegen.Validator(DummyMethod()).validate_response(statements)
+    OutputType = DummyMessage(
+        fields={
+            "species": DummyField(message=DummyMessage(fields={})),
+            "photo": DummyField(message=DummyMessage(fields={}))
+        }
+    )
+    v = samplegen.Validator(DummyMethod(output=OutputType))
+    v.validate_response(statements)
 
 
 def test_validate_write_file_fname_fmt():
@@ -528,7 +789,13 @@ def test_validate_write_file_fname_bad_var():
 
 def test_validate_write_file_missing_fname():
     statements = [{"write_file": {"contents": "$resp.photo"}}]
-    v = samplegen.Validator(DummyMethod())
+    OutputType = DummyMessage(
+        fields={
+            "filename": DummyField(message=DummyMessage(fields={})),
+            "photo": DummyField(message=DummyMessage(fields={}))
+        }
+    )
+    v = samplegen.Validator(DummyMethod(output=OutputType))
     with pytest.raises(samplegen.InvalidStatement):
         v.validate_response(statements)
 
@@ -536,7 +803,14 @@ def test_validate_write_file_missing_fname():
 def test_validate_write_file_missing_contents():
     statements = [{"write_file": {"filename": ["specimen-%s",
                                                "$resp.species"]}}]
-    v = samplegen.Validator(DummyMethod())
+    OutputType = DummyMessage(
+        fields={
+            "species": DummyField(message=DummyMessage(fields={})),
+            "photo": DummyField(message=DummyMessage(fields={}))
+        }
+    )
+
+    v = samplegen.Validator(DummyMethod(output=OutputType))
     with pytest.raises(samplegen.InvalidStatement):
         v.validate_response(statements)
 
@@ -548,7 +822,13 @@ def test_validate_write_file_bad_contents_var():
             "contents": "squid.photo",
         }
     }]
-    v = samplegen.Validator(DummyMethod())
+    OutputType = DummyMessage(
+        fields={
+            "species": DummyField(message=DummyMessage(fields={})),
+            "photo": DummyField(message=DummyMessage(fields={}))
+        }
+    )
+    v = samplegen.Validator(DummyMethod(output=OutputType))
     with pytest.raises(samplegen.UndefinedVariableReference):
         v.validate_response(statements)
 
@@ -596,11 +876,11 @@ def test_validate_request_basic():
     expected = [samplegen.TransformedRequest(
         base="squid",
         body=[
-                samplegen.AttributeRequestSetup(field="mantle_length",
-                                                value="100 cm"),
-                samplegen.AttributeRequestSetup(field="mantle_mass",
-                                                value="10 kg"),
-                ],
+            samplegen.AttributeRequestSetup(field="mantle_length",
+                                            value="100 cm"),
+            samplegen.AttributeRequestSetup(field="mantle_mass",
+                                            value="10 kg"),
+        ],
         single=None
     )]
 
@@ -951,18 +1231,7 @@ def test_validate_expression_no_such_attr():
         v.validate_expression("$resp.nautiloidea")
 
 
-def test_validate_expression_predefined():
-    # TODO: can't remember what this test does
-    exp = "$resp.coleoidea.octopodiformes.octopus"
-    OutputType = message_factory(exp)
-    method = DummyMethod(output=OutputType)
-    v = samplegen.Validator(method)
-
-    with pytest.raises(samplegen.BadAttributeLookup):
-        v.validate_response([{"define": "nautilus=$resp.nautiloidea"}])
-
-
-def test_validate_expression_repeated_attrs():
+def test_validate_expression_non_indexed_non_terminal_repeated():
     # This is a little tricky: there's an attribute hierarchy
     # of response/coleoidea/octopodiformes, but coleoidea is a repeated field,
     # so accessing $resp.coleoidea.octopodiformes doesn't make any sense.
@@ -1046,6 +1315,147 @@ def test_validate_expression_base_attr_is_repeated():
     v = samplegen.Validator(method)
     v.validate_response([{"define": "molluscs=$resp.molluscs"}])
     v.validate_expression("molluscs[0].mantle")
+
+
+def test_validate_expression_map_lookup():
+    # See https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/descriptor.proto#L475
+    # for details on how mapped attributes get transformed by the protoc compiler.
+    OutputType = DummyMessage(
+        fields={
+            "cephalopods": DummyField(
+                message=DummyMessage(
+                    fields={
+                        # real type is most likely str in real protos
+                        "key": DummyField(),
+                        "value": DummyField(
+                            message=DummyMessage(
+                                fields={
+                                    "mantle": DummyField(
+                                        message=DummyMessage(type="MANTLE_TYPE",
+                                                             fields={}),
+                                    )
+                                },
+                                type="CEPHALOPOD_TYPE"
+                            )
+                        ),
+                    },
+                    type="CEPHALOPODS_TYPE",
+                    options=namedtuple("MessageOptions", ["map_field"])(True)),
+                repeated=True,
+            )
+        },
+        type="MOLLUSC_TYPE"
+    )
+    method = DummyMethod(output=OutputType)
+    v = samplegen.Validator(method)
+    v.validate_expression('$resp.cephalopods{"squid"}.mantle')
+
+
+def test_validate_expression_map_lookup_terminal_lookup():
+    OutputType = DummyMessage(
+        fields={
+            "cephalopods": DummyField(
+                message=DummyMessage(
+                    fields={
+                        "key": DummyField(),
+                        "value": DummyField(
+                            message=DummyMessage(
+                                fields={
+                                    "mantle": DummyField(
+                                        message=DummyMessage(type="MANTLE_TYPE",
+                                                             fields={}),
+                                    )
+                                },
+                                type="CEPHALOPOD_TYPE"
+                            )
+                        ),
+                    },
+                    type="CEPHALOPODS_TYPE",
+                    options=namedtuple("MessageOptions", ["map_field"])(True)),
+                repeated=True,
+            )
+        },
+        type="MOLLUSC_TYPE"
+    )
+    method = DummyMethod(output=OutputType)
+    v = samplegen.Validator(method)
+    v.validate_expression('$resp.cephalopods{"squid"}')
+
+
+def test_validate_expression_mapped_no_map_field():
+    OutputType = DummyMessage(
+        fields={
+            "cephalopods": DummyField(
+                message=DummyMessage(
+                    fields={
+                        "key": DummyField(),
+                        "value": DummyField(
+                            message=DummyMessage(
+                                fields={
+                                    "mantle": DummyField(
+                                        message=DummyMessage(type="MANTLE_TYPE",
+                                                             fields={}),
+                                    )
+                                },
+                                type="CEPHALOPOD_TYPE"
+                            )
+                        )},
+                    type="CEPHALOPODS_TYPE",
+                    # The map_field attribute in the options indicates whether
+                    # a message type is 'really' a map or just looks like one.
+                    options=namedtuple("MessageOptions", ["map_field"])(False)),
+                repeated=True,
+            )
+        },
+        type="MOLLUSC_TYPE"
+    )
+    method = DummyMethod(output=OutputType)
+    v = samplegen.Validator(method)
+    with pytest.raises(samplegen.BadAttributeLookup):
+        v.validate_expression('$resp.cephalopods{"squid"}.mantle')
+
+
+def test_validate_expression_mapped_no_value():
+    OutputType = DummyMessage(
+        fields={
+            "cephalopods": DummyField(
+                message=DummyMessage(
+                    # Maps need 'key' AND 'value' attributes.
+                    fields={"key": DummyField()},
+                    type="CEPHALOPODS_TYPE",
+                    options=namedtuple("MessageOptions", ["map_field"])(True)),
+                repeated=True,
+            )
+        },
+        type="MOLLUSC_TYPE"
+    )
+    method = DummyMethod(output=OutputType)
+    v = samplegen.Validator(method)
+    with pytest.raises(samplegen.BadAttributeLookup):
+        v.validate_expression('$resp.cephalopods{"squid"}.mantle')
+
+
+def test_validate_expression_mapped_no_message():
+    OutputType = DummyMessage(
+        fields={
+            "cephalopods": DummyField(
+                message=DummyMessage(
+                    fields={
+                        "key": DummyField(),
+                        # The value field needs a message.
+                        "value": DummyField(),
+                    },
+                    type="CEPHALOPODS_TYPE",
+                    options=namedtuple("MessageOptions", ["map_field"])(True)),
+                repeated=True,
+            )
+        },
+        type="MOLLUSC_TYPE"
+    )
+    method = DummyMethod(output=OutputType)
+    v = samplegen.Validator(method)
+    with pytest.raises(samplegen.BadAttributeLookup):
+        v.validate_expression('$resp.cephalopods{"squid"}.mantle')
 
 
 def test_validate_expresssion_lookup_unrepeated_base():
