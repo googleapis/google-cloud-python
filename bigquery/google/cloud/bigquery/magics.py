@@ -130,6 +130,7 @@
 from __future__ import print_function
 
 import ast
+import sys
 import time
 from concurrent import futures
 
@@ -415,10 +416,19 @@ def _cell_magic(line, query):
     elif args.maximum_bytes_billed is not None:
         value = int(args.maximum_bytes_billed)
         job_config.maximum_bytes_billed = value
-    query_job = _run_query(client, query, job_config)
+
+    error = None
+    try:
+        query_job = _run_query(client, query, job_config)
+    except Exception as ex:
+        error = str(ex)
 
     if not args.verbose:
         display.clear_output()
+
+    if error:
+        print("\nERROR:\n", error, file=sys.stderr)
+        return
 
     result = query_job.to_dataframe(bqstorage_client=bqstorage_client)
     if args.destination_var:
