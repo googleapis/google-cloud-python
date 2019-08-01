@@ -134,7 +134,6 @@ def test_subscribe_to_messages(
     future.cancel()
 
 
-# This test would hang with an earlier version of the patch for #7817.
 def test_subscribe_to_messages_async_callbacks(
     publisher, topic_path, subscriber, subscription_path, cleanup
 ):
