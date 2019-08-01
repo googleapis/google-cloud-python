@@ -117,7 +117,7 @@ development environment:
 .. code-block:: console
 
     pip install -r ../docs/requirements.txt
-    pip install -U mock pytest
+    pip install -U nox mock pytest
 
 3. If you want to run all tests, you will need a billing-enabled 
    `GCP project`_, and a `service account`_ with access to the AutoML APIs.
@@ -131,5 +131,5 @@ development environment:
 .. code-block:: console
 
     export PROJECT_ID=<project-id> GOOGLE_APPLICATION_CREDENTIALS=</path/to/creds.json>
-    pytest
+    nox
 
