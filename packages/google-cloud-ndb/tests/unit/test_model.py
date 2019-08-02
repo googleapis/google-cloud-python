@@ -3610,11 +3610,19 @@ class TestModel:
         _datastore_api.put.return_value = future = tasklets.Future()
         future.set_result(None)
 
-        entity_pb = model._entity_to_protobuf(entity)
+        ds_entity = model._entity_to_ds_entity(entity)
         assert entity._put() == entity.key
-        _datastore_api.put.assert_called_once_with(
-            entity_pb, _options.Options()
-        )
+
+        # Can't do a simple "assert_called_once_with" here because entities'
+        # keys will fail test for equality because Datastore's Key.__eq__
+        # method returns False if either key is partial, regardless of whether
+        # they're effectively equal or not. Have to do this more complicated
+        # unpacking instead.
+        assert _datastore_api.put.call_count == 1
+        call_ds_entity, call_options = _datastore_api.put.call_args[0]
+        assert call_ds_entity.key.path == ds_entity.key.path
+        assert call_ds_entity.items() == ds_entity.items()
+        assert call_options == _options.Options()
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -3624,14 +3632,22 @@ class TestModel:
         _datastore_api.put.return_value = future = tasklets.Future()
 
         key = key_module.Key("SomeKind", 123)
-        future.set_result(key._key.to_protobuf())
+        future.set_result(key._key)
 
-        entity_pb = model._entity_to_protobuf(entity)
+        ds_entity = model._entity_to_ds_entity(entity)
         assert entity._put(use_cache=False) == key
         assert not in_context.cache
-        _datastore_api.put.assert_called_once_with(
-            entity_pb, _options.Options(use_cache=False)
-        )
+
+        # Can't do a simple "assert_called_once_with" here because entities'
+        # keys will fail test for equality because Datastore's Key.__eq__
+        # method returns False if either key is partial, regardless of whether
+        # they're effectively equal or not. Have to do this more complicated
+        # unpacking instead.
+        assert _datastore_api.put.call_count == 1
+        call_ds_entity, call_options = _datastore_api.put.call_args[0]
+        assert call_ds_entity.key.path == ds_entity.key.path
+        assert call_ds_entity.items() == ds_entity.items()
+        assert call_options == _options.Options(use_cache=False)
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -3641,15 +3657,23 @@ class TestModel:
         _datastore_api.put.return_value = future = tasklets.Future()
 
         key = key_module.Key("SomeKind", 123)
-        future.set_result(key._key.to_protobuf())
+        future.set_result(key._key)
 
-        entity_pb = model._entity_to_protobuf(entity)
+        ds_entity = model._entity_to_ds_entity(entity)
         assert entity._put(use_cache=True) == key
         assert in_context.cache[key] == entity
         assert in_context.cache.get_and_validate(key) == entity
-        _datastore_api.put.assert_called_once_with(
-            entity_pb, _options.Options(use_cache=True)
-        )
+
+        # Can't do a simple "assert_called_once_with" here because entities'
+        # keys will fail test for equality because Datastore's Key.__eq__
+        # method returns False if either key is partial, regardless of whether
+        # they're effectively equal or not. Have to do this more complicated
+        # unpacking instead.
+        assert _datastore_api.put.call_count == 1
+        call_ds_entity, call_options = _datastore_api.put.call_args[0]
+        assert call_ds_entity.key.path == ds_entity.key.path
+        assert call_ds_entity.items() == ds_entity.items()
+        assert call_options == _options.Options(use_cache=True)
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -3659,13 +3683,21 @@ class TestModel:
         _datastore_api.put.return_value = future = tasklets.Future()
 
         key = key_module.Key("SomeKind", 123)
-        future.set_result(key._key.to_protobuf())
+        future.set_result(key._key)
 
-        entity_pb = model._entity_to_protobuf(entity)
+        ds_entity = model._entity_to_ds_entity(entity)
         assert entity._put() == key
-        _datastore_api.put.assert_called_once_with(
-            entity_pb, _options.Options()
-        )
+
+        # Can't do a simple "assert_called_once_with" here because entities'
+        # keys will fail test for equality because Datastore's Key.__eq__
+        # method returns False if either key is partial, regardless of whether
+        # they're effectively equal or not. Have to do this more complicated
+        # unpacking instead.
+        assert _datastore_api.put.call_count == 1
+        call_ds_entity, call_options = _datastore_api.put.call_args[0]
+        assert call_ds_entity.key.path == ds_entity.key.path
+        assert call_ds_entity.items() == ds_entity.items()
+        assert call_options == _options.Options()
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -3675,14 +3707,22 @@ class TestModel:
         _datastore_api.put.return_value = future = tasklets.Future()
 
         key = key_module.Key("SomeKind", 123)
-        future.set_result(key._key.to_protobuf())
+        future.set_result(key._key)
 
-        entity_pb = model._entity_to_protobuf(entity)
+        ds_entity = model._entity_to_ds_entity(entity)
         tasklet_future = entity._put_async()
         assert tasklet_future.result() == key
-        _datastore_api.put.assert_called_once_with(
-            entity_pb, _options.Options()
-        )
+
+        # Can't do a simple "assert_called_once_with" here because entities'
+        # keys will fail test for equality because Datastore's Key.__eq__
+        # method returns False if either key is partial, regardless of whether
+        # they're effectively equal or not. Have to do this more complicated
+        # unpacking instead.
+        assert _datastore_api.put.call_count == 1
+        call_ds_entity, call_options = _datastore_api.put.call_args[0]
+        assert call_ds_entity.key.path == ds_entity.key.path
+        assert call_ds_entity.items() == ds_entity.items()
+        assert call_options == _options.Options()
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -3718,11 +3758,19 @@ class TestModel:
         _datastore_api.put.return_value = future = tasklets.Future()
         future.set_result(None)
 
-        entity_pb = model._entity_to_protobuf(entity)
+        ds_entity = model._entity_to_ds_entity(entity)
         assert entity._put() == entity.key
-        _datastore_api.put.assert_called_once_with(
-            entity_pb, _options.Options()
-        )
+
+        # Can't do a simple "assert_called_once_with" here because entities'
+        # keys will fail test for equality because Datastore's Key.__eq__
+        # method returns False if either key is partial, regardless of whether
+        # they're effectively equal or not. Have to do this more complicated
+        # unpacking instead.
+        assert _datastore_api.put.call_count == 1
+        call_ds_entity, call_options = _datastore_api.put.call_args[0]
+        assert call_ds_entity.key.path == ds_entity.key.path
+        assert call_ds_entity.items() == ds_entity.items()
+        assert call_options == _options.Options()
 
         assert entity.pre_put_calls == [((), {})]
         assert entity.post_put_calls == [((), {})]

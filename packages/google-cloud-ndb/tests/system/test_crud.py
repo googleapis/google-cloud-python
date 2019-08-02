@@ -20,11 +20,15 @@ import functools
 import operator
 import threading
 
+from unittest import mock
+
 import pytest
 
 import test_utils.system
 
 from google.cloud import ndb
+from google.cloud.ndb import _cache
+from google.cloud.ndb import global_cache as global_cache_module
 
 from tests.system import KIND, eventually
 
@@ -70,6 +74,40 @@ def test_retrieve_entity_with_caching(ds_entity, client_context):
     assert entity.baz == "night"
 
     assert key.get() is entity
+
+
+def test_retrieve_entity_with_global_cache(ds_entity, client_context):
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(KIND, entity_id, foo=42, bar="none", baz=b"night")
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StringProperty()
+        baz = ndb.StringProperty()
+
+    global_cache = global_cache_module._InProcessGlobalCache()
+    cache_dict = global_cache_module._InProcessGlobalCache.cache
+    with client_context.new(global_cache=global_cache).use() as context:
+        context.set_global_cache_policy(None)  # Use default
+
+        key = ndb.Key(KIND, entity_id)
+        entity = key.get()
+        assert isinstance(entity, SomeKind)
+        assert entity.foo == 42
+        assert entity.bar == "none"
+        assert entity.baz == "night"
+
+        cache_key = _cache.global_cache_key(key._key)
+        assert cache_key in cache_dict
+
+        patch = mock.patch("google.cloud.ndb._datastore_api._LookupBatch.add")
+        patch.side_effect = Exception("Shouldn't call this")
+        with patch:
+            entity = key.get()
+            assert isinstance(entity, SomeKind)
+            assert entity.foo == 42
+            assert entity.bar == "none"
+            assert entity.baz == "night"
 
 
 @pytest.mark.usefixtures("client_context")
@@ -247,6 +285,37 @@ def test_insert_entity_with_caching(dispose_of, client_context):
     assert retrieved.bar == "none"
 
 
+def test_insert_entity_with_global_cache(dispose_of, client_context):
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StringProperty()
+
+    global_cache = global_cache_module._InProcessGlobalCache()
+    cache_dict = global_cache_module._InProcessGlobalCache.cache
+    with client_context.new(global_cache=global_cache).use() as context:
+        context.set_global_cache_policy(None)  # Use default
+
+        entity = SomeKind(foo=42, bar="none")
+        key = entity.put()
+        cache_key = _cache.global_cache_key(key._key)
+        assert not cache_dict
+
+        retrieved = key.get()
+        assert retrieved.foo == 42
+        assert retrieved.bar == "none"
+
+        assert cache_key in cache_dict
+
+        entity.foo = 43
+        entity.put()
+
+        # This is py27 behavior. I can see a case being made for caching the
+        # entity on write rather than waiting for a subsequent lookup.
+        assert cache_key not in cache_dict
+
+        dispose_of(key._key)
+
+
 @pytest.mark.usefixtures("client_context")
 def test_update_entity(ds_entity):
     entity_id = test_utils.system.unique_resource_id()
@@ -357,6 +426,31 @@ def test_delete_entity_with_caching(ds_entity, client_context):
     assert key.delete() is None
     assert key.get() is None
     assert key.delete() is None
+
+
+def test_delete_entity_with_global_cache(ds_entity, client_context):
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(KIND, entity_id, foo=42)
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    key = ndb.Key(KIND, entity_id)
+    cache_key = _cache.global_cache_key(key._key)
+    global_cache = global_cache_module._InProcessGlobalCache()
+    cache_dict = global_cache_module._InProcessGlobalCache.cache
+
+    with client_context.new(global_cache=global_cache).use():
+        assert key.get().foo == 42
+        assert cache_key in cache_dict
+
+        assert key.delete() is None
+        assert cache_key not in cache_dict
+
+        # This is py27 behavior. Not entirely sold on leaving _LOCKED value for
+        # Datastore misses.
+        assert key.get() is None
+        assert cache_dict[cache_key][0] == b"0"
 
 
 @pytest.mark.usefixtures("client_context")

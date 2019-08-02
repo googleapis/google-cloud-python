@@ -108,7 +108,13 @@ class Client(google_client.ClientWithProject):
             )
 
     @contextlib.contextmanager
-    def context(self, cache_policy=None):
+    def context(
+        self,
+        cache_policy=None,
+        global_cache=None,
+        global_cache_policy=None,
+        global_cache_timeout_policy=None,
+    ):
         """Establish a context for a set of NDB calls.
 
         This method provides a context manager which establishes the runtime
@@ -142,8 +148,23 @@ class Client(google_client.ClientWithProject):
             cache_policy (Optional[Callable[[key.Key], bool]]): The
                 cache policy to use in this context. See:
                 :meth:`~google.cloud.ndb.context.Context.set_cache_policy`.
+            global_cache (Optional[global_cache.GlobalCache]):
+                The global cache for this context. See:
+                :class:`~google.cloud.ndb.global_cache.GlobalCache`.
+            global_cache_policy (Optional[Callable[[key.Key], bool]]): The
+                global cache policy to use in this context. See:
+                :meth:`~google.cloud.ndb.context.Context.set_global_cache_policy`.
+            global_cache_timeout_policy (Optional[Callable[[key.Key], int]]):
+                The global cache timeout to use in this context. See:
+                :meth:`~google.cloud.ndb.context.Context.set_global_cache_timeout_policy`.
         """
-        context = context_module.Context(self, cache_policy=cache_policy)
+        context = context_module.Context(
+            self,
+            cache_policy=cache_policy,
+            global_cache=global_cache,
+            global_cache_policy=global_cache_policy,
+            global_cache_timeout_policy=global_cache_timeout_policy,
+        )
         with context.use():
             yield context
 

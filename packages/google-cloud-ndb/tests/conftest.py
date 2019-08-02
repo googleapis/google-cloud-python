@@ -25,6 +25,7 @@ from unittest import mock
 from google.cloud import environment_vars
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _eventloop
+from google.cloud.ndb import global_cache as global_cache_module
 from google.cloud.ndb import model
 
 import pytest
@@ -51,6 +52,7 @@ def reset_state(environ):
     yield
     model.Property._FIND_METHODS_CACHE.clear()
     model.Model._kind_map.clear()
+    global_cache_module._InProcessGlobalCache.cache.clear()
 
 
 @pytest.fixture
@@ -94,4 +96,15 @@ def in_context(context):
     assert not context_module._state.context
     with context.use():
         yield context
+    assert not context_module._state.context
+
+
+@pytest.fixture
+def global_cache(context):
+    assert not context_module._state.context
+
+    cache = global_cache_module._InProcessGlobalCache()
+    with context.new(global_cache=cache).use():
+        yield cache
+
     assert not context_module._state.context

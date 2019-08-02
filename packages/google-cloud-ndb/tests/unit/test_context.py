@@ -15,11 +15,14 @@
 import pytest
 from unittest import mock
 
+from google.cloud.ndb import _cache
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _eventloop
 from google.cloud.ndb import exceptions
+from google.cloud.ndb import global_cache
 from google.cloud.ndb import key as key_module
 from google.cloud.ndb import model
+from google.cloud.ndb import _options
 import tests.unit.utils
 
 
@@ -28,10 +31,12 @@ def test___all__():
 
 
 class TestContext:
-    def _make_one(self):
-        client = mock.Mock(spec=())
+    def _make_one(self, **kwargs):
+        client = mock.Mock(
+            namespace=None, project="testing", spec=("namespace", "project")
+        )
         stub = mock.Mock(spec=())
-        return context_module.Context(client, stub=stub)
+        return context_module.Context(client, stub=stub, **kwargs)
 
     @mock.patch("google.cloud.ndb._datastore_api.make_stub")
     def test_constructor_defaults(self, make_stub):
@@ -63,10 +68,30 @@ class TestContext:
         assert new_context.transaction == "tx123"
         assert context.transaction is None
 
+    def test_new_with_cache(self):
+        context = self._make_one()
+        context.cache["foo"] = "bar"
+        new_context = context.new()
+        assert context.cache is not new_context.cache
+        assert context.cache == new_context.cache
+
     def test_use(self):
         context = self._make_one()
         with context.use():
             assert context_module.get_context() is context
+        with pytest.raises(exceptions.ContextError):
+            context_module.get_context()
+
+    def test_use_nested(self):
+        context = self._make_one()
+        with context.use():
+            assert context_module.get_context() is context
+            next_context = context.new()
+            with next_context.use():
+                assert context_module.get_context() is next_context
+
+            assert context_module.get_context() is context
+
         with pytest.raises(exceptions.ContextError):
             context_module.get_context()
 
@@ -75,6 +100,30 @@ class TestContext:
         context.cache["testkey"] = "testdata"
         context.clear_cache()
         assert not context.cache
+
+    def test__clear_global_cache(self):
+        context = self._make_one(
+            global_cache=global_cache._InProcessGlobalCache()
+        )
+        with context.use():
+            key = key_module.Key("SomeKind", 1)
+            cache_key = _cache.global_cache_key(key._key)
+            context.cache[key] = "testdata"
+            context.global_cache.cache[cache_key] = "testdata"
+            context.global_cache.cache["anotherkey"] = "otherdata"
+            context._clear_global_cache().result()
+
+        assert context.global_cache.cache == {"anotherkey": "otherdata"}
+
+    def test__clear_global_cache_nothing_to_do(self):
+        context = self._make_one(
+            global_cache=global_cache._InProcessGlobalCache()
+        )
+        with context.use():
+            context.global_cache.cache["anotherkey"] = "otherdata"
+            context._clear_global_cache().result()
+
+        assert context.global_cache.cache == {"anotherkey": "otherdata"}
 
     def test_flush(self):
         context = self._make_one()
@@ -94,13 +143,33 @@ class TestContext:
 
     def test_get_memcache_policy(self):
         context = self._make_one()
-        with pytest.raises(NotImplementedError):
+        context.get_memcache_policy()
+        assert (
             context.get_memcache_policy()
+            is context_module._default_global_cache_policy
+        )
+
+    def test_get_global_cache_policy(self):
+        context = self._make_one()
+        context.get_global_cache_policy()
+        assert (
+            context.get_memcache_policy()
+            is context_module._default_global_cache_policy
+        )
 
     def test_get_memcache_timeout_policy(self):
         context = self._make_one()
-        with pytest.raises(NotImplementedError):
+        assert (
             context.get_memcache_timeout_policy()
+            is context_module._default_global_cache_timeout_policy
+        )
+
+    def test_get_global_cache_timeout_policy(self):
+        context = self._make_one()
+        assert (
+            context.get_global_cache_timeout_policy()
+            is context_module._default_global_cache_timeout_policy
+        )
 
     def test_set_cache_policy(self):
         policy = object()
@@ -120,6 +189,26 @@ class TestContext:
         context.set_cache_policy(False)
         assert context.get_cache_policy()(None) is False
 
+    def test__use_cache_default_policy(self):
+        class SomeKind(model.Model):
+            pass
+
+        context = self._make_one()
+        with context.use():
+            key = key_module.Key("SomeKind", 1)
+            options = _options.Options()
+            assert context._use_cache(key, options) is True
+
+    def test__use_cache_from_options(self):
+        class SomeKind(model.Model):
+            pass
+
+        context = self._make_one()
+        with context.use():
+            key = "whocares"
+            options = _options.Options(use_cache=False)
+            assert context._use_cache(key, options) is False
+
     def test_set_datastore_policy(self):
         context = self._make_one()
         with pytest.raises(NotImplementedError):
@@ -127,13 +216,88 @@ class TestContext:
 
     def test_set_memcache_policy(self):
         context = self._make_one()
-        with pytest.raises(NotImplementedError):
-            context.set_memcache_policy(None)
+        context.set_memcache_policy(None)
+        assert (
+            context.global_cache_policy
+            is context_module._default_global_cache_policy
+        )
+
+    def test_set_global_cache_policy(self):
+        context = self._make_one()
+        context.set_global_cache_policy(None)
+        assert (
+            context.global_cache_policy
+            is context_module._default_global_cache_policy
+        )
+
+    def test_set_global_cache_policy_as_bool(self):
+        context = self._make_one()
+        context.set_global_cache_policy(True)
+        assert context.global_cache_policy("whatever") is True
+
+    def test__use_global_cache_no_global_cache(self):
+        context = self._make_one()
+        assert context._use_global_cache("key") is False
+
+    def test__use_global_cache_default_policy(self):
+        class SomeKind(model.Model):
+            pass
+
+        context = self._make_one(global_cache="yes, there is one")
+        with context.use():
+            key = key_module.Key("SomeKind", 1)
+            assert context._use_global_cache(key._key) is True
+
+    def test__use_global_cache_from_options(self):
+        class SomeKind(model.Model):
+            pass
+
+        context = self._make_one(global_cache="yes, there is one")
+        with context.use():
+            key = "whocares"
+            options = _options.Options(use_global_cache=False)
+            assert context._use_global_cache(key, options=options) is False
 
     def test_set_memcache_timeout_policy(self):
         context = self._make_one()
-        with pytest.raises(NotImplementedError):
-            context.set_memcache_timeout_policy(None)
+        context.set_memcache_timeout_policy(None)
+        assert (
+            context.global_cache_timeout_policy
+            is context_module._default_global_cache_timeout_policy
+        )
+
+    def test_set_global_cache_timeout_policy(self):
+        context = self._make_one()
+        context.set_global_cache_timeout_policy(None)
+        assert (
+            context.global_cache_timeout_policy
+            is context_module._default_global_cache_timeout_policy
+        )
+
+    def test_set_global_cache_timeout_policy_as_int(self):
+        context = self._make_one()
+        context.set_global_cache_timeout_policy(14)
+        assert context.global_cache_timeout_policy("whatever") == 14
+
+    def test__global_cache_timeout_default_policy(self):
+        class SomeKind(model.Model):
+            pass
+
+        context = self._make_one()
+        with context.use():
+            key = key_module.Key("SomeKind", 1)
+            timeout = context._global_cache_timeout(key._key, None)
+            assert timeout is None
+
+    def test__global_cache_timeout_from_options(self):
+        class SomeKind(model.Model):
+            pass
+
+        context = self._make_one()
+        with context.use():
+            key = "whocares"
+            options = _options.Options(global_cache_timeout=49)
+            assert context._global_cache_timeout(key, options) == 49
 
     def test_call_on_commit(self):
         context = self._make_one()
@@ -148,16 +312,6 @@ class TestContext:
         context = self._make_one()
         with pytest.raises(NotImplementedError):
             context.default_datastore_policy(None)
-
-    def test_default_memcache_policy(self):
-        context = self._make_one()
-        with pytest.raises(NotImplementedError):
-            context.default_memcache_policy(None)
-
-    def test_default_memcache_timeout_policy(self):
-        context = self._make_one()
-        with pytest.raises(NotImplementedError):
-            context.default_memcache_timeout_policy(None)
 
     def test_memcache_add(self):
         context = self._make_one()
@@ -273,31 +427,92 @@ class Test_default_cache_policy:
         assert context_module._default_cache_policy(key) is False
 
 
-class TestCache:
+class Test_default_global_cache_policy:
     @staticmethod
-    def test_get_and_validate_valid():
-        cache = context_module._Cache()
-        test_entity = mock.Mock(_key="test")
-        cache["test"] = test_entity
-        assert cache.get_and_validate("test") is test_entity
+    def test_key_is_None():
+        assert context_module._default_global_cache_policy(None) is None
 
     @staticmethod
-    def test_get_and_validate_invalid():
-        cache = context_module._Cache()
-        test_entity = mock.Mock(_key="test")
-        cache["test"] = test_entity
-        test_entity._key = "changed_key"
-        with pytest.raises(KeyError):
-            cache.get_and_validate("test")
+    def test_no_model_class():
+        key = mock.Mock(kind="nokind", spec=("kind",))
+        assert context_module._default_global_cache_policy(key) is None
 
     @staticmethod
-    def test_get_and_validate_none():
-        cache = context_module._Cache()
-        cache["test"] = None
-        assert cache.get_and_validate("test") is None
+    @pytest.mark.usefixtures("in_context")
+    def test_standard_model():
+        class ThisKind(model.Model):
+            pass
+
+        key = key_module.Key("ThisKind", 0)
+        assert context_module._default_global_cache_policy(key._key) is None
 
     @staticmethod
-    def test_get_and_validate_miss():
-        cache = context_module._Cache()
-        with pytest.raises(KeyError):
-            cache.get_and_validate("nonexistent_key")
+    @pytest.mark.usefixtures("in_context")
+    def test_standard_model_defines_policy():
+        flag = object()
+
+        class ThisKind(model.Model):
+            @classmethod
+            def _use_global_cache(cls, key):
+                return flag
+
+        key = key_module.Key("ThisKind", 0)
+        assert context_module._default_global_cache_policy(key._key) is flag
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_standard_model_defines_policy_as_bool():
+        class ThisKind(model.Model):
+            _use_global_cache = False
+
+        key = key_module.Key("ThisKind", 0)
+        assert context_module._default_global_cache_policy(key._key) is False
+
+
+class Test_default_global_cache_timeout_policy:
+    @staticmethod
+    def test_key_is_None():
+        assert (
+            context_module._default_global_cache_timeout_policy(None) is None
+        )
+
+    @staticmethod
+    def test_no_model_class():
+        key = mock.Mock(kind="nokind", spec=("kind",))
+        assert context_module._default_global_cache_timeout_policy(key) is None
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_standard_model():
+        class ThisKind(model.Model):
+            pass
+
+        key = key_module.Key("ThisKind", 0)
+        assert (
+            context_module._default_global_cache_timeout_policy(key._key)
+            is None
+        )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_standard_model_defines_policy():
+        class ThisKind(model.Model):
+            @classmethod
+            def _global_cache_timeout(cls, key):
+                return 13
+
+        key = key_module.Key("ThisKind", 0)
+        assert (
+            context_module._default_global_cache_timeout_policy(key._key) == 13
+        )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_standard_model_defines_policy_as_int():
+        class ThisKind(model.Model):
+            _global_cache_timeout = 12
+
+        key = key_module.Key("ThisKind", 0)
+        assert (
+            context_module._default_global_cache_timeout_policy(key._key) == 12
+        )

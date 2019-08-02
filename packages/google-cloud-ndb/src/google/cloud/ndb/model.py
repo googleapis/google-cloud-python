@@ -4856,15 +4856,14 @@ class Model(metaclass=MetaModel):
 
         @tasklets.tasklet
         def put(self):
-            entity_pb = _entity_to_protobuf(self)
-            key_pb = yield _datastore_api.put(entity_pb, _options)
-            if key_pb:
-                ds_key = helpers.key_from_protobuf(key_pb)
+            ds_entity = _entity_to_ds_entity(self)
+            ds_key = yield _datastore_api.put(ds_entity, _options)
+            if ds_key:
                 self._key = key_module.Key._from_ds_key(ds_key)
 
-                context = context_module.get_context()
-                if context._use_cache(self._key, _options):
-                    context.cache[self._key] = self
+            context = context_module.get_context()
+            if context._use_cache(self._key, _options):
+                context.cache[self._key] = self
 
             return self._key
 

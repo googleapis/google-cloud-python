@@ -40,8 +40,18 @@ class TestOptions:
 
     @staticmethod
     def test_constructor_w_use_memcache():
-        with pytest.raises(NotImplementedError):
-            MyOptions(use_memcache=20)
+        options = MyOptions(use_memcache=True)
+        assert options.use_global_cache is True
+
+    @staticmethod
+    def test_constructor_w_use_global_cache():
+        options = MyOptions(use_global_cache=True)
+        assert options.use_global_cache is True
+
+    @staticmethod
+    def test_constructor_w_use_memcache_and_global_cache():
+        with pytest.raises(TypeError):
+            MyOptions(use_global_cache=True, use_memcache=False)
 
     @staticmethod
     def test_constructor_w_use_datastore():
@@ -55,8 +65,18 @@ class TestOptions:
 
     @staticmethod
     def test_constructor_w_memcache_timeout():
-        with pytest.raises(NotImplementedError):
-            MyOptions(memcache_timeout=20)
+        options = MyOptions(memcache_timeout=20)
+        assert options.global_cache_timeout == 20
+
+    @staticmethod
+    def test_constructor_w_global_cache_timeout():
+        options = MyOptions(global_cache_timeout=20)
+        assert options.global_cache_timeout == 20
+
+    @staticmethod
+    def test_constructor_w_memcache_and_global_cache_timeout():
+        with pytest.raises(TypeError):
+            MyOptions(memcache_timeout=20, global_cache_timeout=20)
 
     @staticmethod
     def test_constructor_w_max_memcache_items():

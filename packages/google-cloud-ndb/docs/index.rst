@@ -8,6 +8,7 @@
 
    client
    context
+   global_cache
    key
    model
    query

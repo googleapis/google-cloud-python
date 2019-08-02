@@ -30,13 +30,13 @@ class Options:
         "retries",
         "timeout",
         "use_cache",
+        "use_global_cache",
+        "global_cache_timeout",
         # Not yet implemented
-        "use_memcache",
         "use_datastore",
-        "memcache_timeout",
-        "max_memcache_items",
         # Might or might not implement
         "force_writes",
+        "max_memcache_items",
         # Deprecated
         "propagation",
     )
@@ -118,6 +118,25 @@ class Options:
                 raise TypeError("Can't specify both 'deadline' and 'timeout'")
             kwargs["timeout"] = deadline
 
+        memcache_timeout = kwargs.pop("memcache_timeout", None)
+        if memcache_timeout is not None:
+            global_cache_timeout = kwargs.get("global_cache_timeout")
+            if global_cache_timeout is not None:
+                raise TypeError(
+                    "Can't specify both 'memcache_timeout' and "
+                    "'global_cache_timeout'"
+                )
+            kwargs["global_cache_timeout"] = memcache_timeout
+
+        use_memcache = kwargs.pop("use_memcache", None)
+        if use_memcache is not None:
+            use_global_cache = kwargs.get("use_global_cache")
+            if use_global_cache is not None:
+                raise TypeError(
+                    "Can't specify both 'use_memcache' and 'use_global_cache'"
+                )
+            kwargs["use_global_cache"] = use_memcache
+
         for key in self.slots():
             default = getattr(config, key, None) if config else None
             setattr(self, key, kwargs.pop(key, default))
@@ -136,13 +155,7 @@ class Options:
                 )
             )
 
-        if self.use_memcache is not None:
-            raise NotImplementedError
-
         if self.use_datastore is not None:
-            raise NotImplementedError
-
-        if self.memcache_timeout is not None:
             raise NotImplementedError
 
         if self.max_memcache_items is not None:

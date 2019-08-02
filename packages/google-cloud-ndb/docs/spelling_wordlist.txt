@@ -65,6 +65,7 @@ protobuf
 proxied
 QueryOptions
 reimplemented
+Redis
 RequestHandler
 runtime
 schemas

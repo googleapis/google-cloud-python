@@ -52,6 +52,7 @@ __all__ = [
     "get_indexes_async",
     "get_multi",
     "get_multi_async",
+    "GlobalCache",
     "in_transaction",
     "Index",
     "IndexProperty",
@@ -135,6 +136,7 @@ from google.cloud.ndb._datastore_api import EVENTUAL_CONSISTENCY
 from google.cloud.ndb._datastore_api import STRONG
 from google.cloud.ndb._datastore_query import Cursor
 from google.cloud.ndb._datastore_query import QueryIterator
+from google.cloud.ndb.global_cache import GlobalCache
 from google.cloud.ndb.key import Key
 from google.cloud.ndb.model import BlobKey
 from google.cloud.ndb.model import BlobKeyProperty

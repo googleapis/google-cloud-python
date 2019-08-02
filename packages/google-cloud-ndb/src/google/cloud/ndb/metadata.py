@@ -62,7 +62,7 @@ class _BaseMetadata(model.Model):
     __slots__ = ()
 
     _use_cache = False
-    _use_memcache = False
+    _use_global_cache = False
 
     KIND_NAME = ""
 

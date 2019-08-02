@@ -99,7 +99,7 @@ def _transaction_async(context, callback, read_only=False):
         read_only, retries=0
     )
 
-    with context.new(transaction=transaction_id).use():
+    with context.new(transaction=transaction_id).use() as tx_context:
         try:
             # Run the callback
             result = callback()
@@ -113,6 +113,8 @@ def _transaction_async(context, callback, read_only=False):
         except:
             yield _datastore_api.rollback(transaction_id)
             raise
+
+        tx_context._clear_global_cache()
 
         return result
 
@@ -154,7 +156,7 @@ def transactional_async(
     retries=_retry._DEFAULT_RETRIES, read_only=False, xg=True, propagation=None
 ):
     """A decorator to run a function in an async transaction.
-    
+
     Usage example:
 
     @transactional_async(retries=1, read_only=False)
