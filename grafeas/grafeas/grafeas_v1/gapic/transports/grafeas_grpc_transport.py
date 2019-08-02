@@ -54,7 +54,14 @@ class GrafeasGrpcTransport(object):
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(address, scopes, credentials=credentials)
+            channel = self.create_channel(
+                address=address,
+                credentials=credentials,
+                options={
+                    "grpc.max_send_message_length": -1,
+                    "grpc.max_receive_message_length": -1,
+                },
+            )
 
         self._channel = channel
 
