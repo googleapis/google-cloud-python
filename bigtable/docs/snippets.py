@@ -426,6 +426,10 @@ def test_bigtable_list_tables():
     tables_list = instance.list_tables()
     # [END bigtable_list_tables]
 
+    # Check if returned list has expected table
+    table_names = [table.name for table in tables_list]
+    assert Config.TABLE.name in table_names
+
 
 def test_bigtable_delete_cluster():
     from google.cloud.bigtable import Client
