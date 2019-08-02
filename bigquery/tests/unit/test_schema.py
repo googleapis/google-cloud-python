@@ -160,10 +160,16 @@ class TestSchemaField(unittest.TestCase):
     def test_to_standard_sql_simple_type(self):
         sql_type = self._get_standard_sql_data_type_class()
         examples = (
+            # a few legacy types
             ("INTEGER", sql_type.INT64),
             ("FLOAT", sql_type.FLOAT64),
             ("BOOLEAN", sql_type.BOOL),
             ("DATETIME", sql_type.DATETIME),
+            # a few standard types
+            ("INT64", sql_type.INT64),
+            ("FLOAT64", sql_type.FLOAT64),
+            ("BOOL", sql_type.BOOL),
+            ("GEOGRAPHY", sql_type.GEOGRAPHY),
         )
         for legacy_type, standard_type in examples:
             field = self._make_one("some_field", legacy_type)
@@ -172,7 +178,7 @@ class TestSchemaField(unittest.TestCase):
             self.assertEqual(standard_field.type.type_kind, standard_type)
             self.assertFalse(standard_field.type.HasField("sub_type"))
 
-    def test_to_standard_sql_complex_type(self):
+    def test_to_standard_sql_struct_type(self):
         from google.cloud.bigquery_v2 import types
 
         # Expected result object:
@@ -240,13 +246,13 @@ class TestSchemaField(unittest.TestCase):
             "last_used", "RECORD", fields=(sub_sub_field1, sub_sub_field2)
         )
         sub_field_bytes = self._make_one("image_content", "BYTES")
-        schema_field = self._make_one(
-            "image_usage", "RECORD", fields=(sub_field_bytes, sub_field_record)
-        )
 
-        standard_field = schema_field.to_standard_sql()
-
-        self.assertEqual(standard_field, expected_result)
+        for type_name in ("RECORD", "STRUCT"):
+            schema_field = self._make_one(
+                "image_usage", type_name, fields=(sub_field_bytes, sub_field_record)
+            )
+            standard_field = schema_field.to_standard_sql()
+            self.assertEqual(standard_field, expected_result)
 
     def test_to_standard_sql_unknown_type(self):
         sql_type = self._get_standard_sql_data_type_class()
