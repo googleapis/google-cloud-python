@@ -254,6 +254,59 @@ class TestSchemaField(unittest.TestCase):
             standard_field = schema_field.to_standard_sql()
             self.assertEqual(standard_field, expected_result)
 
+    def test_to_standard_sql_array_type_simple(self):
+        from google.cloud.bigquery_v2 import types
+
+        sql_type = self._get_standard_sql_data_type_class()
+
+        # construct expected result object
+        expected_sql_type = sql_type(type_kind=sql_type.ARRAY)
+        expected_sql_type.array_element_type.type_kind = sql_type.INT64
+        expected_result = types.StandardSqlField(
+            name="valid_numbers", type=expected_sql_type
+        )
+
+        # construct "repeated" SchemaField object and convert to standard SQL
+        schema_field = self._make_one("valid_numbers", "INT64", mode="REPEATED")
+        standard_field = schema_field.to_standard_sql()
+
+        self.assertEqual(standard_field, expected_result)
+
+    def test_to_standard_sql_array_type_struct(self):
+        from google.cloud.bigquery_v2 import types
+
+        sql_type = self._get_standard_sql_data_type_class()
+
+        # define person STRUCT
+        name_field = types.StandardSqlField(
+            name="name", type=sql_type(type_kind=sql_type.STRING)
+        )
+        age_field = types.StandardSqlField(
+            name="age", type=sql_type(type_kind=sql_type.INT64)
+        )
+        person_struct = types.StandardSqlField(
+            name="person_info", type=sql_type(type_kind=sql_type.STRUCT)
+        )
+        person_struct.type.struct_type.fields.extend([name_field, age_field])
+
+        # define expected result - an ARRAY of person structs
+        expected_sql_type = sql_type(
+            type_kind=sql_type.ARRAY, array_element_type=person_struct.type
+        )
+        expected_result = types.StandardSqlField(
+            name="known_people", type=expected_sql_type
+        )
+
+        # construct legacy repeated SchemaField object
+        sub_field1 = self._make_one("name", "STRING")
+        sub_field2 = self._make_one("age", "INTEGER")
+        schema_field = self._make_one(
+            "known_people", "RECORD", fields=(sub_field1, sub_field2), mode="REPEATED"
+        )
+
+        standard_field = schema_field.to_standard_sql()
+        self.assertEqual(standard_field, expected_result)
+
     def test_to_standard_sql_unknown_type(self):
         sql_type = self._get_standard_sql_data_type_class()
         field = self._make_one("weird_field", "TROOLEAN")

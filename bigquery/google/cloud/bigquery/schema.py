@@ -37,6 +37,7 @@ LEGACY_TO_STANDARD_TYPES = {
     "DATE": types.StandardSqlDataType.DATE,
     "TIME": types.StandardSqlDataType.TIME,
     "DATETIME": types.StandardSqlDataType.DATETIME,
+    # no direct conversion from ARRAY, the latter is represented by mode="REPEATED"
 }
 """String names of the legacy SQL types to integer codes of Standard SQL types."""
 
@@ -179,13 +180,28 @@ class SchemaField(object):
             An instance of :class:`~google.cloud.bigquery_v2.types.StandardSqlField`.
         """
         sql_type = types.StandardSqlDataType()
-        sql_type.type_kind = LEGACY_TO_STANDARD_TYPES.get(
-            self.field_type, types.StandardSqlDataType.TYPE_KIND_UNSPECIFIED
-        )
 
-        # NOTE: No need to also handle the "ARRAY" composed type, the latter
-        # does not exist in legacy SQL types.
-        if sql_type.type_kind == types.StandardSqlDataType.STRUCT:  # noqa: E721
+        if self.mode == "REPEATED":
+            sql_type.type_kind = types.StandardSqlDataType.ARRAY
+        else:
+            sql_type.type_kind = LEGACY_TO_STANDARD_TYPES.get(
+                self.field_type, types.StandardSqlDataType.TYPE_KIND_UNSPECIFIED
+            )
+
+        if sql_type.type_kind == types.StandardSqlDataType.ARRAY:  # noqa: E721
+            array_element_type = LEGACY_TO_STANDARD_TYPES.get(
+                self.field_type, types.StandardSqlDataType.TYPE_KIND_UNSPECIFIED
+            )
+            sql_type.array_element_type.type_kind = array_element_type
+
+            # ARRAY cannot directly contain other arrays, only scalar types and STRUCTs
+            # https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#array-type
+            if array_element_type == types.StandardSqlDataType.STRUCT:  # noqa: E721
+                sql_type.array_element_type.struct_type.fields.extend(
+                    field.to_standard_sql() for field in self.fields
+                )
+
+        elif sql_type.type_kind == types.StandardSqlDataType.STRUCT:  # noqa: E721
             sql_type.struct_type.fields.extend(
                 field.to_standard_sql() for field in self.fields
             )
