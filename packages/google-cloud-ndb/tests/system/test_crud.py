@@ -18,6 +18,7 @@ System tests for Create, Update, Delete. (CRUD)
 import datetime
 import functools
 import operator
+import os
 import threading
 
 from unittest import mock
@@ -31,6 +32,8 @@ from google.cloud.ndb import _cache
 from google.cloud.ndb import global_cache as global_cache_module
 
 from tests.system import KIND, eventually
+
+USE_REDIS_CACHE = bool(os.environ.get("REDIS_CACHE_URL"))
 
 
 def _equals(n):
@@ -99,6 +102,40 @@ def test_retrieve_entity_with_global_cache(ds_entity, client_context):
 
         cache_key = _cache.global_cache_key(key._key)
         assert cache_key in cache_dict
+
+        patch = mock.patch("google.cloud.ndb._datastore_api._LookupBatch.add")
+        patch.side_effect = Exception("Shouldn't call this")
+        with patch:
+            entity = key.get()
+            assert isinstance(entity, SomeKind)
+            assert entity.foo == 42
+            assert entity.bar == "none"
+            assert entity.baz == "night"
+
+
+@pytest.mark.skipif(not USE_REDIS_CACHE, reason="Redis is not configured")
+def test_retrieve_entity_with_redis_cache(ds_entity, client_context):
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(KIND, entity_id, foo=42, bar="none", baz=b"night")
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StringProperty()
+        baz = ndb.StringProperty()
+
+    global_cache = global_cache_module.RedisCache.from_environment()
+    with client_context.new(global_cache=global_cache).use() as context:
+        context.set_global_cache_policy(None)  # Use default
+
+        key = ndb.Key(KIND, entity_id)
+        entity = key.get()
+        assert isinstance(entity, SomeKind)
+        assert entity.foo == 42
+        assert entity.bar == "none"
+        assert entity.baz == "night"
+
+        cache_key = _cache.global_cache_key(key._key)
+        assert global_cache.redis.get(cache_key) is not None
 
         patch = mock.patch("google.cloud.ndb._datastore_api._LookupBatch.add")
         patch.side_effect = Exception("Shouldn't call this")
@@ -316,6 +353,37 @@ def test_insert_entity_with_global_cache(dispose_of, client_context):
         dispose_of(key._key)
 
 
+@pytest.mark.skipif(not USE_REDIS_CACHE, reason="Redis is not configured")
+def test_insert_entity_with_redis_cache(dispose_of, client_context):
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StringProperty()
+
+    global_cache = global_cache_module.RedisCache.from_environment()
+    with client_context.new(global_cache=global_cache).use() as context:
+        context.set_global_cache_policy(None)  # Use default
+
+        entity = SomeKind(foo=42, bar="none")
+        key = entity.put()
+        cache_key = _cache.global_cache_key(key._key)
+        assert global_cache.redis.get(cache_key) is None
+
+        retrieved = key.get()
+        assert retrieved.foo == 42
+        assert retrieved.bar == "none"
+
+        assert global_cache.redis.get(cache_key) is not None
+
+        entity.foo = 43
+        entity.put()
+
+        # This is py27 behavior. I can see a case being made for caching the
+        # entity on write rather than waiting for a subsequent lookup.
+        assert global_cache.redis.get(cache_key) is None
+
+        dispose_of(key._key)
+
+
 @pytest.mark.usefixtures("client_context")
 def test_update_entity(ds_entity):
     entity_id = test_utils.system.unique_resource_id()
@@ -451,6 +519,31 @@ def test_delete_entity_with_global_cache(ds_entity, client_context):
         # Datastore misses.
         assert key.get() is None
         assert cache_dict[cache_key][0] == b"0"
+
+
+@pytest.mark.skipif(not USE_REDIS_CACHE, reason="Redis is not configured")
+def test_delete_entity_with_redis_cache(ds_entity, client_context):
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(KIND, entity_id, foo=42)
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    key = ndb.Key(KIND, entity_id)
+    cache_key = _cache.global_cache_key(key._key)
+    global_cache = global_cache_module.RedisCache.from_environment()
+
+    with client_context.new(global_cache=global_cache).use():
+        assert key.get().foo == 42
+        assert global_cache.redis.get(cache_key) is not None
+
+        assert key.delete() is None
+        assert global_cache.redis.get(cache_key) is None
+
+        # This is py27 behavior. Not entirely sold on leaving _LOCKED value for
+        # Datastore misses.
+        assert key.get() is None
+        assert global_cache.redis.get(cache_key) == b"0"
 
 
 @pytest.mark.usefixtures("client_context")

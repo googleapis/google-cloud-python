@@ -55,6 +55,7 @@ nitpick_ignore = [
     ("py:class", "Optional"),
     ("py:class", "Tuple"),
     ("py:class", "Union"),
+    ("py:class", "redis.Redis"),
 ]
 
 # Add any Sphinx extension module names here, as strings. They can be

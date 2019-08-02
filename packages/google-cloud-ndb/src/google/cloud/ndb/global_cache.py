@@ -12,10 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import abc
-import time
-
 """GlobalCache interface and its implementations."""
+
+import abc
+import collections
+import os
+import time
+import uuid
+
+import redis as redis_module
 
 
 class GlobalCache(abc.ABC):
@@ -160,3 +165,110 @@ class _InProcessGlobalCache(GlobalCache):
             current_value = self.cache.get(key)
             if watch_value == current_value:
                 self.cache[key] = (new_value, expires)
+
+
+_Pipeline = collections.namedtuple("_Pipeline", ("pipe", "id"))
+
+
+class RedisCache(GlobalCache):
+    """Redis implementation of the :class:`GlobalCache`.
+
+    This is a synchronous implementation. The idea is that calls to Redis
+    should be fast enough not to warrant the added complexity of an
+    asynchronous implementation.
+
+    Args:
+        redis (redis.Redis): Instance of Redis client to use.
+    """
+
+    @classmethod
+    def from_environment(cls):
+        """Generate a class:`RedisCache` from an environment variable.
+
+        This class method looks for the ``REDIS_CACHE_URL`` environment
+        variable and, if it is set, passes its value to ``Redis.from_url`` to
+        construct a ``Redis`` instance which is then used to instantiate a
+        ``RedisCache`` instance.
+
+        Returns:
+            Optional[RedisCache]: A :class:`RedisCache` instance or
+                :data:`None`, if ``REDIS_CACHE_URL`` is not set in the
+                environment.
+        """
+        url = os.environ.get("REDIS_CACHE_URL")
+        if url:
+            return cls(redis_module.Redis.from_url(url))
+
+    def __init__(self, redis):
+        self.redis = redis
+        self.pipes = {}
+
+    def get(self, keys):
+        """Implements :meth:`GlobalCache.get`."""
+        res = self.redis.mget(keys)
+        return res
+
+    def set(self, items, expires=None):
+        """Implements :meth:`GlobalCache.set`."""
+        self.redis.mset(items)
+        if expires:
+            for key in items.keys():
+                self.redis.expire(key, expires)
+
+    def delete(self, keys):
+        """Implements :meth:`GlobalCache.delete`."""
+        self.redis.delete(*keys)
+
+    def watch(self, keys):
+        """Implements :meth:`GlobalCache.watch`."""
+        pipe = self.redis.pipeline()
+        pipe.watch(*keys)
+        holder = _Pipeline(pipe, str(uuid.uuid4()))
+        for key in keys:
+            self.pipes[key] = holder
+
+    def compare_and_swap(self, items, expires=None):
+        """Implements :meth:`GlobalCache.compare_and_swap`."""
+        pipes = {}
+        mappings = {}
+        results = {}
+        remove_keys = []
+
+        # get associated pipes
+        for key, value in items.items():
+            remove_keys.append(key)
+            if key not in self.pipes:
+                continue
+
+            pipe = self.pipes[key]
+            pipes[pipe.id] = pipe
+            mapping = mappings.setdefault(pipe.id, {})
+            mapping[key] = value
+
+        # execute transaction for each pipes
+        for pipe_id, mapping in mappings.items():
+            pipe = pipes[pipe_id].pipe
+            try:
+                pipe.multi()
+                pipe.mset(mapping)
+                if expires:
+                    for key in mapping.keys():
+                        pipe.expire(key, expires)
+                pipe.execute()
+
+            except redis_module.exceptions.WatchError:
+                pass
+
+            finally:
+                pipe.reset()
+
+        # get keys associated to pipes but not updated
+        for key, pipe in self.pipes.items():
+            if pipe.id in pipes:
+                remove_keys.append(key)
+
+        # remote keys
+        for key in remove_keys:
+            self.pipes.pop(key, None)
+
+        return results

@@ -15,6 +15,7 @@
 from unittest import mock
 
 import pytest
+import redis as redis_module
 
 from google.cloud.ndb import global_cache
 
@@ -144,3 +145,157 @@ class TestInProcessGlobalCache:
 
         result = cache.get([b"one", b"two", b"three"])
         assert result == [None, b"hamburgers", None]
+
+
+class TestRedisCache:
+    @staticmethod
+    def test_constructor():
+        redis = object()
+        cache = global_cache.RedisCache(redis)
+        assert cache.redis is redis
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb.global_cache.redis_module")
+    def test_from_environment(redis_module):
+        redis = redis_module.Redis.from_url.return_value
+        with mock.patch.dict("os.environ", {"REDIS_CACHE_URL": "some://url"}):
+            cache = global_cache.RedisCache.from_environment()
+            assert cache.redis is redis
+            redis_module.Redis.from_url.assert_called_once_with("some://url")
+
+    @staticmethod
+    def test_from_environment_not_configured():
+        with mock.patch.dict("os.environ", {"REDIS_CACHE_URL": ""}):
+            cache = global_cache.RedisCache.from_environment()
+            assert cache is None
+
+    @staticmethod
+    def test_get():
+        redis = mock.Mock(spec=("mget",))
+        cache_keys = [object(), object()]
+        cache_value = redis.mget.return_value
+        cache = global_cache.RedisCache(redis)
+        assert cache.get(cache_keys) is cache_value
+        redis.mget.assert_called_once_with(cache_keys)
+
+    @staticmethod
+    def test_set():
+        redis = mock.Mock(spec=("mset",))
+        cache_items = {"a": "foo", "b": "bar"}
+        cache = global_cache.RedisCache(redis)
+        cache.set(cache_items)
+        redis.mset.assert_called_once_with(cache_items)
+
+    @staticmethod
+    def test_set_w_expires():
+        expired = {}
+
+        def mock_expire(key, expires):
+            expired[key] = expires
+
+        redis = mock.Mock(expire=mock_expire, spec=("mset", "expire"))
+        cache_items = {"a": "foo", "b": "bar"}
+        cache = global_cache.RedisCache(redis)
+        cache.set(cache_items, expires=32)
+        redis.mset.assert_called_once_with(cache_items)
+        assert expired == {"a": 32, "b": 32}
+
+    @staticmethod
+    def test_delete():
+        redis = mock.Mock(spec=("delete",))
+        cache_keys = [object(), object()]
+        cache = global_cache.RedisCache(redis)
+        cache.delete(cache_keys)
+        redis.delete.assert_called_once_with(*cache_keys)
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb.global_cache.uuid")
+    def test_watch(uuid):
+        uuid.uuid4.return_value = "abc123"
+        redis = mock.Mock(
+            pipeline=mock.Mock(spec=("watch",)), spec=("pipeline",)
+        )
+        pipe = redis.pipeline.return_value
+        keys = ["foo", "bar"]
+        cache = global_cache.RedisCache(redis)
+        cache.watch(keys)
+
+        pipe.watch.assert_called_once_with("foo", "bar")
+        assert cache.pipes == {
+            "foo": global_cache._Pipeline(pipe, "abc123"),
+            "bar": global_cache._Pipeline(pipe, "abc123"),
+        }
+
+    @staticmethod
+    def test_compare_and_swap():
+        redis = mock.Mock(spec=())
+        cache = global_cache.RedisCache(redis)
+        pipe1 = mock.Mock(spec=("multi", "mset", "execute", "reset"))
+        pipe2 = mock.Mock(spec=("multi", "mset", "execute", "reset"))
+        cache.pipes = {
+            "ay": global_cache._Pipeline(pipe1, "abc123"),
+            "be": global_cache._Pipeline(pipe1, "abc123"),
+            "see": global_cache._Pipeline(pipe2, "def456"),
+            "dee": global_cache._Pipeline(pipe2, "def456"),
+            "whatevs": global_cache._Pipeline(None, "himom!"),
+        }
+        pipe2.execute.side_effect = redis_module.exceptions.WatchError
+
+        items = {"ay": "foo", "be": "bar", "see": "baz", "wut": "huh?"}
+        cache.compare_and_swap(items)
+
+        pipe1.multi.assert_called_once_with()
+        pipe2.multi.assert_called_once_with()
+        pipe1.mset.assert_called_once_with({"ay": "foo", "be": "bar"})
+        pipe2.mset.assert_called_once_with({"see": "baz"})
+        pipe1.execute.assert_called_once_with()
+        pipe2.execute.assert_called_once_with()
+        pipe1.reset.assert_called_once_with()
+        pipe2.reset.assert_called_once_with()
+
+        assert cache.pipes == {
+            "whatevs": global_cache._Pipeline(None, "himom!")
+        }
+
+    @staticmethod
+    def test_compare_and_swap_w_expires():
+        expired = {}
+
+        def mock_expire(key, expires):
+            expired[key] = expires
+
+        redis = mock.Mock(spec=())
+        cache = global_cache.RedisCache(redis)
+        pipe1 = mock.Mock(
+            expire=mock_expire,
+            spec=("multi", "mset", "execute", "expire", "reset"),
+        )
+        pipe2 = mock.Mock(
+            expire=mock_expire,
+            spec=("multi", "mset", "execute", "expire", "reset"),
+        )
+        cache.pipes = {
+            "ay": global_cache._Pipeline(pipe1, "abc123"),
+            "be": global_cache._Pipeline(pipe1, "abc123"),
+            "see": global_cache._Pipeline(pipe2, "def456"),
+            "dee": global_cache._Pipeline(pipe2, "def456"),
+            "whatevs": global_cache._Pipeline(None, "himom!"),
+        }
+        pipe2.execute.side_effect = redis_module.exceptions.WatchError
+
+        items = {"ay": "foo", "be": "bar", "see": "baz", "wut": "huh?"}
+        cache.compare_and_swap(items, expires=32)
+
+        pipe1.multi.assert_called_once_with()
+        pipe2.multi.assert_called_once_with()
+        pipe1.mset.assert_called_once_with({"ay": "foo", "be": "bar"})
+        pipe2.mset.assert_called_once_with({"see": "baz"})
+        pipe1.execute.assert_called_once_with()
+        pipe2.execute.assert_called_once_with()
+        pipe1.reset.assert_called_once_with()
+        pipe2.reset.assert_called_once_with()
+
+        assert cache.pipes == {
+            "whatevs": global_cache._Pipeline(None, "himom!")
+        }
+        assert expired == {"ay": 32, "be": 32, "see": 32}
