@@ -171,6 +171,7 @@ class Client(ClientWithProject):
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http
         )
+
         kw_args = {"client_info": client_info}
         if client_options:
             if type(client_options) == dict:

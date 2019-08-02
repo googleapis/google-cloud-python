@@ -110,14 +110,14 @@ class TestClient(unittest.TestCase):
             project=self.PROJECT,
             credentials=creds,
             _http=http,
-            client_options={"api_endpoint": "https://www.foo-googleapis.com"},
+            client_options={"api_endpoint": Connection.DEFAULT_API_ENDPOINT},
         )
         self.assertIsInstance(client._connection, Connection)
         self.assertIs(client._connection.credentials, creds)
         self.assertIs(client._connection.http, http)
         self.assertIsNone(client.location)
         self.assertEqual(
-            client._connection.API_BASE_URL, "https://www.foo-googleapis.com"
+            client._connection.API_BASE_URL, Connection.DEFAULT_API_ENDPOINT
         )
 
     def test_ctor_w_empty_client_options(self):
@@ -147,7 +147,7 @@ class TestClient(unittest.TestCase):
 
         creds = _make_credentials()
         http = object()
-        client_options = ClientOptions(api_endpoint="https://www.foo-googleapis.com")
+        client_options = ClientOptions(Connection.DEFAULT_API_ENDPOINT)
         client = self._make_one(
             project=self.PROJECT,
             credentials=creds,
@@ -159,7 +159,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(client._connection.http, http)
         self.assertIsNone(client.location)
         self.assertEqual(
-            client._connection.API_BASE_URL, "https://www.foo-googleapis.com"
+            client._connection.API_BASE_URL, Connection.DEFAULT_API_ENDPOINT
         )
 
     def test_ctor_w_location(self):
