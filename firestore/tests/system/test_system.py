@@ -615,24 +615,33 @@ def test_query_with_order_dot_key(client, cleanup):
     db = client
     collection_id = "collek" + unique_resource_id("-")
     collection = db.collection(collection_id)
-    doc_ref1 = collection.document("page1")
-    cleanup(doc_ref1)
-    doc_ref2 = collection.document("page2")
-    cleanup(doc_ref2)
-    doc_ref3 = collection.document("page3")
-    cleanup(doc_ref3)
-    doc_ref1.set(
-        {"wordcount": {"page3": 130, "page2": 120, "page1": 100}, "count": 100}
-    )
-    doc_ref2.set(
-        {"wordcount": {"page3": 180, "page2": 120, "page1": 150}, "count": 150}
-    )
-    doc_ref3.set({"count": 200, "wordcount": {"page3": 50, "page2": 100, "page1": 200}})
-
+    for index in range(10):
+        doc = collection.document("test_{:09d}".format(index))
+        data = {"count": 10 * index, "wordcount": {"page1": index * 10 + 100}}
+        print("Setting: {}".format(doc.path))
+        doc.set(data)
+        cleanup(doc)
     query = collection.order_by("wordcount.page1").limit(3)
     data = [doc.to_dict()["wordcount"]["page1"] for doc in query.stream()]
-    assert [100, 150, 200] == data
-
+    assert [100, 110, 120] == data
+    for snapshot in collection.order_by("wordcount.page1").limit(3).stream():
+        last_value = snapshot.get("wordcount.page1")
+    good_cursor = {"wordcount": {"page1": last_value}}
+    found = list(
+        collection.order_by("wordcount.page1")
+        .start_after(good_cursor)
+        .limit(3)
+        .stream()
+    )
+    found_data = [{u'count': 30, u'wordcount': {u'page1': 130}},
+                  {u'count': 40, u'wordcount': {u'page1': 140}},
+                  {u'count': 50, u'wordcount': {u'page1': 150}}]
+    assert found_data == [snap.to_dict() for snap in found]
+    bad_cursor = {"wordcount.page1": last_value}
+    bad_cursor_data = list(
+        collection.order_by("wordcount.page1").start_after(bad_cursor).limit(
+            3).stream())
+    assert found_data == [snap.to_dict() for snap in bad_cursor_data]
 
 def test_query_unary(client, cleanup):
     collection_name = "unary" + UNIQUE_RESOURCE_ID
