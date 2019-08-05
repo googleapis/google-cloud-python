@@ -279,7 +279,6 @@ def test_order_by_descending(ds_entity):
     assert [entity.foo for entity in results] == [4, 3, 2, 1, 0]
 
 
-@pytest.mark.skip("Requires an index")
 @pytest.mark.usefixtures("client_context")
 def test_order_by_with_or_filter(dispose_of):
     """
@@ -348,7 +347,6 @@ def test_offset_and_limit(ds_entity):
     assert [entity.foo for entity in results] == [2, 3]
 
 
-@pytest.mark.skip("Requires an index")
 @pytest.mark.usefixtures("client_context")
 def test_offset_and_limit_with_or_filter(dispose_of):
     class SomeKind(ndb.Model):
@@ -528,7 +526,6 @@ def test_fetch_page(dispose_of):
     assert not more
 
 
-@pytest.mark.skip("Requires an index")
 @pytest.mark.usefixtures("client_context")
 def test_query_repeated_property(ds_entity):
     entity_id = test_utils.system.unique_resource_id()
@@ -554,7 +551,6 @@ def test_query_repeated_property(ds_entity):
     assert results[1].foo == 2
 
 
-@pytest.mark.skip("Requires an index")
 @pytest.mark.usefixtures("client_context")
 def test_query_structured_property(dispose_of):
     class OtherKind(ndb.Model):
@@ -603,7 +599,6 @@ def test_query_structured_property(dispose_of):
     assert results[1].foo == 2
 
 
-@pytest.mark.skip("Requires an index")
 @pytest.mark.usefixtures("client_context")
 def test_query_legacy_structured_property(ds_entity):
     class OtherKind(ndb.Model):
@@ -655,7 +650,6 @@ def test_query_legacy_structured_property(ds_entity):
     assert results[1].foo == 2
 
 
-@pytest.mark.skip("Requires an index")
 @pytest.mark.usefixtures("client_context")
 def test_query_repeated_structured_property_with_properties(dispose_of):
     class OtherKind(ndb.Model):
@@ -715,7 +709,6 @@ def test_query_repeated_structured_property_with_properties(dispose_of):
     assert results[1].foo == 2
 
 
-@pytest.mark.skip("Requires an index")
 @pytest.mark.usefixtures("client_context")
 def test_query_repeated_structured_property_with_entity_twice(dispose_of):
     class OtherKind(ndb.Model):
@@ -777,7 +770,6 @@ def test_query_repeated_structured_property_with_entity_twice(dispose_of):
     assert results[0].foo == 1
 
 
-@pytest.mark.skip("Requires an index")
 @pytest.mark.usefixtures("client_context")
 def test_query_legacy_repeated_structured_property(ds_entity):
     class OtherKind(ndb.Model):

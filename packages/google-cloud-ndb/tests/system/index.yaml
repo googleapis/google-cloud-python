@@ -1,4 +1,5 @@
 indexes:
+
 - kind: SomeKind
   properties:
   - name: bar
