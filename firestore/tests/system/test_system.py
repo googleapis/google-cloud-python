@@ -619,18 +619,15 @@ def test_query_with_order_dot_key(client, cleanup):
         doc = collection.document("test_{:09d}".format(index))
         data = {"count": 10 * index, "wordcount": {"page1": index * 10 + 100}}
         doc.set(data)
-        cleanup(doc)
+        cleanup(doc.delete)
     query = collection.order_by("wordcount.page1").limit(3)
     data = [doc.to_dict()["wordcount"]["page1"] for doc in query.stream()]
     assert [100, 110, 120] == data
     for snapshot in collection.order_by("wordcount.page1").limit(3).stream():
         last_value = snapshot.get("wordcount.page1")
-    good_cursor = {"wordcount": {"page1": last_value}}
+    cursor = {"wordcount": {"page1": last_value}}
     found = list(
-        collection.order_by("wordcount.page1")
-        .start_after(good_cursor)
-        .limit(3)
-        .stream()
+        collection.order_by("wordcount.page1").start_after(cursor).limit(3).stream()
     )
     found_data = [
         {u"count": 30, u"wordcount": {u"page1": 130}},
@@ -638,11 +635,14 @@ def test_query_with_order_dot_key(client, cleanup):
         {u"count": 50, u"wordcount": {u"page1": 150}},
     ]
     assert found_data == [snap.to_dict() for snap in found]
-    bad_cursor = {"wordcount.page1": last_value}
-    bad_cursor_data = list(
-        collection.order_by("wordcount.page1").start_after(bad_cursor).limit(3).stream()
+    dot_key_cursor = {"wordcount.page1": last_value}
+    cursor_with_key_data = list(
+        collection.order_by("wordcount.page1")
+        .start_after(dot_key_cursor)
+        .limit(3)
+        .stream()
     )
-    assert found_data == [snap.to_dict() for snap in bad_cursor_data]
+    assert found_data == [snap.to_dict() for snap in cursor_with_key_data]
 
 
 def test_query_unary(client, cleanup):
