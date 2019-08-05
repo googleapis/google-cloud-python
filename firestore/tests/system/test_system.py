@@ -615,10 +615,9 @@ def test_query_with_order_dot_key(client, cleanup):
     db = client
     collection_id = "collek" + unique_resource_id("-")
     collection = db.collection(collection_id)
-    for index in range(10):
+    for index in range(100, -1, -1):
         doc = collection.document("test_{:09d}".format(index))
         data = {"count": 10 * index, "wordcount": {"page1": index * 10 + 100}}
-        print("Setting: {}".format(doc.path))
         doc.set(data)
         cleanup(doc)
     query = collection.order_by("wordcount.page1").limit(3)
@@ -633,15 +632,18 @@ def test_query_with_order_dot_key(client, cleanup):
         .limit(3)
         .stream()
     )
-    found_data = [{u'count': 30, u'wordcount': {u'page1': 130}},
-                  {u'count': 40, u'wordcount': {u'page1': 140}},
-                  {u'count': 50, u'wordcount': {u'page1': 150}}]
+    found_data = [
+        {u"count": 30, u"wordcount": {u"page1": 130}},
+        {u"count": 40, u"wordcount": {u"page1": 140}},
+        {u"count": 50, u"wordcount": {u"page1": 150}},
+    ]
     assert found_data == [snap.to_dict() for snap in found]
     bad_cursor = {"wordcount.page1": last_value}
     bad_cursor_data = list(
-        collection.order_by("wordcount.page1").start_after(bad_cursor).limit(
-            3).stream())
+        collection.order_by("wordcount.page1").start_after(bad_cursor).limit(3).stream()
+    )
     assert found_data == [snap.to_dict() for snap in bad_cursor_data]
+
 
 def test_query_unary(client, cleanup):
     collection_name = "unary" + UNIQUE_RESOURCE_ID
