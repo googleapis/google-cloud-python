@@ -279,8 +279,7 @@ class DatasetReference(object):
             dataset_id (str):
                 A dataset ID in standard SQL format. If ``default_project``
                 is not specified, this must include both the project ID and
-                the dataset ID, separated by ``.`` or, single prefix usage is
-                also permitted.
+                the dataset ID, separated by ``.``.
             default_project (str):
                 Optional. The project ID to use when ``dataset_id`` does not
                 include a project ID.
@@ -291,9 +290,6 @@ class DatasetReference(object):
 
         Examples:
             >>> DatasetReference.from_string('my-project-id.some_dataset')
-            DatasetReference('my-project-id', 'some_dataset')
-
-            >>> DatasetReference.from_string('prefix:my-project-id.some_dataset')
             DatasetReference('my-project-id', 'some_dataset')
 
         Raises:
@@ -313,18 +309,15 @@ class DatasetReference(object):
             raise ValueError(
                 "When default_project is not set, dataset_id must be a "
                 "fully-qualified dataset ID in standard SQL format, "
-                'e.g., "project.dataset_id" or, single prefix usage '
-                'is also permitted, e.g., "prefix:project.dataset_id" '
-                "got {}".format(dataset_id)
+                'e.g., "project.dataset_id" got {}'.format(dataset_id)
             )
         elif len(parts) == 2:
             output_project_id, output_dataset_id = parts
         elif len(parts) > 2:
             raise ValueError(
                 "Too many parts in dataset_id. Expected a fully-qualified "
-                'dataset ID in standard SQL format, e.g., "project.dataset_id" '
-                "or, single prefix usage is also permitted, e.g., "
-                '"prefix:project.dataset_id" got {}'.format(dataset_id)
+                "dataset ID in standard SQL format. e.g. "
+                '"project.dataset_id", got {}'.format(dataset_id)
             )
 
         return cls(output_project_id, output_dataset_id)
@@ -575,7 +568,7 @@ class Dataset(object):
             full_dataset_id (str):
                 A fully-qualified dataset ID in standard SQL format. Must
                 include both the project ID and the dataset ID, separated by
-                ``.`` or, single prefix usage is also permitted.
+                ``.``.
 
         Returns:
             Dataset: Dataset parsed from ``full_dataset_id``.
@@ -583,9 +576,6 @@ class Dataset(object):
         Examples:
             >>> Dataset.from_string('my-project-id.some_dataset')
             Dataset(DatasetReference('my-project-id', 'some_dataset'))
-
-            >>> DatasetReference.from_string('prefix:my-project-id.some_dataset')
-            DatasetReference('my-project-id', 'some_dataset')
 
         Raises:
             ValueError:
