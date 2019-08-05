@@ -60,7 +60,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(conn.build_api_url("/foo"), URI)
 
     def test_build_api_url_w_custom_endpoint(self):
-        custom_endpoint = "https://foo-translation.googleapis.com"
+        custom_endpoint = "https://foo-googleapis.com"
         conn = self._make_one(object(), api_endpoint=custom_endpoint)
         URI = "/".join([custom_endpoint, "storage", conn.API_VERSION, "foo"])
         self.assertEqual(conn.build_api_url("/foo"), URI)

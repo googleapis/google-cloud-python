@@ -81,7 +81,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(
             project=PROJECT,
             credentials=credentials,
-            client_options={"api_endpoint": "https://foo-googleapis.com"},
+            client_options={"api_endpoint": Connection.DEFAULT_API_ENDPOINT},
         )
 
         self.assertEqual(client.project, PROJECT)
@@ -90,7 +90,9 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(client.current_batch)
         self.assertEqual(list(client._batch_stack), [])
         self.assertIsInstance(client._connection._client_info, ClientInfo)
-        self.assertEqual(client._connection.API_BASE_URL, "https://foo-googleapis.com")
+        self.assertEqual(
+            client._connection.API_BASE_URL, Connection.DEFAULT_API_ENDPOINT
+        )
 
     def test_ctor_w_empty_client_options(self):
         from google.cloud._http import ClientInfo
@@ -122,7 +124,7 @@ class TestClient(unittest.TestCase):
 
         PROJECT = "PROJECT"
         credentials = _make_credentials()
-        client_options = ClientOptions(api_endpoint="https://foo-googleapis.com")
+        client_options = ClientOptions(api_endpoint=Connection.DEFAULT_API_ENDPOINT)
 
         client = self._make_one(
             project=PROJECT, credentials=credentials, client_options=client_options
@@ -134,7 +136,9 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(client.current_batch)
         self.assertEqual(list(client._batch_stack), [])
         self.assertIsInstance(client._connection._client_info, ClientInfo)
-        self.assertEqual(client._connection.API_BASE_URL, "https://foo-googleapis.com")
+        self.assertEqual(
+            client._connection.API_BASE_URL, Connection.DEFAULT_API_ENDPOINT
+        )
 
     def test_ctor_wo_project(self):
         from google.cloud.storage._http import Connection
