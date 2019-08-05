@@ -1449,6 +1449,7 @@ class Client(ClientWithProject):
         location=None,
         project=None,
         job_config=None,
+        parquet_compression="snappy",
     ):
         """Upload the contents of a table from a pandas DataFrame.
 
@@ -1491,6 +1492,15 @@ class Client(ClientWithProject):
                 column names matching those of the dataframe. The BigQuery
                 schema is used to determine the correct data type conversion.
                 Indexes are not loaded. Requires the :mod:`pyarrow` library.
+            parquet_compression (str):
+                 The compression method to use if intermittently serializing
+                 ``dataframe`` to a parquet file. Must be one of {"snappy",
+                 "gzip", "brotli"}, or ``None`` for no compression. Defaults
+                 to "snappy".
+
+                 The argument is directly passed as the ``compression`` argument
+                 to the underlying ``DataFrame.to_parquet()`` method.
+                 https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_parquet.html#pandas.DataFrame.to_parquet
 
         Returns:
             google.cloud.bigquery.job.LoadJob: A new load job.
@@ -1527,7 +1537,7 @@ class Client(ClientWithProject):
                         PendingDeprecationWarning,
                         stacklevel=2,
                     )
-                dataframe.to_parquet(tmppath)
+                dataframe.to_parquet(tmppath, compression=parquet_compression)
 
             with open(tmppath, "rb") as parquet_file:
                 return self.load_table_from_file(

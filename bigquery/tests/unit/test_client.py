@@ -5377,6 +5377,33 @@ class TestClientUpload(object):
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_load_table_from_dataframe_wo_pyarrow_custom_compression(self):
+        client = self._make_client()
+        records = [{"name": "Monty", "age": 100}, {"name": "Python", "age": 60}]
+        dataframe = pandas.DataFrame(records)
+
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
+        )
+        pyarrow_patch = mock.patch("google.cloud.bigquery.client.pyarrow", None)
+        to_parquet_patch = mock.patch.object(
+            dataframe, "to_parquet", wraps=dataframe.to_parquet
+        )
+
+        with load_patch, pyarrow_patch, to_parquet_patch as to_parquet_spy:
+            client.load_table_from_dataframe(
+                dataframe,
+                self.TABLE_REF,
+                location=self.LOCATION,
+                parquet_compression="gzip",
+            )
+
+        call_args = to_parquet_spy.call_args
+        assert call_args is not None
+        assert call_args.kwargs.get("compression") == "gzip"
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_load_table_from_dataframe_w_nulls(self):
         """Test that a DataFrame with null columns can be uploaded if a
         BigQuery schema is specified.
