@@ -365,7 +365,7 @@ class Blob(_PropertyMixin):
 
         :type response_type: str
         :param response_type: (Optional) Content type of responses to requests
-                              for the signed URL. Ignored if content_type is set.
+                              for the signed URL. Ignored if content_type is set on object/blob metadata.
 
         :type generation: str
         :param generation: (Optional) A value that indicates which generation
