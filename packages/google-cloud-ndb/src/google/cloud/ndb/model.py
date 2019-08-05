@@ -521,6 +521,14 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
     """
     model_class = model_class or Model._lookup_model(ds_entity.kind)
     entity = model_class()
+
+    # Check if we are dealing with a PolyModel, and if so get correct subclass.
+    # We need to import here to avoid circular import.
+    from google.cloud.ndb import PolyModel
+
+    if isinstance(entity, PolyModel) and "class" in ds_entity:
+        entity = entity._class_map[tuple(ds_entity["class"])]()
+
     if ds_entity.key:
         entity._key = key_module.Key._from_ds_key(ds_entity.key)
 
@@ -655,8 +663,7 @@ def _entity_to_ds_entity(entity, set_key=True):
     if set_key:
         key = entity._key
         if key is None:
-            # use _class_name instead of _get_kind, to get PolyModel right
-            key = key_module.Key(entity._class_name(), None)
+            key = key_module.Key(entity._get_kind(), None)
         ds_entity = ds_entity_module.Entity(
             key._key, exclude_from_indexes=exclude_from_indexes
         )
@@ -1950,12 +1957,10 @@ def _validate_key(value, entity=None):
         raise exceptions.BadValueError("Expected Key, got {!r}".format(value))
 
     if entity and type(entity) not in (Model, Expando):
-        # Need to use _class_name instead of _get_kind, to be able to
-        # return the correct kind if this is a PolyModel
-        if value.kind() != entity._class_name():
+        if value.kind() != entity._get_kind():
             raise KindError(
                 "Expected Key kind to be {}; received "
-                "{}".format(entity._class_name(), value.kind())
+                "{}".format(entity._get_kind(), value.kind())
             )
 
     return value
@@ -4518,7 +4523,7 @@ class Model(metaclass=MetaModel):
 
     @classmethod
     def _class_name(cls):
-        """A hook for polymodel to override.
+        """A hook for PolyModel to override.
 
         For regular models and expandos this is just an alias for
         _get_kind().  For PolyModel subclasses, it returns the class name

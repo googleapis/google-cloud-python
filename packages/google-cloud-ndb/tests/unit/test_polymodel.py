@@ -108,8 +108,9 @@ class TestPolyModel:
         class Cat(Animal):
             pass
 
-        key = datastore.Key("Cat", 123, project="testing")
+        key = datastore.Key("Animal", 123, project="testing")
         datastore_entity = datastore.Entity(key=key)
+        datastore_entity["class"] = ["Animal", "Cat"]
         protobuf = helpers.entity_to_protobuf(datastore_entity)
         entity = model._entity_from_protobuf(protobuf)
         assert isinstance(entity, Cat)
