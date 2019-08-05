@@ -38,6 +38,10 @@ def main():
         author_email="googleapis-packages@google.com",
         license="Apache 2.0",
         url="https://github.com/googleapis/python-ndb",
+        project_urls={
+            'Documentation': 'https://googleapis.dev/python/python-ndb/latest',
+            'Issue Tracker': 'https://github.com/googleapis/python-ndb/issues'
+        },
         classifiers=[
             "Development Status :: 3 - Alpha",
             "Intended Audience :: Developers",
