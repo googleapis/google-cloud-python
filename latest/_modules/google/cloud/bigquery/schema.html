@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.bigquery.schema &#8212; google-cloud 8c8e360 documentation</title>
+    <title>google.cloud.bigquery.schema &#8212; google-cloud 0ce1ca5 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -47,6 +47,33 @@
 <span class="c1"># limitations under the License.</span>
 
 <span class="sd">&quot;&quot;&quot;Schemas for BigQuery tables / queries.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery_v2</span> <span class="k">import</span> <span class="n">types</span>
+
+
+<span class="c1"># SQL types reference:</span>
+<span class="c1"># https://cloud.google.com/bigquery/data-types#legacy_sql_data_types</span>
+<span class="c1"># https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types</span>
+<span class="n">LEGACY_TO_STANDARD_TYPES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;STRING&quot;</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">StandardSqlDataType</span><span class="o">.</span><span class="n">STRING</span><span class="p">,</span>
+    <span class="s2">&quot;BYTES&quot;</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">StandardSqlDataType</span><span class="o">.</span><span class="n">BYTES</span><span class="p">,</span>
+    <span class="s2">&quot;INTEGER&quot;</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">StandardSqlDataType</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span>
+    <span class="s2">&quot;INT64&quot;</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">StandardSqlDataType</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span>
+    <span class="s2">&quot;FLOAT&quot;</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">StandardSqlDataType</span><span class="o">.</span><span class="n">FLOAT64</span><span class="p">,</span>
+    <span class="s2">&quot;FLOAT64&quot;</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">StandardSqlDataType</span><span class="o">.</span><span class="n">FLOAT64</span><span class="p">,</span>
+    <span class="s2">&quot;NUMERIC&quot;</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">StandardSqlDataType</span><span class="o">.</span><span class="n">NUMERIC</span><span class="p">,</span>
+    <span class="s2">&quot;BOOLEAN&quot;</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">StandardSqlDataType</span><span class="o">.</span><span class="n">BOOL</span><span class="p">,</span>
+    <span class="s2">&quot;BOOL&quot;</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">StandardSqlDataType</span><span class="o">.</span><span class="n">BOOL</span><span class="p">,</span>
+    <span class="s2">&quot;GEOGRAPHY&quot;</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">StandardSqlDataType</span><span class="o">.</span><span class="n">GEOGRAPHY</span><span class="p">,</span>
+    <span class="s2">&quot;RECORD&quot;</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">StandardSqlDataType</span><span class="o">.</span><span class="n">STRUCT</span><span class="p">,</span>
+    <span class="s2">&quot;STRUCT&quot;</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">StandardSqlDataType</span><span class="o">.</span><span class="n">STRUCT</span><span class="p">,</span>
+    <span class="s2">&quot;TIMESTAMP&quot;</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">StandardSqlDataType</span><span class="o">.</span><span class="n">TIMESTAMP</span><span class="p">,</span>
+    <span class="s2">&quot;DATE&quot;</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">StandardSqlDataType</span><span class="o">.</span><span class="n">DATE</span><span class="p">,</span>
+    <span class="s2">&quot;TIME&quot;</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">StandardSqlDataType</span><span class="o">.</span><span class="n">TIME</span><span class="p">,</span>
+    <span class="s2">&quot;DATETIME&quot;</span><span class="p">:</span> <span class="n">types</span><span class="o">.</span><span class="n">StandardSqlDataType</span><span class="o">.</span><span class="n">DATETIME</span><span class="p">,</span>
+    <span class="c1"># no direct conversion from ARRAY, the latter is represented by mode=&quot;REPEATED&quot;</span>
+<span class="p">}</span>
+<span class="sd">&quot;&quot;&quot;String names of the legacy SQL types to integer codes of Standard SQL types.&quot;&quot;&quot;</span>
 
 
 <div class="viewcode-block" id="SchemaField"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.schema.SchemaField.html#google.cloud.bigquery.schema.SchemaField">[docs]</a><span class="k">class</span> <span class="nc">SchemaField</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -179,6 +206,41 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_description</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">,</span>
         <span class="p">)</span>
+
+<div class="viewcode-block" id="SchemaField.to_standard_sql"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.schema.SchemaField.html#google.cloud.bigquery.schema.SchemaField.to_standard_sql">[docs]</a>    <span class="k">def</span> <span class="nf">to_standard_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the field as the standard SQL field representation object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            An instance of :class:`~google.cloud.bigquery_v2.types.StandardSqlField`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sql_type</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">StandardSqlDataType</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;REPEATED&quot;</span><span class="p">:</span>
+            <span class="n">sql_type</span><span class="o">.</span><span class="n">type_kind</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">StandardSqlDataType</span><span class="o">.</span><span class="n">ARRAY</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sql_type</span><span class="o">.</span><span class="n">type_kind</span> <span class="o">=</span> <span class="n">LEGACY_TO_STANDARD_TYPES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">field_type</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">StandardSqlDataType</span><span class="o">.</span><span class="n">TYPE_KIND_UNSPECIFIED</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">sql_type</span><span class="o">.</span><span class="n">type_kind</span> <span class="o">==</span> <span class="n">types</span><span class="o">.</span><span class="n">StandardSqlDataType</span><span class="o">.</span><span class="n">ARRAY</span><span class="p">:</span>  <span class="c1"># noqa: E721</span>
+            <span class="n">array_element_type</span> <span class="o">=</span> <span class="n">LEGACY_TO_STANDARD_TYPES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">field_type</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">StandardSqlDataType</span><span class="o">.</span><span class="n">TYPE_KIND_UNSPECIFIED</span>
+            <span class="p">)</span>
+            <span class="n">sql_type</span><span class="o">.</span><span class="n">array_element_type</span><span class="o">.</span><span class="n">type_kind</span> <span class="o">=</span> <span class="n">array_element_type</span>
+
+            <span class="c1"># ARRAY cannot directly contain other arrays, only scalar types and STRUCTs</span>
+            <span class="c1"># https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#array-type</span>
+            <span class="k">if</span> <span class="n">array_element_type</span> <span class="o">==</span> <span class="n">types</span><span class="o">.</span><span class="n">StandardSqlDataType</span><span class="o">.</span><span class="n">STRUCT</span><span class="p">:</span>  <span class="c1"># noqa: E721</span>
+                <span class="n">sql_type</span><span class="o">.</span><span class="n">array_element_type</span><span class="o">.</span><span class="n">struct_type</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                    <span class="n">field</span><span class="o">.</span><span class="n">to_standard_sql</span><span class="p">()</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span>
+                <span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">sql_type</span><span class="o">.</span><span class="n">type_kind</span> <span class="o">==</span> <span class="n">types</span><span class="o">.</span><span class="n">StandardSqlDataType</span><span class="o">.</span><span class="n">STRUCT</span><span class="p">:</span>  <span class="c1"># noqa: E721</span>
+            <span class="n">sql_type</span><span class="o">.</span><span class="n">struct_type</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                <span class="n">field</span><span class="o">.</span><span class="n">to_standard_sql</span><span class="p">()</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">types</span><span class="o">.</span><span class="n">StandardSqlField</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">sql_type</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">SchemaField</span><span class="p">):</span>

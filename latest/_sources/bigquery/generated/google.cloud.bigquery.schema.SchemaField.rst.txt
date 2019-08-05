@@ -16,6 +16,9 @@ google.cloud.bigquery.schema.SchemaField
    
    ~SchemaField.to_api_repr
    
+   
+   ~SchemaField.to_standard_sql
+   
 
 
 
