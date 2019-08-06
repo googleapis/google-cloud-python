@@ -1494,11 +1494,16 @@ class Client(ClientWithProject):
                 Indexes are not loaded. Requires the :mod:`pyarrow` library.
             parquet_compression (str):
                  [Beta] The compression method to use if intermittently
-                 serializing ``dataframe`` to a parquet file. Must be one of
-                 {"snappy", "gzip", "brotli"}, or ``None`` for no compression.
-                 Defaults to "snappy".
+                 serializing ``dataframe`` to a parquet file.
 
-                 The argument is directly passed as the ``compression`` argument
+                 If ``pyarrow`` and job config schema are used, the argument
+                 is directly passed as the ``compression`` argument to the
+                 underlying ``pyarrow.parquet.write_table()`` method (the
+                 default value "snappy" gets converted to uppercase).
+                 https://arrow.apache.org/docs/python/generated/pyarrow.parquet.write_table.html#pyarrow-parquet-write-table
+
+                 If either ``pyarrow`` or job config schema are missing, the
+                 argument is directly passed as the ``compression`` argument
                  to the underlying ``DataFrame.to_parquet()`` method.
                  https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_parquet.html#pandas.DataFrame.to_parquet
 
@@ -1525,8 +1530,14 @@ class Client(ClientWithProject):
 
         try:
             if pyarrow and job_config.schema:
+                if parquet_compression == "snappy":  # adjust the default value
+                    parquet_compression = parquet_compression.upper()
+
                 _pandas_helpers.dataframe_to_parquet(
-                    dataframe, job_config.schema, tmppath
+                    dataframe,
+                    job_config.schema,
+                    tmppath,
+                    parquet_compression=parquet_compression,
                 )
             else:
                 if job_config.schema:
