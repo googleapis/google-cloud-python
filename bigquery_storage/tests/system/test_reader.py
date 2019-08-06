@@ -15,10 +15,6 @@
 # limitations under the License.
 """System tests for reading rows from tables."""
 
-import os
-
-import numpy
-import pyarrow.types
 import pytest
 
 from google.cloud import bigquery_storage_v1beta1
