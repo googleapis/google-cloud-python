@@ -315,8 +315,8 @@ class KeyManagementServiceClient(object):
             order_by (str): Optional. Specify how the results should be sorted. If not specified, the
                 results will be sorted in the default order.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -424,8 +424,8 @@ class KeyManagementServiceClient(object):
             order_by (str): Optional. Specify how the results should be sorted. If not specified, the
                 results will be sorted in the default order.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -535,8 +535,8 @@ class KeyManagementServiceClient(object):
             order_by (str): Optional. Specify how the results should be sorted. If not specified, the
                 results will be sorted in the default order.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -650,8 +650,8 @@ class KeyManagementServiceClient(object):
             order_by (str): Optional. Specify how the results should be sorted. If not specified, the
                 results will be sorted in the default order.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -739,8 +739,8 @@ class KeyManagementServiceClient(object):
         Args:
             name (str): The ``name`` of the ``KeyRing`` to get.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -808,8 +808,8 @@ class KeyManagementServiceClient(object):
         Args:
             name (str): The ``name`` of the ``ImportJob`` to get.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -878,8 +878,8 @@ class KeyManagementServiceClient(object):
         Args:
             name (str): The ``name`` of the ``CryptoKey`` to get.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -947,8 +947,8 @@ class KeyManagementServiceClient(object):
         Args:
             name (str): The ``name`` of the ``CryptoKeyVersion`` to get.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1031,8 +1031,8 @@ class KeyManagementServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.kms_v1.types.KeyRing`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1118,8 +1118,8 @@ class KeyManagementServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.kms_v1.types.ImportJob`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1213,8 +1213,8 @@ class KeyManagementServiceClient(object):
                 ``CryptoKeyVersions``. You must manually call ``CreateCryptoKeyVersion``
                 or ``ImportCryptoKeyVersion`` before you can use this ``CryptoKey``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1299,8 +1299,8 @@ class KeyManagementServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.kms_v1.types.CryptoKeyVersion`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1408,8 +1408,8 @@ class KeyManagementServiceClient(object):
                 This format is the same as the format produced by PKCS#11 mechanism
                 CKM\_RSA\_AES\_KEY\_WRAP.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1500,8 +1500,8 @@ class KeyManagementServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.kms_v1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1587,8 +1587,8 @@ class KeyManagementServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.kms_v1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1681,8 +1681,8 @@ class KeyManagementServiceClient(object):
                 keys, the combined length of the plaintext and
                 additional\_authenticated\_data fields must be no larger than 8KiB.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1765,8 +1765,8 @@ class KeyManagementServiceClient(object):
             additional_authenticated_data (bytes): Optional data that must match the data originally supplied in
                 ``EncryptRequest.additional_authenticated_data``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1845,8 +1845,8 @@ class KeyManagementServiceClient(object):
             name (str): The resource name of the ``CryptoKey`` to update.
             crypto_key_version_id (str): The id of the child ``CryptoKeyVersion`` to use as primary.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1928,8 +1928,8 @@ class KeyManagementServiceClient(object):
         Args:
             name (str): The resource name of the ``CryptoKeyVersion`` to destroy.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -2000,8 +2000,8 @@ class KeyManagementServiceClient(object):
         Args:
             name (str): The resource name of the ``CryptoKeyVersion`` to restore.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -2071,8 +2071,8 @@ class KeyManagementServiceClient(object):
         Args:
             name (str): The ``name`` of the ``CryptoKeyVersion`` public key to get.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -2149,8 +2149,8 @@ class KeyManagementServiceClient(object):
             ciphertext (bytes): Required. The data encrypted with the named ``CryptoKeyVersion``'s
                 public key using OAEP.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -2231,8 +2231,8 @@ class KeyManagementServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.kms_v1.types.Digest`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -2313,8 +2313,8 @@ class KeyManagementServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.kms_v1.types.Policy`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -2390,8 +2390,8 @@ class KeyManagementServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.kms_v1.types.GetPolicyOptions`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -2476,8 +2476,8 @@ class KeyManagementServiceClient(object):
                 information see `IAM
                 Overview <https://cloud.google.com/iam/docs/overview#permissions>`__.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
