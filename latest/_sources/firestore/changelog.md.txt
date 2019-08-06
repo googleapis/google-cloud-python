@@ -5,6 +5,39 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## 1.4.0
+
+08-06-2019 11:43 PDT
+
+### New Features
+- Support emulator in client. ([#8721](https://github.com/googleapis/google-cloud-python/pull/8721))
+- Add GAPIC client for Admin V1. ([#8667](https://github.com/googleapis/google-cloud-python/pull/8667))
+- Add `Transaction.get` / `Transaction.get_all`. ([#8628](https://github.com/googleapis/google-cloud-python/pull/8628))
+
+### Implementation Changes
+- Remove send/recv msg size limit (via synth). ([#8955](https://github.com/googleapis/google-cloud-python/pull/8955))
+- Deprecate `v1beta1` API / client. ([#8886](https://github.com/googleapis/google-cloud-python/pull/8886))
+- Allow snapshot cursors from other collections for collection group queries. ([#8882](https://github.com/googleapis/google-cloud-python/pull/8882))
+- Fix sorting `delete_changes` in `Watch._compute_snapshot`. ([#8809](https://github.com/googleapis/google-cloud-python/pull/8809))
+- Treat `None` as EOF in `Watch.on_snapshot`. ([#8687](https://github.com/googleapis/google-cloud-python/pull/8687))
+- Fix V1 `Client.collections` method. ([#8718](https://github.com/googleapis/google-cloud-python/pull/8718))
+- Avoid adding `prefix` to update mask for transforms used in `update`. ([#8701](https://github.com/googleapis/google-cloud-python/pull/8701))
+- Add `should_terminate` predicate for clean BiDi shutdown. ([#8650](https://github.com/googleapis/google-cloud-python/pull/8650))
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+
+### Documentation
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+
+### Internal / Testing Changes
+- Preserve manual change in noxfile (run systests verbosely). ([#8744](https://github.com/googleapis/google-cloud-python/pull/8744))
+- Update V1 conformance tests to match new repo / format. ([#8689](https://github.com/googleapis/google-cloud-python/pull/8689))
+- Improve cleanups for `watch` system tests. ([#8638](https://github.com/googleapis/google-cloud-python/pull/8638))
+- Avoid sharing top-level collection across test cases / CI runs. ([#8637](https://github.com/googleapis/google-cloud-python/pull/8637))
+
 ## 1.3.0
 
 07-09-2019 13:19 PDT
