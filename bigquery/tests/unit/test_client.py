@@ -5377,6 +5377,66 @@ class TestClientUpload(object):
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_load_table_from_dataframe_w_schema_arrow_custom_compression(self):
+        from google.cloud.bigquery import job
+        from google.cloud.bigquery.schema import SchemaField
+
+        client = self._make_client()
+        records = [{"name": "Monty", "age": 100}, {"name": "Python", "age": 60}]
+        dataframe = pandas.DataFrame(records)
+        schema = (SchemaField("name", "STRING"), SchemaField("age", "INTEGER"))
+        job_config = job.LoadJobConfig(schema=schema)
+
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
+        )
+        to_parquet_patch = mock.patch(
+            "google.cloud.bigquery.client._pandas_helpers.dataframe_to_parquet",
+            autospec=True,
+        )
+
+        with load_patch, to_parquet_patch as fake_to_parquet:
+            client.load_table_from_dataframe(
+                dataframe,
+                self.TABLE_REF,
+                job_config=job_config,
+                location=self.LOCATION,
+                parquet_compression="LZ4",
+            )
+
+        call_args = fake_to_parquet.call_args
+        assert call_args is not None
+        assert call_args.kwargs.get("parquet_compression") == "LZ4"
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_load_table_from_dataframe_wo_pyarrow_custom_compression(self):
+        client = self._make_client()
+        records = [{"name": "Monty", "age": 100}, {"name": "Python", "age": 60}]
+        dataframe = pandas.DataFrame(records)
+
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
+        )
+        pyarrow_patch = mock.patch("google.cloud.bigquery.client.pyarrow", None)
+        to_parquet_patch = mock.patch.object(
+            dataframe, "to_parquet", wraps=dataframe.to_parquet
+        )
+
+        with load_patch, pyarrow_patch, to_parquet_patch as to_parquet_spy:
+            client.load_table_from_dataframe(
+                dataframe,
+                self.TABLE_REF,
+                location=self.LOCATION,
+                parquet_compression="gzip",
+            )
+
+        call_args = to_parquet_spy.call_args
+        assert call_args is not None
+        assert call_args.kwargs.get("compression") == "gzip"
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_load_table_from_dataframe_w_nulls(self):
         """Test that a DataFrame with null columns can be uploaded if a
         BigQuery schema is specified.
