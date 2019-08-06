@@ -909,7 +909,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, blob_name)
 
-    def test_create_hmac_key(self):
+    def _create_hmac_key_helper(self, explicit_project=None):
         import datetime
         from pytz import UTC
         from six.moves.urllib.parse import urlencode
@@ -922,13 +922,19 @@ class TestClient(unittest.TestCase):
         SECRET = "a" * 40
         now = datetime.datetime.utcnow().replace(tzinfo=UTC)
         now_stamp = "{}Z".format(now.isoformat())
+
+        if explicit_project is not None:
+            expected_project = explicit_project
+        else:
+            expected_project = PROJECT
+
         RESOURCE = {
             "kind": "storage#hmacKey",
             "metadata": {
                 "accessId": ACCESS_ID,
                 "etag": "ETAG",
                 "id": "projects/{}/hmacKeys/{}".format(PROJECT, ACCESS_ID),
-                "project": PROJECT,
+                "project": expected_project,
                 "state": "ACTIVE",
                 "serviceAccountEmail": EMAIL,
                 "timeCreated": now_stamp,
@@ -941,7 +947,11 @@ class TestClient(unittest.TestCase):
         http = _make_requests_session([_make_json_response(RESOURCE)])
         client._http_internal = http
 
-        metadata, secret = client.create_hmac_key(service_account_email=EMAIL)
+        kwargs = {}
+        if explicit_project is not None:
+            kwargs["project_id"] = explicit_project
+
+        metadata, secret = client.create_hmac_key(service_account_email=EMAIL, **kwargs)
 
         self.assertIsInstance(metadata, HMACKeyMetadata)
         self.assertIs(metadata._client, client)
@@ -954,7 +964,7 @@ class TestClient(unittest.TestCase):
                 "storage",
                 client._connection.API_VERSION,
                 "projects",
-                PROJECT,
+                expected_project,
                 "hmacKeys",
             ]
         )
@@ -963,6 +973,12 @@ class TestClient(unittest.TestCase):
         http.request.assert_called_once_with(
             method="POST", url=FULL_URI, data=None, headers=mock.ANY
         )
+
+    def test_create_hmac_key_defaults(self):
+        self._create_hmac_key_helper()
+
+    def test_create_hmac_key_explicit_project(self):
+        self._create_hmac_key_helper(explicit_project="other-project-456")
 
     def test_list_hmac_keys_defaults_empty(self):
         PROJECT = "PROJECT"
@@ -995,6 +1011,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.storage.hmac_key import HMACKeyMetadata
 
         PROJECT = "PROJECT"
+        OTHER_PROJECT = "other-project-456"
         MAX_RESULTS = 3
         EMAIL = "storage-user-123@example.com"
         ACCESS_ID = "ACCESS-ID"
@@ -1020,6 +1037,7 @@ class TestClient(unittest.TestCase):
                 max_results=MAX_RESULTS,
                 service_account_email=EMAIL,
                 show_deleted_keys=True,
+                project_id=OTHER_PROJECT,
             )
         )
 
@@ -1036,7 +1054,7 @@ class TestClient(unittest.TestCase):
                 "storage",
                 client._connection.API_VERSION,
                 "projects",
-                PROJECT,
+                OTHER_PROJECT,
                 "hmacKeys",
             ]
         )

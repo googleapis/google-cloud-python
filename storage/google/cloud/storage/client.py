@@ -562,17 +562,24 @@ class Client(ClientWithProject):
             extra_params=extra_params,
         )
 
-    def create_hmac_key(self, service_account_email):
+    def create_hmac_key(self, service_account_email, project_id=None):
         """Create an HMAC key for a service account.
 
         :type service_account_email: str
         :param service_account_email: e-mail address of the service account
 
+        :type project_id: str
+        :param project_id: (Optional) explicit project ID for the key.
+            Defaults to the client's project.
+
         :rtype:
             Tuple[:class:`~google.cloud.storage.hmac_key.HMACKeyMetadata`, str]
         :returns: metadata for the created key, plus the bytes of the key's secret, which is an 40-character base64-encoded string.
         """
-        path = "/projects/{}/hmacKeys".format(self.project)
+        if project_id is None:
+            project_id = self.project
+
+        path = "/projects/{}/hmacKeys".format(project_id)
         qs_params = {"serviceAccountEmail": service_account_email}
         api_response = self._connection.api_request(
             method="POST", path=path, query_params=qs_params
@@ -583,7 +590,11 @@ class Client(ClientWithProject):
         return metadata, secret
 
     def list_hmac_keys(
-        self, max_results=None, service_account_email=None, show_deleted_keys=None
+        self,
+        max_results=None,
+        service_account_email=None,
+        show_deleted_keys=None,
+        project_id=None,
     ):
         """List HMAC keys for a project.
 
@@ -600,11 +611,18 @@ class Client(ClientWithProject):
             (Optional) included deleted keys in the list. Default is to
             exclude them.
 
+        :type project_id: str
+        :param project_id: (Optional) explicit project ID for the key.
+            Defaults to the client's project.
+
         :rtype:
             Tuple[:class:`~google.cloud.storage.hmac_key.HMACKeyMetadata`, str]
         :returns: metadata for the created key, plus the bytes of the key's secret, which is an 40-character base64-encoded string.
         """
-        path = "/projects/{}/hmacKeys".format(self.project)
+        if project_id is None:
+            project_id = self.project
+
+        path = "/projects/{}/hmacKeys".format(project_id)
         extra_params = {}
 
         if service_account_email is not None:
