@@ -42,6 +42,22 @@ class TestHMACKeyMetadata(unittest.TestCase):
         self.assertIsNone(metadata.time_created)
         self.assertIsNone(metadata.updated)
 
+    def test_ctor_explicit(self):
+        OTHER_PROJECT = "other-project-456"
+        ACCESS_ID = "access-id-123456789"
+        client = _Client()
+        metadata = self._make_one(client, access_id=ACCESS_ID, project_id=OTHER_PROJECT)
+        self.assertIs(metadata._client, client)
+        expected = {"accessId": ACCESS_ID, "projectId": OTHER_PROJECT}
+        self.assertEqual(metadata._properties, expected)
+        self.assertEqual(metadata.access_id, ACCESS_ID)
+        self.assertIsNone(metadata.etag)
+        self.assertEqual(metadata.project, OTHER_PROJECT)
+        self.assertIsNone(metadata.service_account_email)
+        self.assertIsNone(metadata.state)
+        self.assertIsNone(metadata.time_created)
+        self.assertIsNone(metadata.updated)
+
     def test___eq___other_type(self):
         metadata = self._make_one()
         for bogus in (None, "bogus", 123, 456.78, [], (), {}, set()):

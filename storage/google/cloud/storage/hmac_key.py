@@ -21,6 +21,13 @@ class HMACKeyMetadata(object):
 
     :type client: :class:`~google.cloud.stoage.client.Client`
     :param client: client associated with the key metadata.
+
+    :type access_id: str
+    :param access_id: (Optional) unique ID of an existing key.
+
+    :type project_id: str
+    :param project_id: (Optional) project ID of an existing key.
+        Defaults to client's project.
     """
 
     ACTIVE_STATE = "ACTIVE"
@@ -35,9 +42,15 @@ class HMACKeyMetadata(object):
 
     _SETTABLE_STATES = (ACTIVE_STATE, INACTIVE_STATE)
 
-    def __init__(self, client):
+    def __init__(self, client, access_id=None, project_id=None):
         self._client = client
         self._properties = {}
+
+        if access_id is not None:
+            self._properties["accessId"] = access_id
+
+        if project_id is not None:
+            self._properties["projectId"] = project_id
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
