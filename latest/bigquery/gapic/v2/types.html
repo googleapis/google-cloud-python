@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Types for BigQuery API Client &#8212; google-cloud 4e771c7 documentation</title>
+    <title>Types for BigQuery API Client &#8212; google-cloud eea5085 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -209,7 +209,9 @@
 <dl class="attribute">
 <dt id="google.cloud.bigquery_v2.types.ListModelsRequest.max_results">
 <code class="sig-name descname">max_results</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.ListModelsRequest.max_results" title="Permalink to this definition">#</a></dt>
-<dd><p>The maximum number of results per page.</p>
+<dd><p>The maximum number of results to return in a single response
+page. Leverage the page tokens to iterate through the entire
+collection.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -672,6 +674,156 @@ centroid.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.bigquery_v2.types.Model.ClusteringMetrics.clusters">
+<code class="sig-name descname">clusters</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.ClusteringMetrics.clusters" title="Permalink to this definition">#</a></dt>
+<dd><p>[Beta] Information for all clusters.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster">
+<em class="property">class </em><code class="sig-name descname">Cluster</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster" title="Permalink to this definition">#</a></dt>
+<dd><p>Message containing the information about one cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.centroid_id">
+<code class="sig-name descname">centroid_id</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.centroid_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Centroid id.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.feature_values">
+<code class="sig-name descname">feature_values</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.feature_values" title="Permalink to this definition">#</a></dt>
+<dd><p>Values of highly variant features for this cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.count">
+<code class="sig-name descname">count</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.count" title="Permalink to this definition">#</a></dt>
+<dd><p>Count of training data rows that were assigned to this
+cluster.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.FeatureValue">
+<em class="property">class </em><code class="sig-name descname">FeatureValue</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.FeatureValue" title="Permalink to this definition">#</a></dt>
+<dd><p>Representative value of a single feature within the cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.FeatureValue.feature_column">
+<code class="sig-name descname">feature_column</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.FeatureValue.feature_column" title="Permalink to this definition">#</a></dt>
+<dd><p>The feature column name.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.FeatureValue.numerical_value">
+<code class="sig-name descname">numerical_value</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.FeatureValue.numerical_value" title="Permalink to this definition">#</a></dt>
+<dd><p>The numerical feature value. This is the centroid value for
+this feature.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.FeatureValue.categorical_value">
+<code class="sig-name descname">categorical_value</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.FeatureValue.categorical_value" title="Permalink to this definition">#</a></dt>
+<dd><p>The categorical feature value.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue">
+<em class="property">class </em><code class="sig-name descname">CategoricalValue</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue" title="Permalink to this definition">#</a></dt>
+<dd><p>Representative value of a categorical feature.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.category_counts">
+<code class="sig-name descname">category_counts</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.category_counts" title="Permalink to this definition">#</a></dt>
+<dd><p>Counts of all categories for the categorical feature. If there
+are more than ten categories, we return top ten (by count) and
+return one more CategoryCount with category ‘<em>OTHER</em>’ and
+count as aggregate counts of remaining categories.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.CategoryCount">
+<em class="property">class </em><code class="sig-name descname">CategoryCount</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.CategoryCount" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents the count of a single category within the cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.CategoryCount.category">
+<code class="sig-name descname">category</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.CategoryCount.category" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of category.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.CategoryCount.count">
+<code class="sig-name descname">count</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.CategoryCount.count" title="Permalink to this definition">#</a></dt>
+<dd><p>The count of training samples matching the category within the
+cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">category</code></dt>
+<dd><p>Field google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.CategoryCount.category</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">count</code></dt>
+<dd><p>Field google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.CategoryCount.count</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">category_counts</code></dt>
+<dd><p>Field google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.category_counts</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">categorical_value</code></dt>
+<dd><p>Field google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.categorical_value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">feature_column</code></dt>
+<dd><p>Field google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.feature_column</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">numerical_value</code></dt>
+<dd><p>Field google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.numerical_value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">centroid_id</code></dt>
+<dd><p>Field google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.centroid_id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">count</code></dt>
+<dd><p>Field google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.count</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">feature_values</code></dt>
+<dd><p>Field google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.feature_values</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">clusters</code></dt>
+<dd><p>Field google.cloud.bigquery.v2.Model.ClusteringMetrics.clusters</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="sig-name descname">davies_bouldin_index</code></dt>
 <dd><p>Field google.cloud.bigquery.v2.Model.ClusteringMetrics.davies_bouldin_index</p>
@@ -694,7 +846,8 @@ training. These are not present for imported models.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_v2.types.Model.EvaluationMetrics.regression_metrics">
 <code class="sig-name descname">regression_metrics</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.EvaluationMetrics.regression_metrics" title="Permalink to this definition">#</a></dt>
-<dd><p>Populated for regression models.</p>
+<dd><p>Populated for regression models and explicit feedback type
+matrix factorization models.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -712,7 +865,7 @@ training. These are not present for imported models.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_v2.types.Model.EvaluationMetrics.clustering_metrics">
 <code class="sig-name descname">clustering_metrics</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.EvaluationMetrics.clustering_metrics" title="Permalink to this definition">#</a></dt>
-<dd><p>[Beta] Populated for clustering models.</p>
+<dd><p>Populated for clustering models.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -740,6 +893,11 @@ training. These are not present for imported models.</p>
 </dd></dl>
 
 </dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_v2.types.Model.KmeansEnums">
+<em class="property">class </em><code class="sig-name descname">KmeansEnums</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.KmeansEnums" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.bigquery_v2.types.Model.LabelsEntry">
@@ -884,7 +1042,8 @@ confidence threshold.</p>
 <dl class="class">
 <dt id="google.cloud.bigquery_v2.types.Model.RegressionMetrics">
 <em class="property">class </em><code class="sig-name descname">RegressionMetrics</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.RegressionMetrics" title="Permalink to this definition">#</a></dt>
-<dd><p>Evaluation metrics for regression models.</p>
+<dd><p>Evaluation metrics for regression and explicit feedback type matrix
+factorization models.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_v2.types.Model.RegressionMetrics.mean_absolute_error">
 <code class="sig-name descname">mean_absolute_error</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.RegressionMetrics.mean_absolute_error" title="Permalink to this definition">#</a></dt>
@@ -1015,7 +1174,7 @@ computed at the end of training.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_v2.types.Model.TrainingRun.IterationResult.cluster_infos">
 <code class="sig-name descname">cluster_infos</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.TrainingRun.IterationResult.cluster_infos" title="Permalink to this definition">#</a></dt>
-<dd><p>[Beta] Information about top clusters for clustering models.</p>
+<dd><p>Information about top clusters for clustering models.</p>
 </dd></dl>
 
 <dl class="class">
@@ -1219,13 +1378,13 @@ training data. Only applicable for classification models.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.distance_type">
 <code class="sig-name descname">distance_type</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.distance_type" title="Permalink to this definition">#</a></dt>
-<dd><p>[Beta] Distance type for clustering models.</p>
+<dd><p>Distance type for clustering models.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.num_clusters">
 <code class="sig-name descname">num_clusters</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.num_clusters" title="Permalink to this definition">#</a></dt>
-<dd><p>[Beta] Number of clusters for clustering models.</p>
+<dd><p>Number of clusters for clustering models.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1239,6 +1398,20 @@ imported. Only applicable for imported models.</p>
 <dt id="google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.optimization_strategy">
 <code class="sig-name descname">optimization_strategy</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.optimization_strategy" title="Permalink to this definition">#</a></dt>
 <dd><p>Optimization strategy for training linear regression models.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.kmeans_initialization_method">
+<code class="sig-name descname">kmeans_initialization_method</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.kmeans_initialization_method" title="Permalink to this definition">#</a></dt>
+<dd><p>The method used to initialize the centroids for kmeans
+algorithm.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.kmeans_initialization_column">
+<code class="sig-name descname">kmeans_initialization_column</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.kmeans_initialization_column" title="Permalink to this definition">#</a></dt>
+<dd><p>The column used to provide the initial centroids for kmeans
+algorithm when kmeans_initialization_method is CUSTOM.</p>
 </dd></dl>
 
 <dl class="class">
@@ -1298,6 +1471,18 @@ imported. Only applicable for imported models.</p>
 <dt>
 <code class="sig-name descname">input_label_columns</code></dt>
 <dd><p>Field google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.input_label_columns</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">kmeans_initialization_column</code></dt>
+<dd><p>Field google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.kmeans_initialization_column</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">kmeans_initialization_method</code></dt>
+<dd><p>Field google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.kmeans_initialization_method</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1549,8 +1734,9 @@ maximum length is 1,024 characters.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery_v2.types.PatchModelRequest.model">
 <code class="sig-name descname">model</code><a class="headerlink" href="#google.cloud.bigquery_v2.types.PatchModelRequest.model" title="Permalink to this definition">#</a></dt>
-<dd><p>Patched model. Follows patch semantics. Missing fields are not
-updated. To clear a field, explicitly set to default value.</p>
+<dd><p>Patched model. Follows RFC5789 patch semantics. Missing fields
+are not updated. To clear a field, explicitly set to default
+value.</p>
 </dd></dl>
 
 <dl class="attribute">

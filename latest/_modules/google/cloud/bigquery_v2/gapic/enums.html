@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.bigquery_v2.gapic.enums &#8212; google-cloud 4e771c7 documentation</title>
+    <title>google.cloud.bigquery_v2.gapic.enums &#8212; google-cloud eea5085 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -125,7 +125,7 @@
 <span class="sd">          MODEL_TYPE_UNSPECIFIED (int)</span>
 <span class="sd">          LINEAR_REGRESSION (int): Linear regression model.</span>
 <span class="sd">          LOGISTIC_REGRESSION (int): Logistic regression based classification model.</span>
-<span class="sd">          KMEANS (int): [Beta] K-means clustering model.</span>
+<span class="sd">          KMEANS (int): K-means clustering model.</span>
 <span class="sd">          TENSORFLOW (int): [Beta] An imported TensorFlow model.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -147,7 +147,24 @@
 
         <span class="n">OPTIMIZATION_STRATEGY_UNSPECIFIED</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">BATCH_GRADIENT_DESCENT</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="n">NORMAL_EQUATION</span> <span class="o">=</span> <span class="mi">2</span></div></div>
+        <span class="n">NORMAL_EQUATION</span> <span class="o">=</span> <span class="mi">2</span></div>
+
+    <span class="k">class</span> <span class="nc">KmeansEnums</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+        <span class="k">class</span> <span class="nc">KmeansInitializationMethod</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Indicates the method used to initialize the centroids for KMeans</span>
+<span class="sd">            clustering algorithm.</span>
+
+<span class="sd">            Attributes:</span>
+<span class="sd">              KMEANS_INITIALIZATION_METHOD_UNSPECIFIED (int)</span>
+<span class="sd">              RANDOM (int): Initializes the centroids randomly.</span>
+<span class="sd">              CUSTOM (int): Initializes the centroids using data specified in</span>
+<span class="sd">              kmeans\_initialization\_column.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+
+            <span class="n">KMEANS_INITIALIZATION_METHOD_UNSPECIFIED</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">RANDOM</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">CUSTOM</span> <span class="o">=</span> <span class="mi">2</span></div>
 
 
 <div class="viewcode-block" id="StandardSqlDataType"><a class="viewcode-back" href="../../../../../bigquery/gapic/v2/enums.html#google.cloud.bigquery_v2.gapic.enums.StandardSqlDataType">[docs]</a><span class="k">class</span> <span class="nc">StandardSqlDataType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
