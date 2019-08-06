@@ -63,7 +63,14 @@ class NotificationChannelServiceGrpcTransport(object):
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(address=address, credentials=credentials)
+            channel = self.create_channel(
+                address=address,
+                credentials=credentials,
+                options={
+                    "grpc.max_send_message_length": -1,
+                    "grpc.max_receive_message_length": -1,
+                }.items(),
+            )
 
         self._channel = channel
 
@@ -222,3 +229,71 @@ class NotificationChannelServiceGrpcTransport(object):
         return self._stubs[
             "notification_channel_service_stub"
         ].DeleteNotificationChannel
+
+    @property
+    def send_notification_channel_verification_code(self):
+        """Return the gRPC stub for :meth:`NotificationChannelServiceClient.send_notification_channel_verification_code`.
+
+        Causes a verification code to be delivered to the channel. The code can
+        then be supplied in ``VerifyNotificationChannel`` to verify the channel.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs[
+            "notification_channel_service_stub"
+        ].SendNotificationChannelVerificationCode
+
+    @property
+    def get_notification_channel_verification_code(self):
+        """Return the gRPC stub for :meth:`NotificationChannelServiceClient.get_notification_channel_verification_code`.
+
+        Requests a verification code for an already verified channel that can then
+        be used in a call to VerifyNotificationChannel() on a different channel
+        with an equivalent identity in the same or in a different project. This
+        makes it possible to copy a channel between projects without requiring
+        manual reverification of the channel. If the channel is not in the
+        verified state, this method will fail (in other words, this may only be
+        used if the SendNotificationChannelVerificationCode and
+        VerifyNotificationChannel paths have already been used to put the given
+        channel into the verified state).
+
+        There is no guarantee that the verification codes returned by this method
+        will be of a similar structure or form as the ones that are delivered
+        to the channel via SendNotificationChannelVerificationCode; while
+        VerifyNotificationChannel() will recognize both the codes delivered via
+        SendNotificationChannelVerificationCode() and returned from
+        GetNotificationChannelVerificationCode(), it is typically the case that
+        the verification codes delivered via
+        SendNotificationChannelVerificationCode() will be shorter and also
+        have a shorter expiration (e.g. codes such as "G-123456") whereas
+        GetVerificationCode() will typically return a much longer, websafe base
+        64 encoded string that has a longer expiration time.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs[
+            "notification_channel_service_stub"
+        ].GetNotificationChannelVerificationCode
+
+    @property
+    def verify_notification_channel(self):
+        """Return the gRPC stub for :meth:`NotificationChannelServiceClient.verify_notification_channel`.
+
+        Verifies a ``NotificationChannel`` by proving receipt of the code
+        delivered to the channel as a result of calling
+        ``SendNotificationChannelVerificationCode``.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs[
+            "notification_channel_service_stub"
+        ].VerifyNotificationChannel
