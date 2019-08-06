@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.bigquery.client.Client &#8212; google-cloud fe577c8 documentation</title>
+    <title>google.cloud.bigquery.client.Client &#8212; google-cloud a015978 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -1072,7 +1072,7 @@ within the requested dataset.</p>
 
 <dl class="method">
 <dt id="google.cloud.bigquery.client.Client.load_table_from_dataframe">
-<code class="sig-name descname">load_table_from_dataframe</code><span class="sig-paren">(</span><em class="sig-param">dataframe</em>, <em class="sig-param">destination</em>, <em class="sig-param">num_retries=6</em>, <em class="sig-param">job_id=None</em>, <em class="sig-param">job_id_prefix=None</em>, <em class="sig-param">location=None</em>, <em class="sig-param">project=None</em>, <em class="sig-param">job_config=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.load_table_from_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.load_table_from_dataframe" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">load_table_from_dataframe</code><span class="sig-paren">(</span><em class="sig-param">dataframe</em>, <em class="sig-param">destination</em>, <em class="sig-param">num_retries=6</em>, <em class="sig-param">job_id=None</em>, <em class="sig-param">job_id_prefix=None</em>, <em class="sig-param">location=None</em>, <em class="sig-param">project=None</em>, <em class="sig-param">job_config=None</em>, <em class="sig-param">parquet_compression='snappy'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.load_table_from_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.load_table_from_dataframe" title="Permalink to this definition">#</a></dt>
 <dd><p>Upload the contents of a table from a pandas DataFrame.</p>
 <p>Similar to <a class="reference internal" href="#google.cloud.bigquery.client.Client.load_table_from_uri" title="google.cloud.bigquery.client.Client.load_table_from_uri"><code class="xref py py-meth docutils literal notranslate"><span class="pre">load_table_from_uri()</span></code></a>, this method creates, starts and
 returns a <a class="reference internal" href="google.cloud.bigquery.job.LoadJob.html#google.cloud.bigquery.job.LoadJob" title="google.cloud.bigquery.job.LoadJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoadJob</span></code></a>.</p>
@@ -1109,6 +1109,18 @@ a value for
 column names matching those of the dataframe. The BigQuery
 schema is used to determine the correct data type conversion.
 Indexes are not loaded. Requires the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pyarrow</span></code> library.</p>
+</p></li>
+<li><p><strong>parquet_compression</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>[Beta] The compression method to use if intermittently
+serializing <code class="docutils literal notranslate"><span class="pre">dataframe</span></code> to a parquet file.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">pyarrow</span></code> and job config schema are used, the argument
+is directly passed as the <code class="docutils literal notranslate"><span class="pre">compression</span></code> argument to the
+underlying <code class="docutils literal notranslate"><span class="pre">pyarrow.parquet.write_table()</span></code> method (the
+default value “snappy” gets converted to uppercase).
+<a class="reference external" href="https://arrow.apache.org/docs/python/generated/pyarrow.parquet.write_table.html#pyarrow-parquet-write-table">https://arrow.apache.org/docs/python/generated/pyarrow.parquet.write_table.html#pyarrow-parquet-write-table</a></p>
+<p>If either <code class="docutils literal notranslate"><span class="pre">pyarrow</span></code> or job config schema are missing, the
+argument is directly passed as the <code class="docutils literal notranslate"><span class="pre">compression</span></code> argument
+to the underlying <code class="docutils literal notranslate"><span class="pre">DataFrame.to_parquet()</span></code> method.
+<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_parquet.html#pandas.DataFrame.to_parquet">https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_parquet.html#pandas.DataFrame.to_parquet</a></p>
 </p></li>
 </ul>
 </dd>

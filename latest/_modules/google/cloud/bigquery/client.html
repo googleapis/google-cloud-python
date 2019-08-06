@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.bigquery.client &#8212; google-cloud fe577c8 documentation</title>
+    <title>google.cloud.bigquery.client &#8212; google-cloud a015978 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -1483,6 +1483,7 @@
         <span class="n">location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">job_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">parquet_compression</span><span class="o">=</span><span class="s2">&quot;snappy&quot;</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload the contents of a table from a pandas DataFrame.</span>
 
@@ -1525,6 +1526,20 @@
 <span class="sd">                column names matching those of the dataframe. The BigQuery</span>
 <span class="sd">                schema is used to determine the correct data type conversion.</span>
 <span class="sd">                Indexes are not loaded. Requires the :mod:`pyarrow` library.</span>
+<span class="sd">            parquet_compression (str):</span>
+<span class="sd">                 [Beta] The compression method to use if intermittently</span>
+<span class="sd">                 serializing ``dataframe`` to a parquet file.</span>
+
+<span class="sd">                 If ``pyarrow`` and job config schema are used, the argument</span>
+<span class="sd">                 is directly passed as the ``compression`` argument to the</span>
+<span class="sd">                 underlying ``pyarrow.parquet.write_table()`` method (the</span>
+<span class="sd">                 default value &quot;snappy&quot; gets converted to uppercase).</span>
+<span class="sd">                 https://arrow.apache.org/docs/python/generated/pyarrow.parquet.write_table.html#pyarrow-parquet-write-table</span>
+
+<span class="sd">                 If either ``pyarrow`` or job config schema are missing, the</span>
+<span class="sd">                 argument is directly passed as the ``compression`` argument</span>
+<span class="sd">                 to the underlying ``DataFrame.to_parquet()`` method.</span>
+<span class="sd">                 https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_parquet.html#pandas.DataFrame.to_parquet</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            google.cloud.bigquery.job.LoadJob: A new load job.</span>
@@ -1549,8 +1564,14 @@
 
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">pyarrow</span> <span class="ow">and</span> <span class="n">job_config</span><span class="o">.</span><span class="n">schema</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">parquet_compression</span> <span class="o">==</span> <span class="s2">&quot;snappy&quot;</span><span class="p">:</span>  <span class="c1"># adjust the default value</span>
+                    <span class="n">parquet_compression</span> <span class="o">=</span> <span class="n">parquet_compression</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+
                 <span class="n">_pandas_helpers</span><span class="o">.</span><span class="n">dataframe_to_parquet</span><span class="p">(</span>
-                    <span class="n">dataframe</span><span class="p">,</span> <span class="n">job_config</span><span class="o">.</span><span class="n">schema</span><span class="p">,</span> <span class="n">tmppath</span>
+                    <span class="n">dataframe</span><span class="p">,</span>
+                    <span class="n">job_config</span><span class="o">.</span><span class="n">schema</span><span class="p">,</span>
+                    <span class="n">tmppath</span><span class="p">,</span>
+                    <span class="n">parquet_compression</span><span class="o">=</span><span class="n">parquet_compression</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">job_config</span><span class="o">.</span><span class="n">schema</span><span class="p">:</span>
@@ -1561,7 +1582,7 @@
                         <span class="ne">PendingDeprecationWarning</span><span class="p">,</span>
                         <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                     <span class="p">)</span>
-                <span class="n">dataframe</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="n">tmppath</span><span class="p">)</span>
+                <span class="n">dataframe</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="n">tmppath</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="n">parquet_compression</span><span class="p">)</span>
 
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmppath</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">parquet_file</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_table_from_file</span><span class="p">(</span>
