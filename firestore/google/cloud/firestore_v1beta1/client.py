@@ -23,6 +23,8 @@ In the hierarchy of API concepts
 * a :class:`~google.cloud.firestore_v1beta1.client.Client` owns a
   :class:`~google.cloud.firestore_v1beta1.document.DocumentReference`
 """
+import warnings
+
 from google.cloud.client import ClientWithProject
 
 from google.cloud.firestore_v1beta1 import _helpers
@@ -47,6 +49,10 @@ _BAD_DOC_TEMPLATE = (
 )
 _ACTIVE_TXN = "There is already an active transaction."
 _INACTIVE_TXN = "There is no active transaction."
+_V1BETA1_DEPRECATED_MESSAGE = (
+    "The 'v1beta1' API endpoint is deprecated. "
+    "The client/library which supports it will be removed in a future release."
+)
 
 
 class Client(ClientWithProject):
@@ -80,6 +86,7 @@ class Client(ClientWithProject):
     _rpc_metadata_internal = None
 
     def __init__(self, project=None, credentials=None, database=DEFAULT_DATABASE):
+        warnings.warn(_V1BETA1_DEPRECATED_MESSAGE, DeprecationWarning, stacklevel=2)
         # NOTE: This API has no use for the _http argument, but sending it
         #       will have no impact since the _http() @property only lazily
         #       creates a working HTTP object.

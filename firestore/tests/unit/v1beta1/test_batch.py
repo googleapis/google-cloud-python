@@ -15,6 +15,7 @@
 import unittest
 
 import mock
+import pytest
 
 
 class TestWriteBatch(unittest.TestCase):
@@ -268,4 +269,6 @@ def _make_client(project="seventy-nine"):
     from google.cloud.firestore_v1beta1.client import Client
 
     credentials = _make_credentials()
-    return Client(project=project, credentials=credentials)
+
+    with pytest.deprecated_call():
+        return Client(project=project, credentials=credentials)
