@@ -98,10 +98,11 @@ class MutationsBatcher(object):
         self.total_mutation_count += mutation_count
         self.total_size += row.get_mutations_size()
 
-        if self.total_size >= self.max_row_bytes or len(self.rows) >= self.flush_count:
-            self.flush()
-
-        if is_last:
+        if (
+            self.total_size >= self.max_row_bytes
+            or len(self.rows) >= self.flush_count
+            or is_last
+        ):
             self.flush()
 
     def mutate_rows(self, rows):

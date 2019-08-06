@@ -510,6 +510,15 @@ class Table(object):
                   corresponding to success or failure of each row mutation
                   sent. These will be in the same order as the `rows`.
         """
+        # retryable_mutate_rows = _RetryableMutateRowsWorker(
+        #     self._instance._client,
+        #     self.name,
+        #     rows,
+        #     app_profile_id=self._app_profile_id,
+        #     timeout=self.mutation_timeout,
+        # )
+        # return retryable_mutate_rows(retry=retry)
+
         mutate_batcher = self.mutations_batcher()
         mutate_batcher.mutate_rows(rows)
         return self.flush_batches(mutate_batcher.batches, retry)
@@ -706,9 +715,14 @@ class _RetryableMutateRowsWorker(object):
     )
     # pylint: enable=unsubscriptable-object
 
-    def __init__(self, client, table_name, batches, app_profile_id=None, timeout=None):
+    def __init__(
+        self, client, table_name, rows=[], batches=[], app_profile_id=None, timeout=None
+    ):
         self.client = client
         self.table_name = table_name
+        self.rows = rows
+        if rows:
+            batches = [rows]
         self.batches = dict([(index, batch) for index, batch in enumerate(batches)])
         self.app_profile_id = app_profile_id
         self.responses_statuses = dict(
@@ -777,7 +791,7 @@ class _RetryableMutateRowsWorker(object):
     def _is_retryable(status):
         return status is None or status.code in _RetryableMutateRowsWorker.RETRY_CODES
 
-    def _do_mutate_retryable_rows(self, batch_index):
+    def _do_mutate_retryable_rows(self, batch_index=0):
         """Mutate all the rows that are eligible for retry.
 
         A row is eligible for retry if it has not been tried or if it resulted
@@ -793,6 +807,8 @@ class _RetryableMutateRowsWorker(object):
                  * :exc:`RuntimeError` if the number of responses doesn't
                    match the number of rows that were retried
         """
+        if len(self.batches) == 0:
+            return []
         batch = self.batches[batch_index]
         responses_statuses = self.responses_statuses[batch_index]
         retryable_rows = []

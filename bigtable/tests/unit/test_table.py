@@ -1158,7 +1158,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         with mock.patch("google.cloud.bigtable.table.wrap_method") as patched:
             patched.return_value = mock.Mock(return_value=[response])
 
-            worker = self._make_worker(client, table.name, [[row_1, row_2, row_3]])
+            worker = self._make_worker(client, table.name, [row_1, row_2, row_3])
             statuses = worker(retry=None)
         result = [status.code for status in statuses]
         expected_result = [self.SUCCESS, self.RETRYABLE_1, self.NON_RETRYABLE]
@@ -1212,7 +1212,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         )
 
         retry = DEFAULT_RETRY.with_delay(initial=0.1)
-        worker = self._make_worker(client, table.name, [[row_1, row_2, row_3]])
+        worker = self._make_worker(client, table.name, [row_1, row_2, row_3])
         statuses = worker(retry=retry)
 
         result = [status.code for status in statuses]
@@ -1262,7 +1262,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         inner_api_calls["mutate_rows"] = mock.Mock(side_effect=[[response]])
 
         worker = self._make_worker(
-            client, table.name, [[row_1], [row_2], [row_3], [row_4]]
+            client, table.name, batches=[[row_1], [row_2], [row_3], [row_4]]
         )
         table._MAX_THREAD_LIMIT = 2
 
@@ -1318,7 +1318,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         retry = DEFAULT_RETRY.with_delay(initial=0.1)
 
         worker = self._make_worker(
-            client, table.name, [[row_1, row_2, row_3], [row_4, row_5, row_6]]
+            client, table.name, batches=[[row_1, row_2, row_3], [row_4, row_5, row_6]]
         )
         worker(retry=retry)
 
@@ -1338,8 +1338,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_table(self.TABLE_ID, instance)
 
-        worker = self._make_worker(client, table.name, [[]])
-        statuses = worker._do_mutate_retryable_rows(0)
+        worker = self._make_worker(client, table.name, [])
+        statuses = worker._do_mutate_retryable_rows()
 
         self.assertEqual(len(statuses), 0)
 
@@ -1377,8 +1377,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         inner_api_calls = client._table_data_client._inner_api_calls
         inner_api_calls["mutate_rows"] = mock.Mock(side_effect=[[response]])
 
-        worker = self._make_worker(client, table.name, [[row_1, row_2]])
-        statuses = worker._do_mutate_retryable_rows(0)
+        worker = self._make_worker(client, table.name, [row_1, row_2])
+        statuses = worker._do_mutate_retryable_rows()
 
         result = [status.code for status in statuses]
         expected_result = [self.SUCCESS, self.NON_RETRYABLE]
@@ -1417,7 +1417,6 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         row_2.set_cell("cf", b"col", b"value2")
         row_3 = DirectRow(row_key=b"row_key_3", table=table)
         row_3.set_cell("cf", b"col", b"value3")
-
         response = self._make_responses(
             [self.SUCCESS, self.RETRYABLE_1, self.NON_RETRYABLE]
         )
@@ -1426,10 +1425,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         inner_api_calls = client._table_data_client._inner_api_calls
         inner_api_calls["mutate_rows"] = mock.Mock(side_effect=[[response]])
 
-        worker = self._make_worker(client, table.name, [[row_1, row_2, row_3]])
+        worker = self._make_worker(client, table.name, [row_1, row_2, row_3])
 
         with self.assertRaises(_BigtableRetryableError):
-            worker._do_mutate_retryable_rows(0)
+            worker._do_mutate_retryable_rows()
 
         statuses = worker.responses_statuses
         statuses = statuses[0]
@@ -1483,7 +1482,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         # Patch the stub used by the API method.
         inner_api_calls = client._table_data_client._inner_api_calls
         inner_api_calls["mutate_rows"] = mock.Mock(side_effect=[[response]])
-        worker = self._make_worker(client, table.name, [[row_1, row_2, row_3, row_4]])
+        worker = self._make_worker(client, table.name, [row_1, row_2, row_3, row_4])
         worker.responses_statuses = {
             0: self._make_responses_statuses(
                 [self.SUCCESS, self.RETRYABLE_1, self.NON_RETRYABLE, self.RETRYABLE_2]
@@ -1491,7 +1490,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         }
 
         with self.assertRaises(_BigtableRetryableError):
-            worker._do_mutate_retryable_rows(0)
+            worker._do_mutate_retryable_rows()
 
         statuses = worker.responses_statuses
         result = [status.code for status in statuses[0]]
@@ -1545,14 +1544,14 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         inner_api_calls = client._table_data_client._inner_api_calls
         inner_api_calls["mutate_rows"] = mock.Mock(side_effect=[[response]])
 
-        worker = self._make_worker(client, table.name, [[row_1, row_2, row_3, row_4]])
+        worker = self._make_worker(client, table.name, [row_1, row_2, row_3, row_4])
         worker.responses_statuses = {
             0: self._make_responses_statuses(
                 [self.SUCCESS, self.RETRYABLE_1, self.NON_RETRYABLE, self.RETRYABLE_2]
             )
         }
 
-        statuses = worker._do_mutate_retryable_rows(0)
+        statuses = worker._do_mutate_retryable_rows()
 
         result = [status.code for status in statuses]
 
@@ -1597,7 +1596,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         row_3.set_cell("cf", b"col", b"value3")
         row_4 = DirectRow(row_key=b"row_key_4", table=table)
         row_4.set_cell("cf", b"col", b"value4")
-        worker = self._make_worker(client, table.name, [[row_1, row_2], [row_3, row_4]])
+        worker = self._make_worker(
+            client, table.name, batches=[[row_1, row_2], [row_3, row_4]]
+        )
 
         worker.responses_statuses = {
             0: self._make_responses_statuses([self.SUCCESS, self.NON_RETRYABLE]),
@@ -1640,9 +1641,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         inner_api_calls = client._table_data_client._inner_api_calls
         inner_api_calls["mutate_rows"] = mock.Mock(side_effect=[[response]])
 
-        worker = self._make_worker(client, table.name, [[row_1, row_2]])
+        worker = self._make_worker(client, table.name, [row_1, row_2])
         with self.assertRaises(RuntimeError):
-            worker._do_mutate_retryable_rows(0)
+            worker._do_mutate_retryable_rows()
 
 
 class Test__create_row_request(unittest.TestCase):
