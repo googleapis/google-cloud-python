@@ -394,3 +394,128 @@ class TestNotificationChannelServiceClient(object):
 
         with pytest.raises(CustomException):
             client.delete_notification_channel(name)
+
+    def test_send_notification_channel_verification_code(self):
+        channel = ChannelStub()
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.NotificationChannelServiceClient()
+
+        # Setup Request
+        name = client.notification_channel_path("[PROJECT]", "[NOTIFICATION_CHANNEL]")
+
+        client.send_notification_channel_verification_code(name)
+
+        assert len(channel.requests) == 1
+        expected_request = notification_service_pb2.SendNotificationChannelVerificationCodeRequest(
+            name=name
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_send_notification_channel_verification_code_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.NotificationChannelServiceClient()
+
+        # Setup request
+        name = client.notification_channel_path("[PROJECT]", "[NOTIFICATION_CHANNEL]")
+
+        with pytest.raises(CustomException):
+            client.send_notification_channel_verification_code(name)
+
+    def test_get_notification_channel_verification_code(self):
+        # Setup Expected Response
+        code = "code3059181"
+        expected_response = {"code": code}
+        expected_response = notification_service_pb2.GetNotificationChannelVerificationCodeResponse(
+            **expected_response
+        )
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.NotificationChannelServiceClient()
+
+        # Setup Request
+        name = client.notification_channel_path("[PROJECT]", "[NOTIFICATION_CHANNEL]")
+
+        response = client.get_notification_channel_verification_code(name)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = notification_service_pb2.GetNotificationChannelVerificationCodeRequest(
+            name=name
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_get_notification_channel_verification_code_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.NotificationChannelServiceClient()
+
+        # Setup request
+        name = client.notification_channel_path("[PROJECT]", "[NOTIFICATION_CHANNEL]")
+
+        with pytest.raises(CustomException):
+            client.get_notification_channel_verification_code(name)
+
+    def test_verify_notification_channel(self):
+        # Setup Expected Response
+        type_ = "type3575610"
+        name_2 = "name2-1052831874"
+        display_name = "displayName1615086568"
+        description = "description-1724546052"
+        expected_response = {
+            "type": type_,
+            "name": name_2,
+            "display_name": display_name,
+            "description": description,
+        }
+        expected_response = notification_pb2.NotificationChannel(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.NotificationChannelServiceClient()
+
+        # Setup Request
+        name = client.notification_channel_path("[PROJECT]", "[NOTIFICATION_CHANNEL]")
+        code = "code3059181"
+
+        response = client.verify_notification_channel(name, code)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = notification_service_pb2.VerifyNotificationChannelRequest(
+            name=name, code=code
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_verify_notification_channel_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = monitoring_v3.NotificationChannelServiceClient()
+
+        # Setup request
+        name = client.notification_channel_path("[PROJECT]", "[NOTIFICATION_CHANNEL]")
+        code = "code3059181"
+
+        with pytest.raises(CustomException):
+            client.verify_notification_channel(name, code)
