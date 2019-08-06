@@ -27,8 +27,8 @@ class MaxMutationsError(ValueError):
 class MutationsBatcher(object):
     """ A MutationsBatcher is used in batch cases where the number of mutations
     is large or unknown. It will store DirectRows in memory until one of the
-    size limits is reached, or an explicit call to flush() is performed. When
-    a flush event occurs, the DirectRows in memory will be sent to Cloud
+    size limits is reached, or an explicit call to finish_batch() is performed.
+     When a flush event occurs, the DirectRows in memory will be sent to Cloud
     Bigtable. Batching mutations is more efficient than sending individual
     request.
 
@@ -63,8 +63,9 @@ class MutationsBatcher(object):
         self.batches = []
 
     def mutate(self, row, is_last=False):
-        """ Add a row to the batch. If the current batch meets one of the size
-        limits, the batch is sent synchronously.
+        """ Add a row to the current batch. If the current batch meets one of
+        the size limits, automatic new branch create and row append in the new
+        batch
 
         For example:
 
@@ -92,7 +93,7 @@ class MutationsBatcher(object):
             )
 
         if (self.total_mutation_count + mutation_count) >= MAX_MUTATIONS:
-            self.flush()
+            self.finish_batch()
 
         self.rows.append(row)
         self.total_mutation_count += mutation_count
@@ -103,11 +104,11 @@ class MutationsBatcher(object):
             or len(self.rows) >= self.flush_count
             or is_last
         ):
-            self.flush()
+            self.finish_batch()
 
     def mutate_rows(self, rows):
-        """ Add a row to the batch. If the current batch meets one of the size
-        limits, the batch is sent synchronously.
+        """Make batch(es) from rows. batch is collection of rows.  mutate rows
+        have multiple batch(es)
 
         For example:
 
@@ -130,8 +131,9 @@ class MutationsBatcher(object):
             is_last = rows[-1] is row
             self.mutate(row, is_last)
 
-    def flush(self):
-        """ make batch
+    def finish_batch(self):
+        """Create a batch and add to the collection if there is rows exists
+        in class. It can used for externally create batch
         For example:
 
         .. literalinclude:: snippets.py
@@ -146,7 +148,8 @@ class MutationsBatcher(object):
             self.rows = []
 
     def flush_batches(self):
-        """Sends batches to Cloud bigtable
+        """Sends batch(es) to Google Cloud Bigtable.
+        The batch(es) is sent synchronously.
 
         :return: combined list of response status of every row in batches
         """

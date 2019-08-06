@@ -74,7 +74,7 @@ class TestMutationsBatcher(unittest.TestCase):
         ]
 
         mutation_batcher.mutate_rows(rows)
-        mutation_batcher.flush()
+        mutation_batcher.finish_batch()
 
         self.assertEqual(len(mutation_batcher.batches), 1)
 
@@ -138,7 +138,7 @@ class TestMutationsBatcher(unittest.TestCase):
         row.set_cell("cf1", b"c3", 3)
 
         mutation_batcher.mutate(row)
-        mutation_batcher.flush()
+        mutation_batcher.finish_batch()
 
         self.assertEqual(len(mutation_batcher.batches), 1)
 

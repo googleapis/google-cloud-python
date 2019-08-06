@@ -1322,7 +1322,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         )
         worker(retry=retry)
 
-        self.assertEqual(worker.latest_executing_batch_index, 2)
+        self.assertEqual(worker.batch_count, 2)
 
     def test_do_mutate_retryable_rows_empty_rows(self):
         from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client

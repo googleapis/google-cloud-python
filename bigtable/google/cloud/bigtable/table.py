@@ -510,15 +510,6 @@ class Table(object):
                   corresponding to success or failure of each row mutation
                   sent. These will be in the same order as the `rows`.
         """
-        # retryable_mutate_rows = _RetryableMutateRowsWorker(
-        #     self._instance._client,
-        #     self.name,
-        #     rows,
-        #     app_profile_id=self._app_profile_id,
-        #     timeout=self.mutation_timeout,
-        # )
-        # return retryable_mutate_rows(retry=retry)
-
         mutate_batcher = self.mutations_batcher()
         mutate_batcher.mutate_rows(rows)
         return self.flush_batches(mutate_batcher.batches, retry)
@@ -527,7 +518,7 @@ class Table(object):
         """mutate batches
 
         :type: list
-        :param batches: list of batch. one batch is a list of rows.
+        :param batches: List of batches. One batch is a list of rows.
 
         :type retry: :class:`~google.api_core.retry.Retry`
         :param retry:
@@ -686,9 +677,10 @@ class Table(object):
 class _RetryableMutateRowsWorker(object):
     """A callable worker that can retry to mutate rows with transient errors.
 
-    This class is a callable that can retry mutating batch/batches of rows that result in
-    transient errors. After all batch/batches are successful or none of the rows of batch
-    are retryable, any subsequent call on this callable will be a no-op.
+    This class is a callable that can retry mutating batch(es) of rows that
+    result in transient errors. After all batch(es) are successful or none of
+    the rows of batches are retryable, any subsequent call on this callable
+    will be a no-op.
 
     :type client: :class:`~google.cloud.bigtable.client.Client`
     :param client: The client that owns the table.
@@ -729,8 +721,8 @@ class _RetryableMutateRowsWorker(object):
             [(index, [None] * len(batch)) for index, batch in enumerate(batches)]
         )
         self.timeout = timeout
-        self.latest_executing_batch_index = 0
-        self.no_of_batches = len(batches)
+        self.batch_count = 0
+        self.num_batches = len(batches)
         self._lock = threading.Lock()
 
     def __call__(self, retry=DEFAULT_RETRY):
@@ -740,26 +732,26 @@ class _RetryableMutateRowsWorker(object):
         ``deadline`` specified in the `retry` is reached.
 
         :rtype: list
-        :returns: Batches of list of response statuses (`google.rpc.status_pb2.Status`)
+        :returns: Batches of lists of response statuses (`google.rpc.status_pb2.Status`)
                   corresponding to success or failure of each row mutation
                   sent. These will be in the same order as the ``rows`` in batch.
         """
-        max_thread_to_start = min(self.no_of_batches, _MAX_THREAD_LIMIT)
+        max_thread_to_start = min(self.num_batches, _MAX_THREAD_LIMIT)
 
         thread_list = []
         for _ in range(max_thread_to_start):
-            thread = threading.Thread(target=self.async_batch_execution, args=(retry,))
+            thread = threading.Thread(target=self.mutate_batch, args=(retry,))
             thread.start()
             thread_list.append(thread)
         for thread in thread_list:
             thread.join()
         response = []
-        for i in range(self.no_of_batches):
+        for i in range(self.num_batches):
             response += self.responses_statuses[i]
         return response
 
-    def async_batch_execution(self, retry=DEFAULT_RETRY):
-        """send asynchronous batch for mutate row
+    def mutate_batch(self, retry=DEFAULT_RETRY):
+        """Send batch to Google Cloud Bigtable synchronously
 
         :type retry: :class:`~google.api_core.retry.Retry`
         :param retry:
@@ -769,10 +761,10 @@ class _RetryableMutateRowsWorker(object):
             method or the :meth:`~google.api_core.retry.Retry.with_deadline`
             method.
         """
-        while not self.latest_executing_batch_index >= self.no_of_batches:
+        while not self.batch_count >= self.num_batches:
             self._lock.acquire()
-            current_batch_index = self.latest_executing_batch_index
-            self.latest_executing_batch_index += 1
+            current_batch_index = self.batch_count
+            self.batch_count += 1
             self._lock.release()
             mutate_rows = self._do_mutate_retryable_rows
             if retry:
