@@ -1493,10 +1493,10 @@ class Client(ClientWithProject):
                 schema is used to determine the correct data type conversion.
                 Indexes are not loaded. Requires the :mod:`pyarrow` library.
             parquet_compression (str):
-                 The compression method to use if intermittently serializing
-                 ``dataframe`` to a parquet file. Must be one of {"snappy",
-                 "gzip", "brotli"}, or ``None`` for no compression. Defaults
-                 to "snappy".
+                 [Beta] The compression method to use if intermittently
+                 serializing ``dataframe`` to a parquet file. Must be one of
+                 {"snappy", "gzip", "brotli"}, or ``None`` for no compression.
+                 Defaults to "snappy".
 
                  The argument is directly passed as the ``compression`` argument
                  to the underlying ``DataFrame.to_parquet()`` method.
