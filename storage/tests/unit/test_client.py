@@ -1007,7 +1007,7 @@ class TestClient(unittest.TestCase):
         )
 
     def test_list_hmac_keys_explicit_non_empty(self):
-        from six.moves.urllib.parse import urlencode
+        from six.moves.urllib.parse import parse_qsl
         from google.cloud.storage.hmac_key import HMACKeyMetadata
 
         PROJECT = "PROJECT"
@@ -1058,12 +1058,17 @@ class TestClient(unittest.TestCase):
                 "hmacKeys",
             ]
         )
-        QS_PARAMS = {
-            "maxResults": MAX_RESULTS,
+        EXPECTED_QPARAMS = {
+            "maxResults": str(MAX_RESULTS),
             "serviceAccountEmail": EMAIL,
-            "showDeletedKeys": True,
+            "showDeletedKeys": "True",
         }
-        FULL_URI = "{}?{}".format(URI, urlencode(QS_PARAMS))
         http.request.assert_called_once_with(
-            method="GET", url=FULL_URI, data=None, headers=mock.ANY
+            method="GET", url=mock.ANY, data=None, headers=mock.ANY
         )
+        kwargs = http.request.mock_calls[0].kwargs
+        uri = kwargs["url"]
+        base, qparam_str = uri.split("?")
+        qparams = dict(parse_qsl(qparam_str))
+        self.assertEqual(base, URI)
+        self.assertEqual(qparams, EXPECTED_QPARAMS)
