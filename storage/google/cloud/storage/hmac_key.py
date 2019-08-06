@@ -43,10 +43,7 @@ class HMACKeyMetadata(object):
         if not isinstance(other, self.__class__):
             return NotImplemented
 
-        return (
-            self._client == other._client
-            and self.access_id == other.access_id
-        )
+        return self._client == other._client and self.access_id == other.access_id
 
     def __hash__(self):
         return hash(self._client) + hash(self.access_id)
@@ -194,6 +191,4 @@ class HMACKeyMetadata(object):
         if self.state != self.INACTIVE_STATE:
             raise ValueError("Cannot delete key if not in 'INACTIVE' state.")
 
-        self._client._connection.api_request(
-            method="DELETE", path=self.path
-        )
+        self._client._connection.api_request(method="DELETE", path=self.path)

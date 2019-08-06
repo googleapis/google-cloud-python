@@ -49,31 +49,31 @@ class TestHMACKeyMetadata(unittest.TestCase):
 
     def test___eq___mismatched_client(self):
         metadata = self._make_one()
-        other_client = _Client(project='other-project-456')
+        other_client = _Client(project="other-project-456")
         other = self._make_one(other_client)
         self.assertNotEqual(metadata, other)
 
     def test___eq___mismatched_access_id(self):
         metadata = self._make_one()
-        metadata._properties['accessId'] = 'ABC123'
+        metadata._properties["accessId"] = "ABC123"
         other = self._make_one(metadata._client)
-        metadata._properties['accessId'] = 'DEF456'
+        metadata._properties["accessId"] = "DEF456"
         self.assertNotEqual(metadata, other)
 
     def test___eq___hit(self):
         metadata = self._make_one()
-        metadata._properties['accessId'] = 'ABC123'
+        metadata._properties["accessId"] = "ABC123"
         other = self._make_one(metadata._client)
-        other._properties['accessId'] = metadata.access_id
+        other._properties["accessId"] = metadata.access_id
         self.assertEqual(metadata, other)
 
     def test___hash__(self):
         client = _Client()
         metadata = self._make_one(client)
-        metadata._properties['accessId'] = 'ABC123'
+        metadata._properties["accessId"] = "ABC123"
         self.assertIsInstance(hash(metadata), int)
         other = self._make_one(client)
-        metadata._properties['accessId'] = 'DEF456'
+        metadata._properties["accessId"] = "DEF456"
         self.assertNotEqual(hash(metadata), hash(other))
 
     def test_access_id_getter(self):
@@ -281,9 +281,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
         expected_kwargs = {
             "method": "PUT",
             "path": expected_path,
-            "data": {
-                "state": "INACTIVE",
-            },
+            "data": {"state": "INACTIVE"},
         }
         connection.api_request.assert_called_once_with(**expected_kwargs)
 
@@ -295,7 +293,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
             "kind": "storage#hmacKeyMetadata",
             "accessId": access_id,
             "serviceAccountEmail": email,
-            "state": "ACTIVE"
+            "state": "ACTIVE",
         }
         connection = mock.Mock(spec=["api_request"])
         connection.api_request.return_value = resource
@@ -313,9 +311,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
         expected_kwargs = {
             "method": "PUT",
             "path": expected_path,
-            "data": {
-                "state": "ACTIVE",
-            },
+            "data": {"state": "ACTIVE"},
         }
         connection.api_request.assert_called_once_with(**expected_kwargs)
 
@@ -344,10 +340,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
         expected_path = "/projects/{}/hmacKeys/{}".format(
             client.DEFAULT_PROJECT, access_id
         )
-        expected_kwargs = {
-            "method": "DELETE",
-            "path": expected_path,
-        }
+        expected_kwargs = {"method": "DELETE", "path": expected_path}
         connection.api_request.assert_called_once_with(**expected_kwargs)
 
     def test_delete_hit_w_project_set(self):
@@ -364,10 +357,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
         metadata.delete()
 
         expected_path = "/projects/{}/hmacKeys/{}".format(project, access_id)
-        expected_kwargs = {
-            "method": "DELETE",
-            "path": expected_path,
-        }
+        expected_kwargs = {"method": "DELETE", "path": expected_path}
         connection.api_request.assert_called_once_with(**expected_kwargs)
 
 
@@ -381,10 +371,7 @@ class _Client(object):
     def __eq__(self, other):
         if not isinstance(other, self.__class__):  # pragma: NO COVER
             return NotImplemented
-        return (
-            self._connection == other._connection
-            and self.project == other.project
-        )
+        return self._connection == other._connection and self.project == other.project
 
     def __hash__(self):
         return hash(self._connection) + hash(self.project)

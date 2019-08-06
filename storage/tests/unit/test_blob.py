@@ -348,9 +348,7 @@ class Test_Blob(unittest.TestCase):
         BLOB_NAME = "foo~bar"
         bucket = _Bucket()
         blob = self._make_one(BLOB_NAME, bucket=bucket)
-        self.assertEqual(
-            blob.public_url, "https://storage.googleapis.com/name/foo~bar"
-        )
+        self.assertEqual(blob.public_url, "https://storage.googleapis.com/name/foo~bar")
 
     def test_public_url_with_non_ascii(self):
         blob_name = u"winter \N{snowman}"
