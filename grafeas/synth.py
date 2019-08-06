@@ -243,7 +243,6 @@ s.replace(
             channel = self\.create_channel\(
                 address=address,
                 credentials=credentials,
-            \)
 """,
     """        # Create the channel.
         if channel is None:
@@ -251,7 +250,6 @@ s.replace(
                 address,
                 scopes,
                 credentials=credentials,
-            )
 """,
 )
 
