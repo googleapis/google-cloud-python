@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Types for Cloud Talent Solution API Client &#8212; google-cloud a015978 documentation</title>
+    <title>Types for Cloud Talent Solution API Client &#8212; google-cloud 16b483e documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -2131,7 +2131,7 @@ be specified.  This field is used to perform a string match
 (<code class="docutils literal notranslate"><span class="pre">CASE_SENSITIVE_MATCH</span></code> or <code class="docutils literal notranslate"><span class="pre">CASE_INSENSITIVE_MATCH</span></code>)
 search. For filterable <code class="docutils literal notranslate"><span class="pre">string_value</span></code>s, a maximum total
 number of 200 values is allowed, with each <code class="docutils literal notranslate"><span class="pre">string_value</span></code>
-has a byte size of no more than 255B. For unfilterable
+has a byte size of no more than 500B. For unfilterable
 <code class="docutils literal notranslate"><span class="pre">string_values</span></code>, the maximum total byte size of unfilterable
 <code class="docutils literal notranslate"><span class="pre">string_values</span></code> is 50KB.  Empty string isn’t allowed.</p>
 </dd></dl>
@@ -2518,7 +2518,7 @@ degree.</p>
 <code class="sig-name descname">school_name</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.EducationRecord.school_name" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The name of the school or institution.  For example,
 “Stanford University”, “UC Berkeley”, and so on.  Number of
-characters allowed is 100.</p>
+characters allowed is 250.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2753,7 +2753,7 @@ matching the filter is excluded.</p>
 <code class="sig-name descname">employer_name</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.EmploymentRecord.employer_name" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The name of the employer company/organization.  For
 example, “Google”, “Alphabet”, and so on.  Number of
-characters allowed is 100.</p>
+characters allowed is 250.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2775,7 +2775,7 @@ allowed is 100.</p>
 <code class="sig-name descname">job_title</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.EmploymentRecord.job_title" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The job title of the employment.  For example,
 “Software Engineer”, “Data Scientist”, and so on.  Number of
-characters allowed is 100.</p>
+characters allowed is 250.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -5652,7 +5652,39 @@ Currently only one person name is supported.</p>
 <dl class="attribute">
 <dt id="google.cloud.talent_v4beta1.types.Profile.addresses">
 <code class="sig-name descname">addresses</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.Profile.addresses" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional. The candidate’s postal addresses.</p>
+<dd><p>Optional. The candidate’s postal addresses. It’s highly
+recommended to input this information as accurately as
+possible to help improve search quality. Here are some
+recommendations:  -  Provide
+[Address.usage][google.cloud.talent.v4beta1.Address.usage] if
+possible, especially if the address is PERSONAL. During a
+search only    personal addresses are considered. If there is
+no such address, all    addresses with unspecified usage are
+assumed to be personal. -  Provide
+[Address.current][google.cloud.talent.v4beta1.Address.current]
+for    the current address if possible. During a search, only
+current    addresses are considered. If there is no such
+address, all addresses    are assumed to be current.  When
+displaying a candidate’s addresses, it is sometimes desirable
+to limit the number of addresses shown. In these cases we
+recommend that you display the addresses in the following
+order of priority: 1.
+[Address.usage][google.cloud.talent.v4beta1.Address.usage] is
+PERSONAL and
+[Address.current][google.cloud.talent.v4beta1.Address.current]
+is true. 2.
+[Address.usage][google.cloud.talent.v4beta1.Address.usage] is
+PERSONAL and
+[Address.current][google.cloud.talent.v4beta1.Address.current]
+is false or not set. 3.
+[Address.usage][google.cloud.talent.v4beta1.Address.usage] is
+CONTACT_INFO_USAGE_UNSPECIFIED and
+[Address.current][google.cloud.talent.v4beta1.Address.current]
+is true. 4.
+[Address.usage][google.cloud.talent.v4beta1.Address.usage] is
+CONTACT_INFO_USAGE_UNSPECIFIED and
+[Address.current][google.cloud.talent.v4beta1.Address.current]
+is false or not set.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -5698,7 +5730,7 @@ only job title is changed from “software    engineer” to
 _current][google.cloud.talent.v4beta1.EmploymentRecord.is_cu
 rrent]    for the current employment if possible. If not, it’s
 inferred from    user inputs.  The limitation for max number
-of employment records is 50.</p>
+of employment records is 100.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -5715,7 +5747,7 @@ different degrees. -  Provide    [EducationRecord.is_current]
 [google.cloud.talent.v4beta1.EducationRecord.is_current]
 for the current education if possible. If not, it’s inferred
 from    user inputs.  The limitation for max number of
-education records is 10.</p>
+education records is 100.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -5724,7 +5756,7 @@ education records is 10.</p>
 <dd><p>Optional. The skill set of the candidate. It’s highly
 recommended to provide as much information as possible to help
 improve the search quality.  The limitation for max number of
-skills is 100.</p>
+skills is 500.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -5808,6 +5840,17 @@ filesResponse][google.cloud.talent.v4beta1.SearchProfilesRespo
 nse].</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.talent_v4beta1.types.Profile.derived_addresses">
+<code class="sig-name descname">derived_addresses</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.Profile.derived_addresses" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Derived locations of the profile, resolved from [
+Profile.addresses][google.cloud.talent.v4beta1.Profile.address
+es].  [derived_addresses][google.cloud.talent.v4beta1.Profile
+.derived_addresses] are exactly matched to [Profile.addresses
+][google.cloud.talent.v4beta1.Profile.addresses] in the same
+order.</p>
+</dd></dl>
+
 <dl class="class">
 <dt id="google.cloud.talent_v4beta1.types.Profile.CustomAttributesEntry">
 <em class="property">class </em><code class="sig-name descname">CustomAttributesEntry</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.Profile.CustomAttributesEntry" title="Permalink to this definition">#</a></dt>
@@ -5871,6 +5914,12 @@ nse].</p>
 <dt>
 <code class="sig-name descname">custom_attributes</code></dt>
 <dd><p>Field google.cloud.talent.v4beta1.Profile.custom_attributes</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">derived_addresses</code></dt>
+<dd><p>Field google.cloud.talent.v4beta1.Profile.derived_addresses</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -6057,13 +6106,35 @@ example, “software engineer in Palo Alto”.</p>
 <dt id="google.cloud.talent_v4beta1.types.ProfileQuery.location_filters">
 <code class="sig-name descname">location_filters</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.ProfileQuery.location_filters" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The location filter specifies geo-regions containing
-the profiles to search against.  If a location filter isn’t
-specified, profiles fitting the other search criteria are
-retrieved regardless of where they’re located.  If [LocationFi
-lter.negated][google.cloud.talent.v4beta1.LocationFilter.negat
-ed] is specified, the result doesn’t contain profiles from
-that location.  For example, search for profiles with
-addresses in “New York City”.</p>
+the profiles to search against. It filters against all of a
+profile’s [Profile.addresses][google.cloud.talent.v4beta1.Prof
+ile.addresses] where
+[Address.usage][google.cloud.talent.v4beta1.Address.usage] is
+PERSONAL and
+[Address.current][google.cloud.talent.v4beta1.Address.current]
+is true. If no such address exists, a fallback logic is
+applied in an attempt to determine the profile’s primary
+address.  The fallback logic selects an address from a
+profile’s [Profile.addresses][google.cloud.talent.v4beta1.Prof
+ile.addresses] in the following order of priority: 1.
+[Address.usage][google.cloud.talent.v4beta1.Address.usage] is
+PERSONAL and
+[Address.current][google.cloud.talent.v4beta1.Address.current]
+is false or not set. 2.
+[Address.usage][google.cloud.talent.v4beta1.Address.usage] is
+CONTACT_INFO_USAGE_UNSPECIFIED and
+[Address.current][google.cloud.talent.v4beta1.Address.current]
+is true. 3.
+[Address.usage][google.cloud.talent.v4beta1.Address.usage] is
+CONTACT_INFO_USAGE_UNSPECIFIED and
+[Address.current][google.cloud.talent.v4beta1.Address.current]
+is false or not set.  If a location filter isn’t specified,
+profiles fitting the other search criteria are retrieved
+regardless of where they’re located.  If [LocationFilter.negat
+ed][google.cloud.talent.v4beta1.LocationFilter.negated] is
+specified, the result doesn’t contain profiles from that
+location.  For example, search for profiles with addresses in
+“New York City”.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -6625,16 +6696,13 @@ field, if [resume_type][google.cloud.talent.v4beta1.Resume.re
 sume_type] is
 [HRXML][google.cloud.talent.v4beta1.Resume.ResumeType.HRXML].
 For example, the API parses this field and creates a profile
-with all structured fields populated, for example. [Employment
-Record][google.cloud.talent.v4beta1.EmploymentRecord], [Educat
-ionRecord][google.cloud.talent.v4beta1.EducationRecord], and
-so on. An error is thrown if this field cannot be parsed.  If
-this field is provided during profile creation or update, any
-other structured data provided in the profile is ignored. The
-API populates these fields by parsing this field. Note that
-the use of the functionality offered by this field to extract
-data from resumes is an Alpha feature and as such is not
-covered by any SLA.</p>
+with all structured fields populated. [EmploymentRecord][googl
+e.cloud.talent.v4beta1.EmploymentRecord], [EducationRecord][go
+ogle.cloud.talent.v4beta1.EducationRecord], and so on. An
+error is thrown if this field cannot be parsed.  Note that the
+use of the functionality offered by this field to extract data
+from resumes is an Alpha feature and as such is not covered by
+any SLA.</p>
 </dd></dl>
 
 <dl class="attribute">

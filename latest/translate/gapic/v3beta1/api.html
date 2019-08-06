@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Client for Cloud Translation API &#8212; google-cloud a015978 documentation</title>
+    <title>Client for Cloud Translation API &#8212; google-cloud 16b483e documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -155,8 +155,8 @@ It’s keyed by target language code.</p>
 message <a class="reference internal" href="types.html#google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig" title="google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">TranslateTextGlossaryConfig</span></code></a></p>
 </p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -215,8 +215,8 @@ NOT_FOUND, if the project doesn’t exist.</p>
 message <a class="reference internal" href="types.html#google.cloud.translate_v3beta1.types.Glossary" title="google.cloud.translate_v3beta1.types.Glossary"><code class="xref py py-class docutils literal notranslate"><span class="pre">Glossary</span></code></a></p>
 </p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -268,8 +268,8 @@ isn’t created yet. Returns NOT_FOUND, if the glossary doesn’t exist.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The name of the glossary to delete.</p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -324,8 +324,8 @@ Otherwise an INVALID_ARGUMENT (400) error is returned.</p>
 <li><p><strong>mime_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Optional. The format of the source text, for example, “text/html”,
 “text/plain”. If left blank, the MIME type defaults to “text/html”.</p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -413,8 +413,8 @@ file.</p></li>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The name of the glossary to retrieve.</p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -474,8 +474,8 @@ in a response.</p></li>
 supported languages of Google general base (PBMT) model.</p>
 </p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -542,8 +542,8 @@ of resources in a page.</p></li>
 Filtering is not supported yet, and the parameter currently has no effect.
 If missing, no filtering is performed.</p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -635,8 +635,8 @@ INVALID_ARGUMENT (400) error is returned.</p>
 message <a class="reference internal" href="types.html#google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig" title="google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">TranslateTextGlossaryConfig</span></code></a></p>
 </p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>

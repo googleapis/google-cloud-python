@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Pub/Sub Client Types &#8212; google-cloud a015978 documentation</title>
+    <title>Pub/Sub Client Types &#8212; google-cloud 16b483e documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -1732,13 +1732,12 @@ match the request; this value should be passed in a new
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.MessageStoragePolicy.allowed_persistence_regions">
 <code class="sig-name descname">allowed_persistence_regions</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.MessageStoragePolicy.allowed_persistence_regions" title="Permalink to this definition">#</a></dt>
-<dd><p>The list of GCP region IDs where messages that are published
+<dd><p>A list of IDs of GCP regions where messages that are published
 to the topic may be persisted in storage. Messages published
 by publishers running in non-allowed GCP regions (or running
 outside of GCP altogether) will be routed for storage in one
-of the allowed regions. An empty list indicates a
-misconfiguration at the project or organization level, which
-will result in all Publish operations failing.</p>
+of the allowed regions. An empty list means that no regions
+are allowed, and is not a valid configuration.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2291,24 +2290,24 @@ pushed. For example, a Webhook endpoint might use
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.PushConfig.attributes">
 <code class="sig-name descname">attributes</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.PushConfig.attributes" title="Permalink to this definition">#</a></dt>
-<dd><p>Endpoint configuration attributes.  Every endpoint has a set
-of API supported attributes that can be used to control
-different aspects of the message delivery.  The currently
+<dd><p>Endpoint configuration attributes that can be used to control
+different aspects of the message delivery.  The only currently
 supported attribute is <code class="docutils literal notranslate"><span class="pre">x-goog-version</span></code>, which you can use
 to change the format of the pushed message. This attribute
 indicates the version of the data expected by the endpoint.
 This controls the shape of the pushed message (i.e., its
-fields and metadata). The endpoint version is based on the
-version of the Pub/Sub API.  If not present during the
+fields and metadata).  If not present during the
 <code class="docutils literal notranslate"><span class="pre">CreateSubscription</span></code> call, it will default to the version of
-the API used to make such call. If not present during a
+the Pub/Sub API used to make such call. If not present in a
 <code class="docutils literal notranslate"><span class="pre">ModifyPushConfig</span></code> call, its value will not be changed.
 <code class="docutils literal notranslate"><span class="pre">GetSubscription</span></code> calls will always return a valid version,
 even if the subscription was created without this attribute.
-The possible values for this attribute are:  -  <code class="docutils literal notranslate"><span class="pre">v1beta1</span></code>:
-uses the push format defined in the v1beta1 Pub/Sub API. -
-<code class="docutils literal notranslate"><span class="pre">v1</span></code> or <code class="docutils literal notranslate"><span class="pre">v1beta2</span></code>: uses the push format defined in the v1
-Pub/Sub    API.</p>
+The only supported values for the <code class="docutils literal notranslate"><span class="pre">x-goog-version</span></code> attribute
+are:  -  <code class="docutils literal notranslate"><span class="pre">v1beta1</span></code>: uses the push format defined in the
+v1beta1 Pub/Sub API. -  <code class="docutils literal notranslate"><span class="pre">v1</span></code> or <code class="docutils literal notranslate"><span class="pre">v1beta2</span></code>: uses the push
+format defined in the v1 Pub/Sub    API.  For example:  ..
+raw:: html     &lt;pre&gt;&lt;code&gt;attributes { “x-goog-version”: “v1”
+} &lt;/code&gt;&lt;/pre&gt;</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3100,13 +3099,9 @@ and it must not start with <code class="docutils literal notranslate"><span clas
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.Topic.message_storage_policy">
 <code class="sig-name descname">message_storage_policy</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.Topic.message_storage_policy" title="Permalink to this definition">#</a></dt>
-<dd><p>Policy constraining how messages published to the topic may be
-stored. It is determined when the topic is created based on
-the policy configured at the project level. It must not be set
-by the caller in the request to CreateTopic or to UpdateTopic.
-This field will be populated in the responses for GetTopic,
-CreateTopic, and UpdateTopic: if not present in the response,
-then no constraints are in effect.</p>
+<dd><p>Policy constraining the set of Google Cloud Platform regions
+where messages published to the topic may be stored. If not
+present, then no constraints are in effect.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3115,11 +3110,7 @@ then no constraints are in effect.</p>
 <dd><p>The resource name of the Cloud KMS CryptoKey to be used to
 protect access to messages published on this topic.  The
 expected format is
-<code class="docutils literal notranslate"><span class="pre">projects/*/locations/*/keyRings/*/cryptoKeys/*</span></code>.
-EXPERIMENTAL: This feature is part of a closed alpha release.
-This API might be changed in backward-incompatible ways and is
-not recommended for production use. It is not subject to any
-SLA or deprecation policy.</p>
+<code class="docutils literal notranslate"><span class="pre">projects/*/locations/*/keyRings/*/cryptoKeys/*</span></code>.</p>
 </dd></dl>
 
 <dl class="class">

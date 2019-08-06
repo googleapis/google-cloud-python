@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Subscriber Client API &#8212; google-cloud a015978 documentation</title>
+    <title>Subscriber Client API &#8212; google-cloud 16b483e documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -85,8 +85,8 @@ than once will not result in an error.</p>
 returned by the Pub/Sub system in the <code class="docutils literal notranslate"><span class="pre">Pull</span></code> response. Must not be
 empty.</p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -159,8 +159,8 @@ completion of the CreateSnapshot request. Format is
 <li><p><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><em>str -&gt; str</em><em>]</em>) – See &lt;a href=”<a class="reference external" href="https://cloud.google.com/pubsub/docs/labels">https://cloud.google.com/pubsub/docs/labels</a>”&gt; Creating and
 managing labels&lt;/a&gt;.</p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -275,8 +275,8 @@ minimum allowed value for <code class="docutils literal notranslate"><span class
 message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.ExpirationPolicy" title="google.cloud.pubsub_v1.types.ExpirationPolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExpirationPolicy</span></code></a></p>
 </p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -328,8 +328,8 @@ snapshot or its subscription, unless the same subscription is specified.</p>
 <li><p><strong>snapshot</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the snapshot to delete. Format is
 <code class="docutils literal notranslate"><span class="pre">projects/{project}/snapshots/{snap}</span></code>.</p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -374,8 +374,8 @@ specified.</p>
 <li><p><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The subscription to delete. Format is
 <code class="docutils literal notranslate"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -466,8 +466,8 @@ See the operation documentation for the appropriate value for this field.</p></l
 message <code class="xref py py-class docutils literal notranslate"><span class="pre">GetPolicyOptions</span></code></p>
 </p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -510,8 +510,8 @@ that is provided to the method.</p></li>
 <li><p><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the subscription to get. Format is
 <code class="docutils literal notranslate"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -576,8 +576,8 @@ resource, this parameter does not affect the return value. If page
 streaming is performed per-page, this determines the maximum number
 of resources in a page.</p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -640,8 +640,8 @@ resource, this parameter does not affect the return value. If page
 streaming is performed per-page, this determines the maximum number
 of resources in a page.</p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -706,8 +706,8 @@ increase in the rate of message redeliveries (that is, duplicates). The
 minimum deadline you can specify is 0 seconds. The maximum deadline you
 can specify is 600 seconds (10 minutes).</p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -763,8 +763,8 @@ pulled and acknowledged - effectively pausing the subscription if
 message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.PushConfig" title="google.cloud.pubsub_v1.types.PushConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">PushConfig</span></code></a></p>
 </p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -821,8 +821,8 @@ it there are no messages available to return in the <code class="docutils litera
 Otherwise, the system may wait (for a bounded amount of time) until at
 least one message is available, rather than returning no messages.</p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -887,8 +887,8 @@ message <a class="reference internal" href="../../types.html#google.cloud.pubsub
 of the provided subscription. Format is
 <code class="docutils literal notranslate"><span class="pre">projects/{project}/snapshots/{snap}</span></code>.</p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -942,8 +942,8 @@ might reject them.</p>
 message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Policy" title="google.cloud.pubsub_v1.types.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a></p>
 </p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -1006,8 +1006,8 @@ by configuring the underlying RPC channel.</p>
 <li><p><strong>requests</strong> (<em>iterator</em><em>[</em><em>dict|google.cloud.pubsub_v1.proto.pubsub_pb2.StreamingPullRequest</em><em>]</em>) – The input objects. If a dict is provided, it must be of the
 same form as the protobuf message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.StreamingPullRequest" title="google.cloud.pubsub_v1.types.StreamingPullRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamingPullRequest</span></code></a></p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -1167,8 +1167,8 @@ wildcards (such as ‘*’ or ‘storage.*’) are not allowed. For more
 information see <a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM
 Overview</a>.</p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -1234,8 +1234,8 @@ Must be specified and non-empty.</p>
 message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.FieldMask" title="google.cloud.pubsub_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
 </p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -1290,8 +1290,8 @@ Must be specified and non-empty.</p>
 message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.FieldMask" title="google.cloud.pubsub_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
 </p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>

@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Publisher Client API &#8212; google-cloud a015978 documentation</title>
+    <title>Publisher Client API &#8212; google-cloud 16b483e documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -86,26 +86,20 @@ signs (<cite>%</cite>). It must be between 3 and 255 characters in length, and i
 must not start with <cite>“goog”</cite>.</p></li>
 <li><p><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><em>str -&gt; str</em><em>]</em>) – See &lt;a href=”<a class="reference external" href="https://cloud.google.com/pubsub/docs/labels">https://cloud.google.com/pubsub/docs/labels</a>”&gt; Creating and
 managing labels&lt;/a&gt;.</p></li>
-<li><p><strong>message_storage_policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.MessageStoragePolicy" title="google.cloud.pubsub_v1.types.MessageStoragePolicy"><em>MessageStoragePolicy</em></a><em>]</em>) – <p>Policy constraining how messages published to the topic may be stored. It
-is determined when the topic is created based on the policy configured at
-the project level. It must not be set by the caller in the request to
-CreateTopic or to UpdateTopic. This field will be populated in the
-responses for GetTopic, CreateTopic, and UpdateTopic: if not present in the
-response, then no constraints are in effect.</p>
+<li><p><strong>message_storage_policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.MessageStoragePolicy" title="google.cloud.pubsub_v1.types.MessageStoragePolicy"><em>MessageStoragePolicy</em></a><em>]</em>) – <p>Policy constraining the set of Google Cloud Platform regions where messages
+published to the topic may be stored. If not present, then no constraints
+are in effect.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.MessageStoragePolicy" title="google.cloud.pubsub_v1.types.MessageStoragePolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">MessageStoragePolicy</span></code></a></p>
 </p></li>
 <li><p><strong>kms_key_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The resource name of the Cloud KMS CryptoKey to be used to protect
 access to messages published on this topic.</p>
 <p>The expected format is
-<code class="docutils literal notranslate"><span class="pre">projects/*/locations/*/keyRings/*/cryptoKeys/*</span></code>. EXPERIMENTAL: This
-feature is part of a closed alpha release. This API might be changed in
-backward-incompatible ways and is not recommended for production use. It
-is not subject to any SLA or deprecation policy.</p>
+<code class="docutils literal notranslate"><span class="pre">projects/*/locations/*/keyRings/*/cryptoKeys/*</span></code>.</p>
 </p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -153,8 +147,8 @@ topic are not deleted, but their <code class="docutils literal notranslate"><spa
 <li><p><strong>topic</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of the topic to delete. Format is
 <code class="docutils literal notranslate"><span class="pre">projects/{project}/topics/{topic}</span></code>.</p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -249,8 +243,8 @@ See the operation documentation for the appropriate value for this field.</p></l
 message <code class="xref py py-class docutils literal notranslate"><span class="pre">GetPolicyOptions</span></code></p>
 </p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -293,8 +287,8 @@ that is provided to the method.</p></li>
 <li><p><strong>topic</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the topic to get. Format is
 <code class="docutils literal notranslate"><span class="pre">projects/{project}/topics/{topic}</span></code>.</p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -354,8 +348,8 @@ resource, this parameter does not affect the return value. If page
 streaming is performed per-page, this determines the maximum number
 of resources in a page.</p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -418,8 +412,8 @@ resource, this parameter does not affect the return value. If page
 streaming is performed per-page, this determines the maximum number
 of resources in a page.</p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -530,8 +524,8 @@ might reject them.</p>
 message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Policy" title="google.cloud.pubsub_v1.types.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a></p>
 </p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -600,8 +594,8 @@ wildcards (such as ‘*’ or ‘storage.*’) are not allowed. For more
 information see <a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM
 Overview</a>.</p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
@@ -666,8 +660,8 @@ above.</p>
 message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.FieldMask" title="google.cloud.pubsub_v1.types.FieldMask"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldMask</span></code></a></p>
 </p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
-to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will not
-be retried.</p></li>
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
 <li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
 for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
 specified, the timeout applies to each individual attempt.</p></li>
