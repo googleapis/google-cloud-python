@@ -51,15 +51,6 @@ s.replace(
     r"from google.cloud.speech_\1.gapic import speech_client as speech_\1",
 )
 
-# Set the maximum received message size to 256 MiB, the default of 4 MiB is
-# often insufficient in practice.
-s.replace(
-    "google/cloud/speech_v1/gapic/transports/speech_grpc_transport.py",
-    "^(\s+)scopes=cls\._OAUTH_SCOPES,",
-    "\g<1>scopes=cls._OAUTH_SCOPES,\n"
-    "\g<1>options={\"grpc.max_receive_message_length\": 256 * 1024 * 1024}.items(),"
-)
-
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
