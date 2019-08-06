@@ -591,7 +591,8 @@ class Blob(_PropertyMixin):
 
             while not download.finished:
                 download.consume_next_chunk(transport)
-                self.progress = float(download.bytes_downloaded) / download.total_bytes
+                if download.total_bytes > 0:
+                    self.progress = float(download.bytes_downloaded) / download.total_bytes
 
         self.progress = 1.0
 
@@ -864,7 +865,11 @@ class Blob(_PropertyMixin):
                 max_retries=num_retries
             )
 
+        self.progress = 0.0
+
         response = upload.transmit(transport, data, object_metadata, content_type)
+
+        self.progress = 1.0
 
         return response
 
@@ -1020,9 +1025,14 @@ class Blob(_PropertyMixin):
             predefined_acl=predefined_acl,
         )
 
+        self.progress = 0.0
+
         while not upload.finished:
             response = upload.transmit_next_chunk(transport)
-            self.progress = float(upload.bytes_uploaded) / upload.total_bytes
+            if upload.total_bytes and upload.total_bytes > 0:
+                self.progress = float(upload.bytes_uploaded) / upload.total_bytes
+
+        self.progress = 1.0
 
         return response
 
@@ -1069,8 +1079,6 @@ class Blob(_PropertyMixin):
                   **only** response in the multipart case and it will be the
                   **final** response in the resumable case.
         """
-        self.progress = 0.0
-
         if size is not None and size <= _MAX_MULTIPART_SIZE:
             response = self._do_multipart_upload(
                 client, stream, content_type, size, num_retries, predefined_acl
@@ -1079,8 +1087,6 @@ class Blob(_PropertyMixin):
             response = self._do_resumable_upload(
                 client, stream, content_type, size, num_retries, predefined_acl
             )
-
-        self.progress = 1.0
 
         return response.json()
 

@@ -348,9 +348,7 @@ class Test_Blob(unittest.TestCase):
         BLOB_NAME = "foo~bar"
         bucket = _Bucket()
         blob = self._make_one(BLOB_NAME, bucket=bucket)
-        self.assertEqual(
-            blob.public_url, "https://storage.googleapis.com/name/foo~bar"
-        )
+        self.assertEqual(blob.public_url, "https://storage.googleapis.com/name/foo~bar")
 
     def test_public_url_with_non_ascii(self):
         blob_name = u"winter \N{snowman}"
@@ -872,6 +870,7 @@ class Test_Blob(unittest.TestCase):
         client = mock.Mock(_credentials=_make_credentials(), spec=["_credentials"])
         bucket = _Bucket(client)
         blob = self._make_one(blob_name, bucket=bucket)
+        self.assertEqual(blob.progress, 0.0)
 
         # Modify the blob so there there will be 2 chunks of size 3.
         blob._CHUNK_SIZE_MULTIPLE = 1
@@ -884,6 +883,7 @@ class Test_Blob(unittest.TestCase):
         blob._do_download(transport, file_obj, download_url, headers)
         # Make sure the download was as expected.
         self.assertEqual(file_obj.getvalue(), b"abcdef")
+        self.assertEqual(blob.progress, 1.0)
 
         # Check that the transport was called exactly twice.
         self.assertEqual(transport.request.call_count, 2)
@@ -1622,6 +1622,7 @@ class Test_Blob(unittest.TestCase):
         blob = self._make_one(u"blob-name", bucket=bucket)
         blob.chunk_size = blob._CHUNK_SIZE_MULTIPLE
         self.assertIsNotNone(blob.chunk_size)
+        self.assertEqual(blob.progress, 0.0)
 
         # Data to be uploaded.
         data = b"<html>" + (b"A" * blob.chunk_size) + b"</html>"
@@ -1650,6 +1651,7 @@ class Test_Blob(unittest.TestCase):
         # Check the returned values.
         self.assertIs(response, responses[2])
         self.assertEqual(stream.tell(), total_bytes)
+        self.assertEqual(blob.progress, 1.0)
 
         # Check the mocks.
         call0 = self._do_resumable_upload_call0(
