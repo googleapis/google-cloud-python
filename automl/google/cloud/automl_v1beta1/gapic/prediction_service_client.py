@@ -282,8 +282,8 @@ class PredictionServiceClient(object):
                 [TablesAnnotation(-s)][[google.cloud.automl.v1beta1.TablesAnnotation].
                 The default is false.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -427,8 +427,8 @@ class PredictionServiceClient(object):
                    edge at least that long as a relative value of video frame size will
                    be returned. Value in 0 to 1 range. Default is 0.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
