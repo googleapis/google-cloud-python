@@ -640,6 +640,20 @@ class Client(ClientWithProject):
             extra_params=extra_params,
         )
 
+    def get_hmac_key_metadata(self, access_id, project_id=None):
+        """Return a metadata instance for the given HMAC key.
+
+        :type access_id: str
+        :param access_id: Unique ID of an existing key.
+
+        :type project_id: str
+        :param project_id: (Optional) project ID of an existing key.
+            Defaults to client's project.
+        """
+        metadata = HMACKeyMetadata(self, access_id, project_id)
+        metadata.reload()  # raises NotFound for missing key
+        return metadata
+
 
 def _item_to_bucket(iterator, item):
     """Convert a JSON bucket to the native object.

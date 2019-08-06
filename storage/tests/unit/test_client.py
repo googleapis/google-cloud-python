@@ -1072,3 +1072,86 @@ class TestClient(unittest.TestCase):
         qparams = dict(parse_qsl(qparam_str))
         self.assertEqual(base, URI)
         self.assertEqual(qparams, EXPECTED_QPARAMS)
+
+    def test_get_hmac_key_metadata_wo_project(self):
+        from google.cloud.storage.hmac_key import HMACKeyMetadata
+
+        PROJECT = "PROJECT"
+        EMAIL = "storage-user-123@example.com"
+        ACCESS_ID = "ACCESS-ID"
+        CREDENTIALS = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
+
+        resource = {
+            "kind": "storage#hmacKeyMetadata",
+            "accessId": ACCESS_ID,
+            "projectId": PROJECT,
+            "serviceAccountEmail": EMAIL,
+        }
+
+        http = _make_requests_session([_make_json_response(resource)])
+        client._http_internal = http
+
+        metadata = client.get_hmac_key_metadata(ACCESS_ID)
+
+        self.assertIsInstance(metadata, HMACKeyMetadata)
+        self.assertIs(metadata._client, client)
+        self.assertEqual(metadata.access_id, ACCESS_ID)
+        self.assertEqual(metadata.project, PROJECT)
+
+        URI = "/".join(
+            [
+                client._connection.API_BASE_URL,
+                "storage",
+                client._connection.API_VERSION,
+                "projects",
+                PROJECT,
+                "hmacKeys",
+                ACCESS_ID,
+            ]
+        )
+        http.request.assert_called_once_with(
+            method="GET", url=URI, data=None, headers=mock.ANY
+        )
+
+    def test_get_hmac_key_metadata_w_project(self):
+        from google.cloud.storage.hmac_key import HMACKeyMetadata
+
+        PROJECT = "PROJECT"
+        OTHER_PROJECT = "other-project-456"
+        EMAIL = "storage-user-123@example.com"
+        ACCESS_ID = "ACCESS-ID"
+        CREDENTIALS = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
+
+        resource = {
+            "kind": "storage#hmacKeyMetadata",
+            "accessId": ACCESS_ID,
+            "projectId": OTHER_PROJECT,
+            "serviceAccountEmail": EMAIL,
+        }
+
+        http = _make_requests_session([_make_json_response(resource)])
+        client._http_internal = http
+
+        metadata = client.get_hmac_key_metadata(ACCESS_ID, project_id=OTHER_PROJECT)
+
+        self.assertIsInstance(metadata, HMACKeyMetadata)
+        self.assertIs(metadata._client, client)
+        self.assertEqual(metadata.access_id, ACCESS_ID)
+        self.assertEqual(metadata.project, OTHER_PROJECT)
+
+        URI = "/".join(
+            [
+                client._connection.API_BASE_URL,
+                "storage",
+                client._connection.API_VERSION,
+                "projects",
+                OTHER_PROJECT,
+                "hmacKeys",
+                ACCESS_ID,
+            ]
+        )
+        http.request.assert_called_once_with(
+            method="GET", url=URI, data=None, headers=mock.ANY
+        )
