@@ -625,9 +625,9 @@ def test_query_with_order_dot_key(client, cleanup):
     assert [100, 110, 120] == data
     for snapshot in collection.order_by("wordcount.page1").limit(3).stream():
         last_value = snapshot.get("wordcount.page1")
-    cursor = {"wordcount": {"page1": last_value}}
+    cursor_with_nested_keys = {"wordcount": {"page1": last_value}}
     found = list(
-        collection.order_by("wordcount.page1").start_after(cursor).limit(3).stream()
+        collection.order_by("wordcount.page1").start_after(cursor_with_nested_keys).limit(3).stream()
     )
     found_data = [
         {u"count": 30, u"wordcount": {u"page1": 130}},
@@ -635,10 +635,10 @@ def test_query_with_order_dot_key(client, cleanup):
         {u"count": 50, u"wordcount": {u"page1": 150}},
     ]
     assert found_data == [snap.to_dict() for snap in found]
-    dot_key_cursor = {"wordcount.page1": last_value}
+    cursor_with_dotted_paths = {"wordcount.page1": last_value}
     cursor_with_key_data = list(
         collection.order_by("wordcount.page1")
-        .start_after(dot_key_cursor)
+        .start_after(cursor_with_dotted_paths)
         .limit(3)
         .stream()
     )
