@@ -533,7 +533,7 @@ class Table(object):
         retryable_mutate_rows = _RetryableMutateRowsWorker(
             self._instance._client,
             self.name,
-            batches,
+            batches=batches,
             app_profile_id=self._app_profile_id,
             timeout=self.mutation_timeout,
         )
