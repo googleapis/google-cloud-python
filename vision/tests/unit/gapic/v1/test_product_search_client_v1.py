@@ -841,3 +841,55 @@ class TestProductSearchClient(object):
         response = client.import_product_sets(parent, input_config)
         exception = response.exception()
         assert exception.errors[0] == error
+
+    def test_purge_products(self):
+        # Setup Expected Response
+        expected_response = {}
+        expected_response = empty_pb2.Empty(**expected_response)
+        operation = operations_pb2.Operation(
+            name="operations/test_purge_products", done=True
+        )
+        operation.response.Pack(expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
+
+        # Setup Request
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
+
+        response = client.purge_products(parent)
+        result = response.result()
+        assert expected_response == result
+
+        assert len(channel.requests) == 1
+        expected_request = product_search_service_pb2.PurgeProductsRequest(
+            parent=parent
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_purge_products_exception(self):
+        # Setup Response
+        error = status_pb2.Status()
+        operation = operations_pb2.Operation(
+            name="operations/test_purge_products_exception", done=True
+        )
+        operation.error.CopyFrom(error)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1.ProductSearchClient()
+
+        # Setup Request
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
+
+        response = client.purge_products(parent)
+        exception = response.exception()
+        assert exception.errors[0] == error
