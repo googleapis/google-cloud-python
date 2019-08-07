@@ -123,7 +123,7 @@ def system(session):
 
     # Additional setup for VPCSC system tests
     env = {
-        "PROJECT_INSIDE": "secure-gcp-test-project-4",
+        "PROJECT_ID": "secure-gcp-test-project-4",
         "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT": os.environ.get(
             "PROJECT_ID"
         ),
