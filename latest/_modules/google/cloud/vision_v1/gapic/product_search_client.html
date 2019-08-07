@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.vision_v1.gapic.product_search_client &#8212; google-cloud 788cc02 documentation</title>
+    <title>google.cloud.vision_v1.gapic.product_search_client &#8212; google-cloud 1d5ede5 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -65,6 +65,7 @@
 <span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">operations_v1</span>
 <span class="kn">import</span> <span class="nn">google.api_core.page_iterator</span>
 <span class="kn">import</span> <span class="nn">google.api_core.path_template</span>
+<span class="kn">import</span> <span class="nn">google.api_core.protobuf_helpers</span>
 <span class="kn">import</span> <span class="nn">grpc</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud.vision_v1.gapic</span> <span class="k">import</span> <span class="n">enums</span>
@@ -1918,6 +1919,138 @@
             <span class="n">operation</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">_operations_client</span><span class="p">,</span>
             <span class="n">product_search_service_pb2</span><span class="o">.</span><span class="n">ImportProductSetsResponse</span><span class="p">,</span>
+            <span class="n">metadata_type</span><span class="o">=</span><span class="n">product_search_service_pb2</span><span class="o">.</span><span class="n">BatchOperationMetadata</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ProductSearchClient.purge_products"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ProductSearchClient.purge_products">[docs]</a>    <span class="k">def</span> <span class="nf">purge_products</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">parent</span><span class="p">,</span>
+        <span class="n">product_set_purge_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">delete_orphan_products</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">force</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+        <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Asynchronous API to delete all Products in a ProductSet or all Products</span>
+<span class="sd">        that are in no ProductSet.</span>
+
+<span class="sd">        If a Product is a member of the specified ProductSet in addition to</span>
+<span class="sd">        other ProductSets, the Product will still be deleted.</span>
+
+<span class="sd">        It is recommended to not delete the specified ProductSet until after</span>
+<span class="sd">        this operation has completed. It is also recommended to not add any of</span>
+<span class="sd">        the Products involved in the batch delete to a new ProductSet while this</span>
+<span class="sd">        operation is running because those Products may still end up deleted.</span>
+
+<span class="sd">        It&#39;s not possible to undo the PurgeProducts operation. Therefore, it is</span>
+<span class="sd">        recommended to keep the csv files used in ImportProductSets (if that was</span>
+<span class="sd">        how you originally built the Product Set) before starting PurgeProducts,</span>
+<span class="sd">        in case you need to re-import the data after deletion.</span>
+
+<span class="sd">        If the plan is to purge all of the Products from a ProductSet and then</span>
+<span class="sd">        re-use the empty ProductSet to re-import new Products into the empty</span>
+<span class="sd">        ProductSet, you must wait until the PurgeProducts operation has finished</span>
+<span class="sd">        for that ProductSet.</span>
+
+<span class="sd">        The ``google.longrunning.Operation`` API can be used to keep track of</span>
+<span class="sd">        the progress and results of the request. ``Operation.metadata`` contains</span>
+<span class="sd">        ``BatchOperationMetadata``. (progress)</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = vision_v1.ProductSearchClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; parent = client.location_path(&#39;[PROJECT]&#39;, &#39;[LOCATION]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.purge_products(parent)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; def callback(operation_future):</span>
+<span class="sd">            ...     # Handle result.</span>
+<span class="sd">            ...     result = operation_future.result()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response.add_done_callback(callback)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Handle metadata.</span>
+<span class="sd">            &gt;&gt;&gt; metadata = response.metadata()</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            parent (str): The project and location in which the Products should be deleted.</span>
+
+<span class="sd">                Format is ``projects/PROJECT_ID/locations/LOC_ID``.</span>
+<span class="sd">            product_set_purge_config (Union[dict, ~google.cloud.vision_v1.types.ProductSetPurgeConfig]): Specify which ProductSet contains the Products to be deleted.</span>
+
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.vision_v1.types.ProductSetPurgeConfig`</span>
+<span class="sd">            delete_orphan_products (bool): If delete\_orphan\_products is true, all Products that are not in any</span>
+<span class="sd">                ProductSet will be deleted.</span>
+<span class="sd">            force (bool): The default value is false. Override this value to true to actually perform</span>
+<span class="sd">                the purge.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will</span>
+<span class="sd">                be retried using a default configuration.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.vision_v1.types._OperationFuture` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s2">&quot;purge_products&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s2">&quot;purge_products&quot;</span>
+            <span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">purge_products</span><span class="p">,</span>
+                <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s2">&quot;PurgeProducts&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s2">&quot;PurgeProducts&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Sanity check: We have some fields which are mutually exclusive;</span>
+        <span class="c1"># raise ValueError if more than one is sent.</span>
+        <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">protobuf_helpers</span><span class="o">.</span><span class="n">check_oneof</span><span class="p">(</span>
+            <span class="n">product_set_purge_config</span><span class="o">=</span><span class="n">product_set_purge_config</span><span class="p">,</span>
+            <span class="n">delete_orphan_products</span><span class="o">=</span><span class="n">delete_orphan_products</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">product_search_service_pb2</span><span class="o">.</span><span class="n">PurgeProductsRequest</span><span class="p">(</span>
+            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
+            <span class="n">product_set_purge_config</span><span class="o">=</span><span class="n">product_set_purge_config</span><span class="p">,</span>
+            <span class="n">delete_orphan_products</span><span class="o">=</span><span class="n">delete_orphan_products</span><span class="p">,</span>
+            <span class="n">force</span><span class="o">=</span><span class="n">force</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;parent&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
+        <span class="n">operation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;purge_products&quot;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">from_gapic</span><span class="p">(</span>
+            <span class="n">operation</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">_operations_client</span><span class="p">,</span>
+            <span class="n">empty_pb2</span><span class="o">.</span><span class="n">Empty</span><span class="p">,</span>
             <span class="n">metadata_type</span><span class="o">=</span><span class="n">product_search_service_pb2</span><span class="o">.</span><span class="n">BatchOperationMetadata</span><span class="p">,</span>
         <span class="p">)</span></div>
 </pre></div>

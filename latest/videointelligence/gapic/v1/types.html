@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Types for Cloud Video Intelligence API Client &#8212; google-cloud 788cc02 documentation</title>
+    <title>Types for Cloud Video Intelligence API Client &#8212; google-cloud 1d5ede5 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -1593,10 +1593,27 @@ label.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.VideoAnnotationResults.segment_presence_label_annotations">
+<code class="sig-name descname">segment_presence_label_annotations</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.VideoAnnotationResults.segment_presence_label_annotations" title="Permalink to this definition">#</a></dt>
+<dd><p>Presence label annotations on video level or user specified
+segment level. There is exactly one element for each unique
+label. This will eventually get publicly exposed and the
+restriction will be removed.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.videointelligence_v1.types.VideoAnnotationResults.shot_label_annotations">
 <code class="sig-name descname">shot_label_annotations</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.VideoAnnotationResults.shot_label_annotations" title="Permalink to this definition">#</a></dt>
 <dd><p>Topical label annotations on shot level. There is exactly one
 element for each unique label.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.videointelligence_v1.types.VideoAnnotationResults.shot_presence_label_annotations">
+<code class="sig-name descname">shot_presence_label_annotations</code><a class="headerlink" href="#google.cloud.videointelligence_v1.types.VideoAnnotationResults.shot_presence_label_annotations" title="Permalink to this definition">#</a></dt>
+<dd><p>Presence label annotations on shot level. There is exactly one
+element for each unique label. This will eventually get
+publicly exposed and the restriction will be removed.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1703,6 +1720,12 @@ fail.</p>
 
 <dl class="attribute">
 <dt>
+<code class="sig-name descname">segment_presence_label_annotations</code></dt>
+<dd><p>Field google.cloud.videointelligence.v1.VideoAnnotationResults.segment_presence_label_annotations</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
 <code class="sig-name descname">shot_annotations</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1.VideoAnnotationResults.shot_annotations</p>
 </dd></dl>
@@ -1711,6 +1734,12 @@ fail.</p>
 <dt>
 <code class="sig-name descname">shot_label_annotations</code></dt>
 <dd><p>Field google.cloud.videointelligence.v1.VideoAnnotationResults.shot_label_annotations</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">shot_presence_label_annotations</code></dt>
+<dd><p>Field google.cloud.videointelligence.v1.VideoAnnotationResults.shot_presence_label_annotations</p>
 </dd></dl>
 
 <dl class="attribute">

@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Types for Cloud Vision API Client &#8212; google-cloud 788cc02 documentation</title>
+    <title>Types for Cloud Vision API Client &#8212; google-cloud 1d5ede5 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -147,13 +147,27 @@ generated.</p>
 <dl class="attribute">
 <dt id="google.cloud.vision_v1.types.AnnotateFileResponse.responses">
 <code class="sig-name descname">responses</code><a class="headerlink" href="#google.cloud.vision_v1.types.AnnotateFileResponse.responses" title="Permalink to this definition">#</a></dt>
-<dd><p>Individual responses to images found within the file.</p>
+<dd><p>Individual responses to images found within the file. This
+field will be empty if the <code class="docutils literal notranslate"><span class="pre">error</span></code> field is set.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision_v1.types.AnnotateFileResponse.total_pages">
 <code class="sig-name descname">total_pages</code><a class="headerlink" href="#google.cloud.vision_v1.types.AnnotateFileResponse.total_pages" title="Permalink to this definition">#</a></dt>
 <dd><p>This field gives the total number of pages in the file.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.AnnotateFileResponse.error">
+<code class="sig-name descname">error</code><a class="headerlink" href="#google.cloud.vision_v1.types.AnnotateFileResponse.error" title="Permalink to this definition">#</a></dt>
+<dd><p>If set, represents the error message for the failed request.
+The <code class="docutils literal notranslate"><span class="pre">responses</span></code> field will not be set in this case.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">error</code></dt>
+<dd><p>Field google.cloud.vision.v1.AnnotateFileResponse.error</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -505,6 +519,23 @@ service call.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.vision_v1.types.AsyncBatchAnnotateFilesRequest.parent">
+<code class="sig-name descname">parent</code><a class="headerlink" href="#google.cloud.vision_v1.types.AsyncBatchAnnotateFilesRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Target project and location to make a call.  Format:
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}</span></code>.  If no
+parent is specified, a region will be chosen automatically.
+Supported location-ids: <code class="docutils literal notranslate"><span class="pre">us</span></code>: USA country only, <code class="docutils literal notranslate"><span class="pre">asia</span></code>:
+East asia areas, like Japan, Taiwan, <code class="docutils literal notranslate"><span class="pre">eu</span></code>: The European
+Union.  Example: <code class="docutils literal notranslate"><span class="pre">projects/project-A/locations/eu</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">parent</code></dt>
+<dd><p>Field google.cloud.vision.v1.AsyncBatchAnnotateFilesRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="sig-name descname">requests</code></dt>
 <dd><p>Field google.cloud.vision.v1.AsyncBatchAnnotateFilesRequest.requests</p>
@@ -549,9 +580,26 @@ format).</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.vision_v1.types.AsyncBatchAnnotateImagesRequest.parent">
+<code class="sig-name descname">parent</code><a class="headerlink" href="#google.cloud.vision_v1.types.AsyncBatchAnnotateImagesRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Target project and location to make a call.  Format:
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}</span></code>.  If no
+parent is specified, a region will be chosen automatically.
+Supported location-ids: <code class="docutils literal notranslate"><span class="pre">us</span></code>: USA country only, <code class="docutils literal notranslate"><span class="pre">asia</span></code>:
+East asia areas, like Japan, Taiwan, <code class="docutils literal notranslate"><span class="pre">eu</span></code>: The European
+Union.  Example: <code class="docutils literal notranslate"><span class="pre">projects/project-A/locations/eu</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="sig-name descname">output_config</code></dt>
 <dd><p>Field google.cloud.vision.v1.AsyncBatchAnnotateImagesRequest.output_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">parent</code></dt>
+<dd><p>Field google.cloud.vision.v1.AsyncBatchAnnotateImagesRequest.parent</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -593,6 +641,23 @@ only one AnnotateFileRequest in BatchAnnotateFilesRequest.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.vision_v1.types.BatchAnnotateFilesRequest.parent">
+<code class="sig-name descname">parent</code><a class="headerlink" href="#google.cloud.vision_v1.types.BatchAnnotateFilesRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Target project and location to make a call.  Format:
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}</span></code>.  If no
+parent is specified, a region will be chosen automatically.
+Supported location-ids: <code class="docutils literal notranslate"><span class="pre">us</span></code>: USA country only, <code class="docutils literal notranslate"><span class="pre">asia</span></code>:
+East asia areas, like Japan, Taiwan, <code class="docutils literal notranslate"><span class="pre">eu</span></code>: The European
+Union.  Example: <code class="docutils literal notranslate"><span class="pre">projects/project-A/locations/eu</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">parent</code></dt>
+<dd><p>Field google.cloud.vision.v1.BatchAnnotateFilesRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="sig-name descname">requests</code></dt>
 <dd><p>Field google.cloud.vision.v1.BatchAnnotateFilesRequest.requests</p>
@@ -629,6 +694,23 @@ call.</p>
 <dt id="google.cloud.vision_v1.types.BatchAnnotateImagesRequest.requests">
 <code class="sig-name descname">requests</code><a class="headerlink" href="#google.cloud.vision_v1.types.BatchAnnotateImagesRequest.requests" title="Permalink to this definition">#</a></dt>
 <dd><p>Individual image annotation requests for this batch.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.BatchAnnotateImagesRequest.parent">
+<code class="sig-name descname">parent</code><a class="headerlink" href="#google.cloud.vision_v1.types.BatchAnnotateImagesRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional. Target project and location to make a call.  Format:
+<code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}</span></code>.  If no
+parent is specified, a region will be chosen automatically.
+Supported location-ids: <code class="docutils literal notranslate"><span class="pre">us</span></code>: USA country only, <code class="docutils literal notranslate"><span class="pre">asia</span></code>:
+East asia areas, like Japan, Taiwan, <code class="docutils literal notranslate"><span class="pre">eu</span></code>: The European
+Union.  Example: <code class="docutils literal notranslate"><span class="pre">projects/project-A/locations/eu</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">parent</code></dt>
+<dd><p>Field google.cloud.vision.v1.BatchAnnotateImagesRequest.parent</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3004,7 +3086,7 @@ will still be (0, 1, 2, 3).</p>
 <dl class="attribute">
 <dt id="google.cloud.vision_v1.types.Paragraph.words">
 <code class="sig-name descname">words</code><a class="headerlink" href="#google.cloud.vision_v1.types.Paragraph.words" title="Permalink to this definition">#</a></dt>
-<dd><p>List of words in this paragraph.</p>
+<dd><p>List of all words in this paragraph.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3115,11 +3197,8 @@ at most 4096 characters long.</p>
 <dd><p>The category for the product identified by the reference
 image. This should be either “homegoods-v2”, “apparel-v2”, or
 “toys-v2”. The legacy categories “homegoods”, “apparel”, and
-“toys” are still supported but will be deprecated. For new
-products, please use “homegoods-v2”, “apparel-v2”, or
-“toys-v2” for better product search accuracy. It is
-recommended to migrate existing products to these categories
-as well.  This field is immutable.</p>
+“toys” are still supported, but these should not be used for
+new products.  This field is immutable.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -3131,7 +3210,10 @@ product_labels.  Note that integer values can be provided as
 strings, e.g. “1199”. Only strings with integer values can
 match a range-based restriction which is to be supported soon.
 Multiple values can be assigned to the same key. One product
-may have up to 100 product_labels.</p>
+may have up to 500 product_labels.  Notice that the total
+number of distinct product_labels over all products in one
+ProductSet cannot exceed 1M, otherwise the product search
+pipeline will refuse to work for that ProductSet.</p>
 </dd></dl>
 
 <dl class="class">
@@ -3318,6 +3400,13 @@ image.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ProductSearchResults.GroupedResult.object_annotations">
+<code class="sig-name descname">object_annotations</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSearchResults.GroupedResult.object_annotations" title="Permalink to this definition">#</a></dt>
+<dd><p>List of generic predictions for the object in the bounding
+box.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="sig-name descname">bounding_poly</code></dt>
 <dd><p>Field google.cloud.vision.v1.ProductSearchResults.GroupedResult.bounding_poly</p>
@@ -3325,8 +3414,70 @@ image.</p>
 
 <dl class="attribute">
 <dt>
+<code class="sig-name descname">object_annotations</code></dt>
+<dd><p>Field google.cloud.vision.v1.ProductSearchResults.GroupedResult.object_annotations</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
 <code class="sig-name descname">results</code></dt>
 <dd><p>Field google.cloud.vision.v1.ProductSearchResults.GroupedResult.results</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.ProductSearchResults.ObjectAnnotation">
+<em class="property">class </em><code class="sig-name descname">ObjectAnnotation</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSearchResults.ObjectAnnotation" title="Permalink to this definition">#</a></dt>
+<dd><p>Prediction for what the object in the bounding box is.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ProductSearchResults.ObjectAnnotation.mid">
+<code class="sig-name descname">mid</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSearchResults.ObjectAnnotation.mid" title="Permalink to this definition">#</a></dt>
+<dd><p>Object ID that should align with EntityAnnotation mid.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ProductSearchResults.ObjectAnnotation.language_code">
+<code class="sig-name descname">language_code</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSearchResults.ObjectAnnotation.language_code" title="Permalink to this definition">#</a></dt>
+<dd><p>The BCP-47 language code, such as “en-US” or “sr-Latn”. For
+more information, see <a class="reference external" href="http://www.unicode.org/reports/tr35/#Uni">http://www.unicode.org/reports/tr35/#Uni</a>
+code_locale_identifier.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ProductSearchResults.ObjectAnnotation.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSearchResults.ObjectAnnotation.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Object name, expressed in its <code class="docutils literal notranslate"><span class="pre">language_code</span></code> language.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ProductSearchResults.ObjectAnnotation.score">
+<code class="sig-name descname">score</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSearchResults.ObjectAnnotation.score" title="Permalink to this definition">#</a></dt>
+<dd><p>Score of the result. Range [0, 1].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">language_code</code></dt>
+<dd><p>Field google.cloud.vision.v1.ProductSearchResults.ObjectAnnotation.language_code</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">mid</code></dt>
+<dd><p>Field google.cloud.vision.v1.ProductSearchResults.ObjectAnnotation.mid</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">name</code></dt>
+<dd><p>Field google.cloud.vision.v1.ProductSearchResults.ObjectAnnotation.name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">score</code></dt>
+<dd><p>Field google.cloud.vision.v1.ProductSearchResults.ObjectAnnotation.score</p>
 </dd></dl>
 
 </dd></dl>
@@ -3461,6 +3612,26 @@ creating a ProductSet.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.vision_v1.types.ProductSetPurgeConfig">
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.vision_v1.types.</code><code class="sig-name descname">ProductSetPurgeConfig</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSetPurgeConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Config to control which ProductSet contains the Products to be deleted.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.ProductSetPurgeConfig.product_set_id">
+<code class="sig-name descname">product_set_id</code><a class="headerlink" href="#google.cloud.vision_v1.types.ProductSetPurgeConfig.product_set_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The ProductSet that contains the Products to delete. If a
+Product is a member of product_set_id in addition to other
+ProductSets, the Product will still be deleted.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">product_set_id</code></dt>
+<dd><p>Field google.cloud.vision.v1.ProductSetPurgeConfig.product_set_id</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.vision_v1.types.Property">
 <em class="property">class </em><code class="sig-prename descclassname">google.cloud.vision_v1.types.</code><code class="sig-name descname">Property</code><a class="headerlink" href="#google.cloud.vision_v1.types.Property" title="Permalink to this definition">#</a></dt>
 <dd><p>A <code class="docutils literal notranslate"><span class="pre">Property</span></code> consists of a user-supplied name/value pair.</p>
@@ -3498,6 +3669,69 @@ creating a ProductSet.</p>
 <dt>
 <code class="sig-name descname">value</code></dt>
 <dd><p>Field google.cloud.vision.v1.Property.value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.vision_v1.types.PurgeProductsRequest">
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.vision_v1.types.</code><code class="sig-name descname">PurgeProductsRequest</code><a class="headerlink" href="#google.cloud.vision_v1.types.PurgeProductsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for the <code class="docutils literal notranslate"><span class="pre">PurgeProducts</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.PurgeProductsRequest.target">
+<code class="sig-name descname">target</code><a class="headerlink" href="#google.cloud.vision_v1.types.PurgeProductsRequest.target" title="Permalink to this definition">#</a></dt>
+<dd><p>The Products to delete.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.PurgeProductsRequest.product_set_purge_config">
+<code class="sig-name descname">product_set_purge_config</code><a class="headerlink" href="#google.cloud.vision_v1.types.PurgeProductsRequest.product_set_purge_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Specify which ProductSet contains the Products to be deleted.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.PurgeProductsRequest.delete_orphan_products">
+<code class="sig-name descname">delete_orphan_products</code><a class="headerlink" href="#google.cloud.vision_v1.types.PurgeProductsRequest.delete_orphan_products" title="Permalink to this definition">#</a></dt>
+<dd><p>If delete_orphan_products is true, all Products that are not
+in any ProductSet will be deleted.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.PurgeProductsRequest.parent">
+<code class="sig-name descname">parent</code><a class="headerlink" href="#google.cloud.vision_v1.types.PurgeProductsRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The project and location in which the Products should be
+deleted.  Format is <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.PurgeProductsRequest.force">
+<code class="sig-name descname">force</code><a class="headerlink" href="#google.cloud.vision_v1.types.PurgeProductsRequest.force" title="Permalink to this definition">#</a></dt>
+<dd><p>The default value is false. Override this value to true to
+actually perform the purge.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">delete_orphan_products</code></dt>
+<dd><p>Field google.cloud.vision.v1.PurgeProductsRequest.delete_orphan_products</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">force</code></dt>
+<dd><p>Field google.cloud.vision.v1.PurgeProductsRequest.force</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">parent</code></dt>
+<dd><p>Field google.cloud.vision.v1.PurgeProductsRequest.parent</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">product_set_purge_config</code></dt>
+<dd><p>Field google.cloud.vision.v1.PurgeProductsRequest.product_set_purge_config</p>
 </dd></dl>
 
 </dd></dl>
@@ -3718,7 +3952,7 @@ represented as around the top-left corner as defined when the
 text is read in the ‘natural’ orientation. For example: *
 when the text is horizontal it might look like: 0—-1 | | 3
 —-2 * when it’s rotated 180 degrees around the top-left
-corner it becomes: 2—-3 | | 1—-0 and the vertice order
+corner it becomes: 2—-3 | | 1—-0 and the vertex order
 will still be (0, 1, 2, 3).</p>
 </dd></dl>
 

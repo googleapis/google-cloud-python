@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Client for Cloud Vision API &#8212; google-cloud 788cc02 documentation</title>
+    <title>Client for Cloud Vision API &#8212; google-cloud 1d5ede5 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -109,7 +109,7 @@ specified, the timeout applies to each individual attempt.</p></li>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1.ImageAnnotatorClient.async_batch_annotate_files">
-<code class="sig-name descname">async_batch_annotate_files</code><span class="sig-paren">(</span><em class="sig-param">requests</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/image_annotator_client.html#ImageAnnotatorClient.async_batch_annotate_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.async_batch_annotate_files" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">async_batch_annotate_files</code><span class="sig-paren">(</span><em class="sig-param">requests</em>, <em class="sig-param">parent=None</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/image_annotator_client.html#ImageAnnotatorClient.async_batch_annotate_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.async_batch_annotate_files" title="Permalink to this definition">#</a></dt>
 <dd><p>Run asynchronous image detection and annotation for a list of generic
 files, such as PDF files, which may contain multiple pages and multiple
 images per page. Progress and results can be retrieved through the
@@ -143,6 +143,13 @@ contains <code class="docutils literal notranslate"><span class="pre">AsyncBatch
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.vision_v1.types.AsyncAnnotateFileRequest" title="google.cloud.vision_v1.types.AsyncAnnotateFileRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncAnnotateFileRequest</span></code></a></p>
 </p></li>
+<li><p><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional. Target project and location to make a call.</p>
+<p>Format: <code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}</span></code>.</p>
+<p>If no parent is specified, a region will be chosen automatically.</p>
+<p>Supported location-ids: <code class="docutils literal notranslate"><span class="pre">us</span></code>: USA country only, <code class="docutils literal notranslate"><span class="pre">asia</span></code>: East asia
+areas, like Japan, Taiwan, <code class="docutils literal notranslate"><span class="pre">eu</span></code>: The European Union.</p>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">projects/project-A/locations/eu</span></code>.</p>
+</p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
 be retried using a default configuration.</p></li>
@@ -170,7 +177,7 @@ that is provided to the method.</p></li>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1.ImageAnnotatorClient.async_batch_annotate_images">
-<code class="sig-name descname">async_batch_annotate_images</code><span class="sig-paren">(</span><em class="sig-param">requests</em>, <em class="sig-param">output_config</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/image_annotator_client.html#ImageAnnotatorClient.async_batch_annotate_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.async_batch_annotate_images" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">async_batch_annotate_images</code><span class="sig-paren">(</span><em class="sig-param">requests</em>, <em class="sig-param">output_config</em>, <em class="sig-param">parent=None</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/image_annotator_client.html#ImageAnnotatorClient.async_batch_annotate_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.async_batch_annotate_images" title="Permalink to this definition">#</a></dt>
 <dd><p>Run asynchronous image detection and annotation for a list of images.</p>
 <p>Progress and results can be retrieved through the
 <code class="docutils literal notranslate"><span class="pre">google.longrunning.Operations</span></code> interface. <code class="docutils literal notranslate"><span class="pre">Operation.metadata</span></code>
@@ -213,6 +220,13 @@ message <a class="reference internal" href="types.html#google.cloud.vision_v1.ty
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.vision_v1.types.OutputConfig" title="google.cloud.vision_v1.types.OutputConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">OutputConfig</span></code></a></p>
 </p></li>
+<li><p><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional. Target project and location to make a call.</p>
+<p>Format: <code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}</span></code>.</p>
+<p>If no parent is specified, a region will be chosen automatically.</p>
+<p>Supported location-ids: <code class="docutils literal notranslate"><span class="pre">us</span></code>: USA country only, <code class="docutils literal notranslate"><span class="pre">asia</span></code>: East asia
+areas, like Japan, Taiwan, <code class="docutils literal notranslate"><span class="pre">eu</span></code>: The European Union.</p>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">projects/project-A/locations/eu</span></code>.</p>
+</p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
 be retried using a default configuration.</p></li>
@@ -240,7 +254,7 @@ that is provided to the method.</p></li>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1.ImageAnnotatorClient.batch_annotate_files">
-<code class="sig-name descname">batch_annotate_files</code><span class="sig-paren">(</span><em class="sig-param">requests</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/image_annotator_client.html#ImageAnnotatorClient.batch_annotate_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.batch_annotate_files" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">batch_annotate_files</code><span class="sig-paren">(</span><em class="sig-param">requests</em>, <em class="sig-param">parent=None</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/image_annotator_client.html#ImageAnnotatorClient.batch_annotate_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.batch_annotate_files" title="Permalink to this definition">#</a></dt>
 <dd><p>Service that performs image detection and annotation for a batch of files.
 Now only “application/pdf”, “image/tiff” and “image/gif” are supported.</p>
 <p>This service will extract at most 5 (customers can specify which 5 in
@@ -265,6 +279,13 @@ extracted.</p>
 AnnotateFileRequest in BatchAnnotateFilesRequest.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateFileRequest" title="google.cloud.vision_v1.types.AnnotateFileRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateFileRequest</span></code></a></p>
+</p></li>
+<li><p><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional. Target project and location to make a call.</p>
+<p>Format: <code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}</span></code>.</p>
+<p>If no parent is specified, a region will be chosen automatically.</p>
+<p>Supported location-ids: <code class="docutils literal notranslate"><span class="pre">us</span></code>: USA country only, <code class="docutils literal notranslate"><span class="pre">asia</span></code>: East asia
+areas, like Japan, Taiwan, <code class="docutils literal notranslate"><span class="pre">eu</span></code>: The European Union.</p>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">projects/project-A/locations/eu</span></code>.</p>
 </p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
@@ -293,7 +314,7 @@ that is provided to the method.</p></li>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1.ImageAnnotatorClient.batch_annotate_images">
-<code class="sig-name descname">batch_annotate_images</code><span class="sig-paren">(</span><em class="sig-param">requests</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/image_annotator_client.html#ImageAnnotatorClient.batch_annotate_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.batch_annotate_images" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">batch_annotate_images</code><span class="sig-paren">(</span><em class="sig-param">requests</em>, <em class="sig-param">parent=None</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/image_annotator_client.html#ImageAnnotatorClient.batch_annotate_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.batch_annotate_images" title="Permalink to this definition">#</a></dt>
 <dd><p>Run image detection and annotation for a batch of images.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">vision_v1</span>
@@ -312,6 +333,13 @@ that is provided to the method.</p></li>
 <li><p><strong>requests</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><em>AnnotateImageRequest</em></a><em>]</em><em>]</em>) – <p>Individual image annotation requests for this batch.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotateImageRequest</span></code></a></p>
+</p></li>
+<li><p><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Optional. Target project and location to make a call.</p>
+<p>Format: <code class="docutils literal notranslate"><span class="pre">projects/{project-id}/locations/{location-id}</span></code>.</p>
+<p>If no parent is specified, a region will be chosen automatically.</p>
+<p>Supported location-ids: <code class="docutils literal notranslate"><span class="pre">us</span></code>: USA country only, <code class="docutils literal notranslate"><span class="pre">asia</span></code>: East asia
+areas, like Japan, Taiwan, <code class="docutils literal notranslate"><span class="pre">eu</span></code>: The European Union.</p>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">projects/project-A/locations/eu</span></code>.</p>
 </p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
@@ -1700,6 +1728,86 @@ using its <cite>pages</cite> property.</p>
 <dt id="google.cloud.vision_v1.ProductSearchClient.product_set_path">
 <em class="property">classmethod </em><code class="sig-name descname">product_set_path</code><span class="sig-paren">(</span><em class="sig-param">project</em>, <em class="sig-param">location</em>, <em class="sig-param">product_set</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/product_search_client.html#ProductSearchClient.product_set_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient.product_set_path" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a fully-qualified product_set string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.vision_v1.ProductSearchClient.purge_products">
+<code class="sig-name descname">purge_products</code><span class="sig-paren">(</span><em class="sig-param">parent</em>, <em class="sig-param">product_set_purge_config=None</em>, <em class="sig-param">delete_orphan_products=None</em>, <em class="sig-param">force=None</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/product_search_client.html#ProductSearchClient.purge_products"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ProductSearchClient.purge_products" title="Permalink to this definition">#</a></dt>
+<dd><p>Asynchronous API to delete all Products in a ProductSet or all Products
+that are in no ProductSet.</p>
+<p>If a Product is a member of the specified ProductSet in addition to
+other ProductSets, the Product will still be deleted.</p>
+<p>It is recommended to not delete the specified ProductSet until after
+this operation has completed. It is also recommended to not add any of
+the Products involved in the batch delete to a new ProductSet while this
+operation is running because those Products may still end up deleted.</p>
+<p>It’s not possible to undo the PurgeProducts operation. Therefore, it is
+recommended to keep the csv files used in ImportProductSets (if that was
+how you originally built the Product Set) before starting PurgeProducts,
+in case you need to re-import the data after deletion.</p>
+<p>If the plan is to purge all of the Products from a ProductSet and then
+re-use the empty ProductSet to re-import new Products into the empty
+ProductSet, you must wait until the PurgeProducts operation has finished
+for that ProductSet.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">google.longrunning.Operation</span></code> API can be used to keep track of
+the progress and results of the request. <code class="docutils literal notranslate"><span class="pre">Operation.metadata</span></code> contains
+<code class="docutils literal notranslate"><span class="pre">BatchOperationMetadata</span></code>. (progress)</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">vision_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision_v1</span><span class="o">.</span><span class="n">ProductSearchClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">location_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[LOCATION]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">purge_products</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">operation_future</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># Handle result.</span>
+<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="n">operation_future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Handle metadata.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">metadata</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>The project and location in which the Products should be deleted.</p>
+<p>Format is <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOC_ID</span></code>.</p>
+</p></li>
+<li><p><strong>product_set_purge_config</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.vision_v1.types.ProductSetPurgeConfig" title="google.cloud.vision_v1.types.ProductSetPurgeConfig"><em>ProductSetPurgeConfig</em></a><em>]</em>) – <p>Specify which ProductSet contains the Products to be deleted.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.vision_v1.types.ProductSetPurgeConfig" title="google.cloud.vision_v1.types.ProductSetPurgeConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProductSetPurgeConfig</span></code></a></p>
+</p></li>
+<li><p><strong>delete_orphan_products</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – If delete_orphan_products is true, all Products that are not in any
+ProductSet will be deleted.</p></li>
+<li><p><strong>force</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – The default value is false. Override this value to true to actually perform
+the purge.</p></li>
+<li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
+be retried using a default configuration.</p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal notranslate"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</p></li>
+<li><p><strong>metadata</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – Additional metadata
+that is provided to the method.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">_OperationFuture</span></code> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the parameters are invalid.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">

@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.vision_v1.gapic.image_annotator_client &#8212; google-cloud 788cc02 documentation</title>
+    <title>google.cloud.vision_v1.gapic.image_annotator_client &#8212; google-cloud 1d5ede5 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -58,6 +58,7 @@
 <span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.client_info</span>
 <span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.config</span>
 <span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.method</span>
+<span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.routing_header</span>
 <span class="kn">import</span> <span class="nn">google.api_core.grpc_helpers</span>
 <span class="kn">import</span> <span class="nn">google.api_core.operation</span>
 <span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">operations_v1</span>
@@ -224,6 +225,7 @@
 <div class="viewcode-block" id="ImageAnnotatorClient.batch_annotate_images"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ImageAnnotatorClient.batch_annotate_images">[docs]</a>    <span class="k">def</span> <span class="nf">batch_annotate_images</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">requests</span><span class="p">,</span>
+        <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
         <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
         <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -246,6 +248,16 @@
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.vision_v1.types.AnnotateImageRequest`</span>
+<span class="sd">            parent (str): Optional. Target project and location to make a call.</span>
+
+<span class="sd">                Format: ``projects/{project-id}/locations/{location-id}``.</span>
+
+<span class="sd">                If no parent is specified, a region will be chosen automatically.</span>
+
+<span class="sd">                Supported location-ids: ``us``: USA country only, ``asia``: East asia</span>
+<span class="sd">                areas, like Japan, Taiwan, ``eu``: The European Union.</span>
+
+<span class="sd">                Example: ``projects/project-A/locations/eu``.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will</span>
 <span class="sd">                be retried using a default configuration.</span>
@@ -276,7 +288,22 @@
                 <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
             <span class="p">)</span>
 
-        <span class="n">request</span> <span class="o">=</span> <span class="n">image_annotator_pb2</span><span class="o">.</span><span class="n">BatchAnnotateImagesRequest</span><span class="p">(</span><span class="n">requests</span><span class="o">=</span><span class="n">requests</span><span class="p">)</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">image_annotator_pb2</span><span class="o">.</span><span class="n">BatchAnnotateImagesRequest</span><span class="p">(</span>
+            <span class="n">requests</span><span class="o">=</span><span class="n">requests</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;parent&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;batch_annotate_images&quot;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
         <span class="p">)</span></div>
@@ -284,6 +311,7 @@
 <div class="viewcode-block" id="ImageAnnotatorClient.batch_annotate_files"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ImageAnnotatorClient.batch_annotate_files">[docs]</a>    <span class="k">def</span> <span class="nf">batch_annotate_files</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">requests</span><span class="p">,</span>
+        <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
         <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
         <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -313,6 +341,16 @@
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.vision_v1.types.AnnotateFileRequest`</span>
+<span class="sd">            parent (str): Optional. Target project and location to make a call.</span>
+
+<span class="sd">                Format: ``projects/{project-id}/locations/{location-id}``.</span>
+
+<span class="sd">                If no parent is specified, a region will be chosen automatically.</span>
+
+<span class="sd">                Supported location-ids: ``us``: USA country only, ``asia``: East asia</span>
+<span class="sd">                areas, like Japan, Taiwan, ``eu``: The European Union.</span>
+
+<span class="sd">                Example: ``projects/project-A/locations/eu``.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will</span>
 <span class="sd">                be retried using a default configuration.</span>
@@ -343,7 +381,22 @@
                 <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
             <span class="p">)</span>
 
-        <span class="n">request</span> <span class="o">=</span> <span class="n">image_annotator_pb2</span><span class="o">.</span><span class="n">BatchAnnotateFilesRequest</span><span class="p">(</span><span class="n">requests</span><span class="o">=</span><span class="n">requests</span><span class="p">)</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">image_annotator_pb2</span><span class="o">.</span><span class="n">BatchAnnotateFilesRequest</span><span class="p">(</span>
+            <span class="n">requests</span><span class="o">=</span><span class="n">requests</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;parent&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;batch_annotate_files&quot;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
         <span class="p">)</span></div>
@@ -352,6 +405,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">requests</span><span class="p">,</span>
         <span class="n">output_config</span><span class="p">,</span>
+        <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
         <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
         <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -399,6 +453,16 @@
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.vision_v1.types.OutputConfig`</span>
+<span class="sd">            parent (str): Optional. Target project and location to make a call.</span>
+
+<span class="sd">                Format: ``projects/{project-id}/locations/{location-id}``.</span>
+
+<span class="sd">                If no parent is specified, a region will be chosen automatically.</span>
+
+<span class="sd">                Supported location-ids: ``us``: USA country only, ``asia``: East asia</span>
+<span class="sd">                areas, like Japan, Taiwan, ``eu``: The European Union.</span>
+
+<span class="sd">                Example: ``projects/project-A/locations/eu``.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will</span>
 <span class="sd">                be retried using a default configuration.</span>
@@ -432,8 +496,21 @@
             <span class="p">)</span>
 
         <span class="n">request</span> <span class="o">=</span> <span class="n">image_annotator_pb2</span><span class="o">.</span><span class="n">AsyncBatchAnnotateImagesRequest</span><span class="p">(</span>
-            <span class="n">requests</span><span class="o">=</span><span class="n">requests</span><span class="p">,</span> <span class="n">output_config</span><span class="o">=</span><span class="n">output_config</span>
+            <span class="n">requests</span><span class="o">=</span><span class="n">requests</span><span class="p">,</span> <span class="n">output_config</span><span class="o">=</span><span class="n">output_config</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span>
         <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;parent&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="n">operation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;async_batch_annotate_images&quot;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
         <span class="p">)</span>
@@ -447,6 +524,7 @@
 <div class="viewcode-block" id="ImageAnnotatorClient.async_batch_annotate_files"><a class="viewcode-back" href="../../../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ImageAnnotatorClient.async_batch_annotate_files">[docs]</a>    <span class="k">def</span> <span class="nf">async_batch_annotate_files</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">requests</span><span class="p">,</span>
+        <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
         <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
         <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -483,6 +561,16 @@
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.vision_v1.types.AsyncAnnotateFileRequest`</span>
+<span class="sd">            parent (str): Optional. Target project and location to make a call.</span>
+
+<span class="sd">                Format: ``projects/{project-id}/locations/{location-id}``.</span>
+
+<span class="sd">                If no parent is specified, a region will be chosen automatically.</span>
+
+<span class="sd">                Supported location-ids: ``us``: USA country only, ``asia``: East asia</span>
+<span class="sd">                areas, like Japan, Taiwan, ``eu``: The European Union.</span>
+
+<span class="sd">                Example: ``projects/project-A/locations/eu``.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will</span>
 <span class="sd">                be retried using a default configuration.</span>
@@ -513,7 +601,22 @@
                 <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
             <span class="p">)</span>
 
-        <span class="n">request</span> <span class="o">=</span> <span class="n">image_annotator_pb2</span><span class="o">.</span><span class="n">AsyncBatchAnnotateFilesRequest</span><span class="p">(</span><span class="n">requests</span><span class="o">=</span><span class="n">requests</span><span class="p">)</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">image_annotator_pb2</span><span class="o">.</span><span class="n">AsyncBatchAnnotateFilesRequest</span><span class="p">(</span>
+            <span class="n">requests</span><span class="o">=</span><span class="n">requests</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;parent&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
         <span class="n">operation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;async_batch_annotate_files&quot;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
         <span class="p">)</span>

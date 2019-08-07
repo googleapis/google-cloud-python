@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Types for Cloud Talent Solution API Client &#8212; google-cloud 788cc02 documentation</title>
+    <title>Types for Cloud Talent Solution API Client &#8212; google-cloud 1d5ede5 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -4947,13 +4947,14 @@ Area”.</p>
 <dd><p>Optional. CLDR region code of the country/region of the
 address. This is used to address ambiguity of the user-input
 location, for example, “Liverpool” against “Liverpool, NY, US”
-or “Liverpool, UK”.  Set this field if all the jobs to search
-against are from a same region, or jobs are world-wide, but
-the job seeker is from a specific region.  See
-<a class="reference external" href="http://cldr.unicode.org/">http://cldr.unicode.org/</a> and <a class="reference external" href="http://www.unicode.org/cldr/chart">http://www.unicode.org/cldr/chart</a>
-s/30/supplemental/territory_information.html for details.
-Example: “CH” for Switzerland. Note that this filter is not
-applicable for Profile Search related queries.</p>
+or “Liverpool, UK”.  Set this field to bias location
+resolution toward a specific country or territory. If this
+field is not set, application behavior is biased toward the
+United States by default.  See <a class="reference external" href="http://cldr.unicode.org/">http://cldr.unicode.org/</a> and ht
+tp://www.unicode.org/cldr/charts/30/supplemental/territory_in
+formation.html for details. Example: “CH” for Switzerland.
+Note that this filter is not applicable for Profile Search
+related queries.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -5578,8 +5579,11 @@ ants/{tenant_id}/profiles/{profile_id}”, for example,
 <dl class="attribute">
 <dt id="google.cloud.talent_v4beta1.types.Profile.external_id">
 <code class="sig-name descname">external_id</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.Profile.external_id" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional. Profile’s id in client system if available.  The
-maximum number of bytes allowed is 100.</p>
+<dd><p>Optional. Profile’s id in client system if available. This
+value is not required to be unique to each profile. However,
+providing unique values makes it easier to specify individual
+profiles when filing support tickets.  The maximum number of
+bytes allowed is 100.</p>
 </dd></dl>
 
 <dl class="attribute">
