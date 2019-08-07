@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Instance &#8212; google-cloud 1d5ede5 documentation</title>
+    <title>Instance &#8212; google-cloud 3d29c75 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -602,7 +602,9 @@ of this instance</p>
 <code class="sig-name descname">table</code><span class="sig-paren">(</span><em class="sig-param">table_id</em>, <em class="sig-param">mutation_timeout=None</em>, <em class="sig-param">app_profile_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/instance.html#Instance.table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.instance.Instance.table" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory to create a table associated with this instance.</p>
 <p>For example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.bigtable</span> <span class="k">import</span> <span class="n">Client</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">exceptions</span>
+    <span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">retry</span>
+    <span class="kn">from</span> <span class="nn">google.cloud.bigtable</span> <span class="k">import</span> <span class="n">Client</span>
     <span class="kn">from</span> <span class="nn">google.cloud.bigtable</span> <span class="k">import</span> <span class="n">column_family</span>
 
     <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">admin</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -610,7 +612,13 @@ of this instance</p>
     <span class="n">table</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;table_my&quot;</span><span class="p">)</span>
     <span class="c1"># Define the GC policy to retain only the most recent 2 versions.</span>
     <span class="n">max_versions_rule</span> <span class="o">=</span> <span class="n">column_family</span><span class="o">.</span><span class="n">MaxVersionsGCRule</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">table</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">column_families</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;cf1&quot;</span><span class="p">:</span> <span class="n">max_versions_rule</span><span class="p">})</span>
+
+    <span class="c1"># Could include other retriable exception types</span>
+    <span class="c1"># Could configure deadline, etc.</span>
+    <span class="n">predicate_504</span> <span class="o">=</span> <span class="n">retry</span><span class="o">.</span><span class="n">if_exception_type</span><span class="p">(</span><span class="n">exceptions</span><span class="o">.</span><span class="n">DeadlineExceeded</span><span class="p">)</span>
+    <span class="n">retry_504</span> <span class="o">=</span> <span class="n">retry</span><span class="o">.</span><span class="n">Retry</span><span class="p">(</span><span class="n">predicate_504</span><span class="p">)</span>
+
+    <span class="n">retry_504</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">create</span><span class="p">)(</span><span class="n">column_families</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;cf1&quot;</span><span class="p">:</span> <span class="n">max_versions_rule</span><span class="p">})</span>
 </pre></div>
 </div>
 <dl class="field-list simple">

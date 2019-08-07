@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.firestore_v1.query &#8212; google-cloud 1d5ede5 documentation</title>
+    <title>google.cloud.firestore_v1.query &#8212; google-cloud 3d29c75 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -700,7 +700,12 @@
             <span class="n">data</span> <span class="o">=</span> <span class="n">document_fields</span>
             <span class="k">for</span> <span class="n">order_key</span> <span class="ow">in</span> <span class="n">order_keys</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">field_path_module</span><span class="o">.</span><span class="n">get_nested_value</span><span class="p">(</span><span class="n">order_key</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="n">order_key</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                        <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">order_key</span><span class="p">])</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                            <span class="n">field_path_module</span><span class="o">.</span><span class="n">get_nested_value</span><span class="p">(</span><span class="n">order_key</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+                        <span class="p">)</span>
                 <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
                     <span class="n">msg</span> <span class="o">=</span> <span class="n">_MISSING_ORDER_BY</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">order_key</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
