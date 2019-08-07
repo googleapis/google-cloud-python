@@ -627,7 +627,10 @@ def test_query_with_order_dot_key(client, cleanup):
         last_value = snapshot.get("wordcount.page1")
     cursor_with_nested_keys = {"wordcount": {"page1": last_value}}
     found = list(
-        collection.order_by("wordcount.page1").start_after(cursor_with_nested_keys).limit(3).stream()
+        collection.order_by("wordcount.page1")
+        .start_after(cursor_with_nested_keys)
+        .limit(3)
+        .stream()
     )
     found_data = [
         {u"count": 30, u"wordcount": {u"page1": 130}},
