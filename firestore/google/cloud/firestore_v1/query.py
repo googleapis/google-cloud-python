@@ -666,7 +666,12 @@ class Query(object):
             data = document_fields
             for order_key in order_keys:
                 try:
-                    values.append(field_path_module.get_nested_value(order_key, data))
+                    if order_key in data:
+                        values.append(data[order_key])
+                    else:
+                        values.append(
+                            field_path_module.get_nested_value(order_key, data)
+                        )
                 except KeyError:
                     msg = _MISSING_ORDER_BY.format(order_key, data)
                     raise ValueError(msg)
