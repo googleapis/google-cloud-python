@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## 1.18.0
+
+08-07-2019 00:37 PDT
+
+
+### New Features
+- Add HMAC key support. ([#8430](https://github.com/googleapis/google-cloud-python/pull/8430))
+
+### Documentation
+- Mark old storage classes as legacy, not deprecated. ([#8887](https://github.com/googleapis/google-cloud-python/pull/8887))
+
+### Internal / Testing Changes
+- Normalize 'lint' / 'blacken' support under nox. ([#8831](https://github.com/googleapis/google-cloud-python/pull/8831))
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
 ## 1.17.0
 
 07-24-2019 12:37 PDT
