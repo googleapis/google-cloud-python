@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.storage.client &#8212; google-cloud 4025336 documentation</title>
+    <title>google.cloud.storage.client &#8212; google-cloud 2eb2969 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -60,6 +60,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.storage.batch</span> <span class="k">import</span> <span class="n">Batch</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage.bucket</span> <span class="k">import</span> <span class="n">Bucket</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage.blob</span> <span class="k">import</span> <span class="n">Blob</span>
+<span class="kn">from</span> <span class="nn">google.cloud.storage.hmac_key</span> <span class="k">import</span> <span class="n">HMACKeyMetadata</span>
 
 
 <span class="n">_marker</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
@@ -593,7 +594,99 @@
             <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
             <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
             <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">,</span>
-        <span class="p">)</span></div></div>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Client.create_hmac_key"><a class="viewcode-back" href="../../../../storage/client.html#google.cloud.storage.client.Client.create_hmac_key">[docs]</a>    <span class="k">def</span> <span class="nf">create_hmac_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_account_email</span><span class="p">,</span> <span class="n">project_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create an HMAC key for a service account.</span>
+
+<span class="sd">        :type service_account_email: str</span>
+<span class="sd">        :param service_account_email: e-mail address of the service account</span>
+
+<span class="sd">        :type project_id: str</span>
+<span class="sd">        :param project_id: (Optional) explicit project ID for the key.</span>
+<span class="sd">            Defaults to the client&#39;s project.</span>
+
+<span class="sd">        :rtype:</span>
+<span class="sd">            Tuple[:class:`~google.cloud.storage.hmac_key.HMACKeyMetadata`, str]</span>
+<span class="sd">        :returns: metadata for the created key, plus the bytes of the key&#39;s secret, which is an 40-character base64-encoded string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">project_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">project_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;/projects/</span><span class="si">{}</span><span class="s2">/hmacKeys&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project_id</span><span class="p">)</span>
+        <span class="n">qs_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;serviceAccountEmail&quot;</span><span class="p">:</span> <span class="n">service_account_email</span><span class="p">}</span>
+        <span class="n">api_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">qs_params</span>
+        <span class="p">)</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">HMACKeyMetadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">metadata</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">api_response</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span>
+        <span class="n">secret</span> <span class="o">=</span> <span class="n">api_response</span><span class="p">[</span><span class="s2">&quot;secret&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">secret</span></div>
+
+<div class="viewcode-block" id="Client.list_hmac_keys"><a class="viewcode-back" href="../../../../storage/client.html#google.cloud.storage.client.Client.list_hmac_keys">[docs]</a>    <span class="k">def</span> <span class="nf">list_hmac_keys</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">service_account_email</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">show_deleted_keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">project_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List HMAC keys for a project.</span>
+
+<span class="sd">        :type max_results: int</span>
+<span class="sd">        :param max_results:</span>
+<span class="sd">            (Optional) max number of keys to return in a given page.</span>
+
+<span class="sd">        :type service_account_email: str</span>
+<span class="sd">        :param service_account_email:</span>
+<span class="sd">            (Optional) limit keys to those created by the given service account.</span>
+
+<span class="sd">        :type show_deleted_keys: bool</span>
+<span class="sd">        :param show_deleted_keys:</span>
+<span class="sd">            (Optional) included deleted keys in the list. Default is to</span>
+<span class="sd">            exclude them.</span>
+
+<span class="sd">        :type project_id: str</span>
+<span class="sd">        :param project_id: (Optional) explicit project ID for the key.</span>
+<span class="sd">            Defaults to the client&#39;s project.</span>
+
+<span class="sd">        :rtype:</span>
+<span class="sd">            Tuple[:class:`~google.cloud.storage.hmac_key.HMACKeyMetadata`, str]</span>
+<span class="sd">        :returns: metadata for the created key, plus the bytes of the key&#39;s secret, which is an 40-character base64-encoded string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">project_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">project_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;/projects/</span><span class="si">{}</span><span class="s2">/hmacKeys&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project_id</span><span class="p">)</span>
+        <span class="n">extra_params</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="n">service_account_email</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">extra_params</span><span class="p">[</span><span class="s2">&quot;serviceAccountEmail&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">service_account_email</span>
+
+        <span class="k">if</span> <span class="n">show_deleted_keys</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">extra_params</span><span class="p">[</span><span class="s2">&quot;showDeletedKeys&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">show_deleted_keys</span>
+
+        <span class="k">return</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">HTTPIterator</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">api_request</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_hmac_key_metadata</span><span class="p">,</span>
+            <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
+            <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Client.get_hmac_key_metadata"><a class="viewcode-back" href="../../../../storage/client.html#google.cloud.storage.client.Client.get_hmac_key_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">get_hmac_key_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">access_id</span><span class="p">,</span> <span class="n">project_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a metadata instance for the given HMAC key.</span>
+
+<span class="sd">        :type access_id: str</span>
+<span class="sd">        :param access_id: Unique ID of an existing key.</span>
+
+<span class="sd">        :type project_id: str</span>
+<span class="sd">        :param project_id: (Optional) project ID of an existing key.</span>
+<span class="sd">            Defaults to client&#39;s project.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">HMACKeyMetadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">access_id</span><span class="p">,</span> <span class="n">project_id</span><span class="p">)</span>
+        <span class="n">metadata</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>  <span class="c1"># raises NotFound for missing key</span>
+        <span class="k">return</span> <span class="n">metadata</span></div></div>
 
 
 <span class="k">def</span> <span class="nf">_item_to_bucket</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
@@ -612,6 +705,23 @@
     <span class="n">bucket</span> <span class="o">=</span> <span class="n">Bucket</span><span class="p">(</span><span class="n">iterator</span><span class="o">.</span><span class="n">client</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
     <span class="n">bucket</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">bucket</span>
+
+
+<span class="k">def</span> <span class="nf">_item_to_hmac_key_metadata</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a JSON key metadata resource to the native object.</span>
+
+<span class="sd">    :type iterator: :class:`~google.api_core.page_iterator.Iterator`</span>
+<span class="sd">    :param iterator: The iterator that has retrieved the item.</span>
+
+<span class="sd">    :type item: dict</span>
+<span class="sd">    :param item: An item to be converted to a key metadata instance.</span>
+
+<span class="sd">    :rtype: :class:`~google.cloud.storage.hmac_key.HMACKeyMetadata`</span>
+<span class="sd">    :returns: The next key metadata instance in the page.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">metadata</span> <span class="o">=</span> <span class="n">HMACKeyMetadata</span><span class="p">(</span><span class="n">iterator</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+    <span class="n">metadata</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">item</span>
+    <span class="k">return</span> <span class="n">metadata</span>
 </pre></div>
 
           </div>

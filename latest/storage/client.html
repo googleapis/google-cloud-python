@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Storage Client &#8212; google-cloud 4025336 documentation</title>
+    <title>Storage Client &#8212; google-cloud 2eb2969 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -187,6 +187,27 @@ If not passed, uses the project set on the client.</p></li>
 </dd></dl>
 
 <dl class="method">
+<dt id="google.cloud.storage.client.Client.create_hmac_key">
+<code class="sig-name descname">create_hmac_key</code><span class="sig-paren">(</span><em class="sig-param">service_account_email</em>, <em class="sig-param">project_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/client.html#Client.create_hmac_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.client.Client.create_hmac_key" title="Permalink to this definition">#</a></dt>
+<dd><p>Create an HMAC key for a service account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_account_email</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – e-mail address of the service account</p></li>
+<li><p><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) explicit project ID for the key.
+Defaults to the client’s project.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tuple[<code class="xref py py-class docutils literal notranslate"><span class="pre">HMACKeyMetadata</span></code>, str]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>metadata for the created key, plus the bytes of the key’s secret, which is an 40-character base64-encoded string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="google.cloud.storage.client.Client.current_batch">
 <em class="property">property </em><code class="sig-name descname">current_batch</code><a class="headerlink" href="#google.cloud.storage.client.Client.current_batch" title="Permalink to this definition">#</a></dt>
 <dd><p>Currently-active batch.</p>
@@ -284,6 +305,21 @@ no batch is active).</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>  <span class="c1"># API request.</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.storage.client.Client.get_hmac_key_metadata">
+<code class="sig-name descname">get_hmac_key_metadata</code><span class="sig-paren">(</span><em class="sig-param">access_id</em>, <em class="sig-param">project_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/client.html#Client.get_hmac_key_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.client.Client.get_hmac_key_metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a metadata instance for the given HMAC key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>access_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Unique ID of an existing key.</p></li>
+<li><p><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) project ID of an existing key.
+Defaults to client’s project.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -386,6 +422,30 @@ project is also <code class="docutils literal notranslate"><span class="pre">Non
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Iterator of all <a class="reference internal" href="buckets.html#google.cloud.storage.bucket.Bucket" title="google.cloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bucket</span></code></a>
 belonging to this project.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.storage.client.Client.list_hmac_keys">
+<code class="sig-name descname">list_hmac_keys</code><span class="sig-paren">(</span><em class="sig-param">max_results=None</em>, <em class="sig-param">service_account_email=None</em>, <em class="sig-param">show_deleted_keys=None</em>, <em class="sig-param">project_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/client.html#Client.list_hmac_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.client.Client.list_hmac_keys" title="Permalink to this definition">#</a></dt>
+<dd><p>List HMAC keys for a project.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – (Optional) max number of keys to return in a given page.</p></li>
+<li><p><strong>service_account_email</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) limit keys to those created by the given service account.</p></li>
+<li><p><strong>show_deleted_keys</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – (Optional) included deleted keys in the list. Default is to
+exclude them.</p></li>
+<li><p><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) explicit project ID for the key.
+Defaults to the client’s project.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tuple[<code class="xref py py-class docutils literal notranslate"><span class="pre">HMACKeyMetadata</span></code>, str]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>metadata for the created key, plus the bytes of the key’s secret, which is an 40-character base64-encoded string.</p>
 </dd>
 </dl>
 </dd></dl>
