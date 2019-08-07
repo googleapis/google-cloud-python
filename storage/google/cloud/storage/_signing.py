@@ -321,7 +321,8 @@ def generate_signed_url_v2(
 
     :type response_type: str
     :param response_type: (Optional) Content type of responses to requests for
-                          the signed URL. Ignored if content_type is set on object/blob metadata.
+                          the signed URL. Ignored if content_type is set on
+                          object/blob metadata.
 
     :type response_disposition: str
     :param response_disposition: (Optional) Content disposition of responses to
@@ -466,7 +467,8 @@ def generate_signed_url_v4(
 
     :type response_type: str
     :param response_type: (Optional) Content type of responses to requests for
-                          the signed URL. Ignored if content_type is set on object/blob metadata.
+                          the signed URL. Ignored if content_type is set on
+                          object/blob metadata.
 
     :type response_disposition: str
     :param response_disposition: (Optional) Content disposition of responses to
