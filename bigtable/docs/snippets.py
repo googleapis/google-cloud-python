@@ -395,6 +395,8 @@ def test_bigtable_update_cluster():
 
 def test_bigtable_create_table():
     # [START bigtable_create_table]
+    from google.api_core import exceptions
+    from google.api_core import retry
     from google.cloud.bigtable import Client
     from google.cloud.bigtable import column_family
 
@@ -404,17 +406,12 @@ def test_bigtable_create_table():
     # Define the GC policy to retain only the most recent 2 versions.
     max_versions_rule = column_family.MaxVersionsGCRule(2)
 
-    RETRIES = 4
-    # Retry if deadline exceed error.
-    for retry in range(RETRIES):
-        try:
-            table.create(column_families={"cf1": max_versions_rule})
-            break
-        except Exception as e:
-            if retry == RETRIES - 1:
-                raise e
-            else:
-                time.sleep(2 ** (retry - 1))
+    # Could include other retriable exception types
+    # Could configure deadline, etc.
+    predicate_504 = retry.if_exception_type(exceptions.DeadlineExceeded)
+    retry_504 = retry.Retry(predicate_504)
+
+    retry_504(table.create)(column_families={"cf1": max_versions_rule})
     # [END bigtable_create_table]
 
     try:
