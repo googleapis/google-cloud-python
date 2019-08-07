@@ -255,7 +255,6 @@ class Client(ClientWithProject):
             self._base_url = "http://" + host
         except KeyError:
             api_endpoint = _DATASTORE_BASE_URL
-            client_options = self._client_options
             if client_options:
                 if type(client_options) == dict:
                     client_options = google.api_core.client_options.from_dict(
