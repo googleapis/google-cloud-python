@@ -16,15 +16,89 @@
 """System tests for reading rows from tables."""
 
 import os
+import uuid
 
 import pytest
 
 from google.cloud import bigquery_storage_v1beta1
 
 
-@pytest.fixture()
+_ASSETS_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), "assets")
+
+
+@pytest.fixture(scope="session")
 def project_id():
     return os.environ["PROJECT_ID"]
+
+
+@pytest.fixture(scope="session")
+def dataset(project_id):
+    from google.cloud import bigquery
+
+    bq_client = bigquery.Client()
+
+    unique_suffix = str(uuid.uuid4()).replace("-", "_")
+    dataset_name = "bq_storage_system_tests_" + unique_suffix
+
+    dataset_id = "{}.{}".format(project_id, dataset_name)
+    dataset = bigquery.Dataset(dataset_id)
+    dataset.location = "US"
+    created_dataset = bq_client.create_dataset(dataset)
+
+    yield created_dataset
+
+    bq_client.delete_dataset(dataset, delete_contents=True)
+
+
+@pytest.fixture(scope="session")
+def table(project_id, dataset):
+    from google.cloud import bigquery
+
+    bq_client = bigquery.Client()
+
+    schema = [
+        bigquery.SchemaField("first_name", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("last_name", "STRING", mode="NULLABLE"),
+        bigquery.SchemaField("age", "INTEGER", mode="REQUIRED"),
+    ]
+
+    table_id = "{}.{}.{}".format(project_id, dataset.dataset_id, "users")
+    bq_table = bigquery.Table(table_id, schema=schema)
+    created_table = bq_client.create_table(bq_table)
+
+    yield created_table
+
+    bq_client.delete_table(created_table)
+
+
+@pytest.fixture
+def table_with_data_ref(dataset, table):
+    from google.cloud import bigquery
+
+    bq_client = bigquery.Client()
+
+    job_config = bigquery.LoadJobConfig()
+    job_config.source_format = bigquery.SourceFormat.CSV
+    job_config.skip_leading_rows = 1
+    job_config.schema = table.schema
+
+    filename = os.path.join(_ASSETS_DIR, "people_data.csv")
+
+    with open(filename, "rb") as source_file:
+        job = bq_client.load_table_from_file(source_file, table, job_config=job_config)
+
+    job.result()  # wait for the load to complete
+
+    table_ref = bigquery_storage_v1beta1.types.TableReference()
+    table_ref.project_id = table.project
+    table_ref.dataset_id = table.dataset_id
+    table_ref.table_id = table.table_id
+    yield table_ref
+
+    # truncate table data
+    query = "DELETE FROM {}.{} WHERE 1 = 1".format(dataset.dataset_id, table.table_id)
+    query_job = bq_client.query(query, location="US")
+    query_job.result()
 
 
 @pytest.fixture()
