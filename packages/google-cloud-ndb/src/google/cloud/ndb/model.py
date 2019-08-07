@@ -1869,6 +1869,22 @@ class Property(ModelAttribute):
         """
         raise exceptions.NoLongerImplementedError()
 
+    def _db_set_value(self, v, unused_p, value):
+        """Helper for :meth:`_serialize`.
+
+        Raises:
+            NotImplementedError: Always. No longer implemented.
+        """
+        raise exceptions.NoLongerImplementedError()
+
+    def _db_get_value(self, v, unused_p):
+        """Helper for :meth:`_deserialize`.
+
+        Raises:
+            NotImplementedError: Always. This method is deprecated.
+        """
+        raise exceptions.NoLongerImplementedError()
+
     def _prepare_for_put(self, entity):
         """Allow this property to define a pre-put hook.
 
@@ -2082,22 +2098,6 @@ class BooleanProperty(Property):
             )
         return value
 
-    def _db_set_value(self, v, unused_p, value):
-        """Helper for :meth:`_serialize`.
-
-        Raises:
-            NotImplementedError: Always. No longer implemented.
-        """
-        raise exceptions.NoLongerImplementedError()
-
-    def _db_get_value(self, v, unused_p):
-        """Helper for :meth:`_deserialize`.
-
-        Raises:
-            NotImplementedError: Always. This method is deprecated.
-        """
-        raise exceptions.NoLongerImplementedError()
-
 
 class IntegerProperty(Property):
     """A property that contains values of type integer.
@@ -2130,22 +2130,6 @@ class IntegerProperty(Property):
                 "Expected integer, got {!r}".format(value)
             )
         return int(value)
-
-    def _db_set_value(self, v, unused_p, value):
-        """Helper for :meth:`_serialize`.
-
-        Raises:
-            NotImplementedError: Always. No longer implemented.
-        """
-        raise exceptions.NoLongerImplementedError()
-
-    def _db_get_value(self, v, unused_p):
-        """Helper for :meth:`_deserialize`.
-
-        Raises:
-            NotImplementedError: Always. This method is deprecated.
-        """
-        raise exceptions.NoLongerImplementedError()
 
 
 class FloatProperty(Property):
@@ -2180,22 +2164,6 @@ class FloatProperty(Property):
                 "Expected float, got {!r}".format(value)
             )
         return float(value)
-
-    def _db_set_value(self, v, unused_p, value):
-        """Helper for :meth:`_serialize`.
-
-        Raises:
-            NotImplementedError: Always. No longer implemented.
-        """
-        raise exceptions.NoLongerImplementedError()
-
-    def _db_get_value(self, v, unused_p):
-        """Helper for :meth:`_deserialize`.
-
-        Raises:
-            NotImplementedError: Always. This method is deprecated.
-        """
-        raise exceptions.NoLongerImplementedError()
 
 
 class _CompressedValue:
@@ -2368,14 +2336,6 @@ class BlobProperty(Property):
         if isinstance(value, _CompressedValue):
             return zlib.decompress(value.z_val)
 
-    def _db_set_value(self, v, unused_p, value):
-        """Helper for :meth:`_serialize`.
-
-        Raises:
-            NotImplementedError: Always. No longer implemented.
-        """
-        raise exceptions.NoLongerImplementedError()
-
     def _db_set_compressed_meaning(self, p):
         """Helper for :meth:`_db_set_value`.
 
@@ -2389,14 +2349,6 @@ class BlobProperty(Property):
 
         Raises:
             NotImplementedError: Always. No longer implemented.
-        """
-        raise exceptions.NoLongerImplementedError()
-
-    def _db_get_value(self, v, unused_p):
-        """Helper for :meth:`_deserialize`.
-
-        Raises:
-            NotImplementedError: Always. This method is deprecated.
         """
         raise exceptions.NoLongerImplementedError()
 
@@ -2592,22 +2544,6 @@ class GeoPtProperty(Property):
             raise exceptions.BadValueError(
                 "Expected GeoPt, got {!r}".format(value)
             )
-
-    def _db_set_value(self, v, p, value):
-        """Helper for :meth:`_serialize`.
-
-        Raises:
-            NotImplementedError: Always. No longer implemented.
-        """
-        raise exceptions.NoLongerImplementedError()
-
-    def _db_get_value(self, v, unused_p):
-        """Helper for :meth:`_deserialize`.
-
-        Raises:
-            NotImplementedError: Always. This method is deprecated.
-        """
-        raise exceptions.NoLongerImplementedError()
 
 
 class PickleProperty(BlobProperty):
@@ -3088,22 +3024,6 @@ class UserProperty(Property):
             entity (Model): An entity with values.
         """
 
-    def _db_set_value(self, v, p, value):
-        """Helper for :meth:`_serialize`.
-
-        Raises:
-            NotImplementedError: Always. No longer implemented.
-        """
-        raise exceptions.NoLongerImplementedError()
-
-    def _db_get_value(self, v, unused_p):
-        """Helper for :meth:`_deserialize`.
-
-        Raises:
-            NotImplementedError: Always. This method is deprecated.
-        """
-        raise exceptions.NoLongerImplementedError()
-
 
 class KeyProperty(Property):
     """A property that contains :class:`.Key` values.
@@ -3323,22 +3243,6 @@ class KeyProperty(Property):
                     "{!r}".format(self._kind, value)
                 )
 
-    def _db_set_value(self, v, unused_p, value):
-        """Helper for :meth:`_serialize`.
-
-        Raises:
-            NotImplementedError: Always. No longer implemented.
-        """
-        raise exceptions.NoLongerImplementedError()
-
-    def _db_get_value(self, v, unused_p):
-        """Helper for :meth:`_deserialize`.
-
-        Raises:
-            NotImplementedError: Always. This method is deprecated.
-        """
-        raise exceptions.NoLongerImplementedError()
-
     def _to_base_type(self, value):
         """Convert a value to the "base" value type for this property.
 
@@ -3392,22 +3296,6 @@ class BlobKeyProperty(Property):
             raise exceptions.BadValueError(
                 "Expected BlobKey, got {!r}".format(value)
             )
-
-    def _db_set_value(self, v, p, value):
-        """Helper for :meth:`_serialize`.
-
-        Raises:
-            NotImplementedError: Always. No longer implemented.
-        """
-        raise exceptions.NoLongerImplementedError()
-
-    def _db_get_value(self, v, unused_p):
-        """Helper for :meth:`_deserialize`.
-
-        Raises:
-            NotImplementedError: Always. This method is deprecated.
-        """
-        raise exceptions.NoLongerImplementedError()
 
 
 class DateTimeProperty(Property):
@@ -3544,22 +3432,6 @@ class DateTimeProperty(Property):
         ):
             value = self._now()
             self._store_value(entity, value)
-
-    def _db_set_value(self, v, p, value):
-        """Helper for :meth:`_serialize`.
-
-        Raises:
-            NotImplementedError: Always. No longer implemented.
-        """
-        raise exceptions.NoLongerImplementedError()
-
-    def _db_get_value(self, v, unused_p):
-        """Helper for :meth:`_deserialize`.
-
-        Raises:
-            NotImplementedError: Always. This method is deprecated.
-        """
-        raise exceptions.NoLongerImplementedError()
 
 
 class DateProperty(DateTimeProperty):
@@ -4071,22 +3943,6 @@ class GenericProperty(Property):
                     "Indexed value %s must be at most %d bytes"
                     % (self._name, _MAX_STRING_LENGTH)
                 )
-
-    def _db_get_value(self, v, unused_p):
-        """Helper for :meth:`_deserialize`.
-
-        Raises:
-            NotImplementedError: Always. This method is deprecated.
-        """
-        raise exceptions.NoLongerImplementedError()
-
-    def _db_set_value(self, v, p, value):
-        """Helper for :meth:`_deserialize`.
-
-        Raises:
-            NotImplementedError: Always. This method is deprecated.
-        """
-        raise exceptions.NoLongerImplementedError()
 
 
 class ComputedProperty(GenericProperty):

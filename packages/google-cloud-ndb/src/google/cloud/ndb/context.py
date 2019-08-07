@@ -513,14 +513,14 @@ class ContextOptions:
     __slots__ = ()
 
     def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
 
 class TransactionOptions:
     __slots__ = ()
 
     def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
 
 class AutoBatcher:

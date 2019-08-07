@@ -76,6 +76,7 @@ __all__ = [
     "put_multi",
     "put_multi_async",
     "ReadonlyPropertyError",
+    "RedisCache",
     "Rollback",
     "StringProperty",
     "StructuredProperty",
@@ -137,6 +138,7 @@ from google.cloud.ndb._datastore_api import STRONG
 from google.cloud.ndb._datastore_query import Cursor
 from google.cloud.ndb._datastore_query import QueryIterator
 from google.cloud.ndb.global_cache import GlobalCache
+from google.cloud.ndb.global_cache import RedisCache
 from google.cloud.ndb.key import Key
 from google.cloud.ndb.model import BlobKey
 from google.cloud.ndb.model import BlobKeyProperty
