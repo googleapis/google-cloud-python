@@ -15,6 +15,8 @@
 """Shared helper functions for connecting BigQuery and pandas."""
 
 import concurrent.futures
+import functools
+import logging
 import warnings
 
 from six.moves import queue
@@ -37,6 +39,8 @@ except ImportError:  # pragma: NO COVER
 
 from google.cloud.bigquery import schema
 
+
+_LOGGER = logging.getLogger(__name__)
 
 _NO_BQSTORAGE_ERROR = (
     "The google-cloud-bigquery-storage library is not installed, "
@@ -74,6 +78,8 @@ def pyarrow_timestamp():
 
 
 if pyarrow:
+    # This dictionary is duplicated in bigquery_storage/test/unite/test_reader.py
+    # When modifying it be sure to update it there as well.
     BQ_TO_ARROW_SCALARS = {
         "BOOL": pyarrow.bool_,
         "BOOLEAN": pyarrow.bool_,
@@ -202,7 +208,7 @@ def dataframe_to_arrow(dataframe, bq_schema):
     return pyarrow.Table.from_arrays(arrow_arrays, names=arrow_names)
 
 
-def dataframe_to_parquet(dataframe, bq_schema, filepath):
+def dataframe_to_parquet(dataframe, bq_schema, filepath, parquet_compression="SNAPPY"):
     """Write dataframe as a Parquet file, according to the desired BQ schema.
 
     This function requires the :mod:`pyarrow` package. Arrow is used as an
@@ -216,12 +222,17 @@ def dataframe_to_parquet(dataframe, bq_schema, filepath):
             columns in the DataFrame.
         filepath (str):
             Path to write Parquet file to.
+        parquet_compression (str):
+            (optional) The compression codec to use by the the
+            ``pyarrow.parquet.write_table`` serializing method. Defaults to
+            "SNAPPY".
+            https://arrow.apache.org/docs/python/generated/pyarrow.parquet.write_table.html#pyarrow-parquet-write-table
     """
     if pyarrow is None:
         raise ValueError("pyarrow is required for BigQuery schema conversion.")
 
     arrow_table = dataframe_to_arrow(dataframe, bq_schema)
-    pyarrow.parquet.write_table(arrow_table, filepath)
+    pyarrow.parquet.write_table(arrow_table, filepath, compression=parquet_compression)
 
 
 def _tabledata_list_page_to_arrow(page, column_names, arrow_types):
@@ -269,14 +280,18 @@ def download_dataframe_tabledata_list(pages, schema, dtypes):
         yield _tabledata_list_page_to_dataframe(page, column_names, dtypes)
 
 
-def _download_dataframe_bqstorage_stream(
-    download_state,
-    bqstorage_client,
-    column_names,
-    dtypes,
-    session,
-    stream,
-    worker_queue,
+def _bqstorage_page_to_arrow(page):
+    return page.to_arrow()
+
+
+def _bqstorage_page_to_dataframe(column_names, dtypes, page):
+    # page.to_dataframe() does not preserve column order in some versions
+    # of google-cloud-bigquery-storage. Access by column name to rearrange.
+    return page.to_dataframe(dtypes=dtypes)[column_names]
+
+
+def _download_table_bqstorage_stream(
+    download_state, bqstorage_client, session, stream, worker_queue, page_to_item
 ):
     position = bigquery_storage_v1beta1.types.StreamPosition(stream=stream)
     rowstream = bqstorage_client.read_rows(position).rows(session)
@@ -284,10 +299,8 @@ def _download_dataframe_bqstorage_stream(
     for page in rowstream.pages:
         if download_state.done:
             return
-        # page.to_dataframe() does not preserve column order in some versions
-        # of google-cloud-bigquery-storage. Access by column name to rearrange.
-        frame = page.to_dataframe(dtypes=dtypes)[column_names]
-        worker_queue.put(frame)
+        item = page_to_item(page)
+        worker_queue.put(item)
 
 
 def _nowait(futures):
@@ -304,14 +317,13 @@ def _nowait(futures):
     return done, not_done
 
 
-def download_dataframe_bqstorage(
+def _download_table_bqstorage(
     project_id,
     table,
     bqstorage_client,
-    column_names,
-    dtypes,
     preserve_order=False,
     selected_fields=None,
+    page_to_item=None,
 ):
     """Use (faster, but billable) BQ Storage API to construct DataFrame."""
     if "$" in table.table_id:
@@ -333,14 +345,18 @@ def download_dataframe_bqstorage(
     session = bqstorage_client.create_read_session(
         table.to_bqstorage(),
         "projects/{}".format(project_id),
+        format_=bigquery_storage_v1beta1.enums.DataFormat.ARROW,
         read_options=read_options,
         requested_streams=requested_streams,
     )
+    _LOGGER.debug(
+        "Started reading table '{}.{}.{}' with BQ Storage API session '{}'.".format(
+            table.project, table.dataset_id, table.table_id, session.name
+        )
+    )
 
-    # Avoid reading rows from an empty table. pandas.concat will fail on an
-    # empty list.
+    # Avoid reading rows from an empty table.
     if not session.streams:
-        yield pandas.DataFrame(columns=column_names)
         return
 
     total_streams = len(session.streams)
@@ -360,14 +376,13 @@ def download_dataframe_bqstorage(
             # See: https://github.com/googleapis/google-cloud-python/pull/7698
             not_done = [
                 pool.submit(
-                    _download_dataframe_bqstorage_stream,
+                    _download_table_bqstorage_stream,
                     download_state,
                     bqstorage_client,
-                    column_names,
-                    dtypes,
                     session,
                     stream,
                     worker_queue,
+                    page_to_item,
                 )
                 for stream in session.streams
             ]
@@ -410,3 +425,36 @@ def download_dataframe_bqstorage(
             # Shutdown all background threads, now that they should know to
             # exit early.
             pool.shutdown(wait=True)
+
+
+def download_arrow_bqstorage(
+    project_id, table, bqstorage_client, preserve_order=False, selected_fields=None
+):
+    return _download_table_bqstorage(
+        project_id,
+        table,
+        bqstorage_client,
+        preserve_order=preserve_order,
+        selected_fields=selected_fields,
+        page_to_item=_bqstorage_page_to_arrow,
+    )
+
+
+def download_dataframe_bqstorage(
+    project_id,
+    table,
+    bqstorage_client,
+    column_names,
+    dtypes,
+    preserve_order=False,
+    selected_fields=None,
+):
+    page_to_item = functools.partial(_bqstorage_page_to_dataframe, column_names, dtypes)
+    return _download_table_bqstorage(
+        project_id,
+        table,
+        bqstorage_client,
+        preserve_order=preserve_order,
+        selected_fields=selected_fields,
+        page_to_item=page_to_item,
+    )

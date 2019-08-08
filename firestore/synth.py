@@ -22,6 +22,10 @@ versions = [
     ("v1beta1", "artman_firestore.yaml"),
     ("v1", "artman_firestore_v1.yaml"),
 ]
+admin_versions = [
+    ("v1", "artman_firestore_v1.yaml"),
+]
+
 
 # ----------------------------------------------------------------------------
 # Generate firestore GAPIC layer
@@ -51,6 +55,33 @@ for version, artman_config in versions:
         "client = firestore_client.FirestoreClient",
     )
 
+
+# ----------------------------------------------------------------------------
+# Generate firestore admin GAPIC layer
+# ----------------------------------------------------------------------------
+for version, artman_config in admin_versions:
+    library = gapic.py_library(
+        "firestore_admin",
+        f"{version}",
+        config_path=f"/google/firestore/admin/{artman_config}",
+        artman_output_name=f"firestore-admin-{version}",
+        include_protos=True,
+    )
+    s.move(library / f"google/cloud/firestore_admin_{version}")
+    s.move(library / "tests")
+
+    s.replace(
+        f"google/cloud/firestore_admin_{version}/gapic/firestore_admin_client.py",
+        "'google-cloud-firestore-admin'",
+        "'google-cloud-firestore'",
+    )
+
+    s.replace(
+        "google/**/*.py",
+        f"from google\.cloud\.firestore\.admin_{version}.proto",
+        f"from google.cloud.firestore_admin_{version}.proto",
+    )
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
@@ -62,5 +93,12 @@ s.replace(
     "GOOGLE_APPLICATION_CREDENTIALS",
     "FIRESTORE_APPLICATION_CREDENTIALS",
 )
+
+s.replace(
+    "noxfile.py",
+    '"--quiet", system_test',
+    '"--verbose", system_test',
+)
+
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

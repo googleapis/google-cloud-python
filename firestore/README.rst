@@ -1,7 +1,7 @@
 Python Client for Google Cloud Firestore
 ========================================
 
-|beta| |pypi| |versions|
+|beta| |pypi| |versions| |compat_check_pypi| |compat_check_github|
 
 The `Google Cloud Firestore`_ API is a flexible, scalable
 database for mobile, web, and server development from Firebase and Google
@@ -20,9 +20,13 @@ including Cloud Functions.
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-firestore.svg
    :target: https://pypi.org/project/google-cloud-firestore/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-firestore.svg
+.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-firestore
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-firestore
+.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dfirestore
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dfirestore
 .. _Google Cloud Firestore: https://cloud.google.com/firestore/
 .. _Product Documentation: https://cloud.google.com/firestore/docs/
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/firestore/index.html
+.. _Client Library Documentation: https://googleapis.dev/python/firestore/latest
 
 Quick Start
 -----------
@@ -37,7 +41,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Google Cloud Firestore API.:  https://cloud.google.com/firestore
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~

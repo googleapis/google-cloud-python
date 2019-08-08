@@ -1,6 +1,8 @@
 Python Client for Google Cloud Data Catalog API (`Alpha`_)
 ==========================================================
 
+|compat_check_pypi| |compat_check_github|
+
 `Google Cloud Data Catalog API`_: Google Cloud Data Catalog API provides features to attach metadata to
 Google Cloud Platform resources like BigQuery Tables. Key critical resources
 include: Entries (Data Catalog representation of a cloud resource).
@@ -8,9 +10,13 @@ include: Entries (Data Catalog representation of a cloud resource).
 - `Client Library Documentation`_
 - `Product Documentation`_
 
+.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-datacatalog
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-datacatalog
+.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Ddatacatalog
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Ddatacatalog
 .. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
 .. _Google Cloud Data Catalog API: https://cloud.google.com/data-catalog
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/datacatalog/index.html
+.. _Client Library Documentation: https://googleapis.dev/python/datacatalog/latest
 .. _Product Documentation:  https://cloud.google.com/data-catalog
 
 Quick Start
@@ -26,7 +32,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Google Cloud Data Catalog API.:  https://cloud.google.com/data-catalog
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~

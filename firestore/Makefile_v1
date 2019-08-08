@@ -8,30 +8,33 @@ PROTOC = protoc
 REPO_DIR=$(HOME)/git-repos
 PROTOBUF_REPO = $(REPO_DIR)/protobuf
 GOOGLEAPIS_REPO = $(REPO_DIR)/googleapis
-TESTS_REPO = $(REPO_DIR)/gcp/google-cloud-common
+TESTS_REPO = $(REPO_DIR)/conformance-tests
+TEST_PROTO_DIR = $(TESTS_REPO)/firestore/v1
+TEST_PROTO_SRC = $(TEST_PROTO_DIR)/proto/google/cloud/conformance/firestore/v1/tests.proto
 
 TMPDIR = /tmp/python-fs-proto
 TMPDIR_FS = $(TMPDIR)/google/cloud/firestore_v1/proto
+TEST_PROTO_COPY = $(TMPDIR_FS)/tests.proto
 
 .PHONY: sync-protos gen-protos
 
 gen-protos: sync-protos tweak-protos
 	# TODO(jba): Put the generated proto somewhere more suitable.
-	$(PROTOC) --python_out=google/cloud/firestore_v1/proto \
+	$(PROTOC) --python_out=. \
 		-I $(TMPDIR) \
 		-I $(PROTOBUF_REPO)/src \
 		-I $(GOOGLEAPIS_REPO) \
-		$(TMPDIR)/test_v1.proto
+		$(TEST_PROTO_COPY)
 
 tweak-protos:
 	mkdir -p $(TMPDIR_FS)
 	cp $(GOOGLEAPIS_REPO)/google/firestore/v1/*.proto $(TMPDIR_FS)
 	sed -i -e 's@google/firestore/v1@google/cloud/firestore_v1/proto@' $(TMPDIR_FS)/*.proto
-	cp $(TESTS_REPO)/testing/firestore/proto/test_v1.proto $(TMPDIR)
-	sed -i -e 's@package tests@package tests.v1@' $(TMPDIR)/test_v1.proto
-	sed -i -e 's@google/firestore/v1@google/cloud/firestore_v1/proto@' $(TMPDIR)/test_v1.proto
+	cp $(TEST_PROTO_SRC) $(TEST_PROTO_COPY)
+	sed -i -e 's@package google.cloud.conformance.firestore.v1@package google.cloud.firestore_v1.proto@' $(TEST_PROTO_COPY)
+	sed -i -e 's@google/firestore/v1@google/cloud/firestore_v1/proto@' $(TEST_PROTO_COPY)
 
 sync-protos:
 	cd $(PROTOBUF_REPO); git pull
 	cd $(GOOGLEAPIS_REPO); git pull
-	#cd $(TESTS_REPO); git pull
+	cd $(TESTS_REPO); git pull

@@ -24,6 +24,7 @@ import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
+import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.operation
 from google.api_core import operations_v1
@@ -190,6 +191,7 @@ class ImageAnnotatorClient(object):
     def batch_annotate_images(
         self,
         requests,
+        parent=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -212,9 +214,19 @@ class ImageAnnotatorClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.vision_v1.types.AnnotateImageRequest`
+            parent (str): Optional. Target project and location to make a call.
+
+                Format: ``projects/{project-id}/locations/{location-id}``.
+
+                If no parent is specified, a region will be chosen automatically.
+
+                Supported location-ids: ``us``: USA country only, ``asia``: East asia
+                areas, like Japan, Taiwan, ``eu``: The European Union.
+
+                Example: ``projects/project-A/locations/eu``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -242,7 +254,22 @@ class ImageAnnotatorClient(object):
                 client_info=self._client_info,
             )
 
-        request = image_annotator_pb2.BatchAnnotateImagesRequest(requests=requests)
+        request = image_annotator_pb2.BatchAnnotateImagesRequest(
+            requests=requests, parent=parent
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["batch_annotate_images"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -250,6 +277,7 @@ class ImageAnnotatorClient(object):
     def batch_annotate_files(
         self,
         requests,
+        parent=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -279,9 +307,19 @@ class ImageAnnotatorClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.vision_v1.types.AnnotateFileRequest`
+            parent (str): Optional. Target project and location to make a call.
+
+                Format: ``projects/{project-id}/locations/{location-id}``.
+
+                If no parent is specified, a region will be chosen automatically.
+
+                Supported location-ids: ``us``: USA country only, ``asia``: East asia
+                areas, like Japan, Taiwan, ``eu``: The European Union.
+
+                Example: ``projects/project-A/locations/eu``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -309,7 +347,22 @@ class ImageAnnotatorClient(object):
                 client_info=self._client_info,
             )
 
-        request = image_annotator_pb2.BatchAnnotateFilesRequest(requests=requests)
+        request = image_annotator_pb2.BatchAnnotateFilesRequest(
+            requests=requests, parent=parent
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["batch_annotate_files"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -318,6 +371,7 @@ class ImageAnnotatorClient(object):
         self,
         requests,
         output_config,
+        parent=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -365,9 +419,19 @@ class ImageAnnotatorClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.vision_v1.types.OutputConfig`
+            parent (str): Optional. Target project and location to make a call.
+
+                Format: ``projects/{project-id}/locations/{location-id}``.
+
+                If no parent is specified, a region will be chosen automatically.
+
+                Supported location-ids: ``us``: USA country only, ``asia``: East asia
+                areas, like Japan, Taiwan, ``eu``: The European Union.
+
+                Example: ``projects/project-A/locations/eu``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -398,8 +462,21 @@ class ImageAnnotatorClient(object):
             )
 
         request = image_annotator_pb2.AsyncBatchAnnotateImagesRequest(
-            requests=requests, output_config=output_config
+            requests=requests, output_config=output_config, parent=parent
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         operation = self._inner_api_calls["async_batch_annotate_images"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -413,6 +490,7 @@ class ImageAnnotatorClient(object):
     def async_batch_annotate_files(
         self,
         requests,
+        parent=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -449,9 +527,19 @@ class ImageAnnotatorClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.vision_v1.types.AsyncAnnotateFileRequest`
+            parent (str): Optional. Target project and location to make a call.
+
+                Format: ``projects/{project-id}/locations/{location-id}``.
+
+                If no parent is specified, a region will be chosen automatically.
+
+                Supported location-ids: ``us``: USA country only, ``asia``: East asia
+                areas, like Japan, Taiwan, ``eu``: The European Union.
+
+                Example: ``projects/project-A/locations/eu``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -479,7 +567,22 @@ class ImageAnnotatorClient(object):
                 client_info=self._client_info,
             )
 
-        request = image_annotator_pb2.AsyncBatchAnnotateFilesRequest(requests=requests)
+        request = image_annotator_pb2.AsyncBatchAnnotateFilesRequest(
+            requests=requests, parent=parent
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         operation = self._inner_api_calls["async_batch_annotate_files"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )

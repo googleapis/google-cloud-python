@@ -1,7 +1,7 @@
 Python Client for Google Cloud Natural Language
 ===============================================
 
-|GA| |pypi| |versions|
+|GA| |pypi| |versions| |compat_check_pypi| |compat_check_github|
 
 The `Google Cloud Natural Language`_ API can be used to reveal the
 structure and meaning of text via powerful machine
@@ -22,9 +22,13 @@ with your document storage on Google Cloud Storage.
    :target: https://pypi.org/project/google-cloud-language/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-language.svg
    :target: https://pypi.org/project/google-cloud-language/
+.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-language
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-language
+.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dlanguage
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dlanguage
 .. _Google Cloud Natural Language: https://cloud.google.com/natural-language/
 .. _Product Documentation:  https://cloud.google.com/language/docs
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/language/index.html
+.. _Client Library Documentation: https://googleapis.dev/python/language/latest
 
 .. note::
 
@@ -44,7 +48,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Google Cloud Language API.:  https://cloud.google.com/natural-language
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~
@@ -99,4 +103,4 @@ Next Steps
 -  Read the `Product documentation`_ to learn
    more about the product and see How-to Guides.
 
-.. _Usage documentation: https://googleapis.github.io/google-cloud-python/latest/language/usage.html
+.. _Usage documentation: https://googleapis.dev/python/language/latest

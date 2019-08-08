@@ -1,7 +1,7 @@
 Python Client for Google Cloud Pub / Sub
 ========================================
 
-|beta| |pypi| |versions|
+|beta| |pypi| |versions| |compat_check_pypi| |compat_check_github|
 
 `Google Cloud Pub / Sub`_ is a fully-managed real-time messaging service that
 allows you to send and receive messages between independent applications. You
@@ -25,9 +25,13 @@ independently written applications.
    :target: https://pypi.org/project/google-cloud-pubsub/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-pubsub.svg
    :target: https://pypi.org/project/google-cloud-pubsub/
+.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-pubsub
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-pubsub
+.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dpubsub
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dpubsub
 .. _Google Cloud Pub / Sub: https://cloud.google.com/pubsub/
 .. _Product Documentation: https://cloud.google.com/pubsub/docs
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/pubsub/
+.. _Client Library Documentation: https://googleapis.dev/python/pubsub/latest
 
 Quick Start
 -----------
@@ -42,7 +46,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Google Cloud Pub / Sub API.:  https://cloud.google.com/pubsub
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~
@@ -113,7 +117,7 @@ messages to it
 
 To learn more, consult the `publishing documentation`_.
 
-.. _publishing documentation: https://googleapis.github.io/google-cloud-python/latest/pubsub/publisher/index.html
+.. _publishing documentation: https://googleapis.dev/python/pubsub/latest
 
 
 Subscribing
@@ -158,7 +162,7 @@ block the current thread until a given condition obtains:
 It is also possible to pull messages in a synchronous (blocking) fashion. To
 learn more about subscribing, consult the `subscriber documentation`_.
 
-.. _subscriber documentation: https://googleapis.github.io/google-cloud-python/latest/pubsub/subscriber/index.html
+.. _subscriber documentation: https://googleapis.dev/python/pubsub/latest
 
 
 Authentication

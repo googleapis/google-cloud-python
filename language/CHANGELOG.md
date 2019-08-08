@@ -4,6 +4,35 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+## 1.3.0
+
+07-24-2019 16:44 PDT
+
+
+### Implementation Changes
+- Allow kwargs to be passed to create_channel  ([#8396](https://github.com/googleapis/google-cloud-python/pull/8396))
+
+### New Features
+- Add 'client_options' support (via synth). ([#8515](https://github.com/googleapis/google-cloud-python/pull/8515))
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+
+### Documentation
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+- Add google.api proto annotations, update docstrings (via synth). ([#7659](https://github.com/googleapis/google-cloud-python/pull/7659))
+
+### Internal / Testing Changes
+- Pin black version (via synth). ([#8588](https://github.com/googleapis/google-cloud-python/pull/8588))
+- Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+- Declare encoding as utf-8 in pb2 files (via synth). ([#8357](https://github.com/googleapis/google-cloud-python/pull/8357))
+- Add disclaimer to auto-generated template files (via synth).  ([#8319](https://github.com/googleapis/google-cloud-python/pull/8319))
+- Suppress checking 'cov-fail-under' in nox default session (via synth).  ([#8246](https://github.com/googleapis/google-cloud-python/pull/8246))
+- Blacken 'noxfile.py' / 'setup.py' (via synth). ([#8158](https://github.com/googleapis/google-cloud-python/pull/8158))
+- Add empty lines (via synth). ([#8063](https://github.com/googleapis/google-cloud-python/pull/8063))
+- Add nox session `docs` (via synth). ([#7776](https://github.com/googleapis/google-cloud-python/pull/7776))
+
 ## 1.2.0
 
 03-29-2019 09:53 PDT

@@ -81,12 +81,83 @@ class ConfigServiceV2Client(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
+    def billing_path(cls, billing_account):
+        """Return a fully-qualified billing string."""
+        return google.api_core.path_template.expand(
+            "billingAccounts/{billing_account}", billing_account=billing_account
+        )
+
+    @classmethod
+    def billing_exclusion_path(cls, billing_account, exclusion):
+        """Return a fully-qualified billing_exclusion string."""
+        return google.api_core.path_template.expand(
+            "billingAccounts/{billing_account}/exclusions/{exclusion}",
+            billing_account=billing_account,
+            exclusion=exclusion,
+        )
+
+    @classmethod
+    def billing_sink_path(cls, billing_account, sink):
+        """Return a fully-qualified billing_sink string."""
+        return google.api_core.path_template.expand(
+            "billingAccounts/{billing_account}/sinks/{sink}",
+            billing_account=billing_account,
+            sink=sink,
+        )
+
+    @classmethod
     def exclusion_path(cls, project, exclusion):
         """Return a fully-qualified exclusion string."""
         return google.api_core.path_template.expand(
             "projects/{project}/exclusions/{exclusion}",
             project=project,
             exclusion=exclusion,
+        )
+
+    @classmethod
+    def folder_path(cls, folder):
+        """Return a fully-qualified folder string."""
+        return google.api_core.path_template.expand("folders/{folder}", folder=folder)
+
+    @classmethod
+    def folder_exclusion_path(cls, folder, exclusion):
+        """Return a fully-qualified folder_exclusion string."""
+        return google.api_core.path_template.expand(
+            "folders/{folder}/exclusions/{exclusion}",
+            folder=folder,
+            exclusion=exclusion,
+        )
+
+    @classmethod
+    def folder_sink_path(cls, folder, sink):
+        """Return a fully-qualified folder_sink string."""
+        return google.api_core.path_template.expand(
+            "folders/{folder}/sinks/{sink}", folder=folder, sink=sink
+        )
+
+    @classmethod
+    def organization_path(cls, organization):
+        """Return a fully-qualified organization string."""
+        return google.api_core.path_template.expand(
+            "organizations/{organization}", organization=organization
+        )
+
+    @classmethod
+    def organization_exclusion_path(cls, organization, exclusion):
+        """Return a fully-qualified organization_exclusion string."""
+        return google.api_core.path_template.expand(
+            "organizations/{organization}/exclusions/{exclusion}",
+            organization=organization,
+            exclusion=exclusion,
+        )
+
+    @classmethod
+    def organization_sink_path(cls, organization, sink):
+        """Return a fully-qualified organization_sink string."""
+        return google.api_core.path_template.expand(
+            "organizations/{organization}/sinks/{sink}",
+            organization=organization,
+            sink=sink,
         )
 
     @classmethod
@@ -263,8 +334,8 @@ class ConfigServiceV2Client(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -357,8 +428,8 @@ class ConfigServiceV2Client(object):
 
                 Example: ``"projects/my-project-id/sinks/my-sink-id"``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -460,8 +531,8 @@ class ConfigServiceV2Client(object):
                 will be a unique service account used only for exports from the new
                 sink. For more information, see ``writer_identity`` in ``LogSink``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -583,8 +654,8 @@ class ConfigServiceV2Client(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.logging_v2.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -668,8 +739,8 @@ class ConfigServiceV2Client(object):
 
                 Example: ``"projects/my-project-id/sinks/my-sink-id"``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -759,8 +830,8 @@ class ConfigServiceV2Client(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -853,8 +924,8 @@ class ConfigServiceV2Client(object):
 
                 Example: ``"projects/my-project-id/exclusions/my-exclusion-id"``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -943,8 +1014,8 @@ class ConfigServiceV2Client(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.logging_v2.types.LogExclusion`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1046,8 +1117,8 @@ class ConfigServiceV2Client(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.logging_v2.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1126,8 +1197,8 @@ class ConfigServiceV2Client(object):
 
                 Example: ``"projects/my-project-id/exclusions/my-exclusion-id"``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.

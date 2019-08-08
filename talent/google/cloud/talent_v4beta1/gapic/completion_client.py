@@ -88,6 +88,20 @@ class CompletionClient(object):
         )
 
     @classmethod
+    def company_without_tenant_path(cls, project, company):
+        """Return a fully-qualified company_without_tenant string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/companies/{company}", project=project, company=company
+        )
+
+    @classmethod
+    def project_path(cls, project):
+        """Return a fully-qualified project string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}", project=project
+        )
+
+    @classmethod
     def tenant_path(cls, project, tenant):
         """Return a fully-qualified tenant string."""
         return google.api_core.path_template.expand(
@@ -281,8 +295,8 @@ class CompletionClient(object):
             type_ (~google.cloud.talent_v4beta1.types.CompletionType): Optional. The completion topic. The default is
                 ``CompletionType.COMBINED``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.

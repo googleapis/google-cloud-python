@@ -1,7 +1,7 @@
 Python Client for Google Cloud Vision
 =====================================
 
-|beta| |pypi| |versions|
+|beta| |pypi| |versions| |compat_check_pypi| |compat_check_github|
 
 The `Google Cloud Vision`_  API enables developers to
 understand the content of an image by encapsulating powerful machine
@@ -23,10 +23,14 @@ Storage.
    :target: https://pypi.org/project/google-cloud-vision/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-vision.svg
    :target: https://pypi.org/project/google-cloud-vision/
+.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-vision
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-vision
+.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dvision
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dvision
 .. _Vision: https://cloud.google.com/vision/
 
 .. _Google Cloud Vision: https://cloud.google.com/vision/
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/vision/
+.. _Client Library Documentation: https://googleapis.dev/python/vision/latest
 .. _Product Documentation: https://cloud.google.com/vision/reference/rest/
 
 
@@ -43,7 +47,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Google Cloud Vision API.:  https://cloud.google.com/vision
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~

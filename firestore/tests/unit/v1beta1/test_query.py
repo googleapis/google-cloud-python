@@ -17,6 +17,7 @@ import types
 import unittest
 
 import mock
+import pytest
 import six
 
 
@@ -1547,7 +1548,9 @@ def _make_client(project="project-project"):
     from google.cloud.firestore_v1beta1.client import Client
 
     credentials = _make_credentials()
-    return Client(project=project, credentials=credentials)
+
+    with pytest.deprecated_call():
+        return Client(project=project, credentials=credentials)
 
 
 def _make_order_pb(field_path, direction):

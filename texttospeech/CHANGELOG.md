@@ -4,6 +4,35 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## 0.5.0
+
+07-24-2019 17:48 PDT
+
+
+### Implementation Changes
+- Allow kwargs to be passed to create_channel (via synth). ([#8407](https://github.com/googleapis/google-cloud-python/pull/8407))
+- Reformat protos, update nox session docs (via synth). ([#7941](https://github.com/googleapis/google-cloud-python/pull/7941))
+- Remove classifier for Python 3.4 for end-of-life. ([#7535](https://github.com/googleapis/google-cloud-python/pull/7535))
+
+### New Features
+- Add 'client_options' support (via synth). ([#8525](https://github.com/googleapis/google-cloud-python/pull/8525))
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+
+### Documentation
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+- Repair top-level API reference page. ([#8435](https://github.com/googleapis/google-cloud-python/pull/8435))
+- Updated client library documentation URLs. ([#7307](https://github.com/googleapis/google-cloud-python/pull/7307))
+
+### Internal / Testing Changes
+- Pin black version (via synth). ([#8599](https://github.com/googleapis/google-cloud-python/pull/8599))
+- Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+- Declare encoding as utf-8 in pb2 files (via synth). ([#8367](https://github.com/googleapis/google-cloud-python/pull/8367))
+- Add disclaimer to auto-generated template files (via synth).  ([#8331](https://github.com/googleapis/google-cloud-python/pull/8331))
+- Blacken (via synth). ([#8281](https://github.com/googleapis/google-cloud-python/pull/8281))
+
 ## 0.4.0
 
 02-07-2019 15:21 PST

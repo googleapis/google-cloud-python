@@ -1,7 +1,8 @@
 Python Client for Cloud Speech API
 ==================================
 
-|GA| |pypi| |versions|
+
+|GA| |pypi| |versions| |compat_check_pypi| |compat_check_github|
 
 The `Cloud Speech API`_ enables developers to convert audio to text by applying
 powerful neural network models.  The API recognizes over 80 languages and
@@ -16,8 +17,12 @@ variants, to support your global user base.
    :target: https://pypi.org/project/google-cloud-speech/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-speech.svg
    :target: https://pypi.org/project/google-cloud-speech/
+.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-speech
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-speech
+.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dspeech
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dspeech
 .. _Cloud Speech API: https://cloud.google.com/speech
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/speech/index.html
+.. _Client Library Documentation: https://googleapis.dev/python/speech/latest
 .. _Product Documentation:  https://cloud.google.com/speech
 
 Quick Start
@@ -33,7 +38,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Cloud Speech API.:  https://cloud.google.com/speech
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/stable/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~

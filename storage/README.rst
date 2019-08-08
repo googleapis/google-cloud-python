@@ -1,7 +1,7 @@
 Python Client for Google Cloud Storage
 ======================================
 
-|GA| |pypi| |versions|
+|GA| |pypi| |versions| |compat_check_pypi| |compat_check_github|
 
 `Google Cloud Storage`_ allows you to store data on
 Google infrastructure with very high reliability, performance and
@@ -17,8 +17,12 @@ via direct download.
    :target: https://pypi.org/project/google-cloud-storage
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-storage.svg
    :target: https://pypi.org/project/google-cloud-storage
+.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-storage
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-storage
+.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dstorage
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dstorage
 .. _Google Cloud Storage: https://cloud.google.com/storage/docs
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/storage/client.html
+.. _Client Library Documentation: https://googleapis.dev/python/storage/latest
 .. _Storage API docs: https://cloud.google.com/storage/docs/json_api/v1
 
 Quick Start
@@ -34,7 +38,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Google Cloud Storage API.:  https://cloud.google.com/storage
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~

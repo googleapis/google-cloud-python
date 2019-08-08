@@ -5,14 +5,6 @@ Python idiomatic clients for `Google Cloud Platform`_ services.
 
 .. _Google Cloud Platform: https://cloud.google.com/
 
--  `Homepage`_
--  `API Documentation`_
--  `Read The Docs Documentation`_
-
-.. _Homepage: https://googleapis.github.io/google-cloud-python/
-.. _API Documentation: https://googleapis.github.io/google-cloud-python/latest/
-.. _Read The Docs Documentation: https://google-cloud-python.readthedocs.io/en/latest/
-
 **Heads up**! These libraries are supported on App Engine standard's `Python 3 runtime`_ but are *not* supported on App Engine's `Python 2 runtime`_.
 
 .. _Python 3 runtime: https://cloud.google.com/appengine/docs/standard/python3
@@ -121,10 +113,9 @@ The following client libraries have **alpha** support:
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
 -  `Google Cloud Security Scanner`_ (`Security Scanner README`_ )
--  `Google Cloud Tasks`_ (`Tasks README`_)
 -  `Google Cloud Trace`_ (`Trace README`_)
 -  `Google Cloud Text-to-Speech`_ (`Text-to-Speech README`_)
--  `Grafeas_ (`Grafeas README`_)
+-  `Grafeas`_ (`Grafeas README`_)
 -  `Stackdriver Error Reporting`_ (`Error Reporting README`_)
 -  `Stackdriver Monitoring`_ (`Monitoring README`_)
 

@@ -27,7 +27,7 @@ PROJECT_INSIDE = os.environ.get("PROJECT_ID", None)
 PROJECT_OUTSIDE = os.environ.get(
     "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT", None
 )
-IS_INSIDE_VPCSC = os.environ.get("GOOGLE_CLOUD_TESTS_IN_VPCSC", "false")
+IS_INSIDE_VPCSC = os.environ.get("GOOGLE_CLOUD_TESTS_IN_VPCSC", "true")
 
 
 class TestVPCServiceControl(object):

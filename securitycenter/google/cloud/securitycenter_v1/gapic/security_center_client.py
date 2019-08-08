@@ -46,6 +46,7 @@ from google.cloud.securitycenter_v1.proto import securitycenter_service_pb2
 from google.cloud.securitycenter_v1.proto import securitycenter_service_pb2_grpc
 from google.cloud.securitycenter_v1.proto import source_pb2
 from google.iam.v1 import iam_policy_pb2
+from google.iam.v1 import options_pb2
 from google.iam.v1 import policy_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import duration_pb2
@@ -303,8 +304,8 @@ class SecurityCenterClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1.types.Source`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -392,8 +393,8 @@ class SecurityCenterClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1.types.Finding`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -444,6 +445,7 @@ class SecurityCenterClient(object):
     def get_iam_policy(
         self,
         resource,
+        options_=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -463,9 +465,14 @@ class SecurityCenterClient(object):
         Args:
             resource (str): REQUIRED: The resource for which the policy is being requested.
                 See the operation documentation for the appropriate value for this field.
+            options_ (Union[dict, ~google.cloud.securitycenter_v1.types.GetPolicyOptions]): OPTIONAL: A ``GetPolicyOptions`` object for specifying options to
+                ``GetIamPolicy``. This field is only used by Cloud IAM.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.securitycenter_v1.types.GetPolicyOptions`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -493,7 +500,9 @@ class SecurityCenterClient(object):
                 client_info=self._client_info,
             )
 
-        request = iam_policy_pb2.GetIamPolicyRequest(resource=resource)
+        request = iam_policy_pb2.GetIamPolicyRequest(
+            resource=resource, options=options_
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -534,8 +543,8 @@ class SecurityCenterClient(object):
             name (str): Name of the organization to get organization settings for. Its format is
                 "organizations/[organization\_id]/organizationSettings".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -604,8 +613,8 @@ class SecurityCenterClient(object):
             name (str): Relative resource name of the source. Its format is
                 "organizations/[organization\_id]/source/[source\_id]".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -735,10 +744,21 @@ class SecurityCenterClient(object):
                 -  boolean literals ``true`` and ``false`` without quotes.
 
                 The following field and operator combinations are supported: name \| '='
-                update\_time \| '>', '<', '>=', '<=', '=' create\_time \| '>', '<',
-                '>=', '<=', '=' iam\_policy.policy\_blob \| '=', ':'
-                resource\_properties \| '=', ':', '>', '<', '>=', '<=' security\_marks
-                \| '=', ':' security\_center\_properties.resource\_name \| '=', ':'
+                update\_time \| '=', '>', '<', '>=', '<='
+
+                Usage: This should be milliseconds since epoch or an RFC3339 string.
+                Examples: "update\_time = "2019-06-10T16:07:18-07:00"" "update\_time =
+                1560208038000"
+
+                create\_time \| '=', '>', '<', '>=', '<='
+
+                Usage: This should be milliseconds since epoch or an RFC3339 string.
+                Examples: "create\_time = "2019-06-10T16:07:18-07:00"" "create\_time =
+                1560208038000"
+
+                iam\_policy.policy\_blob \| '=', ':' resource\_properties \| '=', ':',
+                '>', '<', '>=', '<=' security\_marks \| '=', ':'
+                security\_center\_properties.resource\_name \| '=', ':'
                 security\_center\_properties.resource\_type \| '=', ':'
                 security\_center\_properties.resource\_parent \| '=', ':'
                 security\_center\_properties.resource\_project \| '=', ':'
@@ -789,8 +809,8 @@ class SecurityCenterClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -945,9 +965,15 @@ class SecurityCenterClient(object):
 
                 The following field and operator combinations are supported: name \|
                 ``=`` parent \| '=', ':' resource\_name \| '=', ':' state \| '=', ':'
-                category \| '=', ':' external\_uri \| '=', ':' event\_time \| ``>``,
-                ``<``, ``>=``, ``<=`` security\_marks \| '=', ':' source\_properties \|
-                '=', ':', ``>``, ``<``, ``>=``, ``<=``
+                category \| '=', ':' external\_uri \| '=', ':' event\_time \| ``=``,
+                ``>``, ``<``, ``>=``, ``<=``
+
+                Usage: This should be milliseconds since epoch or an RFC3339 string.
+                Examples: "event\_time = "2019-06-10T16:07:18-07:00"" "event\_time =
+                1560208038000"
+
+                security\_marks \| '=', ':' source\_properties \| '=', ':', ``>``,
+                ``<``, ``>=``, ``<=``
 
                 For example, ``source_properties.size = 100`` is a valid filter string.
             read_time (Union[dict, ~google.cloud.securitycenter_v1.types.Timestamp]): Time used as a reference point when filtering findings. The filter is
@@ -993,8 +1019,8 @@ class SecurityCenterClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1128,7 +1154,18 @@ class SecurityCenterClient(object):
                 -  boolean literals ``true`` and ``false`` without quotes.
 
                 The following are the allowed field and operator combinations: name \|
-                ``=`` update\_time \| ``>``, ``<``, ``>=``, ``<=``
+                ``=`` update\_time \| ``=``, ``>``, ``<``, ``>=``, ``<=``
+
+                Usage: This should be milliseconds since epoch or an RFC3339 string.
+                Examples: "update\_time = "2019-06-10T16:07:18-07:00"" "update\_time =
+                1560208038000"
+
+                create\_time \| ``=``, ``>``, ``<``, ``>=``, ``<=``
+
+                Usage: This should be milliseconds since epoch or an RFC3339 string.
+                Examples: "create\_time = "2019-06-10T16:07:18-07:00"" "create\_time =
+                1560208038000"
+
                 iam\_policy.policy\_blob \| '=', ':' resource\_properties \| '=', ':',
                 ``>``, ``<``, ``>=``, ``<=`` security\_marks \| '=', ':'
                 security\_center\_properties.resource\_name \| '=', ':'
@@ -1203,8 +1240,8 @@ class SecurityCenterClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1343,9 +1380,15 @@ class SecurityCenterClient(object):
 
                 The following field and operator combinations are supported: name \|
                 ``=`` parent \| '=', ':' resource\_name \| '=', ':' state \| '=', ':'
-                category \| '=', ':' external\_uri \| '=', ':' event\_time \| ``>``,
-                ``<``, ``>=``, ``<=`` security\_marks \| '=', ':' source\_properties \|
-                '=', ':', ``>``, ``<``, ``>=``, ``<=``
+                category \| '=', ':' external\_uri \| '=', ':' event\_time \| ``=``,
+                ``>``, ``<``, ``>=``, ``<=``
+
+                Usage: This should be milliseconds since epoch or an RFC3339 string.
+                Examples: "event\_time = "2019-06-10T16:07:18-07:00"" "event\_time =
+                1560208038000"
+
+                security\_marks \| '=', ':' source\_properties \| '=', ':', ``>``,
+                ``<``, ``>=``, ``<=``
 
                 For example, ``source_properties.size = 100`` is a valid filter string.
             order_by (str): Expression that defines what fields and order to use for sorting. The
@@ -1406,8 +1449,8 @@ class SecurityCenterClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1516,8 +1559,8 @@ class SecurityCenterClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1616,8 +1659,8 @@ class SecurityCenterClient(object):
             parent (str): Name of the organization to run asset discovery for. Its format is
                 "organizations/[organization\_id]".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1707,8 +1750,8 @@ class SecurityCenterClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1.types.Timestamp`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1790,8 +1833,8 @@ class SecurityCenterClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1.types.Policy`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1868,8 +1911,8 @@ class SecurityCenterClient(object):
                 information see `IAM
                 Overview <https://cloud.google.com/iam/docs/overview#permissions>`__.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1960,8 +2003,8 @@ class SecurityCenterClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -2042,8 +2085,8 @@ class SecurityCenterClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -2128,8 +2171,8 @@ class SecurityCenterClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -2219,8 +2262,8 @@ class SecurityCenterClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1.types.Timestamp`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.

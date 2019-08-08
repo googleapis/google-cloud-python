@@ -18,7 +18,7 @@
 import google.api_core.grpc_helpers
 
 from google.cloud.kms_v1.proto import service_pb2_grpc
-from google.iam.v1 import iam_policy_pb2
+from google.iam.v1 import iam_policy_pb2_grpc as iam_policy_pb2_grpc
 
 
 class KeyManagementServiceGrpcTransport(object):
@@ -62,7 +62,14 @@ class KeyManagementServiceGrpcTransport(object):
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(address=address, credentials=credentials)
+            channel = self.create_channel(
+                address=address,
+                credentials=credentials,
+                options={
+                    "grpc.max_send_message_length": -1,
+                    "grpc.max_receive_message_length": -1,
+                }.items(),
+            )
 
         self._channel = channel
 
@@ -72,7 +79,7 @@ class KeyManagementServiceGrpcTransport(object):
             "key_management_service_stub": service_pb2_grpc.KeyManagementServiceStub(
                 channel
             ),
-            "iam_policy_stub": iam_policy_pb2.IAMPolicyStub(channel),
+            "iam_policy_stub": iam_policy_pb2_grpc.IAMPolicyStub(channel),
         }
 
     @classmethod
