@@ -36,6 +36,7 @@ from test_utils.system import unique_resource_id
 from test_utils.retry import RetryErrors
 from google.api_core.exceptions import NotFound
 from google.api_core.exceptions import TooManyRequests
+from google.api_core.exceptions import DeadlineExceeded
 from google.cloud._helpers import UTC
 from google.cloud.bigtable import Client
 from google.cloud.bigtable import enums
@@ -62,6 +63,7 @@ LABELS = {LABEL_KEY: str(LABEL_STAMP)}
 INSTANCES_TO_DELETE = []
 
 retry_429 = RetryErrors(TooManyRequests, max_tries=9)
+retry_504 = RetryErrors(DeadlineExceeded, max_tries=4)
 
 
 class Config(object):
@@ -91,7 +93,7 @@ def setup_module():
     # We want to make sure the operation completes.
     operation.result(timeout=100)
     Config.TABLE = Config.INSTANCE.table(TABLE_ID)
-    Config.TABLE.create()
+    retry_504(Config.TABLE.create)()
 
 
 def teardown_module():
