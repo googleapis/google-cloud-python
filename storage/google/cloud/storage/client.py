@@ -299,7 +299,9 @@ class Client(ClientWithProject):
         except NotFound:
             return None
 
-    def create_bucket(self, bucket_or_name, requester_pays=None, project=None, location=None):
+    def create_bucket(
+        self, bucket_or_name, requester_pays=None, project=None, location=None
+    ):
         """API call: create a new bucket via a POST request.
 
         See
@@ -363,7 +365,8 @@ class Client(ClientWithProject):
             bucket.requester_pays = requester_pays
 
         query_params = {"project": project}
-        properties = bucket.properties
+        properties = {key: bucket._properties[key] for key in bucket._changes}
+        properties["name"] = bucket.name
 
         if location is not None:
             properties["location"] = location

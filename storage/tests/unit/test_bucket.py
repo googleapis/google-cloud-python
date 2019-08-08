@@ -556,19 +556,12 @@ class Test_Bucket(unittest.TestCase):
         from google.cloud.storage.client import Client
 
         BUCKET_NAME = "bucket-name"
-        connection = _make_connection()
+
         client = Client(project=None)
+        bucket = self._make_one(client, BUCKET_NAME)
 
-        with mock.patch(
-            'google.cloud.storage.client.Client._connection',
-            new_callable=mock.PropertyMock
-        ) as client_mock:
-            client_mock.return_value = connection
-
-            bucket = self._make_one(client, BUCKET_NAME)
-
-            with self.assertRaises(ValueError):
-                bucket.create()
+        with self.assertRaises(ValueError):
+            bucket.create()
 
     def test_create_w_explicit_project(self):
         from google.cloud.storage.client import Client
@@ -578,22 +571,19 @@ class Test_Bucket(unittest.TestCase):
         OTHER_PROJECT = "other-project-123"
         DATA = {"name": BUCKET_NAME}
         connection = _make_connection(DATA)
-        client = Client(project=PROJECT)
-        with mock.patch(
-            'google.cloud.storage.client.Client._connection',
-            new_callable=mock.PropertyMock
-        ) as client_mock:
-            client_mock.return_value = connection
 
-            bucket = self._make_one(client, BUCKET_NAME)
-            bucket.create(project=OTHER_PROJECT)
-            connection.api_request.assert_called_once_with(
-                method="POST",
-                path="/b",
-                query_params={"project": OTHER_PROJECT},
-                data=DATA,
-                _target_object=bucket
-            )
+        client = Client(project=PROJECT)
+        client._base_connection = connection
+
+        bucket = self._make_one(client, BUCKET_NAME)
+        bucket.create(project=OTHER_PROJECT)
+        connection.api_request.assert_called_once_with(
+            method="POST",
+            path="/b",
+            query_params={"project": OTHER_PROJECT},
+            data=DATA,
+            _target_object=bucket,
+        )
 
     def test_create_w_explicit_location(self):
         from google.cloud.storage.client import Client
@@ -604,29 +594,23 @@ class Test_Bucket(unittest.TestCase):
         DATA = {"location": LOCATION, "name": BUCKET_NAME}
 
         connection = _make_connection(
-            DATA,
-            "{'location': 'us-central1', 'name': 'bucket-name'}"
+            DATA, "{'location': 'us-central1', 'name': 'bucket-name'}"
         )
 
         client = Client(project=PROJECT)
-        with mock.patch(
-            'google.cloud.storage.client.Client._connection',
-            new_callable=mock.PropertyMock
-        ) as client_mock:
-            client_mock.return_value = connection
+        client._base_connection = connection
 
-            bucket = self._make_one(client, BUCKET_NAME)
+        bucket = self._make_one(client, BUCKET_NAME)
+        bucket.create(location=LOCATION)
 
-            bucket.create(location=LOCATION)
-
-            connection.api_request.assert_called_once_with(
-                method="POST",
-                path="/b",
-                data=DATA,
-                _target_object=bucket,
-                query_params={'project': 'PROJECT'}
-            )
-            self.assertEqual(bucket.location, LOCATION)
+        connection.api_request.assert_called_once_with(
+            method="POST",
+            path="/b",
+            data=DATA,
+            _target_object=bucket,
+            query_params={"project": "PROJECT"},
+        )
+        self.assertEqual(bucket.location, LOCATION)
 
     def test_create_hit(self):
         from google.cloud.storage.client import Client
@@ -636,22 +620,18 @@ class Test_Bucket(unittest.TestCase):
         DATA = {"name": BUCKET_NAME}
         connection = _make_connection(DATA)
         client = Client(project=PROJECT)
-        with mock.patch(
-            'google.cloud.storage.client.Client._connection',
-            new_callable=mock.PropertyMock
-        ) as client_mock:
-            client_mock.return_value = connection
+        client._base_connection = connection
 
-            bucket = self._make_one(client=client, name=BUCKET_NAME)
-            bucket.create()
+        bucket = self._make_one(client=client, name=BUCKET_NAME)
+        bucket.create()
 
-            connection.api_request.assert_called_once_with(
-                method="POST",
-                path="/b",
-                query_params={"project": PROJECT},
-                data=DATA,
-                _target_object=bucket
-            )
+        connection.api_request.assert_called_once_with(
+            method="POST",
+            path="/b",
+            query_params={"project": PROJECT},
+            data=DATA,
+            _target_object=bucket,
+        )
 
     def test_create_w_extra_properties(self):
         from google.cloud.storage.client import Client
@@ -683,28 +663,24 @@ class Test_Bucket(unittest.TestCase):
 
         connection = _make_connection(DATA)
         client = Client(project=PROJECT)
-        with mock.patch(
-            'google.cloud.storage.client.Client._connection',
-            new_callable=mock.PropertyMock
-        ) as client_mock:
-            client_mock.return_value = connection
+        client._base_connection = connection
 
-            bucket = self._make_one(client=client, name=BUCKET_NAME)
-            bucket.cors = CORS
-            bucket.lifecycle_rules = LIFECYCLE_RULES
-            bucket.storage_class = STORAGE_CLASS
-            bucket.versioning_enabled = True
-            bucket.requester_pays = True
-            bucket.labels = LABELS
-            bucket.create(location=LOCATION)
+        bucket = self._make_one(client=client, name=BUCKET_NAME)
+        bucket.cors = CORS
+        bucket.lifecycle_rules = LIFECYCLE_RULES
+        bucket.storage_class = STORAGE_CLASS
+        bucket.versioning_enabled = True
+        bucket.requester_pays = True
+        bucket.labels = LABELS
+        bucket.create(location=LOCATION)
 
-            connection.api_request.assert_called_once_with(
-                method="POST",
-                path="/b",
-                query_params={"project": PROJECT},
-                data=DATA,
-                _target_object=bucket
-            )
+        connection.api_request.assert_called_once_with(
+            method="POST",
+            path="/b",
+            query_params={"project": PROJECT},
+            data=DATA,
+            _target_object=bucket,
+        )
 
     def test_acl_property(self):
         from google.cloud.storage.acl import BucketACL

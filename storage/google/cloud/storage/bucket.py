@@ -495,17 +495,6 @@ class Bucket(_PropertyMixin):
         """
         return self._user_project
 
-    @property
-    def properties(self):
-        """Properties of the current bucket object.
-
-        Returns:
-            dict: Bucket properties transformed to dict.
-        """
-        properties = {key: self._properties[key] for key in self._changes}
-        properties["name"] = self.name
-        return properties
-
     def blob(
         self,
         blob_name,
