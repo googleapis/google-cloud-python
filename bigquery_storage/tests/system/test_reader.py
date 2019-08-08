@@ -116,3 +116,32 @@ def test_filtered_rows_read(client, project_id, table_with_data_ref):
     rows = list(client.read_rows(stream_pos).rows(session))
 
     assert len(rows) == 2
+
+
+@pytest.mark.parametrize(
+    "data_format",
+    (
+        (bigquery_storage_v1beta1.enums.DataFormat.AVRO),
+        (bigquery_storage_v1beta1.enums.DataFormat.ARROW),
+    ),
+)
+def test_column_selection_read(client, project_id, table_with_data_ref, data_format):
+    read_options = bigquery_storage_v1beta1.types.TableReadOptions()
+    read_options.selected_fields.append("first_name")
+    read_options.selected_fields.append("age")
+
+    session = client.create_read_session(
+        table_with_data_ref,
+        "projects/{}".format(project_id),
+        format_=data_format,
+        requested_streams=1,
+        read_options=read_options,
+    )
+    stream_pos = bigquery_storage_v1beta1.types.StreamPosition(
+        stream=session.streams[0]
+    )
+
+    rows = list(client.read_rows(stream_pos).rows(session))
+
+    for row in rows:
+        assert sorted(row.keys()) == ["age", "first_name"]
