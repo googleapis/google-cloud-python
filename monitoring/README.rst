@@ -20,7 +20,7 @@ with a few exceptions as noted on the individual method pages.
 .. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dmonitoring
    :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dmonitoring
 .. _Stackdriver Monitoring API: https://cloud.google.com/monitoring/api/ref_v3/rest/
-.. _Client Library Documentation: https://google-cloud-python.readthedocs.io/en/latest/monitoring/
+.. _Client Library Documentation: https://googleapis.dev/python/monitoring/latest
 .. _Product Documentation:  https://cloud.google.com/monitoring/docs
 
 Quick Start
