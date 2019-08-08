@@ -588,35 +588,6 @@ class Blob(_PropertyMixin):
             while not download.finished:
                 download.consume_next_chunk(transport)
 
-    def get_streaming_file(self, filename, client=None):
-        """Returns streaming file connected to :class:`~google.resumable_media.requests.ChunkedDownload` of this blob.
-
-        Args:
-            filename (str): A filename to be passed to ``open``.
-
-            client (Union[ \
-                :class:`~google.cloud.storage.client.Client`, \
-                ``NoneType``, \
-            ]):
-                (Optional) The client to use. If not passed, falls back
-                to the ``client`` stored on the blob's bucket.
-
-        Returns
-            File-like object, that can be partially downloaded/processed.
-        """
-        download_url = self._get_download_url()
-        headers = _get_encryption_headers(self._encryption_key)
-        headers["accept-encoding"] = "gzip"
-        transport = self._get_transport(client)
-
-        return StreamingFile(
-            filename=filename,
-            download_url=download_url,
-            headers=headers,
-            transport=transport,
-            chunk_size=self.chunk_size,
-        )
-
     def download_to_file(self, file_obj, client=None, start=None, end=None):
         """Download the contents of this blob into a file-like object.
 

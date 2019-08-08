@@ -15,6 +15,9 @@
 import io
 import json
 import unittest
+import tempfile
+import os
+import google
 
 import mock
 import pytest
@@ -36,6 +39,15 @@ def _make_connection(*responses):
     mock_conn.user_agent = "testing 1.2.3"
     mock_conn.api_request.side_effect = list(responses) + [NotFound("miss")]
     return mock_conn
+
+
+def _make_blob(*args, **kw):
+    from google.cloud.storage.blob import Blob
+
+    properties = kw.pop("properties", {})
+    blob = Blob(*args, **kw)
+    blob._properties.update(properties)
+    return blob
 
 
 def _make_response(status=http_client.OK, content=b"", headers={}):
@@ -609,6 +621,143 @@ class TestClient(unittest.TestCase):
         )
         json_sent = http.request.call_args_list[0][1]["data"]
         self.assertEqual(json_expected, json.loads(json_sent))
+
+    def test_download_w_streaming_file(self):
+        from google.cloud._testing import _NamedTemporaryFile
+
+        response1 = _make_response(
+            headers={"content-length": "3", "content-range": "bytes 0-2/6"},
+            content=b"abc",
+        )
+        response2 = _make_response(
+            headers={"content-length": "3", "content-range": "bytes 3-5/6"},
+            content=b"def",
+        )
+
+        client = self._make_one(project="PROJECT", credentials=_make_credentials())
+        http = _make_requests_session([response1, response2])
+        client._http_internal = http
+
+        bucket = mock.Mock(
+            client=client, user_project=None, spec=["client", "user_project"]
+        )
+
+        properties = {"mediaLink": "http://example.com/media/"}
+        blob = _make_blob(
+            "blob-name", bucket=bucket, properties=properties, chunk_size=262144
+        )
+
+        with _NamedTemporaryFile() as temp:
+            file_ = client.get_streaming_file(blob, temp.name)
+            # downloading first part
+            chunk1 = file_.read(3)
+
+            # reading part of downloaded chunk
+            file_.seek(0, 0)
+            chunk = file_.read(2)
+            self.assertEqual(chunk, b"ab")
+
+            # reading last chunk
+            file_.seek(3)
+            chunk2 = file_.read(3)
+
+            self.assertEqual(chunk1, b"abc")
+            self.assertEqual(chunk2, b"def")
+
+            file_.seek(0, 0)
+            whole_file = file_.read()
+            self.assertEqual(whole_file, b"abcdef")
+
+            file_.close()
+
+            self.assertEqual(len(http.request.call_args_list), 2)
+
+    def test_download_w_streaming_file_bad_response(self):
+        response1 = _make_response(
+            headers={"content-length": "1", "content-range": "gdfgd 1/6"},
+            content=b"atc",
+        )
+
+        client = self._make_one(project="PROJECT", credentials=_make_credentials())
+        http = _make_requests_session([response1])
+        client._http_internal = http
+
+        bucket = mock.Mock(
+            client=client, user_project=None, spec=["client", "user_project"]
+        )
+
+        properties = {"mediaLink": "http://example.com/media/"}
+        blob = _make_blob(
+            "blob-name", bucket=bucket, properties=properties, chunk_size=262144
+        )
+
+        filehandle, filename = tempfile.mkstemp()
+        os.close(filehandle)
+
+        with self.assertRaises(google.api_core.exceptions.GoogleAPICallError):
+            file_ = client.get_streaming_file(blob, filename)
+            file_.read(3)
+
+        file_.close()
+
+    def test_download_and_read_w_streaming_file(self):
+        from google.cloud._testing import _NamedTemporaryFile
+
+        response1 = _make_response(
+            headers={"content-length": "3", "content-range": "bytes 0-2/6"},
+            content=b"abc",
+        )
+
+        response2 = _make_response(
+            headers={"content-length": "1", "content-range": "bytes 3-4/6"},
+            content=b"d",
+        )
+
+        response3 = _make_response(
+            headers={"content-length": "2", "content-range": "bytes 4-5/6"},
+            content=b"ef",
+        )
+
+        client = self._make_one(project="PROJECT", credentials=_make_credentials())
+        http = _make_requests_session([response1, response2, response3])
+        client._http_internal = http
+
+        bucket = mock.Mock(
+            client=client, user_project=None, spec=["client", "user_project"]
+        )
+
+        properties = {"mediaLink": "http://example.com/media/"}
+        blob = _make_blob(
+            "blob-name", bucket=bucket, properties=properties, chunk_size=262144
+        )
+
+        with _NamedTemporaryFile() as temp:
+            file_ = client.get_streaming_file(blob, temp.name)
+
+            # check if first chunk downloaded
+            chunk1 = file_.read(3)
+            self.assertEqual(chunk1, b"abc")
+            # check if file size equals read() arg
+            self.assertEqual(os.fstat(file_.fileno()).st_size, 3)
+
+            # check if second chunk downloaded and
+            # returned with part of the first one
+            file_.seek(2, 0)
+            from_second = file_.read(2)
+            self.assertEqual(from_second, b"cd")
+            # check if one more letter downloaded
+            self.assertEqual(os.fstat(file_.fileno()).st_size, 4)
+
+            # check if last chunk downloaded
+            file_.seek(0, 0)
+            whole_file = file_.read()
+            self.assertEqual(whole_file, b"abcdef")
+            # check if whole file downloaded
+            self.assertEqual(os.fstat(file_.fileno()).st_size, 6)
+
+            file_.close()
+
+            self.assertEqual(len(http.request.call_args_list), 3)
 
     def test_download_blob_to_file_with_blob(self):
         project = "PROJECT"

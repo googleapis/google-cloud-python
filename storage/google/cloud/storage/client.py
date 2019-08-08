@@ -25,7 +25,7 @@ from google.cloud.exceptions import NotFound
 from google.cloud.storage._http import Connection
 from google.cloud.storage.batch import Batch
 from google.cloud.storage.bucket import Bucket
-from google.cloud.storage.blob import Blob
+from google.cloud.storage.blob import Blob, StreamingFile, _get_encryption_headers
 from google.cloud.storage.hmac_key import HMACKeyMetadata
 
 
@@ -173,6 +173,33 @@ class Client(ClientWithProject):
         else:
             bucket = Bucket(self, name=bucket_or_name)
         return bucket
+
+    def _blob_arg_to_blob(self, blob_or_uri):
+        """Helper to return given blob or create new by uri.
+
+        Args:
+            blob_or_uri (Union[ \
+                :class:`~google.cloud.storage.blob.Blob`, \
+                 str, \
+            ]):
+                The blob to pass or uri to create.
+
+        Returns:
+            google.cloud.storage.blob.Blob
+                The newly created blob or the given one.
+        """
+        if isinstance(blob_or_uri, str):
+            scheme, netloc, path, _, _ = urlsplit(blob_or_uri)
+
+            if scheme != "gs":
+                raise ValueError("URI scheme must be gs")
+
+            bucket = Bucket(self, name=netloc)
+            blob = Blob(path[1:], bucket)
+        else:
+            blob = blob_or_uri
+
+        return blob
 
     @property
     def current_batch(self):
@@ -394,16 +421,38 @@ class Client(ClientWithProject):
 
 
         """
-        try:
-            blob_or_uri.download_to_file(file_obj, client=self, start=start, end=end)
-        except AttributeError:
-            scheme, netloc, path, query, frag = urlsplit(blob_or_uri)
-            if scheme != "gs":
-                raise ValueError("URI scheme must be gs")
-            bucket = Bucket(self, name=netloc)
-            blob_or_uri = Blob(path[1:], bucket)
+        blob = self._blob_arg_to_blob(blob_or_uri)
+        blob.download_to_file(file_obj, client=self, start=start, end=end)
 
-            blob_or_uri.download_to_file(file_obj, client=self, start=start, end=end)
+    def get_streaming_file(self, blob_or_uri, filename):
+        """Returns streaming file connected to :class:`~google.resumable_media.requests.ChunkedDownload` of given blob.
+
+        Args:
+            blob_or_uri (Union[ \
+                :class:`~google.cloud.storage.blob.Blob`, \
+                 str, \
+            ]):
+                The blob to pass or uri to create.
+
+            filename (str): A filename to be passed to ``open``.
+
+        Returns
+            File-like object, that can be partially downloaded/processed.
+        """
+        blob = self._blob_arg_to_blob(blob_or_uri)
+
+        download_url = blob._get_download_url()
+        headers = _get_encryption_headers(blob._encryption_key)
+        headers["accept-encoding"] = "gzip"
+        transport = blob._get_transport(self)
+
+        return StreamingFile(
+            filename=filename,
+            download_url=download_url,
+            headers=headers,
+            transport=transport,
+            chunk_size=blob.chunk_size,
+        )
 
     def list_blobs(
         self,
