@@ -57,13 +57,19 @@ class TestSystemTablesClient(object):
 
     def test_list_datasets(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
-        # we need to unroll the iterator to actually make client calls
-        [d for d in client.list_datasets(timeout=10)]
+        dataset = self.ensure_dataset_ready(client)
+        # will raise if not found
+        next(
+            iter(
+                [d for d in client.list_datasets(timeout=10) if d.name == dataset.name]
+            )
+        )
 
     def test_list_models(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
-        # we need to unroll the iterator to actually make client calls
-        [m for m in client.list_models()]
+        model = self.ensure_model_ready(client)
+        # will raise if not found
+        next(iter([m for m in client.list_models(timeout=10) if m.name == model.name]))
 
     def test_create_delete_dataset(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
@@ -106,22 +112,28 @@ class TestSystemTablesClient(object):
     def test_list_column_specs(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
         dataset = self.ensure_dataset_ready(client)
-        # we need to unroll the iterator to actually make client calls
-        [d for d in client.list_column_specs(dataset=dataset)]
+        # will raise if not found
+        next(
+            iter(
+                [
+                    d
+                    for d in client.list_column_specs(dataset=dataset)
+                    if d.display_name == "Deposit"
+                ]
+            )
+        )
 
     def test_get_column_spec(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
         dataset = self.ensure_dataset_ready(client)
-        # we need to unroll the iterator to actually make client calls
-        cs = [d for d in client.list_column_specs(dataset=dataset)]
-        client.get_column_spec(cs[0].name)
+        name = [d for d in client.list_column_specs(dataset=dataset)][0].name
+        assert client.get_column_spec(name).name == name
 
     def test_list_table_specs(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
         dataset = self.ensure_dataset_ready(client)
-        # we need to unroll the iterator to actually make client calls
-        ts = [d for d in client.list_table_specs(dataset=dataset)]
-        client.get_table_spec(ts[0].name)
+        name = [d for d in client.list_table_specs(dataset=dataset)][0].name
+        assert client.get_table_spec(name).name == name
 
     def test_set_column_nullable(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
@@ -183,14 +195,22 @@ class TestSystemTablesClient(object):
     def test_list_model_evaluations(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
         model = self.ensure_model_online(client)
-        # we need to unroll the iterator to actually make client calls
-        [m for m in client.list_model_evaluations(model=model)]
+        # will raise if not found
+        next(
+            iter(
+                [
+                    m
+                    for m in client.list_model_evaluations(model=model)
+                    if m.display_name is not None
+                ]
+            )
+        )
 
     def test_get_model_evaluation(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
         model = self.ensure_model_online(client)
-        me = [m for m in client.list_model_evaluations(model=model)]
-        client.get_model_evaluation(model_evaluation_name=me[0].name)
+        name = [m for m in client.list_model_evaluations(model=model)][0].name
+        assert client.get_model_evaluation(model_evaluation_name=name).name == name
 
     def test_online_predict(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
