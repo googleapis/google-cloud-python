@@ -97,3 +97,22 @@ def test_basic_nonfiltered_read(client, project_id, table_with_data_ref, data_fo
 
     assert len(rows) == 5  # all table rows
 
+
+def test_filtered_rows_read(client, project_id, table_with_data_ref):
+    read_options = bigquery_storage_v1beta1.types.TableReadOptions()
+    read_options.row_restriction = "age >= 50"
+
+    session = client.create_read_session(
+        table_with_data_ref,
+        "projects/{}".format(project_id),
+        format_=bigquery_storage_v1beta1.enums.DataFormat.AVRO,
+        requested_streams=1,
+        read_options=read_options,
+    )
+    stream_pos = bigquery_storage_v1beta1.types.StreamPosition(
+        stream=session.streams[0]
+    )
+
+    rows = list(client.read_rows(stream_pos).rows(session))
+
+    assert len(rows) == 2
