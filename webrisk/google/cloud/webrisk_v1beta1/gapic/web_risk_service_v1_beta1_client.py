@@ -220,8 +220,8 @@ class WebRiskServiceV1Beta1Client(object):
             version_token (bytes): The current version token of the client for the requested list (the
                 client version that was received from the last successful diff).
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -287,8 +287,8 @@ class WebRiskServiceV1Beta1Client(object):
             uri (str): The URI to be checked for matches.
             threat_types (list[~google.cloud.webrisk_v1beta1.types.ThreatType]): Required. The ThreatLists to search in.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -348,8 +348,8 @@ class WebRiskServiceV1Beta1Client(object):
                 hash. For JSON requests, this field is base64-encoded.
             threat_types (list[~google.cloud.webrisk_v1beta1.types.ThreatType]): Required. The ThreatLists to search in.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.

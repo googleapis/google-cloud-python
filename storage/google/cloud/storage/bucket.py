@@ -421,9 +421,9 @@ class Bucket(_PropertyMixin):
         STANDARD_STORAGE_CLASS,
         NEARLINE_STORAGE_CLASS,
         COLDLINE_STORAGE_CLASS,
-        MULTI_REGIONAL_LEGACY_STORAGE_CLASS,  # deprecated
-        REGIONAL_LEGACY_STORAGE_CLASS,  # deprecated
-        DURABLE_REDUCED_AVAILABILITY_LEGACY_STORAGE_CLASS,  # deprecated
+        MULTI_REGIONAL_LEGACY_STORAGE_CLASS,  # legacy
+        REGIONAL_LEGACY_STORAGE_CLASS,  # legacy
+        DURABLE_REDUCED_AVAILABILITY_LEGACY_STORAGE_CLASS,  # legacy
     )
     """Allowed values for :attr:`storage_class`.
 

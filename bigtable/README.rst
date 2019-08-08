@@ -21,7 +21,7 @@ Analytics, Maps, and Gmail.
 .. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dbigtable
    :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dbigtable
 .. _Google Cloud Bigtable: https://cloud.google.com/bigtable
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/bigtable/usage.html
+.. _Client Library Documentation: https://googleapis.dev/python/bigtable/latest
 .. _Product Documentation:  https://cloud.google.com/bigtable/docs
 
 Quick Start
@@ -37,7 +37,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Cloud Bigtable API.:  https://cloud.google.com/bigtable
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~

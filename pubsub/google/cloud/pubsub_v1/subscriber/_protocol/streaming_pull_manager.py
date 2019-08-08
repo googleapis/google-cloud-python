@@ -44,6 +44,11 @@ _RETRYABLE_STREAM_ERRORS = (
     exceptions.GatewayTimeout,
     exceptions.Aborted,
 )
+_MAX_LOAD = 1.0
+"""The load threshold above which to pause the incoming message stream."""
+
+_RESUME_THRESHOLD = 0.8
+"""The load threshold below which to resume the incoming message stream."""
 
 
 def _maybe_wrap_exception(exception):
@@ -223,7 +228,7 @@ class StreamingPullManager(object):
     def maybe_pause_consumer(self):
         """Check the current load and pause the consumer if needed."""
         with self._pause_resume_lock:
-            if self.load >= 1.0:
+            if self.load >= _MAX_LOAD:
                 if self._consumer is not None and not self._consumer.is_paused:
                     _LOGGER.debug(
                         "Message backlog over load at %.2f, pausing.", self.load
@@ -252,7 +257,7 @@ class StreamingPullManager(object):
             # currently on hold, if the current load allows for it.
             self._maybe_release_messages()
 
-            if self.load < self.flow_control.resume_threshold:
+            if self.load < _RESUME_THRESHOLD:
                 _LOGGER.debug("Current load is %.2f, resuming consumer.", self.load)
                 self._consumer.resume()
             else:
@@ -271,7 +276,7 @@ class StreamingPullManager(object):
         The method assumes the caller has acquired the ``_pause_resume_lock``.
         """
         while True:
-            if self.load >= 1.0:
+            if self.load >= _MAX_LOAD:
                 break  # already overloaded
 
             try:
@@ -518,12 +523,9 @@ class StreamingPullManager(object):
 
         for received_message in response.received_messages:
             message = google.cloud.pubsub_v1.subscriber.message.Message(
-                received_message.message,
-                received_message.ack_id,
-                self._scheduler.queue,
-                autolease=False,
+                received_message.message, received_message.ack_id, self._scheduler.queue
             )
-            if self.load < 1.0:
+            if self.load < _MAX_LOAD:
                 req = requests.LeaseRequest(
                     ack_id=message.ack_id, byte_size=message.size
                 )

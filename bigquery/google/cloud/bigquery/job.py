@@ -2846,6 +2846,36 @@ class QueryJob(_AsyncJob):
         self._done_timeout = timeout
         super(QueryJob, self)._blocking_poll(timeout=timeout)
 
+    @staticmethod
+    def _format_for_exception(query, job_id):
+        """Format a query for the output in exception message.
+
+        Args:
+            query (str): The SQL query to format.
+            job_id (str): The ID of the job that ran the query.
+
+        Returns: (str)
+            A formatted query text.
+        """
+        template = "\n\n(job ID: {job_id})\n\n{header}\n\n{ruler}\n{body}\n{ruler}"
+
+        lines = query.splitlines()
+        max_line_len = max(len(l) for l in lines)
+
+        header = "-----Query Job SQL Follows-----"
+        header = "{:^{total_width}}".format(header, total_width=max_line_len + 5)
+
+        # Print out a "ruler" above and below the SQL so we can judge columns.
+        # Left pad for the line numbers (4 digits plus ":").
+        ruler = "    |" + "    .    |" * (max_line_len // 10)
+
+        # Put line numbers next to the SQL.
+        body = "\n".join(
+            "{:4}:{}".format(n, line) for n, line in enumerate(lines, start=1)
+        )
+
+        return template.format(job_id=job_id, header=header, ruler=ruler, body=body)
+
     def result(self, timeout=None, page_size=None, retry=DEFAULT_RETRY):
         """Start the job and wait for it to complete and get the result.
 
@@ -2874,12 +2904,17 @@ class QueryJob(_AsyncJob):
             concurrent.futures.TimeoutError:
                 If the job did not complete in the given timeout.
         """
-        super(QueryJob, self).result(timeout=timeout)
-        # Return an iterator instead of returning the job.
-        if not self._query_results:
-            self._query_results = self._client._get_query_results(
-                self.job_id, retry, project=self.project, location=self.location
-            )
+        try:
+            super(QueryJob, self).result(timeout=timeout)
+
+            # Return an iterator instead of returning the job.
+            if not self._query_results:
+                self._query_results = self._client._get_query_results(
+                    self.job_id, retry, project=self.project, location=self.location
+                )
+        except exceptions.GoogleCloudError as exc:
+            exc.message += self._format_for_exception(self.query, self.job_id)
+            raise
 
         # If the query job is complete but there are no query results, this was
         # special job, such as a DDL query. Return an empty result set to

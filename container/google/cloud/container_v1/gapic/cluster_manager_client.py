@@ -222,8 +222,8 @@ class ClusterManagerClient(object):
                 Specified in the format 'projects/*/locations/*'. Location "-" matches
                 all zones and all regions.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -313,8 +313,8 @@ class ClusterManagerClient(object):
             name (str): The name (project, location, cluster) of the cluster to retrieve.
                 Specified in the format 'projects/*/locations/*/clusters/\*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -418,8 +418,8 @@ class ClusterManagerClient(object):
             parent (str): The parent (project and location) where the cluster will be created.
                 Specified in the format 'projects/*/locations/*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -517,8 +517,8 @@ class ClusterManagerClient(object):
             name (str): The name (project, location, cluster) of the cluster to update.
                 Specified in the format 'projects/*/locations/*/clusters/\*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -639,8 +639,8 @@ class ClusterManagerClient(object):
                 update. Specified in the format
                 'projects/*/locations/*/clusters/*/nodePools/*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -751,8 +751,8 @@ class ClusterManagerClient(object):
                 autoscaler settings. Specified in the format
                 'projects/*/locations/*/clusters/*/nodePools/*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -856,8 +856,8 @@ class ClusterManagerClient(object):
             name (str): The name (project, location, cluster) of the cluster to set logging.
                 Specified in the format 'projects/*/locations/*/clusters/\*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -960,8 +960,8 @@ class ClusterManagerClient(object):
             name (str): The name (project, location, cluster) of the cluster to set monitoring.
                 Specified in the format 'projects/*/locations/*/clusters/\*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1064,8 +1064,8 @@ class ClusterManagerClient(object):
             name (str): The name (project, location, cluster) of the cluster to set addons.
                 Specified in the format 'projects/*/locations/*/clusters/\*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1170,8 +1170,8 @@ class ClusterManagerClient(object):
             name (str): The name (project, location, cluster) of the cluster to set locations.
                 Specified in the format 'projects/*/locations/*/clusters/\*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1279,8 +1279,8 @@ class ClusterManagerClient(object):
             name (str): The name (project, location, cluster) of the cluster to update.
                 Specified in the format 'projects/*/locations/*/clusters/\*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1390,8 +1390,8 @@ class ClusterManagerClient(object):
             name (str): The name (project, location, cluster) of the cluster to set auth.
                 Specified in the format 'projects/*/locations/*/clusters/\*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1494,8 +1494,8 @@ class ClusterManagerClient(object):
             name (str): The name (project, location, cluster) of the cluster to delete.
                 Specified in the format 'projects/*/locations/*/clusters/\*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1580,8 +1580,8 @@ class ClusterManagerClient(object):
                 Specified in the format 'projects/*/locations/*'. Location "-" matches
                 all zones and all regions.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1671,8 +1671,8 @@ class ClusterManagerClient(object):
             name (str): The name (project, location, operation id) of the operation to get.
                 Specified in the format 'projects/*/locations/*/operations/\*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1762,8 +1762,8 @@ class ClusterManagerClient(object):
             name (str): The name (project, location, operation id) of the operation to cancel.
                 Specified in the format 'projects/*/locations/*/operations/\*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1844,8 +1844,8 @@ class ClusterManagerClient(object):
             name (str): The name (project and location) of the server config to get Specified in
                 the format 'projects/*/locations/*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1935,8 +1935,8 @@ class ClusterManagerClient(object):
             parent (str): The parent (project, location, cluster id) where the node pools will be
                 listed. Specified in the format 'projects/*/locations/*/clusters/\*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -2033,8 +2033,8 @@ class ClusterManagerClient(object):
                 get. Specified in the format
                 'projects/*/locations/*/clusters/*/nodePools/*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -2136,8 +2136,8 @@ class ClusterManagerClient(object):
             parent (str): The parent (project, location, cluster id) where the node pool will be
                 created. Specified in the format 'projects/*/locations/*/clusters/\*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -2238,8 +2238,8 @@ class ClusterManagerClient(object):
                 delete. Specified in the format
                 'projects/*/locations/*/clusters/*/nodePools/*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -2341,8 +2341,8 @@ class ClusterManagerClient(object):
                 rollback upgrade. Specified in the format
                 'projects/*/locations/*/clusters/*/nodePools/*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -2451,8 +2451,8 @@ class ClusterManagerClient(object):
                 set management properties. Specified in the format
                 'projects/*/locations/*/clusters/*/nodePools/*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -2562,8 +2562,8 @@ class ClusterManagerClient(object):
             name (str): The name (project, location, cluster id) of the cluster to set labels.
                 Specified in the format 'projects/*/locations/*/clusters/\*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -2663,8 +2663,8 @@ class ClusterManagerClient(object):
             name (str): The name (project, location, cluster id) of the cluster to set legacy
                 abac. Specified in the format 'projects/*/locations/*/clusters/\*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -2760,8 +2760,8 @@ class ClusterManagerClient(object):
                 rotation. Specified in the format 'projects/*/locations/*/clusters/\*'.
             rotate_credentials (bool): Whether to rotate credentials during IP rotation.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -2855,8 +2855,8 @@ class ClusterManagerClient(object):
             name (str): The name (project, location, cluster id) of the cluster to complete IP
                 rotation. Specified in the format 'projects/*/locations/*/clusters/\*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -2958,8 +2958,8 @@ class ClusterManagerClient(object):
                 set size. Specified in the format
                 'projects/*/locations/*/clusters/*/nodePools/*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -3063,8 +3063,8 @@ class ClusterManagerClient(object):
                 networking policy. Specified in the format
                 'projects/*/locations/*/clusters/\*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -3165,8 +3165,8 @@ class ClusterManagerClient(object):
                 maintenance policy. Specified in the format
                 'projects/*/locations/*/clusters/\*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.

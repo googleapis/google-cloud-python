@@ -16,6 +16,7 @@
 
 import concurrent.futures
 import functools
+import logging
 import warnings
 
 from six.moves import queue
@@ -38,6 +39,8 @@ except ImportError:  # pragma: NO COVER
 
 from google.cloud.bigquery import schema
 
+
+_LOGGER = logging.getLogger(__name__)
 
 _NO_BQSTORAGE_ERROR = (
     "The google-cloud-bigquery-storage library is not installed, "
@@ -205,7 +208,7 @@ def dataframe_to_arrow(dataframe, bq_schema):
     return pyarrow.Table.from_arrays(arrow_arrays, names=arrow_names)
 
 
-def dataframe_to_parquet(dataframe, bq_schema, filepath):
+def dataframe_to_parquet(dataframe, bq_schema, filepath, parquet_compression="SNAPPY"):
     """Write dataframe as a Parquet file, according to the desired BQ schema.
 
     This function requires the :mod:`pyarrow` package. Arrow is used as an
@@ -219,12 +222,17 @@ def dataframe_to_parquet(dataframe, bq_schema, filepath):
             columns in the DataFrame.
         filepath (str):
             Path to write Parquet file to.
+        parquet_compression (str):
+            (optional) The compression codec to use by the the
+            ``pyarrow.parquet.write_table`` serializing method. Defaults to
+            "SNAPPY".
+            https://arrow.apache.org/docs/python/generated/pyarrow.parquet.write_table.html#pyarrow-parquet-write-table
     """
     if pyarrow is None:
         raise ValueError("pyarrow is required for BigQuery schema conversion.")
 
     arrow_table = dataframe_to_arrow(dataframe, bq_schema)
-    pyarrow.parquet.write_table(arrow_table, filepath)
+    pyarrow.parquet.write_table(arrow_table, filepath, compression=parquet_compression)
 
 
 def _tabledata_list_page_to_arrow(page, column_names, arrow_types):
@@ -340,6 +348,11 @@ def _download_table_bqstorage(
         format_=bigquery_storage_v1beta1.enums.DataFormat.ARROW,
         read_options=read_options,
         requested_streams=requested_streams,
+    )
+    _LOGGER.debug(
+        "Started reading table '{}.{}.{}' with BQ Storage API session '{}'.".format(
+            table.project, table.dataset_id, table.table_id, session.name
+        )
     )
 
     # Avoid reading rows from an empty table.

@@ -459,6 +459,28 @@ class TestQuery(unittest.TestCase):
         with self.assertRaises(ValueError):
             query._cursor_helper(snapshot, False, False)
 
+    def test__cursor_helper_w_snapshot_other_collection_all_descendants(self):
+        values = {"a": 7, "b": "foo"}
+        docref = self._make_docref("there", "doc_id")
+        snapshot = self._make_snapshot(docref, values)
+        collection = self._make_collection("here")
+        query1 = self._make_one(collection, all_descendants=True)
+
+        query2 = query1._cursor_helper(snapshot, False, False)
+
+        self.assertIs(query2._parent, collection)
+        self.assertIsNone(query2._projection)
+        self.assertEqual(query2._field_filters, ())
+        self.assertEqual(query2._orders, ())
+        self.assertIsNone(query2._limit)
+        self.assertIsNone(query2._offset)
+        self.assertIsNone(query2._start_at)
+
+        cursor, before = query2._end_at
+
+        self.assertIs(cursor, snapshot)
+        self.assertFalse(before)
+
     def test__cursor_helper_w_snapshot(self):
         values = {"a": 7, "b": "foo"}
         docref = self._make_docref("here", "doc_id")
@@ -784,6 +806,16 @@ class TestQuery(unittest.TestCase):
         cursor = ({"b": 1}, True)
         query = self._make_one(mock.sentinel.parent).order_by("b", "ASCENDING")
 
+        self.assertEqual(query._normalize_cursor(cursor, query._orders), ([1], True))
+
+    def test__normalize_cursor_as_dict_with_dot_key_hit(self):
+        cursor = ({"b.a": 1}, True)
+        query = self._make_one(mock.sentinel.parent).order_by("b.a", "ASCENDING")
+        self.assertEqual(query._normalize_cursor(cursor, query._orders), ([1], True))
+
+    def test__normalize_cursor_as_dict_with_inner_data_hit(self):
+        cursor = ({"b": {"a": 1}}, True)
+        query = self._make_one(mock.sentinel.parent).order_by("b.a", "ASCENDING")
         self.assertEqual(query._normalize_cursor(cursor, query._orders), ([1], True))
 
     def test__normalize_cursor_as_snapshot_hit(self):

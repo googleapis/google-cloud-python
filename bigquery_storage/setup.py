@@ -21,10 +21,10 @@ import setuptools
 
 name = "google-cloud-bigquery-storage"
 description = "BigQuery Storage API API client library"
-version = "0.6.0"
+version = "0.7.0"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
-    "google-api-core[grpc] >= 1.6.0, < 2.0.0dev",
+    "google-api-core[grpc] >= 1.14.0, < 2.0.0dev",
     'enum34; python_version < "3.4"',
 ]
 extras = {

@@ -52,6 +52,21 @@ config = {
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
+                "SendNotificationChannelVerificationCode": {
+                    "timeout_millis": 30000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "GetNotificationChannelVerificationCode": {
+                    "timeout_millis": 30000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "VerifyNotificationChannel": {
+                    "timeout_millis": 30000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
             },
         }
     }

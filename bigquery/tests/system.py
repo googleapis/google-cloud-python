@@ -107,6 +107,11 @@ TIME_PARTITIONING_CLUSTERING_FIELDS_SCHEMA = [
     ),
 ]
 
+# The VPC-SC team maintains a mirror of the GCS bucket used for code
+# samples. The public bucket crosses the configured security boundary.
+# See: https://github.com/googleapis/google-cloud-python/issues/8550
+SAMPLES_BUCKET = os.environ.get("GCLOUD_TEST_SAMPLES_BUCKET", "cloud-samples-data")
+
 retry_storage_errors = RetryErrors(
     (TooManyRequests, InternalServerError, ServiceUnavailable)
 )
@@ -1877,7 +1882,9 @@ class TestBigQuery(unittest.TestCase):
             language="JAVASCRIPT",
             type_="SCALAR_FUNCTION",
             return_type=float64_type,
-            imported_libraries=["gs://cloud-samples-data/bigquery/udfs/max-value.js"],
+            imported_libraries=[
+                "gs://{}/bigquery/udfs/max-value.js".format(SAMPLES_BUCKET)
+            ],
         )
         routine.arguments = [
             bigquery.RoutineArgument(

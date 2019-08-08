@@ -18,27 +18,27 @@ config = {
             },
             "methods": {
                 "CreateApplication": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "GetApplication": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "UpdateApplication": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "DeleteApplication": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "ListApplications": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },

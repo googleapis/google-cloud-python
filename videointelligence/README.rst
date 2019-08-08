@@ -27,7 +27,7 @@ relevant information at the video, shot or per frame.
    :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dvideointelligence
 .. _Google Cloud Video Intelligence: https://cloud.google.com/video-intelligence/
 .. _Google Cloud Storage: https://cloud.google.com/storage/
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/videointelligence/index.html
+.. _Client Library Documentation: https://googleapis.dev/python/videointelligence/latest
 .. _Product Documentation: https://cloud.google.com/video-intelligence/docs/
 
 Quick Start
@@ -43,7 +43,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Google Cloud Video Intelligence API.:  https://cloud.google.com/datastore
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~

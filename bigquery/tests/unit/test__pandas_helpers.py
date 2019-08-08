@@ -17,6 +17,8 @@ import decimal
 import functools
 import warnings
 
+import mock
+
 try:
     import pandas
 except ImportError:  # pragma: NO COVER
@@ -488,7 +490,10 @@ def test_bq_to_arrow_array_w_special_floats(module_under_test):
     roundtrip = arrow_array.to_pylist()
     assert len(rows) == len(roundtrip)
     assert roundtrip[0] == float("-inf")
-    assert roundtrip[1] != roundtrip[1]  # NaN doesn't equal itself.
+    # Since we are converting from pandas, NaN is treated as NULL in pyarrow
+    # due to pandas conventions.
+    # https://arrow.apache.org/docs/python/data.html#none-values-and-nan-handling
+    assert roundtrip[1] is None
     assert roundtrip[2] == float("inf")
     assert roundtrip[3] is None
 
@@ -610,3 +615,23 @@ def test_dataframe_to_parquet_w_missing_columns(module_under_test, monkeypatch):
             pandas.DataFrame(), (schema.SchemaField("not_found", "STRING"),), None
         )
     assert "columns in schema must match" in str(exc_context.value)
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_dataframe_to_parquet_compression_method(module_under_test):
+    bq_schema = (schema.SchemaField("field00", "STRING"),)
+    dataframe = pandas.DataFrame({"field00": ["foo", "bar"]})
+
+    write_table_patch = mock.patch.object(
+        module_under_test.pyarrow.parquet, "write_table", autospec=True
+    )
+
+    with write_table_patch as fake_write_table:
+        module_under_test.dataframe_to_parquet(
+            dataframe, bq_schema, None, parquet_compression="ZSTD"
+        )
+
+    call_args = fake_write_table.call_args
+    assert call_args is not None
+    assert call_args.kwargs.get("compression") == "ZSTD"
