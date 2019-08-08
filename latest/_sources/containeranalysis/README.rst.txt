@@ -25,7 +25,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Container Analysis API.:  https://cloud.google.com/container-registry/docs/container-analysis
-.. _Setup Authentication.: https://googleapis.dev/python/containeranalysis/latest
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~
