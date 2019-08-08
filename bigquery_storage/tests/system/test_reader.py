@@ -15,9 +15,47 @@
 # limitations under the License.
 """System tests for reading rows from tables."""
 
+import json
+import io
+
 import pytest
 
+from google.cloud import bigquery
 from google.cloud import bigquery_storage_v1beta1
+from google.protobuf import timestamp_pb2
+
+
+def _add_rows(table_ref, new_data):
+    """Insert additional rows into an existing table.
+
+    Args:
+        table_ref (bigquery_storage_v1beta1.types.TableReference):
+            A reference to the target table.
+        new_data (Iterable[Dict[str, Any]]):
+            New data to insert with each row represented as a dictionary.
+            The keys must match the table column names, and the values
+            must be JSON serializable.
+    """
+    bq_client = bigquery.Client()
+
+    job_config = bigquery.LoadJobConfig(
+        source_format=bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
+    )
+
+    new_data_str = u"\n".join(json.dumps(item) for item in new_data)
+    new_data_file = io.BytesIO(new_data_str.encode())
+
+    destination_ref = bigquery.table.TableReference.from_api_repr(
+        {
+            "projectId": table_ref.project_id,
+            "datasetId": table_ref.dataset_id,
+            "tableId": table_ref.table_id,
+        }
+    )
+    job = bq_client.load_table_from_file(
+        new_data_file, destination=destination_ref, job_config=job_config
+    )
+    job.result()  # wait for the load to complete
 
 
 @pytest.mark.parametrize(
@@ -145,3 +183,35 @@ def test_column_selection_read(client, project_id, table_with_data_ref, data_for
 
     for row in rows:
         assert sorted(row.keys()) == ["age", "first_name"]
+
+
+def test_snapshot(client, project_id, table_with_data_ref):
+    before_new_data = timestamp_pb2.Timestamp()
+    before_new_data.GetCurrentTime()
+
+    # load additional data into the table
+    new_data = [
+        {u"first_name": u"NewGuyFoo", u"last_name": u"Smith", u"age": 46},
+        {u"first_name": u"NewGuyBar", u"last_name": u"Jones", u"age": 30},
+    ]
+    _add_rows(table_with_data_ref, new_data)
+
+    # read data using the timestamp before the additional data load
+    session = client.create_read_session(
+        table_with_data_ref,
+        "projects/{}".format(project_id),
+        format_=bigquery_storage_v1beta1.enums.DataFormat.AVRO,
+        requested_streams=1,
+        table_modifiers={"snapshot_time": before_new_data},
+    )
+    stream_pos = bigquery_storage_v1beta1.types.StreamPosition(
+        stream=session.streams[0]
+    )
+
+    rows = list(client.read_rows(stream_pos).rows(session))
+
+    # verify that only the data before the timestamp was returned
+    assert len(rows) == 5  # all initial records
+
+    for row in rows:
+        assert "NewGuy" not in row["first_name"]  # no new records

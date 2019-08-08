@@ -111,6 +111,8 @@ def system(session):
     # Use pre-release gRPC for system tests.
     session.install("--pre", "grpcio")
 
+    session.install("protobuf")
+
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
     session.install("mock", "pytest")
