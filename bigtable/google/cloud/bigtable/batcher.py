@@ -107,8 +107,8 @@ class MutationsBatcher(object):
             self.finish_batch()
 
     def mutate_rows(self, rows):
-        """Make batch(es) from rows. batch is collection of rows.  mutate rows
-        have multiple batch(es)
+        """Make batch(es) from rows. A batch is a collection of rows. The rows
+         can be mutated via multiple batches.
 
         For example:
 
@@ -141,16 +141,15 @@ class MutationsBatcher(object):
             :end-before: [END bigtable_batcher_flush]
 
         """
-        if len(self.rows) != 0:
+        if self.rows:
             self.batches.append(self.rows)
             self.total_mutation_count = 0
             self.total_size = 0
             self.rows = []
 
     def flush_batches(self):
-        """Sends batch(es) to Google Cloud Bigtable.
-        The batch(es) is sent synchronously.
+        """Sends batches synchronously to Google Cloud Bigtable.
 
-        :return: combined list of response status of every row in batches
+        :return: combined list of response statuses of every row in batches
         """
         return self.table.flush_batches(self.batches)

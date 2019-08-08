@@ -689,6 +689,9 @@ class _RetryableMutateRowsWorker(object):
     :param table_name: The name of the table.
 
     :type batches: list
+    :param batches: list of rows for mutation
+
+    :type batches: list
     :param batches: list of rows in batch for asynchronous mutation
 
     :type app_profile_id: str
@@ -734,7 +737,7 @@ class _RetryableMutateRowsWorker(object):
         :rtype: list
         :returns: Batches of lists of response statuses (`google.rpc.status_pb2.Status`)
                   corresponding to success or failure of each row mutation
-                  sent. These will be in the same order as the ``rows`` in batch.
+                  sent. These will be in the same order as the ``rows``.
         """
         max_thread_to_start = min(self.num_batches, _MAX_THREAD_LIMIT)
 
@@ -788,6 +791,10 @@ class _RetryableMutateRowsWorker(object):
 
         A row is eligible for retry if it has not been tried or if it resulted
         in a transient error in a previous call.
+
+        :type batch_index: int
+        :param batch_index: Index of the batch from batches, which will be sent
+        for mutate
 
         :rtype: list
         :return: The responses statuses, which is a list of
