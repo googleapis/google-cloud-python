@@ -73,3 +73,27 @@ def test_read_rows_as_rows_full_table(
     rows = list(client.read_rows(stream_pos).rows(session))
 
     assert len(rows) > 0
+
+
+@pytest.mark.parametrize(
+    "data_format",
+    (
+        (bigquery_storage_v1beta1.enums.DataFormat.AVRO),
+        (bigquery_storage_v1beta1.enums.DataFormat.ARROW),
+    ),
+)
+def test_basic_nonfiltered_read(client, project_id, table_with_data_ref, data_format):
+    session = client.create_read_session(
+        table_with_data_ref,
+        "projects/{}".format(project_id),
+        format_=data_format,
+        requested_streams=1,
+    )
+    stream_pos = bigquery_storage_v1beta1.types.StreamPosition(
+        stream=session.streams[0]
+    )
+
+    rows = list(client.read_rows(stream_pos).rows(session))
+
+    assert len(rows) == 5  # all table rows
+
