@@ -15,6 +15,10 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
+
+
 DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/talent_v4beta1/proto/tenant.proto",
     package="google.cloud.talent.v4beta1",
@@ -23,8 +27,12 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\023TenantResourceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        '\n.google/cloud/talent_v4beta1/proto/tenant.proto\x12\x1bgoogle.cloud.talent.v4beta1"\xf8\x01\n\x06Tenant\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x65xternal_id\x18\x02 \x01(\t\x12\x45\n\nusage_type\x18\x03 \x01(\x0e\x32\x31.google.cloud.talent.v4beta1.Tenant.DataUsageType\x12\x34\n,keyword_searchable_profile_custom_attributes\x18\x04 \x03(\t"N\n\rDataUsageType\x12\x1f\n\x1b\x44\x41TA_USAGE_TYPE_UNSPECIFIED\x10\x00\x12\x0e\n\nAGGREGATED\x10\x01\x12\x0c\n\x08ISOLATED\x10\x02\x42\x81\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x13TenantResourceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
+        '\n.google/cloud/talent_v4beta1/proto/tenant.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xf8\x01\n\x06Tenant\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x65xternal_id\x18\x02 \x01(\t\x12\x45\n\nusage_type\x18\x03 \x01(\x0e\x32\x31.google.cloud.talent.v4beta1.Tenant.DataUsageType\x12\x34\n,keyword_searchable_profile_custom_attributes\x18\x04 \x03(\t"N\n\rDataUsageType\x12\x1f\n\x1b\x44\x41TA_USAGE_TYPE_UNSPECIFIED\x10\x00\x12\x0e\n\nAGGREGATED\x10\x01\x12\x0c\n\x08ISOLATED\x10\x02\x42\x81\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x13TenantResourceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
     ),
+    dependencies=[
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
+    ],
 )
 
 
@@ -50,8 +58,8 @@ _TENANT_DATAUSAGETYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=250,
-    serialized_end=328,
+    serialized_start=313,
+    serialized_end=391,
 )
 _sym_db.RegisterEnumDescriptor(_TENANT_DATAUSAGETYPE)
 
@@ -144,8 +152,8 @@ _TENANT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=80,
-    serialized_end=328,
+    serialized_start=143,
+    serialized_end=391,
 )
 
 _TENANT.fields_by_name["usage_type"].enum_type = _TENANT_DATAUSAGETYPE
