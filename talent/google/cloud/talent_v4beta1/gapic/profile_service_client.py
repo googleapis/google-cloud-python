@@ -546,13 +546,33 @@ class ProfileServiceClient(object):
                 -  employment\_records
                 -  education\_records
                 -  skills
-                -  projects
+                -  activities
                 -  publications
                 -  patents
                 -  certifications
                 -  recruiting\_notes
                 -  custom\_attributes
                 -  group\_id
+                -  external\_system
+                -  source\_note
+                -  primary\_responsibilities
+                -  citizenships
+                -  work\_authorizations
+                -  employee\_types
+                -  language\_code
+                -  qualification\_summary
+                -  allowed\_contact\_types
+                -  preferred\_contact\_types
+                -  contact\_availability
+                -  language\_fluencies
+                -  work\_preference
+                -  industry\_experiences
+                -  work\_environment\_experiences
+                -  work\_availability
+                -  security\_clearances
+                -  references
+                -  assessments
+                -  interviews
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.FieldMask`
