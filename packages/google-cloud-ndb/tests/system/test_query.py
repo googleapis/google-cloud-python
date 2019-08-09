@@ -555,7 +555,6 @@ def test_polymodel_query(ds_entity):
     assert isinstance(results[0], Cat)
 
 
-@pytest.mark.skip("Requires an index")
 @pytest.mark.usefixtures("client_context")
 def test_query_repeated_property(ds_entity):
     entity_id = test_utils.system.unique_resource_id()
