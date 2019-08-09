@@ -21,7 +21,7 @@ default. Trace data from other applications can be provided using this API.
 .. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dtrace
    :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dtrace
 .. _Stackdriver Trace API: https://cloud.google.com/trace
-.. _Client Library Documentation: https://googleapis.dev/python/trace/latest
+.. _Client Library Documentation: https://googleapis.dev/python/cloudtrace/latest
 .. _Product Documentation:  https://cloud.google.com/trace
 
 
