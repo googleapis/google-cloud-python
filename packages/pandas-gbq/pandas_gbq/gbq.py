@@ -436,7 +436,7 @@ class GbqConnector(object):
 
         raise GenericGBQException("Reason: {0}".format(ex))
 
-    def run_query(self, query, **kwargs):
+    def run_query(self, query, max_results=None, **kwargs):
         from concurrent.futures import TimeoutError
         from google.auth.exceptions import RefreshError
         from google.cloud import bigquery
@@ -526,15 +526,33 @@ class GbqConnector(object):
                 )
             )
 
+        return self._download_results(query_reply, max_results=max_results)
+
+    def _download_results(self, query_job, max_results=None):
+        # No results are desired, so don't bother downloading anything.
+        if max_results == 0:
+            return None
+
+        if max_results is None:
+            # Only use the BigQuery Storage API if the full result set is requested.
+            bqstorage_client = self.bqstorage_client
+        else:
+            bqstorage_client = None
+
         try:
-            rows_iter = query_reply.result()
+            query_job.result()
+            # Get the table schema, so that we can list rows.
+            destination = self.client.get_table(query_job.destination)
+            rows_iter = self.client.list_rows(
+                destination, max_results=max_results
+            )
         except self.http_error as ex:
             self.process_http_error(ex)
 
         schema_fields = [field.to_api_repr() for field in rows_iter.schema]
         nullsafe_dtypes = _bqschema_to_nullsafe_dtypes(schema_fields)
         df = rows_iter.to_dataframe(
-            dtypes=nullsafe_dtypes, bqstorage_client=self.bqstorage_client
+            dtypes=nullsafe_dtypes, bqstorage_client=bqstorage_client
         )
 
         if df.empty:
@@ -812,6 +830,7 @@ def read_gbq(
     configuration=None,
     credentials=None,
     use_bqstorage_api=False,
+    max_results=None,
     verbose=None,
     private_key=None,
 ):
@@ -907,9 +926,16 @@ def read_gbq(
         ``configuration`` dictionary.
 
         This feature requires the ``google-cloud-bigquery-storage`` and
-        ``fastavro`` packages.
+        ``pyarrow`` packages.
+
+        This value is ignored if ``max_results`` is set.
 
         .. versionadded:: 0.10.0
+    max_results : int, optional
+        If set, limit the maximum number of rows to fetch from the query
+        results.
+
+        .. versionadded:: 0.12.0
     verbose : None, deprecated
         Deprecated in Pandas-GBQ 0.4.0. Use the `logging module
         to adjust verbosity instead
@@ -969,7 +995,9 @@ def read_gbq(
         use_bqstorage_api=use_bqstorage_api,
     )
 
-    final_df = connector.run_query(query, configuration=configuration)
+    final_df = connector.run_query(
+        query, configuration=configuration, max_results=max_results
+    )
 
     # Reindex the DataFrame on the provided column
     if index_col is not None:

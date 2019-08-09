@@ -34,10 +34,6 @@ def min_bq_version():
     return pkg_resources.parse_version("1.9.0")
 
 
-def mock_none_credentials(*args, **kwargs):
-    return None, None
-
-
 def mock_get_credentials_no_project(*args, **kwargs):
     import google.auth.credentials
 
@@ -72,16 +68,6 @@ def mock_compute_engine_credentials():
 
     mock_credentials = mock.create_autospec(
         google.auth.compute_engine.Credentials
-    )
-    return mock_credentials
-
-
-@pytest.fixture
-def mock_get_user_credentials(*args, **kwargs):
-    import google.auth.credentials
-
-    mock_credentials = mock.create_autospec(
-        google.auth.credentials.Credentials
     )
     return mock_credentials
 
@@ -351,6 +337,17 @@ def test_read_gbq_without_inferred_project_id_from_compute_engine_credentials(
         )
 
 
+def test_read_gbq_with_max_results_zero(monkeypatch):
+    df = gbq.read_gbq("SELECT 1", dialect="standard", max_results=0)
+    assert df is None
+
+
+def test_read_gbq_with_max_results_ten(monkeypatch, mock_bigquery_client):
+    df = gbq.read_gbq("SELECT 1", dialect="standard", max_results=10)
+    assert df is not None
+    mock_bigquery_client.list_rows.assert_called_with(mock.ANY, max_results=10)
+
+
 def test_read_gbq_with_invalid_private_key_json_should_fail():
     with pytest.raises(pandas_gbq.exceptions.InvalidPrivateKeyFormat):
         gbq.read_gbq(
@@ -511,8 +508,12 @@ def test_generate_bq_schema_deprecated():
         gbq.generate_bq_schema(df)
 
 
-def test_load_does_not_modify_schema_arg():
-    # Test of Issue # 277
+def test_load_does_not_modify_schema_arg(mock_bigquery_client):
+    """Test of Issue # 277."""
+    from google.api_core.exceptions import NotFound
+
+    # Create table with new schema.
+    mock_bigquery_client.get_table.side_effect = NotFound("nope")
     df = DataFrame(
         {
             "field1": ["a", "b"],

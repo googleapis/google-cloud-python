@@ -15,7 +15,6 @@ def reset_context():
 
 @pytest.fixture(autouse=True)
 def mock_bigquery_client(monkeypatch):
-    from google.api_core.exceptions import NotFound
     import google.cloud.bigquery
     import google.cloud.bigquery.table
 
@@ -35,7 +34,6 @@ def mock_bigquery_client(monkeypatch):
     mock_query.result.return_value = mock_rows
     mock_client.query.return_value = mock_query
     # Mock table creation.
-    mock_client.get_table.side_effect = NotFound("nope")
     monkeypatch.setattr(google.cloud.bigquery, "Client", mock_client)
     mock_client.reset_mock()
     return mock_client

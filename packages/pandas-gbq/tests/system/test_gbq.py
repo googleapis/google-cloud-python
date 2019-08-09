@@ -584,6 +584,30 @@ class TestReadGBQIntegration(object):
         )
         assert len(df.drop_duplicates()) == test_size
 
+    def test_ddl(self, random_dataset, project_id):
+        # Bug fix for https://github.com/pydata/pandas-gbq/issues/45
+        df = gbq.read_gbq(
+            "CREATE OR REPLACE TABLE {}.test_ddl (x INT64)".format(
+                random_dataset.dataset_id
+            )
+        )
+        assert len(df) == 0
+
+    def test_ddl_w_max_results(self, random_dataset, project_id):
+        df = gbq.read_gbq(
+            "CREATE OR REPLACE TABLE {}.test_ddl (x INT64)".format(
+                random_dataset.dataset_id
+            ),
+            max_results=0,
+        )
+        assert df is None
+
+    def test_max_results(self, random_dataset, project_id):
+        df = gbq.read_gbq(
+            "SELECT * FROM UNNEST(GENERATE_ARRAY(1, 100))", max_results=10
+        )
+        assert len(df) == 10
+
     def test_zero_rows(self, project_id):
         # Bug fix for https://github.com/pandas-dev/pandas/issues/10273
         df = gbq.read_gbq(
