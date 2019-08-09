@@ -21,7 +21,7 @@ cloud resources and applications.
 .. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dkms
    :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dkms
 .. _Cloud Key Management Service (KMS) API: https://cloud.google.com/kms
-.. _Client Library Documentation: https://googleapis.dev/python/kms/latest
+.. _Client Library Documentation: https://googleapis.dev/python/cloudkms/latest
 .. _Product Documentation:  https://cloud.google.com/kms
 
 Quick Start

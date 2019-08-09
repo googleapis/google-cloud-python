@@ -20,7 +20,7 @@ requests.
 .. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dtasks
    :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dtasks
 .. _Cloud Tasks API: https://cloud.google.com/tasks
-.. _Client Library Documentation: https://googleapis.dev/python/tasks/latest
+.. _Client Library Documentation: https://googleapis.dev/python/cloudtasks/latest
 .. _Product Documentation:  https://cloud.google.com/tasks
 
 Quick Start
