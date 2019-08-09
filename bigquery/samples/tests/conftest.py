@@ -66,6 +66,15 @@ def dataset_id(client):
 
 
 @pytest.fixture
+def dataset_label(client, dataset_id):
+    dataset = client.get_dataset(dataset_id)
+    dataset.labels = {"color": "green"}
+    dataset = client.update_dataset(dataset, ["labels"])
+    yield "{}.{}".format(dataset.project, dataset.dataset_id)
+    client.delete_dataset(dataset, delete_contents=True, not_found_ok=True)
+
+
+@pytest.fixture
 def table_id(client, dataset_id):
     now = datetime.datetime.now()
     table_id = "python_samples_{}_{}".format(

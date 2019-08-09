@@ -13,20 +13,14 @@
 # limitations under the License.
 
 
-def list_datasets_by_label(client, to_delete):
+def list_datasets_by_label(client):
 
     # [START bigquery_list_datasets_by_label]
-    dataset_id = "list_datasets_by_label_{}".format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
-    dataset.labels = {"color": "green"}
-    dataset = client.create_dataset(dataset)  # API request
-    to_delete.append(dataset)
+    from google.cloud import bigquery
 
-    # from google.cloud import bigquery
+    # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()
 
-    # The following label filter example will find datasets with an
-    # arbitrary 'color' label set to 'green'
     label_filter = "labels.color:green"
     datasets = list(client.list_datasets(filter=label_filter))
 
@@ -36,7 +30,5 @@ def list_datasets_by_label(client, to_delete):
             print("\t{}".format(dataset.dataset_id))
     else:
         print("No datasets found with this filter.")
-    found = set([dataset.dataset_id for dataset in datasets])
-    assert dataset_id in found
 
     # [END bigquery_list_datasets_by_label]
