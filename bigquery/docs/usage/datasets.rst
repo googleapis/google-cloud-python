@@ -81,3 +81,30 @@ Delete a dataset with the
    :dedent: 4
    :start-after: [START bigquery_delete_dataset]
    :end-before: [END bigquery_delete_dataset]
+
+[-REPLACE_COMMENT-]
+:func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
+
+.. literalinclude:: ../samples/samples/dataset_exists.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_dataset_exists]
+   :end-before: [END bigquery_dataset_exists]
+
+[-REPLACE_COMMENT-]
+:func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
+
+.. literalinclude:: ../samples/samples/list_datasets_by_label.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_list_datasets_by_label]
+   :end-before: [END bigquery_list_datasets_by_label]
+
+[-REPLACE_COMMENT-]
+:func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
+
+.. literalinclude:: ../samples/samples/manage_dataset_labels.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_delete_label_dataset]
+   :end-before: [END bigquery_delete_label_dataset]
