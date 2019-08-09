@@ -57,7 +57,7 @@ class {{ service.name }}(metaclass={{ service.name }}Meta):
     def __init__(self, *,
             host: str{% if service.host %} = '{{ service.host }}'{% endif %},
             credentials: credentials.Credentials = None,
-            transport: Union[str, {{ service.name }}Transport] = None,
+            transport: Union[str, {{ service.name }}Transport] = None
             ) -> None:
         """Instantiate the {{ (service.name|snake_case).replace('_', ' ') }}.
 
