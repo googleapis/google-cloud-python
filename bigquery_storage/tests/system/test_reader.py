@@ -15,6 +15,7 @@
 # limitations under the License.
 """System tests for reading rows from tables."""
 
+import datetime as dt
 import json
 import io
 
@@ -215,3 +216,42 @@ def test_snapshot(client, project_id, table_with_data_ref):
 
     for row in rows:
         assert "NewGuy" not in row["first_name"]  # no new records
+
+
+def test_column_partitioned_table(client, project_id, col_partition_table_ref):
+    data = [
+        {"description": "Tracking established.", "occurred": "2017-02-15"},
+        {"description": "Look, a solar eclipse!", "occurred": "2018-02-15"},
+        {"description": "Fake solar eclipse reported.", "occurred": "2018-02-15"},
+        {"description": "1 day after false eclipse report.", "occurred": "2018-02-16"},
+        {"description": "1 year after false eclipse report.", "occurred": "2019-02-15"},
+    ]
+
+    _add_rows(col_partition_table_ref, data)
+
+    # Read from the table with a partition filter specified, and verify that
+    # only the expected data is returned.
+    read_options = bigquery_storage_v1beta1.types.TableReadOptions()
+    read_options.row_restriction = "occurred = '2018-02-15'"
+
+    session = client.create_read_session(
+        col_partition_table_ref,
+        "projects/{}".format(project_id),
+        format_=bigquery_storage_v1beta1.enums.DataFormat.AVRO,
+        requested_streams=1,
+        read_options=read_options,
+    )
+
+    assert session.streams  # there should be some data to fetch
+
+    stream_pos = bigquery_storage_v1beta1.types.StreamPosition(
+        stream=session.streams[0]
+    )
+    rows = list(client.read_rows(stream_pos).rows(session))
+
+    assert len(rows) == 2
+
+    expected_descriptions = ("Look, a solar eclipse!", "Fake solar eclipse reported.")
+    for row in rows:
+        assert row["occurred"] == dt.date(2018, 2, 15)
+        assert row["description"] in expected_descriptions

@@ -101,6 +101,36 @@ def table_with_data_ref(dataset, table):
     query_job.result()
 
 
+@pytest.fixture
+def col_partition_table_ref(project_id, dataset):
+    from google.cloud import bigquery
+
+    bq_client = bigquery.Client()
+
+    schema = [
+        bigquery.SchemaField("occurred", "DATE", mode="REQUIRED"),
+        bigquery.SchemaField("description", "STRING", mode="REQUIRED"),
+    ]
+    time_partitioning = bigquery.table.TimePartitioning(
+        type_=bigquery.table.TimePartitioningType.DAY, field="occurred"
+    )
+    bq_table = bigquery.table.Table(
+        table_ref="{}.{}.notable_events".format(project_id, dataset.dataset_id),
+        schema=schema,
+    )
+    bq_table.time_partitioning = time_partitioning
+
+    created_table = bq_client.create_table(bq_table)
+
+    table_ref = bigquery_storage_v1beta1.types.TableReference()
+    table_ref.project_id = created_table.project
+    table_ref.dataset_id = created_table.dataset_id
+    table_ref.table_id = created_table.table_id
+    yield table_ref
+
+    bq_client.delete_table(created_table)
+
+
 @pytest.fixture()
 def client():
     return bigquery_storage_v1beta1.BigQueryStorageClient()
