@@ -15,11 +15,15 @@
 # limitations under the License.
 """System tests for reading rows from tables."""
 
+import copy
 import datetime as dt
+import decimal
 import json
 import io
+import re
 
 import pytest
+import pytz
 
 from google.cloud import bigquery
 from google.cloud import bigquery_storage_v1beta1
@@ -255,3 +259,72 @@ def test_column_partitioned_table(client, project_id, col_partition_table_ref):
     for row in rows:
         assert row["occurred"] == dt.date(2018, 2, 15)
         assert row["description"] in expected_descriptions
+
+
+@pytest.mark.parametrize(
+    "data_format",
+    (
+        (bigquery_storage_v1beta1.enums.DataFormat.AVRO),
+        (bigquery_storage_v1beta1.enums.DataFormat.ARROW),
+    ),
+)
+def test_decoding_data_types(client, project_id, all_types_table_ref, data_format):
+    data = [
+        {
+            u"string_field": u"Price: € 9.95.",
+            u"bytes_field": bigquery._helpers._bytes_to_json(b"byteees"),
+            u"int64_field": -1085,
+            u"float64_field": -42.195,
+            u"numeric_field": "1.4142",
+            u"bool_field": True,
+            u"geography_field": '{"type": "Point", "coordinates": [-49.3028, 69.0622]}',
+            u"person_struct_field": {u"name": u"John", u"age": 42},
+            u"timestamp_field": 1565357902.017896,  # 2019-08-09T13:38:22.017896
+            u"date_field": u"1995-03-17",
+            u"time_field": u"16:24:51",
+            u"datetime_field": u"2005-10-26T19:49:41",
+            u"string_array_field": [u"foo", u"bar", u"baz"],
+        }
+    ]
+
+    _add_rows(all_types_table_ref, data)
+
+    session = client.create_read_session(
+        all_types_table_ref,
+        "projects/{}".format(project_id),
+        format_=data_format,
+        requested_streams=1,
+    )
+
+    assert session.streams  # there should be data available
+
+    stream_pos = bigquery_storage_v1beta1.types.StreamPosition(
+        stream=session.streams[0]
+    )
+
+    rows = list(client.read_rows(stream_pos).rows(session))
+
+    expected_result = {
+        u"string_field": u"Price: € 9.95.",
+        u"bytes_field": b"byteees",
+        u"int64_field": -1085,
+        u"float64_field": -42.195,
+        u"numeric_field": decimal.Decimal("1.4142"),
+        u"bool_field": True,
+        u"geography_field": "POINT(-49.3028 69.0622)",
+        u"person_struct_field": {u"name": u"John", u"age": 42},
+        u"timestamp_field": dt.datetime(2019, 8, 9, 13, 38, 22, 17896, tzinfo=pytz.UTC),
+        u"date_field": dt.date(1995, 3, 17),
+        u"time_field": dt.time(16, 24, 51),
+        u"string_array_field": [u"foo", u"bar", u"baz"],
+    }
+
+    result_copy = copy.copy(rows[0])
+    del result_copy["datetime_field"]
+    assert result_copy == expected_result
+
+    # Compare datetime separately, AVRO and PYARROW return different object types,
+    # although they should both represent the same value.
+    # TODO: when fixed, change assertion to assert a datetime instance!
+    expected_pattern = re.compile(r"2005-10-26( |T)19:49:41")
+    assert expected_pattern.match(str(rows[0]["datetime_field"]))

@@ -131,6 +131,50 @@ def col_partition_table_ref(project_id, dataset):
     bq_client.delete_table(created_table)
 
 
+@pytest.fixture
+def all_types_table_ref(project_id, dataset):
+    from google.cloud import bigquery
+
+    bq_client = bigquery.Client()
+
+    schema = [
+        bigquery.SchemaField("string_field", "STRING"),
+        bigquery.SchemaField("bytes_field", "BYTES"),
+        bigquery.SchemaField("int64_field", "INT64"),
+        bigquery.SchemaField("float64_field", "FLOAT64"),
+        bigquery.SchemaField("numeric_field", "NUMERIC"),
+        bigquery.SchemaField("bool_field", "BOOL"),
+        bigquery.SchemaField("geography_field", "GEOGRAPHY"),
+        bigquery.SchemaField(
+            "person_struct_field",
+            "STRUCT",
+            fields=(
+                bigquery.SchemaField("name", "STRING"),
+                bigquery.SchemaField("age", "INT64"),
+            ),
+        ),
+        bigquery.SchemaField("timestamp_field", "TIMESTAMP"),
+        bigquery.SchemaField("date_field", "DATE"),
+        bigquery.SchemaField("time_field", "TIME"),
+        bigquery.SchemaField("datetime_field", "DATETIME"),
+        bigquery.SchemaField("string_array_field", "STRING", mode="REPEATED"),
+    ]
+    bq_table = bigquery.table.Table(
+        table_ref="{}.{}.complex_records".format(project_id, dataset.dataset_id),
+        schema=schema,
+    )
+
+    created_table = bq_client.create_table(bq_table)
+
+    table_ref = bigquery_storage_v1beta1.types.TableReference()
+    table_ref.project_id = created_table.project
+    table_ref.dataset_id = created_table.dataset_id
+    table_ref.table_id = created_table.table_id
+    yield table_ref
+
+    bq_client.delete_table(created_table)
+
+
 @pytest.fixture()
 def client():
     return bigquery_storage_v1beta1.BigQueryStorageClient()
