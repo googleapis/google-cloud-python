@@ -2081,9 +2081,7 @@ UpdateDatasetRequest = _reflection.GeneratedProtocolMessageType(
       dataset:
           The dataset which replaces the resource on the server.
       update_mask:
-          The update mask applies to the resource. For the ``FieldMask``
-          definition, see  https: //developers.google.com/protocol-
-          buffers // /docs/reference/google.protobuf#fieldmask
+          The update mask applies to the resource.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.UpdateDatasetRequest)
     ),
@@ -2264,9 +2262,7 @@ UpdateTableSpecRequest = _reflection.GeneratedProtocolMessageType(
       table_spec:
           The table spec which replaces the resource on the server.
       update_mask:
-          The update mask applies to the resource. For the ``FieldMask``
-          definition, see  https: //developers.google.com/protocol-
-          buffers // /docs/reference/google.protobuf#fieldmask
+          The update mask applies to the resource.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.UpdateTableSpecRequest)
     ),
@@ -2365,9 +2361,7 @@ UpdateColumnSpecRequest = _reflection.GeneratedProtocolMessageType(
       column_spec:
           The column spec which replaces the resource on the server.
       update_mask:
-          The update mask applies to the resource. For the ``FieldMask``
-          definition, see  https: //developers.google.com/protocol-
-          buffers // /docs/reference/google.protobuf#fieldmask
+          The update mask applies to the resource.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.UpdateColumnSpecRequest)
     ),
