@@ -13,26 +13,23 @@
 # limitations under the License.
 
 
-def add_empty_column(client, to_delete):
+def add_empty_column(client, table_id):
 
     # [START bigquery_add_empty_column]
-    """Adds an empty column to an existing table."""
-    dataset_id = "add_empty_column_dataset_{}".format(_millis())
-    table_id = "add_empty_column_table_{}".format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
-    dataset = client.create_dataset(dataset)
-    to_delete.append(dataset)
+    from google.cloud import bigquery
 
-    table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
-    table = client.create_table(table)
+    schema = [
+        bigquery.SchemaField("full_name", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("age", "INTEGER", mode="REQUIRED"),
+    ]
 
-    # from google.cloud import bigquery
+    # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()
-    # dataset_id = 'my_dataset'
-    # table_id = 'my_table'
 
-    table_ref = client.dataset(dataset_id).table(table_id)
-    table = client.get_table(table_ref)  # API request
+    # TODO(developer): Set table_id to the ID of the table to add an empty column
+    # table_id = "your-project.your_dataset.your_table_name"
+
+    table = client.get_table(table_id)
 
     original_schema = table.schema
     new_schema = original_schema[:]  # creates a copy of the schema
@@ -41,6 +38,9 @@ def add_empty_column(client, to_delete):
     table.schema = new_schema
     table = client.update_table(table, ["schema"])  # API request
 
-    assert len(table.schema) == len(original_schema) + 1 == len(new_schema)
+    if len(table.schema) == len(original_schema) + 1 == len(new_schema):
+        print("A new column has been added.")
+    else:
+        print("The column has not been added.")
 
     # [END bigquery_add_empty_column]

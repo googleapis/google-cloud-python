@@ -113,6 +113,15 @@ Insert rows into a table's data with the
    :start-after: [START bigquery_table_insert_rows]
    :end-before: [END bigquery_table_insert_rows]
 
+Adds an empty column to the existing table with the
+:func:`~google.cloud.bigquery.update_table` method:
+
+.. literalinclude:: ../samples/samples/add_empty_column.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_add_empty_column]
+   :end-before: [END bigquery_add_empty_column]
+
 Copying a Table
 ^^^^^^^^^^^^^^^
 
@@ -145,15 +154,6 @@ Delete a table with the
    :dedent: 4
    :start-after: [START bigquery_delete_table]
    :end-before: [END bigquery_delete_table]
-
-[-REPLACE_COMMENT-]
-:func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
-
-.. literalinclude:: ../samples/samples/add_empty_column.py
-   :language: python
-   :dedent: 4
-   :start-after: [START bigquery_add_empty_column]
-   :end-before: [END bigquery_add_empty_column]
 
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:

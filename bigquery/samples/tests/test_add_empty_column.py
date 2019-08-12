@@ -16,12 +16,8 @@
 from .. import add_empty_column
 
 
-def test_add_empty_column(capsys, client):
+def test_add_empty_column(capsys, client, table_id):
 
-    schema = [
-        bigquery.SchemaField("full_name", "STRING", mode="REQUIRED"),
-        bigquery.SchemaField("age", "INTEGER", mode="REQUIRED"),
-    ]
-
+    add_empty_column.add_empty_column(client, table_id)
     out, err = capsys.readouterr()
-    assert 
+    assert "A new column has been added." in out
