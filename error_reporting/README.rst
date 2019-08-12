@@ -1,7 +1,7 @@
 Python Client for Stackdriver Error Reporting
 =============================================
 
-|pypi| |versions|
+|pypi| |versions| |compat_check_pypi| |compat_check_github|
 
 The Stackdriver `Error Reporting`_ API counts, analyzes and aggregates the
 crashes in your running cloud services.  A centralized error management
@@ -14,12 +14,16 @@ to receive email and mobile alerts on new errors.
 - `Product Documentation`_
 
 .. _Error Reporting: https://cloud.google.com/error-reporting/
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/error-reporting/usage.html
+.. _Client Library Documentation: https://googleapis.dev/python/clouderroreporting/latest
 .. _Product Documentation: https://cloud.google.com/error-reporting/reference/
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-error-reporting.svg
    :target: https://pypi.org/project/google-cloud-error-reporting/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-error-reporting.svg
    :target: https://pypi.org/project/google-cloud-error-reporting/
+.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-error-reporting
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-error-reporting
+.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Derror_reporting
+   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Derror_reporting
 
 Quick Start
 -----------
@@ -34,7 +38,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Google Cloud Error Reporting API.:  https://cloud.google.com/error-reporting
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~

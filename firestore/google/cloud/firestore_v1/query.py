@@ -390,6 +390,19 @@ class Query(object):
             all_descendants=self._all_descendants,
         )
 
+    def _check_snapshot(self, document_fields):
+        """Validate local snapshots for non-collection-group queries.
+
+        Raises:
+            ValueError: for non-collection-group queries, if the snapshot
+                is from a different collection.
+        """
+        if self._all_descendants:
+            return
+
+        if document_fields.reference._path[:-1] != self._parent._path:
+            raise ValueError("Cannot use snapshot from another collection as a cursor.")
+
     def _cursor_helper(self, document_fields, before, start):
         """Set values to be used for a ``start_at`` or ``end_at`` cursor.
 
@@ -419,10 +432,7 @@ class Query(object):
         if isinstance(document_fields, tuple):
             document_fields = list(document_fields)
         elif isinstance(document_fields, document.DocumentSnapshot):
-            if document_fields.reference._path[:-1] != self._parent._path:
-                raise ValueError(
-                    "Cannot use snapshot from another collection as a cursor."
-                )
+            self._check_snapshot(document_fields)
         else:
             # NOTE: We copy so that the caller can't modify after calling.
             document_fields = copy.deepcopy(document_fields)
@@ -656,7 +666,12 @@ class Query(object):
             data = document_fields
             for order_key in order_keys:
                 try:
-                    values.append(field_path_module.get_nested_value(order_key, data))
+                    if order_key in data:
+                        values.append(data[order_key])
+                    else:
+                        values.append(
+                            field_path_module.get_nested_value(order_key, data)
+                        )
                 except KeyError:
                     msg = _MISSING_ORDER_BY.format(order_key, data)
                     raise ValueError(msg)

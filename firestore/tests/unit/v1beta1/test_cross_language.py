@@ -110,7 +110,10 @@ def _make_client_document(firestore_api, testcase):
 
     # Attach the fake GAPIC to a real client.
     credentials = mock.Mock(spec=google.auth.credentials.Credentials)
-    client = Client(project=project, credentials=credentials)
+
+    with pytest.deprecated_call():
+        client = Client(project=project, credentials=credentials)
+
     client._firestore_api_internal = firestore_api
     return client, client.document(doc_path)
 
@@ -222,7 +225,10 @@ def test_listen_testprotos(test_proto):  # pragma: NO COVER
     testname = test_proto.description
 
     credentials = mock.Mock(spec=google.auth.credentials.Credentials)
-    client = Client(project="project", credentials=credentials)
+
+    with pytest.deprecated_call():
+        client = Client(project="project", credentials=credentials)
+
     modulename = "google.cloud.firestore_v1beta1.watch"
     with mock.patch("%s.Watch.ResumableBidiRpc" % modulename, DummyRpc):
         with mock.patch(
@@ -426,7 +432,10 @@ def parse_query(testcase):
     _directions = {"asc": Query.ASCENDING, "desc": Query.DESCENDING}
 
     credentials = mock.create_autospec(Credentials)
-    client = Client("projectID", credentials)
+
+    with pytest.deprecated_call():
+        client = Client("projectID", credentials)
+
     path = parse_path(testcase.coll_path)
     collection = client.collection(*path)
     query = collection

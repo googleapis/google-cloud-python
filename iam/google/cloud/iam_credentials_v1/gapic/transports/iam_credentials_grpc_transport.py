@@ -61,7 +61,14 @@ class IamCredentialsGrpcTransport(object):
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(address=address, credentials=credentials)
+            channel = self.create_channel(
+                address=address,
+                credentials=credentials,
+                options={
+                    "grpc.max_send_message_length": -1,
+                    "grpc.max_receive_message_length": -1,
+                }.items(),
+            )
 
         self._channel = channel
 
@@ -73,7 +80,7 @@ class IamCredentialsGrpcTransport(object):
 
     @classmethod
     def create_channel(
-        cls, address="iamcredentials.googleapis.com:443", credentials=None
+        cls, address="iamcredentials.googleapis.com:443", credentials=None, **kwargs
     ):
         """Create and return a gRPC channel object.
 
@@ -84,12 +91,14 @@ class IamCredentialsGrpcTransport(object):
                 credentials identify this application to the service. If
                 none are specified, the client will attempt to ascertain
                 the credentials from the environment.
+            kwargs (dict): Keyword arguments, which are passed to the
+                channel creation.
 
         Returns:
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES, **kwargs
         )
 
     @property
@@ -152,17 +161,3 @@ class IamCredentialsGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["iam_credentials_stub"].SignJwt
-
-    @property
-    def generate_identity_binding_access_token(self):
-        """Return the gRPC stub for :meth:`IAMCredentialsClient.generate_identity_binding_access_token`.
-
-        Exchange a JWT signed by third party identity provider to an OAuth 2.0
-        access token
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["iam_credentials_stub"].GenerateIdentityBindingAccessToken

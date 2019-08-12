@@ -21,6 +21,7 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -28,6 +29,7 @@ import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
+import google.api_core.protobuf_helpers
 import grpc
 
 from google.cloud.kms_v1.gapic import enums
@@ -37,6 +39,8 @@ from google.cloud.kms_v1.proto import resources_pb2
 from google.cloud.kms_v1.proto import service_pb2
 from google.cloud.kms_v1.proto import service_pb2_grpc
 from google.iam.v1 import iam_policy_pb2
+from google.iam.v1 import iam_policy_pb2_grpc
+from google.iam.v1 import options_pb2
 from google.iam.v1 import policy_pb2
 from google.protobuf import field_mask_pb2
 
@@ -123,6 +127,17 @@ class KeyManagementServiceClient(object):
         )
 
     @classmethod
+    def import_job_path(cls, project, location, key_ring, import_job):
+        """Return a fully-qualified import_job string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}/keyRings/{key_ring}/importJobs/{import_job}",
+            project=project,
+            location=location,
+            key_ring=key_ring,
+            import_job=import_job,
+        )
+
+    @classmethod
     def key_ring_path(cls, project, location, key_ring):
         """Return a fully-qualified key_ring string."""
         return google.api_core.path_template.expand(
@@ -148,6 +163,7 @@ class KeyManagementServiceClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -178,6 +194,9 @@ class KeyManagementServiceClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -196,6 +215,15 @@ class KeyManagementServiceClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -204,6 +232,7 @@ class KeyManagementServiceClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=key_management_service_grpc_transport.KeyManagementServiceGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -214,7 +243,7 @@ class KeyManagementServiceClient(object):
                 self.transport = transport
         else:
             self.transport = key_management_service_grpc_transport.KeyManagementServiceGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -244,6 +273,8 @@ class KeyManagementServiceClient(object):
         self,
         parent,
         page_size=None,
+        filter_=None,
+        order_by=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -280,9 +311,12 @@ class KeyManagementServiceClient(object):
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
+            filter_ (str): Optional. Only include resources that match the filter in the response.
+            order_by (str): Optional. Specify how the results should be sorted. If not specified, the
+                results will be sorted in the default order.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -290,10 +324,10 @@ class KeyManagementServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.kms_v1.types.KeyRing` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.kms_v1.types.KeyRing` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -313,7 +347,9 @@ class KeyManagementServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = service_pb2.ListKeyRingsRequest(parent=parent, page_size=page_size)
+        request = service_pb2.ListKeyRingsRequest(
+            parent=parent, page_size=page_size, filter=filter_, order_by=order_by
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -342,11 +378,122 @@ class KeyManagementServiceClient(object):
         )
         return iterator
 
+    def list_import_jobs(
+        self,
+        parent,
+        page_size=None,
+        filter_=None,
+        order_by=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Lists ``ImportJobs``.
+
+        Example:
+            >>> from google.cloud import kms_v1
+            >>>
+            >>> client = kms_v1.KeyManagementServiceClient()
+            >>>
+            >>> parent = client.key_ring_path('[PROJECT]', '[LOCATION]', '[KEY_RING]')
+            >>>
+            >>> # Iterate over all results
+            >>> for element in client.list_import_jobs(parent):
+            ...     # process element
+            ...     pass
+            >>>
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
+            >>> for page in client.list_import_jobs(parent).pages:
+            ...     for element in page:
+            ...         # process element
+            ...         pass
+
+        Args:
+            parent (str): Required. The resource name of the ``KeyRing`` to list, in the format
+                ``projects/*/locations/*/keyRings/*``.
+            page_size (int): The maximum number of resources contained in the
+                underlying API response. If page streaming is performed per-
+                resource, this parameter does not affect the return value. If page
+                streaming is performed per-page, this determines the maximum number
+                of resources in a page.
+            filter_ (str): Optional. Only include resources that match the filter in the response.
+            order_by (str): Optional. Specify how the results should be sorted. If not specified, the
+                results will be sorted in the default order.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.kms_v1.types.ImportJob` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "list_import_jobs" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "list_import_jobs"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_import_jobs,
+                default_retry=self._method_configs["ListImportJobs"].retry,
+                default_timeout=self._method_configs["ListImportJobs"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = service_pb2.ListImportJobsRequest(
+            parent=parent, page_size=page_size, filter=filter_, order_by=order_by
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        iterator = google.api_core.page_iterator.GRPCIterator(
+            client=None,
+            method=functools.partial(
+                self._inner_api_calls["list_import_jobs"],
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            ),
+            request=request,
+            items_field="import_jobs",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
+        )
+        return iterator
+
     def list_crypto_keys(
         self,
         parent,
         page_size=None,
         version_view=None,
+        filter_=None,
+        order_by=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -384,9 +531,12 @@ class KeyManagementServiceClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             version_view (~google.cloud.kms_v1.types.CryptoKeyVersionView): The fields of the primary version to include in the response.
+            filter_ (str): Optional. Only include resources that match the filter in the response.
+            order_by (str): Optional. Specify how the results should be sorted. If not specified, the
+                results will be sorted in the default order.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -394,10 +544,10 @@ class KeyManagementServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.kms_v1.types.CryptoKey` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.kms_v1.types.CryptoKey` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -418,7 +568,11 @@ class KeyManagementServiceClient(object):
             )
 
         request = service_pb2.ListCryptoKeysRequest(
-            parent=parent, page_size=page_size, version_view=version_view
+            parent=parent,
+            page_size=page_size,
+            version_view=version_view,
+            filter=filter_,
+            order_by=order_by,
         )
         if metadata is None:
             metadata = []
@@ -453,6 +607,8 @@ class KeyManagementServiceClient(object):
         parent,
         page_size=None,
         view=None,
+        filter_=None,
+        order_by=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -490,9 +646,12 @@ class KeyManagementServiceClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             view (~google.cloud.kms_v1.types.CryptoKeyVersionView): The fields to include in the response.
+            filter_ (str): Optional. Only include resources that match the filter in the response.
+            order_by (str): Optional. Specify how the results should be sorted. If not specified, the
+                results will be sorted in the default order.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -500,10 +659,10 @@ class KeyManagementServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.kms_v1.types.CryptoKeyVersion` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.kms_v1.types.CryptoKeyVersion` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -524,7 +683,11 @@ class KeyManagementServiceClient(object):
             )
 
         request = service_pb2.ListCryptoKeyVersionsRequest(
-            parent=parent, page_size=page_size, view=view
+            parent=parent,
+            page_size=page_size,
+            view=view,
+            filter=filter_,
+            order_by=order_by,
         )
         if metadata is None:
             metadata = []
@@ -576,8 +739,8 @@ class KeyManagementServiceClient(object):
         Args:
             name (str): The ``name`` of the ``KeyRing`` to get.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -623,6 +786,75 @@ class KeyManagementServiceClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
+    def get_import_job(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Returns metadata for a given ``ImportJob``.
+
+        Example:
+            >>> from google.cloud import kms_v1
+            >>>
+            >>> client = kms_v1.KeyManagementServiceClient()
+            >>>
+            >>> name = client.import_job_path('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[IMPORT_JOB]')
+            >>>
+            >>> response = client.get_import_job(name)
+
+        Args:
+            name (str): The ``name`` of the ``ImportJob`` to get.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.kms_v1.types.ImportJob` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "get_import_job" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "get_import_job"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_import_job,
+                default_retry=self._method_configs["GetImportJob"].retry,
+                default_timeout=self._method_configs["GetImportJob"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = service_pb2.GetImportJobRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["get_import_job"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
     def get_crypto_key(
         self,
         name,
@@ -646,8 +878,8 @@ class KeyManagementServiceClient(object):
         Args:
             name (str): The ``name`` of the ``CryptoKey`` to get.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -715,8 +947,8 @@ class KeyManagementServiceClient(object):
         Args:
             name (str): The ``name`` of the ``CryptoKeyVersion`` to get.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -799,8 +1031,8 @@ class KeyManagementServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.kms_v1.types.KeyRing`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -848,11 +1080,99 @@ class KeyManagementServiceClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
+    def create_import_job(
+        self,
+        parent,
+        import_job_id,
+        import_job,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Create a new ``ImportJob`` within a ``KeyRing``.
+
+        ``ImportJob.import_method`` is required.
+
+        Example:
+            >>> from google.cloud import kms_v1
+            >>> from google.cloud.kms_v1 import enums
+            >>>
+            >>> client = kms_v1.KeyManagementServiceClient()
+            >>>
+            >>> parent = client.key_ring_path('[PROJECT]', '[LOCATION]', '[KEY_RING]')
+            >>> import_job_id = 'my-import-job'
+            >>> import_method = enums.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256
+            >>> protection_level = enums.ProtectionLevel.HSM
+            >>> import_job = {'import_method': import_method, 'protection_level': protection_level}
+            >>>
+            >>> response = client.create_import_job(parent, import_job_id, import_job)
+
+        Args:
+            parent (str): Required. The ``name`` of the ``KeyRing`` associated with the
+                ``ImportJobs``.
+            import_job_id (str): Required. It must be unique within a KeyRing and match the regular
+                expression ``[a-zA-Z0-9_-]{1,63}``
+            import_job (Union[dict, ~google.cloud.kms_v1.types.ImportJob]): Required. An ``ImportJob`` with initial field values.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.kms_v1.types.ImportJob`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.kms_v1.types.ImportJob` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "create_import_job" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "create_import_job"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.create_import_job,
+                default_retry=self._method_configs["CreateImportJob"].retry,
+                default_timeout=self._method_configs["CreateImportJob"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = service_pb2.CreateImportJobRequest(
+            parent=parent, import_job_id=import_job_id, import_job=import_job
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["create_import_job"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
     def create_crypto_key(
         self,
         parent,
         crypto_key_id,
         crypto_key,
+        skip_initial_version_creation=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -889,9 +1209,12 @@ class KeyManagementServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.kms_v1.types.CryptoKey`
+            skip_initial_version_creation (bool): If set to true, the request will create a ``CryptoKey`` without any
+                ``CryptoKeyVersions``. You must manually call ``CreateCryptoKeyVersion``
+                or ``ImportCryptoKeyVersion`` before you can use this ``CryptoKey``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -920,7 +1243,10 @@ class KeyManagementServiceClient(object):
             )
 
         request = service_pb2.CreateCryptoKeyRequest(
-            parent=parent, crypto_key_id=crypto_key_id, crypto_key=crypto_key
+            parent=parent,
+            crypto_key_id=crypto_key_id,
+            crypto_key=crypto_key,
+            skip_initial_version_creation=skip_initial_version_creation,
         )
         if metadata is None:
             metadata = []
@@ -973,8 +1299,8 @@ class KeyManagementServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.kms_v1.types.CryptoKeyVersion`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1022,6 +1348,124 @@ class KeyManagementServiceClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
+    def import_crypto_key_version(
+        self,
+        parent,
+        algorithm,
+        import_job,
+        rsa_aes_wrapped_key=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Imports a new ``CryptoKeyVersion`` into an existing ``CryptoKey`` using
+        the wrapped key material provided in the request.
+
+        The version ID will be assigned the next sequential id within the
+        ``CryptoKey``.
+
+        Example:
+            >>> from google.cloud import kms_v1
+            >>> from google.cloud.kms_v1 import enums
+            >>>
+            >>> client = kms_v1.KeyManagementServiceClient()
+            >>>
+            >>> parent = client.crypto_key_path('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY]')
+            >>>
+            >>> # TODO: Initialize `algorithm`:
+            >>> algorithm = enums.CryptoKeyVersion.CryptoKeyVersionAlgorithm.CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED
+            >>>
+            >>> # TODO: Initialize `import_job`:
+            >>> import_job = ''
+            >>>
+            >>> response = client.import_crypto_key_version(parent, algorithm, import_job)
+
+        Args:
+            parent (str): Required. The ``name`` of the ``CryptoKey`` to be imported into.
+            algorithm (~google.cloud.kms_v1.types.CryptoKeyVersionAlgorithm): Required. The ``algorithm`` of the key being imported. This does not
+                need to match the ``version_template`` of the ``CryptoKey`` this version
+                imports into.
+            import_job (str): Required. The ``name`` of the ``ImportJob`` that was used to wrap this
+                key material.
+            rsa_aes_wrapped_key (bytes): Wrapped key material produced with ``RSA_OAEP_3072_SHA1_AES_256`` or
+                ``RSA_OAEP_4096_SHA1_AES_256``.
+
+                This field contains the concatenation of two wrapped keys:
+
+                .. raw:: html
+
+                    <ol>
+                      <li>An ephemeral AES-256 wrapping key wrapped with the
+                          `public_key` using RSAES-OAEP with SHA-1,
+                          MGF1 with SHA-1, and an empty label.
+                      </li>
+                      <li>The key to be imported, wrapped with the ephemeral AES-256 key
+                          using AES-KWP (RFC 5649).
+                      </li>
+                    </ol>
+
+                This format is the same as the format produced by PKCS#11 mechanism
+                CKM\_RSA\_AES\_KEY\_WRAP.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.kms_v1.types.CryptoKeyVersion` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "import_crypto_key_version" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "import_crypto_key_version"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.import_crypto_key_version,
+                default_retry=self._method_configs["ImportCryptoKeyVersion"].retry,
+                default_timeout=self._method_configs["ImportCryptoKeyVersion"].timeout,
+                client_info=self._client_info,
+            )
+
+        # Sanity check: We have some fields which are mutually exclusive;
+        # raise ValueError if more than one is sent.
+        google.api_core.protobuf_helpers.check_oneof(
+            rsa_aes_wrapped_key=rsa_aes_wrapped_key
+        )
+
+        request = service_pb2.ImportCryptoKeyVersionRequest(
+            parent=parent,
+            algorithm=algorithm,
+            import_job=import_job,
+            rsa_aes_wrapped_key=rsa_aes_wrapped_key,
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["import_crypto_key_version"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
     def update_crypto_key(
         self,
         crypto_key,
@@ -1056,8 +1500,8 @@ class KeyManagementServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.kms_v1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1143,8 +1587,8 @@ class KeyManagementServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.kms_v1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1237,8 +1681,8 @@ class KeyManagementServiceClient(object):
                 keys, the combined length of the plaintext and
                 additional\_authenticated\_data fields must be no larger than 8KiB.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1321,8 +1765,8 @@ class KeyManagementServiceClient(object):
             additional_authenticated_data (bytes): Optional data that must match the data originally supplied in
                 ``EncryptRequest.additional_authenticated_data``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1401,8 +1845,8 @@ class KeyManagementServiceClient(object):
             name (str): The resource name of the ``CryptoKey`` to update.
             crypto_key_version_id (str): The id of the child ``CryptoKeyVersion`` to use as primary.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1484,8 +1928,8 @@ class KeyManagementServiceClient(object):
         Args:
             name (str): The resource name of the ``CryptoKeyVersion`` to destroy.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1556,8 +2000,8 @@ class KeyManagementServiceClient(object):
         Args:
             name (str): The resource name of the ``CryptoKeyVersion`` to restore.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1627,8 +2071,8 @@ class KeyManagementServiceClient(object):
         Args:
             name (str): The ``name`` of the ``CryptoKeyVersion`` public key to get.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1705,8 +2149,8 @@ class KeyManagementServiceClient(object):
             ciphertext (bytes): Required. The data encrypted with the named ``CryptoKeyVersion``'s
                 public key using OAEP.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1787,8 +2231,8 @@ class KeyManagementServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.kms_v1.types.Digest`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1843,8 +2287,8 @@ class KeyManagementServiceClient(object):
         metadata=None,
     ):
         """
-        Sets the access control policy on the specified resource. Replaces any
-        existing policy.
+        Sets the access control policy on the specified resource. Replaces
+        any existing policy.
 
         Example:
             >>> from google.cloud import kms_v1
@@ -1869,8 +2313,8 @@ class KeyManagementServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.kms_v1.types.Policy`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1919,14 +2363,14 @@ class KeyManagementServiceClient(object):
     def get_iam_policy(
         self,
         resource,
+        options_=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
     ):
         """
-        Gets the access control policy for a resource.
-        Returns an empty policy if the resource exists and does not have a policy
-        set.
+        Gets the access control policy for a resource. Returns an empty policy
+        if the resource exists and does not have a policy set.
 
         Example:
             >>> from google.cloud import kms_v1
@@ -1940,9 +2384,14 @@ class KeyManagementServiceClient(object):
         Args:
             resource (str): REQUIRED: The resource for which the policy is being requested.
                 See the operation documentation for the appropriate value for this field.
+            options_ (Union[dict, ~google.cloud.kms_v1.types.GetPolicyOptions]): OPTIONAL: A ``GetPolicyOptions`` object for specifying options to
+                ``GetIamPolicy``. This field is only used by Cloud IAM.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.kms_v1.types.GetPolicyOptions`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1970,7 +2419,9 @@ class KeyManagementServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = iam_policy_pb2.GetIamPolicyRequest(resource=resource)
+        request = iam_policy_pb2.GetIamPolicyRequest(
+            resource=resource, options=options_
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1998,8 +2449,8 @@ class KeyManagementServiceClient(object):
     ):
         """
         Returns permissions that a caller has on the specified resource. If the
-        resource does not exist, this will return an empty set of permissions,
-        not a NOT\_FOUND error.
+        resource does not exist, this will return an empty set of
+        permissions, not a NOT_FOUND error.
 
         Note: This operation is designed to be used for building
         permission-aware UIs and command-line tools, not for authorization
@@ -2025,8 +2476,8 @@ class KeyManagementServiceClient(object):
                 information see `IAM
                 Overview <https://cloud.google.com/iam/docs/overview#permissions>`__.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.

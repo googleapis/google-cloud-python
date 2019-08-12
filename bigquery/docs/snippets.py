@@ -26,7 +26,6 @@ need to be deleted during teardown.
 import os
 import time
 
-import mock
 import pytest
 import six
 
@@ -122,27 +121,6 @@ def test_create_client_default_credentials():
     # client library will look for credentials in the environment.
     client = bigquery.Client()
     # [END bigquery_client_default_credentials]
-
-    assert client is not None
-
-
-def test_create_client_json_credentials():
-    """Create a BigQuery client with Application Default Credentials"""
-    with open(os.environ["GOOGLE_APPLICATION_CREDENTIALS"]) as creds_file:
-        creds_file_data = creds_file.read()
-
-    open_mock = mock.mock_open(read_data=creds_file_data)
-
-    with mock.patch("io.open", open_mock):
-        # [START bigquery_client_json_credentials]
-        from google.cloud import bigquery
-
-        # Explicitly use service account credentials by specifying the private
-        # key file. All clients in google-cloud-python have this helper.
-        client = bigquery.Client.from_service_account_json(
-            "path/to/service_account.json"
-        )
-        # [END bigquery_client_json_credentials]
 
     assert client is not None
 
@@ -443,12 +421,8 @@ def test_load_and_query_partitioned_table(client, to_delete):
         bigquery.ScalarQueryParameter("end_date", "DATE", datetime.date(1899, 12, 31)),
     ]
 
-    query_job = client.query(
-        sql,
-        # Location must match that of the dataset(s) referenced in the query.
-        location="US",
-        job_config=job_config,
-    )  # API request
+    # API request
+    query_job = client.query(sql, job_config=job_config)
 
     rows = list(query_job)
     print("{} states were admitted to the US in the 1800s".format(len(rows)))
@@ -987,12 +961,7 @@ def test_load_table_from_file(client, to_delete):
     job_config.autodetect = True
 
     with open(filename, "rb") as source_file:
-        job = client.load_table_from_file(
-            source_file,
-            table_ref,
-            location="US",  # Must match the destination dataset location.
-            job_config=job_config,
-        )  # API request
+        job = client.load_table_from_file(source_file, table_ref, job_config=job_config)
 
     job.result()  # Waits for table load to complete.
 

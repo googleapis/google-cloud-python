@@ -4,6 +4,34 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+## 1.0.3
+
+07-26-2019 10:34 PDT
+
+
+### Implementation Changes
+- Make `Client.build_api_url` an instance method. ([#8747](https://github.com/googleapis/google-cloud-python/pull/8747))
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+
+### Documentation
+- Linkify the PR in the change log. ([#8790](https://github.com/googleapis/google-cloud-python/pull/8790))
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+- Removing typing information for `**kwargs` in order to not conflict with type checkers. ([#8546](https://github.com/googleapis/google-cloud-python/pull/8546))
+
+### Internal / Testing Changes
+- Add nox session 'docs' to remaining manual clients. ([#8478](https://github.com/googleapis/google-cloud-python/pull/8478))
+- Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+
+## 1.0.2
+
+06/11/2019 15:19 PDT
+
+### Internal Changes 
+- Prevent requests from hanging on SSL handshake issue by adding a max timeout of 5 minutes. ([#8207](https://github.com/googleapis/google-cloud-python/pull/8207))
+
 ## 1.0.1
 
 05-28-2019 11:22 PDT

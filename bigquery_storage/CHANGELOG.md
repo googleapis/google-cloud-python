@@ -4,6 +4,49 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## 0.7.0
+
+07-31-2019 17:48 PDT
+
+
+### New Features
+- Support faster Arrow data format in `to_dataframe` and `to_arrow` when using BigQuery Storage API. ([#8551](https://github.com/googleapis/google-cloud-python/pull/8551))
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+- Update pins of 'googleapis-common-protos. ([#8688](https://github.com/googleapis/google-cloud-python/pull/8688))
+
+### Documentation
+- Update quickstart sample with data format and sharding options. ([#8665](https://github.com/googleapis/google-cloud-python/pull/8665))
+- Fix links to bigquery storage documentation. ([#8859](https://github.com/googleapis/google-cloud-python/pull/8859))
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+
+### Internal / Testing Changes
+- Pin black version. (via synth). ([#8672](https://github.com/googleapis/google-cloud-python/pull/8672))
+
+## 0.6.0
+
+07-11-2019 13:15 PDT
+
+### New Features
+
+- Add `to_arrow` with support for Arrow data format. ([#8644](https://github.com/googleapis/google-cloud-python/pull/8644))
+- Add 'client_options' support (via synth). ([#8536](https://github.com/googleapis/google-cloud-python/pull/8536))
+- Add sharding strategy, stream splitting, Arrow support (via synth). ([#8477](https://github.com/googleapis/google-cloud-python/pull/8477))
+
+### Documentation
+
+- Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+
+### Internal / Testing Changes
+
+- Allow kwargs to be passed to create_channel (via synth). ([#8441](https://github.com/googleapis/google-cloud-python/pull/8441))
+- Add encoding declaration to protoc-generated files (via synth). ([#8345](https://github.com/googleapis/google-cloud-python/pull/8345))
+- Refactor `reader.ReadRowsPage` to use `_StreamParser`. ([#8262](https://github.com/googleapis/google-cloud-python/pull/8262))
+- Fix coverage in 'types.py' (via synth). ([#8148](https://github.com/googleapis/google-cloud-python/pull/8148))
+- Add empty lines, remove coverage exclusions (via synth). ([#8051](https://github.com/googleapis/google-cloud-python/pull/8051))
+
 ## 0.5.0
 
 05-20-2019 09:23 PDT

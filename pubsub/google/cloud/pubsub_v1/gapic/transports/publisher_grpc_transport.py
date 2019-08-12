@@ -18,7 +18,7 @@
 import google.api_core.grpc_helpers
 
 from google.cloud.pubsub_v1.proto import pubsub_pb2_grpc
-from google.iam.v1 import iam_policy_pb2
+from google.iam.v1 import iam_policy_pb2_grpc as iam_policy_pb2_grpc
 
 
 class PublisherGrpcTransport(object):
@@ -62,19 +62,28 @@ class PublisherGrpcTransport(object):
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(address=address, credentials=credentials)
+            channel = self.create_channel(
+                address=address,
+                credentials=credentials,
+                options={
+                    "grpc.max_send_message_length": -1,
+                    "grpc.max_receive_message_length": -1,
+                }.items(),
+            )
 
         self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            "iam_policy_stub": iam_policy_pb2.IAMPolicyStub(channel),
+            "iam_policy_stub": iam_policy_pb2_grpc.IAMPolicyStub(channel),
             "publisher_stub": pubsub_pb2_grpc.PublisherStub(channel),
         }
 
     @classmethod
-    def create_channel(cls, address="pubsub.googleapis.com:443", credentials=None):
+    def create_channel(
+        cls, address="pubsub.googleapis.com:443", credentials=None, **kwargs
+    ):
         """Create and return a gRPC channel object.
 
         Args:
@@ -84,12 +93,14 @@ class PublisherGrpcTransport(object):
                 credentials identify this application to the service. If
                 none are specified, the client will attempt to ascertain
                 the credentials from the environment.
+            kwargs (dict): Keyword arguments, which are passed to the
+                channel creation.
 
         Returns:
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES, **kwargs
         )
 
     @property

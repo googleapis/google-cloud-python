@@ -21,6 +21,7 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -42,6 +43,8 @@ from google.cloud.datalabeling_v1beta1.proto import annotation_spec_set_pb2
 from google.cloud.datalabeling_v1beta1.proto import data_labeling_service_pb2
 from google.cloud.datalabeling_v1beta1.proto import data_labeling_service_pb2_grpc
 from google.cloud.datalabeling_v1beta1.proto import dataset_pb2
+from google.cloud.datalabeling_v1beta1.proto import evaluation_job_pb2
+from google.cloud.datalabeling_v1beta1.proto import evaluation_pb2
 from google.cloud.datalabeling_v1beta1.proto import human_annotation_config_pb2
 from google.cloud.datalabeling_v1beta1.proto import instruction_pb2
 from google.cloud.datalabeling_v1beta1.proto import (
@@ -49,6 +52,7 @@ from google.cloud.datalabeling_v1beta1.proto import (
 )
 from google.longrunning import operations_pb2 as longrunning_operations_pb2
 from google.protobuf import empty_pb2
+from google.protobuf import field_mask_pb2
 
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
@@ -121,6 +125,25 @@ class DataLabelingServiceClient(object):
         )
 
     @classmethod
+    def evaluation_path(cls, project, dataset, evaluation):
+        """Return a fully-qualified evaluation string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/datasets/{dataset}/evaluations/{evaluation}",
+            project=project,
+            dataset=dataset,
+            evaluation=evaluation,
+        )
+
+    @classmethod
+    def evaluation_job_path(cls, project, evaluation_job):
+        """Return a fully-qualified evaluation_job string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/evaluationJobs/{evaluation_job}",
+            project=project,
+            evaluation_job=evaluation_job,
+        )
+
+    @classmethod
     def example_path(cls, project, dataset, annotated_dataset, example):
         """Return a fully-qualified example string."""
         return google.api_core.path_template.expand(
@@ -154,6 +177,7 @@ class DataLabelingServiceClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -184,6 +208,9 @@ class DataLabelingServiceClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -202,6 +229,15 @@ class DataLabelingServiceClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -210,6 +246,7 @@ class DataLabelingServiceClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=data_labeling_service_grpc_transport.DataLabelingServiceGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -220,7 +257,7 @@ class DataLabelingServiceClient(object):
                 self.transport = transport
         else:
             self.transport = data_labeling_service_grpc_transport.DataLabelingServiceGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -276,8 +313,8 @@ class DataLabelingServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datalabeling_v1beta1.types.Dataset`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -348,8 +385,8 @@ class DataLabelingServiceClient(object):
             name (str): Required. Dataset resource name, format:
                 projects/{project\_id}/datasets/{dataset\_id}
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -437,8 +474,8 @@ class DataLabelingServiceClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -446,10 +483,10 @@ class DataLabelingServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.datalabeling_v1beta1.types.Dataset` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.datalabeling_v1beta1.types.Dataset` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -523,8 +560,8 @@ class DataLabelingServiceClient(object):
             name (str): Required. Dataset resource name, format:
                 projects/{project\_id}/datasets/{dataset\_id}
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -571,6 +608,7 @@ class DataLabelingServiceClient(object):
         self,
         name,
         input_config,
+        user_email_address=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -610,9 +648,11 @@ class DataLabelingServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datalabeling_v1beta1.types.InputConfig`
+            user_email_address (str): Email of the user who started the import task and should be notified by
+                email. If empty no notification will be sent.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -641,7 +681,7 @@ class DataLabelingServiceClient(object):
             )
 
         request = data_labeling_service_pb2.ImportDataRequest(
-            name=name, input_config=input_config
+            name=name, input_config=input_config, user_email_address=user_email_address
         )
         if metadata is None:
             metadata = []
@@ -672,6 +712,7 @@ class DataLabelingServiceClient(object):
         annotated_dataset,
         output_config,
         filter_=None,
+        user_email_address=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -716,9 +757,11 @@ class DataLabelingServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datalabeling_v1beta1.types.OutputConfig`
             filter_ (str): Optional. Filter is not supported at this moment.
+            user_email_address (str): Email of the user who started the export task and should be notified by
+                email. If empty no notification will be sent.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -751,6 +794,7 @@ class DataLabelingServiceClient(object):
             annotated_dataset=annotated_dataset,
             output_config=output_config,
             filter=filter_,
+            user_email_address=user_email_address,
         )
         if metadata is None:
             metadata = []
@@ -799,8 +843,8 @@ class DataLabelingServiceClient(object):
             name (str): Required. The name of the data item to get, format:
                 projects/{project\_id}/datasets/{dataset\_id}/dataItems/{data\_item\_id}
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -890,8 +934,8 @@ class DataLabelingServiceClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -899,10 +943,10 @@ class DataLabelingServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.datalabeling_v1beta1.types.DataItem` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.datalabeling_v1beta1.types.DataItem` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -977,8 +1021,8 @@ class DataLabelingServiceClient(object):
                 projects/{project\_id}/datasets/{dataset\_id}/annotatedDatasets/
                 {annotated\_dataset\_id}
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1067,8 +1111,8 @@ class DataLabelingServiceClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1076,10 +1120,10 @@ class DataLabelingServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.datalabeling_v1beta1.types.AnnotatedDataset` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.datalabeling_v1beta1.types.AnnotatedDataset` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1182,31 +1226,31 @@ class DataLabelingServiceClient(object):
             feature (~google.cloud.datalabeling_v1beta1.types.Feature): Required. The type of image labeling task.
             image_classification_config (Union[dict, ~google.cloud.datalabeling_v1beta1.types.ImageClassificationConfig]): Configuration for image classification task. One of
                 image\_classification\_config, bounding\_poly\_config, polyline\_config
-                and segmentation\_config is required.
+                and segmentation\_config are required.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datalabeling_v1beta1.types.ImageClassificationConfig`
             bounding_poly_config (Union[dict, ~google.cloud.datalabeling_v1beta1.types.BoundingPolyConfig]): Configuration for bounding box and bounding poly task. One of
                 image\_classification\_config, bounding\_poly\_config, polyline\_config
-                and segmentation\_config is required.
+                and segmentation\_config are required.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datalabeling_v1beta1.types.BoundingPolyConfig`
             polyline_config (Union[dict, ~google.cloud.datalabeling_v1beta1.types.PolylineConfig]): Configuration for polyline task. One of image\_classification\_config,
-                bounding\_poly\_config, polyline\_config and segmentation\_config is
+                bounding\_poly\_config, polyline\_config and segmentation\_config are
                 required.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datalabeling_v1beta1.types.PolylineConfig`
             segmentation_config (Union[dict, ~google.cloud.datalabeling_v1beta1.types.SegmentationConfig]): Configuration for segmentation task. One of
                 image\_classification\_config, bounding\_poly\_config, polyline\_config
-                and segmentation\_config is required.
+                and segmentation\_config are required.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datalabeling_v1beta1.types.SegmentationConfig`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1350,8 +1394,8 @@ class DataLabelingServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datalabeling_v1beta1.types.EventConfig`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1481,8 +1525,8 @@ class DataLabelingServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datalabeling_v1beta1.types.TextEntityExtractionConfig`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1547,108 +1591,6 @@ class DataLabelingServiceClient(object):
             metadata_type=proto_operations_pb2.LabelOperationMetadata,
         )
 
-    def label_audio(
-        self,
-        parent,
-        basic_config,
-        feature,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Starts a labeling task for audio. The type of audio labeling task is
-        configured by feature in the request.
-
-        Example:
-            >>> from google.cloud import datalabeling_v1beta1
-            >>> from google.cloud.datalabeling_v1beta1 import enums
-            >>>
-            >>> client = datalabeling_v1beta1.DataLabelingServiceClient()
-            >>>
-            >>> parent = client.dataset_path('[PROJECT]', '[DATASET]')
-            >>>
-            >>> # TODO: Initialize `basic_config`:
-            >>> basic_config = {}
-            >>>
-            >>> # TODO: Initialize `feature`:
-            >>> feature = enums.LabelAudioRequest.Feature.FEATURE_UNSPECIFIED
-            >>>
-            >>> response = client.label_audio(parent, basic_config, feature)
-            >>>
-            >>> def callback(operation_future):
-            ...     # Handle result.
-            ...     result = operation_future.result()
-            >>>
-            >>> response.add_done_callback(callback)
-            >>>
-            >>> # Handle metadata.
-            >>> metadata = response.metadata()
-
-        Args:
-            parent (str): Required. Name of the dataset to request labeling task, format:
-                projects/{project\_id}/datasets/{dataset\_id}
-            basic_config (Union[dict, ~google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig]): Required. Basic human annotation config.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig`
-            feature (~google.cloud.datalabeling_v1beta1.types.Feature): Required. The type of audio labeling task.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.datalabeling_v1beta1.types._OperationFuture` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "label_audio" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "label_audio"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.label_audio,
-                default_retry=self._method_configs["LabelAudio"].retry,
-                default_timeout=self._method_configs["LabelAudio"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = data_labeling_service_pb2.LabelAudioRequest(
-            parent=parent, basic_config=basic_config, feature=feature
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("parent", parent)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        operation = self._inner_api_calls["label_audio"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-        return google.api_core.operation.from_gapic(
-            operation,
-            self.transport._operations_client,
-            dataset_pb2.AnnotatedDataset,
-            metadata_type=proto_operations_pb2.LabelOperationMetadata,
-        )
-
     def get_example(
         self,
         name,
@@ -1677,8 +1619,8 @@ class DataLabelingServiceClient(object):
                 annotation\_spec.display\_name is supported. Format
                 "annotation\_spec.display\_name = {display\_name}"
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1768,8 +1710,8 @@ class DataLabelingServiceClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1777,10 +1719,10 @@ class DataLabelingServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.datalabeling_v1beta1.types.Example` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.datalabeling_v1beta1.types.Example` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1864,8 +1806,8 @@ class DataLabelingServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datalabeling_v1beta1.types.AnnotationSpecSet`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1936,8 +1878,8 @@ class DataLabelingServiceClient(object):
             name (str): Required. AnnotationSpecSet resource name, format:
                 projects/{project\_id}/annotationSpecSets/{annotation\_spec\_set\_id}
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -2026,8 +1968,8 @@ class DataLabelingServiceClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -2035,10 +1977,10 @@ class DataLabelingServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.datalabeling_v1beta1.types.AnnotationSpecSet` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.datalabeling_v1beta1.types.AnnotationSpecSet` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2112,8 +2054,8 @@ class DataLabelingServiceClient(object):
             name (str): Required. AnnotationSpec resource name, format:
                 ``projects/{project_id}/annotationSpecSets/{annotation_spec_set_id}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -2195,8 +2137,8 @@ class DataLabelingServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datalabeling_v1beta1.types.Instruction`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -2273,8 +2215,8 @@ class DataLabelingServiceClient(object):
             name (str): Required. Instruction resource name, format:
                 projects/{project\_id}/instructions/{instruction\_id}
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -2362,8 +2304,8 @@ class DataLabelingServiceClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -2371,10 +2313,10 @@ class DataLabelingServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.datalabeling_v1beta1.types.Instruction` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.datalabeling_v1beta1.types.Instruction` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2448,8 +2390,8 @@ class DataLabelingServiceClient(object):
             name (str): Required. Instruction resource name, format:
                 projects/{project\_id}/instructions/{instruction\_id}
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -2492,6 +2434,845 @@ class DataLabelingServiceClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
+    def get_evaluation(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Gets an evaluation by resource name.
+
+        Example:
+            >>> from google.cloud import datalabeling_v1beta1
+            >>>
+            >>> client = datalabeling_v1beta1.DataLabelingServiceClient()
+            >>>
+            >>> name = client.evaluation_path('[PROJECT]', '[DATASET]', '[EVALUATION]')
+            >>>
+            >>> response = client.get_evaluation(name)
+
+        Args:
+            name (str): Required. Name of the evaluation. Format:
+                'projects/{project\_id}/datasets/{dataset\_id}/evaluations/{evaluation\_id}'
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.datalabeling_v1beta1.types.Evaluation` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "get_evaluation" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "get_evaluation"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_evaluation,
+                default_retry=self._method_configs["GetEvaluation"].retry,
+                default_timeout=self._method_configs["GetEvaluation"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = data_labeling_service_pb2.GetEvaluationRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["get_evaluation"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def search_evaluations(
+        self,
+        parent,
+        filter_,
+        page_size=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Searchs evaluations within a project. Supported filter: evaluation\_job,
+        evaluation\_time.
+
+        Example:
+            >>> from google.cloud import datalabeling_v1beta1
+            >>>
+            >>> client = datalabeling_v1beta1.DataLabelingServiceClient()
+            >>>
+            >>> parent = client.project_path('[PROJECT]')
+            >>>
+            >>> # TODO: Initialize `filter_`:
+            >>> filter_ = ''
+            >>>
+            >>> # Iterate over all results
+            >>> for element in client.search_evaluations(parent, filter_):
+            ...     # process element
+            ...     pass
+            >>>
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
+            >>> for page in client.search_evaluations(parent, filter_).pages:
+            ...     for element in page:
+            ...         # process element
+            ...         pass
+
+        Args:
+            parent (str): Required. Evaluation search parent. Format: projects/{project\_id}
+            filter_ (str): Optional. Support filtering by model id, job state, start and end time.
+                Format: "evaluation\_job.evaluation\_job\_id = {evaluation\_job\_id} AND
+                evaluation\_job.evaluation\_job\_run\_time\_start = {timestamp} AND
+                evaluation\_job.evaluation\_job\_run\_time\_end = {timestamp} AND
+                annotation\_spec.display\_name = {display\_name}"
+            page_size (int): The maximum number of resources contained in the
+                underlying API response. If page streaming is performed per-
+                resource, this parameter does not affect the return value. If page
+                streaming is performed per-page, this determines the maximum number
+                of resources in a page.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.datalabeling_v1beta1.types.Evaluation` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "search_evaluations" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "search_evaluations"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.search_evaluations,
+                default_retry=self._method_configs["SearchEvaluations"].retry,
+                default_timeout=self._method_configs["SearchEvaluations"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = data_labeling_service_pb2.SearchEvaluationsRequest(
+            parent=parent, filter=filter_, page_size=page_size
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        iterator = google.api_core.page_iterator.GRPCIterator(
+            client=None,
+            method=functools.partial(
+                self._inner_api_calls["search_evaluations"],
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            ),
+            request=request,
+            items_field="evaluations",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
+        )
+        return iterator
+
+    def search_example_comparisons(
+        self,
+        parent,
+        page_size=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Searchs example comparisons in evaluation, in format of examples
+        of both ground truth and prediction(s). It is represented as a search with
+        evaluation id.
+
+        Example:
+            >>> from google.cloud import datalabeling_v1beta1
+            >>>
+            >>> client = datalabeling_v1beta1.DataLabelingServiceClient()
+            >>>
+            >>> parent = client.evaluation_path('[PROJECT]', '[DATASET]', '[EVALUATION]')
+            >>>
+            >>> # Iterate over all results
+            >>> for element in client.search_example_comparisons(parent):
+            ...     # process element
+            ...     pass
+            >>>
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
+            >>> for page in client.search_example_comparisons(parent).pages:
+            ...     for element in page:
+            ...         # process element
+            ...         pass
+
+        Args:
+            parent (str): Required. Name of the Evaluation resource to search example comparison
+                from. Format:
+                projects/{project\_id}/datasets/{dataset\_id}/evaluations/{evaluation\_id}
+            page_size (int): The maximum number of resources contained in the
+                underlying API response. If page streaming is performed per-
+                resource, this parameter does not affect the return value. If page
+                streaming is performed per-page, this determines the maximum number
+                of resources in a page.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.datalabeling_v1beta1.types.ExampleComparison` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "search_example_comparisons" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "search_example_comparisons"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.search_example_comparisons,
+                default_retry=self._method_configs["SearchExampleComparisons"].retry,
+                default_timeout=self._method_configs[
+                    "SearchExampleComparisons"
+                ].timeout,
+                client_info=self._client_info,
+            )
+
+        request = data_labeling_service_pb2.SearchExampleComparisonsRequest(
+            parent=parent, page_size=page_size
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        iterator = google.api_core.page_iterator.GRPCIterator(
+            client=None,
+            method=functools.partial(
+                self._inner_api_calls["search_example_comparisons"],
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            ),
+            request=request,
+            items_field="example_comparisons",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
+        )
+        return iterator
+
+    def create_evaluation_job(
+        self,
+        parent,
+        job,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Creates an evaluation job.
+
+        Example:
+            >>> from google.cloud import datalabeling_v1beta1
+            >>>
+            >>> client = datalabeling_v1beta1.DataLabelingServiceClient()
+            >>>
+            >>> parent = client.project_path('[PROJECT]')
+            >>>
+            >>> # TODO: Initialize `job`:
+            >>> job = {}
+            >>>
+            >>> response = client.create_evaluation_job(parent, job)
+
+        Args:
+            parent (str): Required. Evaluation job resource parent, format:
+                projects/{project\_id}.
+            job (Union[dict, ~google.cloud.datalabeling_v1beta1.types.EvaluationJob]): Required. The evaluation job to create.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.datalabeling_v1beta1.types.EvaluationJob`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.datalabeling_v1beta1.types.EvaluationJob` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "create_evaluation_job" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "create_evaluation_job"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.create_evaluation_job,
+                default_retry=self._method_configs["CreateEvaluationJob"].retry,
+                default_timeout=self._method_configs["CreateEvaluationJob"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = data_labeling_service_pb2.CreateEvaluationJobRequest(
+            parent=parent, job=job
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["create_evaluation_job"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def update_evaluation_job(
+        self,
+        evaluation_job,
+        update_mask,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Updates an evaluation job.
+
+        Example:
+            >>> from google.cloud import datalabeling_v1beta1
+            >>>
+            >>> client = datalabeling_v1beta1.DataLabelingServiceClient()
+            >>>
+            >>> # TODO: Initialize `evaluation_job`:
+            >>> evaluation_job = {}
+            >>>
+            >>> # TODO: Initialize `update_mask`:
+            >>> update_mask = {}
+            >>>
+            >>> response = client.update_evaluation_job(evaluation_job, update_mask)
+
+        Args:
+            evaluation_job (Union[dict, ~google.cloud.datalabeling_v1beta1.types.EvaluationJob]): Required. Evaluation job that is going to be updated.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.datalabeling_v1beta1.types.EvaluationJob`
+            update_mask (Union[dict, ~google.cloud.datalabeling_v1beta1.types.FieldMask]): Optional. Mask for which field in evaluation\_job should be updated.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.datalabeling_v1beta1.types.FieldMask`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.datalabeling_v1beta1.types.EvaluationJob` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "update_evaluation_job" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "update_evaluation_job"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.update_evaluation_job,
+                default_retry=self._method_configs["UpdateEvaluationJob"].retry,
+                default_timeout=self._method_configs["UpdateEvaluationJob"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = data_labeling_service_pb2.UpdateEvaluationJobRequest(
+            evaluation_job=evaluation_job, update_mask=update_mask
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("evaluation_job.name", evaluation_job.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["update_evaluation_job"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def get_evaluation_job(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Gets an evaluation job by resource name.
+
+        Example:
+            >>> from google.cloud import datalabeling_v1beta1
+            >>>
+            >>> client = datalabeling_v1beta1.DataLabelingServiceClient()
+            >>>
+            >>> name = client.evaluation_job_path('[PROJECT]', '[EVALUATION_JOB]')
+            >>>
+            >>> response = client.get_evaluation_job(name)
+
+        Args:
+            name (str): Required. Name of the evaluation job. Format:
+                'projects/{project\_id}/evaluationJobs/{evaluation\_job\_id}'
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.datalabeling_v1beta1.types.EvaluationJob` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "get_evaluation_job" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "get_evaluation_job"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_evaluation_job,
+                default_retry=self._method_configs["GetEvaluationJob"].retry,
+                default_timeout=self._method_configs["GetEvaluationJob"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = data_labeling_service_pb2.GetEvaluationJobRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["get_evaluation_job"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def pause_evaluation_job(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Pauses an evaluation job. Pausing a evaluation job that is already in
+        PAUSED state will be a no-op.
+
+        Example:
+            >>> from google.cloud import datalabeling_v1beta1
+            >>>
+            >>> client = datalabeling_v1beta1.DataLabelingServiceClient()
+            >>>
+            >>> name = client.evaluation_job_path('[PROJECT]', '[EVALUATION_JOB]')
+            >>>
+            >>> client.pause_evaluation_job(name)
+
+        Args:
+            name (str): Required. Name of the evaluation job that is going to be paused. Format:
+                'projects/{project\_id}/evaluationJobs/{evaluation\_job\_id}'
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "pause_evaluation_job" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "pause_evaluation_job"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.pause_evaluation_job,
+                default_retry=self._method_configs["PauseEvaluationJob"].retry,
+                default_timeout=self._method_configs["PauseEvaluationJob"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = data_labeling_service_pb2.PauseEvaluationJobRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        self._inner_api_calls["pause_evaluation_job"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def resume_evaluation_job(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Resumes a paused evaluation job. Deleted evaluation job can't be resumed.
+        Resuming a running evaluation job will be a no-op.
+
+        Example:
+            >>> from google.cloud import datalabeling_v1beta1
+            >>>
+            >>> client = datalabeling_v1beta1.DataLabelingServiceClient()
+            >>>
+            >>> name = client.evaluation_job_path('[PROJECT]', '[EVALUATION_JOB]')
+            >>>
+            >>> client.resume_evaluation_job(name)
+
+        Args:
+            name (str): Required. Name of the evaluation job that is going to be resumed.
+                Format: 'projects/{project\_id}/evaluationJobs/{evaluation\_job\_id}'
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "resume_evaluation_job" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "resume_evaluation_job"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.resume_evaluation_job,
+                default_retry=self._method_configs["ResumeEvaluationJob"].retry,
+                default_timeout=self._method_configs["ResumeEvaluationJob"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = data_labeling_service_pb2.ResumeEvaluationJobRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        self._inner_api_calls["resume_evaluation_job"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def delete_evaluation_job(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Stops and deletes an evaluation job.
+
+        Example:
+            >>> from google.cloud import datalabeling_v1beta1
+            >>>
+            >>> client = datalabeling_v1beta1.DataLabelingServiceClient()
+            >>>
+            >>> name = client.evaluation_job_path('[PROJECT]', '[EVALUATION_JOB]')
+            >>>
+            >>> client.delete_evaluation_job(name)
+
+        Args:
+            name (str): Required. Name of the evaluation job that is going to be deleted.
+                Format: 'projects/{project\_id}/evaluationJobs/{evaluation\_job\_id}'
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "delete_evaluation_job" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "delete_evaluation_job"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_evaluation_job,
+                default_retry=self._method_configs["DeleteEvaluationJob"].retry,
+                default_timeout=self._method_configs["DeleteEvaluationJob"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = data_labeling_service_pb2.DeleteEvaluationJobRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        self._inner_api_calls["delete_evaluation_job"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def list_evaluation_jobs(
+        self,
+        parent,
+        filter_,
+        page_size=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Lists all evaluation jobs within a project with possible filters.
+        Pagination is supported.
+
+        Example:
+            >>> from google.cloud import datalabeling_v1beta1
+            >>>
+            >>> client = datalabeling_v1beta1.DataLabelingServiceClient()
+            >>>
+            >>> parent = client.project_path('[PROJECT]')
+            >>>
+            >>> # TODO: Initialize `filter_`:
+            >>> filter_ = ''
+            >>>
+            >>> # Iterate over all results
+            >>> for element in client.list_evaluation_jobs(parent, filter_):
+            ...     # process element
+            ...     pass
+            >>>
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
+            >>> for page in client.list_evaluation_jobs(parent, filter_).pages:
+            ...     for element in page:
+            ...         # process element
+            ...         pass
+
+        Args:
+            parent (str): Required. Evaluation resource parent. Format: "projects/{project\_id}"
+            filter_ (str): Optional. Only support filter by model id and job state. Format:
+                "evaluation\_job.model\_id = {model\_id} AND evaluation\_job.state =
+                {EvaluationJob::State}"
+            page_size (int): The maximum number of resources contained in the
+                underlying API response. If page streaming is performed per-
+                resource, this parameter does not affect the return value. If page
+                streaming is performed per-page, this determines the maximum number
+                of resources in a page.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.datalabeling_v1beta1.types.EvaluationJob` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "list_evaluation_jobs" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "list_evaluation_jobs"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_evaluation_jobs,
+                default_retry=self._method_configs["ListEvaluationJobs"].retry,
+                default_timeout=self._method_configs["ListEvaluationJobs"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = data_labeling_service_pb2.ListEvaluationJobsRequest(
+            parent=parent, filter=filter_, page_size=page_size
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        iterator = google.api_core.page_iterator.GRPCIterator(
+            client=None,
+            method=functools.partial(
+                self._inner_api_calls["list_evaluation_jobs"],
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            ),
+            request=request,
+            items_field="evaluation_jobs",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
+        )
+        return iterator
+
     def delete_annotated_dataset(
         self,
         name=None,
@@ -2514,8 +3295,8 @@ class DataLabelingServiceClient(object):
                 projects/{project\_id}/datasets/{dataset\_id}/annotatedDatasets/
                 {annotated\_dataset\_id}
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.

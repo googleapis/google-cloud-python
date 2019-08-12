@@ -21,6 +21,7 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -52,6 +53,7 @@ from google.cloud.monitoring_v3.proto import notification_service_pb2
 from google.cloud.monitoring_v3.proto import notification_service_pb2_grpc
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
+from google.protobuf import timestamp_pb2
 
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
@@ -124,6 +126,7 @@ class NotificationChannelServiceClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -154,6 +157,9 @@ class NotificationChannelServiceClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -172,6 +178,15 @@ class NotificationChannelServiceClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -180,6 +195,7 @@ class NotificationChannelServiceClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=notification_channel_service_grpc_transport.NotificationChannelServiceGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -190,7 +206,7 @@ class NotificationChannelServiceClient(object):
                 self.transport = transport
         else:
             self.transport = notification_channel_service_grpc_transport.NotificationChannelServiceGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -266,8 +282,8 @@ class NotificationChannelServiceClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -275,10 +291,10 @@ class NotificationChannelServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.monitoring_v3.types.NotificationChannelDescriptor` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.monitoring_v3.types.NotificationChannelDescriptor` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -360,8 +376,8 @@ class NotificationChannelServiceClient(object):
             name (str): The channel type for which to execute the request. The format is
                 ``projects/[PROJECT_ID]/notificationChannelDescriptors/{channel_type}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -473,8 +489,8 @@ class NotificationChannelServiceClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -482,10 +498,10 @@ class NotificationChannelServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.monitoring_v3.types.NotificationChannel` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.monitoring_v3.types.NotificationChannel` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -568,8 +584,8 @@ class NotificationChannelServiceClient(object):
             name (str): The channel for which to execute the request. The format is
                 ``projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID]``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -659,8 +675,8 @@ class NotificationChannelServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.NotificationChannel`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -748,8 +764,8 @@ class NotificationChannelServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -830,8 +846,8 @@ class NotificationChannelServiceClient(object):
                 channel). If false, channels that are still referenced by an existing
                 alerting policy will fail to be deleted in a delete operation.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -878,5 +894,283 @@ class NotificationChannelServiceClient(object):
             metadata.append(routing_metadata)
 
         self._inner_api_calls["delete_notification_channel"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def send_notification_channel_verification_code(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Causes a verification code to be delivered to the channel. The code can
+        then be supplied in ``VerifyNotificationChannel`` to verify the channel.
+
+        Example:
+            >>> from google.cloud import monitoring_v3
+            >>>
+            >>> client = monitoring_v3.NotificationChannelServiceClient()
+            >>>
+            >>> name = client.notification_channel_path('[PROJECT]', '[NOTIFICATION_CHANNEL]')
+            >>>
+            >>> client.send_notification_channel_verification_code(name)
+
+        Args:
+            name (str): The notification channel to which to send a verification code.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if "send_notification_channel_verification_code" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "send_notification_channel_verification_code"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.send_notification_channel_verification_code,
+                default_retry=self._method_configs[
+                    "SendNotificationChannelVerificationCode"
+                ].retry,
+                default_timeout=self._method_configs[
+                    "SendNotificationChannelVerificationCode"
+                ].timeout,
+                client_info=self._client_info,
+            )
+
+        request = notification_service_pb2.SendNotificationChannelVerificationCodeRequest(
+            name=name
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        self._inner_api_calls["send_notification_channel_verification_code"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def get_notification_channel_verification_code(
+        self,
+        name,
+        expire_time=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Requests a verification code for an already verified channel that can then
+        be used in a call to VerifyNotificationChannel() on a different channel
+        with an equivalent identity in the same or in a different project. This
+        makes it possible to copy a channel between projects without requiring
+        manual reverification of the channel. If the channel is not in the
+        verified state, this method will fail (in other words, this may only be
+        used if the SendNotificationChannelVerificationCode and
+        VerifyNotificationChannel paths have already been used to put the given
+        channel into the verified state).
+
+        There is no guarantee that the verification codes returned by this method
+        will be of a similar structure or form as the ones that are delivered
+        to the channel via SendNotificationChannelVerificationCode; while
+        VerifyNotificationChannel() will recognize both the codes delivered via
+        SendNotificationChannelVerificationCode() and returned from
+        GetNotificationChannelVerificationCode(), it is typically the case that
+        the verification codes delivered via
+        SendNotificationChannelVerificationCode() will be shorter and also
+        have a shorter expiration (e.g. codes such as "G-123456") whereas
+        GetVerificationCode() will typically return a much longer, websafe base
+        64 encoded string that has a longer expiration time.
+
+        Example:
+            >>> from google.cloud import monitoring_v3
+            >>>
+            >>> client = monitoring_v3.NotificationChannelServiceClient()
+            >>>
+            >>> name = client.notification_channel_path('[PROJECT]', '[NOTIFICATION_CHANNEL]')
+            >>>
+            >>> response = client.get_notification_channel_verification_code(name)
+
+        Args:
+            name (str): The notification channel for which a verification code is to be generated
+                and retrieved. This must name a channel that is already verified; if
+                the specified channel is not verified, the request will fail.
+            expire_time (Union[dict, ~google.cloud.monitoring_v3.types.Timestamp]): The desired expiration time. If specified, the API will guarantee that
+                the returned code will not be valid after the specified timestamp;
+                however, the API cannot guarantee that the returned code will be
+                valid for at least as long as the requested time (the API puts an upper
+                bound on the amount of time for which a code may be valid). If omitted,
+                a default expiration will be used, which may be less than the max
+                permissible expiration (so specifying an expiration may extend the
+                code's lifetime over omitting an expiration, even though the API does
+                impose an upper limit on the maximum expiration that is permitted).
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.monitoring_v3.types.Timestamp`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.monitoring_v3.types.GetNotificationChannelVerificationCodeResponse` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if "get_notification_channel_verification_code" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "get_notification_channel_verification_code"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_notification_channel_verification_code,
+                default_retry=self._method_configs[
+                    "GetNotificationChannelVerificationCode"
+                ].retry,
+                default_timeout=self._method_configs[
+                    "GetNotificationChannelVerificationCode"
+                ].timeout,
+                client_info=self._client_info,
+            )
+
+        request = notification_service_pb2.GetNotificationChannelVerificationCodeRequest(
+            name=name, expire_time=expire_time
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["get_notification_channel_verification_code"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def verify_notification_channel(
+        self,
+        name,
+        code,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Verifies a ``NotificationChannel`` by proving receipt of the code
+        delivered to the channel as a result of calling
+        ``SendNotificationChannelVerificationCode``.
+
+        Example:
+            >>> from google.cloud import monitoring_v3
+            >>>
+            >>> client = monitoring_v3.NotificationChannelServiceClient()
+            >>>
+            >>> name = client.notification_channel_path('[PROJECT]', '[NOTIFICATION_CHANNEL]')
+            >>>
+            >>> # TODO: Initialize `code`:
+            >>> code = ''
+            >>>
+            >>> response = client.verify_notification_channel(name, code)
+
+        Args:
+            name (str): The notification channel to verify.
+            code (str): The verification code that was delivered to the channel as a result of
+                invoking the ``SendNotificationChannelVerificationCode`` API method or
+                that was retrieved from a verified channel via
+                ``GetNotificationChannelVerificationCode``. For example, one might have
+                "G-123456" or "TKNZGhhd2EyN3I1MnRnMjRv" (in general, one is only
+                guaranteed that the code is valid UTF-8; one should not make any
+                assumptions regarding the structure or format of the code).
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.monitoring_v3.types.NotificationChannel` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if "verify_notification_channel" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "verify_notification_channel"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.verify_notification_channel,
+                default_retry=self._method_configs["VerifyNotificationChannel"].retry,
+                default_timeout=self._method_configs[
+                    "VerifyNotificationChannel"
+                ].timeout,
+                client_info=self._client_info,
+            )
+
+        request = notification_service_pb2.VerifyNotificationChannelRequest(
+            name=name, code=code
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["verify_notification_channel"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )

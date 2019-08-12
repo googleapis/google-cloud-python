@@ -62,19 +62,6 @@ s.replace(
 )
 
 s.replace(
-    [
-        "google/cloud/bigtable_admin_v2/gapic/transports/"
-        "bigtable_table_admin_grpc_transport.py",
-        "google/cloud/bigtable_v2/gapic/transports/bigtable_grpc_transport.py",
-    ],
-    "google.api_core.grpc_helpers.create_channel\(\n"
-    "(\s+)address.*\n\s+credentials.*\n\s+scopes.*\n",
-    "\g<0>\g<1>options={\n\g<1>    'grpc.max_send_message_length': -1,\n"
-    "\g<1>    'grpc.max_receive_message_length': -1,\n"
-    "\g<1>}.items(),\n",
-)
-
-s.replace(
     ["google/cloud/bigtable_admin_v2/__init__.py"],
     "    __doc__ = bigtable_instance_admin_client."
     "BigtableInstanceAdminClient.__doc__\n",

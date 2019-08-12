@@ -21,6 +21,7 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -79,10 +80,29 @@ class MetricsServiceV2Client(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
+    def billing_path(cls, billing_account):
+        """Return a fully-qualified billing string."""
+        return google.api_core.path_template.expand(
+            "billingAccounts/{billing_account}", billing_account=billing_account
+        )
+
+    @classmethod
+    def folder_path(cls, folder):
+        """Return a fully-qualified folder string."""
+        return google.api_core.path_template.expand("folders/{folder}", folder=folder)
+
+    @classmethod
     def metric_path(cls, project, metric):
         """Return a fully-qualified metric string."""
         return google.api_core.path_template.expand(
             "projects/{project}/metrics/{metric}", project=project, metric=metric
+        )
+
+    @classmethod
+    def organization_path(cls, organization):
+        """Return a fully-qualified organization string."""
+        return google.api_core.path_template.expand(
+            "organizations/{organization}", organization=organization
         )
 
     @classmethod
@@ -99,6 +119,7 @@ class MetricsServiceV2Client(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -129,6 +150,9 @@ class MetricsServiceV2Client(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -147,6 +171,15 @@ class MetricsServiceV2Client(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -155,6 +188,7 @@ class MetricsServiceV2Client(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=metrics_service_v2_grpc_transport.MetricsServiceV2GrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -165,7 +199,7 @@ class MetricsServiceV2Client(object):
                 self.transport = transport
         else:
             self.transport = metrics_service_v2_grpc_transport.MetricsServiceV2GrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -235,8 +269,8 @@ class MetricsServiceV2Client(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -244,10 +278,10 @@ class MetricsServiceV2Client(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.logging_v2.types.LogMetric` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.logging_v2.types.LogMetric` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -324,8 +358,8 @@ class MetricsServiceV2Client(object):
 
                      "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -408,8 +442,8 @@ class MetricsServiceV2Client(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.logging_v2.types.LogMetric`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -495,8 +529,8 @@ class MetricsServiceV2Client(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.logging_v2.types.LogMetric`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -570,8 +604,8 @@ class MetricsServiceV2Client(object):
 
                      "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.

@@ -20,6 +20,7 @@ import itertools
 import json
 
 import fastavro
+import pyarrow
 import mock
 import pandas
 import pandas.testing
@@ -43,6 +44,20 @@ BQ_TO_AVRO_TYPES = {
     "datetime": {"type": "string", "sqlType": "DATETIME"},
     "time": {"type": "long", "logicalType": "time-micros"},
     "timestamp": {"type": "long", "logicalType": "timestamp-micros"},
+}
+# This dictionary is duplicated in bigquery/google/cloud/bigquery/_pandas_helpers.py
+# When modifying it be sure to update it there as well.
+BQ_TO_ARROW_TYPES = {
+    "int64": pyarrow.int64(),
+    "float64": pyarrow.float64(),
+    "bool": pyarrow.bool_(),
+    "numeric": pyarrow.decimal128(38, 9),
+    "string": pyarrow.utf8(),
+    "bytes": pyarrow.binary(),
+    "date": pyarrow.date32(),  # int32 days since epoch
+    "datetime": pyarrow.timestamp("us"),
+    "time": pyarrow.time64("us"),
+    "timestamp": pyarrow.timestamp("us", tz="UTC"),
 }
 SCALAR_COLUMNS = [
     {"name": "int_col", "type": "int64"},
@@ -125,10 +140,37 @@ def _bq_to_avro_blocks(bq_blocks, avro_schema_json):
             fastavro.schemaless_writer(blockio, avro_schema, row)
 
         response = bigquery_storage_v1beta1.types.ReadRowsResponse()
-        response.avro_rows.row_count = len(block)
+        response.row_count = len(block)
         response.avro_rows.serialized_binary_rows = blockio.getvalue()
         avro_blocks.append(response)
     return avro_blocks
+
+
+def _bq_to_arrow_batch_objects(bq_blocks, arrow_schema):
+    arrow_batches = []
+    for block in bq_blocks:
+        arrays = []
+        for name in arrow_schema.names:
+            arrays.append(
+                pyarrow.array(
+                    (row[name] for row in block),
+                    type=arrow_schema.field_by_name(name).type,
+                    size=len(block),
+                )
+            )
+        arrow_batches.append(pyarrow.RecordBatch.from_arrays(arrays, arrow_schema))
+    return arrow_batches
+
+
+def _bq_to_arrow_batches(bq_blocks, arrow_schema):
+    arrow_batches = []
+    for record_batch in _bq_to_arrow_batch_objects(bq_blocks, arrow_schema):
+        response = bigquery_storage_v1beta1.types.ReadRowsResponse()
+        response.arrow_record_batch.serialized_record_batch = (
+            record_batch.serialize().to_pybytes()
+        )
+        arrow_batches.append(response)
+    return arrow_batches
 
 
 def _avro_blocks_w_unavailable(avro_blocks):
@@ -143,9 +185,15 @@ def _avro_blocks_w_deadline(avro_blocks):
     raise google.api_core.exceptions.DeadlineExceeded("test: timeout, don't reconnect")
 
 
-def _generate_read_session(avro_schema_json):
+def _generate_avro_read_session(avro_schema_json):
     schema = json.dumps(avro_schema_json)
     return bigquery_storage_v1beta1.types.ReadSession(avro_schema={"schema": schema})
+
+
+def _generate_arrow_read_session(arrow_schema):
+    return bigquery_storage_v1beta1.types.ReadSession(
+        arrow_schema={"serialized_schema": arrow_schema.serialize().to_pybytes()}
+    )
 
 
 def _bq_to_avro_schema(bq_columns):
@@ -166,6 +214,18 @@ def _bq_to_avro_schema(bq_columns):
     return avro_schema
 
 
+def _bq_to_arrow_schema(bq_columns):
+    def bq_col_as_field(column):
+        doc = column.get("description")
+        name = column["name"]
+        type_ = BQ_TO_ARROW_TYPES[column["type"]]
+        mode = column.get("mode", "nullable").lower()
+
+        return pyarrow.field(name, type_, mode == "nullable", {"description": doc})
+
+    return pyarrow.schema(bq_col_as_field(c) for c in bq_columns)
+
+
 def _get_avro_bytes(rows, avro_schema):
     avro_file = six.BytesIO()
     for row in rows:
@@ -173,21 +233,65 @@ def _get_avro_bytes(rows, avro_schema):
     return avro_file.getvalue()
 
 
-def test_rows_raises_import_error(mut, class_under_test, mock_client, monkeypatch):
+def test_avro_rows_raises_import_error(mut, class_under_test, mock_client, monkeypatch):
     monkeypatch.setattr(mut, "fastavro", None)
+    reader = class_under_test(
+        [], mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
+    )
+
+    bq_columns = [{"name": "int_col", "type": "int64"}]
+    avro_schema = _bq_to_avro_schema(bq_columns)
+    read_session = _generate_avro_read_session(avro_schema)
+
+    with pytest.raises(ImportError):
+        reader.rows(read_session)
+
+
+def test_pyarrow_rows_raises_import_error(
+    mut, class_under_test, mock_client, monkeypatch
+):
+    monkeypatch.setattr(mut, "pyarrow", None)
+    reader = class_under_test(
+        [], mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
+    )
+
+    bq_columns = [{"name": "int_col", "type": "int64"}]
+    arrow_schema = _bq_to_arrow_schema(bq_columns)
+    read_session = _generate_arrow_read_session(arrow_schema)
+
+    with pytest.raises(ImportError):
+        reader.rows(read_session)
+
+
+def test_rows_no_schema_set_raises_type_error(
+    mut, class_under_test, mock_client, monkeypatch
+):
     reader = class_under_test(
         [], mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
     )
     read_session = bigquery_storage_v1beta1.types.ReadSession()
 
-    with pytest.raises(ImportError):
+    with pytest.raises(TypeError):
         reader.rows(read_session)
 
 
 def test_rows_w_empty_stream(class_under_test, mock_client):
     bq_columns = [{"name": "int_col", "type": "int64"}]
     avro_schema = _bq_to_avro_schema(bq_columns)
-    read_session = _generate_read_session(avro_schema)
+    read_session = _generate_avro_read_session(avro_schema)
+    reader = class_under_test(
+        [], mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
+    )
+
+    got = reader.rows(read_session)
+    assert got.total_rows is None
+    assert tuple(got) == ()
+
+
+def test_rows_w_empty_stream_arrow(class_under_test, mock_client):
+    bq_columns = [{"name": "int_col", "type": "int64"}]
+    arrow_schema = _bq_to_arrow_schema(bq_columns)
+    read_session = _generate_arrow_read_session(arrow_schema)
     reader = class_under_test(
         [], mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
     )
@@ -199,7 +303,7 @@ def test_rows_w_empty_stream(class_under_test, mock_client):
 
 def test_rows_w_scalars(class_under_test, mock_client):
     avro_schema = _bq_to_avro_schema(SCALAR_COLUMNS)
-    read_session = _generate_read_session(avro_schema)
+    read_session = _generate_avro_read_session(avro_schema)
     avro_blocks = _bq_to_avro_blocks(SCALAR_BLOCKS, avro_schema)
 
     reader = class_under_test(
@@ -211,10 +315,24 @@ def test_rows_w_scalars(class_under_test, mock_client):
     assert got == expected
 
 
+def test_rows_w_scalars_arrow(class_under_test, mock_client):
+    arrow_schema = _bq_to_arrow_schema(SCALAR_COLUMNS)
+    read_session = _generate_arrow_read_session(arrow_schema)
+    arrow_batches = _bq_to_arrow_batches(SCALAR_BLOCKS, arrow_schema)
+
+    reader = class_under_test(
+        arrow_batches, mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
+    )
+    got = tuple(reader.rows(read_session))
+
+    expected = tuple(itertools.chain.from_iterable(SCALAR_BLOCKS))
+    assert got == expected
+
+
 def test_rows_w_timeout(class_under_test, mock_client):
     bq_columns = [{"name": "int_col", "type": "int64"}]
     avro_schema = _bq_to_avro_schema(bq_columns)
-    read_session = _generate_read_session(avro_schema)
+    read_session = _generate_avro_read_session(avro_schema)
     bq_blocks_1 = [
         [{"int_col": 123}, {"int_col": 234}],
         [{"int_col": 345}, {"int_col": 456}],
@@ -248,7 +366,7 @@ def test_rows_w_timeout(class_under_test, mock_client):
 def test_rows_w_reconnect(class_under_test, mock_client):
     bq_columns = [{"name": "int_col", "type": "int64"}]
     avro_schema = _bq_to_avro_schema(bq_columns)
-    read_session = _generate_read_session(avro_schema)
+    read_session = _generate_avro_read_session(avro_schema)
     bq_blocks_1 = [
         [{"int_col": 123}, {"int_col": 234}],
         [{"int_col": 345}, {"int_col": 456}],
@@ -295,7 +413,7 @@ def test_rows_w_reconnect(class_under_test, mock_client):
 def test_rows_w_reconnect_by_page(class_under_test, mock_client):
     bq_columns = [{"name": "int_col", "type": "int64"}]
     avro_schema = _bq_to_avro_schema(bq_columns)
-    read_session = _generate_read_session(avro_schema)
+    read_session = _generate_avro_read_session(avro_schema)
     bq_blocks_1 = [
         [{"int_col": 123}, {"int_col": 234}],
         [{"int_col": 345}, {"int_col": 456}],
@@ -353,12 +471,47 @@ def test_rows_w_reconnect_by_page(class_under_test, mock_client):
     assert page_4.remaining == 0
 
 
+def test_to_arrow_no_pyarrow_raises_import_error(
+    mut, class_under_test, mock_client, monkeypatch
+):
+    monkeypatch.setattr(mut, "pyarrow", None)
+    arrow_schema = _bq_to_arrow_schema(SCALAR_COLUMNS)
+    read_session = _generate_arrow_read_session(arrow_schema)
+    arrow_batches = _bq_to_arrow_batches(SCALAR_BLOCKS, arrow_schema)
+    reader = class_under_test(
+        arrow_batches, mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
+    )
+
+    with pytest.raises(ImportError):
+        reader.to_arrow(read_session)
+
+    with pytest.raises(ImportError):
+        reader.rows(read_session).to_arrow()
+
+    with pytest.raises(ImportError):
+        next(reader.rows(read_session).pages).to_arrow()
+
+
+def test_to_arrow_w_scalars_arrow(class_under_test):
+    arrow_schema = _bq_to_arrow_schema(SCALAR_COLUMNS)
+    read_session = _generate_arrow_read_session(arrow_schema)
+    arrow_batches = _bq_to_arrow_batches(SCALAR_BLOCKS, arrow_schema)
+    reader = class_under_test(
+        arrow_batches, mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
+    )
+    actual_table = reader.to_arrow(read_session)
+    expected_table = pyarrow.Table.from_batches(
+        _bq_to_arrow_batch_objects(SCALAR_BLOCKS, arrow_schema)
+    )
+    assert actual_table == expected_table
+
+
 def test_to_dataframe_no_pandas_raises_import_error(
     mut, class_under_test, mock_client, monkeypatch
 ):
     monkeypatch.setattr(mut, "pandas", None)
     avro_schema = _bq_to_avro_schema(SCALAR_COLUMNS)
-    read_session = _generate_read_session(avro_schema)
+    read_session = _generate_avro_read_session(avro_schema)
     avro_blocks = _bq_to_avro_blocks(SCALAR_BLOCKS, avro_schema)
 
     reader = class_under_test(
@@ -375,22 +528,21 @@ def test_to_dataframe_no_pandas_raises_import_error(
         next(reader.rows(read_session).pages).to_dataframe()
 
 
-def test_to_dataframe_no_fastavro_raises_import_error(
+def test_to_dataframe_no_schema_set_raises_type_error(
     mut, class_under_test, mock_client, monkeypatch
 ):
-    monkeypatch.setattr(mut, "fastavro", None)
     reader = class_under_test(
         [], mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
     )
     read_session = bigquery_storage_v1beta1.types.ReadSession()
 
-    with pytest.raises(ImportError):
+    with pytest.raises(TypeError):
         reader.to_dataframe(read_session)
 
 
 def test_to_dataframe_w_scalars(class_under_test):
     avro_schema = _bq_to_avro_schema(SCALAR_COLUMNS)
-    read_session = _generate_read_session(avro_schema)
+    read_session = _generate_avro_read_session(avro_schema)
     avro_blocks = _bq_to_avro_blocks(SCALAR_BLOCKS, avro_schema)
 
     reader = class_under_test(
@@ -420,6 +572,26 @@ def test_to_dataframe_w_scalars(class_under_test):
     )
 
 
+def test_to_dataframe_w_scalars_arrow(class_under_test):
+    arrow_schema = _bq_to_arrow_schema(SCALAR_COLUMNS)
+    read_session = _generate_arrow_read_session(arrow_schema)
+    arrow_batches = _bq_to_arrow_batches(SCALAR_BLOCKS, arrow_schema)
+
+    reader = class_under_test(
+        arrow_batches, mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
+    )
+    got = reader.to_dataframe(read_session)
+
+    expected = pandas.DataFrame(
+        list(itertools.chain.from_iterable(SCALAR_BLOCKS)), columns=SCALAR_COLUMN_NAMES
+    )
+
+    pandas.testing.assert_frame_equal(
+        got.reset_index(drop=True),  # reset_index to ignore row labels
+        expected.reset_index(drop=True),
+    )
+
+
 def test_to_dataframe_w_dtypes(class_under_test):
     avro_schema = _bq_to_avro_schema(
         [
@@ -427,7 +599,7 @@ def test_to_dataframe_w_dtypes(class_under_test):
             {"name": "lilfloat", "type": "float64"},
         ]
     )
-    read_session = _generate_read_session(avro_schema)
+    read_session = _generate_avro_read_session(avro_schema)
     blocks = [
         [{"bigfloat": 1.25, "lilfloat": 30.5}, {"bigfloat": 2.5, "lilfloat": 21.125}],
         [{"bigfloat": 3.75, "lilfloat": 11.0}],
@@ -452,13 +624,45 @@ def test_to_dataframe_w_dtypes(class_under_test):
     )
 
 
+def test_to_dataframe_w_dtypes_arrow(class_under_test):
+    arrow_schema = _bq_to_arrow_schema(
+        [
+            {"name": "bigfloat", "type": "float64"},
+            {"name": "lilfloat", "type": "float64"},
+        ]
+    )
+    read_session = _generate_arrow_read_session(arrow_schema)
+    blocks = [
+        [{"bigfloat": 1.25, "lilfloat": 30.5}, {"bigfloat": 2.5, "lilfloat": 21.125}],
+        [{"bigfloat": 3.75, "lilfloat": 11.0}],
+    ]
+    arrow_batches = _bq_to_arrow_batches(blocks, arrow_schema)
+
+    reader = class_under_test(
+        arrow_batches, mock_client, bigquery_storage_v1beta1.types.StreamPosition(), {}
+    )
+    got = reader.to_dataframe(read_session, dtypes={"lilfloat": "float16"})
+
+    expected = pandas.DataFrame(
+        {
+            "bigfloat": [1.25, 2.5, 3.75],
+            "lilfloat": pandas.Series([30.5, 21.125, 11.0], dtype="float16"),
+        },
+        columns=["bigfloat", "lilfloat"],
+    )
+    pandas.testing.assert_frame_equal(
+        got.reset_index(drop=True),  # reset_index to ignore row labels
+        expected.reset_index(drop=True),
+    )
+
+
 def test_to_dataframe_by_page(class_under_test, mock_client):
     bq_columns = [
         {"name": "int_col", "type": "int64"},
         {"name": "bool_col", "type": "bool"},
     ]
     avro_schema = _bq_to_avro_schema(bq_columns)
-    read_session = _generate_read_session(avro_schema)
+    read_session = _generate_avro_read_session(avro_schema)
     block_1 = [{"int_col": 123, "bool_col": True}, {"int_col": 234, "bool_col": False}]
     block_2 = [{"int_col": 345, "bool_col": True}, {"int_col": 456, "bool_col": False}]
     block_3 = [{"int_col": 567, "bool_col": True}, {"int_col": 789, "bool_col": False}]

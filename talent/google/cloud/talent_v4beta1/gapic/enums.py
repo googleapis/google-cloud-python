@@ -527,9 +527,9 @@ class BatchOperationMetadata(object):
           successfully processed.
           FAILED (int): The batch operation is done and no item has been successfully processed.
           CANCELLING (int): The batch operation is in the process of cancelling after
-          [google.longrunning.Operation.CancelOperation] is called.
+          ``google.longrunning.Operations.CancelOperation`` is called.
           CANCELLED (int): The batch operation is done after
-          [google.longrunning.Operation.CancelOperation] is called. Any items
+          ``google.longrunning.Operations.CancelOperation`` is called. Any items
           processed before cancelling are returned in the response.
         """
 
@@ -925,8 +925,21 @@ class ProfileEvent(object):
 
         Attributes:
           PROFILE_EVENT_TYPE_UNSPECIFIED (int): Default value.
-          IMPRESSION (int): The profile is displayed.
-          VIEW (int): The profile is viewed.
+          IMPRESSION (int): Send this event when a ``ProfileEvent.profiles`` was sent as a part of a
+          result set for a CTS API call and was rendered in the end user's UI
+          (that is, the ``ProfileEvent.recruiter``).
+          VIEW (int): The VIEW event records the action of a candidate's profile being viewed
+          by an end user. This is critical to tracking product metrics and should
+          be sent for every profile VIEW that happens in your system, whether the
+          event is associated with an API call (for example, a recruiter making a
+          request for a result set and clicking on a profile) or not (a recruiter
+          using the system to view profile details without making a request).
+
+          For a VIEW events associated with API calls, the
+          ``ClientEvent.request_id`` should be populated. If the VIEW is not
+          associated with an API call, ``request_id`` should not be populated.
+
+          This event requires a valid recruiter and one valid ID in profiles.
           BOOKMARK (int): The profile is bookmarked.
         """
 

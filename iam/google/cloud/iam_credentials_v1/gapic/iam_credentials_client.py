@@ -20,6 +20,7 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -96,6 +97,7 @@ class IAMCredentialsClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -126,6 +128,9 @@ class IAMCredentialsClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -144,6 +149,15 @@ class IAMCredentialsClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -152,6 +166,7 @@ class IAMCredentialsClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=iam_credentials_grpc_transport.IamCredentialsGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -162,7 +177,7 @@ class IAMCredentialsClient(object):
                 self.transport = transport
         else:
             self.transport = iam_credentials_grpc_transport.IamCredentialsGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -238,8 +253,8 @@ class IAMCredentialsClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.iam_credentials_v1.types.Duration`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -330,8 +345,8 @@ class IAMCredentialsClient(object):
             include_email (bool): Include the service account email in the token. If set to ``true``, the
                 token will contain ``email`` and ``email_verified`` claims.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -421,8 +436,8 @@ class IAMCredentialsClient(object):
                 The delegates must have the following format:
                 ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -509,8 +524,8 @@ class IAMCredentialsClient(object):
                 The delegates must have the following format:
                 ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -555,130 +570,5 @@ class IAMCredentialsClient(object):
             metadata.append(routing_metadata)
 
         return self._inner_api_calls["sign_jwt"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
-    def generate_identity_binding_access_token(
-        self,
-        name,
-        scope,
-        jwt,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Exchange a JWT signed by third party identity provider to an OAuth 2.0
-        access token
-
-        Example:
-            >>> from google.cloud import iam_credentials_v1
-            >>>
-            >>> client = iam_credentials_v1.IAMCredentialsClient()
-            >>>
-            >>> name = client.service_account_path('[PROJECT]', '[SERVICE_ACCOUNT]')
-            >>>
-            >>> # TODO: Initialize `scope`:
-            >>> scope = []
-            >>>
-            >>> # TODO: Initialize `jwt`:
-            >>> jwt = ''
-            >>>
-            >>> response = client.generate_identity_binding_access_token(name, scope, jwt)
-
-        Args:
-            name (str): The resource name of the service account for which the credentials are
-                requested, in the following format:
-                ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
-            scope (list[str]): Code to identify the scopes to be included in the OAuth 2.0 access token.
-                See https://developers.google.com/identity/protocols/googlescopes for more
-                information.
-                At least one value required.
-            jwt (str): Required. Input token. Must be in JWT format according to RFC7523
-                (https://tools.ietf.org/html/rfc7523) and must have 'kid' field in the
-                header. Supported signing algorithms: RS256 (RS512, ES256, ES512 coming
-                soon). Mandatory payload fields (along the lines of RFC 7523, section
-                3):
-
-                -  iss: issuer of the token. Must provide a discovery document at
-                   $iss/.well-known/openid-configuration . The document needs to be
-                   formatted according to section 4.2 of the OpenID Connect Discovery
-                   1.0 specification.
-                -  iat: Issue time in seconds since epoch. Must be in the past.
-                -  exp: Expiration time in seconds since epoch. Must be less than 48
-                   hours after iat. We recommend to create tokens that last shorter than
-                   6 hours to improve security unless business reasons mandate longer
-                   expiration times. Shorter token lifetimes are generally more secure
-                   since tokens that have been exfiltrated by attackers can be used for
-                   a shorter time. you can configure the maximum lifetime of the
-                   incoming token in the configuration of the mapper. The resulting
-                   Google token will expire within an hour or at "exp", whichever is
-                   earlier.
-                -  sub: JWT subject, identity asserted in the JWT.
-                -  aud: Configured in the mapper policy. By default the service account
-                   email.
-
-                Claims from the incoming token can be transferred into the output token
-                accoding to the mapper configuration. The outgoing claim size is
-                limited. Outgoing claims size must be less than 4kB serialized as JSON
-                without whitespace.
-
-                Example header: { "alg": "RS256", "kid":
-                "92a4265e14ab04d4d228a48d10d4ca31610936f8" } Example payload: { "iss":
-                "https://accounts.google.com", "iat": 1517963104, "exp": 1517966704,
-                "aud": "https://iamcredentials.googleapis.com/", "sub":
-                "113475438248934895348", "my\_claims": { "additional\_claim": "value" }
-                }
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.iam_credentials_v1.types.GenerateIdentityBindingAccessTokenResponse` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "generate_identity_binding_access_token" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "generate_identity_binding_access_token"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.generate_identity_binding_access_token,
-                default_retry=self._method_configs[
-                    "GenerateIdentityBindingAccessToken"
-                ].retry,
-                default_timeout=self._method_configs[
-                    "GenerateIdentityBindingAccessToken"
-                ].timeout,
-                client_info=self._client_info,
-            )
-
-        request = common_pb2.GenerateIdentityBindingAccessTokenRequest(
-            name=name, scope=scope, jwt=jwt
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["generate_identity_binding_access_token"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )

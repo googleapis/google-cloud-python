@@ -13,12 +13,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.texttospeech.v1 TextToSpeech API."""
 
 import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -30,6 +32,7 @@ from google.cloud.texttospeech_v1.gapic import text_to_speech_client_config
 from google.cloud.texttospeech_v1.gapic.transports import text_to_speech_grpc_transport
 from google.cloud.texttospeech_v1.proto import cloud_tts_pb2
 from google.cloud.texttospeech_v1.proto import cloud_tts_pb2_grpc
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     "google-cloud-texttospeech"
@@ -73,6 +76,7 @@ class TextToSpeechClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -103,6 +107,9 @@ class TextToSpeechClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -121,6 +128,15 @@ class TextToSpeechClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -129,6 +145,7 @@ class TextToSpeechClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=text_to_speech_grpc_transport.TextToSpeechGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -139,7 +156,7 @@ class TextToSpeechClient(object):
                 self.transport = transport
         else:
             self.transport = text_to_speech_grpc_transport.TextToSpeechGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -192,8 +209,8 @@ class TextToSpeechClient(object):
                 specifying "zh" will also get supported "cmn-*" voices; specifying
                 "zh-hk" will also get supported "yue-\*" voices.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -269,8 +286,8 @@ class TextToSpeechClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.texttospeech_v1.types.AudioConfig`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
