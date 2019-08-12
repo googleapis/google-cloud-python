@@ -1,7 +1,7 @@
 {% extends '_base.py.j2' %}
 
 {% block content %}
-from typing import Callable, Dict, Sequence, Tuple
+from typing import Callable, Dict
 
 from google.api_core import grpc_helpers   # type: ignore
 {%- if service.has_lro %}
