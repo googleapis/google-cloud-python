@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.automl_v1beta1.gapic.prediction_service_client &#8212; google-cloud 083ee9c documentation</title>
+    <title>google.cloud.automl_v1beta1.gapic.prediction_service_client &#8212; google-cloud bfb4da8 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -279,6 +279,9 @@
 
 <span class="sd">        ``prediction_type``.</span>
 
+<span class="sd">        -  Text Sentiment - TextSnippet, content up 500 characters, UTF-8</span>
+<span class="sd">           encoded.</span>
+
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import automl_v1beta1</span>
 <span class="sd">            &gt;&gt;&gt;</span>
@@ -293,8 +296,7 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): Name of the model requested to serve the prediction.</span>
-<span class="sd">            payload (Union[dict, ~google.cloud.automl_v1beta1.types.ExamplePayload]): Required.</span>
-<span class="sd">                Payload to perform a prediction on. The payload must match the</span>
+<span class="sd">            payload (Union[dict, ~google.cloud.automl_v1beta1.types.ExamplePayload]): Required. Payload to perform a prediction on. The payload must match the</span>
 <span class="sd">                problem type that the model was trained to solve.</span>
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
@@ -307,6 +309,13 @@
 <span class="sd">                   ``score_threshold`` - (float) A value from 0.0 to 1.0. When the model</span>
 <span class="sd">                   makes predictions for an image, it will only produce results that</span>
 <span class="sd">                   have at least this confidence score. The default is 0.5.</span>
+
+<span class="sd">                -  For Image Object Detection: ``score_threshold`` - (float) When Model</span>
+<span class="sd">                   detects objects on the image, it will only produce bounding boxes</span>
+<span class="sd">                   which have at least this confidence score. Value in 0 to 1 range,</span>
+<span class="sd">                   default is 0.5. ``max_bounding_box_count`` - (int64) No more than</span>
+<span class="sd">                   this number of bounding boxes will be returned in the response.</span>
+<span class="sd">                   Default is 100, the requested value may be limited by server.</span>
 
 <span class="sd">                -  For Tables: ``feature_importance`` - (boolean) Whether</span>
 
@@ -383,9 +392,10 @@
 <span class="sd">        done, ``BatchPredictResult`` is returned in the ``response`` field.</span>
 <span class="sd">        Available for following ML problems:</span>
 
+<span class="sd">        -  Image Classification</span>
+<span class="sd">        -  Image Object Detection</span>
 <span class="sd">        -  Video Classification</span>
-<span class="sd">        -  Video Object Tracking</span>
-<span class="sd">        -  Text Extraction</span>
+<span class="sd">        -  Video Object Tracking \* Text Extraction</span>
 <span class="sd">        -  Tables</span>
 
 <span class="sd">        Example:</span>
@@ -425,6 +435,27 @@
 <span class="sd">                message :class:`~google.cloud.automl_v1beta1.types.BatchPredictOutputConfig`</span>
 <span class="sd">            params (dict[str -&gt; str]): Additional domain-specific parameters for the predictions, any string</span>
 <span class="sd">                must be up to 25000 characters long.</span>
+
+<span class="sd">                -  For Text Classification:</span>
+
+<span class="sd">                   ``score_threshold`` - (float) A value from 0.0 to 1.0. When the model</span>
+<span class="sd">                   makes predictions for a text snippet, it will only produce results</span>
+<span class="sd">                   that have at least this confidence score. The default is 0.5.</span>
+
+<span class="sd">                -  For Image Classification:</span>
+
+<span class="sd">                   ``score_threshold`` - (float) A value from 0.0 to 1.0. When the model</span>
+<span class="sd">                   makes predictions for an image, it will only produce results that</span>
+<span class="sd">                   have at least this confidence score. The default is 0.5.</span>
+
+<span class="sd">                -  For Image Object Detection:</span>
+
+<span class="sd">                   ``score_threshold`` - (float) When Model detects objects on the</span>
+<span class="sd">                   image, it will only produce bounding boxes which have at least this</span>
+<span class="sd">                   confidence score. Value in 0 to 1 range, default is 0.5.</span>
+<span class="sd">                   ``max_bounding_box_count`` - (int64) No more than this number of</span>
+<span class="sd">                   bounding boxes will be produced per image. Default is 100, the</span>
+<span class="sd">                   requested value may be limited by server.</span>
 
 <span class="sd">                -  For Video Classification : ``score_threshold`` - (float) A value from</span>
 <span class="sd">                   0.0 to 1.0. When the model makes predictions for a video, it will</span>
