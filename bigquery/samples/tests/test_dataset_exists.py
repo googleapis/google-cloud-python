@@ -16,7 +16,11 @@
 from .. import dataset_exists
 
 
-def test_dataset_exists(capsys, client):
+def test_dataset_exists(capsys, client, random_dataset_id):
 
+    dataset_exists.dataset_exists(client, random_dataset_id)
     out, err = capsys.readouterr()
-    assert 
+    # print(out)
+    # raise ValueError
+    assert "Created dataset {}".format(random_dataset_id) in out
+    assert "Already Exists:" in out

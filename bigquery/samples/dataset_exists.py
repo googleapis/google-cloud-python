@@ -13,17 +13,29 @@
 # limitations under the License.
 
 
-def dataset_exists(client, to_delete):
+def dataset_exists(client, dataset_id):
 
     # [START bigquery_dataset_exists]
-    """Determine if a dataset exists."""
-    DATASET_ID = "get_table_dataset_{}".format(_millis())
-    dataset_ref = client.dataset(DATASET_ID)
-    dataset = bigquery.Dataset(dataset_ref)
-    dataset = client.create_dataset(dataset)
-    to_delete.append(dataset)
+    from google.cloud import bigquery
 
-    assert dataset_exists(client, dataset_ref)
-    assert not dataset_exists(client, client.dataset("i_dont_exist"))
+    # TODO(developer): Construct a BigQuery client object.
+    # client = bigquery.Client()
+
+    # TODO(developer): Set dataset_id to the ID of the dataset to determine its existence.
+    # dataset_id = "{}.your_dataset".format(client.project)
+
+    # Construct a full Dataset object to send to the API.
+    dataset = bigquery.Dataset(dataset_id)
+
+    # TODO(developer): Specify the geographic location where the dataset should reside.
+    dataset.location = "US"
+
+    dataset = client.create_dataset(dataset)
+    print("Created dataset {}.{}".format(client.project, dataset.dataset_id))
+
+    try:
+        dataset = client.create_dataset(dataset)
+    except Exception as exp:
+        print(exp)
 
     # [END bigquery_dataset_exists]

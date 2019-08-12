@@ -136,7 +136,7 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python="3.7")
+@nox.session(python="3.6")
 def lint(session):
     """Run linters.
 

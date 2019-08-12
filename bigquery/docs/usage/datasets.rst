@@ -58,6 +58,15 @@ Create a new dataset with the
    :start-after: [START bigquery_create_dataset]
    :end-before: [END bigquery_create_dataset]
 
+Determine if a dataset exists with the
+:func:`~google.cloud.bigquery.client.Client.create_dataset` method:
+
+.. literalinclude:: ../samples/samples/dataset_exists.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_dataset_exists]
+   :end-before: [END bigquery_dataset_exists]
+
 Updating a Dataset
 ^^^^^^^^^^^^^^^^^^
 
@@ -120,12 +129,3 @@ Delete a dataset with the
    :dedent: 4
    :start-after: [START bigquery_delete_dataset]
    :end-before: [END bigquery_delete_dataset]
-
-[-REPLACE_COMMENT-]
-:func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
-
-.. literalinclude:: ../samples/samples/dataset_exists.py
-   :language: python
-   :dedent: 4
-   :start-after: [START bigquery_dataset_exists]
-   :end-before: [END bigquery_dataset_exists]

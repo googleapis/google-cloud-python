@@ -22,6 +22,6 @@ def test_browse_table_data(capsys, client, table_w_data):
     out, err = capsys.readouterr()
     assert "The amount of rows in the table = " in out
     assert "First 10 rows of the table are loaded" in out
-    assert "Fields number set to 2"
-    assert "List of non-blank lines:"
-    assert "Printed data contains 11 rows"
+    assert "Fields number set to 2" in out
+    assert "List of non-blank lines:" in out
+    assert "Printed data contains 11 rows" in out
