@@ -132,6 +132,37 @@ def col_partition_table_ref(project_id, dataset):
 
 
 @pytest.fixture
+def ingest_partition_table_ref(project_id, dataset):
+    from google.cloud import bigquery
+
+    bq_client = bigquery.Client()
+
+    schema = [
+        bigquery.SchemaField("shape", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("altitude", "INT64", mode="REQUIRED"),
+    ]
+    time_partitioning = bigquery.table.TimePartitioning(
+        type_=bigquery.table.TimePartitioningType.DAY,
+        field=None,  # use _PARTITIONTIME pseudo column
+    )
+    bq_table = bigquery.table.Table(
+        table_ref="{}.{}.ufo_sightings".format(project_id, dataset.dataset_id),
+        schema=schema,
+    )
+    bq_table.time_partitioning = time_partitioning
+
+    created_table = bq_client.create_table(bq_table)
+
+    table_ref = bigquery_storage_v1beta1.types.TableReference()
+    table_ref.project_id = created_table.project
+    table_ref.dataset_id = created_table.dataset_id
+    table_ref.table_id = created_table.table_id
+    yield table_ref
+
+    bq_client.delete_table(created_table)
+
+
+@pytest.fixture
 def all_types_table_ref(project_id, dataset):
     from google.cloud import bigquery
 

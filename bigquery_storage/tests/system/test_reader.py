@@ -30,7 +30,7 @@ from google.cloud import bigquery_storage_v1beta1
 from google.protobuf import timestamp_pb2
 
 
-def _add_rows(table_ref, new_data):
+def _add_rows(table_ref, new_data, partition_suffix=""):
     """Insert additional rows into an existing table.
 
     Args:
@@ -54,7 +54,7 @@ def _add_rows(table_ref, new_data):
         {
             "projectId": table_ref.project_id,
             "datasetId": table_ref.dataset_id,
-            "tableId": table_ref.table_id,
+            "tableId": table_ref.table_id + partition_suffix,
         }
     )
     job = bq_client.load_table_from_file(
@@ -259,6 +259,55 @@ def test_column_partitioned_table(client, project_id, col_partition_table_ref):
     for row in rows:
         assert row["occurred"] == dt.date(2018, 2, 15)
         assert row["description"] in expected_descriptions
+
+
+@pytest.mark.parametrize(
+    "data_format",
+    (
+        (bigquery_storage_v1beta1.enums.DataFormat.AVRO),
+        (bigquery_storage_v1beta1.enums.DataFormat.ARROW),
+    ),
+)
+def test_ingestion_time_partitioned_table(
+    client, project_id, ingest_partition_table_ref, data_format
+):
+    data = [{"shape": "cigar", "altitude": 1200}, {"shape": "disc", "altitude": 750}]
+    _add_rows(ingest_partition_table_ref, data, partition_suffix="$20190809")
+
+    data = [
+        {"shape": "sphere", "altitude": 3500},
+        {"shape": "doughnut", "altitude": 100},
+    ]
+    _add_rows(ingest_partition_table_ref, data, partition_suffix="$20190810")
+
+    data = [
+        {"shape": "elephant", "altitude": 1},
+        {"shape": "rocket", "altitude": 12700},
+    ]
+    _add_rows(ingest_partition_table_ref, data, partition_suffix="$20190811")
+
+    read_options = bigquery_storage_v1beta1.types.TableReadOptions()
+    read_options.row_restriction = "DATE(_PARTITIONTIME) = '2019-08-10'"
+
+    session = client.create_read_session(
+        ingest_partition_table_ref,
+        "projects/{}".format(project_id),
+        format_=data_format,
+        requested_streams=1,
+        read_options=read_options,
+    )
+
+    assert session.streams  # there should be some data to fetch
+
+    stream_pos = bigquery_storage_v1beta1.types.StreamPosition(
+        stream=session.streams[0]
+    )
+    rows = list(client.read_rows(stream_pos).rows(session))
+    assert len(rows) == 2
+
+    actual_items = {(row["shape"], row["altitude"]) for row in rows}
+    expected_items = {("sphere", 3500), ("doughnut", 100)}
+    assert actual_items == expected_items
 
 
 @pytest.mark.parametrize(
