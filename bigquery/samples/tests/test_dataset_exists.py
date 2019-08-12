@@ -13,14 +13,16 @@
 # limitations under the License.
 
 
+from google.cloud import bigquery
 from .. import dataset_exists
 
 
 def test_dataset_exists(capsys, client, random_dataset_id):
 
     dataset_exists.dataset_exists(client, random_dataset_id)
+    dataset = bigquery.Dataset(random_dataset_id)
+    dataset = client.create_dataset(dataset)
+    dataset_exists.dataset_exists(client, random_dataset_id)
     out, err = capsys.readouterr()
-    # print(out)
-    # raise ValueError
-    assert "Created dataset {}".format(random_dataset_id) in out
-    assert "Already Exists:" in out
+    assert "Dataset {} not found".format(random_dataset_id) in out
+    assert "Dataset {} already exists".format(random_dataset_id) in out

@@ -59,7 +59,7 @@ Create a new dataset with the
    :end-before: [END bigquery_create_dataset]
 
 Determine if a dataset exists with the
-:func:`~google.cloud.bigquery.client.Client.create_dataset` method:
+:func:`~google.cloud.bigquery.client.Client.get_dataset` method:
 
 .. literalinclude:: ../samples/samples/dataset_exists.py
    :language: python
