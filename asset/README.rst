@@ -19,7 +19,7 @@ Python Client for Cloud Asset API
 .. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dasset
    :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dasset
 .. _Cloud Asset API: https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/reference/rest/
-.. _Client Library Documentation: https://googleapis.dev/python/asset/latest
+.. _Client Library Documentation: https://googleapis.dev/python/cloudasset/latest
 .. _Product Documentation:  https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/overview
 
 Quick Start
