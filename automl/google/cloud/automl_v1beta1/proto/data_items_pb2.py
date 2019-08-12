@@ -491,10 +491,12 @@ TextSnippet = _reflection.GeneratedProtocolMessageType(
           Required. The content of the text snippet as a string. Up to
           250000 characters long.
       mime_type:
-          The format of the source text. Currently the only two allowed
-          values are "text/html" and "text/plain". If left blank the
-          format is automatically determined from the type of the
-          uploaded content.
+          Optional. The format of
+          [content][google.cloud.automl.v1beta1.TextSnippet.content].
+          Currently the only two allowed values are "text/html" and
+          "text/plain". If left blank, the format is automatically
+          determined from the type of the uploaded
+          [content][google.cloud.automl.v1beta1.TextSnippet.content].
       content_uri:
           Output only. HTTP URI where you can download the content.
   """,
@@ -532,19 +534,19 @@ Row = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       column_spec_ids:
-          Input Only. The resource IDs of the column specs describing
-          the columns of the row. If set must contain, but possibly in a
-          different order, all input feature  [column\_spec\_ids][google
-          .cloud.automl.v1beta1.TablesModelMetadata.input\_feature\_colu
-          mn\_specs] of the Model this row is being passed to. Note: The
-          below ``values`` field must match order of this field, if this
-          field is set.
+          The resource IDs of the column specs describing the columns of
+          the row. If set must contain, but possibly in a different
+          order, all input feature  [column\_spec\_ids][google.cloud.aut
+          oml.v1beta1.TablesModelMetadata.input\_feature\_column\_specs]
+          of the Model this row is being passed to. Note: The below
+          ``values`` field must match order of this field, if this field
+          is set.
       values:
-          Input Only. The values of the row cells, given in the same
-          order as the column\_spec\_ids, or, if not set, then in the
-          same order as input feature  [column\_specs][google.cloud.auto
-          ml.v1beta1.TablesModelMetadata.input\_feature\_column\_specs]
-          of the Model this row is being passed to.
+          Required. The values of the row cells, given in the same order
+          as the column\_spec\_ids, or, if not set, then in the same
+          order as input feature  [column\_specs][google.cloud.automl.v1
+          beta1.TablesModelMetadata.input\_feature\_column\_specs] of
+          the Model this row is being passed to.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.Row)
     ),
