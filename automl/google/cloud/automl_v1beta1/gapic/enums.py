@@ -52,13 +52,6 @@ class TypeCode(enum.IntEnum):
     """
     ``TypeCode`` is used as a part of ``DataType``.
 
-    Each legal value of a DataType can be encoded to or decoded from a JSON
-    value, using the encodings listed below, and definitions of which can be
-    found at
-
-    https: //developers.google.com/protocol-buffers //
-    /docs/reference/google.protobuf#value.
-
     Attributes:
       TYPE_CODE_UNSPECIFIED (int): Not specified. Should not be used.
       FLOAT64 (int): Encoded as ``number``, or the strings ``"NaN"``, ``"Infinity"``, or
