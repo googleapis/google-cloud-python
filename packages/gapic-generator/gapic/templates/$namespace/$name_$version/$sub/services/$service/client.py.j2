@@ -117,7 +117,7 @@ class {{ service.name }}(metaclass={{ service.name }}Meta):
 
         Returns:
             {{ method.client_output.ident.sphinx }}:
-                {{ method.client_output.meta.doc|wrap(width=72, indent=16) }}
+                {{ method.client_output.meta.doc|rst(width=72, indent=16) }}
         {%- endif %}
         """
         {% if method.flattened_fields -%}
