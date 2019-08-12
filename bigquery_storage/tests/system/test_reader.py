@@ -377,3 +377,49 @@ def test_decoding_data_types(client, project_id, all_types_table_ref, data_forma
     # TODO: when fixed, change assertion to assert a datetime instance!
     expected_pattern = re.compile(r"2005-10-26( |T)19:49:41")
     assert expected_pattern.match(str(rows[0]["datetime_field"]))
+
+
+@pytest.mark.parametrize(
+    "data_format",
+    (
+        (bigquery_storage_v1beta1.enums.DataFormat.AVRO),
+        (bigquery_storage_v1beta1.enums.DataFormat.ARROW),
+    ),
+)
+def test_resuming_read_from_offset(client, project_id, data_format):
+    shakespeare_ref = bigquery_storage_v1beta1.types.TableReference()
+    shakespeare_ref.project_id = project_id
+    shakespeare_ref.dataset_id = "public_samples_copy"
+    shakespeare_ref.table_id = "shakespeare"
+
+    read_session = client.create_read_session(
+        shakespeare_ref,
+        "projects/{}".format(project_id),
+        format_=data_format,
+        requested_streams=1,
+    )
+
+    assert read_session.streams  # there should be data available
+
+    stream_pos = bigquery_storage_v1beta1.types.StreamPosition(
+        stream=read_session.streams[0], offset=0
+    )
+    read_rows_stream = client.read_rows(stream_pos)
+
+    # fetch the first two batches of rows
+    rows_iter = iter(read_rows_stream)
+    some_rows = next(rows_iter)
+    more_rows = next(rows_iter)
+
+    # fetch the rest of the rows using the stream offset
+    new_stream_pos = bigquery_storage_v1beta1.types.StreamPosition(
+        stream=read_session.streams[0], offset=some_rows.row_count + more_rows.row_count
+    )
+    remaining_rows_count = sum(
+        1 for _ in client.read_rows(new_stream_pos).rows(read_session)
+    )
+
+    # verify that the counts match
+    expected_len = 164656  # total rows in shakespeare table
+    actual_len = remaining_rows_count + some_rows.row_count + more_rows.row_count
+    assert actual_len == expected_len
