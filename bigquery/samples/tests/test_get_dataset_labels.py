@@ -13,10 +13,11 @@
 # limitations under the License.
 
 
-from .. import manage_dataset_labels
+from .. import get_dataset_labels
 
 
-def test_manage_dataset_labels(capsys, client):
+def test_get_dataset_labels(capsys, client, dataset_id, dataset_label):
 
+    get_dataset_labels.get_dataset_labels(client, dataset_id)
     out, err = capsys.readouterr()
-    assert 
+    assert "color: green" in out

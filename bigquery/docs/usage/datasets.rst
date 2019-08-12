@@ -79,6 +79,36 @@ Modify user permissions on a dataset with the
    :start-after: [START bigquery_update_dataset_access]
    :end-before: [END bigquery_update_dataset_access]
 
+Manage Dataset labels
+^^^^^^^^^^^^^^^^^^^^^
+
+Add labels to a dataset with the
+:func:`~google.cloud.bigquery.client.Client.update_dataset` method:
+
+.. literalinclude:: ../samples/samples/label_dataset.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_label_dataset]
+   :end-before: [END bigquery_label_dataset]
+
+Get dataset's labels with the
+:func:`~google.cloud.bigquery.client.Client.get_dataset` method:
+
+.. literalinclude:: ../samples/samples/get_dataset_labels.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_get_dataset_labels]
+   :end-before: [END bigquery_get_dataset_labels]
+   
+Delete dataset's labels with the
+:func:`~google.cloud.bigquery.client.Client.update_dataset` method:
+
+.. literalinclude:: ../samples/samples/delete_dataset_labels.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_delete_label_dataset]
+   :end-before: [END bigquery_delete_label_dataset]
+
 Deleting a Dataset
 ^^^^^^^^^^^^^^^^^^
 
@@ -99,12 +129,3 @@ Delete a dataset with the
    :dedent: 4
    :start-after: [START bigquery_dataset_exists]
    :end-before: [END bigquery_dataset_exists]
-
-[-REPLACE_COMMENT-]
-:func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
-
-.. literalinclude:: ../samples/samples/manage_dataset_labels.py
-   :language: python
-   :dedent: 4
-   :start-after: [START bigquery_delete_label_dataset]
-   :end-before: [END bigquery_delete_label_dataset]
