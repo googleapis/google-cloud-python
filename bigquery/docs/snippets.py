@@ -23,11 +23,11 @@ a ``to_delete`` list;  the function adds to the list any objects created which
 need to be deleted during teardown.
 """
 
-# import os
+import os
 import time
 
 import pytest
-# import six
+import six
 
 try:
     import fastparquet
@@ -42,7 +42,7 @@ try:
 except (ImportError, AttributeError):
     pyarrow = None
 
-# from google.api_core import datetime_helpers
+from google.api_core import datetime_helpers
 from google.api_core.exceptions import InternalServerError
 from google.api_core.exceptions import ServiceUnavailable
 from google.api_core.exceptions import TooManyRequests
