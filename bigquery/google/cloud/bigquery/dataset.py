@@ -27,12 +27,7 @@ from google.cloud.bigquery.routine import RoutineReference
 from google.cloud.bigquery.table import TableReference
 
 
-_PROJECT_PREFIX_PATTERN = re.compile(
-    r"""
-    (?P<prefix>\S+\:\S+)\.+(?P<remaining>\S*)
-""",
-    re.VERBOSE,
-)
+_PROJECT_PREFIX_PATTERN = re.compile(r"(?P<project_id>\S+\:\S+)\.+(?P<dataset_id>\S+)$")
 
 
 def _get_table_reference(self, table_id):
@@ -303,9 +298,9 @@ class DatasetReference(object):
         if with_prefix is None:
             parts = dataset_id.split(".")
         else:
-            prefix = with_prefix.group("prefix")
-            remaining = with_prefix.group("remaining")
-            parts = [prefix, remaining]
+            project_id = with_prefix.group("project_id")
+            dataset_id = with_prefix.group("dataset_id")
+            parts = [project_id, dataset_id]
 
         if len(parts) == 1 and not default_project:
             raise ValueError(
