@@ -59,6 +59,8 @@ class PredictionServiceServicer(object):
     up to 5MB. Not available for FORECASTING
 
     [prediction_type][google.cloud.automl.v1beta1.TablesModelMetadata.prediction_type].
+    * Text Sentiment - TextSnippet, content up 500 characters, UTF-8
+    encoded.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -72,9 +74,10 @@ class PredictionServiceServicer(object):
     method. Once the operation is done, [BatchPredictResult][google.cloud.automl.v1beta1.BatchPredictResult] is returned in
     the [response][google.longrunning.Operation.response] field.
     Available for following ML problems:
+    * Image Classification
+    * Image Object Detection
     * Video Classification
-    * Video Object Tracking
-    * Text Extraction
+    * Video Object Tracking * Text Extraction
     * Tables
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
