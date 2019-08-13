@@ -24,5 +24,5 @@ def test_dataset_exists(capsys, client, random_dataset_id):
     dataset = client.create_dataset(dataset)
     dataset_exists.dataset_exists(client, random_dataset_id)
     out, err = capsys.readouterr()
-    assert "Dataset {} not found".format(random_dataset_id) in out
+    assert "Dataset {} is not found".format(random_dataset_id) in out
     assert "Dataset {} already exists".format(random_dataset_id) in out
