@@ -29,7 +29,5 @@ def test_table_exists(capsys, client, random_table_id):
     table = client.create_table(table)
     table_exists.table_exists(client, random_table_id)
     out, err = capsys.readouterr()
-    # print(out)
-    # raise ValueError
     assert "Table {} is not found".format(random_table_id) in out
     assert "Table {} already exists".format(random_table_id) in out
