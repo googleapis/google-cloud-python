@@ -28,7 +28,7 @@ List datasets for a project with the
 List datasets by label for a project with the
 :func:`~google.cloud.bigquery.client.Client.list_datasets` method:
 
-.. literalinclude:: ../samples/samples/list_datasets_by_label.py
+.. literalinclude:: ../samples/list_datasets_by_label.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_list_datasets_by_label]
