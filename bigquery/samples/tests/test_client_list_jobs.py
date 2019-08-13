@@ -14,9 +14,13 @@
 
 
 from .. import client_list_jobs
+from .. import create_job
 
 
 def test_client_list_jobs(capsys, client):
 
+    job = create_job.create_job(client)
+    client_list_jobs.client_list_jobs(client)
+    client.cancel_job(job.job_id, location="US")
     out, err = capsys.readouterr()
-    assert 
+    assert "1 - {}".format(job.job_id) in out

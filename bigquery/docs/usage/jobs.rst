@@ -1,9 +1,6 @@
 Managing Jobs
 ~~~~~~~~~~~~~
 
-List jobs for a project
-^^^^^^^^^^^^^^^^^^^^^^^
-
 Jobs describe actions performed on data in BigQuery tables:
 
 - Load data into a table
@@ -11,7 +8,13 @@ Jobs describe actions performed on data in BigQuery tables:
 - Extract data from a table
 - Copy a table
 
-.. literalinclude:: ../snippets.py
+Listing jobs
+^^^^^^^^^^^^
+
+List jobs for a project with the
+:func:`~google.cloud.bigquery.client.Client.list_jobs` method:
+
+.. literalinclude:: ../samples/client_list_jobs.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_list_jobs]
