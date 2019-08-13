@@ -17,7 +17,7 @@
 from google.cloud.bigquery_v2 import types
 
 
-STRUCT_TYPES = ("RECORD", "STRUCT")
+_STRUCT_TYPES = ("RECORD", "STRUCT")
 
 # SQL types reference:
 # https://cloud.google.com/bigquery/data-types#legacy_sql_data_types
@@ -152,7 +152,7 @@ class SchemaField(object):
 
         # If this is a RECORD type, then sub-fields are also included,
         # add this to the serialized representation.
-        if self.field_type.upper() in STRUCT_TYPES:
+        if self.field_type.upper() in _STRUCT_TYPES:
             answer["fields"] = [f.to_api_repr() for f in self.fields]
 
         # Done; return the serialized dictionary.
