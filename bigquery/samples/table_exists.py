@@ -13,22 +13,18 @@
 # limitations under the License.
 
 
-def table_exists(client, to_delete):
+def table_exists(client, table_id):
 
     # [START bigquery_table_exists]
-    """Determine if a table exists."""
+    from google.cloud.exceptions import NotFound
 
-    DATASET_ID = "get_table_dataset_{}".format(_millis())
-    TABLE_ID = "get_table_table_{}".format(_millis())
-    dataset = bigquery.Dataset(client.dataset(DATASET_ID))
-    dataset = client.create_dataset(dataset)
-    to_delete.append(dataset)
+    # TODO(developer): Set table_id to the ID of the table to determine existence.
+    # table_id = 'your-project.your_dataset.your_table'
 
-    table_ref = dataset.table(TABLE_ID)
-    table = bigquery.Table(table_ref, schema=SCHEMA)
-    table = client.create_table(table)
-
-    assert table_exists(client, table_ref)
-    assert not table_exists(client, dataset.table("i_dont_exist"))
+    try:
+        client.get_table(table_id)
+        print("Table {} already exists".format(table_id))
+    except NotFound:
+        print("Table {} is not found".format(table_id))
 
     # [END bigquery_table_exists]

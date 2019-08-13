@@ -28,6 +28,15 @@ Get a table resource with the
    :start-after: [START bigquery_get_table]
    :end-before: [END bigquery_get_table]
 
+Determine if a table exists with the
+:func:`~google.cloud.bigquery.client.Client.get_table` method:
+
+.. literalinclude:: ../samples/samples/table_exists.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_table_exists]
+   :end-before: [END bigquery_table_exists]
+
 Browse data rows in a table with the
 :func:`~google.cloud.bigquery.client.Client.list_rows` method:
 
@@ -541,15 +550,6 @@ Delete a table with the
    :dedent: 4
    :start-after: [START bigquery_query_results_dataframe]
    :end-before: [END bigquery_query_results_dataframe]
-
-[-REPLACE_COMMENT-]
-:func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
-
-.. literalinclude:: ../samples/samples/table_exists.py
-   :language: python
-   :dedent: 4
-   :start-after: [START bigquery_table_exists]
-   :end-before: [END bigquery_table_exists]
 
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
