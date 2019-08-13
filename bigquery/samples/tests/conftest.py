@@ -66,6 +66,15 @@ def dataset_id(client):
 
 
 @pytest.fixture
+def dataset_label(client, dataset_id):
+    dataset = client.get_dataset(dataset_id)
+    dataset.labels = {"color": "green"}
+    dataset = client.update_dataset(dataset, ["labels"])
+    yield "{}.{}".format(dataset.project, dataset.dataset_id)
+    client.delete_dataset(dataset, delete_contents=True, not_found_ok=True)
+
+
+@pytest.fixture
 def table_id(client, dataset_id):
     now = datetime.datetime.now()
     table_id = "python_samples_{}_{}".format(
@@ -76,6 +85,13 @@ def table_id(client, dataset_id):
     table = client.create_table(table)
     yield "{}.{}.{}".format(table.project, table.dataset_id, table.table_id)
     client.delete_table(table, not_found_ok=True)
+
+
+@pytest.fixture
+def table_w_data(client):
+    dataset = client.get_dataset("bigquery-public-data.samples")
+    table = dataset.table("shakespeare")
+    return table
 
 
 @pytest.fixture
