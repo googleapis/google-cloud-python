@@ -13,35 +13,39 @@
 # limitations under the License.
 
 
-def copy_table(client, to_delete):
+def copy_table(client, dataset_id, table_id):
 
     # [START bigquery_copy_table]
-    dataset_id = "copy_table_dataset_{}".format(_millis())
-    dest_dataset = bigquery.Dataset(client.dataset(dataset_id))
-    dest_dataset.location = "US"
-    dest_dataset = client.create_dataset(dest_dataset)
-    to_delete.append(dest_dataset)
+    from google.cloud import bigquery
 
-    # from google.cloud import bigquery
+    # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()
 
-    source_dataset = client.dataset("samples", project="bigquery-public-data")
-    source_table_ref = source_dataset.table("shakespeare")
+    # TODO(developer): Set dataset_id to the ID of the dataset where to copy a table.
+    # dataset_id = 'your-project.your_dataset'
 
-    # dataset_id = 'my_dataset'
-    dest_table_ref = client.dataset(dataset_id).table("destination_table")
+    # TODO(developer): Set table_id to the ID of the original table
+    # table_id = "your-project.your_dataset.your_table_name"
+
+    dataset = client.get_dataset(dataset_id)
+
+    orig_table = client.get_table(table_id)
+
+    dest_table = dataset.table("destination_table")
 
     job = client.copy_table(
-        source_table_ref,
-        dest_table_ref,
+        orig_table,
+        dest_table,
         # Location must match that of the source and destination tables.
         location="US",
-    )  # API request
+    )
 
     job.result()  # Waits for job to complete.
 
-    assert job.state == "DONE"
-    dest_table = client.get_table(dest_table_ref)  # API request
-    assert dest_table.num_rows > 0
+    if job.state == "DONE":
+        print("Process complete")
+    dest_table = client.get_table(dest_table)
+    if dest_table.num_rows == orig_table.num_rows:
+        print("Copy of the table created")
 
     # [END bigquery_copy_table]
