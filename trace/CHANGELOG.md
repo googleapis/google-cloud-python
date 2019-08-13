@@ -14,8 +14,6 @@
 ### Documentation
 - Fix links to googleapis.dev ([#8998](https://github.com/googleapis/google-cloud-python/pull/8998))
 - Fix pip / usage examples in README.rst. ([#8833](https://github.com/googleapis/google-cloud-python/pull/8833))
-
-### Internal / Testing Changes
 - Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
 
 ## 0.22.0
