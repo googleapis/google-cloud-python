@@ -13,8 +13,6 @@
 ### Documentation
 - Normalize docs. ([#8994](https://github.com/googleapis/google-cloud-python/pull/8994))
 - Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
-
-### Internal / Testing Changes
 - Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
 
 ## 0.2.0
