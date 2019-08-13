@@ -46,6 +46,15 @@ Get a dataset resource (to pick up changes made by another client) with the
    :start-after: [START bigquery_get_dataset]
    :end-before: [END bigquery_get_dataset]
 
+Determine if a dataset exists with the
+:func:`~google.cloud.bigquery.client.Client.get_dataset` method:
+
+.. literalinclude:: ../samples/samples/dataset_exists.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_dataset_exists]
+   :end-before: [END bigquery_dataset_exists]
+
 Creating a Dataset
 ^^^^^^^^^^^^^^^^^^
 
@@ -57,15 +66,6 @@ Create a new dataset with the
    :dedent: 4
    :start-after: [START bigquery_create_dataset]
    :end-before: [END bigquery_create_dataset]
-
-Determine if a dataset exists with the
-:func:`~google.cloud.bigquery.client.Client.get_dataset` method:
-
-.. literalinclude:: ../samples/samples/dataset_exists.py
-   :language: python
-   :dedent: 4
-   :start-after: [START bigquery_dataset_exists]
-   :end-before: [END bigquery_dataset_exists]
 
 Updating a Dataset
 ^^^^^^^^^^^^^^^^^^
