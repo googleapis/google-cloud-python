@@ -606,6 +606,18 @@ def test_synctasklet():
     assert result == 11
 
 
+@pytest.mark.usefixtures("in_context")
 def test_toplevel():
-    with pytest.raises(NotImplementedError):
-        tasklets.toplevel()
+    @tasklets.toplevel
+    def generator_function(value):
+        future = tasklets.Future(value)
+        future.set_result(value)
+        x = yield future
+        return x + 3
+
+    idle = mock.Mock(__name__="idle", return_value=None)
+    _eventloop.add_idle(idle)
+
+    result = generator_function(8)
+    assert result == 11
+    idle.assert_called_once_with()

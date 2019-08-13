@@ -559,5 +559,25 @@ def synctasklet(wrapped):
     return synctasklet_wrapper
 
 
-def toplevel(*args, **kwargs):
-    raise NotImplementedError
+def toplevel(wrapped):
+    """A synctasklet decorator that flushes any pending work.
+
+    Use of this decorator is largely unnecessary, as you should be using
+    :meth:`~google.cloud.ndb.client.Client.context` which also flushes pending
+    work when exiting the context.
+
+    Args:
+        wrapped (Callable): The wrapped function."
+    """
+    synctasklet_wrapped = synctasklet(wrapped)
+
+    @functools.wraps(wrapped)
+    def toplevel_wrapper(*args, **kwargs):
+        context = context_module.get_context()
+        try:
+            with context.new().use():
+                return synctasklet_wrapped(*args, **kwargs)
+        finally:
+            _eventloop.run()
+
+    return toplevel_wrapper

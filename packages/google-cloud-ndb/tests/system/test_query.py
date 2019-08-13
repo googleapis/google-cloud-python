@@ -80,13 +80,13 @@ def test_fetch_lots_of_a_kind(dispose_of):
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
 
-    @ndb.tasklet
+    @ndb.toplevel
     def make_entities():
         entities = [SomeKind(foo=i) for i in range(n_entities)]
         keys = yield [entity.put_async() for entity in entities]
         return keys
 
-    for key in make_entities().result():
+    for key in make_entities():
         dispose_of(key._key)
 
     query = SomeKind.query()
@@ -228,7 +228,7 @@ def test_filter_or(dispose_of):
         foo = ndb.IntegerProperty()
         bar = ndb.StringProperty()
 
-    @ndb.tasklet
+    @ndb.toplevel
     def make_entities():
         keys = yield (
             SomeKind(foo=1, bar="a").put_async(),
@@ -238,7 +238,7 @@ def test_filter_or(dispose_of):
         for key in keys:
             dispose_of(key._key)
 
-    make_entities().check_success()
+    make_entities()
     eventually(SomeKind.query().fetch, _length_equals(3))
 
     query = SomeKind.query(ndb.OR(SomeKind.foo == 1, SomeKind.bar == "c"))
@@ -290,7 +290,7 @@ def test_order_by_with_or_filter(dispose_of):
         foo = ndb.IntegerProperty()
         bar = ndb.StringProperty()
 
-    @ndb.tasklet
+    @ndb.toplevel
     def make_entities():
         keys = yield (
             SomeKind(foo=0, bar="a").put_async(),
@@ -301,7 +301,7 @@ def test_order_by_with_or_filter(dispose_of):
         for key in keys:
             dispose_of(key._key)
 
-    make_entities().check_success()
+    make_entities()
     query = SomeKind.query(ndb.OR(SomeKind.bar == "a", SomeKind.bar == "b"))
     query = query.order(SomeKind.foo)
     results = eventually(query.fetch, _length_equals(4))
@@ -353,7 +353,7 @@ def test_offset_and_limit_with_or_filter(dispose_of):
         foo = ndb.IntegerProperty()
         bar = ndb.StringProperty()
 
-    @ndb.tasklet
+    @ndb.toplevel
     def make_entities():
         keys = yield (
             SomeKind(foo=0, bar="a").put_async(),
@@ -366,7 +366,7 @@ def test_offset_and_limit_with_or_filter(dispose_of):
         for key in keys:
             dispose_of(key._key)
 
-    make_entities().check_success()
+    make_entities()
     eventually(SomeKind.query().fetch, _length_equals(6))
 
     query = SomeKind.query(ndb.OR(SomeKind.bar == "a", SomeKind.bar == "b"))
@@ -498,13 +498,13 @@ def test_fetch_page(dispose_of):
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
 
-    @ndb.tasklet
+    @ndb.toplevel
     def make_entities():
         entities = [SomeKind(foo=i) for i in range(n_entities)]
         keys = yield [entity.put_async() for entity in entities]
         return keys
 
-    for key in make_entities().result():
+    for key in make_entities():
         dispose_of(key._key)
 
     query = SomeKind.query().order(SomeKind.foo)
