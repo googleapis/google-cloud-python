@@ -87,47 +87,5 @@ class _CloseOnDelete(object):
         self._wrapped.close()
 
 
-def dataset_exists(client, dataset_reference):
-    """Return if a dataset exists.
-
-    Args:
-        client (google.cloud.bigquery.client.Client):
-            A client to connect to the BigQuery API.
-        dataset_reference (google.cloud.bigquery.dataset.DatasetReference):
-            A reference to the dataset to look for.
-
-    Returns:
-        bool: ``True`` if the dataset exists, ``False`` otherwise.
-    """
-    from google.cloud.exceptions import NotFound
-
-    try:
-        client.get_dataset(dataset_reference)
-        return True
-    except NotFound:
-        return False
-
-
-def table_exists(client, table_reference):
-    """Return if a table exists.
-
-    Args:
-        client (google.cloud.bigquery.client.Client):
-            A client to connect to the BigQuery API.
-        table_reference (google.cloud.bigquery.table.TableReference):
-            A reference to the table to look for.
-
-    Returns:
-        bool: ``True`` if the table exists, ``False`` otherwise.
-    """
-    from google.cloud.exceptions import NotFound
-
-    try:
-        client.get_table(table_reference)
-        return True
-    except NotFound:
-        return False
-
-
 if __name__ == "__main__":
     pytest.main()
