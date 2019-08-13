@@ -301,19 +301,28 @@ class IAMConfiguration(dict):
         uniform_bucket_level_access_enabled=False,
         uniform_bucket_level_access_locked_time=None,
     ):
-        # Which one wins???
+        data = {"bucketPolicyOnly": {}, "uniformBucketLevelAccess": {}}
         if bucket_policy_only_enabled:
-          data = {"bucketPolicyOnly": {"enabled": bucket_policy_only_enabled}}
-        if bucket_policy_only_locked_time:
-            data["bucketPolicyOnly"]["lockedTime"] = _datetime_to_rfc3339(
-                bucket_policy_only_locked_time
-            )
+          data["bucketPolicyOnly"]["enabled"] = bucket_policy_only_enabled
+          data["uniformBucketLevelAccess"]["enabled"] = bucket_policy_only_enabled
+        if bucket_policy_only_locked_time is not None:
+          data["bucketPolicyOnly"]["lockedTime"] = _datetime_to_rfc3339(
+            bucket_policy_only_locked_time
+          )
+          data["uniformBucketLevelAccess"]["lockedTime"] = _datetime_to_rfc3339(
+            bucket_policy_only_locked_time
+          )
+
         if uniform_bucket_level_access_enabled:
-          data = {"uniformBucketLevelAccess": {"enabled": uniform_bucket_level_access_enabled}}
+          data["bucketPolicyOnly"]["enabled"] = uniform_bucket_level_access_enabled
+          data["uniformBucketLevelAccess"]["enabled"] = uniform_bucket_level_access_enabled
         if uniform_bucket_level_access_locked_time is not None:
-            data["uniformBucketLevelAccess"]["lockedTime"] = _datetime_to_rfc3339(
-                uniform_bucket_level_access_locked_time
-            )
+          data["bucketPolicyOnly"]["lockedTime"] = _datetime_to_rfc3339(
+              uniform_bucket_level_access_locked_time
+          )
+          data["uniformBucketLevelAccess"]["lockedTime"] = _datetime_to_rfc3339(
+            uniform_bucket_level_access_locked_time
+          )
 
         super(IAMConfiguration, self).__init__(data)
         self._bucket = bucket
@@ -331,6 +340,7 @@ class IAMConfiguration(dict):
         :rtype: :class:`IAMConfiguration`
         :returns: Instance created from resource.
         """
+
         instance = cls(bucket)
         instance.update(resource)
         return instance
@@ -366,8 +376,8 @@ class IAMConfiguration(dict):
         #### THIS IS A WORKAROUND ####
         bpo = self.setdefault("bucketPolicyOnly", {})
         bpo["enabled"] = bool(value)
-        self.bucket._patch_property("iamConfiguration", self)
         #### THIS IS A WORKAROUND ####
+        self.bucket._patch_property("iamConfiguration", self)
 
     @bucket_policy_only_enabled.setter
     def bucket_policy_only_enabled(self, value):
