@@ -16,9 +16,9 @@
 def client_query(client):
 
     # [START bigquery_query]
-    """Run a simple query."""
+    from google.cloud import bigquery
 
-    # from google.cloud import bigquery
+    # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()
 
     query = (
@@ -34,7 +34,7 @@ def client_query(client):
 
     for row in query_job:  # API request - fetches results
         # Row values can be accessed by field name or index
-        assert row[0] == row.name == row["name"]
-        print(row)
+        if row[0] == row.name == row["name"]:
+            print(row)
 
     # [END bigquery_query]

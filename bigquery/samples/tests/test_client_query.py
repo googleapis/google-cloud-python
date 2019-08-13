@@ -18,5 +18,6 @@ from .. import client_query
 
 def test_client_query(capsys, client):
 
+    client_query.client_query(client)
     out, err = capsys.readouterr()
-    assert 
+    assert "Row" in out
