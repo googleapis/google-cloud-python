@@ -1,10 +1,67 @@
 Authentication
 ==============
 
+Before you begin, you must create a Google Cloud Platform project. Use the
+`BigQuery sandbox <https://cloud.google.com/bigquery/docs/sandbox>`__ to try
+the service for free.
+
 pandas-gbq `authenticates with the Google BigQuery service
-<https://cloud.google.com/bigquery/docs/authentication/>`_ via OAuth 2.0.
+<https://cloud.google.com/bigquery/docs/authentication/>`_ via OAuth 2.0. Use
+the ``credentials`` argument to explicitly pass in Google
+:class:`~google.auth.credentials.Credentials`.
 
 .. _authentication:
+
+Default Authentication Methods
+------------------------------
+
+If the ``credentials`` parameter is not set, pandas-gbq tries the following
+authentication methods:
+
+1. In-memory, cached credentials at ``pandas_gbq.context.credentials``. See
+   :attr:`pandas_gbq.Context.credentials` for details.
+
+   .. code:: python
+
+       import pandas_gbq
+
+       credentials = ...  # From google-auth or pydata-google-auth library.
+
+       # Update the in-memory credentials cache (added in pandas-gbq 0.7.0).
+       pandas_gbq.context.credentials = credentials
+       pandas_gbq.context.project = "your-project-id"
+
+       # The credentials and project_id arguments can be omitted.
+       df = pandas_gbq.read_gbq("SELECT my_col FROM `my_dataset.my_table`")
+
+2. Application Default Credentials via the :func:`google.auth.default`
+   function.
+
+   .. note::
+
+       If pandas-gbq can obtain default credentials but those credentials
+       cannot be used to query BigQuery, pandas-gbq will also try obtaining
+       user account credentials.
+
+       A common problem with default credentials when running on Google
+       Compute Engine is that the VM does not have sufficient scopes to query
+       BigQuery.
+
+3. User account credentials.
+
+   pandas-gbq loads cached credentials from a hidden user folder on the
+   operating system.
+
+   Windows
+       ``%APPDATA%\pandas_gbq\bigquery_credentials.dat``
+
+   Linux/Mac/Unix
+       ``~/.config/pandas_gbq/bigquery_credentials.dat``
+
+   If pandas-gbq does not find cached credentials, it prompts you to open a
+   web browser, where you can grant pandas-gbq permissions to access your
+   cloud resources. These credentials are only used locally. See the
+   :doc:`privacy policy <privacy>` for details.
 
 
 Authenticating with a Service Account
@@ -131,55 +188,3 @@ credentials are not found.
 Additional information on the user credentials authentication mechanism
 can be found in the `Google Cloud authentication guide
 <https://cloud.google.com/docs/authentication/end-user>`__.
-
-
-Default Authentication Methods
-------------------------------
-
-If the ``credentials`` parameter (or the deprecated ``private_key``
-parameter) is ``None``, pandas-gbq tries the following authentication
-methods:
-
-1. In-memory, cached credentials at ``pandas_gbq.context.credentials``. See
-   :attr:`pandas_gbq.Context.credentials` for details.
-
-   .. code:: python
-
-       import pandas_gbq
-
-       credentials = ...  # From google-auth or pydata-google-auth library.
-
-       # Update the in-memory credentials cache (added in pandas-gbq 0.7.0).
-       pandas_gbq.context.credentials = credentials
-       pandas_gbq.context.project = "your-project-id"
-
-       # The credentials and project_id arguments can be omitted.
-       df = pandas_gbq.read_gbq("SELECT my_col FROM `my_dataset.my_table`")
-
-2. Application Default Credentials via the :func:`google.auth.default`
-   function.
-
-   .. note::
-
-       If pandas-gbq can obtain default credentials but those credentials
-       cannot be used to query BigQuery, pandas-gbq will also try obtaining
-       user account credentials.
-
-       A common problem with default credentials when running on Google
-       Compute Engine is that the VM does not have sufficient scopes to query
-       BigQuery.
-
-3. User account credentials.
-
-   pandas-gbq loads cached credentials from a hidden user folder on the
-   operating system.
-
-   Windows
-       ``%APPDATA%\pandas_gbq\bigquery_credentials.dat``
-
-   Linux/Mac/Unix
-       ``~/.config/pandas_gbq/bigquery_credentials.dat``
-
-   If pandas-gbq does not find cached credentials, it opens a browser window
-   asking for you to authenticate to your BigQuery account using the product
-   name ``pandas GBQ``.

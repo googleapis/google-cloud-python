@@ -11,6 +11,12 @@ Changelog
   ``max_results`` to 0 to ignore query outputs, such as for DML or DDL
   queries. (:issue:`102`)
 
+Documentation
+~~~~~~~~~~~~~
+
+- Add code samples to introduction and refactor howto guides. (:issue:`239`)
+
+
 .. _changelog-0.11.0:
 
 0.11.0 / 2019-07-29
@@ -43,6 +49,10 @@ Internal changes
 
 0.10.0 / 2019-04-05
 -------------------
+
+- **Breaking Change:** Default SQL dialect is now ``standard``. Use
+  :attr:`pandas_gbq.context.dialect` to override the default value.
+  (:issue:`195`, :issue:`245`)
 
 Documentation
 ~~~~~~~~~~~~~

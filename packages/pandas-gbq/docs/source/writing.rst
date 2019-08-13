@@ -1,32 +1,19 @@
 .. _writer:
 
-Writing DataFrames
-==================
+Writing Tables
+==============
 
-Assume we want to write a :class:`~pandas.DataFrame` named ``df`` into a
-BigQuery table using :func:`~pandas_gbq.to_gbq`.
+Use the :func:`pandas_gbq.to_gbq` function to write a
+:class:`pandas.DataFrame` object to a BigQuery table.
 
-.. ipython:: python
-
-   import pandas as pd
-   df = pd.DataFrame({'my_string': list('abc'),
-                      'my_int64': list(range(1, 4)),
-                      'my_float64': np.arange(4.0, 7.0),
-                      'my_bool1': [True, False, True],
-                      'my_bool2': [False, True, False],
-                      'my_dates': pd.date_range('now', periods=3)})
-
-   df
-   df.dtypes
-
-.. code-block:: python
-
-   import pandas_gbq
-   pandas_gbq.to_gbq(df, 'my_dataset.my_table', project_id=projectid)
+.. literalinclude:: samples/to_gbq_simple.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_pandas_gbq_to_gbq_simple]
+   :end-before: [END bigquery_pandas_gbq_to_gbq_simple]
 
 The destination table and destination dataset will automatically be created
 if they do not already exist.
-
 
 Writing to an Existing Table
 ----------------------------

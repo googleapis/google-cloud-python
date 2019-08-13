@@ -3,26 +3,20 @@
 Reading Tables
 ==============
 
-Suppose you want to load all data from an existing BigQuery table
-``test_dataset.test_table`` into a DataFrame using the
-:func:`~pandas_gbq.read_gbq` function.
+Use the :func:`pandas_gbq.read_gbq` function to run a BigQuery query and
+download the results as a :class:`pandas.DataFrame` object.
 
-.. code-block:: python
-
-   import pandas_gbq
-
-   # TODO: Set your BigQuery Project ID.
-   projectid = "xxxxxxxx"
-
-   data_frame = pandas_gbq.read_gbq(
-       'SELECT * FROM `test_dataset.test_table`',
-       project_id=projectid)
+.. literalinclude:: samples/read_gbq_simple.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_pandas_gbq_read_gbq_simple]
+   :end-before: [END bigquery_pandas_gbq_read_gbq_simple]
 
 .. note::
 
-    A project ID is sometimes optional if it can be inferred during
-    authentication, but it is required when authenticating with user
-    credentials. You can find your project ID in the `Google Cloud console
+    A project ID is optional if it can be inferred during authentication, but
+    it is required when authenticating with user credentials. You can find
+    your project ID in the `Google Cloud console
     <https://console.cloud.google.com>`__.
 
 You can define which column from BigQuery to use as an index in the
@@ -36,44 +30,31 @@ destination DataFrame as well as a preferred column order as follows:
        index_col='index_column_name',
        col_order=['col1', 'col2', 'col3'])
 
-
-You can specify the query config as parameter to use additional options of
-your job. For more information about query configuration parameters see `here
-<https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query>`__.
-
-.. code-block:: python
-
-   configuration = {
-      'query': {
-        "useQueryCache": False
-      }
-   }
-   data_frame = read_gbq(
-       'SELECT * FROM `test_dataset.test_table`',
-       project_id=projectid,
-       configuration=configuration)
-
+Querying with legacy SQL syntax
+-------------------------------
 
 The ``dialect`` argument can be used to indicate whether to use
-BigQuery's ``'legacy'`` SQL or BigQuery's ``'standard'`` SQL (beta). The
-default value is ``'standard'`` For more information on BigQuery's standard
-SQL, see `BigQuery SQL Reference
-<https://cloud.google.com/bigquery/docs/reference/standard-sql/>`__
+BigQuery's ``'legacy'`` SQL or BigQuery's ``'standard'`` SQL. The
+default value is ``'standard'``.
 
-.. code-block:: python
+.. literalinclude:: samples/read_gbq_legacy.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_pandas_gbq_read_gbq_legacy]
+   :end-before: [END bigquery_pandas_gbq_read_gbq_legacy]
 
-   data_frame = pandas_gbq.read_gbq(
-       'SELECT * FROM [test_dataset.test_table]',
-       project_id=projectid,
-       dialect='legacy')
-
+* `Standard SQL reference
+  <https://cloud.google.com/bigquery/docs/reference/standard-sql/>`__
+* `Legacy SQL reference
+  <https://cloud.google.com/bigquery/docs/reference/legacy-sql>`__
 
 .. _reading-dtypes:
 
 Inferring the DataFrame's dtypes
 --------------------------------
 
-The :func:`~pandas_gbq.read_gbq` method infers the pandas dtype for each column, based on the BigQuery table schema.
+The :func:`~pandas_gbq.read_gbq` method infers the pandas dtype for each
+column, based on the BigQuery table schema.
 
 ================== =========================
 BigQuery Data Type dtype
@@ -87,7 +68,7 @@ DATE               datetime64[ns]
 
 .. _reading-bqstorage-api:
 
-Using the BigQuery Storage API
+Improving download performance
 ------------------------------
 
 Use the BigQuery Storage API to download large (>125 MB) query results more
@@ -105,22 +86,42 @@ quickly (but at an `increased cost
    create BigQuery Storage API read sessions. This permission is provided by
    the `bigquery.user role
    <https://cloud.google.com/bigquery/docs/access-control#roles>`__.
-#. Install the ``google-cloud-bigquery-storage``, ``fastavro``, and
-   ``python-snappy`` packages.
+#. Install the ``google-cloud-bigquery-storage`` and ``pyarrow``
+    packages.
 
    With pip:
 
    .. code-block:: sh
 
-      pip install --upgrade google-cloud-bigquery-storage fastavro python-snappy
+      pip install --upgrade google-cloud-bigquery-storage pyarrow
 
    With conda:
 
    .. code-block:: sh
 
-      conda install -c conda-forge google-cloud-bigquery-storage fastavro python-snappy
+      conda install -c conda-forge google-cloud-bigquery-storage
 #. Set ``use_bqstorage_api`` to ``True`` when calling the
    :func:`~pandas_gbq.read_gbq` function. As of the ``google-cloud-bigquery``
    package, version 1.11.1 or later,the function will fallback to the
    BigQuery API if the BigQuery Storage API cannot be used, such as with
    small query results.
+
+Advanced configuration
+----------------------
+
+You can specify the query config as parameter to use additional options of
+your job. Refer to the `JobConfiguration REST resource reference
+<https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfiguration>`__
+for details.
+
+.. code-block:: python
+
+   configuration = {
+      'query': {
+        "useQueryCache": False
+      }
+   }
+   data_frame = read_gbq(
+       'SELECT * FROM `test_dataset.test_table`',
+       project_id=projectid,
+       configuration=configuration)

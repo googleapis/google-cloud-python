@@ -48,28 +48,6 @@ def gbq_connector(project, credentials):
     return gbq.GbqConnector(project, credentials=credentials)
 
 
-@pytest.fixture(scope="module")
-def bigquery_client(project_id, private_key_path):
-    from google.cloud import bigquery
-
-    return bigquery.Client.from_service_account_json(
-        private_key_path, project=project_id
-    )
-
-
-@pytest.fixture()
-def random_dataset_id(bigquery_client):
-    import google.api_core.exceptions
-
-    dataset_id = "".join(["pandas_gbq_", str(uuid.uuid4()).replace("-", "_")])
-    dataset_ref = bigquery_client.dataset(dataset_id)
-    yield dataset_id
-    try:
-        bigquery_client.delete_dataset(dataset_ref, delete_contents=True)
-    except google.api_core.exceptions.NotFound:
-        pass  # Not all tests actually create a dataset
-
-
 @pytest.fixture()
 def random_dataset(bigquery_client, random_dataset_id):
     from google.cloud import bigquery
@@ -148,14 +126,6 @@ class TestGBQConnectorIntegration(object):
     def test_should_be_able_to_get_a_bigquery_client(self, gbq_connector):
         bigquery_client = gbq_connector.get_client()
         assert bigquery_client is not None
-
-
-def test_should_read(project, credentials):
-    query = 'SELECT "PI" AS valid_string'
-    df = gbq.read_gbq(
-        query, project_id=project, credentials=credentials, dialect="legacy"
-    )
-    tm.assert_frame_equal(df, DataFrame({"valid_string": ["PI"]}))
 
 
 class TestReadGBQIntegration(object):

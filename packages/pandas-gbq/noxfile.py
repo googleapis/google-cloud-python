@@ -95,5 +95,9 @@ def system(session):
         additional_args = additional_args + ["-m", "not local_auth"]
 
     session.run(
-        "pytest", os.path.join(".", "tests", "system"), "-v", *additional_args
+        "pytest",
+        os.path.join(".", "tests", "system"),
+        os.path.join(".", "samples", "tests"),
+        "-v",
+        *additional_args
     )

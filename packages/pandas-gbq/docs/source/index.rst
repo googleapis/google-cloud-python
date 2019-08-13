@@ -13,7 +13,7 @@ with a shape and data types derived from the source table. Additionally,
 DataFrames can be inserted into new BigQuery tables or appended to existing
 tables.
 
-.. warning::
+.. note::
 
    To use this module, you will need a valid BigQuery account. Use the
    `BigQuery sandbox <https://cloud.google.com/bigquery/docs/sandbox>`__ to
