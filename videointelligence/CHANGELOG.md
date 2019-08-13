@@ -12,7 +12,7 @@
 - Add segment / shot presence label annotations fields (via synth). ([#8987](https://github.com/googleapis/google-cloud-python/pull/8987))
 - Add V1 video segment / feature fields; remove send/recv msg size limit (via synth). ([#8975](https://github.com/googleapis/google-cloud-python/pull/8975))
 
-### Internal / Testing Changes
+### Documentation
 - Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
 
 ## 1.10.0
