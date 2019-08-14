@@ -47,7 +47,6 @@ _NO_BQSTORAGE_ERROR = (
     "please install google-cloud-bigquery-storage to use bqstorage features."
 )
 
-STRUCT_TYPES = ("RECORD", "STRUCT")
 _PROGRESS_INTERVAL = 0.2  # Maximum time between download status checks, in seconds.
 
 
@@ -126,7 +125,7 @@ def bq_to_arrow_data_type(field):
             return pyarrow.list_(inner_type)
         return None
 
-    if field.field_type.upper() in STRUCT_TYPES:
+    if field.field_type.upper() in schema._STRUCT_TYPES:
         return bq_to_arrow_struct_data_type(field)
 
     data_type_constructor = BQ_TO_ARROW_SCALARS.get(field.field_type.upper())
@@ -168,7 +167,7 @@ def bq_to_arrow_array(series, bq_field):
     arrow_type = bq_to_arrow_data_type(bq_field)
     if bq_field.mode.upper() == "REPEATED":
         return pyarrow.ListArray.from_pandas(series, type=arrow_type)
-    if bq_field.field_type.upper() in STRUCT_TYPES:
+    if bq_field.field_type.upper() in schema._STRUCT_TYPES:
         return pyarrow.StructArray.from_pandas(series, type=arrow_type)
     return pyarrow.array(series, type=arrow_type)
 
