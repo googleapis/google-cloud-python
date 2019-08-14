@@ -167,7 +167,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/client_list_jobs.py
+.. literalinclude:: ../samples/client_list_jobs.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_list_jobs]
@@ -176,7 +176,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/client_query.py
+.. literalinclude:: ../samples/client_query.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_query]
@@ -185,7 +185,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/client_query_add_column.py
+.. literalinclude:: ../samples/client_query_add_column.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_add_column_query_append]
@@ -194,7 +194,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/client_query_batch.py
+.. literalinclude:: ../samples/client_query_batch.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_query_batch]
@@ -203,7 +203,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/client_query_destination_table.py
+.. literalinclude:: ../samples/client_query_destination_table.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_query_destination_table]
@@ -212,7 +212,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/client_query_destination_table_cmek.py
+.. literalinclude:: ../samples/client_query_destination_table_cmek.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_query_destination_table_cmek]
@@ -221,7 +221,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/client_query_destination_table_legacy.py
+.. literalinclude:: ../samples/client_query_destination_table_legacy.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_query_legacy_large_results]
@@ -230,7 +230,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/client_query_dry_run.py
+.. literalinclude:: ../samples/client_query_dry_run.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_query_dry_run]
@@ -239,7 +239,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/client_query_relax_column.py
+.. literalinclude:: ../samples/client_query_relax_column.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_relax_column_query_append]
@@ -248,7 +248,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/client_query_total_rows.py
+.. literalinclude:: ../samples/client_query_total_rows.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_query_total_rows]
@@ -257,7 +257,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/client_query_w_array_params.py
+.. literalinclude:: ../samples/client_query_w_array_params.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_query_params_arrays]
@@ -266,7 +266,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/client_query_w_named_params.py
+.. literalinclude:: ../samples/client_query_w_named_params.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_query_params_named]
@@ -275,7 +275,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/client_query_w_positional_params.py
+.. literalinclude:: ../samples/client_query_w_positional_params.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_query_params_positional]
@@ -284,7 +284,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/client_query_w_struct_params.py
+.. literalinclude:: ../samples/client_query_w_struct_params.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_query_params_structs]
@@ -293,7 +293,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/client_query_w_timestamp_params.py
+.. literalinclude:: ../samples/client_query_w_timestamp_params.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_query_params_timestamps]
@@ -302,7 +302,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/copy_table_cmek.py
+.. literalinclude:: ../samples/copy_table_cmek.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_copy_table_cmek]
@@ -311,7 +311,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/copy_table_multiple_source.py
+.. literalinclude:: ../samples/copy_table_multiple_source.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_copy_table_multiple_source]
@@ -320,7 +320,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/create_client_default_credentials.py
+.. literalinclude:: ../samples/create_client_default_credentials.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_client_default_credentials]
@@ -329,7 +329,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/create_partitioned_table.py
+.. literalinclude:: ../samples/create_partitioned_table.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_create_table_partitioned]
@@ -338,7 +338,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/create_table_cmek.py
+.. literalinclude:: ../samples/create_table_cmek.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_create_table_cmek]
@@ -347,7 +347,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/create_table_nested_repeated_schema.py
+.. literalinclude:: ../samples/create_table_nested_repeated_schema.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_nested_repeated_schema]
@@ -356,7 +356,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/ddl_create_view.py
+.. literalinclude:: ../samples/ddl_create_view.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_ddl_create_view]
@@ -365,7 +365,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/extract_table_compressed.py
+.. literalinclude:: ../samples/extract_table_compressed.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_extract_table_compressed]
@@ -374,7 +374,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/extract_table_json.py
+.. literalinclude:: ../samples/extract_table_json.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_extract_table_json]
@@ -383,7 +383,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/list_rows_as_dataframe.py
+.. literalinclude:: ../samples/list_rows_as_dataframe.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_list_rows_dataframe]
@@ -392,7 +392,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/load_and_query_partitioned_table.py
+.. literalinclude:: ../samples/load_and_query_partitioned_table.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_query_partitioned_table]
@@ -401,7 +401,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/load_table_add_column.py
+.. literalinclude:: ../samples/load_table_add_column.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_add_column_load_append]
@@ -410,7 +410,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/load_table_from_dataframe.py
+.. literalinclude:: ../samples/load_table_from_dataframe.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_load_table_dataframe]
@@ -419,7 +419,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/load_table_from_uri_autodetect.py
+.. literalinclude:: ../samples/load_table_from_uri_autodetect.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_load_table_gcs_json_autodetect]
@@ -428,7 +428,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/load_table_from_uri_avro.py
+.. literalinclude:: ../samples/load_table_from_uri_avro.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_load_table_gcs_avro]
@@ -437,7 +437,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/load_table_from_uri_cmek.py
+.. literalinclude:: ../samples/load_table_from_uri_cmek.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_load_table_gcs_json_cmek]
@@ -446,7 +446,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/load_table_from_uri_orc.py
+.. literalinclude:: ../samples/load_table_from_uri_orc.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_load_table_gcs_orc]
@@ -455,7 +455,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/load_table_from_uri_truncate.py
+.. literalinclude:: ../samples/load_table_from_uri_truncate.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_load_table_gcs_orc_truncate]
@@ -464,7 +464,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/load_table_relax_column.py
+.. literalinclude:: ../samples/load_table_relax_column.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_relax_column_load_append]
@@ -473,7 +473,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/manage_job.py
+.. literalinclude:: ../samples/manage_job.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_get_job]
@@ -482,7 +482,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/manage_table_labels.py
+.. literalinclude:: ../samples/manage_table_labels.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_delete_label_table]
@@ -491,7 +491,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/manage_views.py
+.. literalinclude:: ../samples/manage_views.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_grant_view_access]
@@ -500,7 +500,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/query_external_gcs_permanent_table.py
+.. literalinclude:: ../samples/query_external_gcs_permanent_table.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_query_external_gcs_perm]
@@ -509,7 +509,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/query_external_gcs_temporary_table.py
+.. literalinclude:: ../samples/query_external_gcs_temporary_table.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_query_external_gcs_temp]
@@ -518,7 +518,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/query_external_sheets_permanent_table.py
+.. literalinclude:: ../samples/query_external_sheets_permanent_table.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_query_external_sheets_perm]
@@ -527,7 +527,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/query_external_sheets_temporary_table.py
+.. literalinclude:: ../samples/query_external_sheets_temporary_table.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_auth_drive_scope]
@@ -536,7 +536,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/query_no_cache.py
+.. literalinclude:: ../samples/query_no_cache.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_query_no_cache]
@@ -545,7 +545,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/query_results_as_dataframe.py
+.. literalinclude:: ../samples/query_results_as_dataframe.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_query_results_dataframe]
@@ -554,7 +554,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/undelete_table.py
+.. literalinclude:: ../samples/undelete_table.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_undelete_table]
@@ -563,7 +563,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/update_table_cmek.py
+.. literalinclude:: ../samples/update_table_cmek.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_update_table_cmek]
@@ -572,7 +572,7 @@ Delete a table with the
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
 
-.. literalinclude:: ../samples/samples/update_table_expiration.py
+.. literalinclude:: ../samples/update_table_expiration.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_update_table_expiration]
