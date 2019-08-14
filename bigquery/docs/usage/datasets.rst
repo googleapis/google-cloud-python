@@ -49,7 +49,7 @@ Get a dataset resource (to pick up changes made by another client) with the
 Determine if a dataset exists with the
 :func:`~google.cloud.bigquery.client.Client.get_dataset` method:
 
-.. literalinclude:: ../samples/samples/dataset_exists.py
+.. literalinclude:: ../samples/dataset_exists.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_dataset_exists]
@@ -94,7 +94,7 @@ Manage Dataset labels
 Add labels to a dataset with the
 :func:`~google.cloud.bigquery.client.Client.update_dataset` method:
 
-.. literalinclude:: ../samples/samples/label_dataset.py
+.. literalinclude:: ../samples/label_dataset.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_label_dataset]
@@ -103,7 +103,7 @@ Add labels to a dataset with the
 Get dataset's labels with the
 :func:`~google.cloud.bigquery.client.Client.get_dataset` method:
 
-.. literalinclude:: ../samples/samples/get_dataset_labels.py
+.. literalinclude:: ../samples/get_dataset_labels.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_get_dataset_labels]
@@ -112,7 +112,7 @@ Get dataset's labels with the
 Delete dataset's labels with the
 :func:`~google.cloud.bigquery.client.Client.update_dataset` method:
 
-.. literalinclude:: ../samples/samples/delete_dataset_labels.py
+.. literalinclude:: ../samples/delete_dataset_labels.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_delete_label_dataset]
