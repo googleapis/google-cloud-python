@@ -228,6 +228,7 @@ class TestEntity(unittest.TestCase):
         entity["some_value"] = _IntEnum.VALUE_1
 
         self.assertEqual(type(entity["some_value"]), int)
+        self.assertEqual(entity["some_value"], _IntEnum.VALUE_1)
         self.assertEqual(entity["some_value"], _IntEnum.VALUE_1.value)
 
 
