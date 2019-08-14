@@ -13,33 +13,23 @@
 # limitations under the License.
 
 
-def table_insert_rows(client, to_delete):
+def table_insert_rows(client, table_id):
 
     # [START bigquery_table_insert_rows]
-    """Insert / fetch table data."""
-    dataset_id = "table_insert_rows_dataset_{}".format(_millis())
-    table_id = "table_insert_rows_table_{}".format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
-    dataset = client.create_dataset(dataset)
-    dataset.location = "US"
-    to_delete.append(dataset)
+    from google.cloud import bigquery
 
-    table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
-    table = client.create_table(table)
-
-    # TODO(developer): Uncomment the lines below and replace with your values.
-    # from google.cloud import bigquery
+    # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()
-    # dataset_id = 'my_dataset'  # replace with your dataset ID
-    # For this sample, the table must already exist and have a defined schema
-    # table_id = 'my_table'  # replace with your table ID
-    # table_ref = client.dataset(dataset_id).table(table_id)
-    # table = client.get_table(table_ref)  # API request
+
+    # TODO(developer): Set table_id to the ID of the model to fetch.
+    # table_id = 'your-project.your_dataset.your_table'
+
+    table = client.get_table(table_id)
 
     rows_to_insert = [(u"Phred Phlyntstone", 32), (u"Wylma Phlyntstone", 29)]
 
-    errors = client.insert_rows(table, rows_to_insert)  # API request
-
-    assert errors == []
+    errors = client.insert_rows(table, rows_to_insert)
+    if errors == []:
+        print("New rows have been added")
 
     # [END bigquery_table_insert_rows]
