@@ -31,7 +31,7 @@ Get a table resource with the
 Determine if a table exists with the
 :func:`~google.cloud.bigquery.client.Client.get_table` method:
 
-.. literalinclude:: ../samples/samples/table_exists.py
+.. literalinclude:: ../samples/table_exists.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_table_exists]
