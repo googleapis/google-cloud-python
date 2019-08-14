@@ -152,6 +152,15 @@ Copy a table with CMEK with the
    :start-after: [START bigquery_copy_table_cmek]
    :end-before: [END bigquery_copy_table_cmek]
 
+Copy multiple tables with the
+:func:`~google.cloud.bigquery.client.Client.copy_table` method:
+
+.. literalinclude:: ../samples/copy_table_multiple_source.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_copy_table_multiple_source]
+   :end-before: [END bigquery_copy_table_multiple_source]
+
 Copy table data to Google Cloud Storage with the
 :func:`~google.cloud.bigquery.client.Client.extract_table` method:
 
@@ -307,15 +316,6 @@ Delete a table with the
    :dedent: 4
    :start-after: [START bigquery_query_params_timestamps]
    :end-before: [END bigquery_query_params_timestamps]
-
-[-REPLACE_COMMENT-]
-:func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
-
-.. literalinclude:: ../samples/copy_table_multiple_source.py
-   :language: python
-   :dedent: 4
-   :start-after: [START bigquery_copy_table_multiple_source]
-   :end-before: [END bigquery_copy_table_multiple_source]
 
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:

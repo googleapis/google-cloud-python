@@ -13,12 +13,40 @@
 # limitations under the License.
 
 
+import six
+from google.cloud import bigquery
+
 from .. import copy_table_multiple_source
 
 
-def test_copy_table_multiple_source(capsys, client):
+def test_copy_table_multiple_source(capsys, client, dataset_id, random_dataset_id):
 
-    import six
+    schema = [
+        bigquery.SchemaField("name", "STRING"),
+        bigquery.SchemaField("post_abbr", "STRING"),
+    ]
 
+    dataset = bigquery.Dataset(random_dataset_id)
+    dataset.location = "US"
+    dataset = client.create_dataset(dataset)
+    table_data = {"table1": b"Washington,WA", "table2": b"California,CA"}
+    for table_id, data in table_data.items():
+        table_ref = dataset.table(table_id)
+        job_config = bigquery.LoadJobConfig()
+        job_config.schema = schema
+        body = six.BytesIO(data)
+        client.load_table_from_file(
+            body, table_ref, location="US", job_config=job_config
+        ).result()
+
+    tables_ids = [
+        "{}.table1".format(random_dataset_id),
+        "{}.table2".format(random_dataset_id),
+    ]
+
+    copy_table_multiple_source.copy_table_multiple_source(
+        client, dataset_id, tables_ids
+    )
     out, err = capsys.readouterr()
-    assert 
+    assert "The process completed" in out
+    assert "A copy of {} tables created".format(len(tables_ids)) in out
