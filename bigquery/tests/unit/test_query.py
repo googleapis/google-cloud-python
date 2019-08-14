@@ -121,6 +121,15 @@ class Test_ScalarQueryParameter(unittest.TestCase):
         self.assertEqual(param.type_, "INT64")
         self.assertEqual(param.value, 123)
 
+    def test_from_api_repr_wo_value(self):
+        # Back-end may not send back values for None params. See #9027
+        RESOURCE = {"name": "foo", "parameterType": {"type": "INT64"}}
+        klass = self._get_target_class()
+        param = klass.from_api_repr(RESOURCE)
+        self.assertEqual(param.name, "foo")
+        self.assertEqual(param.type_, "INT64")
+        self.assertIs(param.value, None)
+
     def test_to_api_repr_w_name(self):
         EXPECTED = {
             "name": "foo",
