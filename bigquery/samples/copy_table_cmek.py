@@ -22,9 +22,9 @@ def copy_table_cmek(client, dataset_id, table_id):
     # client = bigquery.Client()
 
     # TODO(developer): Set dataset_id to the ID of the dataset where to copy a table.
-    # dataset_id = 'your-project.your_dataset'
+    # dataset_id = "your-project.your_dataset"
 
-    # TODO(developer): Set table_id to the ID of the original table
+    # TODO(developer): Set table_id to the ID of the original table.
     # table_id = "your-project.your_dataset.your_table_name"
 
     dataset = client.get_dataset(dataset_id)
