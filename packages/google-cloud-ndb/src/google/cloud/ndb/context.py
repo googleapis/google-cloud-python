@@ -65,66 +65,71 @@ def get_context():
     raise exceptions.ContextError()
 
 
-def _default_cache_policy(key):
-    """The default cache policy.
+def _default_policy(attr_name, value_type):
+    """Factory for producing default policies.
 
-    Defers to ``_use_cache`` on the Model class for the key's kind.
+    Born of the observation that all default policies are more less the
+    same—they defer to some attribute on the model class for the key's kind and
+    expects the value to be either of a particular type or a callable.
 
-    See: :meth:`~google.cloud.ndb.context.Context.set_cache_policy`
+    Returns:
+        Callable[[key], value_type]: A policy function suitable for use as a
+            default policy.
     """
-    flag = None
-    if key is not None:
-        modelclass = model.Model._kind_map.get(key.kind())
-        if modelclass is not None:
-            policy = getattr(modelclass, "_use_cache", None)
-            if policy is not None:
-                if isinstance(policy, bool):
-                    flag = policy
-                else:
-                    flag = policy(key)
 
-    return flag
+    def policy(key):
+        value = None
+        if key is not None:
+            kind = key.kind
+            if callable(kind):
+                kind = kind()
+            modelclass = model.Model._kind_map.get(kind)
+            if modelclass is not None:
+                policy = getattr(modelclass, attr_name, None)
+                if policy is not None:
+                    if isinstance(policy, value_type):
+                        value = policy
+                    else:
+                        value = policy(key)
 
+        return value
 
-def _default_global_cache_policy(key):
-    """The default global cache policy.
-
-    Defers to ``_use_global_cache`` on the Model class for the key's kind.
-    See: :meth:`~google.cloud.ndb.context.Context.set_global_cache_policy`
-    """
-    flag = None
-    if key is not None:
-        modelclass = model.Model._kind_map.get(key.kind)
-        if modelclass is not None:
-            policy = getattr(modelclass, "_use_global_cache", None)
-            if policy is not None:
-                if isinstance(policy, bool):
-                    flag = policy
-                else:
-                    flag = policy(key)
-
-    return flag
+    return policy
 
 
-def _default_global_cache_timeout_policy(key):
-    """The default global cache timeout policy.
+_default_cache_policy = _default_policy("_use_cache", bool)
+"""The default cache policy.
 
-    Defers to ``_global_cache_timeout`` on the Model class for the key's kind.
-    See:
-    :meth:`~google.cloud.ndb.context.Context.set_global_cache_timeout_policy`
-    """
-    timeout = None
-    if key is not None:
-        modelclass = model.Model._kind_map.get(key.kind)
-        if modelclass is not None:
-            policy = getattr(modelclass, "_global_cache_timeout", None)
-            if policy is not None:
-                if isinstance(policy, int):
-                    timeout = policy
-                else:
-                    timeout = policy(key)
+Defers to ``_use_cache`` on the Model class for the key's kind.
 
-    return timeout
+See: :meth:`~google.cloud.ndb.context.Context.set_cache_policy`
+"""
+
+_default_global_cache_policy = _default_policy("_use_global_cache", bool)
+"""The default global cache policy.
+
+Defers to ``_use_global_cache`` on the Model class for the key's kind.
+
+See: :meth:`~google.cloud.ndb.context.Context.set_global_cache_policy`
+"""
+
+_default_global_cache_timeout_policy = _default_policy(
+    "_global_cache_timeout", int
+)
+"""The default global cache timeout policy.
+
+Defers to ``_global_cache_timeout`` on the Model class for the key's kind.
+
+See: :meth:`~google.cloud.ndb.context.Context.set_global_cache_timeout_policy`
+"""
+
+_default_datastore_policy = _default_policy("_use_datastore", bool)
+"""The default datastore policy.
+
+Defers to ``_use_datastore`` on the Model class for the key's kind.
+
+See: :meth:`~google.cloud.ndb.context.Context.set_datastore_policy`
+"""
 
 
 _ContextTuple = collections.namedtuple(
@@ -172,6 +177,7 @@ class _Context(_ContextTuple):
         global_cache=None,
         global_cache_policy=None,
         global_cache_timeout_policy=None,
+        datastore_policy=None,
     ):
         if eventloop is None:
             eventloop = _eventloop.EventLoop()
@@ -206,6 +212,7 @@ class _Context(_ContextTuple):
         context.set_cache_policy(cache_policy)
         context.set_global_cache_policy(global_cache_policy)
         context.set_global_cache_timeout_policy(global_cache_timeout_policy)
+        context.set_datastore_policy(datastore_policy)
 
         return context
 
@@ -282,6 +289,15 @@ class _Context(_ContextTuple):
         if timeout is None:
             timeout = self.global_cache_timeout_policy(key)
         return timeout
+
+    def _use_datastore(self, key, options=None):
+        """Return whether to use the Datastore for this key."""
+        flag = options.use_datastore if options else None
+        if flag is None:
+            flag = self.datastore_policy(key)
+        if flag is None:
+            flag = True
+        return flag
 
 
 class Context(_Context):
@@ -376,7 +392,16 @@ class Context(_Context):
                 positional argument and returns a ``bool`` indicating if it
                 should use the datastore.  May be :data:`None`.
         """
-        raise NotImplementedError
+        if policy is None:
+            policy = _default_datastore_policy
+
+        elif isinstance(policy, bool):
+            flag = policy
+
+            def policy(key):
+                return flag
+
+        self.datastore_policy = policy
 
     def set_global_cache_policy(self, policy):
         """Set the memcache policy function.
@@ -453,20 +478,6 @@ class Context(_Context):
                 :data:`False`.
         """
         return self.transaction is not None
-
-    @staticmethod
-    def default_datastore_policy(key):
-        """Default cache policy.
-
-        This defers to ``Model._use_datastore``.
-
-        Args:
-            key (google.cloud.ndb.key.Key): The key.
-
-        Returns:
-            Union[bool, None]: Whether to use datastore.
-        """
-        raise NotImplementedError
 
     def memcache_add(self, *args, **kwargs):
         """Direct pass-through to memcache client."""

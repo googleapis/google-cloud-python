@@ -86,7 +86,10 @@ def context():
         project="testing", namespace=None, spec=("project", "namespace")
     )
     context = context_module.Context(
-        client, stub=mock.Mock(spec=()), eventloop=TestingEventLoop()
+        client,
+        stub=mock.Mock(spec=()),
+        eventloop=TestingEventLoop(),
+        datastore_policy=True,
     )
     return context
 

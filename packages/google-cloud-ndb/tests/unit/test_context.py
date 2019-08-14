@@ -141,6 +141,26 @@ class TestContext:
         with pytest.raises(NotImplementedError):
             context.get_datastore_policy()
 
+    def test__use_datastore_default_policy(self):
+        class SomeKind(model.Model):
+            pass
+
+        context = self._make_one()
+        with context.use():
+            key = key_module.Key("SomeKind", 1)
+            options = _options.Options()
+            assert context._use_datastore(key, options) is True
+
+    def test__use_datastore_from_options(self):
+        class SomeKind(model.Model):
+            pass
+
+        context = self._make_one()
+        with context.use():
+            key = key_module.Key("SomeKind", 1)
+            options = _options.Options(use_datastore=False)
+            assert context._use_datastore(key, options) is False
+
     def test_get_memcache_policy(self):
         context = self._make_one()
         context.get_memcache_policy()
@@ -211,8 +231,16 @@ class TestContext:
 
     def test_set_datastore_policy(self):
         context = self._make_one()
-        with pytest.raises(NotImplementedError):
-            context.set_datastore_policy(None)
+        context.set_datastore_policy(None)
+        assert (
+            context.datastore_policy
+            is context_module._default_datastore_policy
+        )
+
+    def test_set_datastore_policy_as_bool(self):
+        context = self._make_one()
+        context.set_datastore_policy(False)
+        context.datastore_policy(None) is False
 
     def test_set_memcache_policy(self):
         context = self._make_one()
@@ -307,11 +335,6 @@ class TestContext:
     def test_in_transaction(self):
         context = self._make_one()
         assert context.in_transaction() is False
-
-    def test_default_datastore_policy(self):
-        context = self._make_one()
-        with pytest.raises(NotImplementedError):
-            context.default_datastore_policy(None)
 
     def test_memcache_add(self):
         context = self._make_one()

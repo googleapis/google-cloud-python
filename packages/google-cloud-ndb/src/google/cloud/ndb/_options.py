@@ -32,7 +32,6 @@ class Options:
         "use_cache",
         "use_global_cache",
         "global_cache_timeout",
-        # Not yet implemented
         "use_datastore",
         # Might or might not implement
         "force_writes",
@@ -154,9 +153,6 @@ class Options:
                     type(self).__name__, next(iter(kwargs))
                 )
             )
-
-        if self.use_datastore is not None:
-            raise NotImplementedError
 
         if self.max_memcache_items is not None:
             raise NotImplementedError

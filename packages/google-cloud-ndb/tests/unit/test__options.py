@@ -55,8 +55,8 @@ class TestOptions:
 
     @staticmethod
     def test_constructor_w_use_datastore():
-        with pytest.raises(NotImplementedError):
-            MyOptions(use_datastore=20)
+        options = MyOptions(use_datastore=False)
+        assert options.use_datastore is False
 
     @staticmethod
     def test_constructor_w_use_cache():

@@ -136,9 +136,19 @@ def lookup(key, options):
             either an entity protocol buffer or _NOT_FOUND.
     """
     context = context_module.get_context()
-    use_global_cache = context._use_global_cache(key, options)
+    use_datastore = context._use_datastore(key, options)
+    in_transaction = bool(_get_transaction(options))
+    if use_datastore and in_transaction:
+        use_global_cache = False
+    else:
+        use_global_cache = context._use_global_cache(key, options)
 
-    entity_pb = None
+    if not (use_global_cache or use_datastore):
+        raise TypeError(
+            "use_global_cache and use_datastore can't both be False"
+        )
+
+    entity_pb = _NOT_FOUND
     key_locked = False
 
     if use_global_cache:
@@ -150,20 +160,21 @@ def lookup(key, options):
                 entity_pb = entity_pb2.Entity()
                 entity_pb.MergeFromString(result)
 
-            else:
+            elif use_datastore:
                 yield _cache.global_lock(cache_key)
                 yield _cache.global_watch(cache_key)
 
-    if entity_pb is None:
+    if entity_pb is _NOT_FOUND and use_datastore:
         batch = _batch.get_batch(_LookupBatch, options)
         entity_pb = yield batch.add(key)
 
-    if use_global_cache and not key_locked and entity_pb is not _NOT_FOUND:
-        expires = context._global_cache_timeout(key, options)
-        serialized = entity_pb.SerializeToString()
-        yield _cache.global_compare_and_swap(
-            cache_key, serialized, expires=expires
-        )
+        # Do not cache misses
+        if use_global_cache and not key_locked and entity_pb is not _NOT_FOUND:
+            expires = context._global_cache_timeout(key, options)
+            serialized = entity_pb.SerializeToString()
+            yield _cache.global_compare_and_swap(
+                cache_key, serialized, expires=expires
+            )
 
     return entity_pb
 
@@ -368,27 +379,39 @@ def put(entity, options):
     """
     context = context_module.get_context()
     use_global_cache = context._use_global_cache(entity.key, options)
-    cache_key = _cache.global_cache_key(entity.key)
-    if use_global_cache and not entity.key.is_partial:
-        yield _cache.global_lock(cache_key)
-
-    transaction = _get_transaction(options)
-    if transaction:
-        batch = _get_commit_batch(transaction, options)
-    else:
-        batch = _batch.get_batch(_NonTransactionalCommitBatch, options)
+    use_datastore = context._use_datastore(entity.key, options)
+    if not (use_global_cache or use_datastore):
+        raise TypeError(
+            "use_global_cache and use_datastore can't both be False"
+        )
 
     entity_pb = helpers.entity_to_protobuf(entity)
-    key_pb = yield batch.put(entity_pb)
-    if key_pb:
-        key = helpers.key_from_protobuf(key_pb)
-    else:
-        key = None
+    cache_key = _cache.global_cache_key(entity.key)
+    if use_global_cache and not entity.key.is_partial:
+        if use_datastore:
+            yield _cache.global_lock(cache_key)
+        else:
+            expires = context._global_cache_timeout(entity.key, options)
+            cache_value = entity_pb.SerializeToString()
+            yield _cache.global_set(cache_key, cache_value, expires=expires)
 
-    if use_global_cache:
-        yield _cache.global_delete(cache_key)
+    if use_datastore:
+        transaction = _get_transaction(options)
+        if transaction:
+            batch = _get_commit_batch(transaction, options)
+        else:
+            batch = _batch.get_batch(_NonTransactionalCommitBatch, options)
 
-    return key
+        key_pb = yield batch.put(entity_pb)
+        if key_pb:
+            key = helpers.key_from_protobuf(key_pb)
+        else:
+            key = None
+
+        if use_global_cache:
+            yield _cache.global_delete(cache_key)
+
+        return key
 
 
 @tasklets.tasklet
@@ -408,18 +431,22 @@ def delete(key, options):
     """
     context = context_module.get_context()
     use_global_cache = context._use_global_cache(key, options)
+    use_datastore = context._use_datastore(key, options)
 
     if use_global_cache:
         cache_key = _cache.global_cache_key(key)
-        yield _cache.global_lock(cache_key)
 
-    transaction = _get_transaction(options)
-    if transaction:
-        batch = _get_commit_batch(transaction, options)
-    else:
-        batch = _batch.get_batch(_NonTransactionalCommitBatch, options)
+    if use_datastore:
+        if use_global_cache:
+            yield _cache.global_lock(cache_key)
 
-    yield batch.delete(key)
+        transaction = _get_transaction(options)
+        if transaction:
+            batch = _get_commit_batch(transaction, options)
+        else:
+            batch = _batch.get_batch(_NonTransactionalCommitBatch, options)
+
+        yield batch.delete(key)
 
     if use_global_cache:
         yield _cache.global_delete(cache_key)

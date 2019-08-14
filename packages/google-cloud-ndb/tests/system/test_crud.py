@@ -798,3 +798,33 @@ def test_uninitialized_property(dispose_of):
 
     with pytest.raises(ndb.exceptions.BadValueError):
         entity.put()
+
+
+@mock.patch(
+    "google.cloud.ndb._datastore_api.make_call",
+    mock.Mock(side_effect=Exception("Datastore shouldn't get called.")),
+)
+def test_crud_without_datastore(ds_entity, client_context):
+    entity_id = test_utils.system.unique_resource_id()
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StringProperty()
+        baz = ndb.StringProperty()
+
+    global_cache = global_cache_module._InProcessGlobalCache()
+    with client_context.new(global_cache=global_cache).use() as context:
+        context.set_global_cache_policy(None)  # Use default
+        context.set_datastore_policy(False)  # Don't use Datastore
+
+        key = ndb.Key(KIND, entity_id)
+        SomeKind(foo=42, bar="none", baz="night", _key=key).put()
+
+        entity = key.get()
+        assert isinstance(entity, SomeKind)
+        assert entity.foo == 42
+        assert entity.bar == "none"
+        assert entity.baz == "night"
+
+        key.delete()
+        assert key.get() is None
