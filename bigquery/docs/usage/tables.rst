@@ -116,7 +116,7 @@ Insert rows into a table's data with the
 Adds an empty column to the existing table with the
 :func:`~google.cloud.bigquery.update_table` method:
 
-.. literalinclude:: ../samples/samples/add_empty_column.py
+.. literalinclude:: ../samples/add_empty_column.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_add_empty_column]
