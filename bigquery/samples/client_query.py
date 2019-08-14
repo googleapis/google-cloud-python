@@ -33,6 +33,9 @@ def client_query(client):
         location="US",
     )  # API request - starts the query
 
+    if query_job:
+        print("The query completed")
+
     for row in query_job:  # API request - fetches results
         # Row values can be accessed by field name or index
         if row[0] == row.name == row["name"]:
