@@ -20,5 +20,5 @@ def test_copy_table(capsys, client, dataset_id, table_w_data):
 
     copy_table.copy_table(client, dataset_id, table_w_data)
     out, err = capsys.readouterr()
-    assert "Process complete" in out
-    assert "Copy of the table created" in out
+    assert "The process completed" in out
+    assert "A copy of the table created" in out

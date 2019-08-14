@@ -43,9 +43,9 @@ def copy_table(client, dataset_id, table_id):
     job.result()  # Waits for job to complete.
 
     if job.state == "DONE":
-        print("Process complete")
+        print("The process completed")
     dest_table = client.get_table(dest_table)
     if dest_table.num_rows == orig_table.num_rows:
-        print("Copy of the table created")
+        print("A copy of the table created")
 
     # [END bigquery_copy_table]
