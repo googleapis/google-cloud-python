@@ -14,6 +14,7 @@
 
 
 from google.cloud import bigquery
+
 from .. import dataset_exists
 
 
