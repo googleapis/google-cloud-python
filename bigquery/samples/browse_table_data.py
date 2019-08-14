@@ -23,7 +23,7 @@ def browse_table_data(client, table_id):
     # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()
 
-    # TODO(developer): Set table_id to the ID of the table to browse data rows
+    # TODO(developer): Set table_id to the ID of the table to browse data rows.
     # table_id = "your-project.your_dataset.your_table_name"
 
     table = client.get_table(table_id)  # API call

@@ -22,7 +22,7 @@ def get_dataset_labels(client, dataset_id):
     # client = bigquery.Client()
 
     # TODO(developer): Set dataset_id to the ID of the dataset to fetch.
-    # dataset_id = 'your-project.your_dataset'
+    # dataset_id = "your-project.your_dataset"
 
     dataset = client.get_dataset(dataset_id)
 

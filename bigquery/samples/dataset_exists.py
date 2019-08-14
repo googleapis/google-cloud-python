@@ -19,7 +19,7 @@ def dataset_exists(client, dataset_id):
     from google.cloud.exceptions import NotFound
 
     # TODO(developer): Set dataset_id to the ID of the dataset to determine existence.
-    # dataset_id = 'your-project.your_dataset'
+    # dataset_id = "your-project.your_dataset"
 
     try:
         client.get_dataset(dataset_id)
