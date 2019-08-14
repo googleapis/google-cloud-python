@@ -14,6 +14,7 @@
 
 
 from google.cloud import bigquery
+
 from .. import table_insert_rows
 
 
