@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.bigquery.query &#8212; google-cloud 2d622fd documentation</title>
+    <title>google.cloud.bigquery.query &#8212; google-cloud f2df9ca documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -160,8 +160,15 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
         <span class="n">type_</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;parameterType&quot;</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s2">&quot;parameterValue&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
-        <span class="n">converted</span> <span class="o">=</span> <span class="n">_QUERY_PARAMS_FROM_JSON</span><span class="p">[</span><span class="n">type_</span><span class="p">](</span><span class="n">value</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="c1"># parameterValue might not be present if JSON resource originates</span>
+        <span class="c1"># from the back-end - the latter omits it for None values.</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;parameterValue&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">converted</span> <span class="o">=</span> <span class="n">_QUERY_PARAMS_FROM_JSON</span><span class="p">[</span><span class="n">type_</span><span class="p">](</span><span class="n">value</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">converted</span> <span class="o">=</span> <span class="kc">None</span>
+
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">converted</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ScalarQueryParameter.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.query.ScalarQueryParameter.html#google.cloud.bigquery.query.ScalarQueryParameter.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
